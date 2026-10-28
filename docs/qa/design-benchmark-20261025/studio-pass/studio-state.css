@@ -1,0 +1,41 @@
+/* Extend the integrated craft system. State text, not color alone, carries meaning. */
+.lt-studio-states .lt-scene-copy {min-width:0;display:flex;flex-direction:column;gap:5px;}
+.lt-studio-states .lt-scene-copy>b {font-weight:600;font-size:13px;line-height:1.5;}
+.lt-studio-states .lt-scene-copy>small {margin:0;font-size:12px;}
+.lt-studio-states .shot {align-items:flex-start;}
+.lt-studio-states .lt-media-kind,.lt-studio-states .lt-take-kind {display:flex;align-items:center;justify-content:center;background:#242424;color:#bdbdbd;border:1px solid #555;border-radius:5px;font-size:12px;flex-shrink:0;}
+.lt-studio-states .lt-review-state {display:inline-block;width:fit-content;max-width:100%;padding:2px 6px;border:1px dashed #727272;border-radius:5px;font-size:12px;line-height:1.45;color:#ddd;background:#222;font-weight:500;white-space:normal;}
+.lt-studio-states .lt-review-state[data-review="approved"] {border-style:solid;color:#f2f2ef;}
+.lt-studio-states .lt-review-state[data-review="rejected"],.lt-studio-states .lt-review-state[data-review="changes_requested"] {border-color:var(--lt-danger);color:var(--lt-danger);}
+.lt-studio-states #takes {align-items:stretch;gap:8px;}
+.lt-studio-states #takes button {display:flex;align-items:center;gap:8px;min-width:152px;padding:8px;text-align:left;}
+.lt-studio-states #takes img,.lt-studio-states .lt-take-kind {display:block;width:48px;height:48px;object-fit:cover;border-radius:4px;}
+.lt-studio-states .lt-take-kind {display:flex;}
+.lt-studio-states .lt-take-copy {display:flex;flex-direction:column;gap:3px;min-width:0;}
+.lt-studio-states .lt-take-copy>b {font-size:13px;}
+.lt-studio-states .lt-take-copy>small {font-size:12px;line-height:1.4;}
+.lt-studio-states .lt-take-row {align-items:center;}
+.lt-studio-states #track {height:auto;min-height:74px;overflow-x:auto;gap:6px;background:transparent;}
+.lt-studio-states #track>.lt-track-clip {display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;min-width:144px;padding:8px;border-radius:5px;white-space:normal;}
+.lt-studio-states #track>.lt-track-clip[data-current="true"] {border-color:#aaa;box-shadow:inset 0 -2px #eee;}
+.lt-studio-states .lt-track-clip>b {width:100%;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lt-studio-states .lt-track-clip>small {font-size:12px;}
+.lt-studio-states #track .lt-review-state {flex:none;padding:2px 5px;border-left-width:1px;background:#242424;}
+.lt-studio-states #takeReviewStatus {display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 10px;}
+.lt-studio-states #takeReviewStatus>b {font-size:14px;}
+.lt-studio-states #takeReviewStatus>small {width:100%;font-size:12px;color:#c1c1be;}
+.lt-studio-states #reason {font-size:12px;line-height:1.6;padding:8px 10px;margin:8px 0 12px;background:transparent;border-left:2px solid #555;border-radius:0;}
+.lt-studio-states #reviewReason {resize:vertical;min-height:76px;line-height:1.5;word-break:keep-all;overflow-wrap:break-word;}
+.lt-studio-states #takeReviewDraftState {font-size:12px;line-height:1.5;margin:4px 0 8px;color:#bdbdbd;}
+.lt-studio-states #discardTakeReviewDraft {font-size:12px;min-height:32px;background:transparent;border-color:#555;margin-bottom:8px;}
+.lt-studio-states .inspector label[for="takeDecision"] {margin-top:12px;font-size:13px;}
+.lt-studio-states .lt-notice-detail>summary {font-size:12px;}
+@media(max-width:900px){
+ .lt-studio-states .lt-take-row {flex-direction:column;align-items:stretch;}
+ .lt-studio-states #takes {width:100%;}
+ .lt-studio-states #compareButton {align-self:flex-end;min-height:44px;min-width:144px;width:auto;white-space:nowrap;}
+ .lt-studio-states #reviewTake {min-height:44px;}
+ .lt-studio-states #takes button {min-width:160px;}
+ .lt-studio-states #discardTakeReviewDraft {min-height:44px;}
+ .lt-studio-states #track>.lt-track-clip {min-width:144px;}
+}

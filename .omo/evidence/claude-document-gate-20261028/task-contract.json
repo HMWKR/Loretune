@@ -1,0 +1,43 @@
+{
+  "task_id": "claude-document-gate-20261028",
+  "attempt": 1,
+  "objective": "Add opt-in project Claude Stop document gate without modifying Claude originals or shared dependencies",
+  "authorization": "User: claude에서도 되게끔 진행을 해줘",
+  "scope": "Loretune project only; no registry/classification/context regeneration approval inferred",
+  "driver_write_set": [
+    ".claude/settings.local.json",
+    ".omo/evidence/claude-document-gate-20261028/*"
+  ],
+  "reviewer_write_set": [
+    ".omo/evidence/claude-document-gate-20261028/independent-review.json"
+  ],
+  "methodology_sources": [
+    "https://code.claude.com/docs/en/hooks",
+    "https://code.claude.com/docs/en/settings",
+    "/Users/leesungmin/.agents/skills/document-completion-gate/SKILL.md"
+  ],
+  "applied_methodology": "Native hook contract verification, additive project-scoped configuration, read-only input/output boundary checks",
+  "verification_standard": "existing global/shared hashes unchanged; project hook command once; blocked first Stop and warning-only reentry; not-configured and malformed input no false pass; actual native auto-dispatch must remain separate if unobserved",
+  "non_goals": [
+    "No Claude model call",
+    "No paid/provider call",
+    "No product implementation or restart",
+    "No registry/promotion/generated context writes",
+    "No global Claude or shared source edits"
+  ],
+  "command": "/opt/homebrew/bin/python3 -B /Users/leesungmin/.agents/skills/document-completion-gate/check.py --hook",
+  "protected_sha256": {
+    "/Users/leesungmin/.claude/settings.json": "5222744f46706659ab83fc0588bb6121895d6f0f67da2955ca7db67a50cdddb9",
+    "/Users/leesungmin/.claude/settings.local.json": "8fa06ca29bb4fa169b799cd114465dd37db1355425b2a5d499d8c739a8893b76",
+    "/Users/leesungmin/.codex/hooks.json": "af8b499ddb0f192c91faa7046af7cbef0a828fdbc1434609e48d67f8c285f63a",
+    "/Users/leesungmin/.agents/skills/document-completion-gate/check.py": "33113f9e233f35f641815ef4dca2933b036466314cff6629586fa2b446a334fa",
+    "/Users/leesungmin/Desktop/Loretune/.document-gate.json": "513ce5591f5d898b87af6549b2acb86d4971618fb6f3f40acb5d6576c4b1d9d4"
+  },
+  "existing_local_project_settings_present": false,
+  "model": "inherit current session",
+  "reasoning": "inherit current session",
+  "agent_type": "worker",
+  "dependency": "reviewer reviews checker/contract independently while driver prepares new project settings",
+  "known_instruction_conflict": "Global Claude CLAUDE.md previously prefers fablize-only Stop blocking; latest explicit request authorizes opt-in document gate for this project; leave global guidance untouched",
+  "created_at": "2026-10-28T06:59:30.484446+00:00"
+}

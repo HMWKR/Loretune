@@ -1,0 +1,197 @@
+{
+  "status": "REPORTED",
+  "issue": "BENCH-COLOR-04",
+  "conclusion": "원본색상누락은아님. 공개모델예측값→COLOR_0에명시적색전달함수변환이없다는것은확인했으나모델학습출력색공간미확인으로감마오류/플랫폼결함을확정하지못함.",
+  "methodology": {
+    "applied": "pinned source producer/consumer trace + installed library numeric conversion probe + raw GLB byte statistics + actual saved PNG inspection",
+    "limits": "No new model inference, native/render execution, dependency install/download, lossy adapter, product or document modification",
+    "role": "existing worker-high fixed gpt6astra medium; actual provider identity not independently measured"
+  },
+  "verified_chain": [
+    {
+      "stage": "PNG input",
+      "observation": "actual original chair PNG contains sRGB/gamma metadata; PIL RGB -> numpy float32 /255 -> bilinear resize; no explicit sRGB inverse in code",
+      "evidence": "numeric-results.json / source-excerpts.json utils.py69-89",
+      "qualification": "Image metadata describes PNG encoding; does not determine model output encoding"
+    },
+    {
+      "stage": "image tokenizer",
+      "observation": "channel means0.485/0.456/0.406 and std0.229/0.224/0.225 normalization; no gamma operation",
+      "evidence": "source-excerpts.json image.py"
+    },
+    {
+      "stage": "model output",
+      "observation": "features passed through sigmoid, range0..1; field queries at mesh vertices; no separately estimated albedo/roughness/light decomposition in inspected export path",
+      "evidence": "source-excerpts.json nerf_renderer.py85-87,system.py185-204;additional-source-excerpts.json utils.py235-253",
+      "qualification": "float dtype/range/sigmoid do not prove linear or sRGB; model training targets unverified"
+    },
+    {
+      "stage": "mesh -> Trimesh",
+      "observation": "float CPU numpy passed to vertex_colors; Trimesh4.0.5 to_rgba multiplies255, rounds to uint8, adds opaque alpha; numeric[.1,.5,.9] -> [26,128,230,255]",
+      "evidence": "source-excerpts.json color.py558-602; numeric-results.json",
+      "qualification": "no transfer function at this boundary"
+    },
+    {
+      "stage": "GLB",
+      "observation": "normalized UNSIGNED_BYTE VEC4 COLOR_0 written directly; raw originals contain no materials entry or primitive material reference",
+      "evidence": "source-excerpts.json gltf.py841-868; numeric-results.json",
+      "qualification": "glTF specification says COLOR_0 linear used as-is; texture sRGB rules do not apply to these no-texture outputs"
+    },
+    {
+      "stage": "installed Blender importer",
+      "observation": "creates BYTE_COLOR attribute, foreach_set color; material_idx None branch creates default Principled and links VertexColor to Base Color",
+      "evidence": "additional-source-excerpts.json mesh.py451-467/material.py20-38",
+      "qualification": "actual importer source confirmed. Numeric default roughness/metallic values not queried in this read-only task; do not apply glTF explicit PBR metallic default1 to this none-material branch"
+    },
+    {
+      "stage": "platform renderer",
+      "observation": "imports originalGLB, creates AREA lights and Cycles CPU scene; no explicit view_transform/exposure/gamma override in inspected current source",
+      "evidence": "additional-source-excerpts.json scene_renderer.py",
+      "qualification": "prior factory receipt reports AgX/None/exposure0/gamma1; not a fresh per-job native observation here"
+    }
+  ],
+  "raw_chair_summary": {
+    "path": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-cpu-artifact-20261028/chair-attempt-1/chair-resolution256-original.glb",
+    "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+    "accessor": {
+      "componentType": 5121,
+      "normalized": true,
+      "type": "VEC4",
+      "byteOffset": 0,
+      "bufferView": 2,
+      "count": 42186,
+      "max": [
+        206,
+        148,
+        138,
+        255
+      ],
+      "min": [
+        3,
+        1,
+        1,
+        255
+      ]
+    },
+    "color_sha256": "7da051e4db50f2cb514499a2f795cfc32a69cb1dca07b01ff4f809a0ffc69920",
+    "rgba_min": [
+      3,
+      1,
+      1,
+      255
+    ],
+    "rgba_max": [
+      206,
+      148,
+      138,
+      255
+    ],
+    "rgba_mean": [
+      137.80346560470298,
+      92.17588773526762,
+      65.80512492296022,
+      255.0
+    ],
+    "rgba_quantiles": [
+      [
+        77.0,
+        49.0,
+        30.0,
+        255.0
+      ],
+      [
+        141.0,
+        92.0,
+        70.0,
+        255.0
+      ],
+      [
+        190.0,
+        131.0,
+        96.0,
+        255.0
+      ]
+    ],
+    "normalized_rgb_mean": [
+      0.5404057474693759,
+      0.36147406955006517,
+      0.25805931342334526
+    ],
+    "materials_present": false,
+    "primitive_material": null,
+    "note": "vertex-weighted distribution, not pixel/area weighted and no image correspondence"
+  },
+  "manual_visual_review": {
+    "files": [
+      ".omo/evidence/paired-3d-benchmark-inputs-20261028/case-2-chair.png",
+      ".omo/evidence/paired-assets-platform-20261028/ui/default-chair.png",
+      ".omo/evidence/paired-assets-platform-20261028/ui/edited-chair.png"
+    ],
+    "observed": "original input brown; saved native chair pale beige. Default framing tiny/rotated, edited framing closer; images are not a same-camera same-light color match experiment.",
+    "not_claimed": "no pixel-aligned metric, user study or model quality equality"
+  },
+  "hypotheses": [
+    {
+      "id": "C1",
+      "hypothesis": "model export values are image-encoded RGB but consumed as linear COLOR_0",
+      "support": "no transfer conversion; input PNG sRGB tagged; theoretical linear-use display could lighten values",
+      "confidence": "plausible, unconfirmed",
+      "missing": "training target/output transfer-function declaration or controlled calibration"
+    },
+    {
+      "id": "C2",
+      "hypothesis": "model colors include appearance/shading which is re-lit by native Principled + lights",
+      "support": "single-image predicted color field, no physical decomposition in inspected path; native lighting definitely applied",
+      "confidence": "plausible, unconfirmed",
+      "missing": "albedo ground truth or same-geometry unlit/PBR controlled comparison"
+    },
+    {
+      "id": "C3",
+      "hypothesis": "native display transform/lighting and material defaults account for pale appearance",
+      "support": "lighting changes output; prior factory AgX record; color node remains connected",
+      "confidence": "plausible; magnitude unmeasured",
+      "missing": "per-render shader/view settings and linear output comparison"
+    },
+    {
+      "id": "C4",
+      "hypothesis": "vertex color data was dropped completely",
+      "support": "contradicted by raw nonconstant COLOR_0 bytes and installed source shader link; prior shader receipt also agrees",
+      "confidence": "low for total color loss; current rendered values not re-probed"
+    }
+  ],
+  "next_controlled_experiments": [
+    {
+      "id": "A",
+      "purpose": "test sensitivity to encoded-vs-linear interpretation without claiming a correction",
+      "fixed": "same immutable original mesh, topology, camera, pose, lights, renderer/version, view transform, samples, seed; no model run",
+      "single_variable": "diagnostic color copy: normalized raw COLOR_0 vs explicit inverse-sRGB candidate; original untouched",
+      "predictions": "inverse candidate has lower scene-linear values and should darken corresponding pixels; magnitude measured on same pixels",
+      "verification": "record exact shader/view settings, float linear buffer and PNG hashes; compare matched geometry pixels. Darker/closer-looking is not proof of correct model encoding; accept correction only after model encoding/calibration is established",
+      "status": "PROPOSED; not executed; not a product adapter"
+    },
+    {
+      "id": "B",
+      "purpose": "separate re-lighting contribution from model colors",
+      "fixed": "same original color bytes/geometry/camera/view transform/output dimensions/version/seed",
+      "single_variable": "original imported Principled path vs diagnostic unlit emission using same color attribute",
+      "predictions": "differences isolate material/light response under unchanged view transform; if pale persists, lighting alone is insufficient",
+      "verification": "capture actual shader links/settings, scene-linear output and same-condition PNG. No inference/mesh modification; note emission is diagnostic not production material recommendation",
+      "status": "PROPOSED; not executed"
+    }
+  ],
+  "preservation": "preservation.json verifies five originalGLB/PNG hashes unchanged",
+  "actual_checks": [
+    {
+      "invocation": "invocation.json argv",
+      "observable": "exit0; to_rgba numeric conversion exact; raw color accessor statistics recorded",
+      "artifact": "numeric-probe.log / numeric-results.json"
+    },
+    {
+      "invocation": "read source and SHA256 files",
+      "observable": "pinned TripoSR107cefd,installed Trimesh4.0.5 MIT,installed Blender importer source hashes",
+      "artifact": "provenance.json / source-excerpts.json / additional-source-excerpts.json"
+    }
+  ],
+  "primary_standard": "https://github.com/KhronosGroup/glTF/blob/main/specification/2.0/Specification.adoc#materials",
+  "prior_receipts_treatment": "Existing color-probe and factory reports are corroboration only, not independently rerun native evidence; no passing production claim based on them."
+}

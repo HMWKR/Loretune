@@ -1,0 +1,116 @@
+{
+  "spaceId": 89,
+  "rootIndexSHA256": "9bfaf17abfa0763e28f1e44f61bea636258f8ffa8de917d768a00dd3079659e7",
+  "loadedChangedFunctionBodies": {
+    "installStudioNotice": {
+      "exact": true,
+      "sha256": "a9f0bff10789d4c68e36d48f8ee8864509422622e7400bc76d0d782299c966e9"
+    },
+    "creatorError": {
+      "exact": true,
+      "sha256": "35c79d3bc8bfda0f3b05ea8ac51f13a01e70c0a007fb523e0fc3e89ade7e96d1"
+    },
+    "sendRequest": {
+      "exact": true,
+      "sha256": "b96da4833d900d2cd147595ccd688f44f3450e05da2c874e2e4b242c0733110d"
+    },
+    "act": {
+      "exact": true,
+      "sha256": "0a28a5b2f4bd9c04434fb953f472c01d1c0b423a82276bbb224067d61862f63f"
+    }
+  },
+  "requests": {
+    "case": "after",
+    "posts": [
+      {
+        "action": "music_structure",
+        "request_id": "3e948a25-16a7-4b2c-b855-7452991d218c",
+        "body_sha256": "bfb27ce21828a0899d2186df2898b936f4b6e2ea2f8edbb370591f2998c29bdc",
+        "http_status": 400,
+        "error": "입력을 확인하세요: 선택 구간은 원곡 길이 안에서 시작 < 끝이어야 합니다."
+      },
+      {
+        "action": "music_structure",
+        "request_id": "3566418f-6275-4506-b884-6ed5f237b1f5",
+        "body_sha256": "7ef387da64904e0f3078125762ad03fb12abd9146d6eab228eaccbff6a0a2800",
+        "http_status": 400,
+        "error": "입력을 확인하세요: 선택 구간은 원곡 길이 안에서 시작 < 끝이어야 합니다."
+      },
+      {
+        "action": "estimate_render",
+        "request_id": "a6e56022-6c1f-4cf7-8f13-dafebe01c1e6",
+        "body_sha256": "eda3d3cbd37cecf114463b30417aa1df426a7c4653aa627c0ebeef54ef53260b",
+        "http_status": 200
+      },
+      {
+        "action": "estimate_render",
+        "request_id": "f06486e8-213d-42d2-ad3c-c52883acd8a9",
+        "body_sha256": "c09a9e8f5c6c9fb47ab828834a9869007a1d312adf90dd8831bcbcc3eb3c8712",
+        "http_status": 200
+      },
+      {
+        "action": "render_job",
+        "request_id": "4ce83385-3ce5-4ba5-b328-7245cba60873",
+        "body_sha256": "c59a4c24cb56391e322bd18582c79b15ef71f49d5eb89824df8c1d0e9f8db716",
+        "http_status": 200
+      },
+      {
+        "action": "scene_asset_import",
+        "request_id": "8c21d00a-536b-48a0-ab5f-587c91613ecf",
+        "body_sha256": "f5382add6354419a22cbc675060e4288af50e33d374a33bcc7c22c4ff7c83d80",
+        "http_status": 400,
+        "error": "입력을 확인하세요: GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요."
+      },
+      {
+        "action": "scene_asset_import",
+        "request_id": "ae33d32b-2278-42fd-b3d6-dd2ac6cf5833",
+        "body_sha256": "ed9b77574ba1843ffa5c12925fbc5d22d4c094ddab68c4781faf7080b0b471a3",
+        "http_status": 400,
+        "error": "입력을 확인하세요: GLB 파일은 8MiB 이하의 정적 모델이어야 합니다."
+      },
+      {
+        "action": "scene_asset_import",
+        "request_id": "fb6ad4b0-975c-4b1b-bdd6-2f0da90eac38",
+        "body_sha256": "1bad7bce60502001e8d917cfcb817fa273d8769365382bd50c72fec9d2dfcb70",
+        "http_status": 400,
+        "error": "입력을 확인하세요: GLB 파일은 8MiB 이하의 정적 모델이어야 합니다."
+      },
+      {
+        "action": "scene_asset_import",
+        "request_id": "6de20b51-cc7c-4da5-a2c9-6d8dc6054c0a",
+        "body_sha256": "2043760ded3acc1e4b37660972ca96c4824dbcfa31970b160338ec10987806b2",
+        "http_status": 400,
+        "error": "입력을 확인하세요: 지원하지 않거나 손상된 GLB 모델입니다."
+      },
+      {
+        "action": "scene_asset_import",
+        "request_id": "3cac526e-8ffb-446d-9ba7-cd91c1d36cfc",
+        "body_sha256": "03a7c629600eef6aca1324a533d15c57c0e64e4e1fce498269e687be4105a09e",
+        "http_status": 200
+      }
+    ],
+    "providers_configured": false
+  },
+  "requestsBasis": "Saved actual fixture receipt after successful import; subsequent operations only readonly downloads/UI toggles",
+  "stateResult": {
+    "jobCount": 1,
+    "completed": 1,
+    "sceneAssets": [
+      {
+        "id": "4b09f3c5e7624ac8bb1f398c7cca4d51",
+        "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+        "profile": "gltf2-static-pbr-color-v2"
+      }
+    ],
+    "takeCount": 1,
+    "timeline": 1
+  },
+  "providerCalls": 0,
+  "limits": [
+    "Audio/shot/timeline seed is a deterministic local fixture",
+    "No actual Claude, commercial Tripo or AI-video provider run",
+    "No screen reader or end-user usability study",
+    "No new3D Take render in this UI stage",
+    "Full served HTML fetch was not verified; loaded changed function text was verified instead"
+  ]
+}

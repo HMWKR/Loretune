@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T03:06:19.158847+00:00",
+  "failure": "After stored native job completed, automation attempted #takes[data-take1] before next UI poll displayed it",
+  "actual_after_observation": "take-01-after-failure-observation.json shows Take1 in current server-backed UI, no pending/busy/dirty and no open modal",
+  "fix": "expose waits for actual target DOM presence via short observation polling before accessing ancestor disclosures; no app code/test weakened or render repeated in the old workspace",
+  "preserved": [
+    "take-01 actual capture frames/recording.json",
+    "workspace/data native source1 and Take1",
+    "server-main action metadata"
+  ],
+  "next_attempt": "Fresh distinct durable workspace main-demo-case-r2, UI creation again; old project not removed",
+  "AI_calls": 0
+}

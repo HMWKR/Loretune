@@ -1,0 +1,91 @@
+{
+  "schema": "agent-work-status-context-report/1",
+  "recorded_at": "2026-10-28T02:38:22.717024+00:00",
+  "state": "REPORTED_SOURCE_FROZEN; parent independent acceptance pending",
+  "objective": "Allow existing selected-model search tool to inspect current-project/current-conversation work as bounded recorded observations",
+  "changed_sources": {
+    "production_context.py": "cb85253d5a5cf194f1c1852603e32acec530a7b9a0884460a543386bb169460d",
+    "tests/test_agent_work_status_context.py": "4d8bcd11d5c3dc197d76edfe0b607b4727f38f9920097ea078323f0d96369c93"
+  },
+  "before_source_sha256": "c6f05454e9ea4c85651040fb44161f109488e4545bb88cded98264adfb71c671",
+  "changes": {
+    "reserved_query": "search_project_context(query=work-status) returns execution_targets.work_status; normal context adds discovery breadcrumb only",
+    "families": [
+      "local render/native motion/optional3D still jobs",
+      "provider image/video jobs",
+      "synthetic rehearsal actions",
+      "general model conversation",
+      "legacy conversation"
+    ],
+    "scope": "Project and current conversation before allowlist projection; explicit owner conflicts and wrong provider workspace/project bindings rejected",
+    "bounds": "Up to8 per source; per-table insertion order descending and truncated explicit; no global newest8 claim",
+    "provenance": "Observation interval/state revision/caller transaction status; not added to project fingerprints, authority or automatic retry",
+    "redaction": "No raw errors, paths, requests/prompts, private reasoning, grants or arbitrary output blobs",
+    "collaboration": "Unavailable: no authenticated members/team/ACL/presence",
+    "approved_followup": "Existing overlay approval text now distinguishes review human approval, allowed FullAccess unapproved agent draft, human remove/clear and separate final output approval"
+  },
+  "verification": {
+    "skills_read": [
+      "feature-verification SKILL/CODEX-RUNTIME/live-feature-verify/uncompromising-rigor",
+      "karpathy-guidelines1.2.1"
+    ],
+    "final_command": "PYTHONDONTWRITEBYTECODE=1 WORK_STATUS_EVIDENCE=<own task folder>/actual-settled python3 -m unittest tests.test_agent_work_status_context -q",
+    "new_tests": 9,
+    "seconds": 2.276,
+    "result": "OK",
+    "unique_ids": 9,
+    "skip_count": 0,
+    "warnings": 0,
+    "related_previous": "37 tests/34.483s/OK before parent-approved description change and added real-render status case; retained related-tests.log, not counted as final whole regression",
+    "actual_http_synthetic_protocol": "Selected anthropic-haiku-5-5→claude-haiku-5-5 fixture response→work-status tool→explicit continuation manifest; job-only progress changes preserve prior observation and do not self-stale; canonical shot change still400",
+    "two_projects_two_conversations": "Actual HTTP creation/projection negative forforeign/default/peer and positive forpeer owner; fixture metadata explicitly identified",
+    "actual_local_render": {
+      "job_id": "42f491cd600949f8ab239927a5c2c4f6",
+      "queued_observed": true,
+      "completed_observed": true,
+      "download_sha256": "cafe5baa0fb1e2053a0021b3d9046551559218a4de7aff8ed83149930e377f17",
+      "bytes": 3994,
+      "seconds": "3.000000",
+      "streams": [
+        "video"
+      ],
+      "full_decode_exit_code": 0,
+      "scope": "Actual3s local silent PNG-source render status; not music-workflow/UI/model acceptance"
+    },
+    "read_byte_preservation": {
+      "before_db_sha256": "9dc763185f496c527e6c94cc738f98d5fdd9607e1d74feaac843052fe4ecf46c",
+      "after_db_sha256": "9dc763185f496c527e6c94cc738f98d5fdd9607e1d74feaac843052fe4ecf46c",
+      "equal": true,
+      "project_fingerprint_unchanged": true,
+      "reopen_metadata_retained": true
+    },
+    "real_model_calls": 0,
+    "external_provider_calls": 0,
+    "actual_browser_UI": "not run by this worker; parent owns Space91 and UI integration"
+  },
+  "limits": [
+    "Status fixtures verify projection, not generated media quality or real model understanding",
+    "Actual local status output is3s silent PNG-source test, not music/video UI demo acceptance",
+    "Current source helpers preserve default-only legacy ownership; conflicting/unowned non-default rows fail closed",
+    "Older work can be omitted when truncated; insertion order is not a common creation/update clock",
+    "Completed/output SHA/registration are stored metadata, not reread physical bytes or final approval",
+    "No new authenticated worker/team/presence, general-media/3D-control tool or real vision route",
+    "Whole current-source regression and parent UI/recording/independent acceptance remain pending"
+  ],
+  "evidence": [
+    "actual-settled/actual-http-synthetic-query.json",
+    "actual-settled/actual-local-render-observation.json",
+    "actual-settled/actual-local-status-output.mp4",
+    "actual-settled/scope-filter.json",
+    "actual-settled/bounds-and-order.json",
+    "actual-settled/read-preservation.json",
+    "actual-settled/canonical-change-still-blocked.json",
+    "final-settled-tests.log",
+    "related-tests.log",
+    "scope-check.json",
+    "source-freeze.json",
+    "product.diff"
+  ],
+  "whole_platform_complete": false,
+  "python": "3.15.0 (main, Oct  9 2026, 11:16:41) [Clang 21.0.0 (clang-2100.3.34.2)]"
+}

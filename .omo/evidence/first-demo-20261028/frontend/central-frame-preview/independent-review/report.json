@@ -1,0 +1,96 @@
+{
+  "schema": "central-frame-preview-independent-acceptance/1",
+  "reviewer": "/root/agent_docs_review",
+  "status": "RECOMMEND_SCOPED_ACCEPT",
+  "scope": "D05/D14 exact saved-frame PNG in central sibling host, fit, original player/output return and prior saved-frame guards",
+  "findings_high_medium": [],
+  "authorization": "Read-only source/artifact review; this single evidence JSON authorized. Shared Space91, user8765 and main61142 not touched. No product/test/MD changes or new test runs.",
+  "model_reasoning": "Session inherited; no model calls or additional agents",
+  "methodology_sources": [
+    "Installed harness-core1.3.5 agent-critic, feature-verification, CODEX-RUNTIME, live-feature-verify, uncompromising-rigor, ui-ux-craft",
+    "Installed Impeccable SKILL and operate/harden/audit references; read and applied manually, CLI context/detector/full audit not run by reviewer",
+    "Existing actual main-demo-case-r2/saved-frame-visibility-inspect.json",
+    "Current media controllers and prior saved-frame async guards",
+    "Frozen worker code/results and independent root R2 actual observation"
+  ],
+  "applied_methodology": [
+    "Concrete counterexamples at loading/decoded/dirty/stale/scope/return transitions",
+    "Same-condition1920 before/after visual and geometry comparison",
+    "Single-DOM/source provenance review",
+    "Separate static/controlled/browser/native playback evidence and parent-owned full regression"
+  ],
+  "source_final_sha256": "a2a94ee7b628babbd5bdc14ef5c715983b4a3748f69576cb1d08f45053ff4af8",
+  "worker_report_sha256": "03c53968634b84803e77495c436b05503cccee4d17fd7e2dd376b37a0acf63d3",
+  "changes_patch_sha256": "59f270024bb755b75edad43b3cee814ff4cf64ea35291bd88a54e061833ca1f6",
+  "source_after_and_available_before_hashes_match": true,
+  "frozen_files": {
+    "index.html": "f79217bd9778af472f00c095a1152e259420a05f40c3b85cfd3cc293870175d9",
+    "studio.css": "8e9b9acf939cdeb2a99626db29dc3a54c850ef099d29a8f45c6b1b82bb25904a",
+    "studio-media.js": "f9b4ff6bde0990336dafa9cf76087f7a259566f8f37864dbe3916fc1ecb521d6",
+    "tests/timeline_motion_overlay.cjs": "2efa8ae4bc03c93d92f696f10e5f2e1986956515c9f42d0be1a9c0762ec2b5aa",
+    "tests/central_frame_preview.cjs": "0a399d1c8a054c2842b71ee1bcc1e04268bcedc0856d0b984f0b07f5772c2788",
+    "tests/test_central_frame_preview.py": "96c70bfbebb612b34d940a9f32ecba766ffc4901b692792c66b1354959292dd8"
+  },
+  "surviving_claims": [
+    {
+      "claim": "The saved PNG is moved to one central host without replacing the original players",
+      "source": ["studio-media.js:30", "studio-media.js:151", "studio-media.js:154", "studio-media.js:169"],
+      "attempted_refutation": "Duplicate image/player nodes, original video replacement or currentTime reset on frame return",
+      "evidence": "Actual browser assertions keep originalFrame/originalPreview/originalDownload identities; one timelineFrameImage; same native video after return and currentTime within0.1 of0.75. Source return invalidates/hides frame without redraw.",
+      "limit": "Preserves paused native media position; automatic playback resume is not claimed. Cross-breakpoint global toggle mouse-locator failure is retained separately."
+    },
+    {
+      "claim": "Only the current decoded PNG can open frame mode; old/dirty/stale/scope results cannot reopen it",
+      "source": ["index.html:403", "index.html:404", "index.html:409", "index.html:417", "index.html:418"],
+      "attempted_refutation": "Late HTTP or image decode after dirty edit, conversation/time/version change, user return or decode failure",
+      "evidence": "Old guards remain; central hook is only inside successful current onload. Added controlled tests at tests/timeline_motion_overlay.cjs:77 and original assertions preserved. Actual browser dirty edit hides image/host and disables confirmation.",
+      "limit": "Failure/late branches are controlled DOM/network evidence, not independently injected real-browser network faults."
+    },
+    {
+      "claim": "Complete PNG content fits the tested desktop/mobile viewports",
+      "source": ["studio.css:132", "studio.css:136", "studio.css:138", "studio.css:139"],
+      "attempted_refutation": "Image bounds differ from actual aspect-fit content; hidden/scroll ancestors or viewport clip its edges",
+      "evidence": "Reviewer opened final seventh-captures after1920/1280/375 screenshots, inspected actual content/intersection geometry and compared the same-fixture before1920. Before image is byte-identical to the previously opened original capture. 1920 content835.47x469.95,1280 content350.56x197.19,375 content351x197.44 all contained with bodyOverflow0.",
+      "limit": "375 is Chrome emulated viewport, not physical-device touch evidence. Portrait canvas,200percent zoom and screen reader not tested here."
+    },
+    {
+      "claim": "Displayed PNG matches the actual server response and identifies version/cut/time without pretending to include soundtrack/subtitles",
+      "source": ["index.html:416", "index.html:418", "studio-media.js:153", "tests/central_frame_preview.cjs:13", "tests/central_frame_preview.cjs:14"],
+      "attempted_refutation": "A different blob, misleading version identity or redundant network confirmation",
+      "evidence": "Display blob and intercepted native fetch clone SHA asserted equal; saved frame.png SHA independently matches7432de7d642b793d539e34f3f4c609701235fc1e345a4d7156464a0a4638f3a2. Six explicit confirmations produced exactly six server PNG GETs, all200; POSTs0/pageerrors0. UI states frame-only and separate subtitle/audio playback.",
+      "limit": "The actual fixture intentionally uses matching source plates so URL/source-bound checks supplement visible frame equality. Existing backend rendering validation is reused, not reimplemented."
+    },
+    {
+      "claim": "Output-card playback exits PNG mode and preserves caption/native playback handling",
+      "source": ["studio-media.js:158", "studio-media.js:161", "tests/central_frame_preview.cjs:18"],
+      "attempted_refutation": "Saved-frame CSS masks output video or breaks native controls/subtitle track",
+      "evidence": "Final browser capture opened by reviewer shows actual output video playing with Korean subtitle. Existing browser assertions require PNG hidden, output visible, track1, currentTime>0.1/playing and loaded-caption status. Root actual R2 receipt independently records0.958967sec, readyState4, pausedfalse, track1, unchanged jobs3 and timeline1, with all3 source hashes matching this freeze.",
+      "limit": "Browser/native playback performed by worker and root; reviewer read artifacts and manually inspected captures, without another browser run."
+    }
+  ],
+  "reused_execution_results_not_rerun": {
+    "actual_browser": "seventh-actual-tests.log:1 test/28.057sec/OK; actual isolated HTTP/native PNG/rendered fixture; not a real model run",
+    "actual_browser_log_sha256": "c2a651e1c41f2a3bf7c5dfc8a4af53261bf8fd4d783b113e5a8d4f2eefe043f1",
+    "related_guards": "final-narrow-tests.log:11 tests/10.479sec/OK; original async/proposal/sidebar/work-status guards included",
+    "related_guards_log_sha256": "d03746f73958c37424ef6e716955e10492e02532ffbb650dd8e19505920de3a0",
+    "syntax": "Worker syntax/result.json reports10 targets exit0; not independently rerun",
+    "root_actual": ".omo/evidence/first-demo-20261028/resume-central-preview/root-actual-central-frame-and-output.json",
+    "current_whole_regression": "Pending parent single full run after all writers frozen; prior914 result does not cover these subsequent changed sources"
+  },
+  "reviewer_performed": [
+    "Read actual installed skills and referenced native rules; no Impeccable CLI command or score claimed",
+    "Read frozen product/test source and exact before/after diff; compare all6 current source hashes and4 available original before hashes",
+    "Open final1920/1280/375 screenshots and actual-output screenshot; reuse byte-identical original before screenshot previously opened",
+    "Hash saved PNG and compare report/browser-result identity; cross-check root R2 actual source hashes and state/playback receipt",
+    "Read final1 and11 execution logs/assertions without test rerun or browser interaction"
+  ],
+  "remaining_limits": [
+    "Preserved mobile-to-desktop global-toggle mouse-locator failure is unverified as product defect or test navigation issue; not hidden or counted as fixed",
+    "Actual keyboard return/focus and native output keyboard playback are covered; no complete screen-reader, forced-colors,200percent zoom or portrait-canvas acceptance",
+    "Current main-data continuous recording, full current-source regression, actual Claude/video generation, billing and release readiness remain parent-owned and incomplete",
+    "No actual UI manipulation or newly executed product/test verification by reviewer; acceptance combines inspected implementation, current artifacts, direct visual review and separate parent actual execution"
+  ],
+  "source_edits": 0,
+  "reviewer_model_calls": 0,
+  "whole_platform_complete": false
+}

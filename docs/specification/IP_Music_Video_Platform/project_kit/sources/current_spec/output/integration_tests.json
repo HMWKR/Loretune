@@ -1,0 +1,784 @@
+{
+  "version": "1.0",
+  "status": "test_design_not_run",
+  "tests": [
+    {
+      "id": "IT-001",
+      "title": "동명 IP와 직접 접근",
+      "fixture_ids": [
+        "FX-01",
+        "FX-02"
+      ],
+      "requirement_ids": [
+        "FR-001",
+        "FR-011",
+        "FR-023"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "조직 A에서 B의 멤버 이름을 검색하고 B의 자산 ID·다운로드 URL·snapshot ID를 직접 요청한다.",
+      "expected": "B의 존재·이름·이미지·검색 결과·근거가 노출되지 않는다. 생성 공급자 입력에도 B 자료가 없다.",
+      "evidence": "검색 추적, 미디어 게이트 로그, 실제 공급자 전달 payload의 비식별 감사",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-002",
+      "title": "과거 시점과 새 의상",
+      "fixture_ids": [
+        "FX-01",
+        "FX-03"
+      ],
+      "requirement_ids": [
+        "FR-009",
+        "FR-021",
+        "FR-024"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "2기 의상을 승인한 뒤 1기 회상 영상과 2기 신곡 영상을 각각 계획한다.",
+      "expected": "1기에는 당시 의상, 2기에는 현재 의상이 선택된다. 둘 다 근거 시점이 맞고 기존 승인 영상은 불변이다.",
+      "evidence": "양쪽 문맥 스냅샷, 의상 버전, 과거 파일 해시",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-003",
+      "title": "꿈과 평행 세계의 격리",
+      "fixture_ids": [
+        "FX-04"
+      ],
+      "requirement_ids": [
+        "FR-010",
+        "FR-019",
+        "FR-021"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G2",
+      "binding_status": "not_bound",
+      "required_capabilities": "분기 병합 또는 모델 변경의 고급 기능 활성화 시 필수",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "꿈 분기에서 탈퇴 사건을 만들고 본편의 다음 영상을 요청한다.",
+      "expected": "꿈 사건은 본편 사실로 검색되지 않는다. 본편 반영 시 차이·출처·승인을 요구한다.",
+      "evidence": "분기 관계, 검색 결과, 승인 사건",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-004",
+      "title": "가사 은유의 공식 설정 오염",
+      "fixture_ids": [
+        "FX-01",
+        "FX-04",
+        "FX-06"
+      ],
+      "requirement_ids": [
+        "FR-020",
+        "FR-036",
+        "FR-072"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "죽음과 배신의 은유가 있는 곡의 완성 영상을 승인하고 프로젝트를 마감한다.",
+      "expected": "감정 연출과 작품 기록만 저장된다. 멤버의 실제 사망·배신 관계가 공식 승인 없이 추가되지 않는다.",
+      "evidence": "마감 전후 assertions, 후보와 승인 로그",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-005",
+      "title": "일회성 색감 예외",
+      "fixture_ids": [
+        "FX-05"
+      ],
+      "requirement_ids": [
+        "FR-026",
+        "FR-027",
+        "FR-028"
+      ],
+      "priority": "P1",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "2번째 곡의 브리지만 따뜻한 색을 요청한 후 3번째 곡을 만든다.",
+      "expected": "해당 구간만 예외가 적용되고 3번째 곡에서 전역 선호로 강제되지 않는다. 사용자가 예외를 다시 선택할 수 있다.",
+      "evidence": "선호 scope·validity, 세 프로젝트 문맥",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-006",
+      "title": "경제적 선택과 취향 구분",
+      "fixture_ids": [
+        "FX-05"
+      ],
+      "requirement_ids": [
+        "FR-026",
+        "FR-030",
+        "FR-076"
+      ],
+      "priority": "P1",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "가장 싼 테이크를 예산 때문에 선택했다고 기록하고 다음 콘셉트를 만든다.",
+      "expected": "가격 때문에 고른 요소가 미적 선호로 확정되지 않는다. 결정 이유가 확인 가능하다.",
+      "evidence": "피드백 원문, 선호 후보, 다음 콘셉트 근거",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-007",
+      "title": "동시 편집과 오래된 승인",
+      "fixture_ids": [
+        "FX-07",
+        "FX-10"
+      ],
+      "requirement_ids": [
+        "FR-041",
+        "FR-060",
+        "FR-063"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "A가 v1을 보고 있는 동안 B가 v2를 저장한다. A가 v1 승인 요청을 보낸다.",
+      "expected": "승인은 v1에만 연결되거나 버전 충돌이 된다. v2가 승인됐다고 표시되지 않는다.",
+      "evidence": "요청 expected_revision, 승인 대상, 버전별 UI",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-008",
+      "title": "부분 의상 수정과 다른 샷 보존",
+      "fixture_ids": [
+        "FX-07"
+      ],
+      "requirement_ids": [
+        "FR-024",
+        "FR-053",
+        "FR-059"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "12개 샷 중 3번의 의상만 변경해 새 후보를 선택한다.",
+      "expected": "다른 11개 테이크 ID·음원·자막·승인 해시가 그대로다. 3번과 필요한 전환만 새 버전이다.",
+      "evidence": "전후 EDL·해시 diff, 발생 작업 수, 비용 차이",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-009",
+      "title": "마스터 교체와 타이밍",
+      "fixture_ids": [
+        "FX-06",
+        "FX-07"
+      ],
+      "requirement_ids": [
+        "FR-031",
+        "FR-033",
+        "FR-056"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "기존 곡보다 앞부분 무음이 긴 새 마스터를 업로드한다.",
+      "expected": "승인 타임라인 음원이 자동 교체되지 않는다. 교체 선택 후 가사·컷의 이동과 재승인 범위를 보여준다.",
+      "evidence": "음원 해시, 샘플 마커, 렌더 동기화 결과",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-010",
+      "title": "권리 철회와 대기 작업",
+      "fixture_ids": [
+        "FX-08",
+        "FX-09"
+      ],
+      "requirement_ids": [
+        "FR-016",
+        "FR-018",
+        "FR-042"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "얼굴 참조를 사용한 작업을 대기시킨 후 동의를 철회하고 워커를 재개한다.",
+      "expected": "실행 직전 재검증에서 새 전송이 막힌다. 이미 전송한 작업은 대사·삭제 가능 범위를 별도로 표시한다.",
+      "evidence": "권리 효력시각, 전송시각, 예약 해제 또는 미확정 상태",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-011",
+      "title": "이중 클릭과 HTTP 재전달",
+      "fixture_ids": [
+        "FX-08"
+      ],
+      "requirement_ids": [
+        "FR-044",
+        "FR-050",
+        "FR-081"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "같은 idempotency key와 body로 생성 요청을 20번 동시에 보낸다.",
+      "expected": "내부 job과 예약은 하나다. 공급자 접수가 하나인지 확인하며 동일 응답 또는 같은 작업 참조를 받는다.",
+      "evidence": "DB job 수, reservation 수, provider attempts, ledger",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-012",
+      "title": "공급자 접수 응답 유실",
+      "fixture_ids": [
+        "FX-08"
+      ],
+      "requirement_ids": [
+        "FR-049",
+        "FR-050",
+        "FR-052"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "공급자는 접수했지만 응답을 유실시킨다. 워커도 중간에 종료한다.",
+      "expected": "submission_unknown 또는 동등 상태에서 같은 작업을 조회·대사한다. 새 유료 POST 없이 원래 결과를 복원한다.",
+      "evidence": "가짜 공급자 요청 수, 작업 전이, 미확정 원장",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-013",
+      "title": "중복과 역순 콜백",
+      "fixture_ids": [
+        "FX-08"
+      ],
+      "requirement_ids": [
+        "FR-050",
+        "FR-081",
+        "FR-088"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "완료 이벤트를 세 번 보내고 이어 진행중·실패 이벤트를 늦게 보낸다.",
+      "expected": "허용 전이와 공급자 현재 상태로 대사한다. 성공 상태가 무음 후퇴하거나 정산이 중복되지 않는다.",
+      "evidence": "webhook inbox, job events, ledger 합계",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-014",
+      "title": "취소와 뒤늦은 성공",
+      "fixture_ids": [
+        "FX-08"
+      ],
+      "requirement_ids": [
+        "FR-051",
+        "FR-082"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "10샷 중 4개 완료·2개 접수·4개 미전송에서 취소하고 접수분 성공을 늦게 전달한다.",
+      "expected": "완료분 보존, 미전송분 예약 해제, 접수분 비용 대사. 추가 샷은 제출하지 않는다.",
+      "evidence": "샷별 결과·접수 수·취소 상태·원장 차이",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-015",
+      "title": "병렬 예산 예약",
+      "fixture_ids": [
+        "FX-08"
+      ],
+      "requirement_ids": [
+        "FR-044",
+        "FR-080",
+        "FR-081"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "조직 잔여 100단위에서 서로 다른 프로젝트가 각각 70단위를 동시에 예약한다.",
+      "expected": "하나만 수락되거나 둘 다 합계100 이하의 명시적 재승인 경로로 전환된다. 부분 축소를 몰래 실행하지 않는다.",
+      "evidence": "동시 트랜잭션 결과, 잔액·예약 합계",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-016",
+      "title": "견적 후 가격 변경",
+      "fixture_ids": [
+        "FX-08"
+      ],
+      "requirement_ids": [
+        "FR-043",
+        "FR-044",
+        "FR-080"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "가격 버전 v1 견적 승인 후 제출 전 v2 단가를 활성화한다.",
+      "expected": "견적 재승인 또는 약정상한 내 서비스 부담 등 명시 정책으로 처리한다. 고객 상한을 몰래 올리지 않는다.",
+      "evidence": "quote hash, price version, 신규 제출·동의 기록",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-017",
+      "title": "외주와 모바일 권한 철회",
+      "fixture_ids": [
+        "FX-10"
+      ],
+      "requirement_ids": [
+        "FR-003",
+        "FR-061",
+        "FR-064"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "열린 외주 탭과 모바일 검토 링크의 권한을 철회하고 댓글·다운로드·생성을 시도한다.",
+      "expected": "새 요청이 차단된다. 이미 내려받은 파일 회수 불가능성은 정확히 안내한다. 아티스트 검토자는 유료 생성이 불가하고 외주자는 명시 위임한 배정·한도 안에서만 가능하나 철회 이후에는 불가다.",
+      "evidence": "세션·API·서명 URL·캐시 접근 결과",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-018",
+      "title": "승인 파일과 실제 납품 불일치",
+      "fixture_ids": [
+        "FX-07"
+      ],
+      "requirement_ids": [
+        "FR-067",
+        "FR-068",
+        "FR-069"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "v1 영상을 승인한 뒤 같은 파일명에 다른 내용 업로드를 시도하고 납품을 요청한다.",
+      "expected": "불변 저장 또는 해시 불일치 검사로 차단한다. 납품은 승인한 정확한 버전·해시만 제공한다.",
+      "evidence": "스토리지 버전·승인 해시·매니페스트",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-019",
+      "title": "미디어와 가사 출력 계약",
+      "fixture_ids": [
+        "FX-06",
+        "FX-07"
+      ],
+      "requirement_ids": [
+        "FR-056",
+        "FR-057",
+        "FR-067"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "혼합 언어 가사, 세로 크롭, 원본 음원을 포함한 최종본을 출력한다.",
+      "expected": "누락 글리프·잘린 가사·음원 중복·길이 불일치를 검출한다. 수정 후 승인 사양과 최종 파일이 일치한다.",
+      "evidence": "ffprobe/전체 디코드 결과, 자막 비교, 사람이 보는 기준 프레임",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-020",
+      "title": "삭제 후 백업 복원",
+      "fixture_ids": [
+        "FX-12"
+      ],
+      "requirement_ids": [
+        "FR-078",
+        "FR-087",
+        "FR-089"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "고객 자료를 삭제하고 삭제 전 백업을 격리 환경에 복원한다.",
+      "expected": "tombstone을 재적용하여 삭제된 자료를 사용자에게 노출하지 않는다. 원장 보존 예외와 콘텐츠 삭제를 구분한다.",
+      "evidence": "객체·DB·색인·캐시 확인, 복원 및 재삭제 로그",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-021",
+      "title": "자료 속 명령과 URL 공격",
+      "fixture_ids": [
+        "FX-11"
+      ],
+      "requirement_ids": [
+        "FR-014",
+        "FR-015",
+        "FR-086"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "문서에 타 고객 자료 전송 지시를 넣고 링크를 내부망으로 리다이렉트한다.",
+      "expected": "자료가 시스템 권한을 바꾸지 못한다. 내부 주소 접근·임의 도구 실행·외부 반출이 없다.",
+      "evidence": "egress 기록, 도구 인자 감사, 차단 사유",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-022",
+      "title": "모델 교체와 하위군 퇴행",
+      "fixture_ids": [
+        "FX-01",
+        "FX-06",
+        "FX-07"
+      ],
+      "requirement_ids": [
+        "FR-043",
+        "FR-077",
+        "FR-090"
+      ],
+      "priority": "P1",
+      "applicable_release_gate": "G2",
+      "binding_status": "not_bound",
+      "required_capabilities": "분기 병합 또는 모델 변경의 고급 기능 활성화 시 필수",
+      "test_kind": "policy_contract_test",
+      "related_experiments": [
+        "EXP-015"
+      ],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "평균은 좋지만 다인 얼굴 유지가 나빠지는 새 모델의 평가 결과를 넣는다.",
+      "expected": "다인 유형은 출시·자동 전환되지 않는다. 검증된 유형만 단계 활성화하고 기존 스냅샷을 유지한다.",
+      "evidence": "세그먼트별 평가, capability release, 라우팅 로그",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-023",
+      "title": "세 작품의 기억 효과",
+      "fixture_ids": [
+        "FX-01",
+        "FX-03",
+        "FX-05",
+        "FX-06"
+      ],
+      "requirement_ids": [
+        "FR-012",
+        "FR-030",
+        "FR-073",
+        "FR-074",
+        "FR-076"
+      ],
+      "priority": "P1",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "experiment_workflow_test",
+      "related_experiments": [
+        "EXP-004",
+        "EXP-005"
+      ],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "동일 자료·모델·예산으로 폴더+가이드와 구조화 기억 조건을 균형 배정해 서로 다른 세 요청을 제작한다.",
+      "expected": "시간·재발 오류·채택 시도·비용·블라인드 IP 적합도를 모두 기록한다. 목표 미달도 실패·중단 포함 보고하며 성과를 미리 확정하지 않는다.",
+      "evidence": "팀별 원자료, 배정표, 활성 시간, 평가·비용·지원 기록",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-024",
+      "title": "접근성 네트워크 복구와 통제감",
+      "fixture_ids": [
+        "FX-07",
+        "FX-10"
+      ],
+      "requirement_ids": [
+        "FR-049",
+        "FR-061",
+        "FR-095"
+      ],
+      "priority": "P1",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "키보드·스크린리더·휴대폰으로 승인·거절을 수행하고 실행 도중 네트워크를 끊었다가 복구한다.",
+      "expected": "포커스·라벨·비용 상태를 파악하고 같은 작업으로 복귀한다. 미저장·처리미확정을 성공으로 선표시하지 않는다.",
+      "evidence": "기기·브라우저·보조기술 버전, 과제 녹화, 작업 ID",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-025",
+      "title": "재분석과 수동 교정 보존",
+      "fixture_ids": [
+        "FX-01",
+        "FX-06"
+      ],
+      "requirement_ids": [
+        "FR-014",
+        "FR-017",
+        "FR-033"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "자동 전사로 잘못 나온 멤버명과 가사를 수정한 뒤 새 분석기 버전으로 같은 자료를 재분석한다.",
+      "expected": "사용자 확정값은 유지되고 차이는 후보로 제시된다. 명시적 선택 전 기존 자막·공식 이름·승인 버전이 바뀌지 않는다.",
+      "evidence": "교정 전후 버전·새 분석 후보·최종 자막 비교",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-026",
+      "title": "기준 프레임 승인 경쟁",
+      "fixture_ids": [
+        "FX-01",
+        "FX-07"
+      ],
+      "requirement_ids": [
+        "FR-040",
+        "FR-041",
+        "FR-045"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "프레임 v1을 승인한 뒤 의상을 고친 v2를 승인하고, 오래된 탭에서 v1 기준으로 생성한다.",
+      "expected": "새 계획이 v2만 허용한다면 stale 요청을 차단한다. v1을 별도 이전 버전으로 다시 사용할 때는 명시 선택·견적·허용 권리를 재검증한다.",
+      "evidence": "frame hash·plan revision·snapshot·차단 응답",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-027",
+      "title": "세 후보 상한과 새 승인",
+      "fixture_ids": [
+        "FX-08"
+      ],
+      "requirement_ids": [
+        "FR-044",
+        "FR-046",
+        "FR-052"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "한 샷의 첫 시도 포함 세 후보를 모두 반려한 뒤 자동화를 다시 재개한다.",
+      "expected": "같은 실행의 네 번째 유료 제출은 없고 원인·대안·추가 견적을 제공한다. 새 승인을 받은 별도 실행만 비용을 예약한다.",
+      "evidence": "provider attempt 수·승인 ID·예약·누적 후보 수",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-028",
+      "title": "보호 자산의 합성 유지",
+      "fixture_ids": [
+        "FX-01",
+        "FX-07"
+      ],
+      "requirement_ids": [
+        "FR-047",
+        "FR-055",
+        "FR-067"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "캐릭터 눈과 로고 레이어를 보호한 상태로 배경만 생성하고 미리보기와 최종 렌더를 만든다.",
+      "expected": "승인 원본 레이어가 같은 자산·마스크·합성 결정으로 사용된다. 허용 이동 외 외형 재생성·가림·누락 여부를 사람이 확인한다.",
+      "evidence": "원본·마스크 해시·합성 결정·대표 프레임 비교",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    },
+    {
+      "id": "IT-029",
+      "title": "업로드 중단과 중복 병합",
+      "fixture_ids": [
+        "FX-06",
+        "FX-11"
+      ],
+      "requirement_ids": [
+        "FR-013",
+        "FR-017",
+        "FR-031"
+      ],
+      "priority": "P0",
+      "applicable_release_gate": "G1",
+      "binding_status": "not_bound",
+      "required_capabilities": "지원 범위의 최소 통제 계약; 고급 G2 관리 화면 없이도 서버 또는 운영 경로로 검증해야 함",
+      "test_kind": "integration_scenario",
+      "related_experiments": [],
+      "preconditions": "가상 공급자 또는 승인된 격리 환경을 사용하고 시험 전 자산·승인·원장 상태를 기록한다. 가짜 공급자 통과는 영상 품질·시간 절감·고객 수요의 증거가 아니다. 유료 실모델 시험은 별도 예산 승인 범위에서만 수행한다.",
+      "action": "음원 업로드를 중간에 끊고 재개한 뒤 같은 파일을 다른 이름으로 다시 업로드한다.",
+      "expected": "재개 파일은 원본 체크섬과 일치한다. 같은 IP에서 중복 후보를 안내하되 다른 권리 선언을 무음 병합하지 않고 과금 분석을 중복 실행하지 않는다.",
+      "evidence": "upload session·checksum·asset 관계·분석 job 수",
+      "status": "not_run",
+      "actual_result": null,
+      "severity_if_failed": "출시 차단 또는 해당 유형 지원 보류",
+      "owner": "QA 및 영역 책임자"
+    }
+  ]
+}

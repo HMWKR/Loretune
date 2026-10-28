@@ -1,0 +1,50 @@
+{
+  "review_status": "final_review",
+  "reviewed_at": "2026-10-23T13:15:06.803508+00:00",
+  "document": "06_Project_Knowledge_and_CLI",
+  "render_directory": "qa/release_render_06",
+  "render_page_count": 10,
+  "actual_reviewed_pages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "unreviewed_pages": [],
+  "blocking_findings": [],
+  "findings": [],
+  "scope_limit": "문서만",
+  "review_method": "최종 재렌더 10페이지 모두를 tools.view_image(detail=original)로 개별 열어 원본 크기로 다시 시각 확인. 이전 11쪽 렌더 검토나 컨택트 시트로 대체하지 않음.",
+  "checks": {
+    "korean_glyphs_and_text_clipping": "최종 10쪽에서 한글 누락·텍스트 잘림 발견 없음",
+    "table_width_and_rows": "표 폭과 반복 헤더 정상, 표 행 중간 분할 및 헤더 고립 발견 없음",
+    "code_and_paths": "CLI 명령·경로·긴 필드가 페이지 폭 안에 표시됨",
+    "headings_and_page_boundaries": "제목 고립 없음. 출처 설명까지 10쪽에 완결되어 이전 마지막 페이지 여백 이슈 해결",
+    "verification_scope": "CLI의 로컬 fixture 16개 실행과 플랫폼·영상·PPT 생성 검증 미실행이 분리되어 표시됨",
+    "integration_snapshot": "9쪽의 835 current / 722 archive / 총 1557은 임시 통합 입력 스냅샷 수치이며 최종 수치는 배포 레지스트리와 최종 검증 기록을 따른다고 명시됨",
+    "bibliography_readability": "10쪽 서지 문단 축소 후에도 6개 URL과 마지막 설명이 원본 크기로 읽히며 겹침·잘림 없음"
+  },
+  "files_modified_by_reviewer": [
+    "qa/visual_review_06.json"
+  ],
+  "source_documents_modified": false,
+  "resolved_findings": [
+    {
+      "previous_render_pages": [
+        10,
+        11
+      ],
+      "type": "sparse_final_page",
+      "status": "resolved_in_final_10_page_render",
+      "evidence": "출처 목록 6개와 확인일·근거 범위·출처 레지스트리 경로의 마지막 설명이 모두 최종 10쪽 안에 표시된다. 본문과 페이지 번호 사이에 여백이 남으며 잘림·겹침이 없다."
+    }
+  ],
+  "final_pdf_sha256": "bd38e2e1352513ccf821b68d471e3a2c355fc48bfe64e32f72f258fd53ab4aba",
+  "final_page_count": 10
+}

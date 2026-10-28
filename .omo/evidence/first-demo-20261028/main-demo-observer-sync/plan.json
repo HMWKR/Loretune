@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-28T03:30:48.526093+00:00",
+  "scope": "QA action synchronisation only, no product behaviour edits",
+  "observed_failures": [
+    "case1 stored Take1 existed before UI poll completed",
+    "caseR2 stored Take2 existed while UI still had only1; compare guard correctly rejected and subsequent selector was hidden"
+  ],
+  "decision": "Wait for actual rendered Take cards and compare open, in addition to persisted result; preserve failed original recordings and never replay mutations",
+  "before_sha256": "134b559cc1bb4a461af198eceda2ac6507d53629f0dfc5736a93f74c874c89d2",
+  "real_model_calls": 0
+}

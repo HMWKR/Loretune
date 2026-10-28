@@ -1,0 +1,480 @@
+--- before/index.html
++++ after/index.html
+@@ -420,7 +420,7 @@
+  finally{clearTimeout(timer);timelineFramePending=false;updateTimelineFrameControls()}
+ }
+ /* End timeline motion overlays. */
+-function updateTimelineStatus(){const p=project();$('#cancelTimelineDraft').hidden=!dirty;$('#timelineStatus').textContent=`${draft.clips.reduce((n,c)=>n+c.duration,0).toFixed(3)}초 · ${dirty?'저장되지 않은 편집':p.timeline_head?'저장 버전 '+p.timeline_head+(draft.approval?' · 출력 승인됨':' · 출력 승인 대기'):'첫 편집 저장 필요'}`;const needsSave=dirty||!p.timeline_head,missingTake=draft.clips.some(c=>!p.shots[c.shot]?.takes?.some(t=>t.id===c.take));if(missingTake)$('#timelineStatus').textContent+=' · 모든 컷의 Take 선택 필요';$('#saveTimeline').classList.toggle('primary',needsSave&&!missingTake);$('#review').classList.toggle('primary',!needsSave&&!draft.approval);$('#render').classList.toggle('primary',!needsSave&&!!draft.approval&&!!p.preflight?.ready);updateTimelineFrameControls()}
++function updateTimelineStatus(){const p=project();$('#cancelTimelineDraft').hidden=!dirty;$('#timelineStatus').textContent=`${draft.clips.reduce((n,c)=>n+c.duration,0).toFixed(3)}초 · ${dirty?'저장되지 않은 편집':p.timeline_head?'저장 버전 '+p.timeline_head+(draft.approval?' · 출력 승인됨':' · 출력 승인 대기'):'첫 편집 저장 필요'}`;const needsSave=dirty||!p.timeline_head,missingTake=draft.clips.some(c=>!p.shots[c.shot]?.takes?.some(t=>t.id===c.take));if(missingTake)$('#timelineStatus').textContent+=' · 모든 컷의 Take 선택 필요';$('#saveTimeline').classList.toggle('primary',needsSave&&!missingTake);$('#review').classList.toggle('primary',!needsSave&&!draft.approval);$('#render').classList.toggle('primary',!needsSave&&!!draft.approval&&!!p.preflight?.ready);updateTimelineFrameControls();globalThis.LoretuneAgentSidebar?.refresh()}
+ function drawTimeline(){stateReadEpoch++;const p=project();if(!p)return;drawCreationProposals();$('#cancelTimelineDraft').hidden=!dirty;const check=p.preflight;$('#preflight').innerHTML=check?`<p><b>${check.ready?'저장 버전 출력 준비됨':'저장 버전 확인 필요'}</b> · ${check.duration}초 · 음원 ${check.audio_version?'v'+check.audio_version+' / '+check.audio_start+'–'+check.audio_end+'초':'없음'}</p>${[...check.errors,...check.warnings].map(x=>`<p>${esc(x)}</p>`).join('')}<small>저장된 버전과 승인 상태를 확인합니다.</small>${creatorDiagnostic('검증 상세',check.note)}`:'';$('#track').innerHTML=renderStudioTrack(p);$('#clips').innerHTML=draft.clips.map((c,i)=>`<div class="clip-row"><span class="clip-index">${i+1}</span><span class="clip-name">${esc(c.shot)}</span><label class="clip-field clip-take"><span class="clip-field-name">Take</span><select data-clip="${i}" data-field="take" aria-label="${esc(c.shot)} take"><option value="">선택</option>${p.shots[c.shot].takes.map(t=>`<option value="${t.id}" ${t.id===c.take?'selected':''}>Take ${t.id}</option>`).join('')}</select></label><label class="clip-field clip-duration"><span class="clip-field-name">길이(초)</span><input aria-label="${esc(c.shot)} 길이" data-clip="${i}" data-field="duration" type="number" min=".125" step=".001" value="${c.duration}"></label><label class="clip-field clip-trim"><span class="clip-field-name">시작(초)</span><input aria-label="${esc(c.shot)} 시작" data-clip="${i}" data-field="trim" type="number" min="0" step=".001" value="${c.trim}"></label><span class="clip-actions"><button data-move="${i}" data-dir="-1" aria-label="앞으로 이동">↑</button><button data-move="${i}" data-dir="1" aria-label="뒤로 이동">↓</button><button type="button" data-remove-clip="${i}" aria-label="${esc(c.shot)} ${i+1}번 컷 제외" ${draft.clips.length<=1?'disabled':''}>제외</button></span></div>${timelineOverlayMarkup(p,c,i)}`).join('');const addShot=$('#addClipShot'),oldShot=addShot.value;addShot.innerHTML=Object.keys(p.shots).map(name=>`<option value="${esc(name)}">${esc(name)}</option>`).join('');if([...addShot.options].some(o=>o.value===oldShot))addShot.value=oldShot;$('#addClip').disabled=draft.clips.length>=MAX_TIMELINE_CLIPS||!addShot.options.length;updateCaptionRange();$('#audioVersion').innerHTML='<option value="">무음</option>'+p.audio_versions.map(a=>`<option value="${a.id}">v${a.id} ${esc(a.filename)}</option>`).join('');$('#audioVersion').value=draft.audio??'';$('#audioOffset').value=draft.audio_offset;$('#profile').value=draft.profile;$('#captions').innerHTML=draft.subtitles.map((l,i)=>`<div class="caption-row"><input aria-label="자막 시작" data-caption="${i}" data-field="start" type="number" min="0" step=".001" value="${l.start}"><input aria-label="자막 끝" data-caption="${i}" data-field="end" type="number" min="0" step=".001" value="${l.end}"><input aria-label="자막 내용" data-caption="${i}" data-field="text" value="${esc(l.text)}"><button data-remove="${i}" aria-label="자막 삭제">×</button></div>`).join('');$('#versions').innerHTML=p.timeline_versions.map(t=>`<option value="${t.id}">버전 ${t.id}${t.approval?' · 승인':''}</option>`).join('')||'<option>저장 버전 없음</option>';$('#versions').value=p.timeline_head;updateTimelineStatus();updateTimelineOverlayNotice();$('#shotlist').innerHTML=renderStudioShots(p);$('#takes').innerHTML=renderStudioTakes(p.shots[shotName]);renderTakeReview();if(typeof LoretuneMedia!=='undefined')LoretuneMedia.timeline()}
+ function drawLibrary(){const p=project(),q=$('#assetSearch').value.toLowerCase(),kind=$('#assetType').value;const projects=$('#assetScope').value==='all'?Object.entries(state.projects):$('#assetScope').value==='ip'?Object.entries(state.projects).filter(([n,x])=>(x.ip||'default')===(p?.ip||'default')):[[song(),p]];$('#library').innerHTML=p?projects.flatMap(([sourceSong,source])=>Object.entries(source.shots).flatMap(([name,s])=>s.takes.map(t=>({...t,shot:name,sourceSong,review:[...(s.reviews||[])].reverse().find(r=>r.take===t.id)?.decision})))).filter(t=>($('#assetReview').value!=='approved'||t.review==='approved')&&(t.filename+' '+t.reason+' '+t.shot).toLowerCase().includes(q)&&(kind==='all'||(image(t)?'image':'video')===kind)).map(t=>`<div class="job">${image(t)?`<img src="${asset(t)}" alt="${esc(t.filename)}">`:'<span class="badge">VIDEO</span>'}<p>${esc(t.filename||t.shot)}</p><small>${esc(t.sourceSong)} / ${esc(t.shot)} · Take ${t.id}<br>${esc(t.rights||'사용권 미확인')} · ${t.review==='approved'?'승인됨':'검토 필요'}${state.asset_rights?.[t.sha256]?.blocked?' · 사용 중지':''}</small><button data-reuse-song="${esc(t.sourceSong)}" data-reuse-shot="${esc(t.shot)}" data-reuse-take="${t.id}">선택 샷에 연결</button></div>`).join(''):''}
+ 
+@@ -628,6 +628,7 @@
+  $('#modelChatStatus').textContent=(turns.length?'최근 작업: '+(states[turns.at(-1).status]||turns.at(-1).status):'아직 모델 대화 작업이 없습니다.')+(pending&&!active?' · 응답이 완료되지 않아 모델 선택을 다시 확인하세요.':'');
+  const html=receipts.map(r=>receiptMarkup(r)).join('')+turns.map(t=>`<article class="guided-card"><h3>${esc(states[t.status]||t.status)}</h3><p>${esc(labels[t.mode]||t.mode)} · ${esc(t.model)}</p><p style="white-space:pre-wrap">${esc(t.prompt)}</p>${t.answer?`<details data-turn="${esc(t.id)}:model" ${expanded.has(t.id+':model')?'open':''}><summary>모델 설명 · 검토 전</summary><p style="white-space:pre-wrap">${esc(t.answer)}</p><p>저장된 모델 원문입니다. 서버 확인 상태와 다를 수 있으며 승인·실행 판정으로 사용하지 않습니다.</p></details>`:''}${pastChatReceipts(t,pid,shotName).length?`<details data-turn="${esc(t.id)}:receipt" ${expanded.has(t.id+':receipt')?'open':''}><summary>이 답변의 과거 조회 영수증 · 현재 승인 아님</summary>${pastChatReceipts(t,pid,shotName).map(r=>receiptMarkup(r,true)).join('')}</details>`:''}<p>${t.mode==='contract-fake'?'모의 사용량 계산':'사용량 기준 비용 계산'} $${esc(t.usage_cost_usd||'0')} · 실청구 ${t.billing_confirmed?'확인':'미확인'}</p>${t.error?`<p class="error">${esc(creatorError(t.error).message)}</p>${creatorDiagnostic('오류 상세',t.error)}`:''}<details data-turn="${esc(t.id)}" ${expanded.has(t.id)?'open':''}><summary>진단 기록 ${(t.steps||[]).length}회</summary>${(t.steps||[]).map(step=>`<p>${esc(step.status)} · ${esc(step.request_id||'응답 식별자 없음')}</p>${(step.tool_calls||[]).map(x=>`<p>${esc(x.call.name)} → ${esc(x.result.status)} ${esc(x.result.plan?.id||x.result.job_id||'')}</p>`).join('')}`).join('')}</details>${['queued','running'].includes(t.status)?`<button data-chat-cancel="${esc(t.id)}">이 대화 중단 요청</button>`:''}</article>`).join('');
+  const host=$('#modelChatTurns');if(host.innerHTML!==html){const top=host.closest('#chatPanel')?.scrollTop;host.innerHTML=html;if(focused&&previousScope===key){const d=[...host.querySelectorAll('details')].find(x=>x.dataset.turn===focused);d?.querySelector('summary')?.focus({preventScroll:true})}if(top!==undefined)host.closest('#chatPanel').scrollTop=top}
++ globalThis.LoretuneAgentSidebar?.refresh();
+ }
+ $('#modelChatPrompt').addEventListener('input',()=>draftWrite(modelChatKey(),$('#modelChatPrompt').value));
+ $('#modelChatForm').onsubmit=async e=>{e.preventDefault();if(project()?.active_conversation?.pending_chat_selection)return message('기존 응답과 모델 선택을 먼저 확인하세요. 입력은 보존됩니다.',true);if(!project()?.chat_connection?.available)return message('서버에 승인된 모델 연결이 없습니다. 입력은 보존됩니다.',true);const prompt=$('#modelChatPrompt').value;if(await act('chat_turn',{song:song(),prompt}))message('대화 작업을 저장했습니다. 접수·답변·미디어 생성은 서로 다른 상태입니다.');drawModelChat()};
+@@ -646,8 +647,25 @@
+  const missingRemoval=remove.length>0&&(remove.length!==1||!Array.isArray(remove[0].clip_indices)||!remove[0].clip_indices.length||!Array.isArray(diff)||diff.length!==remove[0].clip_indices.length||!diff.every(r=>r&&Number.isInteger(r.base_clip_index)&&remove[0].clip_indices.includes(r.base_clip_index)&&typeof r.before?.shot==='string'&&Number.isInteger(r.before.take)&&Number.isFinite(r.before.trim)&&Number.isFinite(r.before.duration))||new Set(diff.map(r=>r.base_clip_index)).size!==diff.length);
+  const append=x.commands?.filter(c=>c.op==='append_clips')||[],added=x.timeline_diff?.added_clips,clips=x.timeline?.clips;
+  const missingAddition=append.length>0&&(append.length!==1||!Array.isArray(append[0].clips)||!append[0].clips.length||!Array.isArray(added)||!Array.isArray(clips)||added.length!==append[0].clips.length||added.length>clips.length||!added.every((r,i)=>{const index=clips.length-added.length+i,a=r?.after,t=clips[index];return r?.proposed_clip_index===index&&a&&t&&typeof a.shot==='string'&&Number.isInteger(a.take)&&Number.isFinite(a.trim)&&Number.isFinite(a.duration)&&a.shot===t.shot&&a.take===t.take&&a.trim===t.trim&&a.duration===t.duration}));
+- const incomplete=missingRemoval||missingAddition;
+- return {applied:x.status==='applied',stale,incomplete,missingRemoval,missingAddition,canApply:!stale&&!incomplete&&['proposed','held'].includes(x.status),label:({applied:'새 편집 버전에 적용됨',held:'보류 · 아직 적용하지 않음',rejected:'거절됨',proposed:'아직 적용하지 않음'})[x.status]||'검토 필요'}
++ const missingOverlay=!timelineOverlayReviewValid(p,x);
++ const incomplete=missingRemoval||missingAddition||missingOverlay;
++ return {applied:x.status==='applied',stale,incomplete,missingRemoval,missingAddition,missingOverlay,canApply:!stale&&!incomplete&&['proposed','held'].includes(x.status),label:({applied:'새 편집 버전에 적용됨',held:'보류 · 아직 적용하지 않음',rejected:'거절됨',proposed:'아직 적용하지 않음'})[x.status]||'검토 필요'}
++}
++function timelineOverlayReviewValid(p,x){
++ const commands=(x.commands||[]).filter(c=>['set_motion_overlay','clear_motion_overlay'].includes(c.op)),diff=x.timeline_diff?.motion_overlays;
++ if(!commands.length&&diff===undefined)return true;
++ const valid=v=>v===null||v&&typeof v.shot==='string'&&v.shot.length>0&&Number.isInteger(v.motion_revision)&&v.motion_revision>0&&Number.isFinite(v.start)&&Number.isFinite(v.end)&&v.start>=0&&v.end>v.start&&Number.isFinite(v.offset_x)&&Math.abs(v.offset_x)<=1920&&Number.isFinite(v.offset_y)&&Math.abs(v.offset_y)<=1080;
++ const same=(a,b)=>JSON.stringify(a??null)===JSON.stringify(b??null);
++ if(diff!==undefined&&(!Array.isArray(diff)||!diff.every(r=>Number.isInteger(r?.base_clip_index)&&r.base_clip_index>=0&&Number.isInteger(r.proposed_clip_index)&&r.proposed_clip_index>=0&&valid(r.before)&&valid(r.after)&&x.timeline?.clips?.[r.proposed_clip_index]&&same(r.after,x.timeline.clips[r.proposed_clip_index].motion_overlay))||new Set(diff.map(r=>r.base_clip_index)).size!==diff.length))return false;
++ return commands.every(c=>{const changed=diff?.find(r=>r.base_clip_index===c.clip_index);if(changed)return c.op==='clear_motion_overlay'?changed.after===null:changed.after!==null;
++  const base=p.timeline_versions?.find(t=>t.id===x.base_version),order=x.timeline_diff?.clip_order,afterIndex=order?.changed?order.after?.indexOf(c.clip_index):c.clip_index;
++  return !!base?.clips?.[c.clip_index]&&Number.isInteger(afterIndex)&&afterIndex>=0&&!!x.timeline?.clips?.[afterIndex]&&same(base.clips[c.clip_index].motion_overlay,x.timeline.clips[afterIndex].motion_overlay);
++ });
++}
++function timelineOverlayCommandSummary(x,c){
++ const rows=x.timeline_diff?.motion_overlays,change=Array.isArray(rows)?rows.find(r=>r?.base_clip_index===c.clip_index):null;
++ const describe=v=>v===null?'겹침 없음':v?`${v.shot} · 원본 버전 ${v.motion_revision} · 컷 내 ${v.start}–${v.end}초 · 위치 가로 ${v.offset_x}px / 세로 ${v.offset_y}px`:'검토 정보 확인 필요';
++ return change?`기준 컷 ${c.clip_index+1} 타이포 겹침: ${describe(change.before)} → ${describe(change.after)}`:`기준 컷 ${c.clip_index+1} 타이포 겹침 · 변경 없음 또는 검토 정보 확인 필요`;
+ }
+ function timelineClipCommandSummary(x,c){
+  const clips=x.timeline_diff?.clips,change=clips?.find(d=>d.base_clip_index===c.clip_index);
+@@ -669,9 +687,9 @@
+  return `원음 시작 ${c.source_offset_seconds}초 요청`;
+ }
+ function memoryProposalChanges(p,x){const before=new Map((p.ontology?.graph.entities||[]).map(e=>[e.id,e]));return x.graph.entities.filter(e=>JSON.stringify(before.get(e.id))!==JSON.stringify(e))}
+-function timelineProposalMarkup(p,x){const v=timelineProposalView(p,x);return `<article class="guided-card creator-proposal" data-proposal="${esc(x.id)}"><h3>편집 변경안 <span class="lt-state-chip">${v.label}</span></h3><p>${esc(x.description)}</p><ul>${(x.commands?x.commands.map(c=>`<li>${esc(({reorder_clips:'컷 순서: '+x.timeline.clips.map((q,i)=>(i+1)+'. '+q.shot+' (Take '+q.take+')').join(' → '),set_captions:timelineCaptionCommandSummary(x,c),set_audio_offset:timelineAudioCommandSummary(x,c),set_clip:timelineClipCommandSummary(x,c),remove_clips:(!v.missingRemoval&&x.timeline_diff?.removed_clips?.length?'제외: '+x.timeline_diff.removed_clips.map(r=>'기준 컷 '+(r.base_clip_index+1)+' · '+r.before.shot+' · Take '+r.before.take+' · 원본 '+r.before.trim+'초부터 '+r.before.duration+'초').join(' / '):'제외할 컷 확인 필요'),append_clips:(!v.missingAddition&&x.timeline_diff?.added_clips?.length?'추가: '+x.timeline_diff.added_clips.map(r=>(r.proposed_clip_index+1)+'번 컷 · '+r.after.shot+' · Take '+r.after.take+' · 원본 '+r.after.trim+'초부터 '+r.after.duration+'초').join(' / '):'추가할 컷 확인 필요')})[c.op])}</li>`).join(''):x.changes.map(c=>`<li>${esc(x.timeline.clips[c.clip_index].shot)} · Take ${c.take} · 원본 ${c.trim}초부터 ${c.duration}초</li>`).join(''))}</ul><p class="muted">${x.commands?(x.commands.some(c=>c.op==='remove_clips'||c.op==='append_clips')?'원본 장면·Take와 이전 편집 버전은 유지됩니다. 자막 시각은 자동 이동하지 않습니다.':'명시한 항목만 변경 · 컷 순서 변경은 자막 시각을 자동 이동하지 않습니다.'):'음원·자막 유지'} · ${v.applied?'적용 완료 · 현재 출력 승인 상태는 타임라인에서 확인하세요.':`기준 편집 버전 ${x.base_version}`}</p>${v.stale&&!v.applied?'<p>기준 편집이 바뀌었습니다. 현재 편집에서 수정하거나 새 변경안을 요청하세요.</p>':''}${v.missingRemoval&&!v.applied?'<p>제외할 컷 정보를 확인할 수 없습니다. 새 변경안을 요청하세요.</p>':''}${v.missingAddition&&!v.applied?'<p>추가할 컷 정보를 확인할 수 없습니다. 새 변경안을 요청하세요.</p>':''}<div class="toolbar">${v.canApply?`<button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="approved" class="primary">변경안 승인·새 버전 저장</button><button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="held">보류</button><button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="rejected">거절</button><button data-edit-proposal="${esc(x.id)}">적용 전 직접 수정</button>`:''}</div>${creatorDiagnostic('변경안 기록',{proposal:x.id,source:x.source})}</article>`}
++function timelineProposalMarkup(p,x){const v=timelineProposalView(p,x);return `<article class="guided-card creator-proposal" data-proposal="${esc(x.id)}"><h3>편집 변경안 <span class="lt-state-chip">${v.label}</span></h3><p>${esc(x.description)}</p><ul>${(x.commands?x.commands.map(c=>`<li>${esc(({reorder_clips:'컷 순서: '+x.timeline.clips.map((q,i)=>(i+1)+'. '+q.shot+' (Take '+q.take+')').join(' → '),set_captions:timelineCaptionCommandSummary(x,c),set_audio_offset:timelineAudioCommandSummary(x,c),set_clip:timelineClipCommandSummary(x,c),set_motion_overlay:timelineOverlayCommandSummary(x,c),clear_motion_overlay:timelineOverlayCommandSummary(x,c),remove_clips:(!v.missingRemoval&&x.timeline_diff?.removed_clips?.length?'제외: '+x.timeline_diff.removed_clips.map(r=>'기준 컷 '+(r.base_clip_index+1)+' · '+r.before.shot+' · Take '+r.before.take+' · 원본 '+r.before.trim+'초부터 '+r.before.duration+'초').join(' / '):'제외할 컷 확인 필요'),append_clips:(!v.missingAddition&&x.timeline_diff?.added_clips?.length?'추가: '+x.timeline_diff.added_clips.map(r=>(r.proposed_clip_index+1)+'번 컷 · '+r.after.shot+' · Take '+r.after.take+' · 원본 '+r.after.trim+'초부터 '+r.after.duration+'초').join(' / '):'추가할 컷 확인 필요')})[c.op])}</li>`).join(''):x.changes.map(c=>`<li>${esc(x.timeline.clips[c.clip_index].shot)} · Take ${c.take} · 원본 ${c.trim}초부터 ${c.duration}초</li>`).join(''))}</ul><p class="muted">${x.commands?(x.commands.some(c=>c.op==='remove_clips'||c.op==='append_clips')?'원본 장면·Take와 이전 편집 버전은 유지됩니다. 자막 시각은 자동 이동하지 않습니다.':'명시한 항목만 변경 · 컷 순서 변경은 자막 시각을 자동 이동하지 않습니다.'):'음원·자막 유지'} · ${v.applied?'적용 완료 · 현재 출력 승인 상태는 타임라인에서 확인하세요.':`기준 편집 버전 ${x.base_version}`}</p>${v.stale&&!v.applied?'<p>기준 편집이 바뀌었습니다. 현재 편집에서 수정하거나 새 변경안을 요청하세요.</p>':''}${v.missingRemoval&&!v.applied?'<p>제외할 컷 정보를 확인할 수 없습니다. 새 변경안을 요청하세요.</p>':''}${v.missingAddition&&!v.applied?'<p>추가할 컷 정보를 확인할 수 없습니다. 새 변경안을 요청하세요.</p>':''}${v.missingOverlay&&!v.applied?'<p>타이포 겹침의 변경 전후 정보를 확인할 수 없습니다. 새 변경안을 요청하세요.</p>':''}<div class="toolbar">${v.canApply?`<button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="approved" class="primary">변경안 승인·새 버전 저장</button><button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="held">보류</button><button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="rejected">거절</button><button data-edit-proposal="${esc(x.id)}">적용 전 직접 수정</button>`:''}</div>${creatorDiagnostic('변경안 기록',{proposal:x.id,source:x.source})}</article>`}
+ function memoryProposalMarkup(p,x){const applied=!!x.applied_revision,stale=!applied&&x.base_revision!==p.ontology.revision;return `<article class="guided-card creator-proposal"><h3>설정 변경 제안 <span class="lt-state-chip">${applied?'설정 승인됨':stale?'기준 설정 변경됨':'검토 대기 · 아직 반영하지 않음'}</span></h3>${memoryProposalChanges(p,x).map(e=>`<p><b>${esc(e.label)}</b> · ${({character:'인물',place:'장소',style:'스타일'})[e.type]||esc(e.type)}<br>${esc(e.description)}</p><blockquote>${e.provenance.map(v=>esc(v.excerpt)).join('<br>')}</blockquote>`).join('')||'<p>저장된 설정 내용과 같습니다.</p>'}<p class="muted">이 작품의 설정에 대한 제안입니다. 다른 작품의 설정은 자동으로 바뀌지 않습니다.</p>${!applied?`<button data-open-memory="${esc(x.id)}">근거·설정 검토</button>`:''}${creatorDiagnostic('설정 제안 기록',{proposal:x.id,base:x.base_revision,applied:x.applied_revision})}</article>`}
+-function drawCreationProposals(){const p=project();if(!p)return;$('#timelineProposals').innerHTML=(p.timeline_edit_proposals||[]).map(x=>timelineProposalMarkup(p,x)).join('');$('#memoryProposals').innerHTML=(p.ontology_proposals||[]).filter(x=>!x.applied_revision).map(x=>memoryProposalMarkup(p,x)).join('');drawMediaCreator();if(window.AethonMotion)window.AethonMotion.refresh();if(window.AethonScene)window.AethonScene.refresh();}
++function drawCreationProposals(){const p=project();if(!p)return;$('#timelineProposals').innerHTML=(p.timeline_edit_proposals||[]).map(x=>timelineProposalMarkup(p,x)).join('');$('#memoryProposals').innerHTML=(p.ontology_proposals||[]).filter(x=>!x.applied_revision).map(x=>memoryProposalMarkup(p,x)).join('');drawMediaCreator();if(window.AethonMotion)window.AethonMotion.refresh();if(window.AethonScene)window.AethonScene.refresh();globalThis.LoretuneAgentSidebar?.refresh();}
+ 
+ function drawOntology(){const p=project();if(!p)return;const o=p.ontology||{revision:0,graph:{entities:[]}};$('#ontologyContent').innerHTML=`<h3>승인 버전 ${o.revision}</h3><p>현재 장면: ${esc(shotName||'선택 없음')}</p><button id="ontologyBind">선택한 설정을 현재 장면에 연결</button>${o.graph.entities.map(e=>`<p><b>${esc(e.label)}</b> · ${esc(e.type)}<br>${esc(e.description)}<br><small>${esc(e.uncertainty.reason)}</small>${creatorDiagnostic('설정 식별 정보',e.id)}<br><label><input style="width:auto" type="checkbox" data-entity-id="${esc(e.id)}">현재 장면에 연결</label><button data-ontology-edit="${esc(e.id)}">설정 수정 제안</button></p>`).join('')||'<p>저장된 설정이 없습니다.</p>'}${(p.ontology_proposals||[]).filter(x=>!x.applied_revision).map(x=>`<div class="job"><b>설정 변경 제안 · 기준 v${x.base_revision}</b>${x.graph.entities.map(e=>`<p>${esc(e.label)} · ${esc(e.description)}<br>출처: ${e.provenance.map(v=>esc(v.excerpt)).join(' / ')}</p>`).join('')}<button data-ontology-apply="${esc(x.id)}" data-revision="${x.base_revision}" ${x.base_revision!==o.revision?'disabled data-runtime-blocked':''}>검토한 설정 변경 승인</button>${x.base_revision!==o.revision?'<p>기준 설정이 바뀌었습니다. 최신 설정에서 새 제안을 작성하세요.</p>':''}</div>`).join('')}${o.revision>1?`<label>복원할 승인 버전<input id="ontologyRestoreVersion" type="number" min="1" max="${o.revision}" value="${o.revision-1}"></label><button id="ontologyRestore">선택 버전을 새 승인 버전으로 복원</button>`:''}`;$('#lineageContent').innerHTML=(p.lineage?.nodes||[]).map(n=>`<p>${esc(n.type)} · ${esc(n.label)} · ${esc(n.source)}<br><small>${esc(n.id)}</small></p>`).join('')+`<p>관계 ${(p.lineage?.edges||[]).length}개 · ${esc(p.lineage?.note||'')}</p>`;}
+ $('#ontologyButton').onclick=()=>{if(!project())return message('작품을 먼저 만드세요.',true);drawOntology();$('#ontologyDialog').showModal()};
+@@ -679,7 +697,7 @@
+ $('#ontologyNew').onclick=()=>{$('#ontologyForm').reset();$('#ontologyEditStatus').textContent='새 설정'};
+ $('#ontologyContent').onclick=async e=>{if(e.target.id==='ontologyBind'){const sh=project().shots[shotName];if(!sh)return message('샷을 먼저 선택하세요.',true);if(await act('ontology_bind',{song:song(),shot:shotName,shot_revision:sh.revision,ontology_revision:project().ontology.revision,entities:[...document.querySelectorAll('[data-entity-id]:checked')].map(x=>x.dataset.entityId)}))drawOntology();return;}const edit=e.target.closest('[data-ontology-edit]');if(edit){const item=project().ontology.graph.entities.find(x=>x.id===edit.dataset.ontologyEdit);const f=$('#ontologyForm');f.elements.entity.value=item.id;f.elements.kind.value=item.type;f.elements.label.value=item.label;f.elements.description.value=item.description;f.elements.evidence.value=item.provenance.map(x=>x.excerpt).join('\n');$('#ontologyEditStatus').textContent='기존 개체 수정 · ID 보존';f.elements.description.focus();return;}const b=e.target.closest('[data-ontology-apply]');if(b&&await act('ontology_apply',{song:song(),proposal:b.dataset.ontologyApply,ontology_revision:Number(b.dataset.revision),approved:true}))drawOntology();if(e.target.id==='ontologyRestore'&&await act('ontology_restore',{song:song(),version:Number($('#ontologyRestoreVersion').value),ontology_revision:project().ontology.revision,approved:true}))drawOntology()};
+ $('#cancelTimelineDraft').onclick=()=>{if(busy)return;draft=structuredClone(project().timeline_head?project().timeline_versions[project().timeline_head-1]:fresh(project()));dirty=false;drawTimeline();message('저장된 편집으로 돌아왔습니다. 원본과 변경안은 유지됩니다.');};
+-$('#timelineProposals').onclick=async e=>{const b=e.target.closest('[data-timeline-proposal]'),edit=e.target.closest('[data-edit-proposal]');if(b){const x=project().timeline_edit_proposals.find(x=>x.id===b.dataset.timelineProposal);if(!x||!timelineProposalView(project(),x).canApply)return message('현재 변경안을 다시 확인하세요.',true);await act('review_timeline_proposal',{song:song(),proposal_id:x.id,timeline_version:x.base_version,decision:b.dataset.proposalDecision});}else if(edit){if(dirty)return message('현재 편집 초안을 먼저 저장하거나 취소하세요.',true);const x=project().timeline_edit_proposals.find(x=>x.id===edit.dataset.editProposal);if(!x||!timelineProposalView(project(),x).canApply)return;draft=structuredClone(x.timeline);dirty=true;drawTimeline();document.querySelector('.lt-timeline-controls').open=true;message('변경안을 편집 초안으로 열었습니다. 저장 전까지 적용되지 않습니다.');}};
++$('#timelineProposals').onclick=async e=>{const b=e.target.closest('[data-timeline-proposal]'),edit=e.target.closest('[data-edit-proposal]');if(b){const x=project().timeline_edit_proposals.find(x=>x.id===b.dataset.timelineProposal);if(!x||!timelineProposalView(project(),x).canApply)return message('현재 변경안을 다시 확인하세요.',true);await act('review_timeline_proposal',{song:song(),proposal_id:x.id,timeline_version:x.base_version,decision:b.dataset.proposalDecision});}else if(edit){if(dirty)return message('현재 편집 초안을 먼저 저장하거나 취소하세요.',true);const x=project().timeline_edit_proposals.find(x=>x.id===edit.dataset.editProposal);if(!x||!timelineProposalView(project(),x).canApply)return;draft=structuredClone(x.timeline);dirty=true;setStep(4);drawTimeline();document.querySelector('.lt-timeline-controls').open=true;message('변경안을 편집 초안으로 열었습니다. 저장 전까지 적용되지 않습니다.');}};
+ $('#memoryProposals').onclick=e=>{const b=e.target.closest('[data-open-memory]');if(b){drawOntology();$('#ontologyDialog').showModal();const card=[...document.querySelectorAll('[data-ontology-apply]')].find(x=>x.dataset.ontologyApply===b.dataset.openMemory);if(card)card.focus();}};
+ document.querySelectorAll('dialog').forEach(d=>{d.setAttribute('aria-label',d.querySelector('h2')?.textContent||'검토');const status=document.createElement('p');status.className='dialog-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');d.prepend(status)});
+ $('#textScale').onchange=e=>document.documentElement.style.setProperty('--text-scale',e.target.value);
+@@ -1081,6 +1099,7 @@
+ <script src="/scene-studio.js"></script>
+ <script>window.LoretuneGeneralChatStateRefresh=refresh;</script>
+ <script src="/general-chat-ui.js"></script>
++<script src="/chat-sidebar.js"></script>
+ <script src="/late-evidence-ui.js"></script>
+ <script>
+ const lateEvidenceContainer=document.createElement('div');
+--- before/studio.css
++++ after/studio.css
+@@ -944,3 +944,80 @@
+ .general-chat-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+ .general-chat-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+ @media (max-width: 480px) { .general-chat-card dl { grid-template-columns: 1fr; } }
++
++/* One resizable conversation surface; the original editor and review nodes
++   remain the content authority. Native modal hosts share the same chat DOM. */
++.lt-ui .agent-workspace { display:grid; grid-template-columns:minmax(0,1fr) 12px var(--agent-width,360px); align-items:start; min-height:0; }
++.lt-ui[data-agent-open="false"] .agent-workspace { grid-template-columns:minmax(0,1fr); }
++.lt-ui .agent-work { min-width:0; }
++.lt-ui .agent-sidebar { position:sticky; top:0; min-width:0; padding:0; min-height:calc(100dvh - 160px); max-height:calc(100dvh - 160px); overflow:auto; background:var(--ui-panel); border-left:1px solid var(--ui-line); scrollbar-gutter:stable; scroll-padding-block:72px var(--ui-space-4); }
++.lt-ui .agent-sidebar-header { position:sticky; top:0; z-index:3; display:flex; align-items:center; gap:var(--ui-space-2); background:var(--ui-panel); padding:var(--ui-space-2); border-bottom:1px solid var(--ui-line); }
++.lt-ui .agent-tabs { display:flex; flex:1; min-width:0; }
++.lt-ui .agent-tabs>button { flex:1; padding-inline:var(--ui-space-2); border-color:transparent; background:transparent; white-space:nowrap; }
++.lt-ui .agent-tabs>button[aria-selected="true"] { border-color:var(--ui-control); box-shadow:inset 0 -2px var(--ui-selection-edge); background:var(--ui-selected); }
++.lt-ui .agent-close { flex:none; padding-inline:var(--ui-space-2); }
++.lt-ui .agent-chat-pane,.lt-ui .agent-settings-pane { min-width:0; padding:var(--ui-space-3); }
++.lt-ui .agent-context { font-size:var(--ui-item); color:var(--ui-body); margin:0 0 var(--ui-space-2); }
++.lt-ui .agent-saved-hint { font-size:var(--ui-meta); color:var(--ui-muted); margin:0 0 var(--ui-space-4); }
++.lt-ui .agent-chat-pane #conversationControls { padding:0 0 var(--ui-space-3); border-bottom:1px solid var(--ui-line); }
++.lt-ui .agent-chat-pane #conversationControls .row { display:flex; flex-wrap:wrap; align-items:end; }
++.lt-ui .agent-chat-pane #conversationControls :is(label,form) { min-width:0; max-width:100%; }
++.lt-ui .agent-chat-pane #conversationControls>h2 { font-size:var(--ui-body-size); }
++.lt-ui .agent-chat-pane #conversationModel { margin-top:var(--ui-space-2); }
++.lt-ui .agent-preferences { margin-block:var(--ui-space-3); border-bottom:1px solid var(--ui-line); }
++.lt-ui .agent-preferences>summary { padding:var(--ui-space-2) 0; cursor:pointer; font-size:var(--ui-item); }
++.lt-ui .agent-preferences-form { padding-block:var(--ui-space-2); }
++.lt-ui .agent-preferences-form button { margin-top:var(--ui-space-3); }
++.lt-ui .agent-setting-note,.lt-ui #agentSettingsStatus { font-size:var(--ui-meta); }
++.lt-ui .agent-chat-pane .general-chat { margin:var(--ui-space-4) 0; }
++.lt-ui .general-chat[data-sidebar-hosted="true"]>#generalChatHeading { display:none; }
++.lt-ui .agent-chat-pane .general-chat-card { border-color:var(--ui-line); border-radius:var(--ui-radius-control); padding:var(--ui-space-3); }
++.lt-ui .agent-chat-pane .general-chat-card dl { grid-template-columns:minmax(0,1fr); gap:var(--ui-space-1); }
++.lt-ui .agent-chat-pane .general-chat-card dd { margin-bottom:var(--ui-space-2); }
++.lt-ui .agent-chat-pane .general-chat-actions { gap:var(--ui-space-2); }
++.lt-ui .agent-chat-pane :is(button,input,select,textarea) { max-width:100%; }
++.lt-ui .agent-chat-pane :is(button,input,select,textarea,summary) { scroll-margin-block:72px var(--ui-space-4); }
++.lt-ui .agent-chat-pane button { white-space:normal; overflow-wrap:anywhere; }
++.lt-ui .agent-chat-pane .toolbar { display:flex; flex-wrap:wrap; padding:var(--ui-space-2) 0; }
++.lt-ui .agent-legacy-chat { margin-block:var(--ui-space-4); border-top:1px solid var(--ui-line); }
++.lt-ui .agent-legacy-chat>summary { padding:var(--ui-space-3) 0; cursor:pointer; }
++.lt-ui .agent-legacy-chat #modelChatPanel { margin:0; padding:0; border:0; }
++.lt-ui .agent-proposals { margin-top:var(--ui-space-4); }
++.lt-ui .agent-proposals .creator-proposal { padding:var(--ui-space-3); }
++.lt-ui .agent-proposals ul { padding-inline-start:var(--ui-space-4); }
++.lt-ui .agent-settings-pane>.inspector { display:block; padding:0; border:0; max-height:none; overflow:visible; }
++.lt-ui .agent-resizer { position:sticky; top:0; height:calc(100dvh - 160px); min-height:180px; cursor:col-resize; touch-action:none; }
++.lt-ui .agent-resizer::after { content:""; position:absolute; inset:0 5px; background:var(--ui-line); }
++.lt-ui .agent-resizer:hover::after,.lt-ui .agent-resizer:focus-visible::after { background:var(--ui-control); }
++.lt-ui.agent-resizing { cursor:col-resize; user-select:none; }
++.lt-ui .lt-studio-shell>.agent-toggle { margin-left:var(--ui-space-2); }
++.lt-ui .agent-dialog-launcher { display:block; margin:0 0 var(--ui-space-3) auto; }
++.lt-ui dialog.agent-dialog { padding:var(--ui-space-4); }
++.lt-ui dialog.agent-dialog[open].agent-dialog-open { display:grid; grid-template-columns:minmax(0,1fr) 12px var(--agent-width,360px); width:min(1320px,calc(100vw - 32px))!important; overflow:hidden; align-items:stretch; }
++.lt-ui dialog.agent-dialog .agent-dialog-main { min-width:0; min-height:0; }
++.lt-ui dialog.agent-dialog[open].agent-dialog-open>.agent-dialog-main { overflow:auto; max-height:calc(100dvh - 70px); padding-right:var(--ui-space-3); }
++.lt-ui .agent-dialog-dock { min-width:0; padding:0; overflow:auto; max-height:calc(100dvh - 70px); border-left:1px solid var(--ui-line); scroll-padding-block:72px var(--ui-space-4); }
++.lt-ui .agent-dialog-heading { position:sticky; top:0; z-index:3; display:flex; align-items:center; justify-content:space-between; gap:var(--ui-space-2); padding:0 var(--ui-space-3) var(--ui-space-2); background:var(--ui-panel); }
++.lt-ui .agent-dialog-heading>h2 { margin:0; }
++.lt-ui .agent-dialog .agent-resizer { height:auto; align-self:stretch; }
++@media(min-width:901px) {
++ .lt-ui .agent-work>main.lt-edit-workspace { grid-template-columns:var(--lt-rail-width) minmax(0,1fr); }
++ .lt-ui[data-guided="true"][data-step="1"] .agent-work>main.lt-edit-workspace { grid-template-columns:minmax(0,1fr); }
++ .lt-ui[data-desktop-shell="bounded"]:is([data-step="3"],[data-step="4"])>.agent-workspace { flex:1; min-height:0; overflow:hidden; align-items:stretch; }
++ .lt-ui[data-desktop-shell="bounded"]:is([data-step="3"],[data-step="4"]) .agent-work { min-height:0; display:flex; flex-direction:column; }
++ .lt-ui[data-desktop-shell="bounded"]:is([data-step="3"],[data-step="4"]) .agent-work>main.lt-edit-workspace { flex:1; min-height:0; margin:0; overflow:auto; align-items:stretch; }
++ .lt-ui[data-desktop-shell="bounded"]:is([data-step="3"],[data-step="4"]) .agent-sidebar { position:relative; min-height:0; max-height:none; height:100%; }
++ .lt-ui[data-desktop-shell="bounded"]:is([data-step="3"],[data-step="4"]) .agent-workspace>.agent-resizer { min-height:0; height:100%; }
++}
++@media(max-width:900px) {
++ .lt-ui .agent-workspace { display:flex; flex-direction:column; }
++ .lt-ui .agent-work { order:2; width:100%; }
++ .lt-ui .agent-sidebar { position:relative; order:0; width:100%; height:auto; max-height:none; min-height:0; border-left:0; }
++ .lt-ui .agent-sidebar-header { padding-top:var(--ui-space-3); }
++ .lt-ui .agent-settings-pane>.inspector.lt-panel-inactive { display:block!important; }
++ .lt-ui .lt-studio-shell>.agent-toggle { margin-left:auto; }
++ .lt-ui dialog.agent-dialog[open].agent-dialog-open { display:block; overflow:auto; }
++ .lt-ui dialog.agent-dialog[open].agent-dialog-open>.agent-dialog-main { max-height:none; overflow:visible; }
++ .lt-ui .agent-dialog-dock { border-left:0; border-top:1px solid var(--ui-line); max-height:none; overflow:visible; margin-top:var(--ui-space-4); }
++ .lt-ui .agent-dialog-heading { top:calc(-1 * var(--ui-space-4)); padding-top:var(--ui-space-3); }
++}
+--- before/general-chat-ui.js
++++ after/general-chat-ui.js
+@@ -17,7 +17,8 @@
+  const usageLabel=turn=>turn.usage_cost_usd==null||(turn.pricing_status!=='priced'&&turn.message_status!=='not_sent')?'사용량 기준 금액 미확인':'사용량 기준 금액 $'+turn.usage_cost_usd;
+  const previewPrompt=v=>typeof v.prompt==='string'?v.prompt:v.message_body?.messages?.length===1&&v.message_body.messages[0].role==='user'&&typeof v.message_body.messages[0].content==='string'?v.message_body.messages[0].content:null;
+  const historyLabel=v=>Number.isSafeInteger(v.history_context?.request_count)&&v.history_context.request_count>0&&Number.isSafeInteger(v.history_context.answer_count)&&v.history_context.answer_count>=0?`이 대화의 이전 요청 ${v.history_context.request_count}개 · 최근 답변 ${v.history_context.answer_count}개 포함. 과거 답변은 승인된 작품 기준이 아닙니다.`:'';
+- function layout(live){if(panel.dataset.liveLayout===String(live))return;panel.dataset.liveLayout=String(live);const legacy=el('modelChatPanel');if(live){el('guidedBrief').before(panel);legacy.hidden=true;panel.open=true}else{legacy.after(panel);legacy.hidden=false}}
++ let sidebarHost=null,closeHost=null;
++ function layout(live){const legacy=el('modelChatPanel');if(sidebarHost){if(panel.parentElement!==sidebarHost)sidebarHost.append(panel);panel.dataset.liveLayout=String(live);panel.dataset.sidebarHosted='true';panel.open=true;legacy.hidden=live;return}if(panel.dataset.liveLayout===String(live))return;panel.dataset.liveLayout=String(live);if(live){el('guidedBrief').before(panel);legacy.hidden=true;panel.open=true}else{legacy.after(panel);legacy.hidden=false}}
+  const toolLabels={propose_media_plan:'장면 계획 제안',search_project_context:'프로젝트 내용 검색',propose_timeline_changes:'편집 변경 제안',request_render:'출력 요청',propose_motion_scene:'모션 구성 제안',request_motion_render:'승인된 모션 후보 렌더'};
+  const states={queued:'대기 중',running:'처리 중',cancel_requested:'취소 요청 중',cancelled:'취소됨',completed:'답변 확인',awaiting_continuation_approval:'추가 전달 승인 대기',continuation_rejected:'추가 전달 거절됨',outcome_unknown:'결과 미확정 · 자동 재호출 없음',blocked_before_message:'전달 전 차단',response_validation_failed:'응답 확인 실패',limit_reached:'대화 한도에 도달'};
+  function controls(){const p=project(),cap=p?.general_chat_connection;const blocked=!!busy||inFlight||!!pendingId()||!!pendingId.failed||!!dirty;const active=(p?.general_chat_turns||[]).some(t=>['queued','running','outcome_unknown','cancel_requested','awaiting_continuation_approval'].includes(t.status));el('generalChatPrepare').disabled=blocked||!allowed(cap)||cap?.new_preview_available===false||active||(p?.general_chat_previews||[]).length>0;el('generalChatRefresh').disabled=!!busy||inFlight;panel.querySelectorAll('[data-general-decision],[data-general-cancel]').forEach(b=>b.disabled=blocked||!allowed(cap)&&b.dataset?.generalDecision!=='reject'&&!b.dataset?.generalCancel)}
+@@ -47,8 +48,8 @@
+  el('generalChatReviews').onclick=async e=>{const b=e.target.closest('[data-general-decision]'),decision=b?.dataset.generalDecision;if(!b||inFlight||busy||scope!==key()||decision!=='reject'&&!allowed(project()?.general_chat_connection))return;const v=(project()?.general_chat_previews||[]).find(x=>x.id===b.dataset.preview);if(!v)return;const rights=[...el('generalChatReviews').querySelectorAll('[data-rights]')].find(x=>x.dataset.rights===v.id)?.checked===true;if(decision==='approve'&&!rights){el('generalChatStatus').textContent='내용의 사용 및 전달 권한을 확인해 주세요.';return}if(decision==='approve'&&!v.turn_id&&previewPrompt(v)!==el('generalChatPrompt').value){el('generalChatStatus').textContent='초안이 바뀌었거나 요청을 확인할 수 없습니다. 이 검토를 거절하고 새 내용을 준비하세요.';return}if(await request('general_chat_decide',{song:song(),preview_id:v.id,manifest_sha256:v.manifest_sha256,decision,rights_confirmed:rights}))el('generalChatStatus').textContent=decision==='approve'?'승인을 저장했습니다. 대화 상태를 확인하세요.':'전달을 거절했습니다.'};
+  el('generalChatTurns').onclick=async e=>{const b=e.target.closest('[data-general-cancel]');if(!b||busy||inFlight||scope!==key())return;if(await request('general_chat_cancel',{song:song(),turn:b.dataset.generalCancel}))el('generalChatStatus').textContent='중단 요청을 저장했습니다. 작업 상태를 확인하세요.'};
+  el('generalChatRefresh').onclick=async()=>{if(dirty)return el('generalChatStatus').textContent='저장되지 않은 편집을 먼저 저장하세요. 초안은 유지됩니다.';try{await refreshState()}catch{el('generalChatStatus').textContent='상태를 불러오지 못했습니다. 초안은 유지됩니다.'}};
+- panel.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const section=e.target.closest('details');if(section?.open){e.preventDefault();section.open=false;section.querySelector(':scope > summary')?.focus()}});
++ panel.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const section=e.target.closest('details');if(section===panel&&sidebarHost){e.preventDefault();e.stopPropagation();closeHost?.();return}if(section?.open){e.preventDefault();e.stopPropagation();section.open=false;section.querySelector(':scope > summary')?.focus()}});
+  async function refreshState(){await windowRefresh();refresh();el('generalChatStatus').textContent='저장된 대화 상태를 확인했습니다.'}
+  const windowRefresh=()=>globalThis.LoretuneGeneralChatStateRefresh();
+- window.LoretuneGeneralChat={refresh,syncControls:controls};
++ window.LoretuneGeneralChat={refresh,syncControls:controls,mount({container,onClose}){sidebarHost=container;closeHost=onClose;panel.setAttribute('aria-label','AI 대화');layout(panel.dataset.liveLayout==='true');return panel}};
+ })();
+--- before/chat-sidebar.js
++++ after/chat-sidebar.js
+@@ -0,0 +1,181 @@
++/* A single conversation surface follows the workspace and native modal host.
++   This module changes presentation only; request journals and consent stay in
++   the existing chat and application controllers. */
++(() => {
++ 'use strict';
++ if (window.LoretuneAgentSidebar) return;
++ const q = selector => document.querySelector(selector);
++ const make = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text) node.textContent = text; return node; };
++ const MIN_WIDTH = 288, MAX_WIDTH = 600, DEFAULT_WIDTH = 360, MIN_WORK_WIDTH = 580, HANDLE_WIDTH = 12;
++ const WIDTH_KEY = 'loretune-agent-sidebar-width-v1';
++ const narrow = matchMedia('(max-width: 900px)');
++ const workspace = make('div', 'agent-workspace'); workspace.id = 'agentWorkspace';
++ const work = make('div', 'agent-work');
++ const main = q('main'), planning = q('#chatPanel'), inspector = q('.inspector'), panelNav = q('.lt-panel-nav');
++ planning.before(workspace); workspace.append(work); work.append(planning, panelNav, main);
++ const sidebar = make('aside', 'agent-sidebar'); sidebar.id = 'agentSidebar'; sidebar.setAttribute('aria-label', 'AI 대화와 작업 설정');
++ const handle = make('div', 'agent-resizer'); handle.tabIndex = 0; handle.setAttribute('role', 'separator'); handle.setAttribute('aria-orientation', 'vertical'); handle.setAttribute('aria-label', 'AI 대화와 작업 설정 너비');
++ const header = make('div', 'agent-sidebar-header'), tabs = make('div', 'agent-tabs'); tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', '오른쪽 작업 공간');
++ const chatTab = make('button', '', 'AI 대화'), settingsTab = make('button', '', '작업 설정'), close = make('button', 'agent-close', '닫기');
++ chatTab.id = 'agentChatTab'; settingsTab.id = 'agentSettingsTab';
++ const chat = make('section', 'agent-chat-pane'); chat.id = 'agentChatPane'; chat.setAttribute('role', 'tabpanel'); chat.setAttribute('aria-labelledby', chatTab.id);
++ const settings = make('section', 'agent-settings-pane'); settings.id = 'agentSettingsPane'; settings.setAttribute('role', 'tabpanel'); settings.setAttribute('aria-labelledby', settingsTab.id);
++ for (const [button, pane] of [[chatTab, chat], [settingsTab, settings]]) { button.type = 'button'; button.setAttribute('role', 'tab'); button.setAttribute('aria-controls', pane.id); tabs.append(button); }
++ close.type = 'button'; close.setAttribute('aria-label', '오른쪽 작업 공간 닫기'); header.append(tabs, close); sidebar.append(header, chat, settings); workspace.append(handle, sidebar);
++ const toggle = make('button', 'agent-toggle', 'AI 대화'); toggle.id = 'agentToggle'; toggle.type = 'button'; toggle.setAttribute('aria-controls', sidebar.id); q('.lt-studio-shell').append(toggle);
++ const context = make('p', 'agent-context'); context.id = 'agentContext'; chat.append(context);
++ const savedHint = make('p', 'agent-saved-hint', '서버에 저장된 작품·편집을 기준으로 대화합니다.'); chat.append(savedHint);
++ chat.append(q('#conversationControls'));
++ const preferences = make('div', 'agent-preferences-slot'); preferences.id = 'agentPreferencesSlot'; chat.append(preferences);
++ const preferenceDetails = make('details', 'agent-preferences'), preferenceSummary = make('summary', '', '에이전트 설정');
++ const preferenceForm = make('form', 'agent-preferences-form'); preferenceForm.id = 'agentPreferencesForm';
++ const modeLabel = make('label', '', '편집 권한'), modeSelect = make('select'); modeSelect.id = 'agentMode'; modeLabel.htmlFor = modeSelect.id;
++ const effortLabel = make('label', '', '추론 강도'), effortSelect = make('select'); effortSelect.id = 'agentEffort'; effortLabel.htmlFor = effortSelect.id;
++ const preferenceSave = make('button', '', '에이전트 설정 저장 · 호출 없음'); preferenceSave.type = 'submit';
++ const preferenceStatus = make('p'); preferenceStatus.id = 'agentSettingsStatus'; preferenceStatus.setAttribute('role', 'status');
++ const preferenceRoute = make('p', 'agent-setting-note'), preferenceActive = make('p', 'agent-setting-note');
++ const preferencePolicy = make('p', 'agent-setting-note', 'FullAccess는 허용된 비삭제 편집만 새 미승인 버전으로 저장합니다. 컷 제외·겹침 제거는 검토가 필요하며, 최종 출력·비용·전송·사용권 승인은 별도입니다. 계정 삭제는 금지하며 다른 파일 삭제도 대상별 명시 허가가 필요합니다.');
++ preferenceForm.append(modeLabel, modeSelect, effortLabel, effortSelect, preferenceSave, preferenceStatus); preferenceDetails.append(preferenceSummary, preferenceForm, preferenceRoute, preferenceActive, preferencePolicy); preferences.append(preferenceDetails); preferences.hidden = true;
++ const generalHost = make('div', 'agent-general-host'); chat.append(generalHost);
++ const legacy = make('details', 'agent-legacy-chat'); const legacyTitle = make('summary', '', '기존 연결 대화 · 별도 실행 이력'); legacy.append(legacyTitle, q('#modelChatPanel')); chat.append(legacy);
++ const proposalTitle = make('h2', '', '편집 변경안'); const proposals = make('section', 'agent-proposals'); proposals.setAttribute('aria-label', '편집 변경안 검토'); proposals.append(proposalTitle, q('#timelineProposals')); chat.append(proposals);
++ settings.append(inspector);
++ let opened = true, selected = 'chat', activeDialog = null, drag = null, preferredWidth = DEFAULT_WIDTH;
++ const dialogHosts = new Map(), dialogStack = [];
++ let preferenceScope = '', preferenceChoices = '';
++ const modeNames = { read_only: '읽기 전용', review: '검토 후 편집', full_access: 'FullAccess' };
++ function renderPreferences(p) {
++  const prefs = p?.agent_preferences, current = prefs?.current, cap = prefs?.capabilities?.models?.[current?.selection];
++  preferences.hidden = !current?.selection || !cap;
++  if (preferences.hidden) return;
++  const choices = JSON.stringify([prefs.capabilities.modes, cap.effort_options, cap.unsupported_efforts]);
++  if (choices !== preferenceChoices) {
++   preferenceChoices = choices; modeSelect.replaceChildren(); effortSelect.replaceChildren();
++   for (const mode of prefs.capabilities.modes) { const option = make('option', '', mode.label); option.value = mode.id; modeSelect.append(option); }
++   for (const value of cap.effort_options) { const option = make('option', '', value); option.value = value; effortSelect.append(option); }
++   for (const item of cap.unsupported_efforts || []) { const option = make('option', '', item.value + ' · 현재 미지원'); option.value = item.value; option.disabled = true; option.title = item.reason; effortSelect.append(option); }
++  }
++  const scope = conversationDraftKey('agent-settings:' + current.selection) + ':' + current.revision;
++  if (preferenceScope !== scope) { preferenceScope = scope; modeSelect.value = current.mode; effortSelect.value = current.effort; preferenceStatus.textContent = ''; }
++  preferenceSummary.textContent = '에이전트 설정 · ' + modeNames[current.mode] + ' · ' + current.effort;
++  const active = prefs.active_response;
++  preferenceActive.textContent = active ? '현재 응답: ' + modeNames[active.effective_mode] + ' · ' + active.effort + (prefs.settings_pending ? ' · 변경한 강도·권한 확장은 다음 새 요청부터 적용됩니다. 권한 축소는 즉시 반영됩니다.' : ' · 이미 승인한 응답의 본문·추론 강도는 유지됩니다.') : '다음 요청: ' + modeNames[current.mode] + ' · ' + current.effort;
++  preferenceRoute.textContent = !cap.general_route_supported ? '이 모델은 현재 일반 대화 연결에서 사용할 수 없습니다. 기존 별도 연결의 지원 여부를 확인하세요.' : !cap.general_route_configured ? '이 모델의 일반 대화 연결은 아직 설정되지 않았습니다. 설정 저장은 모델을 호출하지 않습니다.' : '현재 일반 대화 경로에서 지원하는 설정입니다. 계정·사용량·청구 확인은 별도입니다.';
++  if (cap.unsupported_efforts?.length) preferenceRoute.textContent += ' xhigh·max는 현재 경로에서 지원하지 않습니다.';
++  preferenceSave.disabled = !!busy || !!pendingId() || !!pendingId.failed || !!dirty || current.mode === modeSelect.value && current.effort === effortSelect.value;
++ }
++ modeSelect.addEventListener('change', () => renderPreferences(project())); effortSelect.addEventListener('change', () => renderPreferences(project()));
++ preferenceForm.addEventListener('submit', async event => {
++  event.preventDefault(); const p = project(), current = p?.agent_preferences?.current;
++  if (!current || preferenceSave.disabled) return;
++  const key = conversationDraftKey('agent-settings:' + current.selection);
++  const data = { song: song(), selection: current.selection, settings_revision: current.revision, mode: modeSelect.value, effort: effortSelect.value };
++  preferenceStatus.textContent = '설정 저장 중…';
++  const saved = await act('conversation_agent_settings', data);
++  renderPreferences(project());
++  if (key === conversationDraftKey('agent-settings:' + project()?.agent_preferences?.current?.selection)) preferenceStatus.textContent = saved ? '에이전트 설정을 저장했습니다. 모델 호출은 없습니다.' : '설정을 저장하지 못했습니다. 현재 상태를 확인한 뒤 다시 저장하세요.';
++ });
++ try { const saved = Number(localStorage.getItem(WIDTH_KEY)); if (Number.isFinite(saved) && saved >= MIN_WIDTH && saved <= MAX_WIDTH) preferredWidth = saved; } catch (_) { /* Width preference does not affect request recovery. */ }
++ function maximumWidth() { return Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, innerWidth - MIN_WORK_WIDTH - HANDLE_WIDTH)); }
++ function width(value, persist = false) {
++  const max = maximumWidth(), next = Math.round(Math.max(MIN_WIDTH, Math.min(max, value)));
++  document.documentElement.style.setProperty('--agent-width', next + 'px');
++  handle.setAttribute('aria-valuemin', String(MIN_WIDTH)); handle.setAttribute('aria-valuemax', String(max)); handle.setAttribute('aria-valuenow', String(next)); handle.setAttribute('aria-valuetext', next + '픽셀');
++  if (persist) { preferredWidth = next; try { localStorage.setItem(WIDTH_KEY, String(next)); } catch (_) {} }
++  return next;
++ }
++ function refresh() {
++  const p = project();
++  const active = [...(p?.general_chat_turns || []), ...(p?.chat_turns || [])].some(t => ['queued', 'running', 'cancel_requested'].includes(t.status));
++  const text = p ? `${song()} · ${shotName || '장면 미선택'} · ${p.timeline_head ? '저장 편집 v' + p.timeline_head : '편집 저장 전'}${active ? ' · 대화 작업 진행 중' : ''}` : '작품을 선택하면 음악·장면·편집을 함께 확인합니다.';
++  if (context.textContent !== text) context.textContent = text;
++  const hint = activeDialog ? '이 작업 창의 미저장 입력은 아직 AI에 반영되지 않습니다. 저장된 작품·편집을 기준으로 대화합니다.' : dirty ? '현재 편집에 미저장 변경이 있습니다. 저장 후 대화에 반영됩니다.' : '서버에 저장된 작품·편집을 기준으로 대화합니다.';
++  if (savedHint.textContent !== hint) savedHint.textContent = hint;
++  renderPreferences(p);
++  legacy.hidden = q('#modelChatPanel').hidden;
++  proposals.hidden = !q('#timelineProposals').childElementCount;
++ }
++ function mobilePreview() { if (narrow.matches && q('[data-panel="review"][aria-selected="true"]')) q('[data-panel="preview"]')?.click(); }
++ function apply() {
++  document.body.dataset.agentOpen = String(opened && !activeDialog);
++  sidebar.hidden = !opened || !!activeDialog; chat.hidden = !activeDialog && selected !== 'chat'; settings.hidden = selected !== 'settings';
++  work.hidden = narrow.matches && opened && !activeDialog;
++  chatTab.setAttribute('aria-selected', String(selected === 'chat')); settingsTab.setAttribute('aria-selected', String(selected === 'settings'));
++  chatTab.tabIndex = selected === 'chat' ? 0 : -1; settingsTab.tabIndex = selected === 'settings' ? 0 : -1;
++  toggle.setAttribute('aria-expanded', String(opened)); toggle.textContent = opened ? 'AI 대화 · 열림' : 'AI 대화 열기';
++  handle.hidden = narrow.matches || !(activeDialog ? dialogHosts.get(activeDialog)?.open : opened);
++  handle.setAttribute('aria-controls', activeDialog ? chat.id : sidebar.id);
++  refresh();
++ }
++ function choose(name, focus = false) {
++  selected = name; opened = true;
++  if (narrow.matches) { if (name === 'settings') q('[data-panel="review"]')?.click(); else mobilePreview(); }
++  apply(); if (focus) (name === 'chat' ? chatTab : settingsTab).focus();
++ }
++ function closeAgent() {
++  if (activeDialog) { const host = dialogHosts.get(activeDialog); host.open = false; host.dock.hidden = true; host.launcher.setAttribute('aria-expanded', 'false'); activeDialog.classList.remove('agent-dialog-open'); handle.hidden = true; host.launcher.focus(); return; }
++  opened = false; mobilePreview(); apply(); toggle.focus();
++ }
++ close.addEventListener('click', closeAgent);
++ toggle.addEventListener('click', () => { if (opened && selected === 'chat') closeAgent(); else { choose('chat'); chatTab.focus(); } });
++ chatTab.addEventListener('click', () => choose('chat')); settingsTab.addEventListener('click', () => choose('settings'));
++ tabs.addEventListener('keydown', event => {
++  if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
++  event.preventDefault(); choose(event.key === 'Home' ? 'chat' : event.key === 'End' ? 'settings' : selected === 'chat' ? 'settings' : 'chat', true);
++ });
++ handle.addEventListener('keydown', event => {
++  const current = Number(handle.getAttribute('aria-valuenow')), step = event.shiftKey ? 48 : 16;
++  const values = { ArrowLeft: current + step, ArrowRight: current - step, Home: MIN_WIDTH, End: maximumWidth() };
++  if (event.key === 'Enter') { event.preventDefault(); closeAgent(); return; }
++  if (!(event.key in values)) return;
++  event.preventDefault(); width(values[event.key], true);
++ });
++ handle.addEventListener('pointerdown', event => {
++  if (event.button !== 0 || narrow.matches) return;
++  event.preventDefault(); handle.focus(); drag = { id: event.pointerId, x: event.clientX, width: Number(handle.getAttribute('aria-valuenow')) }; handle.setPointerCapture(event.pointerId); document.body.classList.add('agent-resizing');
++ });
++ handle.addEventListener('pointermove', event => { if (drag?.id === event.pointerId) width(drag.width + drag.x - event.clientX); });
++ function stopDrag(event) { if (drag?.id !== event.pointerId) return; width(Number(handle.getAttribute('aria-valuenow')), true); drag = null; document.body.classList.remove('agent-resizing'); }
++ handle.addEventListener('pointerup', stopDrag); handle.addEventListener('pointercancel', stopDrag); handle.addEventListener('lostpointercapture', stopDrag);
++ function prepareDialog(dialog) {
++  if (dialogHosts.has(dialog)) return;
++  const main = make('div', 'agent-dialog-main'); while (dialog.firstChild) main.append(dialog.firstChild);
++  const launcher = make('button', 'agent-dialog-launcher', 'AI 대화 열기'); launcher.type = 'button'; launcher.setAttribute('aria-controls', chat.id); launcher.setAttribute('aria-expanded', 'false'); main.prepend(launcher);
++  const dock = make('aside', 'agent-dialog-dock'); dock.hidden = true; dock.setAttribute('aria-label', 'AI 대화');
++  const heading = make('div', 'agent-dialog-heading'), title = make('h2', '', 'AI 대화'), dismiss = make('button', '', '대화 닫기'); dismiss.type = 'button'; heading.append(title, dismiss); dock.append(heading); dialog.append(main, dock);
++  const host = { main, launcher, dock, open: false }; dialogHosts.set(dialog, host); dialog.classList.add('agent-dialog');
++  launcher.addEventListener('click', () => { host.open = true; portal(dialog); q('#generalChatPrompt')?.focus(); });
++  dismiss.addEventListener('click', closeAgent);
++ }
++ function portal(dialog) {
++  activeDialog = dialog;
++  if (dialog) {
++   const host = dialogHosts.get(dialog); host.dock.append(chat); host.dock.before(handle); chat.hidden = false; chat.setAttribute('aria-label', 'AI 대화'); chat.removeAttribute('aria-labelledby'); host.dock.hidden = !host.open; dialog.classList.toggle('agent-dialog-open', host.open); host.launcher.setAttribute('aria-expanded', String(host.open));
++  } else { sidebar.append(chat); workspace.insertBefore(handle, sidebar); chat.setAttribute('aria-labelledby', chatTab.id); chat.removeAttribute('aria-label'); }
++  apply();
++ }
++ function syncDialogs() {
++  document.querySelectorAll('dialog').forEach(dialog => {
++   prepareDialog(dialog);
++   const i = dialogStack.indexOf(dialog);
++   if (dialog.open && i === -1) { dialogStack.push(dialog); const host = dialogHosts.get(dialog); host.open = opened && selected === 'chat'; }
++   else if (!dialog.open) { if (i !== -1) dialogStack.splice(i, 1); dialog.classList.remove('agent-dialog-open'); dialogHosts.get(dialog).dock.hidden = true; }
++  });
++  const next = dialogStack.at(-1) || null;
++  if (next !== activeDialog) { const focused = document.activeElement, retain = chat.contains(focused); portal(next); if (retain && focused?.isConnected) { if (next && !dialogHosts.get(next).open) dialogHosts.get(next).launcher.focus(); else if (!next && !opened) toggle.focus(); else focused.focus({ preventScroll: true }); } }
++ }
++ // Observe dialog lifecycle only; never infer application state from rendered text.
++ const lifecycle = new MutationObserver(records => { if (records.some(r => r.type === 'childList' && [...r.addedNodes].some(n => n.nodeType === 1 && (n.matches?.('dialog') || n.querySelector?.('dialog'))) || r.type === 'attributes' && r.target.tagName === 'DIALOG')) syncDialogs(); });
++ lifecycle.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['open'] });
++ sidebar.addEventListener('keydown', event => { if (event.key === 'Escape' && !event.defaultPrevented) { event.preventDefault(); closeAgent(); } });
++ chat.addEventListener('keydown', event => { if (event.key !== 'Escape' || event.defaultPrevented) return; const details = event.target.closest('details'); if (details?.open && chat.contains(details)) { event.preventDefault(); event.stopPropagation(); details.open = false; details.querySelector('summary')?.focus(); } else { event.preventDefault(); event.stopPropagation(); closeAgent(); } });
++ // Preserve the existing mobile review/player controller and its original nodes.
++ q('[data-panel="review"]')?.addEventListener('click', () => { selected = 'settings'; opened = true; apply(); });
++ q('[data-panel="preview"]')?.addEventListener('click', () => { if (narrow.matches && selected === 'settings') { selected = 'chat'; opened = false; apply(); } });
++ const stageObserver = new MutationObserver(() => { if (narrow.matches && selected === 'settings') { selected = 'chat'; opened = false; } apply(); });
++ stageObserver.observe(document.body, { attributes: true, attributeFilter: ['data-step', 'data-guided'] });
++ addEventListener('resize', () => width(preferredWidth)); narrow.addEventListener('change', () => { mobilePreview(); width(preferredWidth); apply(); });
++ window.LoretuneAgentSidebar = { refresh, open: () => { if (activeDialog) { dialogHosts.get(activeDialog).open = true; portal(activeDialog); } else choose('chat'); }, close: closeAgent };
++ window.LoretuneGeneralChat.mount({ container: generalHost, onClose: closeAgent });
++ width(preferredWidth); syncDialogs(); apply();
++})();
+--- before/tests/chat_sidebar.cjs
++++ after/tests/chat_sidebar.cjs
+@@ -0,0 +1,59 @@
++'use strict';
++const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
++const {createRequire}=require('node:module');
++const puppeteer=createRequire('/opt/homebrew/lib/noop.js')('puppeteer-core');
++const url=process.argv[2],evidence=process.argv[3];
++async function main(){
++ const browser=await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--no-sandbox']});
++ let page;try{
++ page=await browser.newPage();const errors=[],posts=[];page.on('pageerror',error=>errors.push(error.message));page.on('request',r=>{if(r.method()==='POST')posts.push({url:r.url(),body:JSON.parse(r.postData()||'{}')})});
++ await page.setViewport({width:1920,height:1080});await page.goto(url,{waitUntil:'networkidle0'});
++ const wait=()=>page.waitForFunction(()=>!busy&&!pendingId());
++ const visible=selector=>page.$eval(selector,e=>!!e.getClientRects().length);
++ const snapshot=async name=>{if(evidence){await page.screenshot({path:path.join(evidence,name+'.png')})}};
++ assert.equal(await visible('#agentSidebar'),true);assert.equal(await page.$eval('#agentToggle',e=>e.getAttribute('aria-expanded')),'true');
++ await page.evaluate(()=>{window.sidebarIdentity={chat:document.getElementById('agentChatPane'),general:document.getElementById('generalChatPanel'),prompt:document.getElementById('generalChatPrompt'),conversation:document.getElementById('conversationSelect'),model:document.getElementById('conversationModelSelect')};});
++ await page.type('#generalChatPrompt','단일 창 입력 보존');await page.click('.agent-close');assert.equal(await visible('#agentSidebar'),false);assert.equal(await page.evaluate(()=>document.activeElement.id),'agentToggle');
++ await page.click('#agentToggle');assert.equal(await page.$eval('#generalChatPrompt',e=>e.value),'단일 창 입력 보존');
++ await page.focus('.agent-resizer');await page.keyboard.press('ArrowLeft');assert.equal(await page.$eval('.agent-resizer',e=>e.getAttribute('aria-valuenow')),'376');await page.keyboard.press('Home');assert.equal(await page.$eval('.agent-resizer',e=>e.getAttribute('aria-valuenow')),'288');await page.keyboard.press('End');assert.equal(await page.$eval('.agent-resizer',e=>e.getAttribute('aria-valuenow')),'600');
++ const bounds=await page.$eval('.agent-resizer',e=>e.getBoundingClientRect().toJSON());await page.mouse.move(bounds.x+6,bounds.y+80);await page.mouse.down();await page.mouse.move(bounds.x+190,bounds.y+80);await page.mouse.up();const mouseWidth=await page.$eval('.agent-resizer',e=>Number(e.getAttribute('aria-valuenow')));assert.ok(mouseWidth>=288&&mouseWidth<=600);await page.reload({waitUntil:'networkidle0'});assert.equal(await page.$eval('.agent-resizer',e=>Number(e.getAttribute('aria-valuenow'))),mouseWidth);
++ await page.click('.agent-close');await page.click('#emptyNewProject');await page.waitForSelector('#projectDialog[open]');
++ await page.click('#projectDialog .agent-dialog-launcher');assert.equal(await page.$eval('#agentChatPane',e=>e.closest('dialog').id),'projectDialog');await page.type('#project input[name=name]','사이드바 기능 검증');await page.click('#project button.primary');await wait();await page.waitForFunction(()=>!document.getElementById('projectDialog').open&&!!project());
++ await page.click('#agentToggle');await page.type('#generalChatPrompt','첫 대화의 입력');await page.evaluate(()=>{window.sidebarIdentity={chat:document.getElementById('agentChatPane'),general:document.getElementById('generalChatPanel'),prompt:document.getElementById('generalChatPrompt'),conversation:document.getElementById('conversationSelect'),model:document.getElementById('conversationModelSelect')};});
++ // All stages use the exact node, independent of the old planning visibility.
++ for(const stage of ['2','3','4','1']){await page.click('.flow-nav [data-step="'+stage+'"]');assert.equal(await visible('#agentSidebar'),true);assert.equal(await page.evaluate(()=>sidebarIdentity.prompt===document.getElementById('generalChatPrompt')),true,'stage changes retain the existing prompt node');}
++ await page.evaluate(()=>{window.sidebarIdentity={chat:document.getElementById('agentChatPane'),general:document.getElementById('generalChatPanel'),prompt:document.getElementById('generalChatPrompt'),conversation:document.getElementById('conversationSelect'),model:document.getElementById('conversationModelSelect')};});
++ for(const id of ['modelSettingsPanel','motionDialog','sceneStudioDialog']){
++  const exists=await page.$('#'+id);if(!exists)continue;
++  await page.evaluate(id=>document.getElementById(id).showModal(),id);await page.waitForFunction(id=>document.getElementById('agentChatPane').closest('dialog')?.id===id,{},id);
++  assert.equal(await visible('#generalChatPrompt'),true);await page.focus('#generalChatPrompt');assert.equal(await page.evaluate(()=>document.activeElement.id),'generalChatPrompt');
++  assert.match(await page.$eval('#agentChatPane .agent-saved-hint',e=>e.textContent),/미저장 입력/);assert.equal(await page.$eval('#generalChatPrompt',e=>e.value),'첫 대화의 입력');
++  await page.evaluate(()=>{document.getElementById('generalChatPrompt').value+=' · 창 전환';document.getElementById('generalChatPrompt').dispatchEvent(new Event('input',{bubbles:true}))});
++  await snapshot(id+'-1920');await page.focus('#generalChatPrompt');await page.keyboard.press('Escape');assert.equal(await page.evaluate(id=>document.getElementById(id).open,id),true);assert.match(await page.evaluate(()=>document.activeElement.className),/agent-dialog-launcher/);
++  await page.click('#'+id+' .agent-dialog-launcher');await page.evaluate(id=>document.getElementById(id).close(),id);await page.waitForFunction(()=>!document.getElementById('agentChatPane').closest('dialog'));assert.equal(await visible('#'+id),false,'closed native dialog must stay visually closed');
++  assert.equal(await page.evaluate(()=>sidebarIdentity.prompt===document.getElementById('generalChatPrompt')&&sidebarIdentity.general===document.getElementById('generalChatPanel')),true);
++  await page.$eval('#generalChatPrompt',e=>{e.value='첫 대화의 입력';e.dispatchEvent(new Event('input',{bubbles:true}))});
++ }
++ // A real motion editor's unsaved inputs survive opening/closing its AI dock.
++ await page.click('.agent-close');await page.click('.flow-nav [data-step="3"]');await page.$eval('#shot',e=>e.closest('details').open=true);await page.type('#shot input[name=shot]','작업 장면');await page.type('#shot input[name=description]','음원용 타이포 장면');await page.click('#shot button');await wait();await page.waitForFunction(()=>!!project()?.shots['작업 장면']);await page.click('#agentToggle');await page.click('#agentSettingsTab');await page.click('#motionButton');await page.waitForSelector('#motionDialog[open]');await page.click('#motionStart');await page.type('[data-motion-field="text"]','보존할 편집 초안');await page.click('#motionDialog .agent-dialog-launcher');assert.equal(await page.$eval('[data-motion-field="text"]',e=>e.value),'보존할 편집 초안');await page.click('#motionDialog .agent-dialog-heading button');assert.equal(await page.$eval('[data-motion-field="text"]',e=>e.value),'보존할 편집 초안');await page.click('#motionDialog .agent-dialog-launcher');await page.click('#motionClose');await page.waitForFunction(()=>!document.getElementById('motionDialog').open);await page.click('#agentChatTab');assert.equal(await page.$eval('#generalChatPrompt',e=>e.value),'첫 대화의 입력');
++ // Conversation creation and model save still use their existing form/CAS path.
++ const oldConversation=await page.$eval('#conversationSelect',e=>e.value);
++ await page.$eval('#conversationCreate',e=>e.closest('details').open=true);await page.type('#conversationTitle','독립 초안');await page.click('#conversationCreate button');await snapshot('after-conversation-create-click');await wait();await page.waitForFunction(id=>project()?.active_conversation?.id!==id&&!conversationSwitching,{},oldConversation);assert.equal(await page.$eval('#generalChatPrompt',e=>e.value),'');
++ await page.type('#generalChatPrompt','두 번째 대화');await page.select('#conversationSelect',oldConversation);await page.waitForFunction(id=>project()?.active_conversation?.id===id&&!conversationSwitching,{},oldConversation);assert.equal(await page.$eval('#generalChatPrompt',e=>e.value),'첫 대화의 입력');
++ await page.$eval('#conversationModel',e=>e.closest('details').open=true);const selections=await page.$$eval('#conversationModelSelect option',options=>options.filter(o=>!o.disabled).map(o=>o.value));if(selections.length){await page.select('#conversationModelSelect',selections.find(id=>id&&id!=='anthropic-haiku-5-5'));await page.click('#conversationModel button');await wait();assert.equal(await page.$eval('#conversationModelSelect',e=>e.value),selections.find(id=>id&&id!=='anthropic-haiku-5-5'));}
++ await page.waitForFunction(()=>!!project()?.agent_preferences?.current?.selection);assert.equal(await visible('#agentPreferencesSlot'),true);await page.click('.agent-preferences>summary');
++ await page.select('#agentMode','read_only');await page.select('#agentEffort','medium');await page.click('#agentPreferencesForm button');await wait();await page.waitForFunction(()=>project().agent_preferences.current.mode==='read_only'&&project().agent_preferences.current.effort==='medium');assert.match(await page.$eval('#agentSettingsStatus',e=>e.textContent),/저장/);
++ await page.select('#agentMode','full_access');await page.click('#agentPreferencesForm button');await wait();await page.waitForFunction(()=>project().agent_preferences.current.mode==='full_access');assert.equal(await page.evaluate(()=>project().timeline_head),null,'permission changes alone never create an edited timeline');
++ await page.select('#conversationSelect',await page.$$eval('#conversationSelect option',(options,old)=>options.find(o=>o.value!==old).value,oldConversation));await page.waitForFunction(id=>project()?.active_conversation?.id!==id&&!conversationSwitching,{},oldConversation);assert.equal(await page.evaluate(()=>project().agent_preferences.current.mode),'review','new conversation does not inherit FullAccess');
++ await page.select('#conversationSelect',oldConversation);await page.waitForFunction(id=>project()?.active_conversation?.id===id&&!conversationSwitching,{},oldConversation);assert.equal(await page.evaluate(()=>project().agent_preferences.current.mode),'full_access');
++ await page.select('#conversationModelSelect','anthropic-haiku-5-5');await page.click('#conversationModel button');await wait();await page.waitForFunction(()=>project().agent_preferences.current.selection==='anthropic-haiku-5-5');assert.equal(await page.evaluate(()=>project().agent_preferences.current.mode),'review','permissions do not leak across models');assert.deepEqual(await page.$$eval('#agentEffort option:disabled',options=>options.map(x=>x.value)),['xhigh','max']);
++ await page.select('#agentEffort','high');await page.click('#agentPreferencesForm button');await wait();await page.waitForFunction(()=>project().agent_preferences.current.effort==='high');
++ await snapshot('workspace-1920');
++ for(const width of [1440,1024,900,768,375,320]){await page.setViewport({width,height:900});await page.waitForFunction(expected=>document.querySelector('.agent-resizer').hidden===expected&&document.querySelector('.agent-work').hidden===expected,{},width<=900);await page.waitForFunction(()=>document.body.scrollWidth<=innerWidth);assert.equal(await visible('#agentSidebar'),true);if(width<=900){assert.equal(await visible('.agent-resizer'),false);assert.equal(await visible('.agent-work'),false);await page.click('.agent-close');assert.equal(await visible('.agent-work'),true);await page.click('#agentToggle');}await snapshot('workspace-'+width);}
++ assert.equal(await page.evaluate(()=>document.querySelectorAll('#generalChatPanel').length),1);assert.equal(await page.evaluate(()=>document.querySelectorAll('#conversationModelSelect').length),1);
++ assert.deepEqual(errors,[]);assert.equal(posts.some(r=>/general_chat_(approve|prepare)|chat_turn/.test(r.body.action)),false,'sidebar lifecycle never invokes a provider');
++ const result={result:'passed',type:'isolated local HTTP/headless interaction; no external AI call',viewports:[1920,1440,1024,900,768,375,320],checks:['default open','close/reopen and focus','keyboard/pointer resize bounds','width reload','same-node modal portal','Escape host focus','all stages','conversation draft isolation','existing model selection','mobile work visibility','no duplicate DOM/listeners/provider invocation'],errors,postActions:posts.map(r=>r.body.action)};
++ if(evidence)fs.writeFileSync(path.join(evidence,'browser-result.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
++ }catch(error){if(page){console.error('FAILURE_STATE',await page.evaluate(()=>({dialogs:[...document.querySelectorAll('dialog[open]')].map(x=>x.id),busy,dirty,pending:!!pendingId(),switching:conversationSwitching,notice:document.getElementById('notice').textContent,conversation:project()?.active_conversation,createDisabled:document.querySelector('#conversationCreate button').disabled,title:document.getElementById('conversationTitle').value})));if(evidence)await page.screenshot({path:path.join(evidence,'failure.png')});}throw error}finally{await browser.close()}
++}
++main().catch(error=>{console.error(error);process.exitCode=1});
+--- before/tests/test_chat_sidebar_ui.py
++++ after/tests/test_chat_sidebar_ui.py
+@@ -0,0 +1,49 @@
++import pathlib
++import shutil
++import subprocess
++import tempfile
++import threading
++import unittest
++
++import app
++
++ROOT = pathlib.Path(__file__).resolve().parents[1]
++
++
++class ChatSidebarUITest(unittest.TestCase):
++    @unittest.skipUnless(shutil.which('node') and pathlib.Path('/opt/homebrew/lib/node_modules/puppeteer-core').exists() and pathlib.Path('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome').exists(), 'installed isolated headless browser unavailable')
++    def test_actual_sidebar_lifecycle(self):
++        with tempfile.TemporaryDirectory() as directory:
++            server = app.server(pathlib.Path(directory), 0)
++            thread = threading.Thread(target=server.serve_forever, daemon=True)
++            thread.start()
++            try:
++                result = subprocess.run(['node', str(ROOT/'tests/chat_sidebar.cjs'), f'http://127.0.0.1:{server.server_port}'], cwd=ROOT, capture_output=True, text=True, timeout=90)
++                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
++            finally:
++                server.shutdown()
++                server.server_close()
++                thread.join(timeout=5)
++
++    def test_overlay_proposal_before_after_gate(self):
++        source = (ROOT/'index.html').read_text()
++        start = source.index('function timelineProposalView')
++        end = source.index('function drawCreationProposals', start)
++        fixture = r'''
++const assert=require('node:assert/strict'),esc=s=>String(s).replaceAll('<','&lt;'),creatorDiagnostic=()=>'';
++const before={shot:'타이포<원본',motion_revision:1,start:0,end:2,offset_x:0,offset_y:0};
++const after={...before,motion_revision:2,start:.5,end:2.5,offset_x:100,offset_y:-40};
++const p={timeline_head:3,timeline_versions:[{id:3,clips:[{motion_overlay:before}]}]};
++const x={id:'p',status:'proposed',description:'겹침 수정',base_version:3,commands:[{op:'set_motion_overlay',clip_index:0}],timeline:{clips:[{shot:'A',motion_overlay:after}]},timeline_diff:{motion_overlays:[{base_clip_index:0,proposed_clip_index:0,before,after}]}};
++assert.equal(timelineProposalView(p,x).canApply,true);let html=timelineProposalMarkup(p,x);assert.match(html,/원본 버전 1/);assert.match(html,/원본 버전 2/);assert.match(html,/0.5–2.5초/);assert.match(html,/가로 100px \/ 세로 -40px/);assert.match(html,/타이포&lt;원본/);
++x.timeline_diff.motion_overlays[0].after={...after,motion_revision:9};assert.equal(timelineProposalView(p,x).canApply,false);
++x.timeline_diff.motion_overlays=[{base_clip_index:0,proposed_clip_index:0,before,after}];x.commands=[{op:'clear_motion_overlay',clip_index:0}];assert.equal(timelineProposalView(p,x).canApply,false);x.timeline.clips[0].motion_overlay=null;x.timeline_diff.motion_overlays[0].after=null;assert.equal(timelineProposalView(p,x).canApply,true);assert.match(timelineProposalMarkup(p,x),/겹침 없음/);
++delete x.timeline_diff.motion_overlays;assert.equal(timelineProposalView(p,x).canApply,false);assert.match(timelineProposalMarkup(p,x),/변경 전후 정보를 확인할 수 없습니다/);
++x.timeline.clips[0].motion_overlay=before;x.commands=[{op:'set_motion_overlay',clip_index:0}];assert.equal(timelineProposalView(p,x).canApply,true,'verified same-state no-op remains reviewable');
++x.timeline_diff.motion_overlays={};assert.equal(timelineProposalView(p,x).canApply,false);
++'''
++        with tempfile.TemporaryDirectory() as directory:
++            script = pathlib.Path(directory)/'test.cjs'
++            script.write_text(source[start:end] + fixture)
++            result = subprocess.run(['node', str(script)], capture_output=True, text=True)
++            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

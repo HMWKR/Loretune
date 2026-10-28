@@ -1,0 +1,30 @@
+test_no_audio_is_explicit_without_manufactured_range_or_approval (tests.test_music_input_context.MusicInputContextTest.test_no_audio_is_explicit_without_manufactured_range_or_approval) ... 127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:13:18] "POST /api/action HTTP/1.1" 200 -
+ERROR
+
+======================================================================
+ERROR: test_no_audio_is_explicit_without_manufactured_range_or_approval (tests.test_music_input_context.MusicInputContextTest.test_no_audio_is_explicit_without_manufactured_range_or_approval)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 75, in test_no_audio_is_explicit_without_manufactured_range_or_approval
+    self.assertEqual(targets['music_input']['scope'], 'current-project-shared')
+                     ~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'music_input'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.630s
+
+FAILED (errors=1)

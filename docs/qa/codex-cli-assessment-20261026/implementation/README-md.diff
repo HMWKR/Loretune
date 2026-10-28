@@ -1,0 +1,18 @@
+--- before/README.md
++++ README.md
+@@ -1,4 +1,6 @@
+-# Loretune · 로컬 제작 작업대
++# Aethon · 로컬 제작 작업대
++
++제품 이름은 Aethon입니다. 기존 프로젝트 폴더 `Loretune`과 저장·복구 식별자는 호환성을 위해 유지합니다. [현재 전체 구현·검증 계획](docs/qa/codex-cli-assessment-20261026/PLAN-ko.md)을 기준으로 후속 작업을 진행합니다. 아래의 날짜별 보고서는 해당 빌드의 증거입니다.
+ 
+ > **현재 구현·검증 인계 (2026-10-26):** [1920 우선·잔여 수정 고정본](docs/qa/desktop-residual-20261026/REPORT-ko.md). 동시 편집 미디어 가용 높이·모델 설정·선택/재생 구분을 개선하고 전체346개 테스트, 초기 키보드 진입, 제어된 저장 오류·미확정 복구를 검증했습니다. [화면·해시](docs/qa/desktop-refinement-20261026/release-manifest.json), [이전342개 baseline](docs/qa/desktop-shell-20261026/REPORT-ko.md), [디자인 문서 목차](docs/qa/design-system-redesign-20261026/INDEX.md), [방법론 추적표](docs/qa/design-system-redesign-20261026/desktop1920/METHODOLOGY-AND-DECISION-LEDGER-ko.md)를 함께 참고하세요. 주 검증1920×1080, 보조1280×900이며 모바일 추가 개선은 보류했습니다.
+ >
+@@ -88,6 +90,6 @@
+ 
+ ## 공급자 역할 정정 (2026-10-25 사용자 지시)
+ 
+-Runway는 경쟁사·디자인 벤치마크이며 Loretune의 연결 공급자가 아니다. 과거 예시에서 도출한 비활성 후보 구현과 승인 질문은 폐기됐다. 모델 registry·신규 action 허용 연결·이미지 큐의 Runway 결합을 제거하고, 기존 문서·저장 기록과 역사적 코드 사본을 보존한다. Runway 계정·키·결제·보관 정책 수락을 요청하지 않는다.
++Runway는 경쟁사·디자인 벤치마크이며 Aethon의 연결 공급자가 아니다. 과거 예시에서 도출한 비활성 후보 구현과 승인 질문은 폐기됐다. 모델 registry·신규 action 허용 연결·이미지 큐의 Runway 결합을 제거하고, 기존 문서·저장 기록과 역사적 코드 사본을 보존한다. Runway 계정·키·결제·보관 정책 수락을 요청하지 않는다.
+ 
+ 영상은 사용자가 지정한 fal.ai Kling 경로, 온톨로지는 Anthropic 지시를 유지한다. 이미지 모델은 아직 선택되지 않았으며 fal 공식 후보 조사만으로 선택/활성화/유료 호출하지 않는다. 기존 이미지 업로드, 공급자 공통 자산 검증·권리·원장·복구 계약, 승인 출력의 자막 미리보기는 유지한다. 이번 정정의 범위·회귀·해시는 docs/qa/benchmark-provider-correction-20261025/REPORT-ko.md를 따른다. 이전 Runway 후보/선택 질문 문서는 과거 근거이며 현재 작업 지시가 아니다.

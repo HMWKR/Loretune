@@ -1,0 +1,74 @@
+[
+  {
+    "round": 1,
+    "input_sha256": "46e08789cc90b9fe5d7b094968e3990849e8f5d65d8cb5946d28ef722345a9c3",
+    "model": "claude-haiku-5-5",
+    "state": "verified_roundtrip",
+    "reserved_usd": "0.002458",
+    "billing_confirmed": false,
+    "input_tokens_counted": 849,
+    "request_id": "req_011CgNoGiJPqGqzUde26B171",
+    "message_id": "msg_011CgNoGjJuxNVAS8s92nRry",
+    "stop_reason": "tool_use",
+    "usage": {
+      "input_tokens": 849,
+      "output_tokens": 50
+    },
+    "usage_cost_usd": "0.0001099",
+    "tool": {
+      "id": "79e964fbf87457a786680cc7c15d279f",
+      "name": "search_project_context",
+      "arguments": {
+        "query": "Song A approved global coat, Song A exception, Mira age"
+      },
+      "complete": true
+    },
+    "tool_result": {
+      "status": "succeeded",
+      "context": {
+        "music": null,
+        "snapshot": [
+          {
+            "id": "canon-mira-v1",
+            "text": "Mira wears a blue coat by default.",
+            "scope": "global",
+            "revision": 1,
+            "approved": true
+          },
+          {
+            "id": "song-A-exception-v1",
+            "text": "Only in Song A studio scene, Mira wears a red coat. This does not replace her global blue coat.",
+            "scope": "song-A",
+            "revision": 1,
+            "approved": true
+          }
+        ],
+        "ontology": null
+      },
+      "search_mode": "scoped-snapshot",
+      "note": "\ud604\uc7ac \uc791\ud488\uc758 \uc2b9\uc778 \ubb38\ub9e5 \uc804\uccb4 \ubc18\ud658; \uc758\ubbf8 \uac80\uc0c9\u00b7\uc784\ubca0\ub529 \uac80\uc0c9 \uc544\ub2d8"
+    },
+    "db_revision_before": 3,
+    "db_revision_after": 5,
+    "idempotent_result": true
+  },
+  {
+    "round": 2,
+    "input_sha256": "0dadcd84999082acbd5eac50bc8e4325a1cc5ce4d0dde9fd7a2072ff7544404d",
+    "model": "claude-haiku-5-5",
+    "state": "response_validation_failed",
+    "reserved_usd": "0.002458",
+    "billing_confirmed": false,
+    "input_tokens_counted": 1145,
+    "request_id": "req_011CgNoGsLr5bGTy9pTw8toA",
+    "message_id": "msg_011CgNoGsgwEZjofNRWRjQYx",
+    "stop_reason": "tool_use",
+    "usage": {
+      "input_tokens": 1145,
+      "output_tokens": 286
+    },
+    "usage_cost_usd": "0.0002575",
+    "error_class": "ValueError",
+    "note": "Response received with tool_use; local argument validation failed. Original tool arguments were not retained; exact invalid field unconfirmed."
+  }
+]

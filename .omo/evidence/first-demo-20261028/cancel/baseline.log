@@ -1,0 +1,31 @@
+test_received_priced_cancel_preserves_cost_and_allows_next_request (tests.test_general_chat_cancel_received.GeneralChatCancelReceivedTest.test_received_priced_cancel_preserves_cost_and_allows_next_request) ... 127.0.0.1 - - [28/Oct/2026 09:26:46] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "PATCH /v1/workspaces/7f16d723-ec8d-498e-8355-f3147e910d06/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:46] "GET /api/state HTTP/1.1" 200 -
+FAIL
+
+======================================================================
+FAIL: test_received_priced_cancel_preserves_cost_and_allows_next_request (tests.test_general_chat_cancel_received.GeneralChatCancelReceivedTest.test_received_priced_cancel_preserves_cost_and_allows_next_request)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_cancel_received.py", line 95, in test_received_priced_cancel_preserves_cost_and_allows_next_request
+    self.assertEqual(result['turn']['status'], 'cancelled')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'outcome_unknown' != 'cancelled'
+- outcome_unknown
++ cancelled
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.557s
+
+FAILED (failures=1)

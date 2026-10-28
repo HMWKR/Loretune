@@ -1,0 +1,35 @@
+const fs=await import('node:fs/promises'),root='/Users/leesungmin/Desktop/Loretune/docs/qa/proposal-draft-fix-20261026/served-baseline';
+const task=await taskSpace(37),p=task.page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await p.selectOption('#compareRight','2');
+await p.waitForFunction(()=>[...document.querySelectorAll('#compareDialog video')].length===2&&[...document.querySelectorAll('#compareDialog video')].every(v=>v.readyState>=2),undefined,{timeout:10000});
+await p.evaluate(()=>{const seek=document.querySelector('#compareSeek');seek.value=.5;seek.dispatchEvent(new Event('input',{bubbles:true}))});
+await p.waitForFunction(()=>[...document.querySelectorAll('#compareDialog video')].every(v=>!v.seeking),undefined,{timeout:5000});
+await p.screenshot({path:root+'/comparison-two-videos-1920.png'});
+await fs.writeFile(root+'/comparison-two-videos-1920.json',JSON.stringify(await p.evaluate(()=>({viewport:[innerWidth,innerHeight],time:new Date().toISOString(),left:document.querySelector('#compareLeft').value,right:document.querySelector('#compareRight').value,sharedTime:document.querySelector('#compareTime').textContent,videos:[...document.querySelectorAll('#compareDialog video')].map(v=>({intrinsic:[v.videoWidth,v.videoHeight],box:[v.clientWidth,v.clientHeight],currentTime:v.currentTime,paused:v.paused,fit:getComputedStyle(v).objectFit})),selectedTake:project().shots[shotName].selected})),null,2));
+await p.click('#compareDialog [data-close]',{label:'비교를 닫고 편집 확인'});
+await p.selectOption('#previewMode','sequence');
+await p.evaluate(()=>{const seek=document.querySelector('#sequenceSeek');seek.value=.5;seek.dispatchEvent(new Event('input',{bubbles:true}))});
+await p.waitForFunction(()=>{const v=document.querySelector('#preview video');return v?.readyState>=2&&!v.seeking&&Math.abs(v.currentTime-.75)<.05},undefined,{timeout:10000});
+await p.evaluate(()=>{
+ const original=window.__baselineMetrics;
+ window.__baselineMetrics=()=>{const result=original();for(const selector of ['#ltTimelineDock','#sequenceTransport','.lt-media-pane','.inspector','.lt-scene-rail','#timelineActions']){const e=document.querySelector(selector);if(e){const r=e.getBoundingClientRect();result.boxes[selector]={x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom,scrollHeight:e.scrollHeight,clientHeight:e.clientHeight}}}result.caption=document.querySelector('#sequenceCaption').textContent;result.time=document.querySelector('#sequenceTime').textContent;result.measurementTime=new Date().toISOString();return result};
+});
+async function capture(name,width,height){const m=await p.evaluate(()=>window.__baselineMetrics());if(m.viewport[0]!==width||m.viewport[1]!==height)throw Error('VIEWPORT_MISMATCH');await p.screenshot({path:root+'/'+name+'.png'});await fs.writeFile(root+'/'+name+'.json',JSON.stringify(m,null,2));console.log({name,document:m.document,media:m.media?.content,caption:m.caption,dirty:m.dirty,dock:m.boxes['#ltTimelineDock']})}
+await capture('sequence-detailed-1920',1920,1080);
+await p.fill('#clips input[data-clip="0"][data-field="duration"]','1.1');
+await p.press('#clips input[data-clip="0"][data-field="duration"]','Tab');
+await p.waitForFunction(()=>dirty===true,undefined,{timeout:5000});
+await capture('dirty-1920',1920,1080);
+await p.click('#cancelTimelineDraft',{label:'저장하지 않은 시험 편집 취소'});
+await p.waitForFunction(()=>dirty===false,undefined,{timeout:5000});
+await p.evaluate(()=>{document.querySelector('.lt-timeline-controls').scrollTop=0;const seek=document.querySelector('#sequenceSeek');seek.value=.5;seek.dispatchEvent(new Event('input',{bubbles:true}))});
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
+await p.waitForFunction(()=>innerWidth===1280&&innerHeight===900&&!document.querySelector('#preview video')?.seeking,undefined,{timeout:5000});
+await capture('sequence-detailed-1280',1280,900);
+await p.click('.lt-timeline-controls > summary',{label:'기본 공간으로 접기'});
+await p.selectOption('#previewMode','selected');
+await p.evaluate(()=>{const v=document.querySelector('#preview video');if(v){v.pause();v.currentTime=1}});
+await p.waitForFunction(()=>!document.querySelector('#preview video')?.seeking,undefined,{timeout:5000});
+await capture('basic-1280',1280,900);
+console.log(await p.snapshot());

@@ -1,0 +1,32 @@
+--- before/production_tools.py
++++ production_tools.py
+@@ -15,6 +15,9 @@
+  'request_media_generation': {'plan_id':str,'action_id':str,'grant_id':str},
+  'get_generation_job': {'job_id':str},
+  'propose_timeline_edit': {'description':str,'timeline_version':int,'changes':list},
++ 'propose_timeline_changes': {'description':str,'timeline_version':int,'commands':list},
++ 'propose_motion_scene': {'shot_id':str,'base_motion_revision':int,'scene':dict},
++ 'request_motion_render': {'shot_id':str,'motion_revision':int,'grant_id':str},
+  'request_render': {'timeline_version':int,'grant_id':str},
+  'propose_memory_update': {'description':str,'kind':str,'label':str,'entity_id':str,'source_id':str,'excerpt':str,'ontology_revision':int},
+ }
+@@ -35,7 +38,9 @@
+             # Empty optional prose is permitted in a plan, never an ID or query.
+             if t is str and k in {'style','constraints','entity_id'} and args[k]=='':continue
+             raise ValueError('INVALID_TOOL_ARGUMENTS')
+-        if t is int and args[k]<(0 if k in {'shot_revision','timeline_version','ontology_revision'} else 1):raise ValueError('INVALID_TOOL_ARGUMENTS')
++        if t is int and args[k]<(0 if k in {'shot_revision','timeline_version','ontology_revision','base_motion_revision'} else 1):raise ValueError('INVALID_TOOL_ARGUMENTS')
++    if name=='propose_motion_scene':__import__('motion_scene').validate(args['scene'])
++    if name=='propose_timeline_changes':__import__('local_creation_tools').validate_commands(args['commands'])
+     if name=='propose_timeline_edit':
+         import local_creation_tools
+         local_creation_tools.validate_changes(args['changes'])
+@@ -89,7 +94,7 @@
+                 result=dict(status='invalid_arguments',code='INVALID_MEDIA_INPUT',retryable=run['state']=='accepting_tools')
+         elif name=='estimate_media_plan' and estimate_plan is not None:
+             result=estimate_plan(args['plan_id'])
+-        elif name in {'propose_timeline_edit','request_render','propose_memory_update'} and local_tool is not None:
++        elif name in {'propose_timeline_edit','propose_timeline_changes','request_render','propose_memory_update','propose_motion_scene','request_motion_render'} and local_tool is not None:
+             try:result=local_tool(name,deepcopy(args),run,call)
+             except Conflict:
+                 result=dict(status='blocked',code='STALE_VERSION',retryable=False)

@@ -1,0 +1,14 @@
+{
+  "attempt1": "attempt-1/invocation.json",
+  "error": "KeyError: overflow on 1920 receipt",
+  "observed_schema": {
+    "1920": {
+      "scrollWidth": 1920,
+      "width": 1920
+    },
+    "1280_and375": "explicit overflow=0"
+  },
+  "change": "Use recorded overflow where present; otherwise compute recorded scrollWidth minus recorded viewport width. No product/source/receipt changed.",
+  "retry_scope": "Full narrow MR1 verifier including source/docs/proposal/media/checker",
+  "failed_attempt_artifacts_preserved": 13
+}

@@ -1,0 +1,197 @@
+test_invalid_colors_and_metadata_rejected (test_scene_vertex_colors.VertexColorTest.test_invalid_colors_and_metadata_rejected) ... ok
+test_scene_preserves_actual_profile_and_rejects_forgery (test_scene_vertex_colors.VertexColorTest.test_scene_preserves_actual_profile_and_rejects_forgery) ... ERROR
+test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) ... 
+  test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5121, dimension=3) ... ERROR
+  test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5121, dimension=4) ... ERROR
+  test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5123, dimension=3) ... ERROR
+  test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5123, dimension=4) ... ERROR
+  test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5126, dimension=3) ... ERROR
+  test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5126, dimension=4) ... ERROR
+test_v1_remains_exact_and_disallows_extras (test_scene_vertex_colors.VertexColorTest.test_v1_remains_exact_and_disallows_extras) ... ok
+
+======================================================================
+ERROR: test_scene_preserves_actual_profile_and_rejects_forgery (test_scene_vertex_colors.VertexColorTest.test_scene_preserves_actual_profile_and_rejects_forgery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_vertex_colors.py", line 67, in test_scene_preserves_actual_profile_and_rejects_forgery
+    self.assertEqual(scene_spec.validate(scene),scene)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_spec.py", line 72, in validate
+    if mesh: _asset(obj['asset'])
+             ~~~~~~^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_spec.py", line 46, in _asset
+    raise ValueError('invalid registered scene asset')
+ValueError: invalid registered scene asset
+
+======================================================================
+ERROR: test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5121, dimension=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_vertex_colors.py", line 42, in test_supported_formats_preserve_original_hash
+    metadata=scene_assets.validate_glb(raw)
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 470, in validate_glb
+    document,binary=_container(raw)
+                    ~~~~~~~~~~^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 141, in _container
+    return _json(chunks[0][1]),chunks[1][1]
+           ~~~~~^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 124, in _json
+    check(value)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 118, in check
+    check(child)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 120, in check
+    for child in item:check(child)
+                      ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 117, in check
+    _fail('외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 43, in _fail
+    raise ValueError(reason)
+ValueError: 외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.
+
+======================================================================
+ERROR: test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5121, dimension=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_vertex_colors.py", line 42, in test_supported_formats_preserve_original_hash
+    metadata=scene_assets.validate_glb(raw)
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 470, in validate_glb
+    document,binary=_container(raw)
+                    ~~~~~~~~~~^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 141, in _container
+    return _json(chunks[0][1]),chunks[1][1]
+           ~~~~~^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 124, in _json
+    check(value)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 118, in check
+    check(child)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 120, in check
+    for child in item:check(child)
+                      ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 117, in check
+    _fail('외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 43, in _fail
+    raise ValueError(reason)
+ValueError: 외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.
+
+======================================================================
+ERROR: test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5123, dimension=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_vertex_colors.py", line 42, in test_supported_formats_preserve_original_hash
+    metadata=scene_assets.validate_glb(raw)
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 470, in validate_glb
+    document,binary=_container(raw)
+                    ~~~~~~~~~~^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 141, in _container
+    return _json(chunks[0][1]),chunks[1][1]
+           ~~~~~^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 124, in _json
+    check(value)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 118, in check
+    check(child)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 120, in check
+    for child in item:check(child)
+                      ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 117, in check
+    _fail('외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 43, in _fail
+    raise ValueError(reason)
+ValueError: 외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.
+
+======================================================================
+ERROR: test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5123, dimension=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_vertex_colors.py", line 42, in test_supported_formats_preserve_original_hash
+    metadata=scene_assets.validate_glb(raw)
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 470, in validate_glb
+    document,binary=_container(raw)
+                    ~~~~~~~~~~^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 141, in _container
+    return _json(chunks[0][1]),chunks[1][1]
+           ~~~~~^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 124, in _json
+    check(value)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 118, in check
+    check(child)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 120, in check
+    for child in item:check(child)
+                      ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 117, in check
+    _fail('외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 43, in _fail
+    raise ValueError(reason)
+ValueError: 외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.
+
+======================================================================
+ERROR: test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5126, dimension=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_vertex_colors.py", line 42, in test_supported_formats_preserve_original_hash
+    metadata=scene_assets.validate_glb(raw)
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 470, in validate_glb
+    document,binary=_container(raw)
+                    ~~~~~~~~~~^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 141, in _container
+    return _json(chunks[0][1]),chunks[1][1]
+           ~~~~~^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 124, in _json
+    check(value)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 118, in check
+    check(child)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 120, in check
+    for child in item:check(child)
+                      ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 117, in check
+    _fail('외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 43, in _fail
+    raise ValueError(reason)
+ValueError: 외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.
+
+======================================================================
+ERROR: test_supported_formats_preserve_original_hash (test_scene_vertex_colors.VertexColorTest.test_supported_formats_preserve_original_hash) (component=5126, dimension=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_vertex_colors.py", line 42, in test_supported_formats_preserve_original_hash
+    metadata=scene_assets.validate_glb(raw)
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 470, in validate_glb
+    document,binary=_container(raw)
+                    ~~~~~~~~~~^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 141, in _container
+    return _json(chunks[0][1]),chunks[1][1]
+           ~~~~~^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 124, in _json
+    check(value)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 118, in check
+    check(child)
+    ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 120, in check
+    for child in item:check(child)
+                      ~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 117, in check
+    _fail('외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/scene_assets.py", line 43, in _fail
+    raise ValueError(reason)
+ValueError: 외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.009s
+
+FAILED (errors=7)

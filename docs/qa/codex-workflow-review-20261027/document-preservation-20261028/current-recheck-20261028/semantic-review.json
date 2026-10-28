@@ -1,0 +1,492 @@
+{
+  "schema": "document-semantic-preservation-review/2",
+  "task_id": "document-preservation-current-recheck-20261028",
+  "attempt": 1,
+  "status": "REPORTED",
+  "reviewer": "/root/general_activation_review",
+  "role": "ce-reviewer",
+  "configured_model": "inherited session",
+  "configured_reasoning": "inherited session",
+  "actual_provider_independently_verified": false,
+  "read_only_limit": "제품·문서·registry는 작업 계약상 읽기 전용이다. 별도 OS sandbox의 강제를 확인했다고 주장하지 않는다.",
+  "write_set": [
+    "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/current-recheck-20261028/semantic-review.json"
+  ],
+  "conclusion": "이전 수락된 의미 검토 이후의 현재 보완에서 주요 문서 삭제나 핵심 요구 손실을 발견하지 못했다. 주요 13개 중 9개는 이전 최종 SHA256과 같고 4개가 보충됐다. 최신 before 전문 6개와 현재를 autojunk=False로 대조한 유일한 교체행은 README의 S774 제목을 과거 인계로 바꾼 한 행이다. 해당 단계의 본문은 유지된다.",
+  "summary": {
+    "named_core_documents": 13,
+    "core_existing": 13,
+    "core_unchanged_from_prior_final_hash": 9,
+    "core_with_supplement": 4,
+    "named_supplemental_documents": 4,
+    "supplemental_existing": 4,
+    "supplemental_baseline_hash_matches": 4,
+    "latest_before_text_documents": 6,
+    "latest_before_hashes_match_prior_final": 6,
+    "removed_or_replaced_lines_since_latest_before": 1,
+    "removed_or_replaced_line_classification": "README 과거 단계 제목; 원요구 제거 아님",
+    "mid_review_root_prefix_documents": 2,
+    "mid_review_prefix_deletions_or_replacements": 0,
+    "standalone_workflow_guide": "현재 존재하고 README에서 연결됨. 이전 별도 검토 당시 SHA256과 동일."
+  },
+  "reused_prior_review": {
+    "path": "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/semantic-review.json",
+    "decision": "ACCEPTED",
+    "reused_result": "adoption before 13개 및 8문서 91행의 의미 대조와 원요구 유지 판정",
+    "reuse_boundary": "이전 전체 조사와 원본 hash 전수검사를 처음부터 반복하지 않았다. 이후 변경된 현재 텍스트와 기준선 연결만 독립 확인했다.",
+    "baseline_chain": "이전 audit.json의 현재 SHA256과 final-verification.json의 보충 후 SHA256을 결합해 history-color document-before.json의 전문 6개 모두를 연결했다. audit의 T0 changed 목록에 없던 새 REPORT/연구 문서는 final-verification의 after_sha256로 확인했다."
+  },
+  "methodology": {
+    "sources": [
+      ".document-gate.json",
+      "docs/qa/DOCUMENT-INVENTORY-20261027.md",
+      "docs/qa/adoption-docs-20261027/BEFORE.json 및 이전에 검증된 before 13개",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/semantic-review.json",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/audit.json",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/final-verification.json",
+      "docs/qa/codex-workflow-review-20261027/history-color-20261028/document-before.json",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/current-recheck-20261028/task-contract.json",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/current-recheck-20261028/document-before.json"
+    ],
+    "applied": "전체 SHA256 연결 → 현재 변경집합 한정 → difflib.SequenceMatcher(autojunk=False) 삽입/삭제/교체 대조 → 원요구와 권한·증거 경계 추적",
+    "actual_tools": [
+      "exec_command로 지정 JSON/MD 읽기",
+      "Python pathlib/json/hashlib/difflib를 이용한 읽기 전용 대조",
+      "지정 JSON 결과 파일에만 apply_patch"
+    ],
+    "not_executed": [
+      "제품 테스트·전체 회귀",
+      "브라우저/API/모델 호출",
+      "registry/정책/생성문맥 변경",
+      ".env/private/data·외부 백업·휴지통 탐색"
+    ]
+  },
+  "mid_review_change": {
+    "observation": "root가 검토 중 README와 canonical REPORT 앞부분에 보존 점검 설명을 추가했다고 알렸다.",
+    "checked": "새 document-before.json의 documents[path].text와 저장 SHA256을 확인했다. before 두 개는 검토자가 먼저 읽은 README fe3c5f4c…/REPORT 7b37570f…와 일치하며 현재까지의 차이는 insert뿐이다.",
+    "scope": "새 prefix의 root 소유 전수검사 수치·등록 제안은 읽되 이 독립 의미 검토가 재검증한 수치로 사용하지 않았다.",
+    "current_hashes_recorded": true
+  },
+  "observations": [
+    {
+      "id": "DOC-DELTA-01",
+      "severity": "none",
+      "confidence": "high",
+      "observation": "주요 13개와 사용자 지정 보충 4개가 모두 존재한다. 13개 중 9개 및 보충 4개는 이용 가능한 이전 최종/불변 기준 SHA256과 같다.",
+      "effect": "이 집합에서 새 파일 삭제나 해당 본문 변경의 증거가 없다."
+    },
+    {
+      "id": "DOC-DELTA-02",
+      "severity": "none",
+      "confidence": "high",
+      "observation": "history-color before 전문 6개와 현재의 교체/삭제는 README의 '현재 작업 인계 · S774' 제목 한 행뿐이다. 최신 S789 설명을 추가하고 S774를 '이전 작업 인계'로 유지한다.",
+      "effect": "역사 상태의 명시이며 과거 본문이나 핵심 요구를 제거한 것으로 판정하지 않는다."
+    },
+    {
+      "id": "DOC-DELTA-03",
+      "severity": "none",
+      "confidence": "high",
+      "observation": "새 단락은 합성/로컬 결과와 실제 Claude·청구·사용자·접근성 수용을 구분한다. 음악영상 중심·3D 선택, 실제 워크플로 준비 뒤 영상 AI 시험 원칙을 유지한다.",
+      "effect": "기능 부분 증거가 전체 완료로 승격되지 않는다."
+    },
+    {
+      "id": "DOC-GUIDE-NEW",
+      "severity": "none",
+      "confidence": "high",
+      "observation": "WORKFLOW-EXECUTION-GUIDE-ko.md가 현재 존재하며 이전 별도 읽기 전용 검토 SHA256과 같다. README 진입 링크도 있다.",
+      "effect": "이전 '별도 범용 문서 미확인' 한계를 현재에는 그대로 반복하지 않는다. 신규 작성은 과거 동일 파일 삭제 또는 복구의 증거가 아니다."
+    }
+  ],
+  "findings": [],
+  "requirement_retention": {
+    "result": "요청된 8개 핵심 기준 모두 현재 문서에 유지된다.",
+    "anchors": {
+      "music_first_photo_optional": {
+        "path": "README.md",
+        "line": 19,
+        "text": "**전체 플랫폼은 아직 미완성이다.** 제작·편집·저장·미리보기·출력·복구는 자체 플랫폼 안에서 수행하며 AI 모델 연결은 예외로 한다. 개인은 음원만으로 시작하고 사진은 선택한다. 최신 구현·실동작·잔여는 [작업 기록](docs/qa/codex-workflow-review-20261027/REPORT-ko.md), [남은 작업](docs/qa/REMAINING-WORK.md)을 먼저 확인한다."
+      },
+      "internal_non_ai": {
+        "path": "README.md",
+        "line": 19,
+        "text": "**전체 플랫폼은 아직 미완성이다.** 제작·편집·저장·미리보기·출력·복구는 자체 플랫폼 안에서 수행하며 AI 모델 연결은 예외로 한다. 개인은 음원만으로 시작하고 사진은 선택한다. 최신 구현·실동작·잔여는 [작업 기록](docs/qa/codex-workflow-review-20261027/REPORT-ko.md), [남은 작업](docs/qa/REMAINING-WORK.md)을 먼저 확인한다."
+      },
+      "three_d_optional": {
+        "path": "README.md",
+        "line": 25,
+        "text": "- **제품 중심:** 음원 기반 음악영상 제작·편집·출력이 중심이며 3D는 선택 도구다. [조사·아키텍처](docs/qa/AI-3D-ARCHITECTURE-RESEARCH-20261027.md)의 Tripo 상용·공개 모델 동등 품질은 미입증이다. 실제 AI 영상 모델 시험은 실무 워크플로 검증 이후에 진행한다."
+      },
+      "workflow_actual": {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "line": 192,
+        "text": "9. 제품 완료 판정은 코드·단위 테스트·디자인 화면이 아니라 실제 시스템과 사용자가 끝까지 수행할 수 있는 업무에 둔다. 기능별 정상/실패/경계에서 화면 조작→서버 응답→실제 저장·재조회→관련 결과를 확인하고, 별도로 음원만/음원+사진의 전체 생성·검토·편집·출력·재개를 연결해 시험한다. 미디어·오디오·자막의 결과 재생과 동기화, 중단·복구·재접속, 모델/도구가 같은 편집 상태를 다루는지, 실행 환경의 권한·데이터·비용·성능을 해당 범위에서 확인한다. fixture·로컬 시험·실제 모델/운영 환경·실사용자 결과를 서로 대체하지 않는다. 검증할 수 없는 기능은 이유와 다음 행동을 남기고 완료로 계산하지 않는다."
+      },
+      "design_simplification": {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "line": 172,
+        "text": "- **워크플로와 디자인:** 사용자 과업을 따라 중복 단계·입력을 찾아 필요한 경우 병합하고, 당장 결정에 필요하지 않은 내부 ID·진단은 기본 화면에서 줄인다. 모델 선택과 실제 실행 범위, 비용·권리·승인·오류·복구에 필요한 정보는 필요한 시점에 남긴다. 관찰과 사용자 혼란 가설을 분리한다. 기능 작업 뒤 Hallmark·Impeccable과 기존 참조·토큰을 활용해 문제→대안→계획→구현→동일 조건 검증을 수행한다. 상세 방법의 선택과 근거는 [방법론 표의 최신 보강](../design-system-redesign-20261026/METHODOLOGY-FIT-MATRIX-ko.md)을 따른다."
+      },
+      "approval_boundary": {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "line": 191,
+        "text": "8. 작업 완료 전, 사용자가 다시 묻기 전에 요구·작업·누락과 증거를 점검해 남은 항목 및 다음 실행 범위를 보여 주고 사용자 허락을 받은 뒤 그 다음 단계로 진행한다. 이미 시작한 작업을 안전하게 검증·기록하고 검토 가능한 결과를 준비하는 과정과 후속 작업 진행 승인을 구분한다."
+      },
+      "preserve_originals": {
+        "path": "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+        "line": 33,
+        "text": "1. 재개 지시가 있을 때 **기존 partial diff와 before 사본을 먼저 검토**한다. 자동 rollback, 새 세션 엔진 중복 작성, 두 source writer를 허용하지 않는다."
+      },
+      "ai_video_after_workflow": {
+        "path": "README.md",
+        "line": 25,
+        "text": "- **제품 중심:** 음원 기반 음악영상 제작·편집·출력이 중심이며 3D는 선택 도구다. [조사·아키텍처](docs/qa/AI-3D-ARCHITECTURE-RESEARCH-20261027.md)의 Tripo 상용·공개 모델 동등 품질은 미입증이다. 실제 AI 영상 모델 시험은 실무 워크플로 검증 이후에 진행한다."
+      }
+    },
+    "explanatory_notes": [
+      "음원만/사진 선택 및 AI 연결 예외의 내부 제작 원칙은 README에 남는다.",
+      "실제 조작·저장·출력·복구와 디자인 검증을 구별하고 내부 진단·중복 단계 축소를 유지한다.",
+      "완료 전 누락 점검·설명과 후속 허락, 기존 승인 재사용·무응답 승인 금지는 기존 작업 기록과 새 안내에 유지된다.",
+      "원본·역사 및 타인 변경 보존 원칙은 기존 PLAN/보충문과 새 안내에 유지된다.",
+      "프로젝트 문서 지식 계층과 제품 IP/자산 런타임 온톨로지는 별도 결과로 유지된다."
+    ]
+  },
+  "standalone_guide": {
+    "path": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md",
+    "exists": true,
+    "sha256": "ef2ec569d1b2559232db5bf10d4888449299fbce0c65b413897bef4902febc17",
+    "unchanged_from_dedicated_review": true,
+    "readme_link_present": true,
+    "prior_absence": "이전 검토 시 별도 파일을 찾지 못했다는 기록은 당시 관측으로 보존한다.",
+    "current_status": "이제 신규 안내가 존재한다. 기존 REPORT/REMAINING/방법론 표를 연결하고 그 기능 상태 기준을 대체하지 않는다.",
+    "governance": "tooling 분류·등록 검토는 root 소유 별도 승인 범위이며 이 검토에서 등록/승격/문맥 반영하지 않았다."
+  },
+  "current_metadata": {
+    "checked_at": "2026-10-27T19:20:13.875773+00:00",
+    "core13": [
+      {
+        "path": "README.md",
+        "exists": true,
+        "prior_accepted_sha256": "d64aac30f1f2741b575f5d450834332117c12070a56b4c4173d5edec36ef5d48",
+        "current_sha256": "2fbeaa124ea154c6908883864872da88c65b35e4421244d02e9ec81d748c6785",
+        "unchanged_since_prior_accepted": false
+      },
+      {
+        "path": "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+        "exists": true,
+        "prior_accepted_sha256": "1a3569ba809c8be042c7b81f1cbbde10a2875bba70fcf95477b1ee43c513ecd0",
+        "current_sha256": "1a3569ba809c8be042c7b81f1cbbde10a2875bba70fcf95477b1ee43c513ecd0",
+        "unchanged_since_prior_accepted": true
+      },
+      {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "exists": true,
+        "prior_accepted_sha256": "4b441535111be74efacdb1882db9a801d07112b3b77fd4ab360e763ca7cb48f7",
+        "current_sha256": "4b441535111be74efacdb1882db9a801d07112b3b77fd4ab360e763ca7cb48f7",
+        "unchanged_since_prior_accepted": true
+      },
+      {
+        "path": "docs/qa/OMISSION-REGISTER.md",
+        "exists": true,
+        "prior_accepted_sha256": "00640a7127bcb976cd7d7c6b692bf0672a07374661607e55d935cb496b799842",
+        "current_sha256": "00640a7127bcb976cd7d7c6b692bf0672a07374661607e55d935cb496b799842",
+        "unchanged_since_prior_accepted": true
+      },
+      {
+        "path": "docs/qa/REMAINING-WORK.md",
+        "exists": true,
+        "prior_accepted_sha256": "c7de729a2276c1e3d60d33bc8a982d93bbe5266cc236b2a0926174948ecaced3",
+        "current_sha256": "662b8fc76d5c882262e83b24c8d05343056bf5d142fc54f66057e47949b02fa5",
+        "unchanged_since_prior_accepted": false
+      },
+      {
+        "path": "docs/qa/SPEC-MS-001-ACCEPTANCE-TRACE.md",
+        "exists": true,
+        "prior_accepted_sha256": "3448ea3d87f55af215bee7ec7bdb5c604d1484cf7148c7cbf15e1b13bb9f85e8",
+        "current_sha256": "3448ea3d87f55af215bee7ec7bdb5c604d1484cf7148c7cbf15e1b13bb9f85e8",
+        "unchanged_since_prior_accepted": true
+      },
+      {
+        "path": "docs/design/CURRENT-DESIGN-QA-PLAN.md",
+        "exists": true,
+        "prior_accepted_sha256": "e4bddac0529b873de83b1ccb6e6907b82353675677febd36657bc54dfa3c9212",
+        "current_sha256": "ea3b3018eb9c033b85c6499ac2e01193215e586259726340d0cd85b363406036",
+        "unchanged_since_prior_accepted": false
+      },
+      {
+        "path": "docs/qa/design-system-redesign-20261026/REFERENCE-LOCK.md",
+        "exists": true,
+        "prior_accepted_sha256": "9adfec95844cc15b25e8cbca492aaa700c9a75cb671861ab43e225435f84d9b4",
+        "current_sha256": "9adfec95844cc15b25e8cbca492aaa700c9a75cb671861ab43e225435f84d9b4",
+        "unchanged_since_prior_accepted": true
+      },
+      {
+        "path": "docs/qa/design-system-redesign-20261026/SEMANTIC-TOKEN-SPEC.md",
+        "exists": true,
+        "prior_accepted_sha256": "2afe7964199fdccb22b749c653d80ead77c56037044e13346df90dbd8b4cbc77",
+        "current_sha256": "2afe7964199fdccb22b749c653d80ead77c56037044e13346df90dbd8b4cbc77",
+        "unchanged_since_prior_accepted": true
+      },
+      {
+        "path": "docs/qa/design-system-redesign-20261026/METHODOLOGY-FIT-MATRIX-ko.md",
+        "exists": true,
+        "prior_accepted_sha256": "011f8d6f4cfb6c253fcd333e5a4090f3ba0281653aca5dbd922363ca2b141ecf",
+        "current_sha256": "011f8d6f4cfb6c253fcd333e5a4090f3ba0281653aca5dbd922363ca2b141ecf",
+        "unchanged_since_prior_accepted": true
+      },
+      {
+        "path": "docs/design/AI-MODELING-PLAN.md",
+        "exists": true,
+        "prior_accepted_sha256": "a51285c08e9d0e40b37c0821ee4f0c3974ef5ad57c5f295f9dafc7ddf5c287cd",
+        "current_sha256": "e6bf0df055cb2140e3ee3417bd3916f1fb0793a53af24884c0b0a151f0f12dfd",
+        "unchanged_since_prior_accepted": false
+      },
+      {
+        "path": "docs/design/AETHONSAAS-ADOPTION-PROPOSAL.md",
+        "exists": true,
+        "prior_accepted_sha256": "9082022d851e6484514ecd16e5b7f1480930aa888ca96ef24121f846511fa4ad",
+        "current_sha256": "9082022d851e6484514ecd16e5b7f1480930aa888ca96ef24121f846511fa4ad",
+        "unchanged_since_prior_accepted": true
+      },
+      {
+        "path": "docs/qa/design-system-redesign-20261026/INDEX.md",
+        "exists": true,
+        "prior_accepted_sha256": "3ddb59d20793923903c726ed06b3a27524305d3caba3a79cbce3496d659b1674",
+        "current_sha256": "3ddb59d20793923903c726ed06b3a27524305d3caba3a79cbce3496d659b1674",
+        "unchanged_since_prior_accepted": true
+      }
+    ],
+    "supplemental4": [
+      {
+        "path": "docs/design/PRODUCT-IDENTITY-AMENDMENT-20261027.md",
+        "exists": true,
+        "current_sha256": "dcf1a7c1e3fce881e4afc6a4887570b0b10844a6316ef60dc8df8d66d2346cb6",
+        "baseline_kind": "prior-accepted-observation",
+        "baseline_sha256": "dcf1a7c1e3fce881e4afc6a4887570b0b10844a6316ef60dc8df8d66d2346cb6",
+        "unchanged_against_available_baseline": true
+      },
+      {
+        "path": "docs/qa/adoption-docs-20261027/REPORT-ko.md",
+        "exists": true,
+        "current_sha256": "eea0b17d1f411ce5cc9ce307c5b9327c99bb653d30ae72446dbacfcc1c6c3868",
+        "baseline_kind": "policy-immutable",
+        "baseline_sha256": "eea0b17d1f411ce5cc9ce307c5b9327c99bb653d30ae72446dbacfcc1c6c3868",
+        "unchanged_against_available_baseline": true
+      },
+      {
+        "path": "docs/qa/DOCUMENT-INVENTORY-20261027.md",
+        "exists": true,
+        "current_sha256": "67ef2dfcd41095dbb7eb54898bdb16346b2b7e692cd485e755dea9c352ba0e8f",
+        "baseline_kind": "policy-immutable",
+        "baseline_sha256": "67ef2dfcd41095dbb7eb54898bdb16346b2b7e692cd485e755dea9c352ba0e8f",
+        "unchanged_against_available_baseline": true
+      },
+      {
+        "path": "docs/qa/ONTOLOGY-COVERAGE-AUDIT-20261027.md",
+        "exists": true,
+        "current_sha256": "695251fa68761c9b172975f6b4f6f26781c22fd8848d0b3a73d1d188adc0a7ea",
+        "baseline_kind": "policy-immutable",
+        "baseline_sha256": "695251fa68761c9b172975f6b4f6f26781c22fd8848d0b3a73d1d188adc0a7ea",
+        "unchanged_against_available_baseline": true
+      }
+    ],
+    "latest_before6": [
+      {
+        "path": "README.md",
+        "before_text_sha256": "d64aac30f1f2741b575f5d450834332117c12070a56b4c4173d5edec36ef5d48",
+        "before_matches_prior_final": true,
+        "current_sha256": "2fbeaa124ea154c6908883864872da88c65b35e4421244d02e9ec81d748c6785",
+        "change_blocks": [
+          {
+            "op": "replace",
+            "before_line": 3,
+            "before_end": 3,
+            "current_line": 3,
+            "current_end": 11,
+            "removed_or_replaced_lines": [
+              "## 현재 작업 인계 · S774 · 2026-10-28"
+            ],
+            "added_line_count": 9
+          }
+        ]
+      },
+      {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "before_text_sha256": "9d3b1c7d7d0e642d8db101824798a551b0af2f7228b7ab58cda60d9108f6feea",
+        "before_matches_prior_final": true,
+        "current_sha256": "f1382b69923857a11e1f1f80cfa8d0d3f714c42f91e0c8a330021b171c98d05a",
+        "change_blocks": [
+          {
+            "op": "insert",
+            "before_line": 2,
+            "before_end": 1,
+            "current_line": 2,
+            "current_end": 35,
+            "removed_or_replaced_lines": [],
+            "added_line_count": 34
+          }
+        ]
+      },
+      {
+        "path": "docs/qa/REMAINING-WORK.md",
+        "before_text_sha256": "c7de729a2276c1e3d60d33bc8a982d93bbe5266cc236b2a0926174948ecaced3",
+        "before_matches_prior_final": true,
+        "current_sha256": "662b8fc76d5c882262e83b24c8d05343056bf5d142fc54f66057e47949b02fa5",
+        "change_blocks": [
+          {
+            "op": "insert",
+            "before_line": 2,
+            "before_end": 1,
+            "current_line": 2,
+            "current_end": 7,
+            "removed_or_replaced_lines": [],
+            "added_line_count": 6
+          }
+        ]
+      },
+      {
+        "path": "docs/design/CURRENT-DESIGN-QA-PLAN.md",
+        "before_text_sha256": "e4bddac0529b873de83b1ccb6e6907b82353675677febd36657bc54dfa3c9212",
+        "before_matches_prior_final": true,
+        "current_sha256": "ea3b3018eb9c033b85c6499ac2e01193215e586259726340d0cd85b363406036",
+        "change_blocks": [
+          {
+            "op": "insert",
+            "before_line": 2,
+            "before_end": 1,
+            "current_line": 2,
+            "current_end": 7,
+            "removed_or_replaced_lines": [],
+            "added_line_count": 6
+          }
+        ]
+      },
+      {
+        "path": "docs/design/AI-MODELING-PLAN.md",
+        "before_text_sha256": "a51285c08e9d0e40b37c0821ee4f0c3974ef5ad57c5f295f9dafc7ddf5c287cd",
+        "before_matches_prior_final": true,
+        "current_sha256": "e6bf0df055cb2140e3ee3417bd3916f1fb0793a53af24884c0b0a151f0f12dfd",
+        "change_blocks": [
+          {
+            "op": "insert",
+            "before_line": 2,
+            "before_end": 1,
+            "current_line": 2,
+            "current_end": 5,
+            "removed_or_replaced_lines": [],
+            "added_line_count": 4
+          }
+        ]
+      },
+      {
+        "path": "docs/qa/AI-3D-ARCHITECTURE-RESEARCH-20261027.md",
+        "before_text_sha256": "a08263f1545c965366dc4d1d543a69162617a1349ad6ffdc82aff51446a2c553",
+        "before_matches_prior_final": true,
+        "current_sha256": "67402ff7b01d94764e6478ee672764dcb0135603fd554d146409579c1d940c95",
+        "change_blocks": [
+          {
+            "op": "insert",
+            "before_line": 4,
+            "before_end": 3,
+            "current_line": 4,
+            "current_end": 11,
+            "removed_or_replaced_lines": [],
+            "added_line_count": 8
+          }
+        ]
+      }
+    ],
+    "mid_review_prefix2": [
+      {
+        "path": "README.md",
+        "before_sha256": "fe3c5f4c3da48c3ef3f609266137b12cc23db9d64c7c384b2fc1671f4e2d2770",
+        "current_sha256": "2fbeaa124ea154c6908883864872da88c65b35e4421244d02e9ec81d748c6785",
+        "operation_types": [
+          "insert"
+        ],
+        "removed_or_replaced_lines": 0
+      },
+      {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "before_sha256": "7b37570f5e60c2d70af5ea6f518692d06765c481a54bb85f12f46c151270e2bf",
+        "current_sha256": "f1382b69923857a11e1f1f80cfa8d0d3f714c42f91e0c8a330021b171c98d05a",
+        "operation_types": [
+          "insert"
+        ],
+        "removed_or_replaced_lines": 0
+      }
+    ],
+    "requirement_anchors": {
+      "music_first_photo_optional": {
+        "path": "README.md",
+        "line": 19,
+        "text": "**전체 플랫폼은 아직 미완성이다.** 제작·편집·저장·미리보기·출력·복구는 자체 플랫폼 안에서 수행하며 AI 모델 연결은 예외로 한다. 개인은 음원만으로 시작하고 사진은 선택한다. 최신 구현·실동작·잔여는 [작업 기록](docs/qa/codex-workflow-review-20261027/REPORT-ko.md), [남은 작업](docs/qa/REMAINING-WORK.md)을 먼저 확인한다."
+      },
+      "internal_non_ai": {
+        "path": "README.md",
+        "line": 19,
+        "text": "**전체 플랫폼은 아직 미완성이다.** 제작·편집·저장·미리보기·출력·복구는 자체 플랫폼 안에서 수행하며 AI 모델 연결은 예외로 한다. 개인은 음원만으로 시작하고 사진은 선택한다. 최신 구현·실동작·잔여는 [작업 기록](docs/qa/codex-workflow-review-20261027/REPORT-ko.md), [남은 작업](docs/qa/REMAINING-WORK.md)을 먼저 확인한다."
+      },
+      "three_d_optional": {
+        "path": "README.md",
+        "line": 25,
+        "text": "- **제품 중심:** 음원 기반 음악영상 제작·편집·출력이 중심이며 3D는 선택 도구다. [조사·아키텍처](docs/qa/AI-3D-ARCHITECTURE-RESEARCH-20261027.md)의 Tripo 상용·공개 모델 동등 품질은 미입증이다. 실제 AI 영상 모델 시험은 실무 워크플로 검증 이후에 진행한다."
+      },
+      "workflow_actual": {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "line": 192,
+        "text": "9. 제품 완료 판정은 코드·단위 테스트·디자인 화면이 아니라 실제 시스템과 사용자가 끝까지 수행할 수 있는 업무에 둔다. 기능별 정상/실패/경계에서 화면 조작→서버 응답→실제 저장·재조회→관련 결과를 확인하고, 별도로 음원만/음원+사진의 전체 생성·검토·편집·출력·재개를 연결해 시험한다. 미디어·오디오·자막의 결과 재생과 동기화, 중단·복구·재접속, 모델/도구가 같은 편집 상태를 다루는지, 실행 환경의 권한·데이터·비용·성능을 해당 범위에서 확인한다. fixture·로컬 시험·실제 모델/운영 환경·실사용자 결과를 서로 대체하지 않는다. 검증할 수 없는 기능은 이유와 다음 행동을 남기고 완료로 계산하지 않는다."
+      },
+      "design_simplification": {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "line": 172,
+        "text": "- **워크플로와 디자인:** 사용자 과업을 따라 중복 단계·입력을 찾아 필요한 경우 병합하고, 당장 결정에 필요하지 않은 내부 ID·진단은 기본 화면에서 줄인다. 모델 선택과 실제 실행 범위, 비용·권리·승인·오류·복구에 필요한 정보는 필요한 시점에 남긴다. 관찰과 사용자 혼란 가설을 분리한다. 기능 작업 뒤 Hallmark·Impeccable과 기존 참조·토큰을 활용해 문제→대안→계획→구현→동일 조건 검증을 수행한다. 상세 방법의 선택과 근거는 [방법론 표의 최신 보강](../design-system-redesign-20261026/METHODOLOGY-FIT-MATRIX-ko.md)을 따른다."
+      },
+      "approval_boundary": {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "line": 191,
+        "text": "8. 작업 완료 전, 사용자가 다시 묻기 전에 요구·작업·누락과 증거를 점검해 남은 항목 및 다음 실행 범위를 보여 주고 사용자 허락을 받은 뒤 그 다음 단계로 진행한다. 이미 시작한 작업을 안전하게 검증·기록하고 검토 가능한 결과를 준비하는 과정과 후속 작업 진행 승인을 구분한다."
+      },
+      "preserve_originals": {
+        "path": "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+        "line": 33,
+        "text": "1. 재개 지시가 있을 때 **기존 partial diff와 before 사본을 먼저 검토**한다. 자동 rollback, 새 세션 엔진 중복 작성, 두 source writer를 허용하지 않는다."
+      },
+      "ai_video_after_workflow": {
+        "path": "README.md",
+        "line": 25,
+        "text": "- **제품 중심:** 음원 기반 음악영상 제작·편집·출력이 중심이며 3D는 선택 도구다. [조사·아키텍처](docs/qa/AI-3D-ARCHITECTURE-RESEARCH-20261027.md)의 Tripo 상용·공개 모델 동등 품질은 미입증이다. 실제 AI 영상 모델 시험은 실무 워크플로 검증 이후에 진행한다."
+      }
+    },
+    "guide": {
+      "path": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md",
+      "exists": true,
+      "sha256": "ef2ec569d1b2559232db5bf10d4888449299fbce0c65b413897bef4902febc17",
+      "unchanged_from_dedicated_review": true,
+      "readme_link_present": true
+    },
+    "baseline_artifact_hashes": {
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/semantic-review.json": "b3dae6d36893cd99cb628795955dcd0a8313b526db18d28e05115fef1d94b85b",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/audit.json": "82f0f83f61568a2e8429b5b95e808c61390678cb332d89ea3636d7863c3dec82",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/final-verification.json": "fc022b8a6bf1075c27271a1638edc759496258bcc1cf98f0732611c0b1cd26a5",
+      "docs/qa/codex-workflow-review-20261027/history-color-20261028/document-before.json": "2f63eabe0503bbba28f266c7063f04f356291596dc0de0a9f94e092095cbd60e",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/current-recheck-20261028/document-before.json": "70b0e6495a91e0168ca13b0a34cebb36b8a63b92b0569478aa4db128ac054f7b",
+      ".document-gate.json": "513ce5591f5d898b87af6549b2acb86d4971618fb6f3f40acb5d6576c4b1d9d4",
+      "docs/qa/DOCUMENT-INVENTORY-20261027.md": "67ef2dfcd41095dbb7eb54898bdb16346b2b7e692cd485e755dea9c352ba0e8f"
+    }
+  },
+  "review_script_correction": {
+    "initial_attempt": "새 document-before.json을 예전 flat mapping 형식으로 읽어 recorded_at 키를 경로로 취급한 FileNotFoundError가 발생했다.",
+    "correction": "실제 wrapper schema의 documents[path].sha256/text를 확인한 뒤 올바른 형식으로 재검사했다. 두 before 전체 hash가 일치하고 현재 차이가 삽입뿐임을 확인했다.",
+    "classification": "검토 스크립트의 schema 가정 오류이며 문서 삭제 증거로 사용하지 않았다. 파일 쓰기는 없었다."
+  },
+  "limits": [
+    "이 검토는 지정 현재 문서의 의미 증분이다. T0 2156개·정책 immutable544·registry285 전수 path/hash 재확인은 병렬 root 작업이며 이 결과로 대체하지 않는다.",
+    "기준선 이전·목록 밖·Git 이력 부재·외부 백업/휴지통의 삭제 부재는 증명하지 않는다.",
+    "역사 QA JSON 2개 최초 바이트 미복구라는 이전 한계를 유지한다. 이번에 원본을 재생성하거나 복구했다고 주장하지 않는다.",
+    "문서 존재·본문 보존과 지식 등록·승격·생성문맥 최신성은 서로 다른 판정이다.",
+    "기능·모델·디자인·실무자·출시 운영의 전체 완료를 판정하지 않았다.",
+    "REPORTED는 root의 별도 수락을 대체하지 않는다."
+  ],
+  "product_markdown_registry_policy_context_modified": false,
+  "memory_files_used": false
+}

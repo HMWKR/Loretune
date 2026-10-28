@@ -1,0 +1,223 @@
+{
+  "summary": {
+    "fails": 9,
+    "reflex": 1,
+    "warns": 13,
+    "waived": 0,
+    "rejected": 0,
+    "answered": 0,
+    "dismissed": 0,
+    "notes": 0,
+    "files": 2,
+    "render": "off"
+  },
+  "findings": [
+    {
+      "gate": "20",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 1,
+      "evidence": "no Hallmark stamp on the first non-empty line of any CSS",
+      "fix": "The stamp comment is line 1 of the CSS; only @charset may precede it"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 1,
+      "evidence": "no overflow-x: clip on html and body",
+      "fix": "overflow-x: clip on both html and body"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 317,
+      "evidence": "width: min(640px,calc(100vw - 32px… on .lt-ui dialog (scrollbar overflow)",
+      "fix": "width: 100% with container padding"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 630,
+      "evidence": "width: min(500px,calc(100vw - 24px… on .lt-ui .lt-notice-detail[open] (scrollbar overflow)",
+      "fix": "width: 100% with container padding"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 993,
+      "evidence": "width: min(1320px,calc(100vw - 32p… on .lt-ui dialog.agent-dialog[open].agent-dialog-open (scrollbar overflow)",
+      "fix": "width: 100% with container padding"
+    },
+    {
+      "gate": "39a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 717,
+      "evidence": "disabled via opacity alone on .lt-ui #reviewTake:not(:disabled)",
+      "fix": "Three disabled channels: fill, ink and cursor, plus the disabled attribute"
+    },
+    {
+      "gate": "50",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 647,
+      "evidence": "bare 1fr track holds images (.lt-ui #creatorReviewEditor>.row)",
+      "fix": "Use minmax(0, 1fr) for image tracks"
+    },
+    {
+      "gate": "56",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 945,
+      "evidence": "two sticky top:0 elements: .lt-ui[data-desktop-shell=bounded]:is([data-step=\"3…",
+      "fix": "Offset the second sticky by banner height"
+    },
+    {
+      "gate": "76",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "index.html",
+      "line": 23,
+      "evidence": "an <img> with no source",
+      "fix": "Give it the real image, make it a data-slot placeholder, or remove it"
+    },
+    {
+      "gate": "38iii",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 112,
+      "evidence": "accented word inside a heading (.badge)",
+      "fix": "Set the whole head one way: a line break, a second line at a second size, or the whole head in the accent. Guard: the theme names the coloured word as its signature and it appears once on the page, in the hero"
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 313,
+      "evidence": "dark surface (L 22%) on .lt-ui :where(.guided-card,.job,.timeline) sets no text colour",
+      "fix": "Swap text to paper in the same rule"
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 471,
+      "evidence": "dark surface (L 28%) on .lt-ui .lt-panel-nav button[aria-selected=\"true\"] sets no text colour",
+      "fix": "Swap text to paper in the same rule"
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 537,
+      "evidence": "dark surface (L 19%) on .lt-ui .lt-execution-card sets no text colour",
+      "fix": "Swap text to paper in the same rule"
+    },
+    {
+      "gate": "F3",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 80,
+      "evidence": "no text-wrap: balance on any display head (31 head rule(s), e.g. h1)",
+      "fix": "Add text-wrap: balance to h1/h2-level heads"
+    },
+    {
+      "gate": "F4",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "index.html",
+      "line": 19,
+      "evidence": "two filled buttons side by side in the hero: \"새 대화 만들기\" and \"대화 모델 선택 저장\"",
+      "fix": "One filled primary per screen; the second action is outlined or a typographic link"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 321,
+      "evidence": "numeric selector .lt-ui .lt-status at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 539,
+      "evidence": "numeric selector .lt-ui .lt-state-chip at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 593,
+      "evidence": "numeric selector .lt-ui .lt-review-state at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 704,
+      "evidence": "numeric selector .lt-ui .review-state-symbol at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 964,
+      "evidence": "numeric selector .lt-ui .agent-work-status at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F7",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 85,
+      "evidence": "same container recipe on 7 selectors (.project-empty, .lt-ui (.guided-card, .job, .ti…...)",
+      "fix": "Vary weight, radius, or fill by role; not every box is the same box"
+    },
+    {
+      "gate": "F23",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "index.html",
+      "line": 1,
+      "evidence": "the document lacks a meta description",
+      "fix": "Name the language, title the page in its own words, and describe it in one sentence for link previews"
+    },
+    {
+      "gate": "F24",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 630,
+      "evidence": "a hairline border under a wide soft shadow on .lt-ui .lt-notice-detail[open]",
+      "fix": "Commit to one: a defined edge, or elevation by shadow"
+    }
+  ]
+}

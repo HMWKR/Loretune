@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-28T05:21:05.303615+00:00",
+  "state": "REPORTED_CONDITIONAL_DIAGNOSTIC; ROOT_ACCEPTANCE_PENDING",
+  "actual_execution": {
+    "elapsed_seconds": 36.70787508302601,
+    "wrapper_seconds": 37.42416337499162,
+    "exit_code": 0,
+    "peak_rss_bytes_macos": 142934016,
+    "network_denied": {
+      "os_network_denied": true,
+      "exception": "PermissionError",
+      "errno": 1
+    },
+    "new_inference_or_provider_calls": 0
+  },
+  "outcome": "A reproducible measurement confound was observed rather than hidden. Frozen raw-basis and GT-assisted registration conditions and every candidate are retained. These conditional metrics cannot establish pure model reconstruction fidelity or commercial/open equivalence.",
+  "controls": {
+    "union_area_volume_occupancy": "verified for duplicated and overlapping box constructions",
+    "identical_pointcloud_and_silhouette": "distance0 and IoU1 verified",
+    "rotation_invariance": "not achieved: known identical transformed reference leaves significant error after frozen rotation-dependent AABB normalization and fixed-scale ICP",
+    "synthetic_missing_backrest_negative": "positive surface discrepancy and silhouette IoU<1 verified; not an AI output"
+  },
+  "cases": {
+    "cube": {
+      "CD_mean_sq_A": 0.09664083232526549,
+      "CD_mean_sq_B": 0.10360621671951853,
+      "IoU_A": {
+        "input": 0.3803830509032821,
+        "front_minus_y": 0.4146327367995223,
+        "right_plus_x": 0.4526575353021634,
+        "rear_plus_y": 0.42873104856575933,
+        "left_minus_x": 0.3955576104336435
+      },
+      "IoU_B": {
+        "input": 0.2832699306687746,
+        "front_minus_y": 0.3956427099185175,
+        "right_plus_x": 0.4276715020516673,
+        "rear_plus_y": 0.4247472315840154,
+        "left_minus_x": 0.4261881369319386
+      },
+      "independent_sample_floor": 0.0001883877454051014,
+      "same_reference_known_transform_CD_mean_sq": 0.10517060472734169
+    },
+    "chair": {
+      "CD_mean_sq_A": 0.033972942199077,
+      "CD_mean_sq_B": 0.004130379265553228,
+      "IoU_A": {
+        "input": 0.5073580133363992,
+        "front_minus_y": 0.446303301543325,
+        "right_plus_x": 0.5238634663474897,
+        "rear_plus_y": 0.46566634636706333,
+        "left_minus_x": 0.41775300361988943
+      },
+      "IoU_B": {
+        "input": 0.5418064333886515,
+        "front_minus_y": 0.5405724456067705,
+        "right_plus_x": 0.5697196043532811,
+        "rear_plus_y": 0.5563163884673749,
+        "left_minus_x": 0.6111241149277313
+      },
+      "independent_sample_floor": 8.066695136061225e-05,
+      "same_reference_known_transform_CD_mean_sq": 0.004964852034672193
+    }
+  },
+  "next_action": "A separate predeclared rotation-invariant uniform normalization/registration diagnostic is needed before interpreting the remaining error as reconstruction quality. Preserve this experiment unchanged; no post-score protocol adjustment. Commercial same-input raw artifact remains required for parity.",
+  "scope_limits": [
+    "No raw commercial Tripo result for the same input, so commercial/open parity remains unproven.",
+    "No new model inference or repeat of prior platform import/render or S819 color checks.",
+    "Software silhouette diagnostics are not a platform UI/render/end-to-end or performance acceptance.",
+    "No unseen-view fidelity conclusion from input-only correspondence."
+  ],
+  "read_skills": [
+    "Karpathy Guidelines and its Codex runtime"
+  ],
+  "source_bytes_preserved": {
+    "cube_scene": true,
+    "chair_scene": true,
+    "cube_input": true,
+    "chair_input": true,
+    "cube_raw": true,
+    "chair_raw": true
+  },
+  "product_docs_registry_changes": 0
+}

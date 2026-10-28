@@ -1,0 +1,52 @@
+{
+  "factory_command": [
+    "docker",
+    "--host",
+    "unix:///Users/leesungmin/.docker/run/docker.sock",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--platform=linux/amd64",
+    "--network=none",
+    "--read-only",
+    "--user=65534:65534",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--pids-limit=64",
+    "--memory=1536m",
+    "--cpus=1",
+    "--tmpfs",
+    "/tmp:rw,noexec,nosuid,size=64m,mode=1777",
+    "--mount",
+    "type=bind,src=/private/tmp/loretune-blender-x64.jEi6qO/unpacked/blender-5.2.2-linux-x64,dst=/opt/blender,readonly",
+    "--mount",
+    "type=bind,src=/Users/leesungmin/Desktop/Loretune/.omo/evidence/paired-assets-platform-20261028/background,dst=/input,readonly",
+    "--entrypoint",
+    "/opt/blender/blender",
+    "sha256:3d80954520e9890c49c488e3b739fc3aec09d1a87b91fcbdffd3fe481cb8ca51",
+    "--background",
+    "--factory-startup",
+    "--disable-autoexec",
+    "--threads",
+    "1",
+    "--python-exit-code",
+    "3",
+    "--python",
+    "/input/probe.py"
+  ],
+  "environment": {
+    "LORETUNE_3D_IMAGE": "sha256:3d80954520e9890c49c488e3b739fc3aec09d1a87b91fcbdffd3fe481cb8ca51",
+    "LORETUNE_3D_BLENDER": "/private/tmp/loretune-blender-x64.jEi6qO/unpacked/blender-5.2.2-linux-x64",
+    "LORETUNE_3D_BLENDER_SHA256": "bafec183e960819c76fe213c000cdb2284c53a87ef6791812f8728b51f07145b",
+    "LORETUNE_3D_TREE_SHA256": "af43744906a28be0212c2615d204d88396e6cd8b09e6cb2dd7d6610cb050187f",
+    "LORETUNE_3D_DOCKER_SOCKET": "/Users/leesungmin/.docker/run/docker.sock"
+  },
+  "source_after": {
+    "scene_renderer.py": "be41e10eb8bebb43ae8ccc1f33156b3f83c4bddd5f422604707e99d7e9664353",
+    "scene_project.py": "2b7d1a3c30dbe5453dcbad983528fae96d6b61179ccc871bdc9c52190adf52e4",
+    "scene_assets.py": "9e35727099e06730ea92d1a15de80ca65fa9ea85eaa4eb547a669dc4a12f4068",
+    "scene_spec.py": "29f3956be9b5fa17d70c614128821c1c801d4a6643a80ce43487892b9fa36c65",
+    "scene-studio.js": "51fdd58f3d7391d26af84c358dcaaa2f8c454aff1a370180c9b9643f7a6524a5"
+  },
+  "unchanged": true
+}

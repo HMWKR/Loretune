@@ -1,0 +1,37 @@
+{
+  "same_payload_sha256": "80aa67c8fbf96f03d576e55220195c43d28d8019af2df6d07920d949d52e784c",
+  "declared_srgb_hex": "#1A2A4A",
+  "expected_rgb": [
+    26,
+    42,
+    74
+  ],
+  "single_changed_expression": {
+    "before": "return CGColor(red: Double((hex >> 16) & 255)/255, green: Double((hex >> 8) & 255)/255, blue: Double(hex & 255)/255, alpha: alpha)",
+    "after": "return CGColor(colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!, components: [Double((hex >> 16) & 255)/255, Double((hex >> 8) & 255)/255, Double(hex & 255)/255, alpha])!"
+  },
+  "results": [
+    {
+      "case": "before",
+      "background_pixel": [
+        34,
+        57,
+        92
+      ],
+      "png_sha256": "2d82c109d3f2c6225dea958f90dd21c8475af79c1566b0a1891ba518f5dc4d17",
+      "source_sha256": "a2f41e73a434d57e455729ccf8aad3cc6986c4f9caf1d0fcef7030633835896e"
+    },
+    {
+      "case": "explicit-srgb",
+      "background_pixel": [
+        26,
+        42,
+        74
+      ],
+      "png_sha256": "bd2f84780f110b16b67f6512259261d93e3c93eff490d5c0f276a067c94bf2f1",
+      "source_sha256": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d"
+    }
+  ],
+  "product_files_modified": false,
+  "scope": "Controlled copied-rasterizer probe only; does not revise existing approvals or source files."
+}

@@ -1,0 +1,32 @@
+test_opacity_geometry_and_korean_text_use_the_same_srgb_colors (tests.test_native_motion_color.NativeMotionColorTest.test_opacity_geometry_and_korean_text_use_the_same_srgb_colors) ... FAIL
+test_opaque_background_and_shape_match_declared_hex_channels (tests.test_native_motion_color.NativeMotionColorTest.test_opaque_background_and_shape_match_declared_hex_channels) ... FAIL
+
+======================================================================
+FAIL: test_opacity_geometry_and_korean_text_use_the_same_srgb_colors (tests.test_native_motion_color.NativeMotionColorTest.test_opacity_geometry_and_korean_text_use_the_same_srgb_colors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_native_motion_color.py", line 53, in test_opacity_geometry_and_korean_text_use_the_same_srgb_colors
+    self.assertTrue(all(abs(a - e) <= 1 for a, e in zip(actual, expected)), actual)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : (108, 133, 174)
+
+======================================================================
+FAIL: test_opaque_background_and_shape_match_declared_hex_channels (tests.test_native_motion_color.NativeMotionColorTest.test_opaque_background_and_shape_match_declared_hex_channels)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_native_motion_color.py", line 45, in test_opaque_background_and_shape_match_declared_hex_channels
+    self.assertEqual(self.pixel(raw, 20, 20), (26, 42, 74))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (34, 57, 92) != (26, 42, 74)
+
+First differing element 0:
+34
+26
+
+- (34, 57, 92)
++ (26, 42, 74)
+
+----------------------------------------------------------------------
+Ran 2 tests in 2.169s
+
+FAILED (failures=2)

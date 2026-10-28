@@ -1,0 +1,71 @@
+{
+  "note": "Example input only. Not automatically ingested, approved, or measured. Replace with the actual project evidence.",
+  "objects": [
+    {
+      "approval": null,
+      "canonical_key": "Source:S-COST-EXAMPLE",
+      "citation_id": "S-COST-EXAMPLE",
+      "decision_state": "not_applicable",
+      "example_only": true,
+      "id": "CLAIMS3:S-COST-EXAMPLE",
+      "kind": "Source",
+      "links": [],
+      "namespace": "CLAIMS3",
+      "retention": {
+        "policy": "keep",
+        "until": null
+      },
+      "review_due": "2026-11-22",
+      "source_checked_at": "2026-10-23",
+      "status": "draft",
+      "summary": "형식 예시. 실제 주장에서는 모델·입력/출력·단가·적용일·최소 과금 단위를 다시 명시한다.",
+      "supersedes": [],
+      "tasks": [
+        "business",
+        "pitch"
+      ],
+      "title": "공급자 요금 출처 형식 예시",
+      "url": "https://docs.dev.runwayml.com/guides/pricing/",
+      "valid_from": "2026-10-23",
+      "valid_to": null,
+      "verification_level": "source_documented",
+      "version": "1"
+    },
+    {
+      "approval": null,
+      "canonical_key": "Assumption:ASM-COST",
+      "claim_type": "assumption",
+      "decision_state": "not_applicable",
+      "domains": [
+        "cost"
+      ],
+      "example_only": true,
+      "id": "CLAIMS3:ASM-COST",
+      "kind": "Assumption",
+      "links": [
+        {
+          "target": "CLAIMS3:S-COST-EXAMPLE",
+          "type": "supported_by"
+        }
+      ],
+      "namespace": "CLAIMS3",
+      "retention": {
+        "policy": "keep",
+        "until": null
+      },
+      "review_due": "2026-11-22",
+      "status": "draft",
+      "summary": "가격 계산의 배수·환율·지원 시간은 실측 전 가정이다. 이 예시는 특정 원가나 마진을 주장하지 않는다.",
+      "supersedes": [],
+      "tasks": [
+        "business",
+        "pitch"
+      ],
+      "title": "재시도·환율·지원 시간의 가정",
+      "valid_from": "2026-10-23",
+      "valid_to": null,
+      "verification_level": "unverified",
+      "version": "1"
+    }
+  ]
+}

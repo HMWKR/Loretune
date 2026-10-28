@@ -1,0 +1,32 @@
+[anaconda] python 3.13.9 exe /opt/anaconda3/bin/python3 sqlite 3.51.0
+[anaconda] default secure_delete=1 journal_mode=delete auto_vacuum=0 compile SECURE_DELETE=['SECURE_DELETE']
+[anaconda] A default DELETE: secure_delete=1 before=2 after_delete=0 backup_copied_after_delete=0 after_vacuum=0
+[anaconda] B ON on deleting connection: secure_delete=1 after_delete=0
+[anaconda] C ON on earlier connection only: deleting connection secure_delete=1 after_delete=0
+[anaconda] D rewrite UPDATE: default(secure_delete=1) after=0 | ON(secure_delete=1) after=0
+[anaconda] files: ['a-backup-after-delete.sqlite3', 'a.sqlite3', 'b.sqlite3', 'c.sqlite3', 'd.sqlite3', 'defaults.sqlite3', 'e.sqlite3']
+[anaconda] exit 0
+[apple] python 3.9.6 exe /Library/Developer/CommandLineTools/usr/bin/python3 sqlite 3.51.0
+[apple] default secure_delete=2 journal_mode=delete auto_vacuum=0 compile SECURE_DELETE=[]
+[apple] A default DELETE: secure_delete=2 before=2 after_delete=2 backup_copied_after_delete=2 after_vacuum=0
+[apple] B ON on deleting connection: secure_delete=1 after_delete=0
+[apple] C ON on earlier connection only: deleting connection secure_delete=2 after_delete=2
+[apple] D rewrite UPDATE: default(secure_delete=2) after=2 | ON(secure_delete=1) after=0
+[apple] files: ['a-backup-after-delete.sqlite3', 'a.sqlite3', 'b.sqlite3', 'c.sqlite3', 'd.sqlite3', 'defaults.sqlite3', 'e.sqlite3']
+[apple] exit 0
+[homebrew] python 3.15.0 exe /opt/homebrew/opt/python@3.15/bin/python3.15 sqlite 3.54.0
+[homebrew] default secure_delete=0 journal_mode=delete auto_vacuum=0 compile SECURE_DELETE=[]
+[homebrew] A default DELETE: secure_delete=0 before=2 after_delete=2 backup_copied_after_delete=2 after_vacuum=0
+[homebrew] B ON on deleting connection: secure_delete=1 after_delete=0
+[homebrew] C ON on earlier connection only: deleting connection secure_delete=0 after_delete=2
+[homebrew] D rewrite UPDATE: default(secure_delete=0) after=2 | ON(secure_delete=1) after=0
+[homebrew] files: ['a-backup-after-delete.sqlite3', 'a.sqlite3', 'b.sqlite3', 'c.sqlite3', 'd.sqlite3', 'defaults.sqlite3', 'e.sqlite3']
+[homebrew] exit 0
+[py315] python 3.15.0 exe /opt/homebrew/opt/python@3.15/bin/python3.15 sqlite 3.54.0
+[py315] default secure_delete=0 journal_mode=delete auto_vacuum=0 compile SECURE_DELETE=[]
+[py315] A default DELETE: secure_delete=0 before=2 after_delete=2 backup_copied_after_delete=2 after_vacuum=0
+[py315] B ON on deleting connection: secure_delete=1 after_delete=0
+[py315] C ON on earlier connection only: deleting connection secure_delete=0 after_delete=2
+[py315] D rewrite UPDATE: default(secure_delete=0) after=2 | ON(secure_delete=1) after=0
+[py315] files: ['a-backup-after-delete.sqlite3', 'a.sqlite3', 'b.sqlite3', 'c.sqlite3', 'd.sqlite3', 'defaults.sqlite3', 'e.sqlite3']
+[py315] exit 0

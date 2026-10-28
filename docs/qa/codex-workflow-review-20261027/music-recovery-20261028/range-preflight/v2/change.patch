@@ -1,0 +1,33 @@
+--- v1/editing.py
++++ v2/editing.py
+@@ -146,13 +146,16 @@
+         warnings.append('음원 없는 무음 출력입니다.')
+     elif timeline['audio_offset'] + total > audio['metadata']['duration']:
+         warnings.append('선택한 음원이 영상보다 짧아 끝부분은 무음으로 채워집니다.')
++    music_selection_warning = None
+     music = next((m for m in p.get('music_versions', []) if m['id'] == p.get('music_head')), None)
+     if audio is not None and music and music['audio'] == audio['id']:
+         selected_range = (round(music['start'], 3), round(music['end'], 3))
+         output_range = (round(timeline['audio_offset'], 3), round(timeline['audio_offset'] + total, 3))
+         if selected_range != output_range:
+-            warnings.append(f'현재 음악 선택 {selected_range[0]:.3f}–{selected_range[1]:.3f}초와 이 편집의 음원 출력 {output_range[0]:.3f}–{output_range[1]:.3f}초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.')
++            music_selection_warning = f'현재 음악 선택 {selected_range[0]:.3f}–{selected_range[1]:.3f}초와 이 편집의 음원 출력 {output_range[0]:.3f}–{output_range[1]:.3f}초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.'
++            warnings.append(music_selection_warning)
+     return dict(ready=not errors, errors=errors, warnings=warnings, duration=total,
++                music_selection_warning=music_selection_warning,
+                 audio_version=timeline.get('audio'), audio_start=timeline.get('audio_offset', 0),
+                 audio_end=timeline.get('audio_offset', 0)+total, profile=timeline.get('profile'),
+                 note='저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다.')
+--- v1/tests/test_editing.py
++++ v2/tests/test_editing.py
+@@ -322,7 +322,9 @@
+         before=deepcopy(project)
+         result=preflight(project)
+         self.assertEqual(project,before)
+-        return result,[w for w in result['warnings'] if w.startswith('현재 음악 선택')]
++        warnings=[w for w in result['warnings'] if w.startswith('현재 음악 선택')]
++        self.assertEqual(result['music_selection_warning'],warnings[0] if warnings else None)
++        return result,warnings
+ 
+     def test_short_long_and_shifted_output_describe_both_ranges_without_blocking(self):
+         for start,end,offset,duration in [(3,4,3,3),(3,7,3,3),(3,6,2,3),(3,6,4,3)]:

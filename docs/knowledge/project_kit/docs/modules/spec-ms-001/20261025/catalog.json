@@ -1,0 +1,637 @@
+{
+  "document_id": "SPEC-MS-001",
+  "source_sha256": "962f15269eec2367df635209636a2e96baa72a5cc3331647175242a0f8c93378",
+  "source_declared_status": "설계됨",
+  "requirements": [
+    {
+      "id": "MS-FR-01",
+      "title": "채팅 이미지 영상 세 슬롯을 독립 선택하고 실제 실행에 반영",
+      "priority": "P0",
+      "tests": [
+        "MS-AT01",
+        "MS-AT02"
+      ],
+      "line": 530
+    },
+    {
+      "id": "MS-FR-02",
+      "title": "선택한 채팅 AI가 공통 제작 도구를 요청하고 실제 결과를 받아 후속 응답",
+      "priority": "P0",
+      "tests": [
+        "MS-AT03",
+        "MS-AT04"
+      ],
+      "line": 531
+    },
+    {
+      "id": "MS-FR-03",
+      "title": "모델 등록부에서 문서 확인 접근 확인 통합 검증 활성 상태를 구분",
+      "priority": "P0",
+      "tests": [
+        "MS-AT05",
+        "MS-AT06"
+      ],
+      "line": 532
+    },
+    {
+      "id": "MS-FR-04",
+      "title": "조직 정책을 먼저 적용하고 명시 선택과 기본값을 정해진 순서로 해석",
+      "priority": "P0",
+      "tests": [
+        "MS-AT07",
+        "MS-AT08"
+      ],
+      "line": 533
+    },
+    {
+      "id": "MS-FR-05",
+      "title": "실제 사용자 권한과 서버 위임으로 도구를 실행",
+      "priority": "P0",
+      "tests": [
+        "MS-AT09",
+        "MS-AT10"
+      ],
+      "line": 534
+    },
+    {
+      "id": "MS-FR-06",
+      "title": "계획 승인과 제한 자동 실행을 구분해 허용 범위 관리",
+      "priority": "P0",
+      "tests": [
+        "MS-AT10",
+        "MS-AT17",
+        "MS-AT21",
+        "MS-AT30",
+        "MS-AT34"
+      ],
+      "line": 535
+    },
+    {
+      "id": "MS-FR-07",
+      "title": "완성된 도구 인수를 검증하고 거부와 중단과 형식 오류를 처리",
+      "priority": "P0",
+      "tests": [
+        "MS-AT11",
+        "MS-AT12"
+      ],
+      "line": 536
+    },
+    {
+      "id": "MS-FR-08",
+      "title": "길이 참조 비율 등 지원 기능을 검증하고 변환을 설명",
+      "priority": "P0",
+      "tests": [
+        "MS-AT13",
+        "MS-AT14"
+      ],
+      "line": 537
+    },
+    {
+      "id": "MS-FR-09",
+      "title": "실행 모델과 문맥을 고정하고 진행 중 기본값 변경을 격리",
+      "priority": "P0",
+      "tests": [
+        "MS-AT15",
+        "MS-AT16"
+      ],
+      "line": 538
+    },
+    {
+      "id": "MS-FR-10",
+      "title": "공급자 연결과 비밀키를 서버에서 관리하고 노출 방지",
+      "priority": "P0",
+      "tests": [
+        "MS-AT26",
+        "MS-AT27"
+      ],
+      "line": 539
+    },
+    {
+      "id": "MS-FR-11",
+      "title": "모델 변경 시 승인 문맥과 실제 작업 상태를 인계",
+      "priority": "P0",
+      "tests": [
+        "MS-AT18",
+        "MS-AT19"
+      ],
+      "line": 540
+    },
+    {
+      "id": "MS-FR-12",
+      "title": "채팅 모델 변경과 검색 임베딩을 분리",
+      "priority": "P0",
+      "tests": [
+        "MS-AT20"
+      ],
+      "line": 541
+    },
+    {
+      "id": "MS-FR-13",
+      "title": "이미지 선행과 샷 의존성을 처리하고 실패한 하위 작업을 차단",
+      "priority": "P0",
+      "tests": [
+        "MS-AT21"
+      ],
+      "line": 542
+    },
+    {
+      "id": "MS-FR-14",
+      "title": "비동기 상태와 재접속을 지원하며 채팅 연결과 작업 수명을 분리",
+      "priority": "P0",
+      "tests": [
+        "MS-AT22"
+      ],
+      "line": 543
+    },
+    {
+      "id": "MS-FR-15",
+      "title": "동일 작업의 중복 실행을 막고 의도된 새 후보를 구분",
+      "priority": "P0",
+      "tests": [
+        "MS-AT23",
+        "MS-AT24"
+      ],
+      "line": 544
+    },
+    {
+      "id": "MS-FR-16",
+      "title": "공급자 접수 불명 상태를 대사하고 무조건 재제출을 방지",
+      "priority": "P0",
+      "tests": [
+        "MS-AT25"
+      ],
+      "line": 545
+    },
+    {
+      "id": "MS-FR-17",
+      "title": "원곡과 승인된 다른 샷을 보존하며 생성 오디오를 분리",
+      "priority": "P0",
+      "tests": [
+        "MS-AT28",
+        "MS-AT29"
+      ],
+      "line": 546
+    },
+    {
+      "id": "MS-FR-18",
+      "title": "가격과 비용 예약을 고정하고 병렬 한도 초과를 차단",
+      "priority": "P0",
+      "tests": [
+        "MS-AT17",
+        "MS-AT30"
+      ],
+      "line": 547
+    },
+    {
+      "id": "MS-FR-19",
+      "title": "고정 모델 장애를 설명하고 허용된 대체만 실행",
+      "priority": "P0",
+      "tests": [
+        "MS-AT31"
+      ],
+      "line": 548
+    },
+    {
+      "id": "MS-FR-20",
+      "title": "취소와 늦은 완료와 비용 정산을 분리",
+      "priority": "P0",
+      "tests": [
+        "MS-AT32"
+      ],
+      "line": 549
+    },
+    {
+      "id": "MS-FR-21",
+      "title": "종료 모델의 새 작업을 차단하고 기존 파일과 기록을 유지",
+      "priority": "P0",
+      "tests": [
+        "MS-AT33"
+      ],
+      "line": 550
+    },
+    {
+      "id": "MS-FR-22",
+      "title": "BYOK의 연결 계정과 비용 청구 주체를 분리",
+      "priority": "P1",
+      "tests": [
+        "MS-AT34"
+      ],
+      "line": 551
+    },
+    {
+      "id": "MS-FR-23",
+      "title": "키 교체와 철회 시 기존 작업 조회 가능 여부를 확인",
+      "priority": "P0",
+      "tests": [
+        "MS-AT34"
+      ],
+      "line": 552
+    },
+    {
+      "id": "MS-FR-24",
+      "title": "결과 파일이 없는 상태에서 생성 완료로 표시하지 않음",
+      "priority": "P0",
+      "tests": [
+        "MS-AT35"
+      ],
+      "line": 553
+    },
+    {
+      "id": "MS-FR-25",
+      "title": "Claude OpenAI Grok의 교차 공급자 제작 경로를 검증",
+      "priority": "P0",
+      "tests": [
+        "MS-AT36"
+      ],
+      "line": 554
+    },
+    {
+      "id": "MS-FR-26",
+      "title": "실제 모델과 연결과 승인과 사용량을 감사 기록에 남김",
+      "priority": "P0",
+      "tests": [
+        "MS-AT37"
+      ],
+      "line": 555
+    },
+    {
+      "id": "MS-FR-27",
+      "title": "공급자별 도구 결과와 스트림과 멀티모달 계약을 변환",
+      "priority": "P0",
+      "tests": [
+        "MS-AT38"
+      ],
+      "line": 556
+    },
+    {
+      "id": "MS-FR-28",
+      "title": "평가된 후보 집합 안의 자동 선택과 사전 허용 대체를 제공",
+      "priority": "P1",
+      "tests": [
+        "MS-AT08",
+        "MS-AT31",
+        "MS-AT37"
+      ],
+      "line": 557
+    }
+  ],
+  "tests": [
+    {
+      "id": "MS-AT01",
+      "trigger": "채팅 모델만 변경 후 메시지 전송",
+      "expected": "다음 응답의 모델만 변경하고 이미지와 영상 기본값 유지",
+      "line": 573
+    },
+    {
+      "id": "MS-AT02",
+      "trigger": "채팅에서 특정 이미지 모델과 영상 모델을 지정",
+      "expected": "각 실제 작업에 선택한 모델과 연결 경로 기록",
+      "line": 574
+    },
+    {
+      "id": "MS-AT03",
+      "trigger": "후렴 장면 생성 요청",
+      "expected": "공통 도구로 계획과 job과 결과가 연결되며 내장 생성 도구로 지정 모델을 우회하지 않음",
+      "line": 575
+    },
+    {
+      "id": "MS-AT04",
+      "trigger": "도구 호출 없이 기획 설명만 반환",
+      "expected": "새 유료 이미지 또는 영상 작업 없음",
+      "line": 576
+    },
+    {
+      "id": "MS-AT05",
+      "trigger": "공급자 목록에 새 모델 등장",
+      "expected": "문서와 계정 확인만으로 자동 활성화하지 않음",
+      "line": 577
+    },
+    {
+      "id": "MS-AT06",
+      "trigger": "모델 기능이 미확인 또는 종료 상태",
+      "expected": "미지원과 미확인을 구분하고 필요한 신규 실행 차단",
+      "line": 578
+    },
+    {
+      "id": "MS-AT07",
+      "trigger": "조직에서 금지한 모델을 사용자나 AI가 명시",
+      "expected": "자료 전송과 실행 차단 기본 모델로 숨겨진 대체 없음",
+      "line": 579
+    },
+    {
+      "id": "MS-AT08",
+      "trigger": "작업 대화 프로젝트 조직 선택값이 다름",
+      "expected": "정해진 순서로 해석하고 실제 선택의 근거 표시",
+      "line": 580
+    },
+    {
+      "id": "MS-AT09",
+      "trigger": "도구 인수에 타 조직 ID나 관리자 역할 삽입",
+      "expected": "인증된 주체와 권한으로 재검사하고 접근 차단",
+      "line": 581
+    },
+    {
+      "id": "MS-AT10",
+      "trigger": "AI가 예산 증액이나 공식 설정 확정을 요청",
+      "expected": "권한 있는 사람의 승인 없이는 제안만 생성하며 AI가 grant를 발급하지 못함",
+      "line": 582
+    },
+    {
+      "id": "MS-AT11",
+      "trigger": "스트리밍 JSON이 중간에 끊기거나 거부 응답",
+      "expected": "인수 완성 전 외부 생성 제출 없음",
+      "line": 583
+    },
+    {
+      "id": "MS-AT12",
+      "trigger": "잘못된 도구 인수가 반복됨",
+      "expected": "제한된 수정 요청 후 중단 오류 원인과 다음 행동 표시",
+      "line": 584
+    },
+    {
+      "id": "MS-AT13",
+      "trigger": "7초 구간 신규 생성 및 다른 계약의 기존 영상 편집",
+      "expected": "생성과 편집의 능력과 가격을 분리하고 사용 구간과 견적을 표시하며 끝 프레임과 박자 조건이 잘리면 계획 수정",
+      "line": 585
+    },
+    {
+      "id": "MS-AT14",
+      "trigger": "참조 개수 초과 또는 이미지 비율 충돌",
+      "expected": "참조를 몰래 삭제하지 않고 입력 수정이나 명시한 변환 필요",
+      "line": 586
+    },
+    {
+      "id": "MS-AT15",
+      "trigger": "인수 스트리밍 중 또는 영상 접수 뒤 채팅 모델 변경",
+      "expected": "기존 job의 모델 문맥 가격과 입력 해시 불변이며 중단된 chat run의 늦은 제작 요청은 차단",
+      "line": 587
+    },
+    {
+      "id": "MS-AT16",
+      "trigger": "두 사용자가 같은 설정 버전을 동시 수정",
+      "expected": "낡은 변경 거절 최신 설정과 차이를 보여줌",
+      "line": 588
+    },
+    {
+      "id": "MS-AT17",
+      "trigger": "여러 샷과 긴 채팅과 배경 분석이 같은 예산 사용",
+      "expected": "토큰과 유료 도구 한도를 포함한 원자적 예약으로 상한 초과와 부모 자식 이중 계산 없음",
+      "line": 589
+    },
+    {
+      "id": "MS-AT18",
+      "trigger": "영상 job 접수 뒤 Claude에서 Grok으로 전환",
+      "expected": "영상 완료를 기다리지 않고 같은 job을 조회하며 승인 문맥 전달과 공급자 호출 ID 분리",
+      "line": 590
+    },
+    {
+      "id": "MS-AT19",
+      "trigger": "과거 의상과 이번 곡 예외와 동명 타 그룹 자료",
+      "expected": "활동기와 IP 범위대로 조회 일회성 예외를 전역 사실로 승격하지 않음",
+      "line": 591
+    },
+    {
+      "id": "MS-AT20",
+      "trigger": "채팅 모델을 여러 번 변경",
+      "expected": "검색 인덱스 유지 불필요한 재임베딩과 타 공간 벡터 혼합 없음",
+      "line": 592
+    },
+    {
+      "id": "MS-AT21",
+      "trigger": "선행 이미지 실패 승인 대기 또는 다른 자산 끼워 넣기",
+      "expected": "조건 충족 전 의존 영상 미제출이며 승인된 선행 action과 출력 슬롯의 결과만 결합",
+      "line": 593
+    },
+    {
+      "id": "MS-AT22",
+      "trigger": "브라우저 종료 후 재접속",
+      "expected": "동일 job을 복원하고 중복 이벤트와 재생성 없음",
+      "line": 594
+    },
+    {
+      "id": "MS-AT23",
+      "trigger": "실행 버튼 중복 전송과 같은 action 재호출",
+      "expected": "기존 job 반환 추가 비용 예약과 외부 제출 없음",
+      "line": 595
+    },
+    {
+      "id": "MS-AT24",
+      "trigger": "같은 멱등 키로 다른 입력 또는 명시한 새 후보",
+      "expected": "전자는 충돌 후자는 새 action과 후보로 구분",
+      "line": 596
+    },
+    {
+      "id": "MS-AT25",
+      "trigger": "공급자는 접수했으나 응답 유실",
+      "expected": "submission_unknown 유지 조회와 대사 전 새 공급자에 자동 중복 제출 없음",
+      "line": 597
+    },
+    {
+      "id": "MS-AT26",
+      "trigger": "브라우저 응답 로그 오류 내보내기 검사",
+      "expected": "공급자 비밀키와 무기한 외부 접근 토큰 노출 없음",
+      "line": 598
+    },
+    {
+      "id": "MS-AT27",
+      "trigger": "참고 문서에 비밀키 전송과 임의 endpoint 지시",
+      "expected": "자료로 취급 허용되지 않은 도구 endpoint 자산 접근 없음",
+      "line": 599
+    },
+    {
+      "id": "MS-AT28",
+      "trigger": "생성 영상에 자체 사운드 포함",
+      "expected": "원곡 마스터와 타임코드 유지 생성 사운드는 별도 트랙",
+      "line": 600
+    },
+    {
+      "id": "MS-AT29",
+      "trigger": "12개 샷 중 3번만 모델 변경 재생성",
+      "expected": "다른 11개 테이크와 승인 유지 새 후보 채택 전 기존 타임라인 보존",
+      "line": 601
+    },
+    {
+      "id": "MS-AT30",
+      "trigger": "승인 뒤 가격 길이 모델 후보 수 또는 action 변조",
+      "expected": "승인 해시와 견적과 현재 허용 범위 재검사 불일치와 범위 초과 제출 차단",
+      "line": 602
+    },
+    {
+      "id": "MS-AT31",
+      "trigger": "고정 모델 장애와 자동 대체 허용 상태 각각 시험",
+      "expected": "전자는 제안 후 대기 후자는 허용 조건 안에서만 실제 모델 공개",
+      "line": 603
+    },
+    {
+      "id": "MS-AT32",
+      "trigger": "취소 뒤 완료와 중복 웹훅 수신",
+      "expected": "상태 역행과 중복 청구 없이 대사 취소 즉시 무료 확정하지 않음",
+      "line": 604
+    },
+    {
+      "id": "MS-AT33",
+      "trigger": "모델 지원 종료 뒤 기존 프로젝트 열기",
+      "expected": "새 생성 차단 기존 파일과 타임라인 열람 및 허용된 렌더 가능",
+      "line": 605
+    },
+    {
+      "id": "MS-AT34",
+      "trigger": "큐 등록 뒤 키 grant 자료 권리 철회 또는 BYOK 계정 변경",
+      "expected": "외부 제출 직전 재검사로 차단하고 이미 접수된 작업은 별도 처리하며 다른 계정과 혼합하지 않음",
+      "line": 606
+    },
+    {
+      "id": "MS-AT35",
+      "trigger": "파일 미수집 또는 생성 실패를 성공처럼 설명하려 함",
+      "expected": "실제 상태 카드와 결과 링크는 서버 사실만 표시 설명의 불일치를 검출하고 교정",
+      "line": 607
+    },
+    {
+      "id": "MS-AT36",
+      "trigger": "채팅 3개 이미지 2개 영상 2개의 최소 조합",
+      "expected": "12개 조합에서 실제 교차 호출 결과 파일과 모델 기록 확인",
+      "line": 608
+    },
+    {
+      "id": "MS-AT37",
+      "trigger": "자동 라우팅과 별칭의 리비전 변경 및 대체 실행",
+      "expected": "실제 모델과 경로 및 고정 상태를 기록하고 엄격한 버전 고정 정책에서 미확인 경로 차단",
+      "line": 609
+    },
+    {
+      "id": "MS-AT38",
+      "trigger": "공급자별 tool result 스트림 시각 입력 제한",
+      "expected": "전용 호출 형식을 올바르게 변환하고 미지원 입력과 비공개 추론 상태 전송 없음",
+      "line": 610
+    }
+  ],
+  "sources": [
+    {
+      "id": "MS-S01",
+      "title": "OpenAI Function calling",
+      "url": "https://developers.openai.com/api/docs/guides/function-calling",
+      "line": 679
+    },
+    {
+      "id": "MS-S02",
+      "title": "Claude Tool use",
+      "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+      "line": 685
+    },
+    {
+      "id": "MS-S03",
+      "title": "Grok Function calling",
+      "url": "https://docs.x.ai/developers/tools/function-calling",
+      "line": 691
+    },
+    {
+      "id": "MS-S04",
+      "title": "Claude Models overview",
+      "url": "https://platform.claude.com/docs/en/models/overview",
+      "line": 697
+    },
+    {
+      "id": "MS-S05",
+      "title": "OpenAI Models",
+      "url": "https://developers.openai.com/api/docs/models",
+      "line": 703
+    },
+    {
+      "id": "MS-S06",
+      "title": "Grok Models",
+      "url": "https://docs.x.ai/developers/models",
+      "line": 709
+    },
+    {
+      "id": "MS-S07",
+      "title": "Codex Authentication",
+      "url": "https://learn.chatgpt.com/docs/auth",
+      "line": 715
+    },
+    {
+      "id": "MS-S08",
+      "title": "Sign in with ChatGPT",
+      "url": "https://developers.openai.com/siwc/token-sharing-open-source",
+      "line": 721
+    },
+    {
+      "id": "MS-S09",
+      "title": "Runway Models",
+      "url": "https://docs.dev.runwayml.com/guides/models/",
+      "line": 727
+    },
+    {
+      "id": "MS-S10",
+      "title": "Runway API 사용 안내",
+      "url": "https://docs.dev.runwayml.com/guides/using-the-api/",
+      "line": 733
+    },
+    {
+      "id": "MS-S11",
+      "title": "Luma Agents Models",
+      "url": "https://docs.agents.lumalabs.ai/guides/model/",
+      "line": 739
+    },
+    {
+      "id": "MS-S12",
+      "title": "Grok Imagine Video",
+      "url": "https://docs.x.ai/developers/model-capabilities/video/overview",
+      "line": 745
+    },
+    {
+      "id": "MS-S13",
+      "title": "Gemini API Video",
+      "url": "https://ai.google.dev/gemini-api/docs/video",
+      "line": 751
+    },
+    {
+      "id": "MS-S14",
+      "title": "Google Cloud Veo 3 1",
+      "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/veo/3-1-generate",
+      "line": 757
+    },
+    {
+      "id": "MS-S15",
+      "title": "Luma Ray 이전 안내",
+      "url": "https://docs.agents.lumalabs.ai/guides/videos/migration/",
+      "line": 763
+    },
+    {
+      "id": "MS-S16",
+      "title": "fal 비동기 요청",
+      "url": "https://fal.ai/docs/documentation/model-apis/inference/queue",
+      "line": 769
+    },
+    {
+      "id": "MS-S17",
+      "title": "OpenAI Structured outputs",
+      "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+      "line": 775
+    },
+    {
+      "id": "MS-S18",
+      "title": "Claude Structured outputs",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+      "line": 781
+    },
+    {
+      "id": "MS-S19",
+      "title": "Grok Structured outputs",
+      "url": "https://docs.x.ai/developers/model-capabilities/text/structured-outputs",
+      "line": 787
+    },
+    {
+      "id": "MS-S20",
+      "title": "OpenAI 모델 목록 API",
+      "url": "https://developers.openai.com/api/reference/resources/models/methods/list",
+      "line": 793
+    },
+    {
+      "id": "MS-S21",
+      "title": "Grok 모델 목록 API",
+      "url": "https://docs.x.ai/developers/rest-api-reference/inference/models",
+      "line": 799
+    }
+  ],
+  "scope": "Document/requirement lineage, not the runtime product IP ontology."
+}

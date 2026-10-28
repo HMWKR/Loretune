@@ -1,0 +1,30 @@
+--- before/README.md
++++ README.md
+@@ -1,6 +1,8 @@
+-# Loretune · 로컬 제작 작업대
++# Aethon · 로컬 제작 작업대
+ 
+-> **현재 구현·검증 인계 (2026-10-26):** [1920 우선·잔여 수정 고정본](docs/qa/desktop-residual-20261026/REPORT-ko.md). 동시 편집 미디어 가용 높이·모델 설정·선택/재생 구분을 개선하고 전체346개 테스트, 초기 키보드 진입, 제어된 저장 오류·미확정 복구를 검증했습니다. [화면·해시](docs/qa/desktop-refinement-20261026/release-manifest.json), [이전342개 baseline](docs/qa/desktop-shell-20261026/REPORT-ko.md), [디자인 문서 목차](docs/qa/design-system-redesign-20261026/INDEX.md), [방법론 추적표](docs/qa/design-system-redesign-20261026/desktop1920/METHODOLOGY-AND-DECISION-LEDGER-ko.md)를 함께 참고하세요. 주 검증1920×1080, 보조1280×900이며 모바일 추가 개선은 보류했습니다.
++제품 이름은 Aethon입니다. 기존 프로젝트 폴더 `Loretune`과 저장·복구 식별자는 호환성을 위해 유지합니다. [현재 전체 구현·검증 계획](docs/qa/codex-cli-assessment-20261026/PLAN-ko.md)을 기준으로 후속 작업을 진행합니다. 아래의 날짜별 보고서는 해당 빌드의 증거입니다.
++
++> **현재 구현·검증 인계 (2026-10-26):** [Aethon 현재 결과](docs/qa/codex-cli-assessment-20261026/REPORT-ko.md), [소스/served·검사·종료 manifest](docs/qa/codex-cli-assessment-20261026/implementation/FINAL-MANIFEST.json). 표시명 전환 후 전체350개 회귀(330비HTTP+20HTTP 한 실행),현재served8상태,두 폼 통제응답12조건과 격리 UI의 합성 후보→3초1080p 음악/한글 자막 출력→reload를 검증했습니다. 실제 Claude/fal 생성 성공과는 구분합니다. 임시 서버/검증공간은 종료됐습니다. [디자인 문서](docs/qa/design-system-redesign-20261026/INDEX.md), [방법론](docs/qa/design-system-redesign-20261026/METHODOLOGY-FIT-MATRIX-ko.md). 1920×1080 주 기준,1280×900 보조,모바일 추가 작업 보류. [이전346개 인계](docs/qa/desktop-residual-20261026/REPORT-ko.md)는 당시 빌드의 이력입니다.
+ >
+ > 아래의22/28/33 테스트 및 초기 미지원·후속 계획 문장은 해당 날짜의 역사적 기록입니다. 최신 구현 완료 범위·미검증을 판단할 때는 위 인계와 연결된 후속 보고서를 우선합니다. 전체96FR/143API 완료나 외부모델 전체 실검증을 뜻하지 않습니다.
+ 
+@@ -28,7 +30,7 @@
+ 
+ 미리보기 640×360, 가로 1920×1080, 세로 1080×1920, 24fps. 최대30컷·600초. 클립 오디오는 제거하고 선택 원곡만 48kHz AAC로 결합. 원곡이 짧으면 무음으로 채움. 영상 짧은 부분은 마지막 프레임 유지. 프레임 양자화가 발생할 수 있으며 정량 동기화 목표 검증은 미완료.
+ 
+-자막은 MP4 **선택 가능한 mov_text 트랙**과 SRT. 번인·글꼴/위치/안전영역·파형·비트 분석·자동 전사·전환·효과·드래그/분할은 미지원. 브라우저 자체 플레이어의 자막 표시 호환성은 제한적일 수 있음. 독립 플레이어에서 자막 트랙 선택 가능.
++자막은 MP4 **선택 가능한 mov_text 트랙**과 SRT. 번인·글꼴/위치/안전영역·비트 분석·자동 전사·전환·효과·드래그/분할은 미지원. 실제 PCM 파형과 승인된 자막 revision의 브라우저 미리보기는 지원합니다. 브라우저 자체 플레이어의 자막 표시 호환성은 제한적일 수 있음. 독립 플레이어에서 자막 트랙 선택 가능.
+ 
+ 이전 /api/action render 경로는 초기 로컬 초안 테스트 호환용이다. UI 최종 출력은 render_job만 사용하며 take/타임라인 승인을 확인한다. JSON 명세는 영상이 아니며 기존 Studio mock 견적은 실제 렌더 운영비가 아니다. 모델 미연결, 외부 호출비0, 로컬 연산 비용 미계측. API capabilities에 실제 지원/미지원 표시.
+ 
+@@ -88,6 +90,6 @@
+ 
+ ## 공급자 역할 정정 (2026-10-25 사용자 지시)
+ 
+-Runway는 경쟁사·디자인 벤치마크이며 Loretune의 연결 공급자가 아니다. 과거 예시에서 도출한 비활성 후보 구현과 승인 질문은 폐기됐다. 모델 registry·신규 action 허용 연결·이미지 큐의 Runway 결합을 제거하고, 기존 문서·저장 기록과 역사적 코드 사본을 보존한다. Runway 계정·키·결제·보관 정책 수락을 요청하지 않는다.
++Runway는 경쟁사·디자인 벤치마크이며 Aethon의 연결 공급자가 아니다. 과거 예시에서 도출한 비활성 후보 구현과 승인 질문은 폐기됐다. 모델 registry·신규 action 허용 연결·이미지 큐의 Runway 결합을 제거하고, 기존 문서·저장 기록과 역사적 코드 사본을 보존한다. Runway 계정·키·결제·보관 정책 수락을 요청하지 않는다.
+ 
+ 영상은 사용자가 지정한 fal.ai Kling 경로, 온톨로지는 Anthropic 지시를 유지한다. 이미지 모델은 아직 선택되지 않았으며 fal 공식 후보 조사만으로 선택/활성화/유료 호출하지 않는다. 기존 이미지 업로드, 공급자 공통 자산 검증·권리·원장·복구 계약, 승인 출력의 자막 미리보기는 유지한다. 이번 정정의 범위·회귀·해시는 docs/qa/benchmark-provider-correction-20261025/REPORT-ko.md를 따른다. 이전 Runway 후보/선택 질문 문서는 과거 근거이며 현재 작업 지시가 아니다.

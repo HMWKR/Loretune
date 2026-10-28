@@ -1,0 +1,65 @@
+{
+  "status": "REPORTED; root visual review pending",
+  "scenario": "Read-only two published images from exact pinned metadata paths",
+  "invocation": "python3 via heredoc; urllib.request GET with 30 second timeout and 12MiB per-file cap; hashlib.sha256 and RIFF/WebP header parser",
+  "records": [
+    {
+      "role": "original_2d_artwork",
+      "url": "https://raw.githubusercontent.com/softmarshmallow/fx-games/d6dd92f8c6877c5389e4d1223391b228eaa02d63/library/characters/riko/sd_flat.webp",
+      "metadata_path": "library/characters/riko/sd_flat.webp",
+      "expected_bytes": 208504,
+      "expected_sha256": "f01c965ff785f0a90a8e19a0f2c1c78820eb54ac50cb4b9f78ba1d264369b3dd",
+      "byte_limit": 12582912,
+      "http_status": 200,
+      "final_url": "https://raw.githubusercontent.com/softmarshmallow/fx-games/d6dd92f8c6877c5389e4d1223391b228eaa02d63/library/characters/riko/sd_flat.webp",
+      "content_type": "image/webp",
+      "actual_bytes": 208504,
+      "actual_sha256": "f01c965ff785f0a90a8e19a0f2c1c78820eb54ac50cb4b9f78ba1d264369b3dd",
+      "metadata_hash_and_size_match": true,
+      "width": 1024,
+      "height": 1536,
+      "webp_chunk": "VP8",
+      "temporary_path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-riko-visual-dbaww2ml/sd_flat.webp",
+      "dimensions_method": "RIFF/WebP header parse; no pixel decode",
+      "utc": "2026-10-27T23:48:26.156142+00:00"
+    },
+    {
+      "role": "final_published_model_preview",
+      "url": "https://raw.githubusercontent.com/softmarshmallow/fx-games/d6dd92f8c6877c5389e4d1223391b228eaa02d63/library/characters/riko/sd_3d.webp",
+      "metadata_path": "library/characters/riko/sd_3d.webp",
+      "expected_bytes": 43728,
+      "expected_sha256": "67c1ce85a0473f38150429843d0748b89d0e1c3e510019caa74d328df2e3c3b9",
+      "byte_limit": 12582912,
+      "http_status": 200,
+      "final_url": "https://raw.githubusercontent.com/softmarshmallow/fx-games/d6dd92f8c6877c5389e4d1223391b228eaa02d63/library/characters/riko/sd_3d.webp",
+      "content_type": "image/webp",
+      "actual_bytes": 43728,
+      "actual_sha256": "67c1ce85a0473f38150429843d0748b89d0e1c3e510019caa74d328df2e3c3b9",
+      "metadata_hash_and_size_match": true,
+      "width": 1024,
+      "height": 1024,
+      "webp_chunk": "VP8",
+      "temporary_path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-riko-visual-dbaww2ml/sd_3d.webp",
+      "dimensions_method": "RIFF/WebP header parse; no pixel decode",
+      "utc": "2026-10-27T23:48:26.621637+00:00"
+    }
+  ],
+  "prior_seven_manifested_files_unchanged": true,
+  "original_input_source": "public-metadata.json source",
+  "final_preview_source": "public-metadata.json artifacts[image/webp]",
+  "limitations": [
+    "2D original artwork versus final published preview, not raw mesh before/after",
+    "Actual generated front/back inputs and pre-repair GLB remain unavailable to this probe",
+    "No image visual review or pixel decoding performed by this agent",
+    "No rerender or platform embedding",
+    "Public availability and repository publication approval do not establish downstream license",
+    "No images copied to repo or durable evidence"
+  ],
+  "artifact_manifest": [
+    {
+      "path": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/public-artifact/visual/download-receipts.json",
+      "bytes": 2151,
+      "sha256": "1a492f9208e961da6eadf8021aa4ba30bf8a40aa2f4b6f18f14efd2dccd205e6"
+    }
+  ]
+}

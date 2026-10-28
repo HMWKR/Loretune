@@ -1,0 +1,103 @@
+{
+  "at": 1793003357.93959,
+  "python": "3.15.0 (main, Oct  9 2026, 11:16:41) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "providerCalls": 0,
+  "source": "snapshot/",
+  "results": [
+    {
+      "id": "C01_current_canon_restart_isolation",
+      "status": "PASS",
+      "observed": {
+        "restartPreservesPriorUserTurn": true,
+        "canonicalRevision": 2,
+        "stableEntityAndRelation": true,
+        "currentProvenance": [
+          {
+            "excerpt": "A-CANARY-V2: Nari wears violet now. Age remains unknown.",
+            "source_id": "author-correction-v2"
+          }
+        ],
+        "oldVersionPreserved": true,
+        "priorAssistantMarkedUnreviewed": true,
+        "foreignCanaryExcludedBothWays": true,
+        "claudeQuality": "NOT RUN; fake text proves app payload only"
+      }
+    },
+    {
+      "id": "C02_long_session_constraint_retention",
+      "status": "FAIL",
+      "observed": {
+        "persistedTurns": 10,
+        "retainedPriorUserTurns": [
+          "Synthetic neutral turn 2",
+          "Synthetic neutral turn 3",
+          "Synthetic neutral turn 4",
+          "Synthetic neutral turn 5",
+          "Synthetic neutral turn 6",
+          "Synthetic neutral turn 7",
+          "Synthetic neutral turn 8",
+          "Synthetic neutral turn 9"
+        ],
+        "canaryStillInDatabase": true,
+        "canaryInProviderRequest": false,
+        "summaryOrStructuredSessionConstraintsInHandoff": [
+          "context",
+          "embedding_policy",
+          "execution_targets",
+          "instructions",
+          "jobs",
+          "messages"
+        ],
+        "expected": "Session prohibition survives history compaction, even if original turn is omitted",
+        "error": "CC01: turn 1 session prohibition is absent after 9 completed turns; only last 8 are re-sent, no summary/constraint channel",
+        "trace": "Traceback (most recent call last):\n  File \"/Users/leesungmin/Desktop/Loretune/docs/qa/independent-claude-context-prompt-audit-20261026/offline_probe.py\", line 19, in record\n    try:run(observed);status='PASS'\n        ~~~^^^^^^^^^^\n  File \"/Users/leesungmin/Desktop/Loretune/docs/qa/independent-claude-context-prompt-audit-20261026/offline_probe.py\", line 75, in history_probe\n    assert 'SESSION-LONG-913' in wire,'CC01: turn 1 session prohibition is absent after 9 completed turns; only last 8 are re-sent, no summary/constraint channel'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: CC01: turn 1 session prohibition is absent after 9 completed turns; only last 8 are re-sent, no summary/constraint channel\n"
+      }
+    },
+    {
+      "id": "C03_same_project_session_capability",
+      "status": "PASS",
+      "observed": {
+        "observation": "One conversation per project; new session_id is not accepted; natural-language new session does not reset history",
+        "separateSessionApi": false,
+        "sameProjectPriorCanaryIncluded": true,
+        "classification": "UNIMPLEMENTED/GAP, not cross-project leakage"
+      }
+    },
+    {
+      "id": "C04_conflict_unknown_stale_revision",
+      "status": "PASS",
+      "observed": {
+        "bothSourceClaimsPreserved": true,
+        "uncertaintyStatus": "unknown",
+        "staleRevisionRejected": true,
+        "applicationSemanticConflictResolution": "not implemented by this path; model behavior requires live review",
+        "searchMode": "scoped-snapshot"
+      }
+    },
+    {
+      "id": "P01_prompt_to_fake_fal_approval_revisions",
+      "status": "PASS",
+      "observed": {
+        "naturalLanguageInput": "Nari를 수채화 새벽 구리 천문대에서 천천히 전진 촬영해줘. 궤도 회전과 글자는 금지하고 원곡을 보존해.",
+        "fakeAuthoredPrompt": "Nari in violet coat, watercolor copper observatory at dawn; slow forward dolly, no orbit, no lettering, preserve identity and original audio.",
+        "quality": "NOT EVALUATED: fake response manually authored",
+        "modelSlots": {
+          "chat": "anthropic-haiku-5-5",
+          "image": "fal-flux-pro-1-1",
+          "video": "fal-kling-2-5-turbo"
+        },
+        "exactFalPayload": true,
+        "actualModelEndpoint": "https://queue.fal.run/fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+        "referenceBytesHash": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+        "preApprovalProviderCalls": 0,
+        "postApprovalFakeSubmits": 1,
+        "duplicateSameJob": true,
+        "reservations": 1,
+        "correctedPromptNewAction": true,
+        "oldPromptImmutable": true,
+        "oldGrantCannotApproveCorrection": true,
+        "unsupportedAuthorityFieldRejected": true
+      }
+    }
+  ]
+}

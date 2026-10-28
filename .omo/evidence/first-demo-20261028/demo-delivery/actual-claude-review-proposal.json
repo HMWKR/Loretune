@@ -1,0 +1,78 @@
+{
+  "schema": "bounded-actual-claude-review-proposal/1",
+  "at": "2026-10-28T04:23:54.449199+00:00",
+  "status": "PROPOSED_ONLY_NOT_APPROVED_OR_EXECUTED",
+  "prerequisites": [
+    "User reviews the3 original first-demo recordings",
+    "Separate explicit approval of this model/data/call/budget/retention scope",
+    "Approved credential/account availability checked without logging values; no alternate provider/model silently substituted"
+  ],
+  "model": {
+    "selection": "anthropic-haiku-5-5",
+    "wire_model": "claude-haiku-5-5",
+    "destination": "https://api.anthropic.com/v1/messages",
+    "effort": "high",
+    "thinking": "disabled",
+    "permission": "review; proposed changes reviewed through UI, output approved separately"
+  },
+  "transmission": {
+    "included": [
+      "Exact user request text and the existing server-owned SYSTEM+6typed tool schemas",
+      "Current demo project music/timeline/scene/source metadata, approved immutable typography AST, subtitles and bounded work-status tool results",
+      "Same-conversation request/answer history only when explicitly shown in each continuation manifest"
+    ],
+    "not_included": [
+      "Audio/image/video binary files",
+      "Unrelated projects or conversations",
+      "Personal account data, API secrets, private reasoning or full MD corpus"
+    ],
+    "no_vision_claim": "This is a text/typed-tool workflow trial. Metadata access is not listening to audio or seeing frames."
+  },
+  "budget_and_calls": {
+    "logical_requests": 1,
+    "maximum_messages": 4,
+    "maximum_count_tokens_requests": 4,
+    "per_round_ceiling_USD": "0.01",
+    "total_ceiling_USD": "0.04",
+    "automatic_retries": false,
+    "actual_usage_or_bill_so_far": "0 real calls; no actual usage/bill verified",
+    "runtime_limits": {
+      "input_tokens": 4096,
+      "output_tokens": 4096,
+      "source": "chat_general.py:28-30 current frozen source"
+    },
+    "stop_condition": "If actual counted input exceeds4096, account/model contract fails, usage cannot be safely settled, outcome is unknown or budget cannot reserve, do not send/retry another message; inspect existing IDs/state/cost first. No current real token-fit success claim.",
+    "failure_cost": "A transmitted model request can consume observed tokens even when tool/content validation fails. Preserve known settlement or unknown hold; no promised refund, automatic replacement call or silent budget increase.",
+    "platform_budget_setup": "After explicit approval, configure this designated demo project scope to USD0.04 using existing budget UI/CAS; maxConcurrency1, automaticRetriesfalse. Do not alter other project/month/rehearsal budgets. This is a spending ceiling, not a payment or actual-spend receipt."
+  },
+  "retention": {
+    "platform": "Existing local project history, editable versions and outputs retained; do not erase during test",
+    "provider": "Default API inputs/outputs removed within30days, subject to longer services, separate agreement, usage-policy enforcement or law. Account-specific ZDR not verified. No Files API, feedback submission or training opt-in in this scope.",
+    "scope_note": "Provider policy disclosure for approval, not proof of the current account agreement."
+  },
+  "verification": [
+    "Actual selected/wire/returned model identity, frozen high/body and exact manifests",
+    "Counted tokenfit distinct from synthetic100-token fixtures",
+    "Actual tool choice and answer compared with server diff/actual saved edit",
+    "Human review applies new unapproved version; separate final output approval",
+    "Native output/play/download/reopen and prior versions preserved",
+    "Observed usage and price calculation distinct from confirmed provider invoice"
+  ],
+  "AI_video_generation_authorized": false,
+  "primary_sources_checked_no_model_API_calls": [
+    {
+      "url": "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+      "observed": "Exact API id claude-haiku-5-5; standard≤100k input/output USD.10/.50 per1M tokens, higher tier above100k."
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "observed": "Global standard tier and long-context distinction; local configured Haiku rates matched, no account pricing/billing checked."
+    },
+    {
+      "url": "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data",
+      "observed": "API default30day deletion with stated exceptions; no current-account retention agreement checked."
+    }
+  ],
+  "local_source_crosscheck": "chat_models.py selected model/id/pricing/endpoint; chat_general.py actual4096/4096/4bounds, no credentials read",
+  "conversation": "Use a newly created isolated demo conversation through UI after approval; do not inherit synthetic assistant replies. Shared human-approved demo assets/versions stay available under existing scope checks."
+}

@@ -1,0 +1,91 @@
+{
+  "at": "2026-10-26T04:09:41.054578+00:00",
+  "commands": [
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-v",
+      "error",
+      "-f",
+      "lavfi",
+      "-i",
+      "testsrc2=size=320x180:rate=24:duration=3",
+      "-c:v",
+      "libx264",
+      "-pix_fmt",
+      "yuv420p",
+      "-an",
+      "-y",
+      "docs/qa/frontend-functional-independent-20261026/fixtures/media/synthetic-3s-24fps.mp4"
+    ],
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-v",
+      "error",
+      "-f",
+      "lavfi",
+      "-i",
+      "sine=frequency=440:duration=3:sample_rate=48000",
+      "-c:a",
+      "pcm_s16le",
+      "-y",
+      "docs/qa/frontend-functional-independent-20261026/fixtures/media/synthetic-3s-440hz.wav"
+    ]
+  ],
+  "evidence_scope": "local FFmpeg fixture preparation/metadata only; no browser playback/decode validation",
+  "files": {
+    "synthetic-3s-24fps.mp4": {
+      "sha256": "16556e80fdcb74d2baa98f5a0183b8e8144542e757fa1b5bcacb7a0f3b77c93b",
+      "bytes": 86526,
+      "ffprobe_returncode": 0,
+      "ffprobe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 320,
+            "height": 180,
+            "r_frame_rate": "24/1",
+            "duration": "3.000000",
+            "nb_frames": "72"
+          }
+        ],
+        "format": {
+          "duration": "3.000000"
+        }
+      },
+      "stderr": ""
+    },
+    "synthetic-3s-440hz.wav": {
+      "sha256": "7353fbb9ab4d9eb310d2925489eaba4b4865ed6fc7cde99b6bb33553a310f2ef",
+      "bytes": 288078,
+      "ffprobe_returncode": 0,
+      "ffprobe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s16le",
+            "codec_type": "audio",
+            "r_frame_rate": "0/0",
+            "duration": "3.000000"
+          }
+        ],
+        "format": {
+          "duration": "3.000000"
+        }
+      },
+      "stderr": ""
+    },
+    "corrupt.mp4": {
+      "sha256": "42a311c06995ab9db4b58ddfe1526d3a794758ce217979d110be647459f8dd98",
+      "bytes": 51,
+      "ffprobe_returncode": 1,
+      "ffprobe": {},
+      "stderr": "[mov,mp4,m4a,3gp,3g2,mj2 @ 0xc7ac54000] moov atom not found\ndocs/qa/frontend-functional-independent-20261026/fixtures/media/corrupt.mp4: Invalid data found when processing input"
+    }
+  }
+}

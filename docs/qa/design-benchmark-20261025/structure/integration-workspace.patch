@@ -1,0 +1,311 @@
+--- a/index.html
++++ b/index.html
+@@ -165,6 +165,166 @@
+ }
+ 
+ </style>
++<style id="loretuneWorkspaceLayout">
++/* Loretune workspace v3. Append after the existing semantic system.
++   Source roles / provenance: structure/DECISIONS.md. Candidate, not integrated. */
++.lt-workspace-v3 {
++  --lt-chrome: #151515;
++  --lt-work: #1b1b1b;
++  --lt-border-subtle: #303030;
++  --lt-rail-width: 184px;
++  --lt-inspector-width: 288px;
++  --lt-work-gap: 16px;
++  --lt-preview-height: clamp(220px,36vh,360px);
++}
++.lt-workspace-v3 .lt-studio-shell {
++  min-height:56px; padding:8px 20px; gap:12px; flex-wrap:wrap;
++  background:var(--lt-chrome); border-bottom:1px solid var(--lt-border-subtle);
++}
++.lt-workspace-v3 .lt-studio-shell>b { font-size:20px; letter-spacing:-.7px; margin-right:8px; }
++.lt-workspace-v3 .lt-studio-shell>#songs { width:240px; padding:8px 10px; background:transparent; border-color:var(--lt-line); }
++.lt-workspace-v3 .lt-studio-shell>#editModelSettings { margin-left:auto; }
++.lt-workspace-v3 .lt-studio-shell :where(button,summary) { min-height:36px; }
++.lt-workspace-v3 .lt-studio-shell :where(.management,.lt-project-context) { position:relative; margin:0; width:auto; padding:0; border:0; }
++.lt-workspace-v3 .lt-studio-shell summary { padding:8px 10px; color:var(--lt-text-secondary); border-radius:8px; }
++.lt-workspace-v3 .lt-studio-shell details[open] { position:relative; background:var(--lt-surface); }
++.lt-workspace-v3 .lt-studio-shell details[open] { flex-basis:100%; padding:12px; border:1px solid var(--lt-line); border-radius:8px; }
++.lt-workspace-v3 .lt-project-context #flowSummary { margin:8px 0; }
++.lt-workspace-v3 .lt-project-context #modelDefaultsBar { padding:0; }
++.lt-workspace-v3 .lt-mode-switch { padding:8px 0; border:0; }
++.lt-workspace-v3 .lt-stage-bar { display:flex; gap:16px; align-items:center; justify-content:space-between; padding:8px 20px; background:var(--lt-chrome); border-bottom:1px solid var(--lt-border-subtle); }
++.lt-workspace-v3 .flow-nav { display:flex; flex-wrap:nowrap; padding:0; gap:4px; background:none; min-width:0; }
++.lt-workspace-v3 .flow-nav button { min-height:36px; padding:7px 12px; font-size:var(--lt-body); background:transparent; border-color:transparent; white-space:nowrap; }
++.lt-workspace-v3 .flow-nav button[aria-current="step"] { background:#303030; border-color:transparent; box-shadow:inset 0 -2px #ddd; }
++.lt-workspace-v3 #flowNext { min-height:36px; margin:0; max-width:280px; padding:7px 12px; color:var(--lt-text); background:var(--lt-surface-raised); border-color:var(--lt-line); font-size:var(--lt-meta); font-weight:500; }
++.lt-workspace-v3 .lt-status-line { display:flex; gap:20px; align-items:baseline; padding:6px 20px; border-bottom:1px solid var(--lt-border-subtle); }
++.lt-workspace-v3 #flowHeading { flex-shrink:0; font-size:var(--lt-meta); font-weight:600; margin:0; color:var(--lt-text-secondary); }
++.lt-workspace-v3 #notice { padding:0; min-height:0; background:transparent; font-size:var(--lt-meta); color:var(--lt-text-secondary); }
++.lt-workspace-v3 #notice.error { color:var(--lt-danger); font-weight:600; }
++.lt-workspace-v3 .lt-edit-workspace { padding:16px 20px 24px; gap:var(--lt-work-gap); min-height:0; align-items:start; max-width:none!important; }
++.lt-workspace-v3 main>.lt-scene-rail { padding:0; border:0; min-width:0; }
++.lt-workspace-v3 .shot-board>h2 { display:flex; align-items:center; gap:8px; font-size:var(--lt-meta); color:var(--lt-text-secondary); margin:4px 0 12px; }
++.lt-workspace-v3 .shot { padding:8px; margin:4px 0; gap:8px; border-color:transparent; background:transparent; border-radius:8px; }
++.lt-workspace-v3 .shot.active { border-color:#777; background:#262626; box-shadow:inset 2px 0 #f5f5f5; }
++.lt-workspace-v3 .shot .thumb { width:52px; height:36px; }
++.lt-workspace-v3 .shot small { font-size:12px; }
++.lt-workspace-v3 main>.lt-media-pane { padding:0; min-width:0; }
++.lt-workspace-v3 .lt-shot-header { justify-content:space-between; flex-wrap:nowrap; gap:12px; }
++.lt-workspace-v3 .lt-shot-header>h1 { font-size:var(--lt-section); line-height:1.5; }
++.lt-workspace-v3 #selectedBadge { flex:0 0 auto; border-color:var(--lt-border-subtle); color:var(--lt-text-secondary); }
++.lt-workspace-v3 #description { font-size:var(--lt-meta); margin:4px 0 12px; }
++.lt-workspace-v3 #preview { max-width:none; width:100%; height:var(--lt-preview-height); aspect-ratio:auto; border:1px solid var(--lt-border-subtle); border-radius:10px; }
++.lt-workspace-v3 #preview :where(video,img) { width:100%; height:100%; object-fit:contain; }
++.lt-workspace-v3 .lt-take-row { display:flex; align-items:center; gap:8px; min-width:0; padding-block:8px; }
++.lt-workspace-v3 #takes { flex:1; min-width:0; padding:0; gap:6px; }
++.lt-workspace-v3 #takes button { min-width:72px; padding:6px 8px; font-size:var(--lt-meta); line-height:1.3; }
++.lt-workspace-v3 #takes img { display:none; }
++.lt-workspace-v3 #compareButton { flex:0 0 auto; min-height:36px; padding:6px 10px; font-size:var(--lt-meta); }
++.lt-workspace-v3 .timeline { margin:8px 0 0; padding:12px; border:1px solid var(--lt-border-subtle); border-radius:10px; background:var(--lt-work); overflow:visible; }
++.lt-workspace-v3 .lt-timeline-header { align-items:center; flex-wrap:nowrap; }
++.lt-workspace-v3 .lt-timeline-header h2 { font-size:var(--lt-body); margin:0; }
++.lt-workspace-v3 #sync { flex:0 1 auto; font-size:var(--lt-meta); padding:6px 8px; min-height:32px; }
++.lt-workspace-v3 #timelineStatus { margin:6px 0; font-size:var(--lt-meta); }
++.lt-workspace-v3 #track { height:32px; margin:10px 0; border-radius:4px; }
++.lt-workspace-v3 #track span { border-color:#606060; background:#383838; }
++.lt-workspace-v3 .lt-timeline-controls { margin:4px 0 0; }
++.lt-workspace-v3 .lt-timeline-controls>summary { padding:6px 0; min-height:32px; font-size:var(--lt-meta); }
++.lt-workspace-v3 .lt-timeline-controls[open] { overflow-x:auto; }
++.lt-workspace-v3 .lt-output-actions { display:flex; flex:0 1 auto; gap:8px; flex-wrap:wrap; margin:0; }
++.lt-workspace-v3[data-guided="true"]:not([data-step="4"]) .lt-output-actions { display:none; }
++.lt-workspace-v3 #saveTimeline { background:var(--lt-surface-raised); color:var(--lt-text); border-color:var(--lt-control-border); }
++.lt-workspace-v3 #review { background:var(--lt-surface-raised); color:var(--lt-text); border-color:var(--lt-control-border); }
++.lt-workspace-v3 main>.inspector { padding:0 0 0 16px; border:0; border-left:1px solid var(--lt-border-subtle); min-width:0; display:block; }
++.lt-workspace-v3 .inspector>section { border-bottom:1px solid var(--lt-border-subtle); padding:0 0 16px; }
++.lt-workspace-v3 .inspector :where(h2,summary) { font-size:var(--lt-body); font-weight:600; }
++.lt-workspace-v3 .inspector :where(p,small) { font-size:var(--lt-meta); line-height:1.6; }
++.lt-workspace-v3 .inspector label { font-size:var(--lt-meta); }
++.lt-workspace-v3 .inspector .row { display:block; }
++.lt-workspace-v3 .inspector .row>* { width:100%; margin-bottom:8px; }
++.lt-workspace-v3 #reviewTake { background:var(--lt-action); color:var(--lt-on-action); font-weight:600; border-color:var(--lt-action); }
++.lt-workspace-v3 #reviewTake:disabled,.lt-workspace-v3 #flowNext:disabled,.lt-workspace-v3 #render:disabled,.lt-workspace-v3 #saveTimeline:disabled {
++ background:var(--lt-surface-raised); color:var(--lt-text-disabled); border-color:var(--lt-line); cursor:not-allowed;
++}
++.lt-workspace-v3 .lt-inspector-detail { margin:0; border-bottom:1px solid var(--lt-border-subtle); }
++.lt-workspace-v3 .lt-inspector-detail>summary { min-height:44px; padding:12px 0; }
++.lt-workspace-v3 .lt-inspector-detail>section { padding:0 0 12px; border:0; }
++.lt-workspace-v3 .lt-inspector-detail>section>.job { padding:12px; }
++.lt-workspace-v3 #downloadPreview:empty,.lt-workspace-v3 .lt-output-label { display:none; }
++.lt-workspace-v3 #downloadPreview:not(:empty) { margin:0 0 12px; }
++.lt-workspace-v3 #downloadPreview video { height:var(--lt-preview-height); object-fit:contain; background:var(--lt-media); border-radius:10px; max-height:none; }
++.lt-workspace-v3[data-step="4"] .lt-output-label:has(+ #downloadPreview:not(:empty)) { display:block; font-size:var(--lt-meta); }
++.lt-workspace-v3[data-step="4"] #downloadPreview:not(:empty)~#preview { display:none!important; }
++.lt-workspace-v3 .lt-panel-nav { display:none; }
++.lt-workspace-v3[data-guided="true"][data-step="3"] .timeline,
++.lt-workspace-v3[data-guided="true"][data-step="4"] #preview,
++.lt-workspace-v3[data-guided="true"][data-step="4"] #takes,
++.lt-workspace-v3[data-guided="true"][data-step="4"] #compareButton,
++.lt-workspace-v3[data-guided="true"][data-step="4"] main>.lt-scene-rail { display:block; }
++.lt-workspace-v3[data-guided="true"][data-step="4"] #takes { display:flex; }
++.lt-workspace-v3[data-guided="true"][data-step="4"] .audio-section,
++.lt-workspace-v3[data-guided="true"][data-step="4"] .snapshot-section,
++.lt-workspace-v3[data-guided="true"][data-step="4"] .inspector>:not(.render-section) { display:none; }
++.lt-workspace-v3[data-guided="true"][data-step="1"] .lt-panel-nav,
++.lt-workspace-v3[data-guided="true"][data-step="2"] .lt-panel-nav { display:none; }
++.lt-workspace-v3 #chatPanel { padding:20px!important; }
++.lt-workspace-v3 #chatPanel>h1 { font-size:20px; }
++.lt-workspace-v3 #chatPanel>p { max-width:76ch; font-size:var(--lt-meta); }
++@media(min-width:901px) {
++ .lt-workspace-v3:not([data-guided="true"]) main,
++ .lt-workspace-v3[data-guided="true"][data-step="3"] main,
++ .lt-workspace-v3[data-guided="true"][data-step="4"] main { display:grid; grid-template-columns:var(--lt-rail-width) minmax(0,1fr) var(--lt-inspector-width); }
++ .lt-workspace-v3 main>.inspector { grid-column:auto!important; max-height:calc(100dvh - 190px); overflow-y:auto; scrollbar-gutter:stable; padding-right:8px; }
++ .lt-workspace-v3[data-guided="true"][data-step="3"] main>.inspector { border-top:0; }
++ .lt-workspace-v3[data-guided="true"][data-step="1"] main { padding-inline:24px; max-width:960px!important; }
++}
++@media(min-width:901px) and (max-width:1150px) {
++ .lt-workspace-v3 { --lt-rail-width:148px; --lt-inspector-width:260px; --lt-work-gap:12px; }
++ .lt-workspace-v3 .shot { flex-direction:column; }
++}
++@media(max-width:900px) {
++ .lt-workspace-v3 .lt-studio-shell { padding:8px 12px; gap:6px; }
++ .lt-workspace-v3 .lt-studio-shell>b { margin:0; font-size:18px; }
++ .lt-workspace-v3 .lt-studio-shell>#songs { flex:1; width:120px; min-width:0; }
++ .lt-workspace-v3 .lt-studio-shell>.management { flex:0 0 auto; }
++ .lt-workspace-v3 .lt-studio-shell>.management>summary { padding-inline:6px; }
++ .lt-workspace-v3 .lt-studio-shell .lt-project-context { margin-left:auto; }
++ .lt-workspace-v3 .lt-studio-shell>#editModelSettings { margin-left:0; }
++ .lt-workspace-v3 .lt-studio-shell :where(button,summary) { min-height:44px; }
++ .lt-workspace-v3 .lt-stage-bar { display:block; padding:6px 12px; }
++ .lt-workspace-v3 .flow-nav { overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; }
++ .lt-workspace-v3 .flow-nav button { min-height:44px; padding:8px 10px; font-size:13px; }
++ .lt-workspace-v3 #flowNext { display:block; width:100%; max-width:none; min-height:44px; margin-top:4px; }
++ .lt-workspace-v3 .lt-status-line { display:block; padding:6px 12px; }
++ .lt-workspace-v3 #flowHeading { font-size:12px; }
++ .lt-workspace-v3 #notice { font-size:12px; padding-top:4px; }
++ .lt-workspace-v3 .lt-panel-nav:not([hidden]) { display:flex; gap:4px; padding:8px 12px; border-bottom:1px solid var(--lt-border-subtle); }
++ .lt-workspace-v3 .lt-panel-nav button { flex:1; min-height:44px; background:transparent; border-color:transparent; }
++ .lt-workspace-v3 .lt-panel-nav button[aria-selected="true"] { background:var(--lt-selected); box-shadow:inset 0 -2px #eee; }
++ .lt-workspace-v3 .lt-panel-inactive { display:none!important; }
++ .lt-workspace-v3 .lt-edit-workspace { display:block!important; padding:12px; }
++ .lt-workspace-v3[data-guided="true"][data-step="2"] .lt-edit-workspace { display:none!important; }
++ .lt-workspace-v3 main>.inspector { border:0; padding:0; }
++ .lt-workspace-v3 #preview { height:auto; aspect-ratio:16/9; min-height:0; }
++ .lt-workspace-v3 #preview :where(img,video) { max-height:52dvh; }
++ .lt-workspace-v3 #takes img { display:none; }
++ .lt-workspace-v3 #takes button,.lt-workspace-v3 #compareButton,.lt-workspace-v3 #sync { min-height:44px; }
++ .lt-workspace-v3 .lt-take-row { align-items:stretch; }
++ .lt-workspace-v3 #compareButton { max-width:112px; }
++ .lt-workspace-v3 #shotlist { display:block; }
++ .lt-workspace-v3 .shot { min-width:0; }
++ .lt-workspace-v3 .shot .thumb { width:76px; height:48px; }
++ .lt-workspace-v3 .timeline { padding:10px; }
++ .lt-workspace-v3 .lt-timeline-header { flex-wrap:wrap; }
++ .lt-workspace-v3 .lt-output-actions { flex-basis:100%; }
++ .lt-workspace-v3 .lt-timeline-controls>summary { min-height:44px; padding:10px 0; }
++ .lt-workspace-v3 #downloadPreview video { height:auto; max-height:52dvh; }
++ .lt-workspace-v3 #chatPanel { padding:12px!important; }
++}
++@media(prefers-reduced-motion:reduce) {
++ .lt-workspace-v3 *, .lt-workspace-v3 *::before, .lt-workspace-v3 *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
++}
++
++</style>
+ <body class="lt-system">
+ <a class="skip-link" href="#flowHeading" id="skipFlow">제작 단계로 건너뛰기</a><header><b>Loretune</b><span>제작 스튜디오</span><span id="providerBadge" class="badge">LOCAL · 모델 미연결</span></header>
+ <div class="lt-project-bar"><div class="toolbar"><select id="songs" aria-label="작품 선택"></select><button id="newProject">새 작품</button><details class="management"><summary>설정·자산·운영 더 보기</summary><label>글자 크기<select id="textScale"><option value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label><button id="ontologyButton">인물·장소·계보</button><button id="settings">IP 기준 설정</button><button id="preferencesButton">연출 취향</button><button id="archiveButton">보관 관리</button><button id="operationsButton">운영 상태</button><button id="budgetButton">예산·원장</button><button id="libraryButton">자산함</button><button id="rightsButton">사용권 관리</button></details><div class="spacer"></div><button id="review" class="primary">타임라인 승인</button><button id="render" class="primary">렌더 대기열에 추가</button></div>
+@@ -332,4 +492,141 @@
+ document.querySelectorAll('button[data-step]').forEach(b=>b.onclick=()=>setStep(Number(b.dataset.step)));$('#flowNext').onclick=()=>setStep(guidedStep%4+1);
+ 
+ setInterval(async()=>{if(busy||!state)return;try{const r=await fetch('/api/state');const fresh=await r.json();const name=song(),p=state.projects[name],next=fresh.projects[name];if(p&&next&&(JSON.stringify(p.chat_turns)!==JSON.stringify(next.chat_turns)||JSON.stringify(p.chat_connection)!==JSON.stringify(next.chat_connection))){p.chat_turns=next.chat_turns;p.chat_connection=next.chat_connection;drawModelChat()}if(JSON.stringify(state.jobs)!==JSON.stringify(fresh.jobs)){state.jobs=fresh.jobs;drawJobs()}if(JSON.stringify(state.generation_jobs)!==JSON.stringify(fresh.generation_jobs)){state.generation_jobs=fresh.generation_jobs;if(!dirty&&state.revision!==fresh.revision)await refresh(song());else drawGeneration()}}catch{}},1500);refresh().then(()=>{document.body.dataset.step='1';mode(true);message('로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.')}).catch(()=>message('서버 연결을 확인하세요.',true));
++</script>
++<script id="loretuneWorkspaceStructure">
++/* DOM-only integration candidate. Preserve original nodes, IDs, handlers and data. */
++(() => {
++  if (document.body.classList.contains('lt-workspace-v3')) return;
++  const q = s => document.querySelector(s);
++  const make = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text) el.textContent = text; return el; };
++  const disclosure = (label, cls) => { const d = make('details', cls); d.append(make('summary', '', label)); return d; };
++  const main = q('main'), media = q('main>article'), rail = q('main>aside:not(.inspector)'), inspector = q('main>.inspector');
++  if (!main || !media || !rail || !inspector) return;
++  document.body.classList.add('lt-workspace-v3');
++
++  // A compact shell. Nodes move without changing their save/action semantics.
++  const oldHeader = q('body>header'), projectBar = q('.lt-project-bar');
++  const shell = make('header', 'lt-studio-shell');
++  oldHeader.before(shell);
++  const brand = oldHeader.querySelector('b'); shell.append(brand, q('#songs'));
++  const management = q('.management');
++  management.querySelector('summary').textContent = '작품·설정';
++  const modeBar = q('#chatMode').parentElement;
++  modeBar.classList.add('lt-mode-switch');
++  management.append(modeBar, q('#newProject'));
++  const modelButton = q('#editModelSettings');
++  const context = disclosure('프로젝트 상태', 'lt-project-context');
++  const modelBar = q('#modelDefaultsBar'); modelBar.className = 'lt-model-context';
++  context.append(q('#providerBadge'), q('#flowSummary'), modelBar);
++  shell.append(management, context, modelButton);
++  modelButton.textContent = '모델 설정';
++  const stage = make('div', 'lt-stage-bar');
++  shell.after(stage);
++  stage.append(q('.flow-nav'), q('#flowNext'));
++  const heading = q('#flowHeading'); heading.classList.add('lt-stage-heading');
++  const status = make('div', 'lt-status-line'); stage.after(status);
++  status.append(heading, q('#notice'));
++  // Move the existing output actions next to timeline save/version controls.
++  const outputActions = make('div', 'lt-output-actions');
++  outputActions.append(q('#review'), q('#render'));
++  oldHeader.remove(); projectBar.remove(); q('.flow-summary').remove();
++
++  main.classList.add('lt-edit-workspace');
++  rail.classList.add('lt-scene-rail'); rail.id = 'ltScenePanel';
++  media.classList.add('lt-media-pane'); media.id = 'ltPreviewPanel';
++  inspector.id = 'ltReviewPanel';
++  const shotHeader = q('#shotTitle').parentElement; shotHeader.classList.add('lt-shot-header');
++  const takeRow = make('div', 'lt-take-row');
++  q('#preview').after(takeRow); takeRow.append(q('#takes'), q('#compareButton'));
++  const download = q('#downloadPreview'); q('#preview').before(download);
++  const outputLabel = make('p', 'lt-output-label', '렌더 결과 · 선택 Take와 별도 출력 버전'); download.before(outputLabel);
++
++  // Keep actual timeline data visible; secondary numeric controls are disclosed.
++  const timeline = q('.timeline');
++  timeline.id = 'ltTimelineDock';
++  const timelineHeader = timeline.querySelector('.row'); timelineHeader.classList.add('lt-timeline-header');
++  timelineHeader.querySelector('h2').textContent = '타임라인';
++  const track = q('#track'), timelineStatus = q('#timelineStatus');
++  const controls = disclosure('정밀 편집 · 음원·자막·버전', 'lt-timeline-controls');
++  [...timeline.children].filter(n => n !== timelineHeader && n !== track && n !== timelineStatus).forEach(n => controls.append(n));
++  timeline.append(timelineHeader, timelineStatus, track, controls);
++  timelineHeader.append(outputActions);
++
++  // Inspection starts with the selected Take. Production controls remain separate.
++  const reviewSection = q('#takeDecision').closest('section');
++  reviewSection.classList.add('lt-take-review');
++  reviewSection.querySelector('h2').textContent = '선택 Take 검토';
++  inspector.prepend(reviewSection);
++  const upload = q('#upload');
++  const uploadDetails = disclosure('새 Take 연결', 'lt-inspector-detail');
++  upload.before(uploadDetails); uploadDetails.append(upload);
++  const reviewRow = q('#takeDecision').parentElement;
++  reviewRow.before(q('#reviewReason').closest('label'));
++  const reason = q('#reason'); reviewSection.querySelector('h2').after(reason);
++  [...inspector.children].filter(n => n.tagName === 'SECTION' && n !== reviewSection && !n.classList.contains('render-section')).forEach(section => {
++    const title = section.querySelector('h2');
++    const d = disclosure(title?.textContent || '상세', 'lt-inspector-detail');
++    section.before(d); if (title) title.remove(); d.append(section);
++    if (section.contains(q('#executionCards'))) { d.classList.add('lt-execution-detail'); d.open = true; }
++  });
++
++  // Mobile focuses one working panel, while desktop retains all three columns.
++  const panelNav = make('div', 'lt-panel-nav'); panelNav.setAttribute('role', 'tablist'); panelNav.setAttribute('aria-label', '작업 영역');
++  main.before(panelNav);
++  const panels = [['scenes', '장면', rail], ['preview', '미리보기', media], ['review', '검토', inspector]];
++  const mobile = matchMedia('(max-width: 900px)');
++  let selected = 'preview';
++  function applyPanels() {
++    // On small screens keep one shell row; model/state controls stay in the
++    // clearly named project disclosure rather than forming more chrome rows.
++    if (mobile.matches && context.parentElement === shell) management.append(context, modelButton);
++    if (!mobile.matches && context.parentElement === management) shell.append(context, modelButton);
++    const focused = !document.body.matches('[data-guided="true"][data-step="1"],[data-guided="true"][data-step="2"]');
++    panelNav.hidden = !mobile.matches || !focused;
++    panels.forEach(([name, , panel]) => {
++      const button = panelNav.querySelector('[data-panel="' + name + '"]');
++      const active = name === selected;
++      button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1;
++      panel.classList.toggle('lt-panel-inactive', mobile.matches && focused && !active);
++      if (mobile.matches && focused) { panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', button.id); panel.tabIndex = 0; }
++      else { panel.removeAttribute('role'); panel.removeAttribute('aria-labelledby'); panel.removeAttribute('tabindex'); }
++    });
++  }
++  function choose(name, focusButton = false) {
++    selected = name; applyPanels();
++    if (focusButton) panelNav.querySelector('[data-panel="' + name + '"]').focus();
++  }
++  panels.forEach(([name, label, panel], i) => {
++    const button = make('button', '', label); button.type = 'button'; button.id = 'ltPanelTab-' + name;
++    button.dataset.panel = name; button.setAttribute('role', 'tab'); button.setAttribute('aria-controls', panel.id);
++    button.addEventListener('click', () => choose(name));
++    button.addEventListener('keydown', event => {
++      const keys = { ArrowRight: (i + 1) % 3, ArrowLeft: (i + 2) % 3, Home: 0, End: 2 };
++      if (event.key in keys) { event.preventDefault(); choose(panels[keys[event.key]][0], true); }
++    });
++    panelNav.append(button);
++  });
++  q('#shotlist').addEventListener('click', event => { if (mobile.matches && event.target.closest('[data-shot]')) choose('preview', true); });
++  // Only mode/stage UI changes are observed. No provider or application-state writes.
++  let previousStage = '';
++  function stageChanged() {
++    const stageKey = document.body.dataset.guided + ':' + document.body.dataset.step;
++    if (stageKey !== previousStage) {
++      previousStage = stageKey; selected = 'preview';
++      management.open = false; context.open = false;
++      controls.open = document.body.dataset.step === '4';
++      // Only change focus visibility; keep app's original stage handling intact.
++      applyPanels();
++    }
++  }
++  new MutationObserver(stageChanged).observe(document.body, { attributes: true, attributeFilter: ['data-guided', 'data-step'] });
++  mobile.addEventListener('change', applyPanels); stageChanged();
++  // Disclosure dismissal never submits a form or changes project data.
++  document.addEventListener('keydown', event => {
++    if (event.key !== 'Escape' || q('dialog[open]')) return;
++    const opened = [management, context].find(d => d.open && d.contains(document.activeElement));
++    if (opened) { opened.open = false; opened.querySelector('summary').focus(); }
++  });
++})();
++
+ </script></html>

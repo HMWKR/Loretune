@@ -1,0 +1,107 @@
+{
+  "action": {
+    "id": "e591895725d648dab33e8a6b78bd4985",
+    "plan_id": "307cf693f5404d738c96af9f68ab812a",
+    "plan_revision": 1,
+    "context_hash": "64c815049c4e204c5a489ecacf303a9c20f85d1504e4f4b7ad9ccdfdad6ba05b",
+    "context_kind": "media-v1",
+    "role": "video",
+    "release_id": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "inputs": {
+      "prompt": "Watercolor-style scene at a copper observatory. Nari, wearing a teal coat, stands in the frame as the camera performs a slow, steady forward dolly toward them. No orbiting or circular camera movement. Soft watercolor textures, muted copper and teal palette, gentle natural motion in the figure and surroundings. No text, no lettering, no captions or watermarks. Preserve the original audio track.",
+      "asset_refs": [
+        {
+          "shot": "장면 1",
+          "take": 1,
+          "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+          "role": "start_frame"
+        }
+      ]
+    },
+    "options": {
+      "shot": "장면 1",
+      "shot_revision": 3,
+      "generation": {
+        "duration": 5,
+        "generate_audio": false
+      },
+      "quote": {
+        "provider": "fal.ai",
+        "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+        "money": {
+          "amount": "0.01",
+          "currency": "USD"
+        },
+        "input_sha256": "73e9d8846262a3a4bb84faf7c5514d18b747c3d502740829fdc8c9958ce47762",
+        "kind": "fixture",
+        "price_revision": "synthetic-only",
+        "source": "https://fal.ai/models/fal-ai/kling-video/v2.5-turbo/pro/image-to-video/api",
+        "expires": 1793029539.9843001
+      },
+      "output_policy": {
+        "expiration_duration_seconds": 3600,
+        "initial_acl": {
+          "default": "forbid",
+          "rules": []
+        }
+      },
+      "selection_origin": "explicit"
+    },
+    "dependencies": [],
+    "mode": "provider",
+    "connection_id": "fal-model-queue-v1",
+    "hash": "bc17978c16c10bafd5b6b38e7128d02313ceee728d84b889601db33222827e11"
+  },
+  "preapproval": {
+    "status": "invalid_arguments",
+    "code": "INVALID_ACTION_REFERENCE",
+    "retryable": true
+  },
+  "receipt": {
+    "status": "accepted",
+    "job_id": "08778942-4f69-454e-8760-990a88b5fe86",
+    "state": "prepared",
+    "mode": "contract-fake",
+    "failure_code": null,
+    "action_id": "e591895725d648dab33e8a6b78bd4985",
+    "plan_id": "307cf693f5404d738c96af9f68ab812a",
+    "plan_revision": 1,
+    "release_id": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "grant_id": "0f4fa4f1e6354783896a7412e920a05e",
+    "external_calls": 0,
+    "provider_completed": false,
+    "result": null,
+    "result_approved": false,
+    "cost": {
+      "reservation_state": "reserved",
+      "estimate": {
+        "amount": "0.01",
+        "currency": "USD"
+      },
+      "actual": null,
+      "billing_confirmed": false,
+      "evidence": null
+    }
+  },
+  "duplicate_job": "08778942-4f69-454e-8760-990a88b5fe86",
+  "payload": {
+    "prompt": "Watercolor-style scene at a copper observatory. Nari, wearing a teal coat, stands in the frame as the camera performs a slow, steady forward dolly toward them. No orbiting or circular camera movement. Soft watercolor textures, muted copper and teal palette, gentle natural motion in the figure and surroundings. No text, no lettering, no captions or watermarks. Preserve the original audio track.",
+    "duration": "5",
+    "enable_safety_checker": true,
+    "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKklEQVR4nGOQc+uhKWIYtWDUglELRi0YtWDUglELRi0YtWDUglELhooFAKkVwC7U5YGHAAAAAElFTkSuQmCC"
+  },
+  "payload_hash": "73e9d8846262a3a4bb84faf7c5514d18b747c3d502740829fdc8c9958ce47762",
+  "fake_transport": {
+    "method": "POST",
+    "url": "https://queue.fal.run/fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "body": {
+      "prompt": "Watercolor-style scene at a copper observatory. Nari, wearing a teal coat, stands in the frame as the camera performs a slow, steady forward dolly toward them. No orbiting or circular camera movement. Soft watercolor textures, muted copper and teal palette, gentle natural motion in the figure and surroundings. No text, no lettering, no captions or watermarks. Preserve the original audio track.",
+      "duration": "5",
+      "enable_safety_checker": true,
+      "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKklEQVR4nGOQc+uhKWIYtWDUglELRi0YtWDUglELRi0YtWDUglELhooFAKkVwC7U5YGHAAAAAElFTkSuQmCC"
+    },
+    "mode": "contract-fake",
+    "network_sent": false
+  },
+  "real_fal_calls": 0
+}

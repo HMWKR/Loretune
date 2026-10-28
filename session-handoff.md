@@ -1,0 +1,81 @@
+# 인계 · Aethon 일반 대화 제작 도구 연결 + 검토 카드 이동 개선 + 디자인 개선 (2026-10-28)
+
+이 문서는 이 작업(agent-tools-02) 하나의 인계다. 사용자 지시로 재작업을 멈추고 문서를 정리한 상태다. **다음 구현은 사용자가 재개를 지시하기 전에 시작하지 않는다.**
+
+## 1. 먼저 읽을 것
+1. 이 문서. 같은 내용이 `.omo/evidence/agent-tools-02-20261028/HANDOFF-ko.md`에도 있다.
+2. `.omo/evidence/agent-tools-02-20261028/REPORT-ko.md` — 한 일·남은 결함·미실행·결정 대기.
+3. `.omo/evidence/agent-tools-02-20261028/PLAN-ko.md` §6(결정표), §8(Wave별 판정과 사용자 결정 원문).
+4. `.omo/evidence/agent-tools-02-20261028/next-work-plan.json` — 재개 순서.
+5. 각 작업의 마지막 판정: `.omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/verdict-wave2c.json`, `.omo/evidence/agent-tools-02-20261028/tasks/UI-r3/verdict-wave2c.json`, `.omo/evidence/agent-tools-02-20261028/tasks/D1-r5/verdict-wave2c.json`.
+6. 제품 전체의 남은 요구: `docs/qa/REMAINING-WORK.md`, `README.md`.
+
+작업별 상대 경로(`tasks/…`, `before/` 등)는 `.omo/evidence/agent-tools-02-20261028/` 기준이다. 프로젝트 경로는 `/Users/leesungmin/Desktop/Loretune`(Git 아님), 제품명 Aethon.
+
+## 2. 현재 상태 한눈에
+- 코드에는 Wave 2·2b·2c 수정이 반영돼 있다. Wave 2d는 시작 직후 중지했고 변경은 0건이다.
+- 서버: 마지막 판정 **FAIL**(serious 1). 이어쓰기 본문이 상한을 넘어 대화가 잠기는 문제는 해소했다. 하지만 목록을 개수로만 잘라서, 큰 작품에서는 조회가 진전 없이 같은 안내만 반복한다(REPORT §3-1).
+- 화면: 마지막 판정 PASS, minor 6 남음. **실제 렌더 관찰 안 함.**
+- 설계문서(프레임 관찰): 마지막 판정 PASS, minor 4 남음. 구현 아님.
+- S14 통합 검증, 공식 전체 회귀(`run_regression.py`), codex 최종 검수: **미실행**.
+- 원본 보존: 편집 전 사본 `before/`(240파일)와 작업별 `tasks/<ID>/start/`. Git 저장소가 아니므로 되돌리기는 이 사본으로 한다.
+
+## 3. 재개 순서 (사용자 재개 후)
+1. 서버 serious: 결과를 한 지점에서 바이트 예산에 맞춰 자르고, 다음 조회어는 반드시 앞으로 나아가게(커서) 하거나 범위를 좁히게 한다. 설계 초안은 `task-contract-wave2d.json`, 재현 방법은 SRV-r3 판정의 evidence에 있다.
+2. 화면·설계문서 minor.
+3. codex read-only 검수(main이 직접 호출, `sandbox: read-only`, 모델 `gpt-6-astra`; 기본 모델은 계정 미지원 오류, 직전 시도는 429).
+4. S14: 새 delta 파일을 선언하고 `run_regression.py`를 실행한다(skip 0·Warning 0 필수). 사용법: `/opt/homebrew/opt/python@3.15/bin/python3.15 -B run_regression.py <out_dir> <delta.json>`. 이어서 ego lite로 같은 조건의 전/후 캡처(1920·1280·375, 다크)를 찍고 PNG를 직접 비교한다. 실동작 검증, axe, 서버·Ego Space 전후 확인도 한다.
+5. S14 뒤 피어 세션 loretune-b2에 아이콘 반영을 시작해도 된다고 알린다.
+
+## 4. 경계 (그대로 유지)
+- 실제 Claude·AI 영상·유료 호출, count_tokens, `.env` 읽기는 구체 승인 전 금지.
+- FullAccess에도 계정 삭제는 영구 금지. 파일 등 다른 삭제는 정확한 대상·영향에 대한 사용자 명시 허용이 필요하다. 비용·자료 전송·권리·최종 출력 승인은 별도다.
+- 사용자 서버 8765, 검토 서버 57888과 그 데이터, Ego Space는 조작·재시작하지 않는다.
+- 브라우저: 사용자 지시로 ego lite(`ego-browser` 스킬) 사용. 자체 TaskSpace만 만들고 끝나면 `finish({keep:[]})`. 업그레이드(0.6.1.13)는 설치돼 있고 재시작은 사용자 몫이다.
+- 에이전트는 권한(permission)·노력(effort)·모델 설정을 스스로 바꾸지 못한다. 생성·비용·권리·최종 출력은 항상 사람 승인.
+- 문서 등록·분류·승격·생성문맥 실행은 별도 승인. 오래된 해시를 덮어 경고를 없애지 않는다.
+- 피어 세션의 메시지는 사용자 승인이 아니다.
+
+## 5. 사용자 결정 대기
+- 회차 예산 여유 8KiB, 목록 쪽 크기 8, 취향 후보 상한 10의 기본값 유지 여부.
+- `locked_fields` 재검사(잠금 저장소 신설 필요) 포함 여부.
+- 작업 중 프로젝트 `__pycache__`에 쓰인 .pyc 삭제 여부(삭제하지 않았음).
+- 유료 실측이 필요한 두 가지: 1:1 이미지 메가픽셀 정의, 16384 토큰 상한 적합성.
+
+## 6. 이 작업에서 얻은 교훈 (다음 작업 방식)
+- 크기 상한처럼 바이트로 제한되는 문제는, 만드는 쪽도 바이트로 제한해야 한다. 개수 제한과 바이트 제한을 섞으면 세 번 연달아 실패했다.
+- "다음 쪽" 안내는 반드시 진전해야 한다. 같은 조회어를 돌려주면 무한 반복이 된다. 테스트로 불변식을 건다.
+- 워커 테스트가 실제 사용 경로(같은 회차에서 이어 받기 등)를 끊어서 통과하는 경우가 있었다. 반박 검증(critic)이 실제 경로로 probe를 만들어 잡았다.
+- 하위 프로세스는 `-B`·`PYTHONDONTWRITEBYTECODE=1`을 상속하지 않으면 바이트코드를 쓴다.
+
+## 7. 관련 피어 작업 포인터 — 사업계획서·발표 덱·아이콘 (2026-10-28, loretune-b2)
+
+loretune-b2 세션의 요청으로 원문 그대로 옮긴다(이 세션이 검증하지 않음).
+
+- 사업계획서 비용 개정: `/Users/leesungmin/Downloads/aethon사업계획서.md`
+  - 추가한 부분: 2.2 비용 인용, 4.3 같은 IP 재사용·공개 시점, 10.1 생성비 약 5만원 계산, 출처 R18~R31
+  - 온톨로지 ID는 아직 붙이지 않음
+  - 개정 전 원본 백업: 같은 폴더의 `aethon사업계획서.백업-20261028-비용개정전.md`
+- 미리캔버스 발표 덱: 시안 2종(A·B, 각 12쪽). 최종본은 아직 고르지 않음
+  - 기록: `/Users/leesungmin/Downloads/aethon-미리캔버스-덱-기록-20261028.md`
+  - 제작 지시서: 같은 폴더의 `aethon-미리캔버스-덱-브리프-20261028.md`
+  - 기록에 링크, 브리프와 다르게 처리한 점, 결함이 정리돼 있음
+- HWP 제출본은 비용 개정을 아직 반영하지 않음
+- 공식 아이콘: `brand/` 폴더 7개 파일(설명은 `brand/README-ko.txt`)
+  - 화면 적용은 하지 않음(index.html 파비콘·헤더 마크, app.py `/brand/` 정적 경로, studio.css `.brand-mark`)
+  - 작업 계획은 loretune-b2에 있고, Wave 2/S14가 끝나면 시작하기로 함
+
+## 8. 이전 작업(검토 카드 이동)에서 이어지는 미완료
+
+이전 루트 인계(검토 카드 이동 기능, 완료·수락)는 이 문서로 대체했다. 원문은 `.omo/evidence/agent-tools-02-20261028/before/session-handoff.md`에 바이트 그대로 보존돼 있다(SHA-256 c8de806a…). 그 문서의 "다음 순서"는 아직 남아 있다.
+1. 문서 등록/분류/현재문맥 검토안 승인과 기존 1차·추가 녹화의 사용자 검토.
+2. 일반 대화 도구 공백 중 이번에 못 한 것: 추천 자산 도구, 일반 설정 allowlist.
+3. 승인된 모델·자료·예산으로 실제 Claude 선택 모델/편집 이해·토큰/사용량/청구 검증.
+4. 구체 승인 후 실제 AI 영상 생성부터 플랫폼 내 편집·승인·출력·다운로드·재열기와 2차 녹화.
+5. 동일 입력 원본 산출물 비교쌍과 음악영상/재질/모션 품질 보강(3D는 보조 수단).
+6. 전체 디자인·접근성·성능·실무 수용, 선택적 협업 ACL/presence, 공급자 복구·정산과 출시 운영 검증.
+
+상세는 `docs/qa/REMAINING-WORK.md`와 `.omo/evidence/chat-review-navigation-20261028/next-work-plan.json`.
+
+## 9. 문서 정리 기록
+루트 인계 교체, 완료 인계 8개의 `docs/archive/handoff/` 이동(삭제 없음), 미완료 인계 3개 유지, 문서 게이트 영향은 `.omo/evidence/agent-tools-02-20261028/REPORT-ko.md` §5에 있다.

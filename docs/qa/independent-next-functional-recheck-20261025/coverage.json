@@ -1,0 +1,148 @@
+[
+  {
+    "scope": "B03",
+    "requirements": [
+      "MS-FR-09",
+      "MS-FR-11"
+    ],
+    "acceptance": [
+      "MS-AT15",
+      "MS-AT18"
+    ],
+    "result": "pass-local-subset",
+    "evidence": [
+      "human-flow-results.json",
+      "next-contract-results.json"
+    ],
+    "unverified": "actual cross-provider chat/media handoff"
+  },
+  {
+    "scope": "asset rights",
+    "requirements": [
+      "MS-FR-05",
+      "MS-FR-06",
+      "MS-FR-13",
+      "MS-FR-23"
+    ],
+    "acceptance": [
+      "MS-AT09",
+      "MS-AT21",
+      "MS-AT34"
+    ],
+    "result": "pass-synthetic-claim",
+    "evidence": [
+      "next-contract-results.json"
+    ],
+    "unverified": "external dispatcher bytes/submit atomicity and live receipt"
+  },
+  {
+    "scope": "approval/idempotency/budget/unknown",
+    "requirements": [
+      "MS-FR-06",
+      "MS-FR-15",
+      "MS-FR-16",
+      "MS-FR-18"
+    ],
+    "acceptance": [
+      "MS-AT10",
+      "MS-AT17",
+      "MS-AT23",
+      "MS-AT24",
+      "MS-AT25",
+      "MS-AT30"
+    ],
+    "result": "pass-local-subset",
+    "evidence": [
+      "audit-results.json",
+      "error-guard-results.json",
+      "guard-results.json"
+    ]
+  },
+  {
+    "scope": "F05",
+    "requirements": [],
+    "acceptance": [
+      "F05-specific-regression"
+    ],
+    "result": "pass-vm-code",
+    "evidence": [
+      "ui-results.json"
+    ],
+    "unverified": "real browser"
+  },
+  {
+    "scope": "F06-original",
+    "requirements": [
+      "FR-060-related",
+      "FR-062-related"
+    ],
+    "acceptance": [
+      "F06-specific-regression"
+    ],
+    "result": "pass-vm-code",
+    "evidence": [
+      "ui-results.json"
+    ],
+    "unverified": "real browser"
+  },
+  {
+    "scope": "F07-adjacent",
+    "requirements": [
+      "FR-060-related",
+      "FR-062-related"
+    ],
+    "acceptance": [],
+    "result": "fail-vm-code",
+    "evidence": [
+      "ui-results.json",
+      "CHECKPOINT.md"
+    ],
+    "severity": "medium-correctness",
+    "unverified": "real browser frequency/UX"
+  },
+  {
+    "scope": "prior F/R",
+    "requirements": [
+      "MS-FR-17",
+      "MS-FR-20"
+    ],
+    "acceptance": [
+      "MS-AT28-related",
+      "MS-AT32-local-subset"
+    ],
+    "result": "pass-synthetic",
+    "evidence": [
+      "after-evidence.json",
+      "adjacent-results.json",
+      "guard-results.json"
+    ]
+  },
+  {
+    "scope": "generic chat",
+    "requirements": [
+      "MS-FR-02",
+      "MS-FR-07",
+      "MS-FR-14"
+    ],
+    "acceptance": [
+      "MS-AT03-local-subset",
+      "MS-AT12",
+      "MS-AT22-local-subset"
+    ],
+    "result": "existing-tests-pass-fake-only",
+    "evidence": [
+      "controls.log"
+    ],
+    "unverified": "live API, billing, semantic grounding"
+  },
+  {
+    "scope": "later-source-drift",
+    "requirements": [],
+    "acceptance": [],
+    "result": "not-executed",
+    "evidence": [
+      "source-drift.json",
+      "later-source-drift.patch"
+    ]
+  }
+]

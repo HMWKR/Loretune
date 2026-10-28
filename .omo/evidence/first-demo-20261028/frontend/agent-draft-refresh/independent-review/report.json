@@ -1,0 +1,99 @@
+{
+  "schema": "agent-draft-refresh-independent-review/1",
+  "reviewer": "/root/agent_docs_review",
+  "status": "RECOMMEND_SCOPED_ACCEPT",
+  "scope": "Clean UI timeline draft refresh after server-authored new version; preserve dirty draft, poll scope/epoch guards and pending-request recovery",
+  "high_medium_findings": [],
+  "authorization": "Read-only product/test/document/artifact review; only this JSON authorized for writing. No Space91/user server interaction, new test execution, full regression duplication or model/provider calls.",
+  "model_reasoning": "Inherited supported session configuration",
+  "methodology_sources": [
+    "Installed native harness-core agent-critic and feature-verification/runtime/live-feature-verify/rigor already read in this session",
+    "Current user approved agent-draft versus output-approval boundaries",
+    "Actual index.html poll/epoch/dirty/scope/recovery implementation and existing frontend async tests",
+    "Frozen worker source/diff/results; actual isolated synthetic UI before/post-fix artifacts; parent actual R3 recording/state/output receipts"
+  ],
+  "applied_methodology": [
+    "Source-bound adversarial state-transition review",
+    "Compare authoritative stored head, local draft, rendered controls and approval state",
+    "Seek dirty/busy/null-head/same-head/ABA/out-of-order/unknown-journal counterexamples",
+    "Preserve original evidence and distinguish controlled, actual HTTP/UI, native output and actual model evidence"
+  ],
+  "input_sha256": {
+    "source-final.json": "1c98cb1e464e1010a0802c7f8f0fa6f92cc82b45e727e35887e190ad91e84b63",
+    "report.json": "1b2673b55898998d0f890609a75574bc976ca1b7269d5f09b57eae50aade4022",
+    "changes.patch": "c97aab5aeb4d8e6a53c28e897b3e773b7408fb7d12ee19eef9704cb558c6c096",
+    "narrow-tests.log": "4be3a296f5ca4c658f37115a7a94ba0dd7108b15e3e9d80d6a7e69257a7c22fb",
+    "post-fix/immediate-agent-draft-checkpoint.json": "bb9f0fbe86749300769281e4e64465bf19c6991b5176852cede4987e8274c46c",
+    "post-fix/dirty-poll-preservation.json": "e3386b89fa46d54f08c608264b8db249c1cb0bb65ca82f21f582782c683b71da",
+    "R3/synthetic-chat-ui-receipt.json": "37060f6bec183196cef77f7e742f7ee15551a084db3467b2391b425b2e81a903"
+  },
+  "frozen_sources": {
+    "index.html": "be666645e2fb8d48ff18b5278cbadfb9614267c4283164a36761c80e9aed7410",
+    "tests/frontend_async_regressions.cjs": "dc60e5af70519f6ea5014b0e77edd5811e161259740828278292fb947a0db3c0"
+  },
+  "current_and_before_hashes_match": true,
+  "original_case_retention": {"before": 19, "after": 23, "lost_case_names": [], "new_cases": 4, "original_assertions_weakened": false},
+  "observed_problem_and_resolution": {
+    "before": "Actual synthetic UI checkpoint: serverhead4, draft3, stored overlay240/120/newcaption/unapproved; displayed0/0/oldcaption/version3/output-approved. Current source hashes in receipt identify prior accepted central-frame version.",
+    "after": "Post-fix actual UI checkpoint: head4=draft4, stored/draft/displayed240/120 and newcaption match; stored/draft approvalfalse and status output-approval pending; no reload workaround.",
+    "visual_review": "Reviewer directly opened before immediate-agent-draft.png, post-fix immediate-agent-draft.png and dirty-preserved.png. Before shows savedversion3/output-approved; after savedversion4/output-approval pending. Dirty capture retains240.001 and unsaved indication. Numeric/caption details are supplied by corresponding DOM/state checkpoint, not inferred from the screenshots."
+  },
+  "surviving_claims": [
+    {
+      "claim": "A clean draft adopts a new authoritative timeline head or repairs a pre-existing ID mismatch using the already received response",
+      "references": ["index.html:879", "index.html:880", "index.html:884", "index.html:885", "index.html:886", "index.html:388", "tests/frontend_async_regressions.cjs:35"],
+      "counterexample": "Previous poll already put serverhead4 into state while draft remains3",
+      "outcome": "Draft-ID comparison triggers one repair even if stored state head already4. Actual isolated and parent R3 UI receipts align head/draft/controls. Branch issues no extra GET or server mutation."
+    },
+    {
+      "claim": "Same-head status polls and unversioned fresh drafts retain local object identity",
+      "references": ["index.html:64", "index.html:884", "index.html:885", "tests/frontend_async_regressions.cjs:38"],
+      "counterexample": "A logical null head versus absent draft.id causes repeated full redraw; new general-chat status resets media/focus",
+      "outcome": "Nullish normalization treats absent ID/head as equal; full redraw occurs only on version/ID mismatch. Controlled cases assert same object and one-time repair; actual two-tab receipt confirms same-head object retained."
+    },
+    {
+      "claim": "User edits and obsolete/foreign responses cannot be overwritten by the new branch",
+      "references": ["index.html:879", "index.html:881", "index.html:358", "index.html:364", "index.html:368", "tests/frontend_async_regressions.cjs:29", "tests/frontend_async_regressions.cjs:42"],
+      "counterexample": "Dirty/busy flips while fetch is in flight; project or conversation A-B-A; foreign workspace/conversation; older revision or reverse response order",
+      "outcome": "Existing apply-time guards precede state replacement. Conversation equality is added before accepted poll sequence. Epoch changes on explicit switch/draw/mutation protect ABA. Controlled cases cover these guards. Actual second-tab head5 while first tab dirty keeps first tabhead4/draft4/local240.001; only explicit cancel followed by poll adopts5."
+    },
+    {
+      "claim": "Pending outcome-unknown requests remain unknown and locked after rebase",
+      "references": ["index.html:886", "index.html:490", "index.html:492", "index.html:498", "tests/frontend_async_regressions.cjs:45"],
+      "counterexample": "draw restores enabled timeline controls or implicitly settles/removes/reissues the unresolved request",
+      "outcome": "Branch invokes existing updateRecovery after draw; unresolved journal ID/pendingRequest remain, no settle/remove/request call added, timeline lock restored. Existing settled-ID housekeeping is unchanged and not confused with an unknown ID. Controlled case asserts no removals and unchanged request ID."
+    },
+    {
+      "claim": "Refresh does not create authority or preserve an old approval on the new agent draft",
+      "references": ["index.html:885", "index.html:388", "index.html:423", "index.html:498"],
+      "counterexample": "New version4 inherits displayed local-owner approval from draft3; FullAccess silently permits final render",
+      "outcome": "Clean draft is copied from server version4 rather than locally marked approved. Actual UI estimate and direct HTTP render both400 before human approval; parent R3 jobs4-to4 denial followed by separate approval and native render. No backend permission/model/price policy changed."
+    }
+  ],
+  "reused_execution_evidence_not_rerun": {
+    "narrow": "6 tests/0.500sec/OK from narrow-tests.log; seven inline syntax targets exit0. These are existing execution receipts, not reviewer executions.",
+    "isolated_post_fix": "Actual local UI/HTTP with deterministic synthetic model transport, no reload; head4 alignment, unapproved render rejection, explicit human approval, actual3s render/play/reopen; sources at start=end and match current files.",
+    "actual_dirty_two_tab": "post-fix/dirty-poll-preservation.json plus dirty-preserved.png: same-head identity, dirty local240.001 retained while second tab saves unapproved5; explicit cancel/poll adopts5.",
+    "parent_R3": "actual-chat-edit-ui-alignment.json: head4=draft4, -80/-80, new lastcaption, unapproved; actual-unapproved-chat-output-denied.json jobs4-to4; source-bound actual41.743sec/541-frame continuous synthetic chat recording receipt; later explicit approval/native9s output/play/download/reopen and old3 versions/audio preserved.",
+    "parent_R3_output": {"job_id": "b5fb295ae4b648b3ae22fb4b90ab94f4", "sha256": "ca7b3b1b1a3290647e9013718786a6c55a1e884f9243be8befedd083b3d163dc", "physical_file_hash_matches": true, "bytes": 543231, "stored_probe_duration": "9.000000", "stored_probe_streams": ["1920x1080 video", "48000Hz audio", "subtitle"]},
+    "actual_model_and_billing": "0 actual Claude/provider calls; deterministic fixture protocol and synthetic budget are disclosed. No actual model comprehension or billing acceptance.",
+    "whole_current_regression": "Parent run is separate/in progress at assignment; not duplicated or claimed complete in this review."
+  },
+  "reviewer_performed": [
+    "Read frozen2-source diff and full relevant poll/recovery/switch/draw paths",
+    "Repeated hash comparison of current source, preserved originals, and actual UI source_start/source_end/root recording source binding",
+    "Verify19 prior named cases remain plus4 new cases; inspect assertions and existing6-test/syntax receipts",
+    "Open actual before/post-fix/dirty screenshots and read matching state/DOM/negative/output/reopen artifacts",
+    "Hash actual R3 output file and compare its completed-job/download receipt; no new rendering/media decoding/test/browser runs"
+  ],
+  "unverified_or_outside_scope": [
+    "This is timeline-head/draft-ID reconciliation, not a general guarantee that every same-head metadata change is live refreshed.",
+    "Dirty/scope/unknown races are partly controlled; actual two-tab dirty preservation and actual clean synthetic-chat flow provide distinct evidence. Exhaustive live concurrency/fault injection not claimed.",
+    "Full current-source regression, complete recorded-content review/user acceptance, actual Claude/video-model understanding, provider billing and launch readiness remain separate.",
+    "Reviewer did not run product tests or operate a browser. Manual visual review, source/receipt/hash review and other agents' actual executions are distinguished."
+  ],
+  "source_edits": 0,
+  "new_test_runs": 0,
+  "model_calls": 0,
+  "whole_platform_complete": false
+}

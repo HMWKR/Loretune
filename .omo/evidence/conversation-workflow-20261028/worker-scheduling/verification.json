@@ -1,0 +1,65 @@
+{
+  "invocation": "python3 .omo/evidence/conversation-workflow-20261028/worker-scheduling/verify.py",
+  "result": "PASS",
+  "tests_run": 13,
+  "skipped": 0,
+  "cases": [
+    {
+      "scenario": "tests.test_worker_scheduling.WorkerConversationTest.test_global_reservation_cap_still_rejects_another_conversation",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_worker_scheduling.WorkerConversationTest.test_held_conversation_does_not_block_other_dispatch_or_actual_render",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_worker_scheduling.WorkerConversationTest.test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_worker_scheduling.WorkerSchedulingTest.test_failed_queue_recovers_without_private_error_or_stalling_others",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_worker_scheduling.WorkerSchedulingTest.test_fixed_domains_and_preset_stop_never_process",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_app.HttpTest.test_http_validation_and_local_boundary",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_app.HttpTest.test_registered_manifest_http_preserves_content_and_rights",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_app.PersistenceTest.test_concurrent_writers",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_app.PersistenceTest.test_invalid_rolls_back",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_app.PersistenceTest.test_real_render_and_immutable_takes",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_app.PersistenceTest.test_restart_duplicate_and_conflict",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_app.WorkerCycleTest.test_failed_chat_does_not_stop_other_queues_or_log_private_error",
+      "result": "PASS"
+    },
+    {
+      "scenario": "tests.test_app.WorkerCycleTest.test_failed_render_still_processes_generation_and_chat",
+      "result": "PASS"
+    }
+  ],
+  "source_sha256": {
+    "app.py": "3e09e2ef7824f0c2bee47ea0166c04ca4f4789b7b64fdcc4a599e3beb46b109a",
+    "tests/test_worker_scheduling.py": "ed9281073f16c47221d389ba0bb2adadd9d43574a6742719f0db71dcc244d3c5"
+  },
+  "scope": "Local HTTP, SQLite, production scheduler and FFmpeg; synthetic provider response only, no real Claude calls."
+}

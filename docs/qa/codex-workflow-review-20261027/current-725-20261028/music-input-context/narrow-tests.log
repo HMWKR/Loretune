@@ -1,0 +1,499 @@
+test_audio_change_invalidates_pending_general_manifest_before_any_transmission (tests.test_music_input_context.MusicInputContextTest.test_audio_change_invalidates_pending_general_manifest_before_any_transmission) ... 127.0.0.1 - - [28/Oct/2026 00:14:15] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:15] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:15] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:15] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:15] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:15] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:15] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:15] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+FAIL
+test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked (tests.test_music_input_context.MusicInputContextTest.test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked) ... 127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52968)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 694, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 359, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 763, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/server.py", line 474, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/server.py", line 462, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/app.py", line 1256, in do_GET
+    value=store.state(selection)
+  File "/Users/leesungmin/Desktop/Loretune/app.py", line 294, in state
+    for p in saved['projects'].values(): p['preflight'] = preflight(p)
+                                                          ~~~~~~~~~^^^
+  File "/Users/leesungmin/Desktop/Loretune/editing.py", line 147, in preflight
+    elif timeline['audio_offset'] + total > audio['metadata']['duration']:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'int' and 'NoneType'
+----------------------------------------
+
+  test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked (tests.test_music_input_context.MusicInputContextTest.test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked) (duration='None') ... ERROR
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52978)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 694, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 359, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 763, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/server.py", line 474, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/server.py", line 462, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/app.py", line 1256, in do_GET
+    value=store.state(selection)
+  File "/Users/leesungmin/Desktop/Loretune/app.py", line 294, in state
+    for p in saved['projects'].values(): p['preflight'] = preflight(p)
+                                                          ~~~~~~~~~^^^
+  File "/Users/leesungmin/Desktop/Loretune/editing.py", line 147, in preflight
+    elif timeline['audio_offset'] + total > audio['metadata']['duration']:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'int' and 'str'
+----------------------------------------
+  test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked (tests.test_music_input_context.MusicInputContextTest.test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked) (duration="'3'") ... ERROR
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53017)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 694, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 359, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 763, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/server.py", line 474, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/server.py", line 462, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/app.py", line 1256, in do_GET
+    value=store.state(selection)
+  File "/Users/leesungmin/Desktop/Loretune/app.py", line 294, in state
+    for p in saved['projects'].values(): p['preflight'] = preflight(p)
+                                                          ~~~~~~~~~^^^
+  File "/Users/leesungmin/Desktop/Loretune/editing.py", line 147, in preflight
+    elif timeline['audio_offset'] + total > audio['metadata']['duration']:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'int' and 'dict'
+----------------------------------------
+  test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked (tests.test_music_input_context.MusicInputContextTest.test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked) (duration="{'secret': 'https://private.invalid/secret-token'}") ... ERROR
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+test_confirmed_range_remains_bound_to_its_audio_when_selected_and_timeline_diverge (tests.test_music_input_context.MusicInputContextTest.test_confirmed_range_remains_bound_to_its_audio_when_selected_and_timeline_diverge) ... 127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:17] "POST /api/action HTTP/1.1" 200 -
+ok
+test_general_fixture_tool_result_requires_new_consent_and_carries_only_safe_music_facts (tests.test_music_input_context.MusicInputContextTest.test_general_fixture_tool_result_requires_new_consent_and_carries_only_safe_music_facts) ... 127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:18] "GET /api/state HTTP/1.1" 200 -
+ok
+test_no_audio_is_explicit_without_manufactured_range_or_approval (tests.test_music_input_context.MusicInputContextTest.test_no_audio_is_explicit_without_manufactured_range_or_approval) ... 127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+ok
+test_shared_audio_is_visible_to_other_conversation_but_not_other_project (tests.test_music_input_context.MusicInputContextTest.test_shared_audio_is_visible_to_other_conversation_but_not_other_project) ... 127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state?song=A&conversation=a753fb7d06e943bb931d92e22e3a5be4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state?song=A&conversation=a753fb7d06e943bb931d92e22e3a5be4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state?song=A&conversation=a753fb7d06e943bb931d92e22e3a5be4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+ok
+test_upload_only_discloses_inspected_duration_without_paths_or_implicit_range (tests.test_music_input_context.MusicInputContextTest.test_upload_only_discloses_inspected_duration_without_paths_or_implicit_range) ... 127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 00:14:20] "GET /api/state HTTP/1.1" 200 -
+ok
+
+======================================================================
+ERROR: test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked (tests.test_music_input_context.MusicInputContextTest.test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked) (duration='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 135, in test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked
+    source = self.context()['music_input']['selected_source']
+             ~~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 36, in context
+    handoff = self.post('model_handoff', song=song, conversation=conversation)['handoff']['execution_targets']
+              ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 28, in post
+    status, result = send(action, song=song, **data)
+                     ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 60, in action
+    return self.send(dict(action=action,data=data,revision=self.state()['revision'],request_id=uuid.uuid4().hex))
+                                                           ~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 46, in state
+    with urlopen(self.base+'/api/state') as r:return json.load(r)
+         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 187, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 489, in open
+    response = self._open(req, data)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 506, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 1364, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 1339, in do_open
+    r = h.getresponse()
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 1490, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 350, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 314, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+======================================================================
+ERROR: test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked (tests.test_music_input_context.MusicInputContextTest.test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked) (duration="'3'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 135, in test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked
+    source = self.context()['music_input']['selected_source']
+             ~~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 36, in context
+    handoff = self.post('model_handoff', song=song, conversation=conversation)['handoff']['execution_targets']
+              ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 28, in post
+    status, result = send(action, song=song, **data)
+                     ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 60, in action
+    return self.send(dict(action=action,data=data,revision=self.state()['revision'],request_id=uuid.uuid4().hex))
+                                                           ~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 46, in state
+    with urlopen(self.base+'/api/state') as r:return json.load(r)
+         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 187, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 489, in open
+    response = self._open(req, data)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 506, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 1364, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 1339, in do_open
+    r = h.getresponse()
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 1490, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 350, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 314, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+======================================================================
+ERROR: test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked (tests.test_music_input_context.MusicInputContextTest.test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked) (duration="{'secret': 'https://private.invalid/secret-token'}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 135, in test_bad_duration_and_extra_fields_are_not_forwarded_and_rights_are_rechecked
+    source = self.context()['music_input']['selected_source']
+             ~~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 36, in context
+    handoff = self.post('model_handoff', song=song, conversation=conversation)['handoff']['execution_targets']
+              ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 28, in post
+    status, result = send(action, song=song, **data)
+                     ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 60, in action
+    return self.send(dict(action=action,data=data,revision=self.state()['revision'],request_id=uuid.uuid4().hex))
+                                                           ~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 46, in state
+    with urlopen(self.base+'/api/state') as r:return json.load(r)
+         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 187, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 489, in open
+    response = self._open(req, data)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 506, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 1364, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/urllib/request.py", line 1339, in do_open
+    r = h.getresponse()
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 1490, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 350, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/http/client.py", line 314, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+                             " response")
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+======================================================================
+FAIL: test_audio_change_invalidates_pending_general_manifest_before_any_transmission (tests.test_music_input_context.MusicInputContextTest.test_audio_change_invalidates_pending_general_manifest_before_any_transmission)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_music_input_context.py", line 196, in test_audio_change_invalidates_pending_general_manifest_before_any_transmission
+    self.assertEqual(status, 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 400
+
+----------------------------------------------------------------------
+Ran 7 tests in 5.290s
+
+FAILED (failures=1, errors=3)

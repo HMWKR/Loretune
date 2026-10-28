@@ -1,0 +1,506 @@
+"""Bounded, static GLB input profile for the isolated local Blender worker.
+
+This is deliberately not a general glTF implementation. Original bytes are
+validated, never repaired or rewritten. It grants no rights or approval and
+does not decode JPEG pixels; native image/importer decoding must still occur
+inside the pinned, resource-limited renderer. The limits are admission limits,
+not a measured promise that every admitted file renders within its deadline.
+"""
+import hashlib
+import json
+import math
+import struct
+import zlib
+
+
+PROFILE = 'gltf2-static-pbr-v1'
+MAX_BYTES = 8 * 1024 * 1024
+MAX_JSON_BYTES = 512 * 1024
+MAX_JSON_DEPTH = 24
+MAX_VERTICES = 50_000
+MAX_TRIANGLES = 100_000
+MAX_NODES = 32
+MAX_NODE_DEPTH = 16
+MAX_MESHES = 16
+MAX_PRIMITIVES = 64
+MAX_MATERIALS = 16
+MAX_IMAGES = 8
+MAX_TEXTURES = 16
+MAX_IMAGE_EDGE = 2048
+MAX_IMAGE_PIXELS = 16 * 1024 * 1024
+MAX_VIEWS = 256
+MAX_ACCESSORS = 128
+MAX_ACCESSOR_VALUES = MAX_VERTICES * 12 + MAX_TRIANGLES * 3
+MAX_COORDINATE = 1_000_000
+MAX_IMAGE_CHUNKS = 4096
+MAX_JPEG_SCANS = 64
+_COMPONENTS = {5121: ('B', 1), 5123: ('H', 2), 5125: ('I', 4), 5126: ('f', 4)}
+_DIMENSIONS = {'SCALAR': 1, 'VEC2': 2, 'VEC3': 3, 'VEC4': 4}
+_ERROR = '지원하지 않거나 손상된 GLB 모델입니다.'
+
+
+def _fail(reason=_ERROR):
+    raise ValueError(reason)
+
+
+def _object(value, allowed, required=()):
+    if type(value) is not dict or set(value) - set(allowed) or set(required) - set(value):
+        _fail()
+    if 'name' in value and (type(value['name']) is not str or len(value['name']) > 256):
+        _fail()
+    return value
+
+
+def _integer(value, low=0, high=2**31-1):
+    if type(value) is not int or not low <= value <= high:
+        _fail()
+    return value
+
+
+def _number(value, low=-MAX_COORDINATE, high=MAX_COORDINATE):
+    if type(value) not in (int, float) or not low <= value <= high or not math.isfinite(value):
+        _fail()
+    return value
+
+
+def _vector(value, length, low=-MAX_COORDINATE, high=MAX_COORDINATE):
+    if type(value) is not list or len(value) != length:
+        _fail()
+    return [_number(part, low, high) for part in value]
+
+
+def _array(document, key, maximum, *, minimum=0):
+    value=document.get(key, [])
+    if type(value) is not list or not minimum <= len(value) <= maximum:
+        _fail('GLB 모델의 구성 또는 자원 한도를 확인하세요.')
+    return value
+
+
+def _reference(value, items):
+    return _integer(value, 0, len(items)-1)
+
+
+def _pairs(pairs):
+    value={}
+    for key,item in pairs:
+        if key in value:
+            _fail()
+        value[key]=item
+    return value
+
+
+def _constant(_):
+    _fail()
+
+
+def _json(encoded):
+    # Bound nesting before json.loads allocates recursive containers.
+    depth=0;inside=False;escaped=False
+    for char in encoded:
+        if inside:
+            if escaped:escaped=False
+            elif char==92:escaped=True
+            elif char==34:inside=False
+        elif char==34:inside=True
+        elif char in (91,123):
+            depth+=1
+            if depth > MAX_JSON_DEPTH:_fail()
+        elif char in (93,125):
+            depth-=1
+            if depth < 0:_fail()
+    if depth or inside:_fail()
+    value=json.loads(encoded.decode('utf-8'),object_pairs_hook=_pairs,parse_constant=_constant)
+    def check(item):
+        if isinstance(item, dict):
+            for key,child in item.items():
+                if key in {'uri','extensions','extras'}:
+                    _fail('외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.')
+                check(child)
+        elif isinstance(item,list):
+            for child in item:check(child)
+        elif type(item) in (int,float):
+            if not math.isfinite(item) or abs(item)>2**53:_fail()
+        elif isinstance(item,str) and len(item)>2048:_fail()
+    check(value)
+    return value
+
+
+def _container(raw):
+    if type(raw) is not bytes or not 28 <= len(raw) <= MAX_BYTES:
+        _fail('GLB 파일은 8MiB 이하의 정적 모델이어야 합니다.')
+    magic,version,length=struct.unpack_from('<4sII',raw)
+    if magic!=b'glTF' or version!=2 or length!=len(raw):_fail()
+    position=12;chunks=[]
+    while position<len(raw):
+        if position+8>len(raw) or len(chunks)>=2:_fail()
+        size,kind=struct.unpack_from('<II',raw,position);position+=8
+        if size%4 or position+size>len(raw):_fail()
+        chunks.append((kind,raw[position:position+size]));position+=size
+    if [kind for kind,_ in chunks]!=[0x4e4f534a,0x004e4942]:_fail()
+    if len(chunks[0][1])>MAX_JSON_BYTES:_fail('GLB 구성 정보가 지원 한도를 넘었습니다.')
+    return _json(chunks[0][1]),chunks[1][1]
+
+
+def _png(data):
+    if not data.startswith(b'\x89PNG\r\n\x1a\n'):_fail()
+    position=8;seen=[];idat=[];size=None;palette=False
+    while position<len(data):
+        if len(seen)>=MAX_IMAGE_CHUNKS or position+12>len(data):_fail()
+        length=struct.unpack_from('>I',data,position)[0]
+        kind=data[position+4:position+8];end=position+12+length
+        if end>len(data):_fail()
+        content=data[position+8:position+8+length]
+        if zlib.crc32(kind+content)&0xffffffff!=struct.unpack_from('>I',data,end-4)[0]:_fail()
+        if kind==b'IHDR':
+            if seen or length!=13:_fail()
+            width,height,depth,color,compression,filtering,interlace=struct.unpack('>IIBBBBB',content)
+            # Indexed/interlaced/16-bit images require a broader decoder contract.
+            if depth!=8 or color not in (0,2,4,6) or compression or filtering or interlace:_fail('내장 PNG는 비팔레트 8비트 정적 이미지여야 합니다.')
+            _image_budget(width,height)
+            size=(width,height,color)
+        elif kind==b'PLTE':
+            if not size or palette or idat or size[2] in (0,4) or not 3<=length<=768 or length%3:_fail()
+            palette=True
+        elif kind==b'IDAT':
+            if not size or b'IEND' in seen or (idat and seen[-1]!=b'IDAT'):_fail()
+            idat.append(content)
+        elif kind==b'IEND':
+            if length or not idat or end!=len(data):_fail()
+        elif kind not in {b'tRNS',b'sRGB',b'gAMA',b'cHRM',b'pHYs',b'bKGD',b'sBIT'}:
+            # In particular reject APNG and compressed metadata/profile streams.
+            _fail('내장 PNG는 8비트 정적 이미지 프로파일이어야 합니다.')
+        else:
+            if not size or idat or kind in seen:_fail()
+            color=size[2]
+            if kind in (b'sRGB',b'gAMA',b'cHRM',b'sBIT') and palette:_fail()
+            if kind==b'tRNS':
+                required={0:2,2:6}.get(color)
+                if required is None or length!=required or any(value>255 for value in struct.unpack('>'+'H'*(length//2),content)):_fail()
+            elif kind==b'sRGB':
+                if length!=1 or content[0]>3:_fail()
+            elif kind==b'gAMA':
+                if length!=4 or not struct.unpack('>I',content)[0]:_fail()
+            elif kind==b'cHRM':
+                if length!=32 or any(value>100000 for value in struct.unpack('>8I',content)):_fail()
+            elif kind==b'pHYs':
+                if length!=9 or content[-1] not in (0,1):_fail()
+            elif kind==b'bKGD':
+                required=2 if color in (0,4) else 6
+                if length!=required or any(value>255 for value in struct.unpack('>'+'H'*(length//2),content)):_fail()
+            elif kind==b'sBIT':
+                required={0:1,2:3,4:2,6:4}[color]
+                if length!=required or any(not 1<=value<=8 for value in content):_fail()
+        seen.append(kind);position=end
+    if not size or not seen or seen[-1]!=b'IEND':_fail()
+    width,height,color=size;channels={0:1,2:3,4:2,6:4}[color]
+    row=width*channels+1;expected=height*row;produced=0
+    decoder=zlib.decompressobj();pending=b''.join(idat)
+    while pending:
+        block=decoder.decompress(pending,min(64*1024,expected-produced+1))
+        if produced+len(block)>expected:_fail()
+        first=(-produced)%row
+        if any(block[index]>4 for index in range(first,len(block),row)):_fail()
+        produced+=len(block);tail=decoder.unconsumed_tail
+        if tail==pending and not block:_fail()
+        pending=tail
+        if decoder.unused_data:_fail()
+    if not decoder.eof or produced!=expected:_fail()
+    return width,height
+
+
+def _jpeg(data):
+    if not data.startswith(b'\xff\xd8'):_fail()
+    position=2;size=None;scans=0;markers=0;ended=False
+    while position<len(data):
+        markers+=1
+        if markers>MAX_IMAGE_CHUNKS or data[position]!=255:_fail()
+        while position<len(data) and data[position]==255:position+=1
+        if position>=len(data):_fail()
+        marker=data[position];position+=1
+        if marker==0xd9:
+            ended=position==len(data);break
+        if marker in (0,0xd8) or 0xd0<=marker<=0xd7 or position+2>len(data):_fail()
+        length=struct.unpack_from('>H',data,position)[0]
+        if length<2 or position+length>len(data):_fail()
+        payload=data[position+2:position+length];position+=length
+        if marker in (0xc0,0xc2):
+            if size or len(payload)<6:_fail()
+            precision,height,width,components=struct.unpack_from('>BHHB',payload)
+            if precision!=8 or components not in (1,3) or len(payload)!=6+3*components:_fail()
+            _image_budget(width,height);size=(width,height)
+        elif 0xc0<=marker<=0xcf and marker not in (0xc4,):_fail()
+        if marker==0xda:
+            scans+=1
+            if not size or scans>MAX_JPEG_SCANS or len(payload)<4:_fail()
+            while position<len(data):
+                if data[position]!=255:position+=1;continue
+                start=position
+                while position<len(data) and data[position]==255:position+=1
+                if position>=len(data):_fail()
+                if data[position]==0 or 0xd0<=data[position]<=0xd7:position+=1;continue
+                position=start;break
+    if not ended or not size or not scans:_fail()
+    return size
+
+
+def _image_budget(width,height):
+    if not 1<=width<=MAX_IMAGE_EDGE or not 1<=height<=MAX_IMAGE_EDGE:
+        _fail('내장 텍스처는 가로·세로 2048px 이하여야 합니다.')
+
+
+def _views_and_accessors(document,binary):
+    views=_array(document,'bufferViews',MAX_VIEWS,minimum=1)
+    for view in views:
+        _object(view,('buffer','byteOffset','byteLength','byteStride','target','name'),('buffer','byteLength'))
+        if _integer(view['buffer'])!=0:_fail()
+        offset=_integer(view.get('byteOffset',0));length=_integer(view['byteLength'],1)
+        if offset+length>len(binary):_fail()
+        if 'byteStride' in view:
+            stride=_integer(view['byteStride'],4,252)
+            if stride%4:_fail()
+        if 'target' in view and view['target'] not in (34962,34963):_fail()
+    accessors=_array(document,'accessors',MAX_ACCESSORS,minimum=1);decoded=[];total=0
+    for accessor in accessors:
+        _object(accessor,('bufferView','byteOffset','componentType','normalized','count','type','min','max','name'),('bufferView','componentType','count','type'))
+        view=views[_reference(accessor['bufferView'],views)]
+        component=accessor['componentType'];kind=accessor['type']
+        if type(component) is not int or component not in _COMPONENTS or kind not in _DIMENSIONS:_fail()
+        if 'normalized' in accessor and type(accessor['normalized']) is not bool:_fail()
+        if accessor.get('normalized',False) and component not in (5121,5123):_fail()
+        code,component_size=_COMPONENTS[component];dimension=_DIMENSIONS[kind]
+        count=_integer(accessor['count'],1,MAX_TRIANGLES*3);offset=_integer(accessor.get('byteOffset',0))
+        total+=count*dimension
+        if total>MAX_ACCESSOR_VALUES:_fail('GLB 데이터가 지원 geometry 한도를 넘었습니다.')
+        element=component_size*dimension;stride=view.get('byteStride',element)
+        absolute=view.get('byteOffset',0)+offset
+        if stride<element or offset%component_size or absolute%component_size or offset+(count-1)*stride+element>view['byteLength']:_fail()
+        values=[struct.unpack_from('<'+code*dimension,binary,absolute+i*stride) for i in range(count)]
+        if component==5126 and any(not math.isfinite(v) or abs(v)>MAX_COORDINATE for item in values for v in item):_fail()
+        for bound in ('min','max'):
+            if bound in accessor:
+                expected=_vector(accessor[bound],dimension)
+                actual=[(min if bound=='min' else max)(item[i] for item in values) for i in range(dimension)]
+                if any(not math.isclose(a,b,rel_tol=1e-5,abs_tol=1e-6) for a,b in zip(actual,expected)):_fail()
+        decoded.append((accessor,view,values))
+    return views,decoded
+
+
+def _textures_and_materials(document,binary,views):
+    images=_array(document,'images',MAX_IMAGES);pixels=0
+    for item in images:
+        _object(item,('bufferView','mimeType','name'),('bufferView','mimeType'))
+        view=views[_reference(item['bufferView'],views)]
+        if 'byteStride' in view or 'target' in view:_fail()
+        data=binary[view.get('byteOffset',0):view.get('byteOffset',0)+view['byteLength']]
+        if item['mimeType']=='image/png':width,height=_png(data)
+        elif item['mimeType']=='image/jpeg':width,height=_jpeg(data)
+        else:_fail('내장 텍스처는 PNG 또는 JPEG만 지원합니다.')
+        pixels+=width*height
+        if pixels>MAX_IMAGE_PIXELS:_fail('내장 텍스처의 전체 픽셀 한도를 넘었습니다.')
+    samplers=_array(document,'samplers',MAX_TEXTURES)
+    for sampler in samplers:
+        _object(sampler,('magFilter','minFilter','wrapS','wrapT','name'))
+        for key,allowed in (('magFilter',(9728,9729)),('minFilter',(9728,9729,9984,9985,9986,9987)),('wrapS',(33071,33648,10497)),('wrapT',(33071,33648,10497))):
+            if key in sampler and (type(sampler[key]) is not int or sampler[key] not in allowed):_fail()
+    textures=_array(document,'textures',MAX_TEXTURES)
+    for texture in textures:
+        _object(texture,('sampler','source','name'),('source',));_reference(texture['source'],images)
+        if 'sampler' in texture:_reference(texture['sampler'],samplers)
+    used_textures=set()
+    def texture_info(info,extra=()):
+        _object(info,('index','texCoord',*extra),('index',));used_textures.add(_reference(info['index'],textures))
+        if _integer(info.get('texCoord',0))!=0:_fail()
+    materials=_array(document,'materials',MAX_MATERIALS);textured=[]
+    for material in materials:
+        _object(material,('name','pbrMetallicRoughness','normalTexture','occlusionTexture','emissiveTexture','emissiveFactor','alphaMode','alphaCutoff','doubleSided'))
+        pbr=_object(material.get('pbrMetallicRoughness',{}),('baseColorFactor','baseColorTexture','metallicFactor','roughnessFactor','metallicRoughnessTexture'))
+        _vector(pbr.get('baseColorFactor',[1,1,1,1]),4,0,1)
+        _number(pbr.get('metallicFactor',1),0,1);_number(pbr.get('roughnessFactor',1),0,1)
+        used=False
+        for key in ('baseColorTexture','metallicRoughnessTexture'):
+            if key in pbr:texture_info(pbr[key]);used=True
+        for key in ('normalTexture','occlusionTexture','emissiveTexture'):
+            if key in material:
+                texture_info(material[key],('scale',) if key=='normalTexture' else ('strength',) if key=='occlusionTexture' else ())
+                if key=='normalTexture':_number(material[key].get('scale',1),-10,10)
+                if key=='occlusionTexture':_number(material[key].get('strength',1),0,1)
+                used=True
+        _vector(material.get('emissiveFactor',[0,0,0]),3,0,1)
+        if material.get('alphaMode','OPAQUE') not in ('OPAQUE','MASK','BLEND'):_fail()
+        _number(material.get('alphaCutoff',0.5),0,1)
+        if 'doubleSided' in material and type(material['doubleSided']) is not bool:_fail()
+        textured.append(used)
+    if used_textures!=set(range(len(textures))) or {textures[index]['source'] for index in used_textures}!=set(range(len(images))):
+        _fail('사용되지 않는 texture 또는 이미지가 있는 GLB는 현재 지원하지 않습니다.')
+    return len(images),textured
+
+
+def _meshes(document,decoded,textured):
+    meshes=_array(document,'meshes',MAX_MESHES,minimum=1);counts=[];primitives=0;vertices=triangles=0
+    roles={image['bufferView']:'image' for image in document.get('images',[])};used_materials=set()
+    def mark(accessor,role):
+        view=accessor['bufferView']
+        if view in roles and roles[view]!=role:_fail()
+        roles[view]=role
+    for mesh in meshes:
+        _object(mesh,('primitives','name'),('primitives',));items=mesh['primitives']
+        if type(items) is not list or not items:_fail()
+        mesh_vertices=mesh_triangles=0;bounds=None
+        for primitive in items:
+            primitives+=1
+            if primitives>MAX_PRIMITIVES:_fail()
+            _object(primitive,('attributes','indices','material','mode'),('attributes',))
+            if type(primitive.get('mode',4)) is not int or primitive.get('mode',4)!=4:_fail('정적 삼각형 mesh를 포함한 GLB만 지원합니다.')
+            attributes=_object(primitive['attributes'],('POSITION','NORMAL','TEXCOORD_0','TANGENT'),('POSITION',))
+            position,position_view,points=decoded[_reference(attributes['POSITION'],decoded)]
+            mark(position,'attribute')
+            if position['type']!='VEC3' or position['componentType']!=5126 or position.get('normalized',False) or not {'min','max'}<=set(position):_fail()
+            if position_view.get('target',34962)!=34962 or (position_view.get('byteOffset',0)+position.get('byteOffset',0))%4:_fail()
+            count=position['count'];mesh_vertices+=count
+            # Declared bounds may use exporter rounding; world admission uses decoded data.
+            low=[min(point[i] for point in points) for i in range(3)]
+            high=[max(point[i] for point in points) for i in range(3)]
+            bounds=([min(a,b) for a,b in zip(bounds[0],low)],[max(a,b) for a,b in zip(bounds[1],high)]) if bounds else (low[:],high[:])
+            for key in ('NORMAL','TEXCOORD_0','TANGENT'):
+                if key not in attributes:continue
+                accessor,view,values=decoded[_reference(attributes[key],decoded)]
+                mark(accessor,'attribute')
+                if accessor['count']!=count or view.get('target',34962)!=34962 or (view.get('byteOffset',0)+accessor.get('byteOffset',0))%4:_fail()
+                if key=='TEXCOORD_0':
+                    if accessor['type']!='VEC2' or not (accessor['componentType']==5126 or accessor['componentType'] in (5121,5123) and accessor.get('normalized') is True):_fail()
+                else:
+                    if accessor['type']!=('VEC3' if key=='NORMAL' else 'VEC4') or accessor['componentType']!=5126 or accessor.get('normalized',False):_fail()
+                    if any(not 0.98<=sum(v*v for v in value[:3])<=1.02 for value in values):_fail()
+                    if key=='TANGENT' and any(value[3] not in (-1,1) for value in values):_fail()
+            elements=count
+            if 'indices' in primitive:
+                accessor,view,values=decoded[_reference(primitive['indices'],decoded)]
+                mark(accessor,'index')
+                if accessor['type']!='SCALAR' or accessor['componentType'] not in (5121,5123,5125) or accessor.get('normalized',False) or 'byteStride' in view or view.get('target',34963)!=34963:_fail()
+                maximum={5121:255,5123:65535,5125:4294967295}[accessor['componentType']]
+                if any(value[0]>=count or value[0]==maximum for value in values):_fail()
+                elements=accessor['count']
+            if not elements or elements%3:_fail()
+            if 'material' in primitive:
+                material=_reference(primitive['material'],textured)
+                used_materials.add(material)
+                if textured[material] and 'TEXCOORD_0' not in attributes:_fail()
+            mesh_triangles+=elements//3
+        vertices+=mesh_vertices;triangles+=mesh_triangles
+        if vertices>MAX_VERTICES or triangles>MAX_TRIANGLES:_fail('GLB geometry가 지원 한도를 넘었습니다.')
+        counts.append((mesh_vertices,mesh_triangles,bounds))
+    if used_materials!=set(range(len(textured))):_fail('사용되지 않는 재질이 있는 GLB는 현재 지원하지 않습니다.')
+    return counts
+
+
+def _multiply(left,right):
+    return [[sum(left[row][i]*right[i][column] for i in range(4)) for column in range(4)] for row in range(4)]
+
+
+def _matrix(node):
+    if 'matrix' in node:
+        if any(key in node for key in ('translation','rotation','scale')):_fail()
+        values=_vector(node['matrix'],16)
+        if any(abs(values[i])>1e-6 for i in (3,7,11)) or abs(values[15]-1)>1e-6:_fail()
+        result=[[values[column*4+row] for column in range(4)] for row in range(4)]
+    else:
+        x,y,z,w=_vector(node.get('rotation',[0,0,0,1]),4,-1,1)
+        if not math.isclose(x*x+y*y+z*z+w*w,1,abs_tol=1e-4):_fail()
+        scale=_vector(node.get('scale',[1,1,1]),3,-10_000,10_000)
+        translation=_vector(node.get('translation',[0,0,0]),3)
+        rotation=[[1-2*(y*y+z*z),2*(x*y-z*w),2*(x*z+y*w)],
+                  [2*(x*y+z*w),1-2*(x*x+z*z),2*(y*z-x*w)],
+                  [2*(x*z-y*w),2*(y*z+x*w),1-2*(x*x+y*y)]]
+        result=[[rotation[row][column]*scale[column] for column in range(3)]+[translation[row]] for row in range(3)]+[[0,0,0,1]]
+    determinant=(result[0][0]*(result[1][1]*result[2][2]-result[1][2]*result[2][1])-
+                 result[0][1]*(result[1][0]*result[2][2]-result[1][2]*result[2][0])+
+                 result[0][2]*(result[1][0]*result[2][1]-result[1][1]*result[2][0]))
+    if not math.isfinite(determinant) or abs(determinant)<1e-12:_fail()
+    return result
+
+
+def _nodes(document,mesh_counts):
+    nodes=_array(document,'nodes',MAX_NODES,minimum=1);matrices=[];parents=[0]*len(nodes)
+    for node in nodes:
+        _object(node,('name','mesh','children','matrix','translation','rotation','scale'))
+        if 'mesh' in node:_reference(node['mesh'],mesh_counts)
+        children=node.get('children',[])
+        if type(children) is not list or len(children)>MAX_NODES or len(set(children))!=len(children):_fail()
+        for child in children:
+            parents[_reference(child,nodes)]+=1
+            if parents[child]>1:_fail()
+        matrices.append(_matrix(node))
+    scenes=_array(document,'scenes',1,minimum=1)
+    if _integer(document.get('scene',0))!=0:_fail()
+    _object(scenes[0],('nodes','name'),('nodes',));roots=scenes[0]['nodes']
+    if type(roots) is not list or not roots or len(roots)>MAX_NODES or len(set(roots))!=len(roots):_fail()
+    for root in roots:
+        if parents[_reference(root,nodes)]:_fail()
+    visited=set();vertices=triangles=0
+    def visit(index,parent,depth):
+        nonlocal vertices,triangles
+        if index in visited or depth>MAX_NODE_DEPTH:_fail()
+        visited.add(index);matrix=_multiply(parent,matrices[index])
+        if any(not math.isfinite(v) or abs(v)>MAX_COORDINATE for row in matrix for v in row):_fail()
+        node=nodes[index]
+        if 'mesh' in node:
+            v,t,bounds=mesh_counts[node['mesh']];vertices+=v;triangles+=t
+            if vertices>MAX_VERTICES or triangles>MAX_TRIANGLES:_fail('GLB 인스턴스 geometry가 지원 한도를 넘었습니다.')
+            for x in (bounds[0][0],bounds[1][0]):
+                for y in (bounds[0][1],bounds[1][1]):
+                    for z in (bounds[0][2],bounds[1][2]):
+                        world=[sum(matrix[row][i]*value for i,value in enumerate((x,y,z,1))) for row in range(3)]
+                        if any(not math.isfinite(value) or abs(value)>MAX_COORDINATE for value in world):_fail()
+        for child in node.get('children',[]):visit(child,matrix,depth+1)
+    identity=[[int(row==column) for column in range(4)] for row in range(4)]
+    for root in roots:visit(root,identity,1)
+    if len(visited)!=len(nodes) or not triangles:_fail()
+    if {node['mesh'] for node in nodes if 'mesh' in node}!=set(range(len(mesh_counts))):_fail('사용되지 않는 mesh가 있는 GLB는 현재 지원하지 않습니다.')
+    return vertices,triangles,len(nodes)
+
+
+def validate_glb(raw):
+    """Return bounded metadata for unchanged bytes, or a value-free ValueError.
+
+    Callers must bind the hash/profile to an immutable file, project/conversation
+    and rights/approval state, then revalidate those bytes at renderer admission.
+    JPEG marker/dimension validation is not a pixel-decoder security guarantee.
+    """
+    try:
+        document,binary=_container(raw)
+        _object(document,('asset','scene','scenes','nodes','meshes','accessors','bufferViews','buffers','images','textures','samplers','materials','extensionsUsed','extensionsRequired'),('asset','scenes','nodes','meshes','accessors','bufferViews','buffers'))
+        asset=_object(document['asset'],('version','minVersion','generator','copyright'),('version',))
+        if asset['version']!='2.0' or asset.get('minVersion','2.0')!='2.0':_fail()
+        for key in ('generator','copyright'):
+            if key in asset and (type(asset[key]) is not str or len(asset[key])>2048):_fail()
+        for key in ('extensionsUsed','extensionsRequired'):
+            if key in document and document[key]!=[]:_fail('압축 및 glTF 확장 기능은 현재 지원하지 않습니다.')
+        buffers=_array(document,'buffers',1,minimum=1)
+        _object(buffers[0],('byteLength','name'),('byteLength',));length=_integer(buffers[0]['byteLength'],1,MAX_BYTES)
+        if not length<=len(binary)<=length+3 or any(binary[length:]):_fail()
+        binary=binary[:length]
+        views,decoded=_views_and_accessors(document,binary)
+        images,textured=_textures_and_materials(document,binary,views)
+        counts=_meshes(document,decoded,textured)
+        vertices,triangles,nodes=_nodes(document,counts)
+        return dict(profile=PROFILE,sha256=hashlib.sha256(raw).hexdigest(),byte_length=len(raw),
+                    vertex_count=vertices,triangle_count=triangles,image_count=images,node_count=nodes)
+    except (ValueError,TypeError,KeyError,IndexError,OverflowError,RecursionError,UnicodeError,struct.error,zlib.error) as exc:
+        if type(exc) is ValueError and str(exc).startswith(('GLB','내장','외부','압축','지원','정적','사용')):
+            raise
+        raise ValueError(_ERROR) from None
+
+
+def embedded_images(raw):
+    """Return original, validated image byte slices for isolated native decoding.
+
+    This repeats admission validation rather than trusting caller metadata.
+    The result proves no successful pixel decoding, rights, or render approval.
+    """
+    validate_glb(raw)
+    document,binary=_container(raw)
+    images=[]
+    for image in document.get('images',[]):
+        view=document['bufferViews'][image['bufferView']];offset=view.get('byteOffset',0)
+        images.append(dict(mime_type=image['mimeType'],data=binary[offset:offset+view['byteLength']]))
+    return images

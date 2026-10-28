@@ -1,0 +1,25 @@
+const fs=await import('node:fs/promises'),crypto=await import('node:crypto');
+const out='/Users/leesungmin/Desktop/Loretune/docs/qa/desktop-refinement-20261026/';
+const p=(await taskSpace(31)).page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await p.reload();await p.waitForFunction(()=>document.body.dataset.desktopShell==='bounded');
+const hash=async()=>crypto.createHash('sha256').update(await p.evaluate(()=>JSON.stringify(project()))).digest('hex');
+const before=await hash(),trace=[];
+async function keyTarget(id,aria){for(let i=0;i<130;i++){const x=await p.evaluate(()=>{const e=document.activeElement,r=e.getBoundingClientRect();return{id:e.id,aria:e.getAttribute('aria-label'),tag:e.tagName,x:r.x,y:r.y,w:r.width,h:r.height,scrollY}});trace.push(x);if((id&&x.id===id)||(aria&&x.aria===aria)){if(x.y<0||x.y+x.h>1080)throw Error('target offscreen '+id);return}await p.keyboard.press('Tab')}throw Error('keyboard target not reached '+id+aria)}
+await keyTarget(null,'3 장면 제작·검토');await p.keyboard.press('Enter');
+await keyTarget('creatorEditReview');await p.keyboard.press('Enter');
+await keyTarget('reviewReason');await p.keyboard.press('ControlOrMeta+A');await p.keyboard.insertText('키보드 전용 임시 초안 · 취소 검증');
+const draft=await p.evaluate(()=>({reason:document.getElementById('reviewReason').value,saveDisabled:document.getElementById('reviewTake').disabled}));
+await keyTarget('discardTakeReviewDraft');await p.keyboard.press('Enter');
+await p.waitForFunction(()=>document.activeElement.id==='creatorEditReview');
+const cancel=await p.evaluate(()=>({focus:document.activeElement.id,reason:document.getElementById('reviewReason').value}));
+await keyTarget('editModelSettings');await p.keyboard.press('Enter');
+await p.waitForFunction(()=>document.getElementById('modelSettingsPanel').open);
+const modal=await p.evaluate(()=>({focus:document.activeElement.id||document.activeElement.tagName,open:document.getElementById('modelSettingsPanel').open}));
+await p.keyboard.press('Escape');
+const end=await p.evaluate(()=>({focus:document.activeElement.id,modalOpen:document.getElementById('modelSettingsPanel').open,doc:document.documentElement.scrollHeight}));
+const result={at:new Date().toISOString(),viewport:[1920,1080],method:'reload initial music page; Tab/Enter/type/Escape only, no focus() or click()',before,after:await hash(),draft,cancel,modal,end,trace};
+if(result.before!==result.after)throw Error('canonical project changed');
+await fs.writeFile(out+'keyboard-initial-journey.json',JSON.stringify(result,null,2));
+console.log({pass:true,tabObservations:trace.length,before,after:result.after,draft,cancel,modal,end});
+console.log(await p.snapshot());

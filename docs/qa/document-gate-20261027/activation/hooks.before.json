@@ -1,0 +1,92 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '프로젝트: %s\\n' \"$(basename \"$PWD\")\"; git status --short 2>/dev/null || printf 'Git 저장소 아님\\n'",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 /Users/leesungmin/.codex/scripts/anti_loop_guard.py sessionstart",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 /Users/leesungmin/.codex/scripts/architect_agent_detector.py sessionstart",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|shell|exec_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/leesungmin/.codex/scripts/anti_loop_guard.py pretooluse",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 /Users/leesungmin/.codex/scripts/supabase_mcp_guard.py pretooluse",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__supabase|supabase",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/leesungmin/.codex/scripts/supabase_mcp_guard.py pretooluse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|shell|exec_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/leesungmin/.codex/scripts/anti_loop_guard.py posttooluse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/leesungmin/.codex/scripts/prompt_policy_guard.py userpromptsubmit",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "_disabled": {
+    "__note": "2026-09-05 사용자 지시로 비활성화. checkpoint_save.py 가 프로젝트 루트의 checkpoint.md 를 덮어써서 세션 인계 포인터를 지웠다(aethonSaaS/atheon 에서 실측). 재개 지점은 docs/agent-work/ 로 옮겼다. 되살리려면 이 블록을 hooks 안으로 되돌려라.",
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/leesungmin/.codex/scripts/checkpoint_save.py stop",
+            "timeout": 5,
+            "statusMessage": "세션 종료 체크포인트 저장..."
+          }
+        ]
+      }
+    ]
+  }
+}

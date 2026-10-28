@@ -1,0 +1,1277 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-10-23",
+  "rea_interpretation": "사용자의 REA MCP를 현재 제공된 Refero MCP로 해석하여 실제 조회. 다른 REA 도구를 의미했다면 도구명 확인 후 추출 계획만 재매핑.",
+  "research_status": "completed_read_only",
+  "counts": {
+    "style_search_angles": 3,
+    "full_styles": 3,
+    "full_screen_details": 12,
+    "screen_images_visually_inspected": 4,
+    "full_flows": 5,
+    "official_pages": 8
+  },
+  "limitations": [
+    "Refero 캡처의 촬영시점은 모두 확인되지 않았다.",
+    "정적 화면과 Refero가 생성한 설명은 실제 실행 테스트·현재 제품 동작 보장이 아니다.",
+    "스타일은 마케팅/제품페이지의 미학자료이며 앱 내부 기능명세의 증거가 아니다.",
+    "벤치마크 패턴 채택이 우리 제품의 성능·매출·품질을 보장하지 않는다."
+  ],
+  "exact_product_lookup": [
+    {
+      "product": "Character App",
+      "domain": "character.app",
+      "result": "정확한 도메인이 조회 상위10개에 나타나지 않음. Refero 전체 미등재를 증명하지 않음.",
+      "fallback": [
+        "S-U21",
+        "S-U22"
+      ]
+    },
+    {
+      "product": "Tunee",
+      "domain": "tunee.ai",
+      "result": "동일",
+      "fallback": [
+        "S-U25"
+      ]
+    },
+    {
+      "product": "LTX Studio",
+      "domain": "ltx.studio",
+      "result": "동일",
+      "fallback": [
+        "S-U23"
+      ]
+    },
+    {
+      "product": "Hedra",
+      "domain": "hedra.com",
+      "result": "동일",
+      "fallback": [
+        "S-U24"
+      ]
+    },
+    {
+      "product": "Notion",
+      "domain": "notion.so",
+      "result": "도메인검색 및 단독/이력 화면 검색에서 Notion 본제품 정확 결과 미확인",
+      "fallback": [
+        "S-U28"
+      ]
+    },
+    {
+      "product": "Frame.io",
+      "domain": "frame.io",
+      "result": "정확한 사이트 확인, style 및 자산관리 화면 조회",
+      "references": [
+        "S-U02",
+        "S-U05"
+      ]
+    },
+    {
+      "product": "Linear",
+      "domain": "linear.app",
+      "result": "style·화면·멤버초대flow 조회",
+      "references": [
+        "S-U01",
+        "S-U04",
+        "S-U18"
+      ]
+    }
+  ],
+  "query_log": [
+    {
+      "layer": "styles",
+      "query": "professional video production platform cinematic dark media collaboration",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "6a82f165-eb8e-4a87-a0dd-31593f08128b",
+        "3a63b3fa-dc79-4dc3-935e-3f8f4ab447a7",
+        "57173e45-09c8-4278-9024-a634e97bacda",
+        "6cdcbe02-96f5-4daa-8094-9c61bbaf3147",
+        "260ed304-25ca-401f-a0a8-c40f63f9e4fd",
+        "71a929ee-cfd4-4465-8719-778bc723a108",
+        "c00d3961-a100-4c22-91fe-75f6e488e579",
+        "d029f1ef-7bf9-483e-8501-25528fb61613",
+        "9844e7bf-4bff-48e6-8efc-e45002ce5226",
+        "9d795615-79d0-4544-ac5e-2858971c3b3b"
+      ]
+    },
+    {
+      "layer": "styles",
+      "query": "restrained monochrome precise SaaS interface typography",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "9552d07f-2f68-4dd7-a0e9-d779d4a31562",
+        "a4da778b-6520-4fbc-9211-fcff23ba3b65",
+        "5f21d79b-ac26-4b50-a74b-d2af084253cf",
+        "91b6dc03-35f1-461a-80b6-0b2473c05f5a",
+        "bedd8b37-9085-46c3-9a67-159373d11334",
+        "9c657624-4aa8-4688-a6be-4eb3d6f2ce57",
+        "0d02bc89-3122-4a9b-b536-0a858ca42a52",
+        "69987cc6-447d-4c32-a5d1-7cc9d627c40d",
+        "289021a2-4f3b-45b2-9009-972d72393ab7",
+        "b49ec76c-1410-44cb-9de1-b5ac58255949"
+      ]
+    },
+    {
+      "layer": "styles",
+      "query": "Linear product design dark compact technical",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "554b801c-3b31-4086-a7e5-ae613cdd618b",
+        "983516b7-9fad-4143-8c1b-e3d90ce8dfb5",
+        "744c9117-a290-4652-9e77-16eca68663ee",
+        "4c81106b-5137-41ca-9919-77d2f4374ae1",
+        "11d3e58a-87d7-4a9a-bbf5-720f4fd3ffc6",
+        "4ee42a45-82e7-4a4b-8cc3-86c6b77bbca4",
+        "8ac461ad-1f30-4829-bb6e-dc68f1d2b6dd",
+        "2055406e-755a-4276-af43-09d6b06a78f3",
+        "57173e45-09c8-4278-9024-a634e97bacda",
+        "4b3c372c-aff6-4608-bafb-1dde853c4805"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "Frame.io video review comments version",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "89a78122-d24e-4311-95a0-03053530710e",
+        "f81922ed-0520-4a99-a185-84a8bee91f2c",
+        "8d7d27b5-905b-4289-a372-8ca9685511f1",
+        "c2b05f6e-e70a-40ae-9021-2c9f644dcc99",
+        "2d9d7d23-3804-4918-8b82-095698d00e96",
+        "ac2cbe59-20b6-4ded-9744-c9447b712eb0",
+        "3befc759-777d-482e-984c-914b57d6ed92",
+        "a4f6a57b-72d8-4996-a812-426e74661e91",
+        "9e49cbf8-d113-41ce-992d-607340697d99",
+        "a007b688-ad2d-40ea-8b74-143cd865ec31"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "Linear project board settings member permissions",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "45d9d8ed-c43d-4b17-9ca4-2b29286fec4a",
+        "095403d4-c5b5-40f5-a55c-d1f2801c41b9",
+        "fbbd9e52-ec43-4ea6-a7d1-d445f0af053d",
+        "4c0280ed-8d23-4119-b13a-3d7b67969117",
+        "4a094449-e0ab-4893-8e58-c6239e7c228c",
+        "64a1ae68-00b5-4d76-9e61-5ee4f57c7f60",
+        "18976a0c-9e83-4c73-ae81-7627b1ae8d59",
+        "80958fd7-979b-45cd-b882-97e4fe3a8231",
+        "f0ed18af-9363-4da0-9a9f-4ffa74d1156c",
+        "9c047eda-4202-461b-b0df-955db43fb363"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "Notion page history knowledge database",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "922b9b2a-4169-4669-9cae-cedfbcc35f57",
+        "7b1d4426-624b-43ed-8a49-cc5e63ec1bcf",
+        "ea4ad0dc-3c65-47d0-bc49-1a1367d62f18",
+        "3f023547-aa16-4d17-81e6-2850803d9036",
+        "a7f1c46f-c293-48b9-ab89-96869d50c677",
+        "4a094449-e0ab-4893-8e58-c6239e7c228c",
+        "566af3d2-efb9-41c4-9228-d371c263466d",
+        "bd40e42e-f73c-42f3-9da0-6e8bb142b191",
+        "e619639d-1206-41cb-b3c9-c4fa5fc4d310",
+        "744a7d5a-cba1-4b4d-a171-21426a82e8b8"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "video editor timeline asset upload",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "8d1d17c3-2d7d-48bd-816c-e707b1e50a56",
+        "90885d73-474a-46c6-ad52-9fc1d1383dbb",
+        "1f4e31e9-6ab6-4181-835b-58aabffdfa2f",
+        "814c1cf2-26da-4bf9-b715-18d566bb991e",
+        "fc9ca0f0-10e3-4621-b479-19e3c1a6b694",
+        "19df1342-6357-457b-83ce-5e108b2736d8",
+        "4b3a12b9-7046-40b9-ad70-621fc7d52cb3",
+        "de7c55c1-b3bd-443d-8926-473c72dd962e",
+        "56b3d8e3-ac46-41ad-890d-1602549572ca",
+        "bd12fb75-e6ec-447d-93e3-c52eeff71c7b"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "billing usage credits budget spending limit",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "399ce73a-cd7d-47a5-a9e0-5f9e8896900b",
+        "0316cb1c-3c50-4af2-8ca1-fd84b004d901",
+        "7aa415a9-4dc3-47df-9657-0f6cf04ea241",
+        "9a62b697-0e8d-4fae-af93-dbac2c2248eb",
+        "6982f829-e99b-413f-ac4f-d460b54605b6",
+        "d5eabd56-eaa7-488d-b0b9-33595488a4c4",
+        "e2dbd16d-a3c2-4422-bf5c-a0360d9bf8fe",
+        "b071661b-94aa-42ce-8d6b-b173f6f0f290",
+        "db14b4aa-9863-446b-a388-f6b1edabc112",
+        "88152e45-9e64-4b23-b15d-12c6713c9c28"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "LTX Studio Hedra Tunee Character App",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "f3988777-55ef-424e-9033-e2199e949fbf",
+        "5e2157e8-4716-4812-81ac-48c7bb7210dd",
+        "8f7b052c-1762-41c4-8e01-f99458c8d09a",
+        "1c717a2c-cc3f-4be2-8f0c-999a7ea6d71b",
+        "0891b578-0bbb-4969-9569-b105e1c4bc2b",
+        "6d6da91b-1dee-4730-b98b-999f47722ab4",
+        "e73b0b0f-3a2a-463a-8833-d5e1cb5923b0",
+        "c43b21ce-968d-498a-9060-9eadb2ebf8f9",
+        "6bbe7271-216b-4e98-98fb-39f3217420e5",
+        "de945c5f-c764-4d84-ba40-39e1d29e855a"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "Frame.io",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "3ca88c6b-39f7-4a62-9b4e-1493d453e2d1",
+        "18f09e82-d282-4a73-81a5-3be1c640e8c7",
+        "5b6a1a4b-c80b-4df6-be21-5fb1d17efa29",
+        "9b1059c9-bb66-4b43-8a7c-31cf1ca7b8dd",
+        "faf8700d-518a-4041-a39f-4f7156c9b009",
+        "0b2a9401-454c-4b18-8752-608c168ed914",
+        "eb40446b-d43f-425f-97c7-cc016494da8a",
+        "1cb4d389-1ff8-4141-ae6f-742d86052ac1",
+        "da746bf9-c282-4ec2-a882-9fa887689e36",
+        "46e20175-f0c7-417c-8afc-30b3b4999265"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "Notion history",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "281fdb29-6701-4dbc-8e78-a54cbcde1699",
+        "d0348d53-6399-4944-a57c-10e231cb4f6b",
+        "6513c22c-c801-47bb-8416-d5553ca80760",
+        "a574c575-29e4-4473-86c9-d462025acc51",
+        "2100be65-70b3-4544-acf7-ef6c9e643906",
+        "e9118dc4-17a5-4973-b7b4-c8438114c33a",
+        "5a2e7f0c-6fd1-4f05-8c6e-c5fed88fa354",
+        "85c83932-1d32-40bd-b34c-8d035a471035",
+        "b7778b21-65a0-4d49-9a54-111ef6024107",
+        "b5faa16f-0eaf-447b-aa29-fc3ddcdabc58"
+      ]
+    },
+    {
+      "layer": "screens",
+      "query": "Notion",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "5b4e085c-1faa-426a-b505-2b3eea2a905b",
+        "ecc987d3-1f8c-4997-89e1-57f4d0870a27",
+        "744a7d5a-cba1-4b4d-a171-21426a82e8b8",
+        "b90e1622-52d8-4c35-a889-6d593015b86b",
+        "4af1bc24-7ea8-44f3-9e41-34798784e5bc",
+        "ff4b5552-2334-4c43-93af-6983fb867a5e",
+        "e2e6e82b-d4d7-4ce6-8d50-a54461b7910b",
+        "a5e63ec6-4ee7-4835-a978-df8849343d28",
+        "6b436eaa-b2fb-44f6-b22e-30c3adee3b14",
+        "2ccd89e6-8bd7-4116-89ee-47f2cc9f9a72"
+      ]
+    },
+    {
+      "layer": "screens_web",
+      "query": "Frame.io projects",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "eb9805ed-c449-4ed5-8bb7-3cdeeffa566e",
+        "82359064-b61c-4430-a4a8-850dcfc82bfd",
+        "d71d374b-69ee-491b-9376-799b97020e35",
+        "f4826db6-f812-4db4-8dd7-a82e6ad2ede7",
+        "f5c533bd-9b7f-4b87-9741-f74434cc10f2",
+        "d8cb464d-94e7-48c5-ab8d-72394a4eaa3f",
+        "28ce8009-980b-4801-b704-8375acc2f5ad",
+        "18620a01-32ac-4294-ad23-d21df274717c",
+        "24ee3476-e4b8-4f07-bb16-77eb13a8eceb",
+        "f8811186-2f5b-4427-8878-ccefe04400b5"
+      ]
+    },
+    {
+      "layer": "screens_web",
+      "query": "Frame.io",
+      "page": 2,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "a5319f8f-7cd3-4429-a729-920ceb3be945",
+        "0c1e8269-18cf-44f2-9576-528404d6ba23",
+        "f055e30f-9821-488a-9275-9d7a5cd3bb37",
+        "affb819e-f30d-42c9-865a-515cb70a1702",
+        "a3766d5f-73b0-4d49-aa1f-69ef4e57d088",
+        "717b951a-90b0-421b-b40b-e62b33cd8e67",
+        "8da2cba3-3b17-44ff-8775-fc05aaae9040",
+        "eb9805ed-c449-4ed5-8bb7-3cdeeffa566e",
+        "0b612920-0f38-43f3-8046-c867bde0de08",
+        "b0dfeee1-1de6-4bf2-908d-cd01eb8c101c"
+      ]
+    },
+    {
+      "layer": "screens_ios",
+      "query": "video review comments approval",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        "d07224d6-d451-418f-a0c1-e892808db2b3",
+        "3da3326d-a51f-4692-95c9-54c766e00386",
+        "6a0f8a0f-1087-4611-bc72-d6430c8dc430",
+        "1d7fe9f4-34dc-4ee7-ae46-54a8dcac5e56",
+        "57d0038b-6a43-496b-8463-995963039a0a",
+        "0d4fb3ae-8eea-41ad-bf11-55bd90c2cfb1",
+        "04e219de-c550-4f10-a809-ddd318d47ced",
+        "0b9ef13e-7cf9-4d86-a7b3-79dbef60e2aa",
+        "6b8cee29-85ee-44c5-b032-57f765092f96",
+        "af7e344b-153b-4bef-8a27-38617836258d"
+      ]
+    },
+    {
+      "layer": "sites",
+      "query": "character.app",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        156,
+        196,
+        748,
+        218,
+        386,
+        691,
+        86,
+        795,
+        728,
+        765
+      ]
+    },
+    {
+      "layer": "sites",
+      "query": "tunee.ai",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        481,
+        1138,
+        917,
+        943,
+        104,
+        75,
+        1144,
+        137,
+        924,
+        670
+      ]
+    },
+    {
+      "layer": "sites",
+      "query": "ltx.studio",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        944,
+        495,
+        527,
+        59,
+        57,
+        935,
+        194,
+        765,
+        114,
+        505
+      ]
+    },
+    {
+      "layer": "sites",
+      "query": "hedra.com",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        675,
+        765,
+        194,
+        93,
+        234,
+        57,
+        332,
+        633,
+        691,
+        510
+      ]
+    },
+    {
+      "layer": "sites",
+      "query": "notion.so",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        457,
+        216,
+        112,
+        760,
+        721,
+        80,
+        194,
+        26,
+        411,
+        370
+      ]
+    },
+    {
+      "layer": "sites",
+      "query": "frame.io",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        1142,
+        935,
+        259,
+        114,
+        505,
+        215,
+        495,
+        448,
+        943,
+        821
+      ]
+    },
+    {
+      "layer": "flows",
+      "query": "Frame.io review share video comments",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        13040,
+        13042,
+        13041,
+        8133,
+        12760,
+        8130,
+        12765,
+        1237,
+        13044,
+        12338
+      ]
+    },
+    {
+      "layer": "flows",
+      "query": "Linear inviting members to workspace",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        12293,
+        12508,
+        9283,
+        12299,
+        6641,
+        5834,
+        114,
+        4843,
+        597,
+        115
+      ]
+    },
+    {
+      "layer": "flows",
+      "query": "Notion creating page uploading files",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        13027,
+        13025,
+        5338,
+        8327,
+        4492,
+        3834,
+        4852,
+        4215,
+        6371,
+        8306
+      ]
+    },
+    {
+      "layer": "flows",
+      "query": "workspace billing usage limit",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        4183,
+        12024,
+        3851,
+        3896,
+        9947,
+        3894,
+        9955,
+        12301,
+        8713,
+        14301
+      ]
+    },
+    {
+      "layer": "flows",
+      "query": "video project creation onboarding",
+      "page": 1,
+      "status": "success",
+      "returned_count": 10,
+      "returned_ids": [
+        12146,
+        14064,
+        298,
+        2107,
+        11687,
+        2093,
+        4186,
+        12307,
+        5733,
+        12303
+      ]
+    }
+  ],
+  "references": [
+    {
+      "source_id": "S-U01",
+      "type": "refero_style",
+      "reference_id": "554b801c-3b31-4086-a7e5-ae613cdd618b",
+      "title": "Linear",
+      "source_url": "https://linear.app",
+      "inspection": "full_style_metadata",
+      "observed": "짙은 중립 배경, 얇은 경계, 6px 계열 작은 반경, 압축된 정보밀도, 선택적인 lime primary action.",
+      "adopt": "주 작업영역의 중립 표면·간결한 상태행·작은 반경·제한된 행동 강조.",
+      "reject": "브랜드 색/폰트/마케팅 헤드라인을 그대로 복제하지 않음. 10px 레이블을 핵심 한국어정보에 적용하지 않음."
+    },
+    {
+      "source_id": "S-U02",
+      "type": "refero_style",
+      "reference_id": "6a82f165-eb8e-4a87-a0dd-31593f08128b",
+      "title": "Frame.io",
+      "source_url": "https://frame.io",
+      "inspection": "full_style_metadata",
+      "observed": "어두운 미디어 중심 캔버스, 큰 제품시각물, 둥근 CTA, 보라/파랑의 제한된 강조.",
+      "adopt": "미디어를 충분한 크기로 유지하고 검토 댓글을 옆에 배치하는 작업 구조만 채택.",
+      "reject": "마케팅용 광채·우주적 gradient·대형 capsule을 밀집된 제작툴 전체로 옮기지 않음."
+    },
+    {
+      "source_id": "S-U03",
+      "type": "refero_style",
+      "reference_id": "9552d07f-2f68-4dd7-a0e9-d779d4a31562",
+      "title": "Audyr",
+      "source_url": "https://audyr.com",
+      "inspection": "full_style_metadata",
+      "observed": "밝은 중립 캔버스, 명확한 구조선과 타이포, 색에 의존하지 않는 위계.",
+      "adopt": "내보내는 명세·청구 설명·긴 설정문서의 읽기 순서에 한정하여 참고.",
+      "reject": "주 제작공간을 흰 랜딩페이지로 바꾸거나 145px 마케팅 섹션 간격을 앱에 적용하지 않음."
+    },
+    {
+      "source_id": "S-U04",
+      "type": "refero_screen",
+      "reference_id": "4a094449-e0ab-4893-8e58-c6239e7c228c",
+      "title": "Linear 작업목록",
+      "source_url": "https://refero.design/pages/4a094449-e0ab-4893-8e58-c6239e7c228c",
+      "original_page_url": "https://linear.app/refero-design/profiles/mileshart",
+      "product": "Linear",
+      "platform": "web",
+      "inspection": "full_metadata_and_screen_image",
+      "observed": "상태별 목록과 우측 문맥 패널을 확인.",
+      "adopt": "프로젝트 작업·숏 목록은 ID/상태/담당을 스캔 가능하게, 상세 문맥은 drawer로.",
+      "target_screens": [
+        "SCR-016"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U05",
+      "type": "refero_screen",
+      "reference_id": "18620a01-32ac-4294-ad23-d21df274717c",
+      "title": "Frame.io 자산 표·정렬",
+      "source_url": "https://refero.design/pages/18620a01-32ac-4294-ad23-d21df274717c",
+      "original_page_url": "https://next.frame.io/project/0312a86b-4c23-4ec9-bad9-c9e0dbee19e3",
+      "product": "Frame.io ",
+      "platform": "web",
+      "inspection": "full_metadata_and_screen_image",
+      "observed": "좌측 프로젝트/자산 탐색과 썸네일·메타데이터 표, 정렬 팝오버를 확인.",
+      "adopt": "라이브러리에서 상태/권리/시대 필터·표/그리드 전환.",
+      "target_screens": [
+        "SCR-011"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U06",
+      "type": "refero_screen",
+      "reference_id": "45d9d8ed-c43d-4b17-9ca4-2b29286fec4a",
+      "title": "Runway 멤버 관리",
+      "source_url": "https://refero.design/pages/45d9d8ed-c43d-4b17-9ca4-2b29286fec4a",
+      "original_page_url": "https://app.runwayml.com/video-tools/teams/LiamBasil/settings/members",
+      "product": "Runway",
+      "platform": "web",
+      "inspection": "full_metadata_only",
+      "observed": "역할·멤버검색·사용량 등이 있는 관리표라는 상세 설명을 확인.",
+      "adopt": "역할과 할당 범위·유료생성 한도를 함께 제시하되 비용권한은 분리.",
+      "target_screens": [
+        "SCR-028"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U07",
+      "type": "refero_screen",
+      "reference_id": "8d1d17c3-2d7d-48bd-816c-e707b1e50a56",
+      "title": "Butter 영상편집",
+      "source_url": "https://refero.design/pages/8d1d17c3-2d7d-48bd-816c-e707b1e50a56",
+      "original_page_url": "https://www.usebutter.com/studio/07d3b2f3-c113-4d97-b6e9-6d2c42309378",
+      "product": "Butter",
+      "platform": "web",
+      "inspection": "full_metadata_only",
+      "observed": "자산·미리보기·속성과 하단 타임라인 구조의 상세 설명을 확인.",
+      "adopt": "숏 중심 편집과 하단 음악/자막 트랙, 기존 편집툴 연동 경로.",
+      "target_screens": [
+        "SCR-021"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U08",
+      "type": "refero_screen",
+      "reference_id": "90885d73-474a-46c6-ad52-9fc1d1383dbb",
+      "title": "Butter 업로드 오류",
+      "source_url": "https://refero.design/pages/90885d73-474a-46c6-ad52-9fc1d1383dbb",
+      "original_page_url": "https://www.usebutter.com/studio/07d3b2f3-c113-4d97-b6e9-6d2c42309378",
+      "product": "Butter",
+      "platform": "web",
+      "inspection": "full_metadata_and_screen_image",
+      "observed": "빈 업로드 영역과 하단 업로드 실패 메시지를 실제 이미지로 확인.",
+      "adopt": "오류를 항목 옆에 남기고 원인/재개/다른파일선택을 제공; 단순 toast만으로 끝내지 않음.",
+      "target_screens": [
+        "SCR-006"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U09",
+      "type": "refero_screen",
+      "reference_id": "88152e45-9e64-4b23-b15d-12c6713c9c28",
+      "title": "Steel Wallet",
+      "source_url": "https://refero.design/pages/88152e45-9e64-4b23-b15d-12c6713c9c28",
+      "original_page_url": "https://app.steel.dev/settings/billing/wallet",
+      "product": "Steel",
+      "platform": "web",
+      "inspection": "full_metadata_only",
+      "observed": "포함/구매 크레딧과 활동·잔고·한도 관리가 나뉜 상세 설명을 확인.",
+      "adopt": "잔고·예약·확정사용·환불대기를 분리하고 자동충전은 opt-in.",
+      "target_screens": [
+        "SCR-029"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U10",
+      "type": "refero_screen",
+      "reference_id": "bd40e42e-f73c-42f3-9da0-6e8bb142b191",
+      "title": "Lemni 지식 자료",
+      "source_url": "https://refero.design/pages/bd40e42e-f73c-42f3-9da0-6e8bb142b191",
+      "original_page_url": "https://lemni.com/s/aDHsA/knowledge/LNqY0",
+      "product": "Lemni",
+      "platform": "web",
+      "inspection": "full_metadata_only",
+      "observed": "카테고리/데이터셋과 문서 목록, 업로드/URL 추가 설명을 확인.",
+      "adopt": "자료 라이브러리와 확정된 사실을 별도 메뉴로 제공.",
+      "target_screens": [
+        "SCR-011"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U11",
+      "type": "refero_screen",
+      "reference_id": "e619639d-1206-41cb-b3c9-c4fa5fc4d310",
+      "title": "Zendesk 문서 이력",
+      "source_url": "https://refero.design/pages/e619639d-1206-41cb-b3c9-c4fa5fc4d310",
+      "original_page_url": "https://refero.zendesk.com/knowledge/history/QnJhbmQ6OTQ3MDk1NTEzMzk3OQ==",
+      "product": "Zendesk",
+      "platform": "web",
+      "inspection": "full_metadata_only",
+      "observed": "행위자/이벤트 필터가 붙은 시간순 이력 설명을 확인.",
+      "adopt": "공식설정 변경·승인·권리철회 이력을 필터링.",
+      "target_screens": [
+        "SCR-031"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U12",
+      "type": "refero_screen",
+      "reference_id": "3befc759-777d-482e-984c-914b57d6ed92",
+      "title": "Dropbox 영상 검토",
+      "source_url": "https://refero.design/pages/3befc759-777d-482e-984c-914b57d6ed92",
+      "original_page_url": "https://www.dropbox.com/home/Team?preview=10667774-uhd_4096_2160_25fps.mp4",
+      "product": "Dropbox",
+      "platform": "web",
+      "inspection": "full_metadata_only",
+      "observed": "큰 영상과 우측 댓글·타임코드/반응 패널의 상세 설명을 확인.",
+      "adopt": "장면·take·버전·timecode에 묶인 댓글. 댓글과 공식취향 승인 분리.",
+      "target_screens": [
+        "SCR-023"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U13",
+      "type": "refero_screen",
+      "reference_id": "c2b05f6e-e70a-40ae-9021-2c9f644dcc99",
+      "title": "Hello Ivy 파일·버전·승인",
+      "source_url": "https://refero.design/pages/c2b05f6e-e70a-40ae-9021-2c9f644dcc99",
+      "original_page_url": "https://app.helloivy.co/office/files/149235",
+      "product": "Hello Ivy",
+      "platform": "web",
+      "inspection": "full_metadata_only",
+      "observed": "상단 파일명/버전/형식/승인상태와 댓글의 설명을 확인.",
+      "adopt": "검토버전과 승인상태를 헤더에 고정; 현재편집본과 혼동 방지.",
+      "target_screens": [
+        "SCR-023"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U14",
+      "type": "refero_screen",
+      "reference_id": "e73b0b0f-3a2a-463a-8833-d5e1cb5923b0",
+      "title": "Luma 생성 대기",
+      "source_url": "https://refero.design/pages/e73b0b0f-3a2a-463a-8833-d5e1cb5923b0",
+      "original_page_url": "https://lumalabs.ai/genie?view=one&one=73ad63b0-b600-4e5e-8577-0667a5aa9984",
+      "product": "Luma AI",
+      "platform": "web",
+      "inspection": "full_metadata_only",
+      "observed": "몇 분 걸릴 수 있음을 알리는 생성 대기 화면 설명을 확인.",
+      "adopt": "정확한 퍼센트가 없을 때 단계·마지막 갱신·떠나도 되는지 표시.",
+      "target_screens": [
+        "SCR-019"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U15",
+      "type": "refero_screen",
+      "reference_id": "0d4fb3ae-8eea-41ad-bf11-55bd90c2cfb1",
+      "title": "YouTube 모바일 댓글",
+      "source_url": "https://refero.design/screens/0d4fb3ae-8eea-41ad-bf11-55bd90c2cfb1",
+      "product": "YouTube",
+      "platform": "ios",
+      "inspection": "full_metadata_and_screen_image",
+      "observed": "영상 위에 확장 가능한 댓글 시트와 하단 입력창을 실제 이미지로 확인.",
+      "adopt": "모바일 검토의 bottom sheet·입력 위치만 차용; 좋아요 중심 사회적 지표는 제외.",
+      "target_screens": [
+        "SCR-023"
+      ],
+      "runtime_verified": false,
+      "limitation": "정적 캡처와 Refero 설명으로 UI 패턴을 관찰했다. 최신 제품의 실제 권한·과금·성능·저장 동작을 실행 검증하지 않았다."
+    },
+    {
+      "source_id": "S-U16",
+      "type": "refero_flow",
+      "reference_id": 298,
+      "title": "신규 프로젝트 형식→에디터",
+      "product": "Ozone",
+      "source_url": "https://refero.design/flows/298",
+      "inspection": "full_flow_metadata",
+      "steps_count": 5,
+      "observed_steps": [
+        {
+          "title": "Template / Format Entry",
+          "screen_id": "ef0a055c-2625-4b38-9f64-be65a593b8f7",
+          "goal": "Start creating a new video project and choose a target format from available templates",
+          "action": "Click 'New Project' (top-right) or select a template thumbnail (Instagram Story, TikTok, Reel, etc.)",
+          "system_response": "Opens the 'New Video Project' modal centered on screen (project metadata and upload options)."
+        },
+        {
+          "title": "New Project Modal (Defaults)",
+          "screen_id": "e3163d14-0d36-462e-941d-eff91a8830fc",
+          "goal": "Provide project name, confirm default size/format, and optionally upload media before starting",
+          "action": "Type a project name, review the preselected Size & Format field, optionally click Upload to add files, then press 'Let's Start'",
+          "system_response": "Modal accepts input; if mandatory fields are present it enables the start action. No navigation yet until 'Let's Start' is tapped."
+        },
+        {
+          "title": "Size & Format Selector",
+          "screen_id": "19ae39f0-0db8-4026-abb2-d0bf1e6aefb6",
+          "goal": "Choose the output aspect ratio / platform format for the project",
+          "action": "Open the Size & Format dropdown and select the desired preset (TikTok, YouTube, IG post, Wide Landscape, etc.)",
+          "system_response": "Dropdown displays preset options; selecting one updates the Size & Format field in the modal and highlights the chosen preset."
+        },
+        {
+          "title": "Confirm Project Details",
+          "screen_id": "2f577d97-7a52-473c-b8c7-a8ee4d057bb2",
+          "goal": "Finalize project metadata (name + format) and prepare to launch the editor",
+          "action": "Verify the project name (example: 'Party #1 / teaser'), confirm Size & Format, optionally upload files, then click 'Let's Start'",
+          "system_response": "Modal closes and the system creates/initializes the project with provided metadata (and uploaded files if any). The editor is prepared and the project title is set."
+        },
+        {
+          "title": "Blank Editor Initialized",
+          "screen_id": "bdee7082-2c0b-4da2-afcb-e13994288f7c",
+          "goal": "Begin editing the newly created project with an empty canvas and timeline",
+          "action": "Use the editor controls (timeline, import buttons, play) to add media and start editing",
+          "system_response": "Editor opens with the project name shown at the top, an empty preview canvas, and an initialized timeline. Share and Export controls are available; the project is ready to receive media and edits."
+        }
+      ],
+      "adopt": "프로젝트명/화면비/파일을 한정한 생성 전 설정",
+      "target_screens": [
+        "SCR-013"
+      ],
+      "runtime_verified": false,
+      "limitation": "Refero가 해석한 캡처 기반 happy path다. 오류·권한·정산 분기는 우리 제품의 제안 요구사항이다."
+    },
+    {
+      "source_id": "S-U17",
+      "type": "refero_flow",
+      "reference_id": 3896,
+      "title": "월 지출 한도 설정",
+      "product": "Cohere",
+      "source_url": "https://refero.design/flows/3896",
+      "inspection": "full_flow_metadata",
+      "steps_count": 4,
+      "observed_steps": [
+        {
+          "title": "Spending Limit overview",
+          "screen_id": "9a62b697-0e8d-4fae-af93-dbac2c2248eb",
+          "goal": "See the current team monthly spending limit and access controls to set or modify it.",
+          "action": "User reviews the Billing & Usage → Spending Limit tab and clicks the 'Set limit' button (green with +).",
+          "system_response": "The app opens a modal titled 'Set monthly spending limit' that contains an input for the monthly limit, explanatory text about notifications and enforcement, and action buttons (Cancel and Set limit)."
+        },
+        {
+          "title": "Open set-limit modal (empty)",
+          "screen_id": "4c4dc7b4-5541-40b7-bf83-32675ba9ad81",
+          "goal": "Begin entering a new monthly limit value.",
+          "action": "User focuses the 'Monthly limit' input inside the modal and types a numeric amount.",
+          "system_response": "The input accepts the entered value and the modal shows a warning box explaining that once total usage reaches the limit, API requests will be blocked. The primary action (Set limit) becomes available for confirmation."
+        },
+        {
+          "title": "Enter limit value",
+          "screen_id": "0a2e47c7-12b6-4f44-a0c5-452c383ffe7e",
+          "goal": "Confirm the desired monthly cap (example: $10).",
+          "action": "User enters the amount (e.g., '10') and clicks the red 'Set limit' button to confirm.",
+          "system_response": "The modal closes and the Spending Limit overview refreshes to reflect the newly saved amount. The page now shows the dollar amount in large type and displays a usage progress indicator for the current month."
+        },
+        {
+          "title": "Saved limit overview",
+          "screen_id": "0316cb1c-3c50-4af2-8ca1-fd84b004d901",
+          "goal": "Verify the saved monthly limit and see current month usage relative to the limit; access edit/remove actions.",
+          "action": "User inspects the displayed $10.00 USD limit and the progress bar; optionally clicks 'Edit limit' (pencil) to reopen the modal or clicks 'Remove' (trash) to delete the cap.",
+          "system_response": "If Edit is clicked the modal reopens pre-filled with the current limit; if Remove is clicked the UI returns to the 'Unlimited' state. The dashboard shows month-to-date usage (e.g., January usage $0.00) and continues to surface the enforcement/notification copy."
+        }
+      ],
+      "adopt": "현재 한도→숫자입력→집행 영향 설명→저장결과",
+      "target_screens": [
+        "SCR-029"
+      ],
+      "runtime_verified": false,
+      "limitation": "Refero가 해석한 캡처 기반 happy path다. 오류·권한·정산 분기는 우리 제품의 제안 요구사항이다."
+    },
+    {
+      "source_id": "S-U18",
+      "type": "refero_flow",
+      "reference_id": 6641,
+      "title": "팀원 초대",
+      "product": "Linear",
+      "source_url": "https://refero.design/flows/6641",
+      "inspection": "full_flow_metadata",
+      "steps_count": 4,
+      "observed_steps": [
+        {
+          "title": "Members list (baseline)",
+          "screen_id": "2a8eea37-102c-46f1-b177-092be383a7f8",
+          "goal": "View current workspace members and access member management actions",
+          "action": "Scan the members table for active users and click the Invite button in the top-right corner to add new members.",
+          "system_response": "Members screen stays visible; selecting Invite will open an invite modal (no state change yet). Export CSV remains available. Left navigation provides access to other admin settings."
+        },
+        {
+          "title": "Open invite modal",
+          "screen_id": "02ebbb2c-05ec-4c39-a6a0-92ac486a2572",
+          "goal": "Provide a place to enter email addresses to invite",
+          "action": "Click the Invite button. In the modal, focus the Email input and type or paste one or more email addresses.",
+          "system_response": "A centered modal titled \"Invite to your workspace\" appears with an Email input and a Send invites button. The modal can be closed with the X. The rest of the screen dims to emphasize the modal."
+        },
+        {
+          "title": "Enter multiple emails",
+          "screen_id": "487a4a7e-2df3-430e-a2d9-39c0088bfeb6",
+          "goal": "Supply one or more email addresses for invitation",
+          "action": "Paste or type multiple comma-separated email addresses into the Email input (example shows two addresses).",
+          "system_response": "The input accepts multiple addresses (comma-separated). The Send invites button is available to submit the list."
+        },
+        {
+          "title": "Invites sent and reflected in list",
+          "screen_id": "3fafb58c-bb88-46df-b360-cb8b7b5d396d",
+          "goal": "Confirm that invitations were issued and view pending invites in the members list",
+          "action": "Click Send invites. Observe the members list update and confirmation notification.",
+          "system_response": "Modal closes (or is dismissed) and the members table now includes an \"Invited\" section listing the newly-invited email addresses with a status indicating invited/pending. A transient toast appears confirming the number of invites sent and that invited members were notified by email."
+        }
+      ],
+      "adopt": "입력→전송→초대중 상태가 목록에 남는 확인",
+      "target_screens": [
+        "SCR-028"
+      ],
+      "runtime_verified": false,
+      "limitation": "Refero가 해석한 캡처 기반 happy path다. 오류·권한·정산 분기는 우리 제품의 제안 요구사항이다."
+    },
+    {
+      "source_id": "S-U19",
+      "type": "refero_flow",
+      "reference_id": 8327,
+      "title": "문서 업로드",
+      "product": "Memotron",
+      "source_url": "https://refero.design/flows/8327",
+      "inspection": "full_flow_metadata",
+      "steps_count": 5,
+      "observed_steps": [
+        {
+          "title": "New note — choose input type",
+          "screen_id": "0809c3e5-6dd2-413b-82dd-e2f90d494af2",
+          "goal": "Start a new note/document and select how the content will be provided.",
+          "action": "User enters a title (optional) and selects a content type from the type selector (Markdown selected by default).",
+          "system_response": "The selected type is highlighted and determines the editor area below. Controls for the chosen type (e.g., file upload area for Markdown) are shown. A cancel/close control is available."
+        },
+        {
+          "title": "Add link and choose files",
+          "screen_id": "5e598322-277f-4e1d-a992-35a2e270a51f",
+          "goal": "Associate the new document with an existing node/collection and choose files to attach.",
+          "action": "User optionally pastes or types a link into the 'Link to a node or add to a collection' field, then drags files into the central drop area or clicks 'Select file' to open the file picker.",
+          "system_response": "The link becomes a token inside the link input. The file drop area accepts dragged files and the file picker opens when 'Select file' is clicked. Accepted file types and per-file size limits are displayed."
+        },
+        {
+          "title": "Files selected — choose save behavior",
+          "screen_id": "4029bfc7-5039-4e57-a4d8-d8a877c4143b",
+          "goal": "Review how many files are selected and choose whether to save them to the system or insert them into the markdown content.",
+          "action": "User sees the '6 files selected' message and chooses either 'Save all' or 'Insert into markdown'.",
+          "system_response": "The UI shows the selected file count and exposes two primary actions: a primary 'Save all' button and a secondary 'Insert into markdown' button. Clicking an action initiates processing/uploading or insertion behavior."
+        },
+        {
+          "title": "Processing and uploading",
+          "screen_id": "19dc8f6a-192f-49e6-92ab-2a3c3514f81e",
+          "goal": "Allow the system to upload and process the selected files while preventing conflicting actions.",
+          "action": "User waits for uploads to complete; no additional input is required (no visible cancel in screenshots).",
+          "system_response": "The UI displays a processing/uploading state (progress indicator). Action buttons show progress or become visually disabled to indicate work in progress while the system uploads and processes the files."
+        },
+        {
+          "title": "Upload success confirmation",
+          "screen_id": "b9a48de2-3a10-4da2-800c-94a4b5a8cfca",
+          "goal": "Confirm to the user that files were saved and return them to the editing context.",
+          "action": "User observes the success notification and continues editing or performs a next action (e.g., insert into markdown if desired).",
+          "system_response": "A toast appears: '6 nodes saved successfully!'. The selected files remain indicated in the UI and actionable buttons are re-enabled. The system has persisted the files (nodes created) and notifies the user of completion."
+        }
+      ],
+      "adopt": "파일선택→처리→파일 수가 포함된 성공확인",
+      "target_screens": [
+        "SCR-006"
+      ],
+      "runtime_verified": false,
+      "limitation": "Refero가 해석한 캡처 기반 happy path다. 오류·권한·정산 분기는 우리 제품의 제안 요구사항이다."
+    },
+    {
+      "source_id": "S-U20",
+      "type": "refero_flow",
+      "reference_id": 13040,
+      "title": "영상 시간별 댓글",
+      "product": "Dropbox",
+      "source_url": "https://refero.design/flows/13040",
+      "inspection": "full_flow_metadata",
+      "steps_count": 7,
+      "observed_steps": [
+        {
+          "title": "Video Preview",
+          "screen_id": "5f26ce77-e98b-4dbc-84c1-02d8b79df9b2",
+          "goal": "Review the video at the current playback point.",
+          "action": "Watch or pause the video and access the comments control.",
+          "system_response": "The video remains in the player and the comments feature is available from the top bar."
+        },
+        {
+          "title": "Open Comments Panel",
+          "screen_id": "e538d74b-67a9-4c6d-ad35-e35435c462f2",
+          "goal": "View the discussion area for the video.",
+          "action": "Open the comments panel on the right.",
+          "system_response": "A right-side comments sidebar slides open with an empty-state message and a composer at the bottom."
+        },
+        {
+          "title": "Start Comment",
+          "screen_id": "7c85cef9-f4fd-447c-b7f2-9659132ed36e",
+          "goal": "Begin writing feedback tied to the current time.",
+          "action": "Click in the comment composer and start typing.",
+          "system_response": "The input becomes active and shows the timestamp for the current playback position."
+        },
+        {
+          "title": "Mention Picker",
+          "screen_id": "70e76d3e-b157-4494-8142-652bfe1bbec9",
+          "goal": "Tag a person in the comment.",
+          "action": "Type an @ mention or select a contact from the suggestion list.",
+          "system_response": "A contact autocomplete dropdown appears and lets the user choose a recipient."
+        },
+        {
+          "title": "Draft Feedback",
+          "screen_id": "7a9682a3-66c1-4a1a-b284-3041598f7772",
+          "goal": "Write the actual review note.",
+          "action": "Continue typing the comment text after the mention.",
+          "system_response": "The composer shows the full draft, and the Post action remains available."
+        },
+        {
+          "title": "Submit Comment",
+          "screen_id": "182f5e92-dea8-4faf-ba11-05b276faa506",
+          "goal": "Publish the feedback.",
+          "action": "Click Post.",
+          "system_response": "The comment is saved and appears in the thread with the author, timestamp, and mention."
+        },
+        {
+          "title": "Comment Thread View",
+          "screen_id": "a601e837-2b78-45f1-b5ea-e7086e5024e0",
+          "goal": "Confirm the comment is visible and ready for replies.",
+          "action": "Review the posted comment or open the reply field.",
+          "system_response": "The sidebar shows the published comment, sorting controls, and a reply entry area."
+        }
+      ],
+      "adopt": "재생→댓글→시점→작성→저장확인",
+      "target_screens": [
+        "SCR-023"
+      ],
+      "runtime_verified": false,
+      "limitation": "Refero가 해석한 캡처 기반 happy path다. 오류·권한·정산 분기는 우리 제품의 제안 요구사항이다."
+    },
+    {
+      "source_id": "S-U21",
+      "type": "official_documentation_or_product_page",
+      "title": "Character App Story Bible",
+      "source_url": "https://www.character.app/ai-story-bible",
+      "web_ref": "turn109view0",
+      "inspection": "official_page_opened",
+      "observed": "Director 제안을 사용자가 승인·수정·기각하는 Bible, World를 통한 이후 장면 참조.",
+      "adopt": "후보와 공식기억을 명확히 구분.",
+      "runtime_verified": false
+    },
+    {
+      "source_id": "S-U22",
+      "type": "official_documentation_or_product_page",
+      "title": "Character App Director guide",
+      "source_url": "https://www.character.app/guides/how-the-director-works",
+      "web_ref": "turn109view1",
+      "inspection": "official_page_opened",
+      "observed": "기획 대화→씬 이미지→테이크·keep/retry의 단계 및 비용 상한 설명.",
+      "adopt": "초안과 촬영 승인, 부분수정 경로.",
+      "runtime_verified": false
+    },
+    {
+      "source_id": "S-U23",
+      "type": "official_documentation_or_product_page",
+      "title": "LTX Brand Kit",
+      "source_url": "https://ltx.io/blog/introducing-brand-kit-in-ltx-studio",
+      "web_ref": "turn109view2",
+      "inspection": "official_page_opened",
+      "observed": "Enterprise-only 공용 brand elements와 팀별 관리.",
+      "adopt": "사용 가능한 기준자산·원본키트 표시. 과거 프로젝트는 별도 snapshot 유지 제안.",
+      "runtime_verified": false
+    },
+    {
+      "source_id": "S-U24",
+      "type": "official_documentation_or_product_page",
+      "title": "Hedra Spaces",
+      "source_url": "https://www.hedra.com/docs/pages/app/getting-started/spaces",
+      "web_ref": "turn109view3",
+      "inspection": "official_page_opened",
+      "observed": "프로젝트 대화/캔버스·reference 작업공간 설명.",
+      "adopt": "대화는 의도입력, 캔버스는 검토가능 작업결과로 역할 분리.",
+      "runtime_verified": false
+    },
+    {
+      "source_id": "S-U25",
+      "type": "official_documentation_or_product_page",
+      "title": "Tunee Music Video Generator",
+      "source_url": "https://www.tunee.ai/features/music-video-generator",
+      "web_ref": "turn109view4",
+      "inspection": "official_page_opened",
+      "observed": "음원 업로드와 대화 기반 콘셉트·콘티·장면·완성영상 편집을 공식 제품페이지에서 주장.",
+      "adopt": "간단한 시작과 곡 중심 진입을 참고. 시간/품질 주장은 독립 검증되지 않음.",
+      "runtime_verified": false
+    },
+    {
+      "source_id": "S-U26",
+      "type": "official_documentation_or_product_page",
+      "title": "Frame.io V4 Shares",
+      "source_url": "https://help.frame.io/en/articles/9105232-shares-in-frame-io",
+      "web_ref": "turn111view0",
+      "inspection": "official_page_opened",
+      "observed": "공유 링크·권한·만료·댓글/다운로드 설정에 관한 최신 V4 문서.",
+      "adopt": "공유대상·버전·유효기간·다운로드권을 명확히 표시.",
+      "runtime_verified": false
+    },
+    {
+      "source_id": "S-U27",
+      "type": "official_documentation_or_product_page",
+      "title": "Frame.io V4 Comparison Viewer",
+      "source_url": "https://help.frame.io/en/articles/9952618-comparison-viewer",
+      "web_ref": "turn111view1",
+      "inspection": "official_page_opened",
+      "observed": "두 자산/버전 비교·연동재생·어느 자산에 댓글을 다는지 선택.",
+      "adopt": "현재/후보 테이크 비교와 버전별 피드백.",
+      "runtime_verified": false
+    },
+    {
+      "source_id": "S-U28",
+      "type": "official_documentation_or_product_page",
+      "title": "Notion Wikis and verified pages",
+      "source_url": "https://www.notion.com/help/wikis-and-verified-pages",
+      "web_ref": "turn111view2",
+      "inspection": "official_page_opened",
+      "observed": "페이지 owner·유효기간이 있는 verification과 재검증 알림.",
+      "adopt": "공식설정 상태·승인자·유효기간·재검토 책임.",
+      "runtime_verified": false
+    }
+  ],
+  "reference_lock": {
+    "primary": "S-U01: Linear 계열의 중립적인 짙은 표면, 압축된 목록, 얇은 경계, 작은 반경.",
+    "preserve": [
+      "미디어 외 앱 장식 최소화",
+      "업무 상태와 대상 버전의 일관된 위치",
+      "강한 강조는 한 화면의 주 결정에 제한",
+      "정확한 값은 표·근거는 drawer"
+    ],
+    "scoped_borrowings": [
+      {
+        "source": "S-U02/S-U05/S-U12/S-U27",
+        "scope": "미디어 크기·자산탐색·검토댓글·버전비교 구조"
+      },
+      {
+        "source": "S-U03/S-U28",
+        "scope": "긴 설정문서·승인 책임·비용설명의 읽기 구조"
+      }
+    ],
+    "explicit_rejects": [
+      "전체를 대화창 하나로 대체",
+      "온톨로지 그래프를 첫 화면에 강제",
+      "일회성 좋아요를 영구공식설정으로 저장",
+      "계속 도는 spinner·가짜 퍼센트",
+      "색만으로 권리·승인상태 표시",
+      "매 화면 hero·decorative gradient·보라색 glow",
+      "시도 무제한·한 번에 완벽한 MV 약속"
+    ],
+    "proposed_tokens_not_extracted_truth": {
+      "surface": "#101214",
+      "panel": "#181B1F",
+      "raised": "#22262B",
+      "text": "#F5F6F7",
+      "secondary_text": "#B7BEC7",
+      "border": "#3A424C",
+      "primary_action": "#DCEC3F",
+      "primary_action_role": "최종적 주요 행동에 제한, 배경 전체 사용 금지",
+      "type": "한국어 지원 sans-serif 14/16/20/24px; 핵심 본문 14px 이상. 수치/timecode는 tabular numerals.",
+      "radius": "기본6px, 큰미디어8px, 모바일sheet12px",
+      "spacing": "4px 단위; 항목8~12px, 패널16~24px",
+      "note": "정확한 색대비·폰트 라이선스·브라우저 렌더는 구현단계에서 검증. 참고브랜드의 자산/상표를 복제하지 않는다."
+    }
+  },
+  "decision_ledger": [
+    {
+      "decision": "IP를 프로젝트 위에 둔다",
+      "source": "사용자 요구/S-U21",
+      "rule": "World/공식설정은 여러 작품에서 공유, 프로젝트는 버전 snapshot",
+      "why": "다음 영상에서 같은 그룹의 기준을 찾기 쉬움"
+    },
+    {
+      "decision": "기억을 공식설정·취향·원본·제작이력으로 분리",
+      "source": "사용자 요구/S-U21/S-U28",
+      "rule": "승인과 출처가 보이며 후보는 후보",
+      "why": "생성결과를 사실로 오해하는 오염 방지"
+    },
+    {
+      "decision": "편집은 미디어 중심 3영역+음악 시간축",
+      "source": "S-U07/S-U12",
+      "rule": "미리보기의 크기를 먼저 확보, 세부제어는 선택된 대상에만",
+      "why": "오디오와 장면을 함께 검토"
+    },
+    {
+      "decision": "현재 버전과 후보 비교",
+      "source": "S-U13/S-U27",
+      "rule": "댓글·승인을 해당버전에 묶음",
+      "why": "좋은 부분을 유지하며 부분수정"
+    },
+    {
+      "decision": "생성 실행은 견적→예약→접수",
+      "source": "사용자 요구/S-U09/S-U17",
+      "rule": "예산 하드캡과 알림한도 분리",
+      "why": "자동재시도의 비용 불안 제거"
+    },
+    {
+      "decision": "모바일은 검토 중심",
+      "source": "사용자 역할/S-U15/S-U20",
+      "rule": "큰영상+댓글sheet+명확한결정, 유료생성없음",
+      "why": "아티스트가 제작도구를 배우지 않고 의견전달"
+    },
+    {
+      "decision": "상태 확인이 재시도보다 우선",
+      "source": "사용자 과금신뢰 요구/S-U14",
+      "rule": "unknown을 실패로 바꾸지 않음",
+      "why": "중복 과금 방지"
+    },
+    {
+      "decision": "일반목록 기본·그래프 보조",
+      "source": "사용자 작업목적/S-U10/S-U11",
+      "rule": "근거·시대·관계를 필요할 때 드러냄",
+      "why": "온톨로지 구축 부담을 숨기되 검증가능성을 유지"
+    }
+  ],
+  "actual_platform_testing": {
+    "performed": false,
+    "reason": "대상 신규 플랫폼 미구현. 문서/스키마/참조 정합성만 검증 가능."
+  }
+}

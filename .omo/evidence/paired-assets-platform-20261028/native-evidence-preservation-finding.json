@@ -1,0 +1,10 @@
+{
+  "issue": "VC-EVIDENCE-01",
+  "observed_at": "2026-10-27T19:29:24.798680+00:00",
+  "severity": "medium",
+  "location": "tests/test_scene_vertex_colors_native.py",
+  "before_sha256": "254bfe9c67af13544a926d23d43aa6941c43c623a1fd21ef5a9dee01fa7f1edb",
+  "observation": "Default evidence path points to a persistent prior observation; writes fixed PNG names and receipt.json. READY repeat would replace prior evidence. Current full runner has not started.",
+  "decision": "Default output under existing owned TemporaryDirectory. Explicit evidence destination must be empty before test writes. Preserve current native artifact tree unchanged.",
+  "non_goals": "No weakening render/rights/approval assertions; no product behavior change"
+}

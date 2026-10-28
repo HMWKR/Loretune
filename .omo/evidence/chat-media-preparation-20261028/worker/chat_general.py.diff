@@ -1,0 +1,12 @@
+--- chat_general.py.before
++++ chat_general.py
+@@ -33,7 +33,8 @@
+ SAFE_JSON_INTEGER = 2 ** 53 - 1
+ ALLOWED_TOOLS = ('propose_media_plan', 'search_project_context',
+                  'propose_timeline_changes', 'request_render',
+-                 'propose_motion_scene', 'request_motion_render')
++                 'propose_motion_scene', 'request_motion_render',
++                 'get_model_capabilities', 'prepare_image_action')
+ 
+ 
+ def initialize(c):

@@ -1,0 +1,1253 @@
+{
+  "kind": "read-only state-aware triage of existing installed Hallmark URL-only receipt; not a detector rerun",
+  "raw_receipt": "../stdout.json",
+  "raw_summary_preserved": {
+    "fails": 15,
+    "reflex": 0,
+    "warns": 1,
+    "waived": 0,
+    "rejected": 0,
+    "answered": 0,
+    "dismissed": 0,
+    "notes": 0,
+    "files": 0,
+    "render": "ran"
+  },
+  "finding_interpretations": [
+    {
+      "id": "HHTTP-01",
+      "original_gate": "40",
+      "original_grade": "FAIL",
+      "original_evidence": "[1280px] computed contrast 4.21:1 < 4.5:1 on button \"에이전트 설정 저장 · 호출 없음\"",
+      "observation": {
+        "viewport": [
+          1280,
+          900
+        ],
+        "default": {
+          "closed_ancestor": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "disabled": true,
+          "visible": false
+        },
+        "opened_disabled": {
+          "disabled": true,
+          "visible": true,
+          "colors": [
+            "rgb(133, 133, 133)",
+            "rgb(36, 36, 36)"
+          ],
+          "contrast": 4.2067173296991305
+        },
+        "opened_enabled_unsaved": {
+          "disabled": false,
+          "visible": true,
+          "colors": [
+            "rgb(244, 244, 242)",
+            "rgb(36, 36, 36)"
+          ],
+          "contrast": 14.095581565061364
+        },
+        "enabled_hover_after_250ms": {
+          "colors": [
+            "rgb(244, 244, 242)",
+            "rgb(48, 48, 48)"
+          ],
+          "contrast": 11.9845478197919
+        },
+        "saved": false
+      },
+      "interpretation": "The 4.21 ratio is reproducible on the inactive disabled control, hidden in the default collapsed disclosure. The same operable control uses a different foreground and exceeds 4.5 in the observed enabled/resting and settled hover states. This is state-aware interpretation, not a rewritten detector PASS or full accessibility verdict.",
+      "unverified": [],
+      "criteria_source": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html#inactive-user-interface-components",
+      "criteria_limit": "Official informative explanation of SC1.4.3 exempts inactive controls; no claim of whole-product WCAG compliance.",
+      "evidence": [
+        "contrast-states.json",
+        "contrast-hover-settled.json",
+        "1280-settings-open-disabled.png",
+        "1280-settings-open-enabled-unsaved.png"
+      ]
+    },
+    {
+      "id": "HHTTP-02",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"캐릭터·장소·스타일\" wraps to 3 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "ontologyButton",
+        "label": "캐릭터·장소·스타일",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 134,
+            "width": 71.515625,
+            "height": 78.890625,
+            "top": 134,
+            "right": 192.875,
+            "bottom": 212.890625,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 29,
+            "y": 199,
+            "width": 131.375,
+            "height": 44,
+            "top": 199,
+            "right": 160.375,
+            "bottom": 243,
+            "left": 29
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 42,
+              "y": 211.84375,
+              "width": 105.375,
+              "height": 17,
+              "top": 211.84375,
+              "right": 147.375,
+              "bottom": 228.84375,
+              "left": 42
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-03",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"세계관 설정\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "settings",
+        "label": "세계관 설정",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 220.890625,
+            "width": 71.515625,
+            "height": 58.59375,
+            "top": 220.890625,
+            "right": 192.875,
+            "bottom": 279.484375,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 168.375,
+            "y": 199,
+            "width": 90.234375,
+            "height": 44,
+            "top": 199,
+            "right": 258.609375,
+            "bottom": 243,
+            "left": 168.375
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 181.375,
+              "y": 211.84375,
+              "width": 64.234375,
+              "height": 17,
+              "top": 211.84375,
+              "right": 245.609375,
+              "bottom": 228.84375,
+              "left": 181.375
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-04",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"연출 취향\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "preferencesButton",
+        "label": "연출 취향",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 287.484375,
+            "width": 71.515625,
+            "height": 58.59375,
+            "top": 287.484375,
+            "right": 192.875,
+            "bottom": 346.078125,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 29,
+            "y": 251,
+            "width": 78.125,
+            "height": 44,
+            "top": 251,
+            "right": 107.125,
+            "bottom": 295,
+            "left": 29
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 42,
+              "y": 263.84375,
+              "width": 52.125,
+              "height": 17,
+              "top": 263.84375,
+              "right": 94.125,
+              "bottom": 280.84375,
+              "left": 42
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-05",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"보관 관리\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "archiveButton",
+        "label": "보관 관리",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 354.078125,
+            "width": 71.515625,
+            "height": 58.59375,
+            "top": 354.078125,
+            "right": 192.875,
+            "bottom": 412.671875,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 115.125,
+            "y": 251,
+            "width": 78.125,
+            "height": 44,
+            "top": 251,
+            "right": 193.25,
+            "bottom": 295,
+            "left": 115.125
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 128.125,
+              "y": 263.84375,
+              "width": 52.125,
+              "height": 17,
+              "top": 263.84375,
+              "right": 180.25,
+              "bottom": 280.84375,
+              "left": 128.125
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-06",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"진단·작업 기록\" wraps to 3 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "operationsButton",
+        "label": "진단·작업 기록",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 420.671875,
+            "width": 71.515625,
+            "height": 78.890625,
+            "top": 420.671875,
+            "right": 192.875,
+            "bottom": 499.5625,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 29,
+            "y": 303,
+            "width": 106.59375,
+            "height": 44,
+            "top": 303,
+            "right": 135.59375,
+            "bottom": 347,
+            "left": 29
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 42,
+              "y": 315.84375,
+              "width": 80.59375,
+              "height": 17,
+              "top": 315.84375,
+              "right": 122.59375,
+              "bottom": 332.84375,
+              "left": 42
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-07",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"제작 예산\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "budgetButton",
+        "label": "제작 예산",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 507.5625,
+            "width": 71.515625,
+            "height": 58.59375,
+            "top": 507.5625,
+            "right": 192.875,
+            "bottom": 566.15625,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 143.59375,
+            "y": 303,
+            "width": 78.125,
+            "height": 44,
+            "top": 303,
+            "right": 221.71875,
+            "bottom": 347,
+            "left": 143.59375
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 156.59375,
+              "y": 315.84375,
+              "width": 52.125,
+              "height": 17,
+              "top": 315.84375,
+              "right": 208.71875,
+              "bottom": 332.84375,
+              "left": 156.59375
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-08",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"사용권 관리\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "rightsButton",
+        "label": "사용권 관리",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 626.15625,
+            "width": 71.515625,
+            "height": 58.59375,
+            "top": 626.15625,
+            "right": 192.875,
+            "bottom": 684.75,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 99.34375,
+            "y": 355,
+            "width": 90.234375,
+            "height": 44,
+            "top": 355,
+            "right": 189.578125,
+            "bottom": 399,
+            "left": 99.34375
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 112.34375,
+              "y": 367.84375,
+              "width": 64.234375,
+              "height": 17,
+              "top": 367.84375,
+              "right": 176.578125,
+              "bottom": 384.84375,
+              "left": 112.34375
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-09",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"안내형 제작\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "chatMode",
+        "label": "안내형 제작",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 700.75,
+            "width": 79.515625,
+            "height": 58.59375,
+            "top": 700.75,
+            "right": 200.875,
+            "bottom": 759.34375,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 29,
+            "y": 415,
+            "width": 90.234375,
+            "height": 44,
+            "top": 415,
+            "right": 119.234375,
+            "bottom": 459,
+            "left": 29
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 42,
+              "y": 427.84375,
+              "width": 64.234375,
+              "height": 17,
+              "top": 427.84375,
+              "right": 106.234375,
+              "bottom": 444.84375,
+              "left": 42
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-10",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"상세 작업대\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "workbenchMode",
+        "label": "상세 작업대",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 775.34375,
+            "width": 79.515625,
+            "height": 58.59375,
+            "top": 775.34375,
+            "right": 200.875,
+            "bottom": 833.9375,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 135.234375,
+            "y": 415,
+            "width": 90.234375,
+            "height": 44,
+            "top": 415,
+            "right": 225.46875,
+            "bottom": 459,
+            "left": 135.234375
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 148.234375,
+              "y": 427.84375,
+              "width": 64.234375,
+              "height": 17,
+              "top": 427.84375,
+              "right": 212.46875,
+              "bottom": 444.84375,
+              "left": 148.234375
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-11",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"다음: 직접 쓴 계획을 검토하세요\" wraps to 3 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "flowNext",
+        "label": "다음: 직접 쓴 계획을 검토하세요",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            },
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 117.359375,
+            "y": 1154.5,
+            "width": 79.515625,
+            "height": 72.53125,
+            "top": 1154.5,
+            "right": 196.875,
+            "bottom": 1227.03125,
+            "left": 117.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 38,
+            "y": 668.1875,
+            "width": 244,
+            "height": 44,
+            "top": 668.1875,
+            "right": 282,
+            "bottom": 712.1875,
+            "left": 38
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 77.9375,
+              "y": 681.765625,
+              "width": 164.109375,
+              "height": 16,
+              "top": 681.765625,
+              "right": 242.046875,
+              "bottom": 697.765625,
+              "left": 77.9375
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": [
+          {
+            "className": "lt-project-context",
+            "id": "",
+            "summary": "제작 진행·도움말",
+            "open": false
+          },
+          {
+            "className": "management",
+            "id": "",
+            "summary": "작품·설정",
+            "open": true
+          }
+        ]
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-12",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[320px] control \"모델 설정\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          320,
+          900
+        ],
+        "control_id": "editModelSettings",
+        "label": "모델 설정",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 121.359375,
+            "y": 959.9375,
+            "width": 71.515625,
+            "height": 58.59375,
+            "top": 959.9375,
+            "right": 192.875,
+            "bottom": 1018.53125,
+            "left": 121.359375
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 29,
+            "y": 729.1875,
+            "width": 78.125,
+            "height": 44,
+            "top": 729.1875,
+            "right": 107.125,
+            "bottom": 773.1875,
+            "left": 29
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 42,
+              "y": 742.03125,
+              "width": 52.125,
+              "height": 17,
+              "top": 742.03125,
+              "right": 94.125,
+              "bottom": 759.03125,
+              "left": 42
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "320-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-13",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[1024px] control \"진단·작업 기록\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          1024,
+          900
+        ],
+        "control_id": "operationsButton",
+        "label": "진단·작업 기록",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 490.765625,
+            "y": 373.078125,
+            "width": 79.515625,
+            "height": 58.59375,
+            "top": 373.078125,
+            "right": 570.28125,
+            "bottom": 431.671875,
+            "left": 490.765625
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 446.859375,
+            "y": 188,
+            "width": 106.59375,
+            "height": 38.296875,
+            "top": 188,
+            "right": 553.453125,
+            "bottom": 226.296875,
+            "left": 446.859375
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 459.859375,
+              "y": 198,
+              "width": 80.59375,
+              "height": 17,
+              "top": 198,
+              "right": 540.453125,
+              "bottom": 215,
+              "left": 459.859375
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": null
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "1024-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-14",
+      "original_gate": "49a",
+      "original_grade": "FAIL",
+      "original_evidence": "[1024px] control \"다음: 직접 쓴 계획을 검토하세요\" wraps to 2 lines (button)",
+      "observation": {
+        "viewport": [
+          1024,
+          900
+        ],
+        "control_id": "flowNext",
+        "label": "다음: 직접 쓴 계획을 검토하세요",
+        "closed_state": {
+          "visible": false,
+          "closed_or_hidden_ancestors": [
+            {
+              "id": "",
+              "tag": "DETAILS",
+              "reason": "closed disclosure"
+            }
+          ],
+          "rect": {
+            "x": 586.28125,
+            "y": 240.375,
+            "width": 127.53125,
+            "height": 53.6875,
+            "top": 240.375,
+            "right": 713.8125,
+            "bottom": 294.0625,
+            "left": 586.28125
+          }
+        },
+        "actual_open_state": {
+          "visible": true,
+          "rect": {
+            "x": 33,
+            "y": 499.984375,
+            "width": 280,
+            "height": 36,
+            "top": 499.984375,
+            "right": 313,
+            "bottom": 535.984375,
+            "left": 33
+          },
+          "text_line_count": 1,
+          "text_line_rects": [
+            {
+              "x": 90.9375,
+              "y": 509.5625,
+              "width": 164.109375,
+              "height": 16,
+              "top": 509.5625,
+              "right": 255.046875,
+              "bottom": 525.5625,
+              "left": 90.9375
+            }
+          ],
+          "body_horizontal_overflow": 0
+        },
+        "flowNext_ancestor_details": [
+          {
+            "className": "lt-project-context",
+            "id": "",
+            "summary": "제작 진행·도움말",
+            "open": false
+          }
+        ]
+      },
+      "interpretation": "The flagged wrapped geometry is inside a closed disclosure and is not painted. Opening the actual management/help disclosure produces one visible text line with no horizontal page overflow at this viewport. No task-blocking wrap reproduced in this exact state.",
+      "unverified": [],
+      "evidence": [
+        "wrapping-states.json",
+        "fully-open-wrapping.json",
+        "1024-management-and-help-open.png"
+      ]
+    },
+    {
+      "id": "HHTTP-15",
+      "original_gate": "56",
+      "original_grade": "FAIL",
+      "original_evidence": "[1280px] two sticky top:0 elements: div.agent-dialog-heading + div.agent-resizer",
+      "observation": {
+        "viewport": [
+          1280,
+          900
+        ],
+        "default_dialog_headings_visible": 0,
+        "opened_motion_dialog_heading_rect": {
+          "x": 887,
+          "y": 35,
+          "width": 358,
+          "height": 48,
+          "top": 35,
+          "right": 1245,
+          "bottom": 83,
+          "left": 887
+        },
+        "opened_motion_separator_rect": {
+          "x": 874,
+          "y": 35,
+          "width": 12,
+          "height": 830,
+          "top": 35,
+          "right": 886,
+          "bottom": 865,
+          "left": 874
+        },
+        "intersection": {
+          "width": 0,
+          "height": 48
+        },
+        "intersection_area": 0,
+        "separator_role": "separator",
+        "keyboard_arrow_left_width_before": "360",
+        "keyboard_arrow_left_width_after": "376",
+        "keyboard_focus": "agent-resizer"
+      },
+      "interpretation": "Both declarations use sticky top:0, but default modal headings are inside closed dialogs. In the opened modal the heading and separator occupy adjacent grid columns; their intersection area is zero. ArrowLeft changes the focused separator width. The observed layout is not a vertical sticky collision.",
+      "unverified": [],
+      "evidence": [
+        "sticky-and-keyboard.json",
+        "1280-default.png",
+        "1280-motion-open-sticky-keyboard.png"
+      ]
+    },
+    {
+      "id": "HHTTP-16",
+      "original_gate": "F25",
+      "original_grade": "WARN",
+      "original_evidence": "[375px] 62 words shown at 1440 are hidden on a phone (first: \"v1 original-demo-music.wav12.00초 · 4\")",
+      "observation": {
+        "viewport": [
+          375,
+          900
+        ],
+        "default_agent_open_work_hidden": true,
+        "after_agent_close": {
+          "work_hidden": false,
+          "audio_info_visible": true,
+          "audio_section_visible": true,
+          "focus": "agentToggle"
+        },
+        "menu_open": {
+          "settings_visible": true,
+          "horizontal_overflow": 0
+        },
+        "audio_input_expanded": {
+          "stage": "1",
+          "project": "1차 시연 리허설",
+          "revision": 36,
+          "workHidden": false,
+          "agentHidden": true,
+          "audioPanelOpen": true,
+          "audioFormVisible": true,
+          "focused": {
+            "name": "rights",
+            "type": "text",
+            "insideAudioForm": true
+          },
+          "formControls": [
+            {
+              "tag": "INPUT",
+              "name": "file",
+              "type": "file",
+              "disabled": false,
+              "visible": true,
+              "rect": {
+                "x": 12,
+                "y": 558.34375,
+                "width": 351,
+                "height": 44,
+                "top": 558.34375,
+                "right": 363,
+                "bottom": 602.34375,
+                "left": 12
+              }
+            },
+            {
+              "tag": "INPUT",
+              "name": "rights",
+              "type": "text",
+              "disabled": false,
+              "visible": true,
+              "rect": {
+                "x": 12,
+                "y": 633.34375,
+                "width": 351,
+                "height": 44,
+                "top": 633.34375,
+                "right": 363,
+                "bottom": 677.34375,
+                "left": 12
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "name": "",
+              "type": "submit",
+              "disabled": false,
+              "visible": true,
+              "rect": {
+                "x": 12,
+                "y": 682.34375,
+                "width": 106.59375,
+                "height": 44,
+                "top": 682.34375,
+                "right": 118.59375,
+                "bottom": 726.34375,
+                "left": 12
+              }
+            }
+          ],
+          "overflow": 0
+        }
+      },
+      "interpretation": "This is an intentional narrow-screen single-workspace tradeoff: the default-open AI pane hides the work area; closing it restores the original audio content. The audio input disclosure can be opened and keyboard Tab reaches the rights field without overflow. Content was not deleted, but the extra close action and discoverability cost remain a usability hypothesis.",
+      "unverified": [
+        "No participant usability test. Whether first-time music-first users discover Close promptly is unmeasured.",
+        "No upload/submit/API mutation performed in this read-only triage."
+      ],
+      "evidence": [
+        "phone-workflow.json",
+        "phone-audio-input.json",
+        "375-agent-default-open.png",
+        "375-agent-closed-audio-and-menu.png",
+        "375-agent-closed-audio-input-keyboard.png"
+      ]
+    }
+  ],
+  "observed_task_blocking_defects": [],
+  "statement_limit": "No task blocker reproduced in the inspected states. The original 15 FAIL + 1 WARN remain the original detector result; no formal dismiss/waive action and no all-clear/compliance score are produced.",
+  "requests": {
+    "non_GET_attempts": [],
+    "page_errors": [],
+    "actual_model_calls": 0,
+    "render_engine_invocations": 0,
+    "server_data_mutations": 0,
+    "source_changes": 0
+  },
+  "sources": {
+    "url": "http://127.0.0.1:57413/",
+    "baseline_project": "1차 시연 리허설",
+    "baseline_revision": 36,
+    "served_assets": [
+      {
+        "url": "http://127.0.0.1:57413/",
+        "status": 200,
+        "sha256": "45e3f36436412e8db9c51959017cfc10b40bee20e1e8f1a06fdfbf8d2740b719"
+      },
+      {
+        "url": "http://127.0.0.1:57413/studio.css",
+        "status": 200,
+        "sha256": "cf1ec74f58ca27e7bff389bd7f0fcc3ded3dd217675c2dc96c18c174cbd5ec52"
+      },
+      {
+        "url": "http://127.0.0.1:57413/general-chat-ui.js",
+        "status": 200,
+        "sha256": "f92daed3368a99b12a71f40991964b59b5fc14aadcb892a3204dee4dbdbf65bc"
+      },
+      {
+        "url": "http://127.0.0.1:57413/chat-sidebar.js",
+        "status": 200,
+        "sha256": "e15b31d341481bb653899a9065e35a9fd2e8add963446e4b2f6682ea03ac8f27"
+      },
+      {
+        "url": "http://127.0.0.1:57413/studio.css",
+        "status": 200,
+        "sha256": "cf1ec74f58ca27e7bff389bd7f0fcc3ded3dd217675c2dc96c18c174cbd5ec52"
+      },
+      {
+        "url": "http://127.0.0.1:57413/general-chat-ui.js",
+        "status": 200,
+        "sha256": "f92daed3368a99b12a71f40991964b59b5fc14aadcb892a3204dee4dbdbf65bc"
+      },
+      {
+        "url": "http://127.0.0.1:57413/chat-sidebar.js",
+        "status": 200,
+        "sha256": "e15b31d341481bb653899a9065e35a9fd2e8add963446e4b2f6682ea03ac8f27"
+      },
+      {
+        "url": "http://127.0.0.1:57413/studio.css",
+        "status": 200,
+        "sha256": "cf1ec74f58ca27e7bff389bd7f0fcc3ded3dd217675c2dc96c18c174cbd5ec52"
+      },
+      {
+        "url": "http://127.0.0.1:57413/chat-sidebar.js",
+        "status": 200,
+        "sha256": "e15b31d341481bb653899a9065e35a9fd2e8add963446e4b2f6682ea03ac8f27"
+      },
+      {
+        "url": "http://127.0.0.1:57413/general-chat-ui.js",
+        "status": 200,
+        "sha256": "f92daed3368a99b12a71f40991964b59b5fc14aadcb892a3204dee4dbdbf65bc"
+      },
+      {
+        "url": "http://127.0.0.1:57413/studio.css",
+        "status": 200,
+        "sha256": "cf1ec74f58ca27e7bff389bd7f0fcc3ded3dd217675c2dc96c18c174cbd5ec52"
+      },
+      {
+        "url": "http://127.0.0.1:57413/general-chat-ui.js",
+        "status": 200,
+        "sha256": "f92daed3368a99b12a71f40991964b59b5fc14aadcb892a3204dee4dbdbf65bc"
+      },
+      {
+        "url": "http://127.0.0.1:57413/chat-sidebar.js",
+        "status": 200,
+        "sha256": "e15b31d341481bb653899a9065e35a9fd2e8add963446e4b2f6682ea03ac8f27"
+      }
+    ],
+    "source_unchanged": true,
+    "source_after": "source-after.json",
+    "wcag_disabled_control_reference": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html#inactive-user-interface-components"
+  },
+  "manual_png_review": [
+    "1280-settings-open-enabled-unsaved.png",
+    "1280-motion-open-sticky-keyboard.png",
+    "320-management-and-help-open.png",
+    "375-agent-closed-audio-and-menu.png"
+  ],
+  "preserved_good_behavior": [
+    "Same-DOM dock remains inside native modal and keyboard resize works",
+    "Header controls reflow to fit narrow opened menus without nowrap hacks",
+    "Enabled settings and disabled state use distinguishable semantic tokens",
+    "Music content/input returns after closing phone AI pane"
+  ],
+  "remaining": [
+    "F25 default AI-open vs music-first mobile discoverability needs actual users; observed recovery is not proof of good usability",
+    "Full screen-reader/zoom/all-state accessibility audit not performed",
+    "This triage does not replace root actual production-workflow recording or user approval"
+  ]
+}

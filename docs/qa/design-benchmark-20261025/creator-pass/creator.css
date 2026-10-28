@@ -1,0 +1,72 @@
+/* Existing palette, new roles. No media or interaction is fabricated. */
+.lt-creator{--creator-surface:#1b1b1b;--creator-inset:#141414;--creator-line:#383838;--creator-muted:#bdbdbb;--creator-title:18px;--creator-body:14px;--creator-small:12px}
+.lt-creator [hidden]{display:none!important}
+.lt-creator .lt-studio-shell{position:relative;gap:12px}
+.lt-creator .lt-studio-shell .lt-notice-detail{margin-left:auto;max-width:none;font-size:12px}
+.lt-creator .lt-notice-detail[open]{position:absolute;right:16px;top:48px;z-index:55;width:min(500px,calc(100vw - 24px));padding:12px;background:#242424;border:1px solid #666;border-radius:8px;box-shadow:0 12px 36px #0008}
+.lt-creator .lt-notice-detail[open]>summary{font-weight:600}
+.lt-creator .lt-project-context #flowNext{margin-top:8px;width:100%}
+.lt-creator .lt-stage-bar{min-height:48px;padding-block:5px}
+.lt-creator .creator-skip-target{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap}
+.lt-creator main>.inspector{max-height:calc(100dvh - 140px);border-color:var(--creator-line)!important;background:var(--creator-surface)}
+.lt-creator .lt-take-review>h2{font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--creator-muted);margin:0 0 12px}
+.lt-creator .creator-review-scene{display:block;width:100%;font-size:18px;line-height:1.45;letter-spacing:-.2px;word-break:keep-all;overflow-wrap:anywhere;margin-bottom:4px}
+.lt-creator #takeReviewStatus{margin:0 0 12px;gap:8px}
+.lt-creator #reason{padding:0;margin:8px 0 16px;border:0;color:var(--creator-muted)}
+.lt-creator .creator-test-badge{display:inline-block;border:1px dashed #797977;background:#242424;border-radius:4px;padding:2px 6px;font-size:12px;color:#d5d5d1;line-height:1.45}
+.lt-creator .creator-media-facts{display:block;font-size:12px;margin-top:6px}
+.lt-creator .creator-source>summary,.lt-creator .creator-diagnostic>summary{font-size:12px;color:var(--creator-muted);font-weight:400;min-height:32px;padding:6px 0}
+.lt-creator .creator-diagnostic{border-top:1px solid var(--creator-line);margin:8px 0}
+.lt-creator .creator-diagnostic pre{font:12px/1.55 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--creator-muted);margin:8px 0}
+.lt-creator .creator-record-label{font-size:12px!important;color:var(--creator-muted);margin:0 0 6px}
+.lt-creator #creatorSavedReason{font-size:14px;line-height:1.65;word-break:keep-all;overflow-wrap:anywhere;margin:0 0 16px}
+.lt-creator #creatorEditReview{width:100%;min-height:40px;border-color:#696969;background:#252525;color:#f4f4f2}
+.lt-creator #creatorReviewEditor>.row{display:grid;grid-template-columns:1fr 80px;gap:8px;align-items:center}
+.lt-creator #creatorReviewEditor>.row>label,.lt-creator #takeDecision,.lt-creator #takeReviewDraftState{grid-column:1/-1}
+.lt-creator #creatorReviewEditor #reviewTake{grid-column:1;grid-row:4;margin:0;min-height:42px}
+.lt-creator #creatorReviewEditor #discardTakeReviewDraft{grid-column:2;grid-row:4;margin:0;min-height:42px}
+.lt-creator #creatorReviewEditor #takeReviewDraftState{grid-row:3;margin:0}
+.lt-creator #creatorReviewEditor label{margin-top:8px}
+.lt-creator .creator-scene-description{margin:4px 0 10px}
+.lt-creator .creator-scene-description>summary{font-size:12px;color:var(--creator-muted)}
+.lt-creator .creator-scene-description #description{margin:8px 0}
+.lt-creator .creator-comparison-identity{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:12px 0}
+.lt-creator .creator-comparison-identity>span{font-size:12px;color:var(--creator-muted)}
+.lt-creator .creator-comparison-facts{margin-top:12px}
+.lt-creator .creator-model-slot{padding:12px 0;border-bottom:1px solid var(--creator-line)}
+.lt-creator .creator-model-slot .lt-model-name{font-size:14px;font-weight:600;margin:8px 0 4px}
+.lt-creator .creator-model-slot>p{font-size:13px;line-height:1.5;margin:4px 0}
+.lt-creator .creator-output-card>header{display:flex;align-items:center;gap:8px;padding:0;border:0;background:none;font-size:15px}
+.lt-creator .creator-output-card .creator-downloads{display:flex;gap:16px}
+.lt-creator .creator-recovery-card{padding:12px 0;border-bottom:1px solid var(--creator-line)}
+.lt-creator .creator-recovery-card h3{font-size:14px}
+.lt-creator #creatorMobileContext{display:none}
+@media(max-width:900px){
+ .lt-creator .lt-studio-shell{gap:8px;padding-inline:12px}
+ .lt-creator .lt-studio-shell #songs{max-width:none;min-width:0;flex:1}
+ .lt-creator .lt-studio-shell>.lt-notice-detail{order:5;margin-left:0}
+ .lt-creator .lt-studio-shell>.lt-notice-detail:not([open]){font-size:11px}
+ .lt-creator .lt-panel-nav{padding-top:0}
+ .lt-creator #creatorMobileContext{display:flex;align-items:baseline;gap:8px;justify-content:space-between;padding:12px 12px 8px;background:#151515;border-bottom:1px solid #2f2f2f}
+ .lt-creator #creatorMobileContext b{font-size:13px;line-height:1.5;word-break:keep-all;overflow-wrap:anywhere}
+ .lt-creator #creatorMobileContext small{font-size:12px;line-height:1.5;flex-shrink:0;color:var(--creator-muted)}
+ .lt-creator[data-step="1"] #creatorMobileContext,.lt-creator[data-step="2"] #creatorMobileContext{display:none}
+ .lt-creator .creator-review-scene{display:none}
+ .lt-creator #creatorEditReview,.lt-creator #creatorReviewEditor #reviewTake,.lt-creator #creatorReviewEditor #discardTakeReviewDraft{min-height:44px}
+ .lt-creator .creator-source>summary,.lt-creator .creator-diagnostic>summary{min-height:44px;display:flex;align-items:center}
+ .lt-creator #reason{margin-bottom:12px}
+}
+
+.lt-creator .lt-stage-bar:has(.creator-skip-target:focus-visible){outline:2px solid #e4ddbe;outline-offset:-3px}
+
+.lt-creator #reason .creator-media-facts{display:inline;margin-left:8px}
+.lt-creator #creatorReviewSource{margin-top:12px}
+@media(max-width:900px){
+ .lt-creator.lt-workspace-v3 .lt-studio-shell>.lt-notice-detail[open]{position:static;flex-basis:100%;order:6;width:100%;margin:0;padding:4px 0 0;border:0;border-top:1px solid #555;box-shadow:none;background:transparent}
+ .lt-creator .lt-notice-detail[open]>summary{min-height:24px;padding:0;font-size:12px}
+ .lt-creator .lt-notice-detail #notice{padding:2px 0;font-size:12px;line-height:1.5;min-height:0}
+ .lt-creator .lt-notice-detail .creator-diagnostic{margin:0;border:0}
+ .lt-creator .lt-notice-detail .creator-diagnostic>summary{padding:0;min-height:44px}
+}
+
+.lt-creator .creator-output-card>header b{font-size:15px;letter-spacing:0}

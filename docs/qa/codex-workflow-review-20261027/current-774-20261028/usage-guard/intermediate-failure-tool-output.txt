@@ -1,0 +1,29 @@
+출처: 최종 대상 테스트의 중간 실패 시 functions.exec를 통해 호출한 tools.write_stdin의 표시 출력에서 traceback만 복사한 발췌다. 전체 원본 테스트 로그 복구본이 아니다. 같은 이름의 로그가 후속 성공 시험으로 덮어써졌기 때문에 이 발췌 외의 당시 원문은 보존되지 않았다.
+
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/chat_general.py", line 517, in process_next
+    c.execute('BEGIN IMMEDIATE');preview=get_row(c,'general_chat_previews',turn['preview_id']);self._current(c,turn,preview);require_reconciled_budget(c,self.store.workspace_id,turn['binding'])
+                                                                                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/chat_general.py", line 386, in require_reconciled_budget
+    ledger.require_bounded_exposure(c,workspace,budget_scope(binding))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/ledger.py", line 235, in require_bounded_exposure
+    raise BudgetExposureBlocked('미확정 원장 기록을 먼저 확인해야 새 전송을 진행할 수 있습니다.')
+ledger.BudgetExposureBlocked: 미확정 원장 기록을 먼저 확인해야 새 전송을 진행할 수 있습니다.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_scope_journal_guard.py", line 119, in test_already_queued_other_conversation_is_blocked_before_count
+    self.assertTrue(self.store.general_chat_runtime.process_next())
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/chat_general.py", line 666, in process_next
+    with self.store.connect() as c:
+         ~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/contextlib.py", line 210, in __exit__
+    next(self.gen)
+    ~~~~^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/app.py", line 235, in connect
+    with connection:
+         ^^^^^^^^^^
+sqlite3.OperationalError: database is locked

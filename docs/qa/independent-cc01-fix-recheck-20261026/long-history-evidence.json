@@ -1,0 +1,25 @@
+{
+  "persistedTurns": 10,
+  "retainedPriorUserTurns": [
+    "Synthetic neutral turn 2",
+    "Synthetic neutral turn 3",
+    "Synthetic neutral turn 4",
+    "Synthetic neutral turn 5",
+    "Synthetic neutral turn 6",
+    "Synthetic neutral turn 7",
+    "Synthetic neutral turn 8",
+    "Synthetic neutral turn 9"
+  ],
+  "canaryStillInDatabase": true,
+  "canaryInProviderRequest": true,
+  "summaryOrStructuredSessionConstraintsInHandoff": [
+    "context",
+    "embedding_policy",
+    "execution_targets",
+    "instructions",
+    "jobs",
+    "messages",
+    "session_request_history"
+  ],
+  "expected": "Session prohibition survives history compaction, even if original turn is omitted"
+}

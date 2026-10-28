@@ -1,0 +1,363 @@
+{
+  "schema": "hallmark-render-triage/1",
+  "recorded_at": "2026-10-28T00:52:51.027410+00:00",
+  "status": "REPORTED; actual HTTP task-state checks owned by root",
+  "scope": "Read-only independent source/receipt and actual retained-PNG inspection; no browser/Space91 operation, no source edit or test execution",
+  "source_sha256": {
+    "index.html": "9779fa9f53924eeb4b59d20f9a56298c67fb3c84f8ea1f101ef96a08c2cde24a",
+    "studio.css": "19851dcf5e21244fed815beb34cb11967036b44fdf0dc1e0d705b1ae5b29cd54",
+    "studio-media.js": "bdd14c7107f4dabba3afcb9cd176c7984671089bab67ed85198ef50324a0111c"
+  },
+  "input_receipt": {
+    "path": "../hallmark-recheck/invocation.json",
+    "sha256": "91a711be35351726f4f555bcb4ae40bf15fe5cb1545741ec69bf474b8b1a8603",
+    "command": [
+      "node",
+      "/Users/leesungmin/.agents/skills/hallmark/scripts/sloplint.mjs",
+      "/Users/leesungmin/Desktop/Loretune/index.html",
+      "/Users/leesungmin/Desktop/Loretune/studio.css",
+      "--scope",
+      "app",
+      "--genre",
+      "modern-minimal",
+      "--render",
+      "--url",
+      "http://127.0.0.1:57413/",
+      "--json"
+    ],
+    "exit_code": 1,
+    "summary": {
+      "fails": 26,
+      "reflex": 75,
+      "warns": 16,
+      "waived": 0,
+      "rejected": 0,
+      "answered": 0,
+      "dismissed": 0,
+      "notes": 0,
+      "files": 2,
+      "render": "ran"
+    }
+  },
+  "raw_results_retained": true,
+  "added_result_counts": {
+    "FAIL": 15,
+    "REFLEX": 2,
+    "WARN": 1
+  },
+  "added_findings": [
+    {
+      "gate": "40",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[1440px] a field's edge is under 3:1 against what surrounds it: select 1.62:1",
+      "fix": "Draw the field in --color-muted, or fill it a step off the surface it sits on"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"캐릭터·장소·스타일\" wraps to 3 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"세계관 설정\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"연출 취향\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"보관 관리\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"진단·작업 기록\" wraps to 3 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"제작 예산\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"사용권 관리\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"안내형 제작\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"상세 작업대\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"다음: 직접 쓴 계획을 검토하세요\" wraps to 3 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[320px] control \"모델 설정\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[1024px] control \"진단·작업 기록\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "49a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:57413/",
+      "line": 1,
+      "evidence": "[1024px] control \"다음: 직접 쓴 계획을 검토하세요\" wraps to 2 lines (button)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "render",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "/Users/leesungmin/Desktop/Loretune/index.html",
+      "line": 1,
+      "evidence": "a script threw on load: LoretuneMedia is not defined",
+      "fix": "Fix the script; a page that throws ships half-working"
+    },
+    {
+      "gate": "39b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "/Users/leesungmin/Desktop/Loretune/index.html",
+      "line": 1,
+      "evidence": "[1440px] control height outside 32 to 52px: input 21px, input 21px, input 21px",
+      "fix": "Marketing controls stand 44 to 52px; app UI 32 to 40px with a 44px hit target"
+    },
+    {
+      "gate": "71",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "/Users/leesungmin/Desktop/Loretune/index.html",
+      "line": 1,
+      "evidence": "[1440px] heads nearer what precedes them than what they head: h2 \"기준 스냅샷\" 0px over, 20px under; h3 \"\" 5px over, 19px un…",
+      "fix": "At least twice the space above a head as below it"
+    },
+    {
+      "gate": "render",
+      "grade": "WARN",
+      "tier": "floor",
+      "file": "/Users/leesungmin/Desktop/Loretune/index.html",
+      "line": 1,
+      "evidence": "the shots show a fallback: fonts or stylesheets did not load (studio.css)",
+      "fix": "Recapture when the host answers or the path is right; never review or sign off a fallback face"
+    }
+  ],
+  "target_separation": {
+    "cause": "sloplint.mjs filters non-shell HTML files then passes [...htmlFiles,...opts.urls] to renderCheck. This index has ordinary scripts and is not the module-shell exception. sloplint-render.mjs navigates each local file using pathToFileURL and the URL using HTTP.",
+    "source_refs": [
+      "/Users/leesungmin/.agents/skills/hallmark/scripts/sloplint.mjs:4143-4149",
+      "/Users/leesungmin/.agents/skills/hallmark/scripts/sloplint-render.mjs:119-126"
+    ],
+    "targets": [
+      "file:///Users/leesungmin/Desktop/Loretune/index.html",
+      "http://127.0.0.1:57413/"
+    ],
+    "filename_provenance": "Local-file shots are written under project .hallmark/shots/index-*.png. URL shots are written under invocation cwd .hallmark/shots/127.0.0.1-57413-*.png.",
+    "conclusion": "The retained LoretuneMedia undefined FAIL and stylesheet fallback WARN have the absolute file path as target; they do not establish the same failure on HTTP.",
+    "http_observations": [
+      "URL screenshots show styled real project/audio waveform/player rather than fallback",
+      "Current HTTP HTML/media JS/CSS all return200 and exactly current source bytes",
+      "studio-media.js assigns root.LoretuneMedia=api, where root is globalThis; a literal window.LoretuneMedia search would be an invalid absence test",
+      "No HTTP-target script-on-load FAIL appears in retained render results"
+    ],
+    "limits": [
+      "Asset200 and screenshots do not prove every later editor operation has no JS error",
+      "Only Step1 is shown; new overlay/approval/editor states remain root actual workflow evidence"
+    ],
+    "next_method": "If additional render diagnostics are needed, keep static HTML/CSS audit separate from URL-only render audit to avoid treating unsupported file:// startup as the web product. No extra audit run by this worker."
+  },
+  "triage": [
+    {
+      "id": "HR-SCRIPT",
+      "severity": "No demonstrated HTTP defect; file startup failure observed",
+      "findings": [
+        "Local file LoretuneMedia undefined",
+        "Local file studio.css fallback"
+      ],
+      "observation": "Actually opened local file screenshot is a white unstyled fallback. Leading-slash /studio-media.js and /studio.css point to filesystem root under file://, while the HTTP server serves both successfully.",
+      "action": "Do not rewrite web asset paths or lower test assertions merely for file:// compatibility. Highest priority if root sees a real HTTP script failure; then capture that URL and error separately."
+    },
+    {
+      "id": "HR-WRAP",
+      "severity": "Unverified exact320/1024 state; probable visibility-filter false positives for many closed-disclosure controls",
+      "findings": 13,
+      "observation": "HTTP1440/1920/375 screenshots actually show collapsed 작품·설정 and 제작 진행·도움말 and do not show the cited management/mode/next-step buttons in the painted view. Source moves management buttons/modeBar into management details and flowNext into project-context details.",
+      "detector_limit": "observe.visible checks only own computed display/visibility/opacity and nonzero bounding rect; it does not check closed details ancestors or checkVisibility/content-visibility. Retained renderer creates screenshots at375/1280/1440/1920 but not at320/1024.",
+      "source_refs": [
+        "sloplint-render.mjs:425-430",
+        "sloplint-render.mjs:453-480",
+        "index.html shell management/modeBar/project-context construction",
+        "index.html initializeCreatorUI context.append(flowNext)"
+      ],
+      "root_checks": [
+        "At exact320 and1024, inspect cited nodes checkVisibility plus each ancestor details.open; compare painted screenshot",
+        "Open the disclosures deliberately and verify readable labels, keyboard reachability and no clipping",
+        "Model settings button is not established to be hidden by the same details path; inspect it separately rather than dismissing all13"
+      ],
+      "action": "Do not force nowrap on all buttons or delete labels from an unproven geometry-only report; if a visible open control is clipped or unusable, fix its owning layout."
+    },
+    {
+      "id": "HR-EDGE",
+      "severity": "Observed low field-boundary contrast, not dismissed; precise target/applicability needs root live check",
+      "finding": "HTTP1440 select edge1.62:1 vs detector3:1 target",
+      "observation": "1440 screenshot has a visible dark project select with a subdued border. Existing .lt-ui .lt-studio-shell>#songs uses border-color:var(--ui-line). The detector reports generic select without ID, so #songs is a grounded candidate rather than independently measured exact target.",
+      "source_refs": [
+        "studio.css:360",
+        "sloplint-render.mjs:1133-1153"
+      ],
+      "root_checks": [
+        "Identify the actual select, compute all edge/fill/surrounding colors and test native dropdown arrow, focus and enabled state",
+        "If the boundary is required to identify the control and remains under3:1, track as actual accessibility defect and use an existing semantic control boundary in a separately verified change",
+        "Do not apply stylesheet changes during source221 full-regression freeze"
+      ],
+      "action": "Preserve1.62 measurement and unresolved applicability. No blanket waiver, no whole-design PASS."
+    },
+    {
+      "id": "HR-FILE-QUALITY",
+      "severity": "Local fallback-only measurements; not applicable to styled HTTP acceptance",
+      "findings": [
+        "Local file input21px control heights",
+        "Local file heading spacing reflex"
+      ],
+      "observation": "These REFLEX entries name absolute index.html and local fallback screenshot visibly lacks stylesheet. Source quality remains separately reviewed, but the fallback geometry cannot prove the running product has these dimensions.",
+      "action": "Do not fix live CSS against unstyled file:// geometry."
+    }
+  ],
+  "actual_images_opened": [
+    {
+      "path": ".omo/evidence/first-demo-20261028/hallmark-recheck/.hallmark/shots/127.0.0.1-57413-1440x900.png",
+      "sha256": "6943e0aafbc86682a9512faf8e00802dc12c977ca0d48539132f6823fe1f75e9",
+      "actually_opened_with_view_image": true,
+      "target": "http://127.0.0.1:57413/",
+      "state": "Step1 music input, project1차 시연 리허설, audio original-demo-music.wav, closed toolbar disclosures"
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/hallmark-recheck/.hallmark/shots/127.0.0.1-57413-375.png",
+      "sha256": "72eedf08c14a7d3c02d7ce5b54a0a9f5a61d97639760d06b6253a2327a571de4",
+      "actually_opened_with_view_image": true,
+      "target": "http://127.0.0.1:57413/",
+      "state": "Step1 music input, project1차 시연 리허설, audio original-demo-music.wav, closed toolbar disclosures"
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/hallmark-recheck/.hallmark/shots/127.0.0.1-57413-1920x1080.png",
+      "sha256": "ae73da3f7df0499d251a3ce47a60f13dee115b86c7d6856c0fd4b423ace53695",
+      "actually_opened_with_view_image": true,
+      "target": "http://127.0.0.1:57413/",
+      "state": "Step1 music input, project1차 시연 리허설, audio original-demo-music.wav, closed toolbar disclosures"
+    },
+    {
+      "path": ".hallmark/shots/index-1440x900.png",
+      "sha256": "6269e91a3056a5e90bc3972e8c6898640a252f6dfb8ba84a93ddcc4d3b53ad94",
+      "actually_opened_with_view_image": true,
+      "target": "file:///Users/leesungmin/Desktop/Loretune/index.html",
+      "observed": "White unstyled fallback, no project loaded, source inputs shown, connection error, no working media UI; not the HTTP product screen"
+    }
+  ],
+  "HTTP_read_only_asset_checks": [
+    {
+      "url": "http://127.0.0.1:57413/studio-media.js",
+      "status": 200,
+      "content_type": "text/javascript; charset=utf-8",
+      "bytes": 23104,
+      "sha256": "bdd14c7107f4dabba3afcb9cd176c7984671089bab67ed85198ef50324a0111c",
+      "same_as_current_source": true
+    },
+    {
+      "url": "http://127.0.0.1:57413/studio.css",
+      "status": 200,
+      "content_type": "text/css; charset=utf-8",
+      "bytes": 77650,
+      "sha256": "19851dcf5e21244fed815beb34cb11967036b44fdf0dc1e0d705b1ae5b29cd54",
+      "same_as_current_source": true
+    },
+    {
+      "url": "http://127.0.0.1:57413/",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 216898,
+      "sha256": "9779fa9f53924eeb4b59d20f9a56298c67fb3c84f8ea1f101ef96a08c2cde24a",
+      "same_as_current_source": true
+    }
+  ],
+  "manual_image_observations": [
+    "HTTP desktop and mobile show an audio-first screen, real waveform and browser audio controls, optional-photo copy and collapsed advanced details",
+    "Viewed screenshots contain no new timeline overlay/frame controls because the current step is1; they are not proof of the new feature visual quality",
+    "Desktop1440 and1920 show the same calm neutral workbench;375 wraps optional-photo copy normally with the audio player fitting the screen; no screenshot-at375 is evidence for exact320"
+  ],
+  "first_demo_status": "Not accepted by this review alone; root must finish actual normal/edit/error/reopen recording and noted controls/contrast checks",
+  "changes": {
+    "product_source": false,
+    "style": false,
+    "Space91": false,
+    "existing_evidence": false,
+    "only_new_file": ".omo/evidence/first-demo-20261028/frontend/hallmark-render-triage.json"
+  },
+  "no_false_pass": "Hallmark render ran but exit1 and raw26FAIL/75REFLEX/16WARN remain; independent triage is not detector clean or full accessibility compliance."
+}

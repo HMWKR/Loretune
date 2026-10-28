@@ -1,0 +1,222 @@
+{
+  "id": "9561f7fcc84c4330bf53dcd1cabdd922",
+  "project": "3e559d2d-21e2-5113-b835-49a674e7a0da",
+  "name": "B",
+  "run": "764a2caeccfd4b8aba94f70242fef223",
+  "prompt": "Query only project B. What coat and location are approved for Nari here, and what camera request or age is known? Explain in Korean with actual source IDs; if no camera request or age is recorded, say unknown. Do not import facts or requests from other projects and do not create anything.",
+  "status": "completed",
+  "mode": "contract-fake",
+  "model": "claude-haiku-5-5",
+  "binding": "041f6b9582cc758fc72c34efffe8559a201336b45e9237aa5b30519e3041b3db",
+  "answer": "Offline synthetic answer, not Claude quality evidence.",
+  "answer_review": "unreviewed",
+  "steps": [
+    {
+      "round": 0,
+      "mode": "contract-fake",
+      "input_sha256": "c0bb6f9cc01745d0619df2ef438fd840e58007da28ffd7cbce863e0c221303be",
+      "status": "tools_applied",
+      "request_id": "fake",
+      "tool_calls": [
+        {
+          "call": {
+            "id": "1f9e9aa5822a5ea98044017e775418c5",
+            "name": "search_project_context",
+            "arguments": {
+              "query": "current Nari facts and execution targets"
+            },
+            "complete": true
+          },
+          "result": {
+            "status": "succeeded",
+            "context": {
+              "music": null,
+              "snapshot": [],
+              "ontology": {
+                "revision": 1,
+                "graph": {
+                  "entities": [
+                    {
+                      "description": "B-ONLY-CANARY: Nari wears saffron at an underwater laboratory. Age unknown.",
+                      "id": "022eff01-798c-5b35-9ce3-ebd984cedca0",
+                      "label": "Nari",
+                      "provenance": [
+                        {
+                          "excerpt": "B-ONLY-CANARY: Nari wears saffron at an underwater laboratory. Age unknown.",
+                          "source_id": "synthetic-B-v1"
+                        }
+                      ],
+                      "type": "character",
+                      "uncertainty": {
+                        "reason": "Age unknown; other facts supplied by synthetic author.",
+                        "status": "unknown"
+                      }
+                    }
+                  ],
+                  "relations": []
+                },
+                "digest": "59bb8964221cb73ee926649b9cd07500de6b9bc83daf9ceb83d1d9c702a42d92"
+              }
+            },
+            "search_mode": "scoped-snapshot",
+            "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님",
+            "sources": [
+              {
+                "id": "ontology:022eff01-798c-5b35-9ce3-ebd984cedca0",
+                "text": "B-ONLY-CANARY: Nari wears saffron at an underwater laboratory. Age unknown."
+              },
+              {
+                "id": "turn:9561f7fcc84c4330bf53dcd1cabdd922",
+                "text": "Query only project B. What coat and location are approved for Nari here, and what camera request or age is known? Explain in Korean with actual source IDs; if no camera request or age is recorded, say unknown. Do not import facts or requests from other projects and do not create anything."
+              }
+            ],
+            "execution_targets": {
+              "shots": [],
+              "timeline": {
+                "version": 0,
+                "clips": [],
+                "audio_version": null,
+                "audio_offset": 0,
+                "captions": [],
+                "profile": "landscape",
+                "grant_id": null
+              },
+              "plans": [],
+              "actions": [],
+              "ontology_revision": 1,
+              "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+            }
+          }
+        }
+      ],
+      "input_tokens_counted": 100,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 50
+      },
+      "usage_cost_usd": "0.000035",
+      "stop_reason": "tool_use",
+      "output_sha256": "679e558a8365cee5fc63806efc7d8c7692915ebec8473a3e22f509fe81bd963f",
+      "visible_response": [
+        {
+          "type": "tool_use",
+          "id": "5f83279d51ab47ef8bac92e7f1d952c8",
+          "name": "search_project_context",
+          "input": {
+            "query": "current Nari facts and execution targets"
+          }
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "contract-fake",
+      "input_sha256": "780e33f67da3a08e83189f60cc8addcbff90b3a5aa10e0fcb63fea3bbe85486d",
+      "status": "answer_received",
+      "request_id": "fake",
+      "tool_calls": [],
+      "input_tokens_counted": 100,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 50
+      },
+      "usage_cost_usd": "0.000035",
+      "stop_reason": "end_turn",
+      "output_sha256": "954baff80cf6675ea5924a3aee0391cbacd1c3dd1d0656c26dfff6ca9749cfb8",
+      "visible_response": [
+        {
+          "type": "text",
+          "text": "Offline synthetic answer, not Claude quality evidence."
+        }
+      ]
+    }
+  ],
+  "usage_cost_usd": "0.000070",
+  "billing_confirmed": false,
+  "handoff": {
+    "context": {
+      "value": {
+        "model_settings": {
+          "revision": 1,
+          "selections": {
+            "chat": "anthropic-haiku-5-5",
+            "image": null,
+            "video": "fal-kling-2-5-turbo"
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "anthropic-haiku-5-5",
+                "video": "fal-kling-2-5-turbo"
+              },
+              "at": 1793025915.4188328
+            }
+          ]
+        },
+        "context": {
+          "music": null,
+          "snapshot": [],
+          "ontology": {
+            "revision": 1,
+            "graph": {
+              "entities": [
+                {
+                  "description": "B-ONLY-CANARY: Nari wears saffron at an underwater laboratory. Age unknown.",
+                  "id": "022eff01-798c-5b35-9ce3-ebd984cedca0",
+                  "label": "Nari",
+                  "provenance": [
+                    {
+                      "excerpt": "B-ONLY-CANARY: Nari wears saffron at an underwater laboratory. Age unknown.",
+                      "source_id": "synthetic-B-v1"
+                    }
+                  ],
+                  "type": "character",
+                  "uncertainty": {
+                    "reason": "Age unknown; other facts supplied by synthetic author.",
+                    "status": "unknown"
+                  }
+                }
+              ],
+              "relations": []
+            },
+            "digest": "59bb8964221cb73ee926649b9cd07500de6b9bc83daf9ceb83d1d9c702a42d92"
+          }
+        },
+        "approved_shots": []
+      },
+      "sha256": "0d26e5e238d34b66a66a899e7b25296170c9b8a550960e06cade66a6be5bf23b"
+    },
+    "messages": [],
+    "jobs": [],
+    "execution_targets": {
+      "shots": [],
+      "timeline": {
+        "version": 0,
+        "clips": [],
+        "audio_version": null,
+        "audio_offset": 0,
+        "captions": [],
+        "profile": "landscape",
+        "grant_id": null
+      },
+      "plans": [],
+      "actions": [],
+      "ontology_revision": 1,
+      "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+    },
+    "instructions": "서버 상태만 작업 결과로 설명하세요. 미수집 결과를 완료로 설명하지 마세요.",
+    "embedding_policy": "unchanged",
+    "session_request_history": {
+      "schema_version": 1,
+      "scope": {
+        "workspace_id": "a6bf4db6-b7ee-401b-a204-ca0db315b96b",
+        "project_id": "3e559d2d-21e2-5113-b835-49a674e7a0da",
+        "conversation": "project-default"
+      },
+      "requests": [],
+      "digest": "40149e7d06ffcf262933cdd97083bbeefed1c8f1021b2ccc130429fe505860a3"
+    }
+  }
+}

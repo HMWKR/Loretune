@@ -1,0 +1,157 @@
+{
+  "status": "REPORTED: actual default-resolution cube artifact generated; platform import rejected; quality unproven",
+  "source": "VAST-AI-Research/TripoSR@107cefdc244c39106fa830359024f6a2f1c78871",
+  "weights": "stabilityai/TripoSR@5b521936b01fbe1890f6f9baed0254ab6351c04a",
+  "torchmcubes": "tatsy/torchmcubes@a9ac95aa329957ba646e7bb057f825f5dfa77f38",
+  "licenses": {
+    "TripoSR source and weights": "MIT per pinned README and model card",
+    "torchmcubes": "MPL-2.0 per pinned LICENSE; no source modification",
+    "DINO config": "metadata only; TripoSR checkpoint contains learned image encoder weights"
+  },
+  "changes": [
+    "lazy/background-removal dependency removed; called remove_background raises explicitly",
+    "torch.load weights_only=True; torch2.10.0 patched against official GHSA list checked in pytorch-advisories.json",
+    "DINO config path is local pinned metadata instead of implicit remote request"
+  ],
+  "runtime_scope": {
+    "service_api_calls": 0,
+    "private_input": false,
+    "credentials": "none in explicit inference/download subprocess environments",
+    "global_or_product_mutation": false,
+    "network": "public GET during setup; OS-denied during import, smoke and planned inference"
+  },
+  "platform_profile": {
+    "path": "scene_assets.py",
+    "max_bytes": 8388608,
+    "max_vertices": 50000,
+    "max_triangles": 100000,
+    "COLOR_0": "not admitted; optional separately labelled PBR conversion"
+  },
+  "verification": {
+    "cpu_smoke": "cpu-smoke.log sphere vertices2272 faces4508; torch2.10.0 CPU",
+    "os_network_denial": "cpu-smoke.log actual socket EPERM",
+    "module_import": "model-import.log TSR_IMPORT_OK",
+    "full_generation": "result-256.json / execution-256.json / cube-resolution256-original.glb",
+    "platform_http_render": "NOT RUN; native profile validator rejected original extras and COLOR_0 unsupported"
+  },
+  "full_generation": {
+    "resolution": 256,
+    "default_quality": true,
+    "vertices": 46223,
+    "faces": 92304,
+    "bounds": [
+      [
+        -0.42542675137519836,
+        -0.3444173336029053,
+        -0.34835368394851685
+      ],
+      [
+        0.3730192184448242,
+        0.3484337329864502,
+        0.35710299015045166
+      ]
+    ],
+    "watertight": false,
+    "bytes": 1848244,
+    "sha256": "307b92e8cb61be726d6de12d9059dc54254be956d13bae3f66700b60dccd1cfe",
+    "seconds": 26.894886249967385,
+    "input_sha256": "472c4e8e77d713e5bf8f8f46fc50f99ec468b8c775803e06050be433bd9b9033",
+    "background_pixel": [
+      58,
+      58,
+      58
+    ],
+    "crop": "none",
+    "background_removal": false,
+    "torch": "2.10.0",
+    "threads": 2,
+    "interop_threads": 2,
+    "chunk_size": 4096,
+    "device": "cpu"
+  },
+  "execution": {
+    "invocation": [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-cpu-artifact-20261028/network-deny.sb",
+      "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/venv/bin/python",
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-cpu-artifact-20261028/infer.py",
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-cpu-artifact-20261028",
+      "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/model",
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/paired-3d-benchmark-inputs-20261028/case-1-cube.png",
+      "256"
+    ],
+    "exit_code": 0,
+    "seconds": 29.351280291972216,
+    "peak_tree_rss_bytes": 2695364608,
+    "termination_reason": null,
+    "limits": {
+      "rss_bytes": 8589934592,
+      "seconds": 1200,
+      "disk_bytes": 12884901888
+    },
+    "network": "OS sandbox deny network; tested separately",
+    "environment_keys": [
+      "HF_HOME",
+      "HF_HUB_DISABLE_IMPLICIT_TOKEN",
+      "HF_HUB_OFFLINE",
+      "MKL_NUM_THREADS",
+      "OMP_NUM_THREADS",
+      "PATH",
+      "PYTHONPATH",
+      "TMPDIR",
+      "TOKENIZERS_PARALLELISM",
+      "TRANSFORMERS_OFFLINE"
+    ]
+  },
+  "profile_inspection": {
+    "original": {
+      "path": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-cpu-artifact-20261028/cube-resolution256-original.glb",
+      "sha256": "307b92e8cb61be726d6de12d9059dc54254be956d13bae3f66700b60dccd1cfe",
+      "bytes": 1848244,
+      "vertices": 46223,
+      "faces": 92304,
+      "visual_kind": "vertex",
+      "watertight": false,
+      "euler_number": -66,
+      "component_count": 5,
+      "platform_validation_error": "외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다."
+    }
+  },
+  "scope_limits": [
+    "Only cube input executed; chair input hash verified but not generated",
+    "No visual render/manual quality judgment; parent owns render validation",
+    "No commercial Tripo equivalence claim",
+    "No product code changes; no lossy adapter generated",
+    "5 components and non-watertight output observed",
+    "Setup public GETs allowed; actual inference denied all network by OS"
+  ],
+  "resources": {
+    "temporary_file_logical_bytes": 3574599096,
+    "preflight_to_weight_ready_seconds": 887.0836029052734,
+    "inference_peak_rss_bytes": 2695364608,
+    "inference_wall_seconds": 29.351280291972216
+  },
+  "attempts": [
+    {
+      "stage": "initial torch2.5.1 CPU build",
+      "result": "compiled; never loaded weights; superseded by patched2.10.0",
+      "artifact": "cpu-build.log"
+    },
+    {
+      "stage": "download600second limit",
+      "result": "stopped at1644167168 bytes; same-file ETag/Range resume succeeded; full SHA matched",
+      "artifact": "weight-download.log / resume-response.json / weight-integrity.json"
+    },
+    {
+      "stage": "inference attempt1",
+      "result": "config interpolation error before weight loading; restored original OmegaConf.resolve sequence",
+      "artifact": "attempt-1-config-resolution/"
+    },
+    {
+      "stage": "inference attempt2",
+      "result": "exit0 and nonempty GLB with default mc256",
+      "artifact": "execution-256.json / result-256.json"
+    }
+  ]
+}

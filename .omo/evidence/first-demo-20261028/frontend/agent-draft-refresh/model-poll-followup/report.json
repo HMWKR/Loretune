@@ -1,0 +1,40 @@
+{
+  "status": "RECEIVED",
+  "problem": "Model-only polling VM omitted product-global draft; new head-sync expression raised ReferenceError before existing model redraw.",
+  "diagnosis": "diagnosis.json",
+  "decision": "Repair test runtime parity rather than add dead fallback to actual product.",
+  "change": [
+    "Declare draft:null exactly as the real page does.",
+    "Full redraw spy plus post-poll assertion enforces zero full redraw for all 13 existing same-head/model-only scenarios, including guarded responses."
+  ],
+  "preserved": [
+    "All original 13 case names, expected values, test bodies, assertions and count remain unchanged.",
+    "index.html and head-refresh product behavior unchanged.",
+    "Python wrapper and frontend async safety test unchanged.",
+    "Original 915-test failure receipt preserved by root."
+  ],
+  "verification": {
+    "node_syntax": "exit 0",
+    "controlled_narrow": "3 tests in 1.116s OK: model-only 13 cases plus model settings reopen plus existing head/dirty/scope/pending/media async regressions",
+    "in_memory_missing_binding_control": "Original preserved fixture fails with observed ReferenceError: draft is not defined.",
+    "in_memory_declaration_control": "Adding only draft:null to original preserved fixture passes all 13 original cases.",
+    "actual_store_normalization": "before/grok/cleared timeline_head null; actual fresh(p) has no id; both normalized heads null.",
+    "existing_case_bodies_byte_equal": true,
+    "product_source_unchanged": true,
+    "real_provider_calls": 0,
+    "browser_tests_newly_run": 0
+  },
+  "evidence": [
+    "before.json",
+    "before/tests/chat_model_polling.cjs",
+    "diagnosis.json",
+    "narrow-results.json",
+    "narrow-tests.log",
+    "changes.patch",
+    "source-final.json"
+  ],
+  "limitations": [
+    "This follow-up is a VM contract repair and controlled regression, not a new actual-model or browser validation.",
+    "Fresh whole-suite attempt 2 is delegated to root after this freeze."
+  ]
+}

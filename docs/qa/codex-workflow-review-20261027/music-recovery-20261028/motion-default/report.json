@@ -1,0 +1,129 @@
+{
+  "status": "REPORTED",
+  "issue": "MOTION-TEXT-BOX-12",
+  "recorded_at": "2026-10-27T21:45:37.096419+00:00",
+  "code_frozen": true,
+  "source_sha256": {
+    "motion-studio.js": "ebd080a0575271aec9ba383055f91ffab5774e2a1bae736f4268b98ef1299e58",
+    "tests/test_motion_text_controls.py": "d39890cf2aad5dc6188111774341c9a787c26e8563a4727a7f392e45f4e41650",
+    "native/motion_frame_renderer.swift": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d",
+    "motion_renderer.py": "a83ccb5064d512d9350b37fb3842e2b8349fb1cf826d51c79fdb2c91c4f384e0",
+    "tests/motion_text_controls.cjs": "99c359225325d930cbf90aa64d10b8815b0ec5c2b370b1163c02e93aad4055b4"
+  },
+  "change": "Only new direct text starter height160→240. Native two80px lines require208px;32px headroom. Position/font/motion/duration and saved state are unchanged.",
+  "write_set": [
+    "motion-studio.js",
+    "tests/test_motion_text_controls.py",
+    "tests/motion_text_controls.cjs",
+    ".omo/evidence/music-recovery-20261028/motion-default/**"
+  ],
+  "checks": [
+    {
+      "scenario": "Before actual starter two-line native validation fails while other focused checks pass",
+      "invocation": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_motion_text_controls.py",
+        "-v"
+      ],
+      "observable": "exit1,4 tests, one two-line native error",
+      "artifact": "before-native-tests.log"
+    },
+    {
+      "scenario": "Changed starter1/2lines/native old160reject/singlelinepixels/existing bounds scope and recovery",
+      "invocation": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_motion_text_controls.py",
+        "-v"
+      ],
+      "observable": "exit0,4tests pass,0skips",
+      "artifact": "after-tests.log"
+    },
+    {
+      "scenario": "Starter validation and conversation isolation",
+      "invocation": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_motion_first_ui.py",
+        "-v"
+      ],
+      "observable": "exit0,1test pass",
+      "artifact": "test_motion_first_ui.py.log"
+    },
+    {
+      "scenario": "Proposal versions,preview generation,poll preserves editing",
+      "invocation": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_motion_ui.py",
+        "-v"
+      ],
+      "observable": "exit0,1test pass",
+      "artifact": "test_motion_ui.py.log"
+    },
+    {
+      "scenario": "Persistent actual CoreText success/failure and visible-frame receipts",
+      "invocation": [
+        "python3",
+        ".omo/evidence/music-recovery-20261028/motion-default/native-probe.py"
+      ],
+      "observable": "6 native invocations match expected exits,missingglyphfalse,new/old singlelinePNG byte-identical",
+      "artifact": "native-results.json"
+    },
+    {
+      "scenario": "Minimal diff and preserved native guard/existing test body",
+      "invocation": "Python exact replacement and sha256 comparison",
+      "observable": "one product literal changed; existing MotionTextControlsTest body identical; native/renderer SHA unchanged",
+      "artifact": "motion-studio.js.diff"
+    }
+  ],
+  "manual_visual": {
+    "artifact": "two-line-default-visible.png",
+    "observed": "1920×1080 actual native frame24 opened with view_image; both requested Korean lines visible without clipping; this is output artifact review, not browser UI review."
+  },
+  "limitations": [
+    "Browser save→approval→candidate→Take→audio final workflow acceptance is root-owned and not claimed by this child.",
+    "No live provider/Claude/AI video testing by this child.",
+    "240 is sufficient for default80px two lines, not arbitrary user-edited160px text; validation remains strict.",
+    "omo currentAttemptDir unavailable because bun and fallback CLI absent; no config edits."
+  ],
+  "development_failures": [
+    {
+      "artifact": "before-tests.log",
+      "reason": "Initial new controlled DOM harness did not append proposal on mocked save; corrected harness to match save refresh contract before baseline native test. This was not a product diagnosis."
+    }
+  ],
+  "skills": {
+    "read_applied": [
+      "karpathy-guidelines",
+      "feature-verification",
+      "impeccable craft-floor"
+    ],
+    "commands_not_run": [
+      "impeccable launcher",
+      "full819 suite"
+    ]
+  },
+  "parent_acceptance": "pending root real browser workflow; no automatic ACCEPTED promotion"
+}

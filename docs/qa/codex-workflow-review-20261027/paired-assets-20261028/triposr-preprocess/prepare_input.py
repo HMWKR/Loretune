@@ -1,0 +1,9 @@
+import pathlib,json,hashlib,numpy as np
+from PIL import Image
+from tsr.utils import resize_foreground
+out=pathlib.Path(__file__).resolve().parent;inp=out.parent/"paired-3d-benchmark-inputs-20261028/case-2-chair.png"
+assert hashlib.sha256(inp.read_bytes()).hexdigest()=="e673407b9000388e4bb4e9cc382f1a91043468665c2170d996bdd21ad526835e"
+rgb=np.array(Image.open(inp).convert("RGB"));bg=np.all(rgb==np.array([58,58,58],dtype=np.uint8),axis=-1);alpha=np.where(bg,0,255).astype(np.uint8);rgba=np.dstack([rgb,alpha]);Image.fromarray(rgba).save(out/"chair-known-bg-alpha.png")
+resized=resize_foreground(Image.fromarray(rgba),0.85);resized.save(out/"chair-official-ratio085-rgba.png");arr=np.array(resized).astype(np.float32)/255.0;combined=arr[:,:,:3]*arr[:,:,3:4]+(1-arr[:,:,3:4])*0.5;derived=Image.fromarray((combined*255.0).astype(np.uint8));derived.save(out/"chair-derived-input.png")
+y,x=np.where(alpha>0);record={"rule":"alpha0 iff all source RGB channels exactly58, otherwise255; no tolerance, flood fill, rembg or learned model","original_size":list(Image.open(inp).size),"transparent_pixels":int(bg.sum()),"opaque_pixels":int((~bg).sum()),"transparent_fraction":float(bg.mean()),"foreground_bbox_inclusive":[int(x.min()),int(y.min()),int(x.max()),int(y.max())],"official_ratio":0.85,"official_composite_float_background":0.5,"result_uint8_background":derived.getpixel((0,0)),"derived_size":list(derived.size),"helper_boundary_note":"original helper maximum-coordinate-exclusive slice retained without correction","scope":"synthetic known constant background only; not arbitrary-photo segmentation","hashes":{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in [inp,out/"chair-known-bg-alpha.png",out/"chair-official-ratio085-rgba.png",out/"chair-derived-input.png"]}}
+(out/"preprocessing.json").write_text(json.dumps(record,indent=2));print(json.dumps(record),flush=True)

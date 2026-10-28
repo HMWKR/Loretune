@@ -1,0 +1,18 @@
+test_local_vtt_mime_and_incomplete_unknown_host_denials (tests.test_caption_image_recovery.CaptionHTTPTest.test_local_vtt_mime_and_incomplete_unknown_host_denials) ... 127.0.0.1 - - [26/Oct/2026 01:12:43] "GET /exports/5999287a93c9499aadff117842f72841.vtt HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 01:12:43] "GET /exports/5999287a93c9499aadff117842f72841.vtt HTTP/1.1" 403 -
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 403: 'Forbidden'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+127.0.0.1 - - [26/Oct/2026 01:12:43] "GET /exports/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.vtt HTTP/1.1" 404 -
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 404: 'Not Found'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+127.0.0.1 - - [26/Oct/2026 01:12:43] "GET /exports/5999287a93c9499aadff117842f72841.vtt HTTP/1.1" 409 -
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 409: 'Conflict'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+ok
+test_restricted_principal_cannot_read_legacy_captions (tests.test_caption_image_recovery.CaptionHTTPTest.test_restricted_principal_cannot_read_legacy_captions) ... 127.0.0.1 - - [26/Oct/2026 01:12:44] "GET /exports/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.vtt HTTP/1.1" 403 -
+ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 1.046s
+
+OK

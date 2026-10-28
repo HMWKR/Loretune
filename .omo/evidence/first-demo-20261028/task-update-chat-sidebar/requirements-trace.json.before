@@ -1,0 +1,199 @@
+{
+  "updated_at": "2026-10-28T00:26:24.256641+00:00",
+  "source": "latest user first/second demonstration request",
+  "scope_preserved": true,
+  "items": [
+    {
+      "id": "D01",
+      "user_task": "빈 프로젝트에서 음원 단독 시작",
+      "screen_and_interaction": "음악 입력",
+      "internal_path": "project/audio/music_structure",
+      "expected_behavior": "사진·3D없이시작",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D02",
+      "user_task": "사진을선택적으로추가",
+      "screen_and_interaction": "장면제작/파일업로드",
+      "internal_path": "take/select/rights",
+      "expected_behavior": "음원경로에사진강제없음",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D03",
+      "user_task": "독립타이포생성·미리보기",
+      "screen_and_interaction": "모션원본편집",
+      "internal_path": "motion_propose/frame/review/render",
+      "expected_behavior": "편집원본과MP4후보구별",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D04",
+      "user_task": "타이포문구·크기·색·위치·시간·움직임수정",
+      "screen_and_interaction": "모션원본폼",
+      "internal_path": "motion_versions/scene",
+      "expected_behavior": "수정새버전·재생성반영",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D05",
+      "user_task": "기존이미지·영상위타이포겹치기수정",
+      "screen_and_interaction": "타임라인겹치기/저장편집프레임",
+      "internal_path": "timeline/motion_overlay/timeline-frame/renderer",
+      "expected_behavior": "typed승인원본참조와실제RGBA합성",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D06",
+      "user_task": "후보비교·선택·권리·검토",
+      "screen_and_interaction": "Take비교/검토",
+      "internal_path": "take/select/review_take/declare_take_rights",
+      "expected_behavior": "선택과승인별개",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D07",
+      "user_task": "컷순서·길이·음원구간·자막편집",
+      "screen_and_interaction": "편집출력",
+      "internal_path": "timeline_versions/editing",
+      "expected_behavior": "저장값과실제영상시간일치",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D08",
+      "user_task": "승인·출력·재생·다운로드",
+      "screen_and_interaction": "출력확인/작업/플레이어",
+      "internal_path": "approve_timeline/estimate/render_job/exports",
+      "expected_behavior": "저장해시·다운로드·실제디코드일치",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D09",
+      "user_task": "재열기·서버재시작후이어쓰기",
+      "screen_and_interaction": "reload/편집복원",
+      "internal_path": "SQLite/assets/jobs/manifest",
+      "expected_behavior": "원본·편집·결과보존",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D10",
+      "user_task": "선택모델·현재음원/장면/편집문맥·AI설명과도구실행",
+      "screen_and_interaction": "대화전송검토/변경안",
+      "internal_path": "general_chat/production_tools/ledger",
+      "expected_behavior": "합성/실제검증구분",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D11",
+      "user_task": "대화이력·초안·모델선택격리와병행",
+      "screen_and_interaction": "두탭/대화선택",
+      "internal_path": "chat_sessions/CAS/workers",
+      "expected_behavior": "서로다른대화드리프트허용·혼합차단",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D12",
+      "user_task": "공유타임라인충돌·공통예산",
+      "screen_and_interaction": "두탭/편집/예산",
+      "internal_path": "shared_fingerprint/reservations",
+      "expected_behavior": "오래된승인·예산우회차단",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D13",
+      "user_task": "취소·timeout·재접속·unknown복구",
+      "screen_and_interaction": "작업취소/상태재조회",
+      "internal_path": "attempts/reservations/recovery",
+      "expected_behavior": "중복전송·비용누락없음",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D14",
+      "user_task": "디자인·키보드·포커스·상태",
+      "screen_and_interaction": "핵심화면/편집폼",
+      "internal_path": "tokens/frontend/stateguards",
+      "expected_behavior": "내부진단점진공개·중요결정유지",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D15",
+      "user_task": "실제플랫폼화면연속녹화",
+      "screen_and_interaction": "핵심과업실조작",
+      "internal_path": "CDPscreencast/recording-sidecar",
+      "expected_behavior": "재생가능·시간보존·실패/개입공개",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "unverified"
+    },
+    {
+      "id": "D16",
+      "user_task": "AI영상모델호출1차시연이후승인",
+      "screen_and_interaction": "별도승인",
+      "internal_path": "provider/pricing/inputscope",
+      "expected_behavior": "무응답승인아님·phase1실호출0",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "approval_pending"
+    },
+    {
+      "id": "D17",
+      "user_task": "승인후실제AI뮤비/2차녹화/청구연결",
+      "screen_and_interaction": "추후실제생성→편집→출력",
+      "internal_path": "provider/jobs/ledger/artifacts",
+      "expected_behavior": "정해진모델·자료·길이·횟수·최대비용별승인필요",
+      "verification_result": "pending",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "approval_pending"
+    }
+  ],
+  "notes": [
+    "Earlier S850/CS/public Tripo research retained as separate prior evidence; not automatically counted as this demo acceptance.",
+    "No arbitrary canvas drag or multitrack capability claimed.",
+    "Current local-owner permissions are not multiuser authentication acceptance."
+  ]
+}

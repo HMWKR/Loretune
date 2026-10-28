@@ -1,0 +1,41 @@
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 06:34:51] "GET /exports/87e0427e57874e1bbf3f4230c48f0e8d.mp4 HTTP/1.1" 200 -
+Invalid duration for option ss: .1
+Error parsing options for input file /Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/range-preflight/before/output.mp4.
+Error opening input files: Invalid argument
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/range-preflight/probe.py", line 85, in <module>
+    pcm = subprocess.check_output(['ffmpeg', '-v', 'error', '-ss', '.1', '-i', str(output), '-map', '0:a:0', '-t', '.2', '-ac', '1', '-ar', '48000', '-f', 's16le', '-'])
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 587, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['ffmpeg', '-v', 'error', '-ss', '.1', '-i', '/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/range-preflight/before/output.mp4', '-map', '0:a:0', '-t', '.2', '-ac', '1', '-ar', '48000', '-f', 's16le', '-']' returned non-zero exit status 234.

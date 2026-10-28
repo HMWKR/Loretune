@@ -1,0 +1,11 @@
+--- scene-studio.js before
++++ scene-studio.js current
+@@ -65,7 +65,7 @@
+   for(const id of ['sceneStudioAssetFile','sceneStudioAssetRights','sceneStudioAssetSelect'])el(id).disabled=blocked||!same;
+   el('sceneStudioAssetImport').disabled=blocked||!same||isStale||!imports.get(scope)?.file||!el('sceneStudioAssetRights').value.trim();
+   const selectedAsset=assets().find(x=>x.id===el('sceneStudioAssetSelect').value);el('sceneStudioAssetUse').disabled=blocked||!same||isStale||!selectedAsset||!!state?.asset_rights?.[selectedAsset.sha256]?.blocked;
+-  el('sceneStudioInputs').disabled=blocked||!same||!editing;el('sceneStudioRecover').hidden=!pendingRequest;el('sceneStudioRecover').disabled=busy||inFlight;
++  el('sceneStudioInputs').disabled=blocked||!same||!editing;el('sceneStudioRecover').hidden=!pendingRequest||(typeof mutationRequestActive==='function'&&mutationRequestActive(pendingRequest)&&!pendingId.failed);el('sceneStudioRecover').disabled=busy||inFlight;
+   const retryAvailable=globalThis.LoretuneSceneRecovery?.canRetry?.()===true;el('sceneStudioRetry').hidden=!retryAvailable;el('sceneStudioRetry').disabled=!retryAvailable||inFlight||assetReading||busy;
+   el('sceneStudioSave').disabled=blocked||!same||!editing||(!dirty&&!rejected&&!(!r?.head&&p?.requires_review))||isStale;el('sceneStudioDiscard').disabled=blocked||!same||!dirty;
+   const unavailableAsset=editing?.objects?.some(obj=>obj.kind==='mesh'&&!assets().some(x=>x.id===obj.asset?.id&&x.sha256===obj.asset?.sha256&&x.profile===obj.asset?.profile&&!state?.asset_rights?.[x.sha256]?.blocked));

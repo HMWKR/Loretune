@@ -1,0 +1,127 @@
+{
+  "schema": "approved-motion-overlay-backend/1",
+  "recorded_at": "2026-10-28T00:31:56.050809+00:00",
+  "status": "REPORTED; parent integration acceptance pending",
+  "implementation": "timeline clip immutable approved motion reference + same-compositor saved-frame PNG preview",
+  "contract": {
+    "field": "clips[].motion_overlay",
+    "none": "omitted or null; null normalized to omitted",
+    "fields": {
+      "shot": "same-project source shot name",
+      "motion_revision": "approved immutable source version integer",
+      "start": "clip-local seconds; source starts at frame0",
+      "end": "exclusive clip-local seconds; <=clip.duration and interval <= source duration",
+      "offset_x": "logical1920x1080px, -1920..1920",
+      "offset_y": "logical1920x1080px, -1080..1080"
+    },
+    "composition": "One motion source per clip; source supports up to8 text/rect/circle layers. Original opaque background excluded; source alpha/keyframes/in/out preserved. Motion canvas aspect-fits target profile; offsets use same uniform scale.",
+    "new_motion_head": "does not replace referenced immutable source",
+    "new_context_or_conversation": "does not rewrite already approved immutable source; final composition needs its own timeline approval",
+    "tampering_and_font_change": "canonical source scene/approval hash and current font/backend hashes checked at approval/preview/render resolution"
+  },
+  "preview": {
+    "endpoint": "GET /api/timeline-frame?song&timeline_revision&clip_index&frame[&conversation]",
+    "scope": "current saved timeline head only; no unsaved draft",
+    "separate_approval": true,
+    "same_compositor": "renderer.clip_command + RGBA CoreText frames",
+    "state_effects": "No job, audit action, reservation or approval writes; temporary PNG/runtime cache only",
+    "concurrency": "one nonblocking Store-local preview lock; busy409",
+    "limits": {
+      "source_frames_max": 96,
+      "temporary_source_png_bytes_max": 134217728,
+      "returned_PNG_bytes_max": 16777216,
+      "source_sequence_deadline_seconds": 60,
+      "individual_CoreText_process_timeout_seconds": 10,
+      "first_compile_timeout_seconds": 90,
+      "FFmpeg_preview_timeout_seconds": 30
+    },
+    "measured_loopback_preview_seconds": [
+      2.293,
+      2.547
+    ],
+    "late_change_guard": "reload canonical references after preview; reject changed timeline or used composition with409; recheck rights and bytes"
+  },
+  "source_files": {
+    "app.py": "3bfee8d73c9f73559d9da050b673e9a1960c6c8d6d88fc66fa72859014edac67",
+    "editing.py": "b2e2d7ff092eb263ee8f0bbb72b48c3ef88d03b36bab5383643bb6e04b8fd803",
+    "renderer.py": "26aa1c1a4508c674db514ada15277cf1faa04d1fe16d5d292657e50e5da5f77f",
+    "motion_renderer.py": "155824df1daf6ef5dc213d42c308a5c488e3944c6fab140affc3f36382876f5a",
+    "native/motion_frame_renderer.swift": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+    "tests/test_motion_overlay.py": "a760de421b82eaae84d1c4ab70a0d010578aacb37955132255fde9524db5c16b"
+  },
+  "locations": {
+    "editing.py": {
+      "motion_overlay": 64,
+      "approved_motion": 76,
+      "resolve_motion_overlay": 92,
+      "validate_motion_overlay_snapshot": 104,
+      "render_project": 214
+    },
+    "renderer.py": {
+      "clip_command": 70,
+      "preview": 100
+    },
+    "motion_renderer.py": {
+      "frame": 28,
+      "overlay_frames": 39
+    },
+    "app.py": {
+      "render_record": 52,
+      "sidecar_snapshot_hashes": 90,
+      "timeline_preview": 419
+    }
+  },
+  "verification": {
+    "first_new_suite": "9 tests/20.668s OK; HTTPError close ResourceWarning then corrected",
+    "related_attempt": "52 tests/44.931s with1 test-harness NameError from misplaced assertion; product assertions otherwise passed; retained log",
+    "final_related_suite": "52 tests/44.006s OK; skip0 Warning0",
+    "command": "python3 -m unittest tests.test_motion_overlay tests.test_editing tests.test_motion tests.test_export_sidecar_integrity tests.test_backup_sidecar_restore -v",
+    "new_tests": 10,
+    "actual_HTTP_script": "verify_http.py",
+    "actual_HTTP_events": 20,
+    "actual_local_outputs": [
+      {
+        "path": "actual-v1.mp4",
+        "sha256": "2a098f91c1dfb801ecbcebe8a798cbea1c04cd58de9f76740ee64966923a0e38",
+        "duration": "3.000000",
+        "streams": [
+          "video",
+          "audio",
+          "subtitle"
+        ],
+        "decoded": true
+      },
+      {
+        "path": "actual-v2.mp4",
+        "sha256": "eeff117c0847c3e556a9b457643a6c404f13670aa4d89654cbc29f06bae3d1c0",
+        "duration": "3.000000",
+        "streams": [
+          "video",
+          "audio",
+          "subtitle"
+        ],
+        "decoded": true
+      }
+    ],
+    "actual_provider_calls": 0,
+    "backup_restore": "both completed output hashes and timeline_head2 preserved",
+    "visual_review": "Both before/after1080p PNGs opened; two-line Korean text and shape visibly translated on actual testsrc2 video; no original background wash introduced",
+    "media_assertions": "Partial-alpha rectangle pixel matches half blend, original canvas corners unchanged, source in/out respected, video timing/offset control, actual preview vs decoded final frame mean absolute RGB difference<3, subtitle/audio/video streams and full decode"
+  },
+  "attempt_preservation": [
+    "focused-tests.log",
+    "verification-tests.log",
+    "verification-final-tests.log",
+    "verify_http-attempt1.py",
+    "actual-http-attempt1.log"
+  ],
+  "remaining": [
+    "Parent actual UI integration/keyboard/viewport and continuous browser recording",
+    "Real Claude/model/account/billing remain unverified; provider calls0",
+    "New native implementation changes font/backend manifest; old motion execution grants require new reviewed source version instead of bypassing the guard",
+    "No drag canvas/arbitrary timeline tracks. Current source composition remains3–4seconds; placement window cannot exceed it.",
+    "Overlay pixel tests cover landscape/preview outputs; portrait scaling uses aspect-fit code but no independent portrait pixel comparison in this scoped audit."
+  ],
+  "documents_or_registries_changed": false,
+  "whole_platform_complete": false
+}

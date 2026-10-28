@@ -1,0 +1,46 @@
+test_previous_renderer_approval_and_queued_job_require_explicit_reapproval (test_scene_background.BackgroundApprovalHTTPTest.test_previous_renderer_approval_and_queued_job_require_explicit_reapproval) ... 127.0.0.1 - - [28/Oct/2026 04:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 04:33:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 04:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 04:33:42] "POST /api/action HTTP/1.1" 200 -
+ERROR
+test_background_is_assigned_to_active_shader (test_scene_background.BackgroundContractTest.test_background_is_assigned_to_active_shader) ... FAIL
+test_fingerprint_uses_loaded_code_not_current_disk (test_scene_background.BackgroundContractTest.test_fingerprint_uses_loaded_code_not_current_disk) ... ERROR
+
+======================================================================
+ERROR: test_previous_renderer_approval_and_queued_job_require_explicit_reapproval (test_scene_background.BackgroundApprovalHTTPTest.test_previous_renderer_approval_and_queued_job_require_explicit_reapproval)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_background.py", line 53, in test_previous_renderer_approval_and_queued_job_require_explicit_reapproval
+    with patch.object(scene_renderer,'_RENDERER_FINGERPRINT','0'*64):
+         ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/unittest/mock.py", line 1510, in __enter__
+    original, local = self.get_original()
+                      ~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/unittest/mock.py", line 1480, in get_original
+    raise AttributeError(
+        "%s does not have the attribute %r" % (target, name)
+    )
+AttributeError: <module 'scene_renderer' from '/Users/leesungmin/Desktop/Loretune/scene_renderer.py'> does not have the attribute '_RENDERER_FINGERPRINT'
+
+======================================================================
+ERROR: test_fingerprint_uses_loaded_code_not_current_disk (test_scene_background.BackgroundContractTest.test_fingerprint_uses_loaded_code_not_current_disk)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_background.py", line 33, in test_fingerprint_uses_loaded_code_not_current_disk
+    first=load();before=first.renderer_fingerprint();compiled=first.compile_scene(sample())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'background_loaded_renderer' has no attribute 'renderer_fingerprint'
+
+======================================================================
+FAIL: test_background_is_assigned_to_active_shader (test_scene_background.BackgroundContractTest.test_background_is_assigned_to_active_shader)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_background.py", line 22, in test_background_is_assigned_to_active_shader
+    self.assertIn("nodes['Background'].inputs['Color'].default_value",compiled)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "nodes['Background'].inputs['Color'].default_value" not found in 'SCENE_JSON = \'{"background":[0.1,0.1,0.1],"camera":{"lens_mm":50,"position":[5,-7,5],"target":[0,0,0]},"height":96,"lights":[{"color":[1,1,1],"energy_w":800,"id":"key","position":[3,-4,6],"size_m":3,"target":[0,0,0]}],"objects":[{"color":[0.05,0.25,0.8],"id":"subject","kind":"cube","position":[0,0,0],"rotation_degrees":[0,0,0],"scale":[1,1,1]}],"schema_version":1,"width":96}\'\nimport bpy, json, math, time\nfrom mathutils import Vector\nscene_data = json.loads(SCENE_JSON)\nbpy.ops.object.select_all(action=\'SELECT\')\nbpy.ops.object.delete(use_global=False)\nscene = bpy.context.scene\nscene.render.engine = \'CYCLES\'\nscene.cycles.device = \'CPU\'\nscene.cycles.samples = 4\nscene.cycles.seed = 0\nscene.render.resolution_x = scene_data[\'width\']\nscene.render.resolution_y = scene_data[\'height\']\nscene.render.resolution_percentage = 100\nscene.render.image_settings.file_format = \'PNG\'\nscene.render.filepath = \'/output/frame.png\'\nscene.world.color = tuple(scene_data[\'background\'])\nfor data in scene_data[\'objects\']:\n    if data[\'kind\'] == \'cube\':\n        bpy.ops.mesh.primitive_cube_add(size=2, location=data[\'position\'])\n    elif data[\'kind\'] == \'sphere\':\n        bpy.ops.mesh.primitive_uv_sphere_add(segments=24, ring_count=12, location=data[\'position\'])\n    elif data[\'kind\'] == \'plane\':\n        bpy.ops.mesh.primitive_plane_add(size=2, location=data[\'position\'])\n    obj = bpy.context.object\n    obj.name = data[\'id\']\n    obj.rotation_euler = [math.radians(v) for v in data[\'rotation_degrees\']]\n    obj.scale = data[\'scale\']\n    material = bpy.data.materials.new(\'material-\' + data[\'id\'])\n    material.use_nodes = True\n    material.node_tree.nodes.get(\'Principled BSDF\').inputs[\'Base Color\'].default_value = (*data[\'color\'], 1)\n    obj.data.materials.append(material)\nfor data in scene_data[\'lights\']:\n    bpy.ops.object.light_add(type=\'AREA\', location=data[\'position\'])\n    light = bpy.context.object\n    light.name = data[\'id\']\n    light.data.energy = data[\'energy_w\']\n    light.data.size = data[\'size_m\']\n    light.data.color = data[\'color\']\n    light.rotation_euler = (Vector(data[\'target\']) - light.location).to_track_quat(\'-Z\', \'Y\').to_euler()\nbpy.ops.object.camera_add(location=scene_data[\'camera\'][\'position\'])\ncamera = bpy.context.object\ncamera.rotation_euler = (Vector(scene_data[\'camera\'][\'target\']) - camera.location).to_track_quat(\'-Z\', \'Y\').to_euler()\ncamera.data.type = \'PERSP\'\ncamera.data.sensor_fit = \'HORIZONTAL\'\ncamera.data.sensor_width = 36\ncamera.data.lens = scene_data[\'camera\'][\'lens_mm\']\nscene.camera = camera\nbpy.ops.render.render(write_still=True)\nwith open(\'/output/ready\', \'x\', encoding=\'ascii\') as marker:\n    marker.write(\'complete\')\n# The output tmpfs disappears when a container stops. Keep this trusted process\n# alive while the host copies the verified-size result; the host then removes it.\nwhile True:\n    time.sleep(1)\n'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.610s
+
+FAILED (failures=1, errors=2)

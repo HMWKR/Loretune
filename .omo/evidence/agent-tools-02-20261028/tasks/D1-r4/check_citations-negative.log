@@ -1,0 +1,9 @@
+## negative run (tampered copy: r3 motion target restored + one out-of-range anchor)
+OUT_OF_RANGE agent_preferences.py:93-999 len 141
+STALE kind:'timeline'|'motion'
+STALE timeline_revision|proposal_id+scene_sha256
+explicit anchors 302 content checks 178 (before/md 173 + current 5) empty-expected 0 fail 3
+exit 1
+## literal_eval refuses code (eval would have run it)
+ValueError: malformed node or string on line 1: Call(func=Attribute(value=Call(func=Name(...), args=[Constant(...)], keywords=[]), attr='getcwd', ctx=Load()), args=[], keywords=[])
+literal list ok: 2

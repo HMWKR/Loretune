@@ -1,0 +1,86 @@
+{
+  "schema": "post-mr1-document-preservation-audit/1",
+  "recorded_at": "2026-10-27T22:11:39.950290+00:00",
+  "status": "REPORTED; driver acceptance pending",
+  "source_documents_changed_by_auditor": [],
+  "whole_platform_complete": false,
+  "prior_evidence_files_preserved": 22,
+  "changed_from_prior_freeze": [
+    "README.md",
+    "docs/qa/REMAINING-WORK.md",
+    "docs/qa/codex-workflow-review-20261027/REPORT-ko.md"
+  ],
+  "document_changes": [
+    {
+      "path": "README.md",
+      "before_sha256": "4130f06612ca58ac03f10c96f5b1c935ea77db72f503dc1bee5c16a4a75e0c02",
+      "after_sha256": "26d084bf59bcc3e10ebe4c7db0b2111f223e0c6ebdf23cebf7f91f95ac4f745a",
+      "deleted_or_replaced_lines": 0,
+      "inserted_lines": 10,
+      "before_bytes_reconstructed_in_order": true
+    },
+    {
+      "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+      "before_sha256": "6520430638d01126bd89737cd89059d6de7389d99104792816625afc519b818e",
+      "after_sha256": "9740d9cadc3d1254c571898960db78c7c001edfb8d185d67933108924611ceaf",
+      "deleted_or_replaced_lines": 0,
+      "inserted_lines": 24,
+      "before_bytes_reconstructed_in_order": true
+    },
+    {
+      "path": "docs/qa/REMAINING-WORK.md",
+      "before_sha256": "591ff03f8534371f24227ab9bf05e0d9670fd4ced2398fb9a19c2214db34f698",
+      "after_sha256": "35f9d803e8a00372091cc6ea5ff51a81b363d5e1ff4e471c67bd1e5706ee5ac3",
+      "deleted_or_replaced_lines": 0,
+      "inserted_lines": 11,
+      "before_bytes_reconstructed_in_order": true
+    }
+  ],
+  "added_local_link_count": 27,
+  "missing_added_local_links": [],
+  "immutable_sha256_matches": 544,
+  "registered_sha256_matches": 285,
+  "context_receipt_and_payload_matches": 58,
+  "frozen_existing_paths": 675,
+  "source_test_claim_consistency": "57 tests/24.683s log; 214 sources before/after/current identical; six changed since S819",
+  "media_claim_consistency": "Actual ffprobe/FFmpeg decode corroborates declared 3-second MP4 and one Korean subtitle; browser receipts are consistent, not rerun by auditor",
+  "proposal": {
+    "sha256": "d0b340899f73fbfc9bdc43eae649b1b4609b0e932dcbace0a8385fb779791d68",
+    "sources": 13,
+    "links": 26,
+    "classifications": 4,
+    "current_contexts": 6,
+    "destinations_created": 0,
+    "executed": false
+  },
+  "gate": {
+    "command": [
+      "python3",
+      "/Users/leesungmin/.agents/skills/document-completion-gate/check.py",
+      "--root",
+      "/Users/leesungmin/Desktop/Loretune"
+    ],
+    "exit_code": 1,
+    "stderr": "",
+    "status": "blocked",
+    "evidence_sha256": "2aedc4dcbed582458e708e05e1eb32f7bd17252a642394cf3b235c49392753a7",
+    "findings": {
+      "REGISTERED_SOURCE_OUTDATED": 26,
+      "UNCLASSIFIED_DOCUMENT": 4
+    },
+    "warnings": {
+      "CONTEXT_STALE": 52
+    }
+  },
+  "limitations": [
+    "Two historical QA JSON T0 bytes and unknown preT0 history remain unresolved.",
+    "No private/external/provider accesses; no registration, promotion, context regeneration, or MD changes.",
+    "Standard local link destinations in added text verified; external pages and heading anchors not checked.",
+    "Browser receipt consistency is not an independent live browser replay, visual review, or real-user acceptance.",
+    "57 tests were not rerun during this document audit; their retained log and exact current source provenance were checked.",
+    "Full819 baseline not represented as current regression."
+  ],
+  "fablize_narrow_verification": "This verifier directly checked preservation, source/log provenance, actual media decode, proposal scope and the read-only document gate.",
+  "observer_correction": "observer-correction.json",
+  "failed_first_attempt_preserved": "attempt-1/"
+}

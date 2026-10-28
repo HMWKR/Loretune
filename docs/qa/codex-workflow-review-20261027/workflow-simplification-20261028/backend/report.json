@@ -1,0 +1,108 @@
+{
+  "status": "REPORTED",
+  "task": "UX-IMPORT-06",
+  "python": "3.15.0",
+  "source_frozen": true,
+  "writes": {
+    "scene_assets.py": "00137112cc48da1def1fb9974c8c6b07dc45f6b318ab5198a163402fa0f606bd",
+    "tests/test_scene_asset_diagnostics.py": "8ef0d4c6171f9fd0bb9af7e2bac674badf3db2bf8668d5310154558dd2c35ff6",
+    "tests/test_scene_asset_workflow.py": "a680370a5c8a596d19a6ab6f8804b355a552afbc7fd2ec41ceaf9d8aaa2accc8"
+  },
+  "scope": "Only resource complexity diagnostics; validation bounds and original color admission unchanged",
+  "guard_expressions_equal": true,
+  "guard_count": 25,
+  "commands": [
+    {
+      "invocation": "python3 -m unittest tests.test_scene_asset_diagnostics -v",
+      "exit": 1,
+      "artifact": "diagnostics-before.log",
+      "observable": "4 tests, 8 expected failing subcases before fix"
+    },
+    {
+      "invocation": "PYTHONPATH=.:tests python3 -m unittest tests.test_scene_asset_diagnostics tests.test_scene_assets tests.test_scene_vertex_colors tests.test_scene_asset_workflow -v",
+      "exit": 0,
+      "artifact": "narrow-tests.log",
+      "observable": "42 tests passed before HTTP regression case addition"
+    },
+    {
+      "invocation": "PYTHONPATH=.:tests python3 -m unittest tests.test_scene_asset_diagnostics tests.test_scene_assets tests.test_scene_vertex_colors tests.test_scene_asset_workflow -v",
+      "exit": 0,
+      "artifact": "narrow-tests-final.log",
+      "observable": "43 tests passed, zero skips"
+    },
+    {
+      "invocation": "python3 .omo/evidence/workflow-simplification-20261028/backend/http_probe.py",
+      "exit": 0,
+      "artifact": "http-probe.log",
+      "observable": "7 actual HTTP requests; valid color import200, malformed and complexity400; selected take and all compared state/media unchanged"
+    }
+  ],
+  "criteria": [
+    {
+      "scenario": "count type and positive overflow classification",
+      "observable": "9 malformed cases generic, 3 positive overflow cases constructive complexity message",
+      "artifact": "narrow-tests-final.log"
+    },
+    {
+      "scenario": "scalar exact boundary and overflow; mesh and instance vertex/triangle aggregate overflows",
+      "observable": "900000 scalar boundary accepted by accessor decoder; overflow rejected with shared message; all 4 aggregate combinations rejected",
+      "artifact": "narrow-tests-final.log"
+    },
+    {
+      "scenario": "existing vertex/triangle maximum boundary, colors, security and workflow regression",
+      "observable": "43 scoped test methods pass; original limits preserved",
+      "artifact": "narrow-tests-final.log"
+    },
+    {
+      "scenario": "actual 5.2MB original rejected without mutation",
+      "observable": {
+        "case": "resource-overflow",
+        "input_sha256": "b21a787c86346ff3a3f090beb32e41e5dc0a2a120fe5cd106de1512dc617b937",
+        "input_bytes": 5189600,
+        "status": 400,
+        "error": "입력을 확인하세요: GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.",
+        "projects_revision_assets_selection_equal": true
+      },
+      "artifact": "http-result.json"
+    },
+    {
+      "scenario": "actual normal original color import",
+      "observable": {
+        "path": ".omo/evidence/triposr-cpu-artifact-20261028/chair-attempt-1/chair-resolution256-original.glb",
+        "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+        "metadata": {
+          "profile": "gltf2-static-pbr-color-v2",
+          "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+          "byte_length": 1686596,
+          "vertex_count": 42186,
+          "triangle_count": 84216,
+          "image_count": 0,
+          "node_count": 2
+        },
+        "saved_original_bytes_equal": true
+      },
+      "artifact": "http-result.json"
+    },
+    {
+      "scenario": "actual malformed request with current selection",
+      "observable": {
+        "case": "malformed-count",
+        "input_sha256": "27d6f20edde64bc6afbd38b84e1451e4fd516f3cf12f993fb57382e76a079464",
+        "input_bytes": 1686592,
+        "status": 400,
+        "error": "입력을 확인하세요: 지원하지 않거나 손상된 GLB 모델입니다.",
+        "projects_revision_assets_selection_equal": true
+      },
+      "artifact": "http-result.json"
+    }
+  ],
+  "limitations": [
+    "No full suite run here; root owns final integration freeze run.",
+    "No browser/UI/model generation/native Blender rendering claimed by this subtask.",
+    "Workflow unit fixtures use renderer configuration mocks; standalone actual HTTP probe uses app.server without renderer/provider configuration and no transport mocking.",
+    "Read-only ULW status failed127 because bun and node fallback were absent; lifecycle not repaired; see before.json.",
+    "Rejected overflow sample is not asserted otherwise valid or undamaged.",
+    "Root independent acceptance pending; REPORTED is not whole-platform completion."
+  ],
+  "evidence_directory": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/workflow-simplification-20261028/backend"
+}

@@ -1,0 +1,2688 @@
+{
+  "recorded_at": "2026-10-28T00:29:27.253392+00:00",
+  "origin": "http://127.0.0.1:60130",
+  "folder": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl",
+  "fixtures": "self-authored synthetic music/photo/video; no real creator media",
+  "actual_provider_calls": 0,
+  "configured_model": null,
+  "worker_helper": "app.start_workers",
+  "worker_count": 2,
+  "trace": [
+    {
+      "action": "project",
+      "request_id": "3915aabf24514cd1a8774443bb3a2d98",
+      "revision": 0,
+      "http_status": 200,
+      "elapsed": 0.001414500002283603,
+      "result": {
+        "revision": 1
+      }
+    },
+    {
+      "action": "audio",
+      "request_id": "c9ec5855df9e42e19fb5da2862e6b266",
+      "revision": 1,
+      "http_status": 200,
+      "elapsed": 0.12919383397093043,
+      "result": {
+        "revision": 2
+      }
+    },
+    {
+      "action": "shot",
+      "request_id": "c5d5c1ea0a2f41dd98c6eb7f6693b224",
+      "revision": 2,
+      "http_status": 200,
+      "elapsed": 0.002050583017989993,
+      "result": {
+        "revision": 3
+      }
+    },
+    {
+      "action": "take",
+      "request_id": "12cd66fec3414a80a6fc54151d8eab17",
+      "revision": 3,
+      "http_status": 200,
+      "elapsed": 0.06538445898331702,
+      "result": {
+        "revision": 4
+      }
+    },
+    {
+      "action": "take",
+      "request_id": "1651a3eba2b04956a92e7e81962bb4c5",
+      "revision": 4,
+      "http_status": 200,
+      "elapsed": 0.06862583395559341,
+      "result": {
+        "revision": 5
+      }
+    },
+    {
+      "action": "select",
+      "request_id": "264b6070077545c89af9ce87fe894710",
+      "revision": 5,
+      "http_status": 200,
+      "elapsed": 0.0011865840060636401,
+      "result": {
+        "revision": 6
+      }
+    },
+    {
+      "action": "motion_propose",
+      "request_id": "55c6bc2f6e8348a5856b41024683a8f0",
+      "revision": 6,
+      "http_status": 200,
+      "elapsed": 0.001568333012983203,
+      "result": {
+        "motion": {
+          "status": "proposed",
+          "proposal_id": "4e6391b383ea4110bcc9a80e35dc3ae2",
+          "shot_id": "3b0a8e855eff5c13be87b2857abeff1a",
+          "base_revision": 0,
+          "scene": {
+            "schema_version": 1,
+            "width": 1920,
+            "height": 1080,
+            "fps": 24,
+            "frame_count": 96,
+            "background": "#101010",
+            "layers": [
+              {
+                "id": "title",
+                "kind": "text",
+                "text": "음악 위에\n겹치는 타이포",
+                "font": "system-ko-regular",
+                "font_size": 80,
+                "width": 1500,
+                "height": 240,
+                "color": "#F4F4F2",
+                "in_frame": 0,
+                "out_frame": 96,
+                "keyframes": [
+                  {
+                    "frame": 0,
+                    "x": 160,
+                    "y": 160,
+                    "opacity": 0.5,
+                    "easing": "linear"
+                  },
+                  {
+                    "frame": 72,
+                    "x": 240,
+                    "y": 160,
+                    "opacity": 0.8,
+                    "easing": "linear"
+                  }
+                ]
+              },
+              {
+                "id": "bar",
+                "kind": "rect",
+                "text": "",
+                "font": "system-ko-regular",
+                "font_size": 80,
+                "width": 600,
+                "height": 100,
+                "color": "#A7C7FF",
+                "in_frame": 0,
+                "out_frame": 96,
+                "keyframes": [
+                  {
+                    "frame": 0,
+                    "x": 160,
+                    "y": 700,
+                    "opacity": 1,
+                    "easing": "linear"
+                  }
+                ]
+              }
+            ]
+          },
+          "applied": false,
+          "rendered": false
+        },
+        "revision": 7
+      }
+    },
+    {
+      "action": "motion_review",
+      "request_id": "5f41f0e0fd5946469542d9a5b4dae4ee",
+      "revision": 7,
+      "http_status": 200,
+      "elapsed": 1.7677965000038967,
+      "result": {
+        "motion": {
+          "applied": true,
+          "revision": 1
+        },
+        "revision": 8
+      }
+    },
+    {
+      "action": "timeline",
+      "request_id": "31e8ddb1f0ab489ea5fd9b7b9331054a",
+      "revision": 8,
+      "http_status": 200,
+      "elapsed": 0.0017382500227540731,
+      "result": {
+        "revision": 9
+      }
+    },
+    {
+      "action": "saved-frame-preview",
+      "timeline_revision": 1,
+      "clip_index": 0,
+      "frame": 18,
+      "http_status": 200,
+      "bytes": 315519,
+      "elapsed": 2.293108625046443,
+      "sha256": "fe7e092255a9f6f83122cde315b33c1263d10ad540bdc3976ac8aaec29fc400e"
+    },
+    {
+      "action": "review_take",
+      "request_id": "310cb160467f40a38a7055727da68e9e",
+      "revision": 9,
+      "http_status": 200,
+      "elapsed": 0.0016264579608105123,
+      "result": {
+        "revision": 10
+      }
+    },
+    {
+      "action": "review_take",
+      "request_id": "bf26f4178aad427a902c1c44cde72de4",
+      "revision": 10,
+      "http_status": 200,
+      "elapsed": 0.0014151670038700104,
+      "result": {
+        "revision": 11
+      }
+    },
+    {
+      "action": "approve_timeline",
+      "request_id": "0976f4691eaa4aa6af0fd254a2a3b95b",
+      "revision": 11,
+      "http_status": 200,
+      "elapsed": 0.06222529103979468,
+      "result": {
+        "revision": 12
+      }
+    },
+    {
+      "action": "estimate_render",
+      "request_id": "d425b2449f72432a801f45cf15d18ecb",
+      "revision": 12,
+      "http_status": 200,
+      "elapsed": 0.06309416599106044,
+      "result": {
+        "estimate": "a6b9525b92924c64ac031649200bc8fa",
+        "revision": 13
+      }
+    },
+    {
+      "action": "render_job",
+      "request_id": "de81c77eb8194a6b8928fe32d8497aea",
+      "revision": 13,
+      "http_status": 200,
+      "elapsed": 0.06438783300109208,
+      "result": {
+        "job": "103487b542d844af817b54d9a06278fe",
+        "revision": 14
+      }
+    },
+    {
+      "action": "timeline",
+      "request_id": "2119e0b98c8a4ed3bf9096cc9e6856f9",
+      "revision": 14,
+      "http_status": 200,
+      "elapsed": 0.002400583995040506,
+      "result": {
+        "revision": 15
+      }
+    },
+    {
+      "action": "render_job",
+      "request_id": "9ec8d6a8088e4ce7ac868d16362d9733",
+      "revision": 15,
+      "http_status": 400,
+      "elapsed": 0.0010540829971432686,
+      "result": {
+        "error": "입력을 확인하세요: 저장한 타임라인을 승인한 후 출력하세요."
+      }
+    },
+    {
+      "action": "saved-frame-preview",
+      "timeline_revision": 2,
+      "clip_index": 0,
+      "frame": 18,
+      "http_status": 200,
+      "bytes": 306969,
+      "elapsed": 2.547122332965955,
+      "sha256": "8c788ccf8527ea32c6d554a18dd1875205f0ce32de92c583c0e28ad9fa38ddd3"
+    },
+    {
+      "action": "approve_timeline",
+      "request_id": "8eb6f686c8354291b090df22184e7bef",
+      "revision": 15,
+      "http_status": 200,
+      "elapsed": 0.07266787497792393,
+      "result": {
+        "revision": 16
+      }
+    },
+    {
+      "action": "render_job",
+      "request_id": "46d60fa2e3284be58354240ea3d64a95",
+      "revision": 16,
+      "http_status": 200,
+      "elapsed": 0.06408708303933963,
+      "result": {
+        "job": "48affb5d27d840eb8827bd3f351c467f",
+        "revision": 17
+      }
+    }
+  ],
+  "first_job": {
+    "id": "103487b542d844af817b54d9a06278fe",
+    "revision": 6,
+    "song": "actual overlay",
+    "status": "completed",
+    "progress": 100,
+    "created": 1793147354.975878,
+    "cancel_requested": false,
+    "snapshot": {
+      "name": "actual overlay",
+      "ip": "default",
+      "snapshot": [],
+      "shots": {
+        "0": {
+          "description": "synthetic photograph/video background",
+          "takes": [
+            {
+              "id": 1,
+              "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1.png",
+              "sha256": "4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1",
+              "reason": "direct synthetic media",
+              "metadata": {
+                "duration": 0.0,
+                "codec": "png",
+                "width": 640,
+                "height": 360,
+                "sample_rate": null,
+                "channels": null
+              },
+              "rights": "directly authored fixture",
+              "filename": "blue.png",
+              "reference_version_at_upload": null,
+              "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+            },
+            {
+              "id": 2,
+              "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e.mp4",
+              "sha256": "325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e",
+              "reason": "direct synthetic media",
+              "metadata": {
+                "duration": 3.0,
+                "codec": "h264",
+                "width": 640,
+                "height": 360,
+                "sample_rate": null,
+                "channels": null
+              },
+              "rights": "directly authored fixture",
+              "filename": "video.mp4",
+              "reference_version_at_upload": null,
+              "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+            }
+          ],
+          "selected": 2,
+          "revision": 5,
+          "motion_versions": [
+            {
+              "id": 1,
+              "scene": {
+                "schema_version": 1,
+                "width": 1920,
+                "height": 1080,
+                "fps": 24,
+                "frame_count": 96,
+                "background": "#101010",
+                "layers": [
+                  {
+                    "id": "title",
+                    "kind": "text",
+                    "text": "음악 위에\n겹치는 타이포",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 1500,
+                    "height": 240,
+                    "color": "#F4F4F2",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 160,
+                        "opacity": 0.5,
+                        "easing": "linear"
+                      },
+                      {
+                        "frame": 72,
+                        "x": 240,
+                        "y": 160,
+                        "opacity": 0.8,
+                        "easing": "linear"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bar",
+                    "kind": "rect",
+                    "text": "",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 600,
+                    "height": 100,
+                    "color": "#A7C7FF",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 700,
+                        "opacity": 1,
+                        "easing": "linear"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+              "source": {
+                "actor": "local-owner",
+                "mode": "human-edit",
+                "restored_from": null
+              },
+              "context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+              "font": {
+                "backend": "aethon-coretext-v1",
+                "font": "AppleSDGothicNeo-Regular",
+                "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+                "source_sha256": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+                "os": "26.5.1",
+                "color_space": "sRGB"
+              },
+              "created": 1793147352.44707,
+              "approval": {
+                "id": "083d803b5c4a439796e85d08d97cd705",
+                "actor": "local-owner",
+                "scope": "local-motion-candidate",
+                "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d"
+              }
+            }
+          ],
+          "motion_head": 1,
+          "reviews": [
+            {
+              "take": 1,
+              "decision": "approved",
+              "reason": "synthetic media checked",
+              "actor": "local-owner",
+              "at": 1793147354.769429
+            },
+            {
+              "take": 2,
+              "decision": "approved",
+              "reason": "synthetic media checked",
+              "actor": "local-owner",
+              "at": 1793147354.774691
+            }
+          ],
+          "duration": 1.5,
+          "trim": 0,
+          "motion_overlay": {
+            "shot": "base",
+            "motion_revision": 1,
+            "start": 0.25,
+            "end": 1.25,
+            "offset_x": 0,
+            "offset_y": 0,
+            "motion": {
+              "id": 1,
+              "scene": {
+                "schema_version": 1,
+                "width": 1920,
+                "height": 1080,
+                "fps": 24,
+                "frame_count": 96,
+                "background": "#101010",
+                "layers": [
+                  {
+                    "id": "title",
+                    "kind": "text",
+                    "text": "음악 위에\n겹치는 타이포",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 1500,
+                    "height": 240,
+                    "color": "#F4F4F2",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 160,
+                        "opacity": 0.5,
+                        "easing": "linear"
+                      },
+                      {
+                        "frame": 72,
+                        "x": 240,
+                        "y": 160,
+                        "opacity": 0.8,
+                        "easing": "linear"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bar",
+                    "kind": "rect",
+                    "text": "",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 600,
+                    "height": 100,
+                    "color": "#A7C7FF",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 700,
+                        "opacity": 1,
+                        "easing": "linear"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+              "source": {
+                "actor": "local-owner",
+                "mode": "human-edit",
+                "restored_from": null
+              },
+              "context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+              "font": {
+                "backend": "aethon-coretext-v1",
+                "font": "AppleSDGothicNeo-Regular",
+                "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+                "source_sha256": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+                "os": "26.5.1",
+                "color_space": "sRGB"
+              },
+              "created": 1793147352.44707,
+              "approval": {
+                "id": "083d803b5c4a439796e85d08d97cd705",
+                "actor": "local-owner",
+                "scope": "local-motion-candidate",
+                "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d"
+              }
+            }
+          }
+        },
+        "1": {
+          "description": "synthetic photograph/video background",
+          "takes": [
+            {
+              "id": 1,
+              "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1.png",
+              "sha256": "4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1",
+              "reason": "direct synthetic media",
+              "metadata": {
+                "duration": 0.0,
+                "codec": "png",
+                "width": 640,
+                "height": 360,
+                "sample_rate": null,
+                "channels": null
+              },
+              "rights": "directly authored fixture",
+              "filename": "blue.png",
+              "reference_version_at_upload": null,
+              "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+            },
+            {
+              "id": 2,
+              "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e.mp4",
+              "sha256": "325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e",
+              "reason": "direct synthetic media",
+              "metadata": {
+                "duration": 3.0,
+                "codec": "h264",
+                "width": 640,
+                "height": 360,
+                "sample_rate": null,
+                "channels": null
+              },
+              "rights": "directly authored fixture",
+              "filename": "video.mp4",
+              "reference_version_at_upload": null,
+              "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+            }
+          ],
+          "selected": 1,
+          "revision": 5,
+          "motion_versions": [
+            {
+              "id": 1,
+              "scene": {
+                "schema_version": 1,
+                "width": 1920,
+                "height": 1080,
+                "fps": 24,
+                "frame_count": 96,
+                "background": "#101010",
+                "layers": [
+                  {
+                    "id": "title",
+                    "kind": "text",
+                    "text": "음악 위에\n겹치는 타이포",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 1500,
+                    "height": 240,
+                    "color": "#F4F4F2",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 160,
+                        "opacity": 0.5,
+                        "easing": "linear"
+                      },
+                      {
+                        "frame": 72,
+                        "x": 240,
+                        "y": 160,
+                        "opacity": 0.8,
+                        "easing": "linear"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bar",
+                    "kind": "rect",
+                    "text": "",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 600,
+                    "height": 100,
+                    "color": "#A7C7FF",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 700,
+                        "opacity": 1,
+                        "easing": "linear"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+              "source": {
+                "actor": "local-owner",
+                "mode": "human-edit",
+                "restored_from": null
+              },
+              "context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+              "font": {
+                "backend": "aethon-coretext-v1",
+                "font": "AppleSDGothicNeo-Regular",
+                "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+                "source_sha256": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+                "os": "26.5.1",
+                "color_space": "sRGB"
+              },
+              "created": 1793147352.44707,
+              "approval": {
+                "id": "083d803b5c4a439796e85d08d97cd705",
+                "actor": "local-owner",
+                "scope": "local-motion-candidate",
+                "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d"
+              }
+            }
+          ],
+          "motion_head": 1,
+          "reviews": [
+            {
+              "take": 1,
+              "decision": "approved",
+              "reason": "synthetic media checked",
+              "actor": "local-owner",
+              "at": 1793147354.769429
+            },
+            {
+              "take": 2,
+              "decision": "approved",
+              "reason": "synthetic media checked",
+              "actor": "local-owner",
+              "at": 1793147354.774691
+            }
+          ],
+          "duration": 1.5,
+          "trim": 0,
+          "motion_overlay": {
+            "shot": "base",
+            "motion_revision": 1,
+            "start": 0.25,
+            "end": 1.25,
+            "offset_x": 320,
+            "offset_y": 0,
+            "motion": {
+              "id": 1,
+              "scene": {
+                "schema_version": 1,
+                "width": 1920,
+                "height": 1080,
+                "fps": 24,
+                "frame_count": 96,
+                "background": "#101010",
+                "layers": [
+                  {
+                    "id": "title",
+                    "kind": "text",
+                    "text": "음악 위에\n겹치는 타이포",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 1500,
+                    "height": 240,
+                    "color": "#F4F4F2",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 160,
+                        "opacity": 0.5,
+                        "easing": "linear"
+                      },
+                      {
+                        "frame": 72,
+                        "x": 240,
+                        "y": 160,
+                        "opacity": 0.8,
+                        "easing": "linear"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bar",
+                    "kind": "rect",
+                    "text": "",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 600,
+                    "height": 100,
+                    "color": "#A7C7FF",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 700,
+                        "opacity": 1,
+                        "easing": "linear"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+              "source": {
+                "actor": "local-owner",
+                "mode": "human-edit",
+                "restored_from": null
+              },
+              "context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+              "font": {
+                "backend": "aethon-coretext-v1",
+                "font": "AppleSDGothicNeo-Regular",
+                "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+                "source_sha256": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+                "os": "26.5.1",
+                "color_space": "sRGB"
+              },
+              "created": 1793147352.44707,
+              "approval": {
+                "id": "083d803b5c4a439796e85d08d97cd705",
+                "actor": "local-owner",
+                "scope": "local-motion-candidate",
+                "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d"
+              }
+            }
+          }
+        }
+      },
+      "revision": 6,
+      "profile": "landscape",
+      "audio_versions": [
+        {
+          "id": 1,
+          "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6.wav",
+          "sha256": "1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6",
+          "filename": "music.wav",
+          "metadata": {
+            "duration": 5.0,
+            "codec": "pcm_s16le",
+            "width": null,
+            "height": null,
+            "sample_rate": "48000",
+            "channels": 1,
+            "waveform": {
+              "status": "measured",
+              "source": "decoded-pcm-8khz-mono",
+              "duration": 5.0,
+              "peaks": [
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125
+              ],
+              "rms": 0.08837,
+              "quiet": false,
+              "note": "최대 첫 600초의 간이 진폭 표시. 비트·BPM·구간 분석이 아닙니다."
+            }
+          },
+          "rights": "directly authored 440Hz fixture"
+        }
+      ],
+      "audio_selected": 1,
+      "audio_offset": 0,
+      "timeline_versions": [
+        {
+          "clips": [
+            {
+              "shot": "base",
+              "take": 2,
+              "duration": 1.5,
+              "trim": 0,
+              "motion_overlay": {
+                "shot": "base",
+                "motion_revision": 1,
+                "start": 0.25,
+                "end": 1.25,
+                "offset_x": 0,
+                "offset_y": 0
+              }
+            },
+            {
+              "shot": "base",
+              "take": 1,
+              "duration": 1.5,
+              "trim": 0,
+              "motion_overlay": {
+                "shot": "base",
+                "motion_revision": 1,
+                "start": 0.25,
+                "end": 1.25,
+                "offset_x": 320,
+                "offset_y": 0
+              }
+            }
+          ],
+          "audio": 1,
+          "audio_offset": 0,
+          "subtitles": [
+            {
+              "start": 0.2,
+              "end": 2.8,
+              "text": "음원 · 영상 · 사진 · 한글 타이포"
+            }
+          ],
+          "profile": "landscape",
+          "id": 1,
+          "approval": {
+            "id": "5726d8790a35479ebda09622b66bf685",
+            "actor": "local-owner",
+            "at": 1793147354.840406,
+            "execution_scope": "local-render",
+            "timeline_version": 1,
+            "scope": "로컬 단일 사용자 승인; 조직 권한 검증 아님",
+            "selected_take_snapshot": {
+              "base": 2
+            },
+            "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+          }
+        }
+      ],
+      "timeline_head": 1,
+      "subtitles": [
+        {
+          "start": 0.2,
+          "end": 2.8,
+          "text": "음원 · 영상 · 사진 · 한글 타이포"
+        }
+      ],
+      "comments": [],
+      "conversation_owners": {
+        "4e6391b383ea4110bcc9a80e35dc3ae2": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "motion_proposals"
+        },
+        "083d803b5c4a439796e85d08d97cd705": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "motion_grants"
+        },
+        "5726d8790a35479ebda09622b66bf685": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "timeline_grants"
+        },
+        "a6b9525b92924c64ac031649200bc8fa": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "render_estimates"
+        }
+      },
+      "chat_sessions": [
+        {
+          "id": "0df5211b57305e279fcaefc3dcaaa346",
+          "title": "기존 대화",
+          "revision": 12,
+          "chat_selection": null,
+          "model_revision": 0
+        }
+      ],
+      "motion_proposals": [
+        {
+          "id": "4e6391b383ea4110bcc9a80e35dc3ae2",
+          "shot": "base",
+          "shot_id": "3b0a8e855eff5c13be87b2857abeff1a",
+          "base_revision": 0,
+          "base_context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+          "scene": {
+            "schema_version": 1,
+            "width": 1920,
+            "height": 1080,
+            "fps": 24,
+            "frame_count": 96,
+            "background": "#101010",
+            "layers": [
+              {
+                "id": "title",
+                "kind": "text",
+                "text": "음악 위에\n겹치는 타이포",
+                "font": "system-ko-regular",
+                "font_size": 80,
+                "width": 1500,
+                "height": 240,
+                "color": "#F4F4F2",
+                "in_frame": 0,
+                "out_frame": 96,
+                "keyframes": [
+                  {
+                    "frame": 0,
+                    "x": 160,
+                    "y": 160,
+                    "opacity": 0.5,
+                    "easing": "linear"
+                  },
+                  {
+                    "frame": 72,
+                    "x": 240,
+                    "y": 160,
+                    "opacity": 0.8,
+                    "easing": "linear"
+                  }
+                ]
+              },
+              {
+                "id": "bar",
+                "kind": "rect",
+                "text": "",
+                "font": "system-ko-regular",
+                "font_size": 80,
+                "width": 600,
+                "height": 100,
+                "color": "#A7C7FF",
+                "in_frame": 0,
+                "out_frame": 96,
+                "keyframes": [
+                  {
+                    "frame": 0,
+                    "x": 160,
+                    "y": 700,
+                    "opacity": 1,
+                    "easing": "linear"
+                  }
+                ]
+              }
+            ]
+          },
+          "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+          "status": "applied",
+          "source": {
+            "actor": "local-owner",
+            "mode": "human-edit",
+            "restored_from": null
+          },
+          "created": 1793147350.676726,
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "applied_revision": 1,
+          "reviews": [
+            {
+              "actor": "local-owner",
+              "decision": "approved",
+              "at": 1793147352.447108
+            }
+          ]
+        }
+      ],
+      "render_estimates": [
+        {
+          "id": "a6b9525b92924c64ac031649200bc8fa",
+          "created": 1793147354.907326,
+          "expires": 1793147654.907326,
+          "fingerprint": "c332ff8fb05de6620cf042bdcdec8d7721e81f3646b60df9b60e60d62f29f116",
+          "timeline_version": 1,
+          "clips": 2,
+          "duration": 3.0,
+          "resolution": [
+            1920,
+            1080
+          ],
+          "audio_version": 1,
+          "audio_start": 0,
+          "audio_end": 3.0,
+          "subtitles": 1,
+          "provider_calls": 0,
+          "provider_cost": 0,
+          "local_compute": null,
+          "scope": "로컬 FFmpeg 합성만; 외부 전송 없음. AI 생성 견적·예산 예약·청구가 아닙니다.",
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+        }
+      ],
+      "_conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+      "audio": {
+        "id": 1,
+        "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6.wav",
+        "sha256": "1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6",
+        "filename": "music.wav",
+        "metadata": {
+          "duration": 5.0,
+          "codec": "pcm_s16le",
+          "width": null,
+          "height": null,
+          "sample_rate": "48000",
+          "channels": 1,
+          "waveform": {
+            "status": "measured",
+            "source": "decoded-pcm-8khz-mono",
+            "duration": 5.0,
+            "peaks": [
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125
+            ],
+            "rms": 0.08837,
+            "quiet": false,
+            "note": "최대 첫 600초의 간이 진폭 표시. 비트·BPM·구간 분석이 아닙니다."
+          }
+        },
+        "rights": "directly authored 440Hz fixture"
+      },
+      "frame_timing": {
+        "fps": 24,
+        "policy": "nearest-internal-ceil-final",
+        "requested_duration": 3.0,
+        "duration": 3.0,
+        "clips": [
+          {
+            "start_frame": 0,
+            "end_frame": 36,
+            "frames": 36,
+            "start": 0.0,
+            "end": 1.5
+          },
+          {
+            "start_frame": 36,
+            "end_frame": 72,
+            "frames": 36,
+            "start": 1.5,
+            "end": 3.0
+          }
+        ]
+      },
+      "timeline": {
+        "clips": [
+          {
+            "shot": "base",
+            "take": 2,
+            "duration": 1.5,
+            "trim": 0,
+            "motion_overlay": {
+              "shot": "base",
+              "motion_revision": 1,
+              "start": 0.25,
+              "end": 1.25,
+              "offset_x": 0,
+              "offset_y": 0
+            }
+          },
+          {
+            "shot": "base",
+            "take": 1,
+            "duration": 1.5,
+            "trim": 0,
+            "motion_overlay": {
+              "shot": "base",
+              "motion_revision": 1,
+              "start": 0.25,
+              "end": 1.25,
+              "offset_x": 320,
+              "offset_y": 0
+            }
+          }
+        ],
+        "audio": 1,
+        "audio_offset": 0,
+        "subtitles": [
+          {
+            "start": 0.2,
+            "end": 2.8,
+            "text": "음원 · 영상 · 사진 · 한글 타이포"
+          }
+        ],
+        "profile": "landscape",
+        "id": 1,
+        "approval": {
+          "id": "5726d8790a35479ebda09622b66bf685",
+          "actor": "local-owner",
+          "at": 1793147354.840406,
+          "execution_scope": "local-render",
+          "timeline_version": 1,
+          "scope": "로컬 단일 사용자 승인; 조직 권한 검증 아님",
+          "selected_take_snapshot": {
+            "base": 2
+          },
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+        }
+      }
+    },
+    "download": "/exports/103487b542d844af817b54d9a06278fe.mp4",
+    "error": null,
+    "cost": {
+      "provider_calls": 0,
+      "provider_cost": 0,
+      "local_compute": "미계측",
+      "kind": "render-only"
+    },
+    "estimate": {
+      "id": "a6b9525b92924c64ac031649200bc8fa",
+      "created": 1793147354.907326,
+      "expires": 1793147654.907326,
+      "fingerprint": "c332ff8fb05de6620cf042bdcdec8d7721e81f3646b60df9b60e60d62f29f116",
+      "timeline_version": 1,
+      "clips": 2,
+      "duration": 3.0,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "audio_version": 1,
+      "audio_start": 0,
+      "audio_end": 3.0,
+      "subtitles": 1,
+      "provider_calls": 0,
+      "provider_cost": 0,
+      "local_compute": null,
+      "scope": "로컬 FFmpeg 합성만; 외부 전송 없음. AI 생성 견적·예산 예약·청구가 아닙니다.",
+      "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+    },
+    "started": 1793147354.993792,
+    "sha256": "2a098f91c1dfb801ecbcebe8a798cbea1c04cd58de9f76740ee64966923a0e38",
+    "sidecar_sha256": {
+      ".srt": "5abbac0411f1077c7422c135308eab3e4b85aaffde5f158de0bd90f0de94028f",
+      ".json": "dc45141be79abc8b7f9007ddf54b4ec98885448cfccc259db9dc674f714c959a"
+    },
+    "verified": {
+      "duration": 3.0,
+      "width": 1920,
+      "height": 1080,
+      "frame_rate": "24/1",
+      "audio_sample_rate": "48000",
+      "frame_timing": {
+        "fps": 24,
+        "policy": "nearest-internal-ceil-final",
+        "requested_duration": 3.0,
+        "duration": 3.0,
+        "clips": [
+          {
+            "start_frame": 0,
+            "end_frame": 36,
+            "frames": 36,
+            "start": 0.0,
+            "end": 1.5
+          },
+          {
+            "start_frame": 36,
+            "end_frame": 72,
+            "frames": 36,
+            "start": 1.5,
+            "end": 3.0
+          }
+        ]
+      },
+      "streams": [
+        "video",
+        "audio",
+        "subtitle"
+      ],
+      "verified_at": 1793147359.299338
+    },
+    "finished": 1793147359.303591
+  },
+  "second_job": {
+    "id": "48affb5d27d840eb8827bd3f351c467f",
+    "revision": 6,
+    "song": "actual overlay",
+    "status": "completed",
+    "progress": 100,
+    "created": 1793147362.022573,
+    "cancel_requested": false,
+    "snapshot": {
+      "name": "actual overlay",
+      "ip": "default",
+      "snapshot": [],
+      "shots": {
+        "0": {
+          "description": "synthetic photograph/video background",
+          "takes": [
+            {
+              "id": 1,
+              "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1.png",
+              "sha256": "4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1",
+              "reason": "direct synthetic media",
+              "metadata": {
+                "duration": 0.0,
+                "codec": "png",
+                "width": 640,
+                "height": 360,
+                "sample_rate": null,
+                "channels": null
+              },
+              "rights": "directly authored fixture",
+              "filename": "blue.png",
+              "reference_version_at_upload": null,
+              "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+            },
+            {
+              "id": 2,
+              "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e.mp4",
+              "sha256": "325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e",
+              "reason": "direct synthetic media",
+              "metadata": {
+                "duration": 3.0,
+                "codec": "h264",
+                "width": 640,
+                "height": 360,
+                "sample_rate": null,
+                "channels": null
+              },
+              "rights": "directly authored fixture",
+              "filename": "video.mp4",
+              "reference_version_at_upload": null,
+              "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+            }
+          ],
+          "selected": 2,
+          "revision": 5,
+          "motion_versions": [
+            {
+              "id": 1,
+              "scene": {
+                "schema_version": 1,
+                "width": 1920,
+                "height": 1080,
+                "fps": 24,
+                "frame_count": 96,
+                "background": "#101010",
+                "layers": [
+                  {
+                    "id": "title",
+                    "kind": "text",
+                    "text": "음악 위에\n겹치는 타이포",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 1500,
+                    "height": 240,
+                    "color": "#F4F4F2",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 160,
+                        "opacity": 0.5,
+                        "easing": "linear"
+                      },
+                      {
+                        "frame": 72,
+                        "x": 240,
+                        "y": 160,
+                        "opacity": 0.8,
+                        "easing": "linear"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bar",
+                    "kind": "rect",
+                    "text": "",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 600,
+                    "height": 100,
+                    "color": "#A7C7FF",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 700,
+                        "opacity": 1,
+                        "easing": "linear"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+              "source": {
+                "actor": "local-owner",
+                "mode": "human-edit",
+                "restored_from": null
+              },
+              "context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+              "font": {
+                "backend": "aethon-coretext-v1",
+                "font": "AppleSDGothicNeo-Regular",
+                "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+                "source_sha256": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+                "os": "26.5.1",
+                "color_space": "sRGB"
+              },
+              "created": 1793147352.44707,
+              "approval": {
+                "id": "083d803b5c4a439796e85d08d97cd705",
+                "actor": "local-owner",
+                "scope": "local-motion-candidate",
+                "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d"
+              }
+            }
+          ],
+          "motion_head": 1,
+          "reviews": [
+            {
+              "take": 1,
+              "decision": "approved",
+              "reason": "synthetic media checked",
+              "actor": "local-owner",
+              "at": 1793147354.769429
+            },
+            {
+              "take": 2,
+              "decision": "approved",
+              "reason": "synthetic media checked",
+              "actor": "local-owner",
+              "at": 1793147354.774691
+            }
+          ],
+          "duration": 1.5,
+          "trim": 0,
+          "motion_overlay": {
+            "shot": "base",
+            "motion_revision": 1,
+            "start": 0.5,
+            "end": 1.5,
+            "offset_x": 480,
+            "offset_y": 120,
+            "motion": {
+              "id": 1,
+              "scene": {
+                "schema_version": 1,
+                "width": 1920,
+                "height": 1080,
+                "fps": 24,
+                "frame_count": 96,
+                "background": "#101010",
+                "layers": [
+                  {
+                    "id": "title",
+                    "kind": "text",
+                    "text": "음악 위에\n겹치는 타이포",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 1500,
+                    "height": 240,
+                    "color": "#F4F4F2",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 160,
+                        "opacity": 0.5,
+                        "easing": "linear"
+                      },
+                      {
+                        "frame": 72,
+                        "x": 240,
+                        "y": 160,
+                        "opacity": 0.8,
+                        "easing": "linear"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bar",
+                    "kind": "rect",
+                    "text": "",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 600,
+                    "height": 100,
+                    "color": "#A7C7FF",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 700,
+                        "opacity": 1,
+                        "easing": "linear"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+              "source": {
+                "actor": "local-owner",
+                "mode": "human-edit",
+                "restored_from": null
+              },
+              "context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+              "font": {
+                "backend": "aethon-coretext-v1",
+                "font": "AppleSDGothicNeo-Regular",
+                "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+                "source_sha256": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+                "os": "26.5.1",
+                "color_space": "sRGB"
+              },
+              "created": 1793147352.44707,
+              "approval": {
+                "id": "083d803b5c4a439796e85d08d97cd705",
+                "actor": "local-owner",
+                "scope": "local-motion-candidate",
+                "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d"
+              }
+            }
+          }
+        },
+        "1": {
+          "description": "synthetic photograph/video background",
+          "takes": [
+            {
+              "id": 1,
+              "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1.png",
+              "sha256": "4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1",
+              "reason": "direct synthetic media",
+              "metadata": {
+                "duration": 0.0,
+                "codec": "png",
+                "width": 640,
+                "height": 360,
+                "sample_rate": null,
+                "channels": null
+              },
+              "rights": "directly authored fixture",
+              "filename": "blue.png",
+              "reference_version_at_upload": null,
+              "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+            },
+            {
+              "id": 2,
+              "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e.mp4",
+              "sha256": "325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e",
+              "reason": "direct synthetic media",
+              "metadata": {
+                "duration": 3.0,
+                "codec": "h264",
+                "width": 640,
+                "height": 360,
+                "sample_rate": null,
+                "channels": null
+              },
+              "rights": "directly authored fixture",
+              "filename": "video.mp4",
+              "reference_version_at_upload": null,
+              "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+            }
+          ],
+          "selected": 1,
+          "revision": 5,
+          "motion_versions": [
+            {
+              "id": 1,
+              "scene": {
+                "schema_version": 1,
+                "width": 1920,
+                "height": 1080,
+                "fps": 24,
+                "frame_count": 96,
+                "background": "#101010",
+                "layers": [
+                  {
+                    "id": "title",
+                    "kind": "text",
+                    "text": "음악 위에\n겹치는 타이포",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 1500,
+                    "height": 240,
+                    "color": "#F4F4F2",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 160,
+                        "opacity": 0.5,
+                        "easing": "linear"
+                      },
+                      {
+                        "frame": 72,
+                        "x": 240,
+                        "y": 160,
+                        "opacity": 0.8,
+                        "easing": "linear"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bar",
+                    "kind": "rect",
+                    "text": "",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 600,
+                    "height": 100,
+                    "color": "#A7C7FF",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 700,
+                        "opacity": 1,
+                        "easing": "linear"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+              "source": {
+                "actor": "local-owner",
+                "mode": "human-edit",
+                "restored_from": null
+              },
+              "context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+              "font": {
+                "backend": "aethon-coretext-v1",
+                "font": "AppleSDGothicNeo-Regular",
+                "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+                "source_sha256": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+                "os": "26.5.1",
+                "color_space": "sRGB"
+              },
+              "created": 1793147352.44707,
+              "approval": {
+                "id": "083d803b5c4a439796e85d08d97cd705",
+                "actor": "local-owner",
+                "scope": "local-motion-candidate",
+                "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d"
+              }
+            }
+          ],
+          "motion_head": 1,
+          "reviews": [
+            {
+              "take": 1,
+              "decision": "approved",
+              "reason": "synthetic media checked",
+              "actor": "local-owner",
+              "at": 1793147354.769429
+            },
+            {
+              "take": 2,
+              "decision": "approved",
+              "reason": "synthetic media checked",
+              "actor": "local-owner",
+              "at": 1793147354.774691
+            }
+          ],
+          "duration": 1.5,
+          "trim": 0,
+          "motion_overlay": {
+            "shot": "base",
+            "motion_revision": 1,
+            "start": 0.25,
+            "end": 1.25,
+            "offset_x": 320,
+            "offset_y": 0,
+            "motion": {
+              "id": 1,
+              "scene": {
+                "schema_version": 1,
+                "width": 1920,
+                "height": 1080,
+                "fps": 24,
+                "frame_count": 96,
+                "background": "#101010",
+                "layers": [
+                  {
+                    "id": "title",
+                    "kind": "text",
+                    "text": "음악 위에\n겹치는 타이포",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 1500,
+                    "height": 240,
+                    "color": "#F4F4F2",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 160,
+                        "opacity": 0.5,
+                        "easing": "linear"
+                      },
+                      {
+                        "frame": 72,
+                        "x": 240,
+                        "y": 160,
+                        "opacity": 0.8,
+                        "easing": "linear"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "bar",
+                    "kind": "rect",
+                    "text": "",
+                    "font": "system-ko-regular",
+                    "font_size": 80,
+                    "width": 600,
+                    "height": 100,
+                    "color": "#A7C7FF",
+                    "in_frame": 0,
+                    "out_frame": 96,
+                    "keyframes": [
+                      {
+                        "frame": 0,
+                        "x": 160,
+                        "y": 700,
+                        "opacity": 1,
+                        "easing": "linear"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+              "source": {
+                "actor": "local-owner",
+                "mode": "human-edit",
+                "restored_from": null
+              },
+              "context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+              "font": {
+                "backend": "aethon-coretext-v1",
+                "font": "AppleSDGothicNeo-Regular",
+                "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+                "source_sha256": "a2d5376f62c94a1ce283ff8584f89b5a7c92e6b01d4d4d31eaf1ae4902cb8015",
+                "os": "26.5.1",
+                "color_space": "sRGB"
+              },
+              "created": 1793147352.44707,
+              "approval": {
+                "id": "083d803b5c4a439796e85d08d97cd705",
+                "actor": "local-owner",
+                "scope": "local-motion-candidate",
+                "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d"
+              }
+            }
+          }
+        }
+      },
+      "revision": 7,
+      "profile": "landscape",
+      "audio_versions": [
+        {
+          "id": 1,
+          "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6.wav",
+          "sha256": "1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6",
+          "filename": "music.wav",
+          "metadata": {
+            "duration": 5.0,
+            "codec": "pcm_s16le",
+            "width": null,
+            "height": null,
+            "sample_rate": "48000",
+            "channels": 1,
+            "waveform": {
+              "status": "measured",
+              "source": "decoded-pcm-8khz-mono",
+              "duration": 5.0,
+              "peaks": [
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125
+              ],
+              "rms": 0.08837,
+              "quiet": false,
+              "note": "최대 첫 600초의 간이 진폭 표시. 비트·BPM·구간 분석이 아닙니다."
+            }
+          },
+          "rights": "directly authored 440Hz fixture"
+        }
+      ],
+      "audio_selected": 1,
+      "audio_offset": 0,
+      "timeline_versions": [
+        {
+          "clips": [
+            {
+              "shot": "base",
+              "take": 2,
+              "duration": 1.5,
+              "trim": 0,
+              "motion_overlay": {
+                "shot": "base",
+                "motion_revision": 1,
+                "start": 0.25,
+                "end": 1.25,
+                "offset_x": 0,
+                "offset_y": 0
+              }
+            },
+            {
+              "shot": "base",
+              "take": 1,
+              "duration": 1.5,
+              "trim": 0,
+              "motion_overlay": {
+                "shot": "base",
+                "motion_revision": 1,
+                "start": 0.25,
+                "end": 1.25,
+                "offset_x": 320,
+                "offset_y": 0
+              }
+            }
+          ],
+          "audio": 1,
+          "audio_offset": 0,
+          "subtitles": [
+            {
+              "start": 0.2,
+              "end": 2.8,
+              "text": "음원 · 영상 · 사진 · 한글 타이포"
+            }
+          ],
+          "profile": "landscape",
+          "id": 1,
+          "approval": {
+            "id": "5726d8790a35479ebda09622b66bf685",
+            "actor": "local-owner",
+            "at": 1793147354.840406,
+            "execution_scope": "local-render",
+            "timeline_version": 1,
+            "scope": "로컬 단일 사용자 승인; 조직 권한 검증 아님",
+            "selected_take_snapshot": {
+              "base": 2
+            },
+            "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+          }
+        },
+        {
+          "clips": [
+            {
+              "shot": "base",
+              "take": 2,
+              "duration": 1.5,
+              "trim": 0,
+              "motion_overlay": {
+                "shot": "base",
+                "motion_revision": 1,
+                "start": 0.5,
+                "end": 1.5,
+                "offset_x": 480,
+                "offset_y": 120
+              }
+            },
+            {
+              "shot": "base",
+              "take": 1,
+              "duration": 1.5,
+              "trim": 0,
+              "motion_overlay": {
+                "shot": "base",
+                "motion_revision": 1,
+                "start": 0.25,
+                "end": 1.25,
+                "offset_x": 320,
+                "offset_y": 0
+              }
+            }
+          ],
+          "audio": 1,
+          "audio_offset": 0,
+          "subtitles": [
+            {
+              "start": 0.2,
+              "end": 2.8,
+              "text": "음원 · 영상 · 사진 · 한글 타이포"
+            }
+          ],
+          "profile": "landscape",
+          "id": 2,
+          "approval": {
+            "id": "02fb634b6753486d8d77926f06e7693d",
+            "actor": "local-owner",
+            "at": 1793147361.953527,
+            "execution_scope": "local-render",
+            "timeline_version": 2,
+            "scope": "로컬 단일 사용자 승인; 조직 권한 검증 아님",
+            "selected_take_snapshot": {
+              "base": 2
+            },
+            "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+          }
+        }
+      ],
+      "timeline_head": 2,
+      "subtitles": [
+        {
+          "start": 0.2,
+          "end": 2.8,
+          "text": "음원 · 영상 · 사진 · 한글 타이포"
+        }
+      ],
+      "comments": [],
+      "conversation_owners": {
+        "4e6391b383ea4110bcc9a80e35dc3ae2": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "motion_proposals"
+        },
+        "083d803b5c4a439796e85d08d97cd705": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "motion_grants"
+        },
+        "5726d8790a35479ebda09622b66bf685": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "timeline_grants"
+        },
+        "a6b9525b92924c64ac031649200bc8fa": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "render_estimates"
+        },
+        "103487b542d844af817b54d9a06278fe": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "jobs"
+        },
+        "02fb634b6753486d8d77926f06e7693d": {
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "kind": "timeline_grants"
+        }
+      },
+      "chat_sessions": [
+        {
+          "id": "0df5211b57305e279fcaefc3dcaaa346",
+          "title": "기존 대화",
+          "revision": 15,
+          "chat_selection": null,
+          "model_revision": 0
+        }
+      ],
+      "motion_proposals": [
+        {
+          "id": "4e6391b383ea4110bcc9a80e35dc3ae2",
+          "shot": "base",
+          "shot_id": "3b0a8e855eff5c13be87b2857abeff1a",
+          "base_revision": 0,
+          "base_context": "c19ce5f3ed691814aa46e6e595e08528a0c6cdf45588dd6f0736e94f2ae6b5db",
+          "scene": {
+            "schema_version": 1,
+            "width": 1920,
+            "height": 1080,
+            "fps": 24,
+            "frame_count": 96,
+            "background": "#101010",
+            "layers": [
+              {
+                "id": "title",
+                "kind": "text",
+                "text": "음악 위에\n겹치는 타이포",
+                "font": "system-ko-regular",
+                "font_size": 80,
+                "width": 1500,
+                "height": 240,
+                "color": "#F4F4F2",
+                "in_frame": 0,
+                "out_frame": 96,
+                "keyframes": [
+                  {
+                    "frame": 0,
+                    "x": 160,
+                    "y": 160,
+                    "opacity": 0.5,
+                    "easing": "linear"
+                  },
+                  {
+                    "frame": 72,
+                    "x": 240,
+                    "y": 160,
+                    "opacity": 0.8,
+                    "easing": "linear"
+                  }
+                ]
+              },
+              {
+                "id": "bar",
+                "kind": "rect",
+                "text": "",
+                "font": "system-ko-regular",
+                "font_size": 80,
+                "width": 600,
+                "height": 100,
+                "color": "#A7C7FF",
+                "in_frame": 0,
+                "out_frame": 96,
+                "keyframes": [
+                  {
+                    "frame": 0,
+                    "x": 160,
+                    "y": 700,
+                    "opacity": 1,
+                    "easing": "linear"
+                  }
+                ]
+              }
+            ]
+          },
+          "scene_hash": "8d6e6fdbf2b949aa0f6c1981211ee8b46965a0e58461d4f46e10a499c30a715d",
+          "status": "applied",
+          "source": {
+            "actor": "local-owner",
+            "mode": "human-edit",
+            "restored_from": null
+          },
+          "created": 1793147350.676726,
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "applied_revision": 1,
+          "reviews": [
+            {
+              "actor": "local-owner",
+              "decision": "approved",
+              "at": 1793147352.447108
+            }
+          ]
+        }
+      ],
+      "render_estimates": [
+        {
+          "id": "a6b9525b92924c64ac031649200bc8fa",
+          "created": 1793147354.907326,
+          "expires": 1793147654.907326,
+          "fingerprint": "c332ff8fb05de6620cf042bdcdec8d7721e81f3646b60df9b60e60d62f29f116",
+          "timeline_version": 1,
+          "clips": 2,
+          "duration": 3.0,
+          "resolution": [
+            1920,
+            1080
+          ],
+          "audio_version": 1,
+          "audio_start": 0,
+          "audio_end": 3.0,
+          "subtitles": 1,
+          "provider_calls": 0,
+          "provider_cost": 0,
+          "local_compute": null,
+          "scope": "로컬 FFmpeg 합성만; 외부 전송 없음. AI 생성 견적·예산 예약·청구가 아닙니다.",
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+          "job": "103487b542d844af817b54d9a06278fe"
+        }
+      ],
+      "_conversation_id": "0df5211b57305e279fcaefc3dcaaa346",
+      "audio": {
+        "id": 1,
+        "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/data/assets/1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6.wav",
+        "sha256": "1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6",
+        "filename": "music.wav",
+        "metadata": {
+          "duration": 5.0,
+          "codec": "pcm_s16le",
+          "width": null,
+          "height": null,
+          "sample_rate": "48000",
+          "channels": 1,
+          "waveform": {
+            "status": "measured",
+            "source": "decoded-pcm-8khz-mono",
+            "duration": 5.0,
+            "peaks": [
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125,
+              0.125
+            ],
+            "rms": 0.08837,
+            "quiet": false,
+            "note": "최대 첫 600초의 간이 진폭 표시. 비트·BPM·구간 분석이 아닙니다."
+          }
+        },
+        "rights": "directly authored 440Hz fixture"
+      },
+      "frame_timing": {
+        "fps": 24,
+        "policy": "nearest-internal-ceil-final",
+        "requested_duration": 3.0,
+        "duration": 3.0,
+        "clips": [
+          {
+            "start_frame": 0,
+            "end_frame": 36,
+            "frames": 36,
+            "start": 0.0,
+            "end": 1.5
+          },
+          {
+            "start_frame": 36,
+            "end_frame": 72,
+            "frames": 36,
+            "start": 1.5,
+            "end": 3.0
+          }
+        ]
+      },
+      "timeline": {
+        "clips": [
+          {
+            "shot": "base",
+            "take": 2,
+            "duration": 1.5,
+            "trim": 0,
+            "motion_overlay": {
+              "shot": "base",
+              "motion_revision": 1,
+              "start": 0.5,
+              "end": 1.5,
+              "offset_x": 480,
+              "offset_y": 120
+            }
+          },
+          {
+            "shot": "base",
+            "take": 1,
+            "duration": 1.5,
+            "trim": 0,
+            "motion_overlay": {
+              "shot": "base",
+              "motion_revision": 1,
+              "start": 0.25,
+              "end": 1.25,
+              "offset_x": 320,
+              "offset_y": 0
+            }
+          }
+        ],
+        "audio": 1,
+        "audio_offset": 0,
+        "subtitles": [
+          {
+            "start": 0.2,
+            "end": 2.8,
+            "text": "음원 · 영상 · 사진 · 한글 타이포"
+          }
+        ],
+        "profile": "landscape",
+        "id": 2,
+        "approval": {
+          "id": "02fb634b6753486d8d77926f06e7693d",
+          "actor": "local-owner",
+          "at": 1793147361.953527,
+          "execution_scope": "local-render",
+          "timeline_version": 2,
+          "scope": "로컬 단일 사용자 승인; 조직 권한 검증 아님",
+          "selected_take_snapshot": {
+            "base": 2
+          },
+          "conversation_id": "0df5211b57305e279fcaefc3dcaaa346"
+        }
+      }
+    },
+    "download": "/exports/48affb5d27d840eb8827bd3f351c467f.mp4",
+    "error": null,
+    "cost": {
+      "provider_calls": 0,
+      "provider_cost": 0,
+      "local_compute": "미계측",
+      "kind": "render-only"
+    },
+    "started": 1793147362.062506,
+    "sha256": "eeff117c0847c3e556a9b457643a6c404f13670aa4d89654cbc29f06bae3d1c0",
+    "sidecar_sha256": {
+      ".srt": "5abbac0411f1077c7422c135308eab3e4b85aaffde5f158de0bd90f0de94028f",
+      ".json": "b25fef66078bd6ed89b7aa50e8bd72e3c253b094c66556f4424d0df8de12f9e0"
+    },
+    "verified": {
+      "duration": 3.0,
+      "width": 1920,
+      "height": 1080,
+      "frame_rate": "24/1",
+      "audio_sample_rate": "48000",
+      "frame_timing": {
+        "fps": 24,
+        "policy": "nearest-internal-ceil-final",
+        "requested_duration": 3.0,
+        "duration": 3.0,
+        "clips": [
+          {
+            "start_frame": 0,
+            "end_frame": 36,
+            "frames": 36,
+            "start": 0.0,
+            "end": 1.5
+          },
+          {
+            "start_frame": 36,
+            "end_frame": 72,
+            "frames": 36,
+            "start": 1.5,
+            "end": 3.0
+          }
+        ]
+      },
+      "streams": [
+        "video",
+        "audio",
+        "subtitle"
+      ],
+      "verified_at": 1793147366.390778
+    },
+    "finished": 1793147366.392867
+  },
+  "source_sha256": {
+    "blue.png": "4bf53217c85d950969da5a9372accd081d7af85fc872cb4c81327fd10a7475b1",
+    "video.mp4": "325049ad2a1d0d283e02461aab4da68753e1377d593a4fb10a6c662317d9642e",
+    "music.wav": "1e4319ba00c7fdeede85d65ab962cf0fd30ca91b18099bcb9c4416ee0a1f5ff6"
+  },
+  "source_motion_preserved": true,
+  "preview_has_no_state_or_job_side_effect": true,
+  "final_media": [
+    {
+      "path": "actual-v1.mp4",
+      "sha256": "2a098f91c1dfb801ecbcebe8a798cbea1c04cd58de9f76740ee64966923a0e38",
+      "duration": "3.000000",
+      "streams": [
+        "video",
+        "audio",
+        "subtitle"
+      ],
+      "decoded": true
+    },
+    {
+      "path": "actual-v2.mp4",
+      "sha256": "eeff117c0847c3e556a9b457643a6c404f13670aa4d89654cbc29f06bae3d1c0",
+      "duration": "3.000000",
+      "streams": [
+        "video",
+        "audio",
+        "subtitle"
+      ],
+      "decoded": true
+    }
+  ],
+  "backup_and_restore": {
+    "backup": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/backup",
+    "restored": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-overlay-http-9mr8jcxl/restored",
+    "output_hashes_match": true,
+    "timeline_head": 2
+  },
+  "limitations": [
+    "Not real model output, browser UI recording or user acceptance"
+  ]
+}

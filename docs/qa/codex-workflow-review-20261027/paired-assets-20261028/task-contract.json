@@ -1,0 +1,67 @@
+{
+  "task_id": "paired-assets-platform-20261028",
+  "recorded_at": "2026-10-27T19:25:41.686520+00:00",
+  "objective": "Actual generated raw GLBs through platform workflow and artifact-quality comparison; keep3Doptional",
+  "Methodology sources": [
+    ".document-gate.json",
+    "docs/WORKFLOW-EXECUTION-GUIDE-ko.md",
+    "docs/qa/AI-3D-ARCHITECTURE-RESEARCH-20261027.md",
+    "https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes",
+    "installed pinned Blender importer",
+    "harness-core:feature-verification"
+  ],
+  "Applied methodology": "Closed-profile compatibility review; actual UI/API/state/artifact checks; same-input before/edit/after comparison and bounded full regression",
+  "Non-goals/limits": [
+    "No actual paid/provider calls or keys/.env/private data",
+    "No registration/promotion/context change",
+    "No claim of commercial Tripo equivalence",
+    "No animation/rigging/material-edit expansion",
+    "No source edits during initial review/regression"
+  ],
+  "Verification standard": "v1unchanged; v2 exact raw SHA/profile/rights/source binding; no bypasses; actual native previews and camera/light edits; user can finish music video; full suite source hashes before/after",
+  "source_freeze": {
+    "scene_assets.py": "9e35727099e06730ea92d1a15de80ca65fa9ea85eaa4eb547a669dc4a12f4068",
+    "scene_spec.py": "29f3956be9b5fa17d70c614128821c1c801d4a6643a80ce43487892b9fa36c65",
+    "scene_project.py": "2b7d1a3c30dbe5453dcbad983528fae96d6b61179ccc871bdc9c52190adf52e4",
+    "scene-studio.js": "51fdd58f3d7391d26af84c358dcaaa2f8c454aff1a370180c9b9643f7a6524a5",
+    "tests/test_scene_vertex_colors.py": "3b1caf1c63f6ac55ec36265da9cb69905857b30e9a3f90011773207b69678707",
+    "tests/test_scene_vertex_colors_native.py": "254bfe9c67af13544a926d23d43aa6941c43c623a1fd21ef5a9dee01fa7f1edb"
+  },
+  "agents": [
+    {
+      "Agent": "root",
+      "Role": "UI/native/artifact acceptance",
+      "Model": "inherited session",
+      "Reasoning": "inherited session",
+      "Scope": "real isolated browser music workflow and visual input/output comparison",
+      "Write set": [
+        ".omo/evidence/paired-assets-platform-20261028/ui",
+        ".omo/evidence/paired-assets-platform-20261028/browser-fixture.py"
+      ],
+      "Dependency": "current v2 source freeze"
+    },
+    {
+      "Agent": "general_activation_review",
+      "Role": "independent source review",
+      "Model": "inherited session",
+      "Reasoning": "inherited session",
+      "Scope": "4 changed product files+2tests and v1 compatibility/closed input/state/source guarantees; no edits",
+      "Write set": [
+        ".omo/evidence/paired-assets-platform-20261028/independent-review.json"
+      ],
+      "Dependency": "current source freeze"
+    },
+    {
+      "Agent": "regression",
+      "Role": "read-only-source full current regression",
+      "Model": "inherited session",
+      "Reasoning": "inherited session",
+      "Scope": "single full unittest run using verified pinned local environment and isolated synthetic data",
+      "Write set": [
+        ".omo/evidence/paired-assets-platform-20261028/regression"
+      ],
+      "Dependency": "current source freeze; SCENE_VERTEX_EVIDENCE must point to owned new run output to preserve prior native evidence"
+    }
+  ],
+  "state": "RUNNING"
+}

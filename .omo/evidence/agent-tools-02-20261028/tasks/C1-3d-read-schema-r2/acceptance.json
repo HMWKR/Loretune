@@ -1,0 +1,24 @@
+{
+ "task": "C1-3d-read-schema",
+ "attempt": 2,
+ "at": "2026-10-28T09:23:55.885107+00:00",
+ "state": "ACCEPTED",
+ "acceptance_owner": "lead (main)",
+ "critic_pass": true,
+ "critic_tests_rerun": "From /Users/leesungmin/Desktop/Loretune with PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/opt/python@3.15/bin/python3.15 -B: (1) -m unittest discover -s tests -p test_general_chat_scene_context.py -v → Ran 11 tests OK; (2) -p test_scene_spec_proposal_schema.py → Ran 6 tests OK; (3) PYTHONPATH=tests, the worker's 21 modules plus test_general_chat_tool_invariants → Ran 197 tests in 69.220s OK (skipped=18); (4) adversarial probe /private/tmp/claude-501/-Users-leesungmin-Desktop-Loretune/1ebfb89f-9e94-4156-8aea-2393f299eb3e/scratchpad/probe_c13d.py (head-0 drift, exactly 32 scenes, drift then re-approve, held/rejected/stale counts, a stale proposal not flagging the head) → Ran 16 tests OK. Write-set check: the diffs of before-r2 against the current files touch only the 5 allowed files, and the hunks match evidence/source.diff and tests.diff. Files outside the write set that differ from before/ (chat_protocols.py, chat_runtime.py, fal_dispatch.py, chat-sidebar.js, general-chat-ui.js, index.html, tests/general_chat_review_navigation.cjs, and others) cannot be attributed to this track; they match concurrent tracks such as chat-review-navigation, so they are not counted as violations.",
+ "write_set_violations": [],
+ "carried_minor_issues": [
+  "[minor] The size bound still does not hold against the 4096 budget. The count cap (32 scenes x 10 pending) lets one scene-status result reach about 12 KB with 1 pending proposal per scene (measured) and about 39 KB in the worst case (extrapolated by copying one scene entry, not run). test_result_size_is_bounded_and_recorded still asserts <4096 on a 2-scene fixture only. The worker disclosed this honestly as a D20 decision, and defect 2 only asked for a cap such as 32, so this is an open decision and not a failure of defect 2.",
+  "[minor] status() raises KeyError on any head version without approval.binding.ontology_revision. A single legacy record would then break the whole scene-status read for the conversation instead of degrading. The worker states this assumption: every current approval path writes the field (scene_project.py:349). Whether real legacy data exists is unverified.",
+  "[minor] public(), the UI projection, still ignores ontology drift. With ontology-only drift, Scene Studio shows no review needed while scene-status reports stale_context/requires_review. The worker disclosed this as a residual gap; it is outside the write set (app.py/UI).",
+  "[minor] The committed tests do not cover the exact-cap boundary (exactly 32 scenes → truncated False; exactly 10 pending → pending_truncated False) or ontology drift on a head-0 draft. I verified all of these by probe, but they are not in the regression suite."
+ ],
+ "source_sha256": {
+  "production_context.py": "048b9b429a6f0207770bb5c05499a82a6e5601fdf66838ae63fdbaa9c99e8d14",
+  "scene_project.py": "d9584c40f3a911686699e3e4747f083ad8853cba40eaf6176570937ff99bba51",
+  "scene_spec.py": "b573fe08188f643e5c5443e6bb545abdd9e6114da9aa18e9fb5944a2bf18345b",
+  "tests/test_general_chat_scene_context.py": "57caa5781bf70522792260aff9ca1d0b523384b87cccca11c0df5ae1e9dff711",
+  "tests/test_scene_spec_proposal_schema.py": "106de7d9b98c7004a1d5add7c577247389f0e95b962eac755fd4c6cbf30c2c1e"
+ },
+ "note": "Accepted for integration; carried issues are defects assigned to wave 2 (A2a/A2b/B2/S14) — not closed. Full regression pending (S14)."
+}

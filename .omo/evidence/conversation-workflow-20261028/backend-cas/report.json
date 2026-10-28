@@ -1,0 +1,183 @@
+{
+  "status": "implemented-and-verified-scoped-cas-only",
+  "problem_id": "CS-GENERAL-CAS-14",
+  "source_frozen": true,
+  "files": {
+    "chat_sessions.py": "f9e578aa0bf4a7ab8ccb04b8c64556929c979ca3a232de87f6e217fe3c2933f6",
+    "tests/test_general_chat_conversations.py": "baf8dfa26b1e310bb192ce6a35d28440f978792a1feb3771e02b7bb039da8a17"
+  },
+  "implementation": "Exactly one LOCAL_ACTIONS line: general_chat_preview/decide/cancel; no transaction, ownership, approval, ledger or API-handler code altered by this worker",
+  "one_line_diff_verified_against_baseline_sha256": true,
+  "baseline": {
+    "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/baseline.json",
+    "observable": "All 3 actions HTTP409 after sibling-only global drift, target conversation/shared unchanged, rejected selected SQL tables unchanged; fresh global revisionHTTP200"
+  },
+  "red_tests": {
+    "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/red-tests.log",
+    "observable": "3 targeted tests fail expected200 observed409 before product fix"
+  },
+  "checks": [
+    {
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations -v",
+      "observable": "17 tests, OK, zero skips",
+      "exit_code": 0,
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "invocation": "python3 -m unittest tests.test_chat_sessions tests.test_general_chat_activation tests.test_chat_general_http -v",
+      "observable": "73 tests, OK, zero skips",
+      "exit_code": 0,
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/related-regression.log"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "test_preview_tolerates_sibling_revision_and_stays_private",
+      "line": 69,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_preview_tolerates_sibling_revision_and_stays_private -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_approval_tolerates_sibling_revision_and_replay_reserves_once",
+      "line": 81,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_approval_tolerates_sibling_revision_and_replay_reserves_once -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_queued_cancel_tolerates_sibling_revision_and_releases_once",
+      "line": 98,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_queued_cancel_tolerates_sibling_revision_and_releases_once -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_preview_rejects_stale_conversation",
+      "line": 121,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_preview_rejects_stale_conversation -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_approval_rejects_stale_conversation",
+      "line": 124,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_approval_rejects_stale_conversation -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_cancel_rejects_stale_conversation",
+      "line": 127,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_cancel_rejects_stale_conversation -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_preview_rejects_changed_shared_context",
+      "line": 130,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_preview_rejects_changed_shared_context -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_approval_rejects_changed_shared_context",
+      "line": 133,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_approval_rejects_changed_shared_context -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_cancel_rejects_changed_shared_context",
+      "line": 136,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_cancel_rejects_changed_shared_context -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_unscoped_request_still_requires_global_revision",
+      "line": 139,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_unscoped_request_still_requires_global_revision -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_other_conversation_cannot_approve_or_reject_preview_or_cancel_turn",
+      "line": 147,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_other_conversation_cannot_approve_or_reject_preview_or_cancel_turn -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_invalid_manifest_rights_and_new_request_replay_stay_atomic",
+      "line": 157,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_invalid_manifest_rights_and_new_request_replay_stay_atomic -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_changed_rights_registry_blocks_approval_after_sibling_drift",
+      "line": 169,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_changed_rights_registry_blocks_approval_after_sibling_drift -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_project_concurrency_cap_cannot_be_avoided_by_another_conversation",
+      "line": 178,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_project_concurrency_cap_cannot_be_avoided_by_another_conversation -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_project_money_cap_is_shared_across_conversations",
+      "line": 199,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_project_money_cap_is_shared_across_conversations -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_running_cancel_after_sibling_drift_prevents_message_dispatch",
+      "line": 214,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_running_cancel_after_sibling_drift_prevents_message_dispatch -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    },
+    {
+      "scenario": "test_unknown_cancel_preserves_uncertain_reservation_and_never_retries",
+      "line": 236,
+      "invocation": "python3 -m unittest tests.test_general_chat_conversations.GeneralChatConversationsTest.test_unknown_cancel_preserves_uncertain_reservation_and_never_retries -v",
+      "observed": "PASS in full focused module run; assertions inspect real localhost HTTP response plus SQL reservation/state",
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-final.log"
+    }
+  ],
+  "boundary_observables": {
+    "same_conversation_stale": "409 for all3; critical SQL state unchanged",
+    "shared_context_changed": "409 for all3; critical SQL state unchanged",
+    "unscoped_global_stale": "409",
+    "other_conversation_ownership": "400 for approve/reject/cancel",
+    "manifest_rights_changed": "400 and no reservation/provider call",
+    "idempotency": "same request replays exact result without new turn/reservation; changed same request409; new request same consumed preview400",
+    "project_job_cap": "400 with concurrent limit error; only1reservation/turn",
+    "project_money_cap": "400 at actual quote-derived shared cap; only1reservation",
+    "queued_cancel": "cancelled turn + cancelled reservation; no provider call",
+    "running_cancel": "cancel_requested + reserved during count; cancelled+cancelled afterwards, only count socket called",
+    "unknown_cancel": "outcome_unknown + uncertain retained; cross-conversation cancellation400; sibling new approval400; no retry, only2synthetic calls"
+  },
+  "failed_attempts": [
+    {
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-attempt1.log",
+      "cause": "Test expected429 from ledger but /api/action intentionally maps ValueError to400; corrected expectation and required specific limit error text."
+    },
+    {
+      "artifact": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/backend-cas/verification-attempt2.log",
+      "cause": "Money cap test initially used request maximum instead of actual quoted reserve; corrected setup using preview.reserve_micro, asserted individual fit and summed excess."
+    }
+  ],
+  "limits": [
+    "Synthetic provider sockets only; no actual Claude/model/account/billing verification",
+    "No worker-startup scheduling claim; root and worker_scheduling own that separate flow",
+    "No MD, registry, policy, document promotion or unrelated source edited",
+    "This is scoped conversation CAS acceptance, not entire platform completion"
+  ]
+}

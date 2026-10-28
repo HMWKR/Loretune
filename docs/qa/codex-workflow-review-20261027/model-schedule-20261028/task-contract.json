@@ -1,0 +1,38 @@
+{
+  "task_id": "GC-MODEL-02+GC-SCHEDULE-03",
+  "stage": "implementation plan before changes",
+  "recorded_at": "2026-10-27T18:31:50.488138+00:00",
+  "problem": "Connection capability ignores selected model; general active requests reject scheduling while UI promises it.",
+  "decision": "Scope capability to effective conversation selection and reuse existing pending selection/session lifecycle, preserving frozen active request and consent.",
+  "alternative_rejected": "New engine-independent scheduling table requires needless migration; existing pending state is sufficient for current two runtimes.",
+  "methodology_sources": [
+    "CHAT-SESSION-PLAN section3.2/CS07/09/11/12/15",
+    "Existing legacy completed-selection contract",
+    "Installed Karpathy/feature-verification, incumbent Operate design"
+  ],
+  "write_sets": {
+    "backend": [
+      "app.py",
+      "chat_general.py",
+      "chat_sessions.py",
+      "new backend tests"
+    ],
+    "root": [
+      "index.html",
+      "general-chat-ui.js",
+      "scoped UI tests",
+      "task evidence and continuity documents"
+    ]
+  },
+  "verification": [
+    "Effective model/default/override/disabled selection; no silent fallback or key/network on rejected selection",
+    "Queued/running/tool continuation reservation, completion atomic application, frozen current body/model/cost",
+    "Cancellation/unknown/restart/failure pending preserved and explicit reselect recovery",
+    "Actual isolated HTTP and UI round trip, reload, independent review and current source freeze"
+  ],
+  "non_goals": [
+    "No new provider/router/auth/RAG/registry system",
+    "No paid/live AI until pending approval",
+    "No automatic document registration/promotion/context refresh"
+  ]
+}

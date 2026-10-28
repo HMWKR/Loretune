@@ -1,0 +1,20 @@
+test_actual_http_preview_transparency_timing_positions_render_and_reopen (tests.test_motion_overlay.MotionOverlayTest.test_actual_http_preview_transparency_timing_positions_render_and_reopen) ... 127.0.0.1 - - [28/Oct/2026 09:24:26] "GET /api/timeline-frame?song=song&timeline_revision=1&clip_index=0&frame=14 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:24:30] "GET /api/timeline-frame?song=song&timeline_revision=1&clip_index=0&frame=24 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:24:35] "GET /api/timeline-frame?song=song&timeline_revision=1&clip_index=0&frame=51 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:24:39] "GET /api/timeline-frame?song=song&timeline_revision=1&clip_index=0&frame=24 HTTP/1.1" 409 -
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 409: 'Conflict'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+ok
+test_editing_placement_requires_fresh_approval_and_preserves_old_snapshot (tests.test_motion_overlay.MotionOverlayTest.test_editing_placement_requires_fresh_approval_and_preserves_old_snapshot) ... ok
+test_font_change_rejected_at_approval_and_render_resolution (tests.test_motion_overlay.MotionOverlayTest.test_font_change_rejected_at_approval_and_render_resolution) ... ok
+test_immutable_source_survives_new_head_context_and_conversation (tests.test_motion_overlay.MotionOverlayTest.test_immutable_source_survives_new_head_context_and_conversation) ... ok
+test_invalid_source_time_offsets_and_untrusted_fields_roll_back (tests.test_motion_overlay.MotionOverlayTest.test_invalid_source_time_offsets_and_untrusted_fields_roll_back) ... ok
+test_null_normalizes_to_absence_without_changing_legacy_clip (tests.test_motion_overlay.MotionOverlayTest.test_null_normalizes_to_absence_without_changing_legacy_clip) ... ok
+test_original_duration_and_approval_hash_are_enforced (tests.test_motion_overlay.MotionOverlayTest.test_original_duration_and_approval_hash_are_enforced) ... ok
+test_preview_busy_stale_bad_frame_and_blocked_rights_do_not_create_jobs (tests.test_motion_overlay.MotionOverlayTest.test_preview_busy_stale_bad_frame_and_blocked_rights_do_not_create_jobs) ... ok
+test_snapshot_sidecar_rejects_missing_or_different_composition (tests.test_motion_overlay.MotionOverlayTest.test_snapshot_sidecar_rejects_missing_or_different_composition) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 20.668s
+
+OK

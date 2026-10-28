@@ -1,0 +1,91 @@
+{
+  "schema": "work-status-context-independent-acceptance/1",
+  "observed_at_utc": "2026-10-28 03:36:24 UTC",
+  "reviewer": "/root/agent_docs_review",
+  "status": "RECOMMEND_SCOPED_ACCEPT",
+  "scope": "Current-project/current-conversation recorded work-status projection and mode-qualified overlay approval wording",
+  "high_medium_findings": [],
+  "model_and_reasoning": "Inherited session configuration; no secondary agents or model calls",
+  "authorization": "Read-only product/test/document review; this single evidence JSON explicitly authorized by parent. No source, test, MD, registry or generated-context edits.",
+  "runtime_boundary": "Read-only behavior observed by reviewer, not claimed as runtime-enforced sandbox isolation",
+  "methodology_sources": [
+    "Current user rules and docs/design/CHAT-SESSION-PLAN.md:11 AGENT-STATUS-03",
+    "Installed harness-core1.3.5 agent-critic and feature-verification SKILL.md, CODEX-RUNTIME.md, live-feature-verify.md and uncompromising-rigor.md",
+    "Actual production_context.py, tests/test_agent_work_status_context.py, chat_sessions.py, Store source and canonical binding/snapshot source",
+    "Frozen worker report and actual-settled HTTP/local-render receipts"
+  ],
+  "applied_methodology": [
+    "Scope-first data minimization",
+    "Concrete counterexample and adverse-effect review",
+    "Claim-level provenance and snapshot audit",
+    "Separate executed reviewer checks from reused worker execution evidence"
+  ],
+  "input_sha256": {
+    "report.json": "d60dffa80857b74fed335c486b4c0275e3fbd80d8d77bd77922006abf6b9aa27",
+    "source-freeze.json": "30730885984bd2f6edf051490392e8cee4425673a7e0ed8bb93ca6d238b7f539",
+    "artifact-manifest.json": "e2f4129a9b19b7c99bf6458097514007c01a36447a82e3ea10ebb1979a4cbf21",
+    "actual-settled/actual-http-synthetic-query.json": "96b9307014d6016f0674120272aaecf25ca321eac53f2d3c8ddbe0bfe9b186e5",
+    "actual-settled/actual-local-render-observation.json": "816eda2ee2075c145faad6126053cf153047d842e460444e180dac839675dc0a"
+  },
+  "frozen_sources_match_before_and_after_review": {
+    "production_context.py": "cb85253d5a5cf194f1c1852603e32acec530a7b9a0884460a543386bb169460d",
+    "tests/test_agent_work_status_context.py": "4d8bcd11d5c3dc197d76edfe0b607b4727f38f9920097ea078323f0d96369c93"
+  },
+  "artifact_manifest": {"entries": 45, "missing_or_hash_mismatched": 0},
+  "surviving_claims": [
+    {
+      "claim": "Recorded status is limited to the current project and conversation before field projection",
+      "references": ["production_context.py:149", "production_context.py:174", "production_context.py:185", "production_context.py:198", "production_context.py:205", "chat_sessions.py:100", "tests/test_agent_work_status_context.py:89"],
+      "counterexamples_attempted": "Foreign song/binding, sibling ownership, explicit owner/body disagreement, SQL/body conversation disagreement, legacy fallback",
+      "outcome": "Rejected or fail closed in source, worker receipts and independently executed in-memory projection checks. Existing single-local-workspace boundary remains; no authenticated multi-tenant claim."
+    },
+    {
+      "claim": "Only bounded allowlisted observations are disclosed",
+      "references": ["production_context.py:145", "production_context.py:156", "production_context.py:165", "production_context.py:210", "tests/test_agent_work_status_context.py:70", "tests/test_agent_work_status_context.py:107", "tests/test_agent_work_status_context.py:120"],
+      "counterexamples_attempted": "Raw prompt/error/path/private reasoning/grant blobs, unsupported status/mode/kind, invalid numbers and more than8 source items",
+      "outcome": "Private fields omitted, unknown values marked as unknown/unavailable and each source truncated to8 with explicit insertion ordering. Total query work is not bounded by this response limit."
+    },
+    {
+      "claim": "Dynamic status is an observation, not canonical authority or a retroactive approved-body edit",
+      "references": ["production_context.py:134", "production_context.py:213", "model_selection.py:55", "chat_general.py:189", "chat_general.py:606", "tests/test_agent_work_status_context.py:178", "tests/test_agent_work_status_context.py:212"],
+      "counterexamples_attempted": "Job progresses after the model tool observation; canonical shot changes after continuation preview",
+      "outcome": "Existing HTTP receipt preserves the exact old approved continuation body for job-only progress and fresh query returns the new recorded status; canonical shot change still400 before a second provider message. Reviewer in-memory check independently confirms old observation remains unchanged while a fresh query updates."
+    },
+    {
+      "claim": "Read does not modify saved project/DB or manufacture collaborator presence",
+      "references": ["production_context.py:210", "production_context.py:218", "tests/test_agent_work_status_context.py:131", "chat_sessions.py:155", "app.py:237"],
+      "counterexamples_attempted": "Compare project object and SQL total_changes before/after query; inspect reopen preservation receipt and presence projection",
+      "outcome": "Independent in-memory project and SQL mutation checks unchanged; worker receipt has equal DB hashes after read/reopen. collaboration.available explicitlyfalse; no team/ACL/presence invented."
+    },
+    {
+      "claim": "Overlay approval help now matches review versus FullAccess behavior",
+      "references": ["production_context.py:255", "chat_models.py:42", "chat_models.py:45"],
+      "counterexamples_attempted": "Earlier unqualified human edit review statement versus applied agent-draft receipt",
+      "outcome": "Current wording consistently distinguishes human review, whitelisted unapproved agent-draft, remove/clear human review and separate final output approval. No model comprehension claim."
+    }
+  ],
+  "reviewer_executed": [
+    {"kind": "read/hash", "result": "PASS", "scope": "Two frozen sources and all45 artifact manifest entries match; repeated source comparison unchanged"},
+    {"kind": "in-memory SQLite projection counterexamples", "tool_chunk": "4156be", "exit_code": 0, "result": "PASS", "file_writes": 0, "notes": "First probe used an invalid observer-supplied workspace UUID and exited before projection; corrected fixture then passed. This was observer setup error, not a product defect."},
+    {"kind": "actual artifact SHA", "result": "PASS", "sha256": "cafe5baa0fb1e2053a0021b3d9046551559218a4de7aff8ed83149930e377f17", "bytes": 3994},
+    {"kind": "ffprobe", "tool_chunk": "d4bd86", "exit_code": 0, "seconds": "3.000000", "width": 640, "height": 360, "fps": "24/1", "audio_streams": 0},
+    {"kind": "ffmpeg full decode to null", "tool_chunk": "16420d", "exit_code": 0, "stderr": ""}
+  ],
+  "reused_execution_evidence_not_rerun": {
+    "focused": "final-settled-tests.log:9 tests/2.276sec/OK; reviewed actual source assertions and receipts",
+    "http": "Selected anthropic-haiku-5-5 to wire claude-haiku-5-5; contract-fake/test-fixture-no-network; actual HTTP requests, synthetic provider responses/job metadata; actual provider calls0",
+    "local_render": "Actual queued0 to completed100, recordedrevision1 to5, HTTP downloaded SHA matches artifact; silent3s PNG-source internal render, not music/UI acceptance",
+    "whole_regression": "Existing regression-agent-workspace receipt/log:914 tests/546.471sec/OK, skips0. Both reviewed source hashes are included and match; receipt hash matches driver acceptance. Reviewer did not rerun suite."
+  },
+  "unverified_and_nonblocking_limits": [
+    "Local/provider tables are scanned and JSON-decoded until9 visible rows are found; worst-case cross-project/old-history scan cost is unbounded by response limit and production-scale latency is unmeasured (production_context.py:165,205). No concrete current-load failure reproduced.",
+    "Only current-conversation work is returned; no project-wide cross-conversation work summary or authenticated collaborator/team/presence implementation.",
+    "Completed/output SHA/registration remain stored observations; the projection itself does not revalidate physical media bytes, rights or final approval.",
+    "Status-source ordering is per-table descending insertion, not cross-source chronological order; older active work may be truncated without pagination.",
+    "Malformed/corrupted persisted database shapes are not exhaustively fuzzed; accepted server-owned record contracts were inspected.",
+    "No independent HTTP/UI/browser run, real Claude/model understanding, actual video-generation model, provider billing or full music-first recording acceptance in this review."
+  ],
+  "product_edits": 0,
+  "real_model_calls": 0,
+  "whole_platform_complete": false
+}

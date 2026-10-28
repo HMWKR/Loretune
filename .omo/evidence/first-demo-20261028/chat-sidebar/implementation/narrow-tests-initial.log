@@ -1,0 +1,58 @@
+test_actual_sidebar_lifecycle (tests.test_chat_sidebar_ui.ChatSidebarUITest.test_actual_sidebar_lifecycle) ... 127.0.0.1 - - [28/Oct/2026 11:02:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /studio.css HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /studio-media.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /motion-studio.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /scene-studio.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /general-chat-ui.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /chat-sidebar.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /late-evidence-ui.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:55] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /studio-media.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /studio.css HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /motion-studio.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /scene-studio.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /chat-sidebar.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /late-evidence-ui.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /general-chat-ui.js HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /api/state?song=%EC%82%AC%EC%9D%B4%EB%93%9C%EB%B0%94+%EA%B8%B0%EB%8A%A5+%EA%B2%80%EC%A6%9D&conversation=a949fec2685d50caaa9494070e56911f HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /api/state?song=%EC%82%AC%EC%9D%B4%EB%93%9C%EB%B0%94+%EA%B8%B0%EB%8A%A5+%EA%B2%80%EC%A6%9D&conversation=1913dde0d30243a0bc4587df81875914 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 11:02:56] "GET /api/state?song=%EC%82%AC%EC%9D%B4%EB%93%9C%EB%B0%94+%EA%B8%B0%EB%8A%A5+%EA%B2%80%EC%A6%9D&conversation=a949fec2685d50caaa9494070e56911f HTTP/1.1" 200 -
+FAIL
+test_overlay_proposal_before_after_gate (tests.test_chat_sidebar_ui.ChatSidebarUITest.test_overlay_proposal_before_after_gate) ... ok
+test_current_source_renderers_and_states (tests.test_proposal_ui.ProposalUITest.test_current_source_renderers_and_states) ... ok
+test_integrated_creator_core_and_caption_handlers_preserved (tests.test_proposal_ui.ProposalUITest.test_integrated_creator_core_and_caption_handlers_preserved) ... ok
+test_controls_follow_current_state_after_request_completion (tests.test_general_chat_ui_controls.GeneralChatControlsTest.test_controls_follow_current_state_after_request_completion) ... ok
+
+======================================================================
+FAIL: test_actual_sidebar_lifecycle (tests.test_chat_sidebar_ui.ChatSidebarUITest.test_actual_sidebar_lifecycle)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_sidebar_ui.py", line 23, in test_actual_sidebar_lifecycle
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ '두 번째 대화'
+- '첫 대화의 입력'
+
+    at main (/Users/leesungmin/Desktop/Loretune/tests/chat_sidebar.cjs:40:127) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '두 번째 대화',
+  expected: '첫 대화의 입력',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.459s
+
+FAILED (failures=1)

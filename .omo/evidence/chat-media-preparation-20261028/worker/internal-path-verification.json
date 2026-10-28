@@ -1,0 +1,76 @@
+{
+  "schema": "chat-image-preparation-path-verification/1",
+  "request_path": [
+    "Actual UI prompt and three explicit synthetic transmission consents",
+    "Real POST /api/action general_chat_preview/general_chat_decide",
+    "Fixture response envelopes normalized to typed capabilities and image preparation",
+    "Actual Store production_tool transaction",
+    "Existing FalDispatch.prepare_tool→prepare→action_execution.propose",
+    "SQLite immutable production_actions and conversation ownership",
+    "Actual /api/state media_actions projection",
+    "Existing work-settings image card; reload same record; hold/reject"
+  ],
+  "ui_action_id": "773ab88c497f45ba86bb1313d1d18d58",
+  "saved_action_id": "773ab88c497f45ba86bb1313d1d18d58",
+  "saved_action_hash": "7145b2e48d3e8243058dd29629ac97eb1f03a11775f6ec13c05a2dc7e9e916a3",
+  "ids_match": true,
+  "plan_id": "7b339db49d6b4f9c9c0fdac73e110e39",
+  "plan_revision": 1,
+  "model_release": "fal-ai/flux/schnell",
+  "role": "image",
+  "generation_options": {
+    "ratio": "16:9"
+  },
+  "shot_revision": 0,
+  "declared_future_action_mode": "provider",
+  "actual_adapter_mode": "contract-fake",
+  "quote_kind": "fixture",
+  "approval_after_UI": "rejected",
+  "owner": {
+    "conversation_id": "6bf9615f38ad521ca9e20420d146b55f",
+    "kind": "production_actions"
+  },
+  "production_tool_requests": [
+    {
+      "action": "production_tool",
+      "request_id": "ff299691ba4a4ba88760ad4af9d72fa7:0:d32a44af65ca555f910282d33237e7b2",
+      "revision": 8,
+      "call_name": "get_model_capabilities",
+      "committed": true
+    },
+    {
+      "action": "production_tool",
+      "request_id": "ff299691ba4a4ba88760ad4af9d72fa7:1:7f6cee1e6a98586090abff0e77869b45",
+      "revision": 10,
+      "call_name": "prepare_image_action",
+      "committed": true
+    }
+  ],
+  "table_counts": {
+    "production_actions": 1,
+    "execution_grants": 0,
+    "generation_jobs": 0,
+    "provider_action_jobs": 0
+  },
+  "media_reservations": 0,
+  "all_reservations": [
+    {
+      "scope": "rehearsal:project:5ac93e0a-0852-52dc-96fa-894dd8b0831e",
+      "state": "settled",
+      "actual": 60
+    },
+    {
+      "scope": "rehearsal:project:5ac93e0a-0852-52dc-96fa-894dd8b0831e",
+      "state": "settled",
+      "actual": 60
+    },
+    {
+      "scope": "rehearsal:project:5ac93e0a-0852-52dc-96fa-894dd8b0831e",
+      "state": "settled",
+      "actual": 60
+    }
+  ],
+  "distinction": "Chat synthetic reservations are separate rehearsal accounting; no media grant/reservation/job/submission or actual billing",
+  "provider_submissions": [],
+  "db_sha256": "c9c6a42f784da3175b7e170fa2d964ac1aba038316604adafba50b6c9824e888"
+}

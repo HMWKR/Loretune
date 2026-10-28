@@ -1,0 +1,33 @@
+{
+  "at": "2026-10-28T01:54:50.350376+00:00",
+  "method": "Read current official primary vendor documentation; no provider API/token/account calls",
+  "sources": [
+    {
+      "url": "https://platform.claude.com/docs/en/build-with-claude/effort",
+      "finding": "Haiku5.5 supports low/medium/high/xhigh/max. Disabled thinking accepted only through high; xhigh/max require adaptive thinking."
+    },
+    {
+      "url": "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting",
+      "finding": "Existing general transport rejects private thinking blocks. Exposing high-effort adaptive options needs separate protocol preservation work, not just extra select options."
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+      "finding": "Responses reasoning.effort supports none/low/medium/high/xhigh/max. Model documentation does not prove current general-chat transport support."
+    },
+    {
+      "url": "https://docs.x.ai/developers/model-capabilities/text/reasoning",
+      "finding": "grok4.7 Responses reasoning.effort supports low/medium/high/xhigh and cannot disable reasoning."
+    }
+  ],
+  "implementation_status": "Plan only; current hardcoded low and selected-Claude-only general runtime verified from source. No new settings claim.",
+  "deletion_policy": {
+    "account_deletion": "always forbidden to AI, including FullAccess",
+    "other_deletion": "only exact target/effect explicitly authorized by user, including FullAccess",
+    "FullAccess_does_not_override": [
+      "rights",
+      "transmission consent",
+      "budget",
+      "output approval"
+    ]
+  }
+}

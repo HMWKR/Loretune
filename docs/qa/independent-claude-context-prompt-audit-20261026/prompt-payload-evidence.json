@@ -1,0 +1,72 @@
+{
+  "modelToolArgs": {
+    "shot_id": "a2e64dc374254edaadbe13a33d14efc3",
+    "model_id": "fal-kling-2-5-turbo",
+    "prompt": "Nari in violet coat, watercolor copper observatory at dawn; slow forward dolly, no orbit, no lettering, preserve identity and original audio.",
+    "duration": 5,
+    "shot_revision": 3,
+    "source_shot_id": "a2e64dc374254edaadbe13a33d14efc3",
+    "source_take_id": 1,
+    "source_sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2"
+  },
+  "prepared": {
+    "status": "proposed",
+    "action_id": "04f2b96bf7e04b9e8163b21409992ea2",
+    "plan_id": "d41df69758914943a560a110966d6318",
+    "plan_revision": 1,
+    "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "role": "video",
+    "prompt": "Nari in violet coat, watercolor copper observatory at dawn; slow forward dolly, no orbit, no lettering, preserve identity and original audio.",
+    "output_options": {
+      "duration": 5,
+      "generate_audio": false
+    },
+    "estimate": {
+      "amount": "0.01",
+      "currency": "USD"
+    },
+    "price_kind": "fixture",
+    "approval": "required",
+    "mode": "contract-fake",
+    "external_calls": 0
+  },
+  "fakeTransport": [
+    {
+      "method": "POST",
+      "url": "https://queue.fal.run/fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+      "body": {
+        "prompt": "Nari in violet coat, watercolor copper observatory at dawn; slow forward dolly, no orbit, no lettering, preserve identity and original audio.",
+        "duration": "5",
+        "enable_safety_checker": true,
+        "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKklEQVR4nGOQc+uhKWIYtWDUglELRi0YtWDUglELRi0YtWDUglELhooFAKkVwC7U5YGHAAAAAElFTkSuQmCC"
+      },
+      "headers": "not recorded; synthetic adapter only"
+    }
+  ],
+  "corrected": {
+    "status": "proposed",
+    "action_id": "f249c780a76a4321a949af7e0024e0c9",
+    "plan_id": "d41df69758914943a560a110966d6318",
+    "plan_revision": 1,
+    "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "role": "video",
+    "prompt": "Nari in violet coat, watercolor copper observatory at dusk; locked camera, no dolly, no orbit, no lettering; original audio preserved.",
+    "output_options": {
+      "duration": 5,
+      "generate_audio": false
+    },
+    "estimate": {
+      "amount": "0.01",
+      "currency": "USD"
+    },
+    "price_kind": "fixture",
+    "approval": "required",
+    "mode": "contract-fake",
+    "external_calls": 0
+  },
+  "oldGrantRejection": {
+    "status": "blocked",
+    "code": "APPROVAL_OR_DEPENDENCY_REQUIRED",
+    "retryable": false
+  }
+}

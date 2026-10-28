@@ -1,0 +1,81 @@
+{
+  "utc": "2026-10-26T02:57:32.754Z",
+  "before": "8ac30524626fcd58457cb62a2616710426e7ec33c1958f3d271bc3dca42a740d",
+  "after": "8ac30524626fcd58457cb62a2616710426e7ec33c1958f3d271bc3dca42a740d",
+  "diagnostic": {
+    "open": false,
+    "detailsVisibility": false,
+    "text": "검증 상세저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+  },
+  "diagnosticOpen": true,
+  "rejected": {
+    "message": "서버가 저장을 거절했습니다. 입력은 보존했습니다. 입력을 확인·수정한 뒤 ‘검토 변경 저장’을 누르세요.",
+    "reason": "독립 QA 모의 거절 — 입력 보존과 다음 행동을 확인합니다.",
+    "pending": false,
+    "saveDisabled": false
+  },
+  "unknown": {
+    "message": "아직 저장 여부를 확인하지 못했습니다. 입력은 보존했습니다. 연결이 돌아오면 아래 ‘기존 저장 확인’으로 같은 요청을 조회하세요. 확인 전에는 새로 제출하지 않습니다.",
+    "reason": "독립 QA 미확정 — 같은 요청을 조회하며 새 제출은 하지 않습니다.",
+    "pending": true,
+    "saveDisabled": true,
+    "calls": [
+      {
+        "method": "POST",
+        "path": "/api/action",
+        "action": "review_take",
+        "forwarded": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/action",
+        "action": "review_take",
+        "forwarded": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/requests/[synthetic-id]",
+        "forwarded": false
+      }
+    ]
+  },
+  "other": {
+    "shot": "02 움직임과 만남",
+    "reason": "합성 테스트. 실제 인물·모델 생성 결과 아님.",
+    "errorHidden": true
+  },
+  "returned": {
+    "shot": "01 빛의 시작",
+    "reason": "독립 QA 미확정 — 같은 요청을 조회하며 새 제출은 하지 않습니다."
+  },
+  "recovered": {
+    "reason": "응답 대기 중 새로 쓴 초안 — 이전 요청 확인으로 지워지면 안 됩니다.",
+    "pending": false,
+    "calls": [
+      {
+        "method": "POST",
+        "path": "/api/action",
+        "action": "review_take",
+        "forwarded": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/action",
+        "action": "review_take",
+        "forwarded": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/requests/[synthetic-id]",
+        "forwarded": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/requests/[synthetic-id]",
+        "forwarded": false
+      }
+    ],
+    "blocked": []
+  },
+  "scope": "controlled browser responses only; all mutation methods intercepted; no real server fault/billing; committed lookup is synthetic; fetch restored"
+}

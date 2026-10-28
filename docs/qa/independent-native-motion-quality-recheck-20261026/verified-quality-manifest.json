@@ -1,0 +1,238 @@
+{
+  "frozen_at_utc": "2026-10-26T19:07:37.812280+00:00",
+  "source": {
+    "action_execution.py": "d0952b1cd194877124e9609a553ab2d8026621ce880712ad0265e3378aa8f4cd",
+    "anthropic_ontology.py": "2f97cd79e6c9b15a6f8d49814647791fd5a13ae0faef36aca788ff1b86e6802f",
+    "app.py": "26615dc7dacd66244b2e3dac2735722046fa7879657ed582c32c2d4cfc1a3580",
+    "chat_models.py": "29a54c95d2fc87645b13f6f13127e9bb5a7f5db33d63328493bf2a293eedef2b",
+    "chat_protocols.py": "e1351a9dea5a32120fd0e24da128cdcb9f75fc88819d2018833ca2b09571b523",
+    "chat_runtime.py": "d7f13645f19b770535990f7cf649b2cb06318ea6a3ff57dff6bcb496af7795f3",
+    "index.html": "25bfab1a9ef92abed34150ac01b2b075036af259fdba2dd97bc0d467df8e768b",
+    "local_creation_tools.py": "263154a41540f15b1b1aa9feaa50627c6c4584c96bfb7f38a1411db43134f7d8",
+    "motion-studio.js": "71e8959f23dc14863c63d619b23420b9d199165e5bd28a01901d391cfa37e40e",
+    "motion_renderer.py": "a83ccb5064d512d9350b37fb3842e2b8349fb1cf826d51c79fdb2c91c4f384e0",
+    "motion_scene.py": "aec910b146d0e04d53c2e5560d312adf16c5985875c66afbb937928acc8529a3",
+    "native/motion_frame_renderer.swift": "a2f41e73a434d57e455729ccf8aad3cc6986c4f9caf1d0fcef7030633835896e",
+    "production_context.py": "40e52d564f6fc45e5fde8c87f3b61de5a6e0e5c44d6920f91a7a6c1a64141563",
+    "production_tools.py": "b3f3e72617bf95964430b2917dae428db456b3eff2bfed3383f0c3ba2818b455",
+    "scripts/native_motion_trial.py": "0c0657e1feeab2dd13bcef3865fdfedf07a8dde5830804658ab282c6d570b52e",
+    "studio-media.js": "ac41a9830a18c9894fdabdf982d1999cc0afa9bf5c613957bc0db7bd9d2832c9",
+    "studio.css": "4c52de6d0f28c5ac1d0259dfa1afe251dc184ebd14802224286c6f41b5db8644",
+    "tests/frontend_async_regressions.cjs": "f3de5d2c7abd866249891c074e45341607e961247dbaac79d79f86071d53d89d",
+    "tests/test_chat_preflight.py": "f99ce69857602f311cd53c5913cb303628365845adad4812e7c9ce71e676cc59",
+    "tests/test_chat_protocols.py": "e79f9db0fe38ec9c17bdbc156f02b8b726bb6bb28f5398a9a317479f92877631",
+    "tests/test_count_diagnostics.py": "b91f0705bdc591131b7b752b7c06c4ee6c2034adcbc08de1cfb8a258fc0b6245",
+    "tests/test_motion.py": "ed65b7f5fdcdbb27214b4262b9e7ec926aaece4e567af8a37f5be93d3f599d8e",
+    "tests/test_motion_ui.py": "2639165a0a6812b4690aea41d4ea240ffb9450c8129cf6f18a8799018474cfc0",
+    "tests/test_strict_wire_schema.py": "302f1df428eb8435a7b2918faee8130a4241ec292f8bc84e91c6cec64f0d2868",
+    "tests/test_timeline_commands.py": "2c273d8a72e9d254a8294350d7f43afe0b006e8ab0bd903a9e021d7d020a7ec9",
+    "tests/test_native_motion_quality.py": "3e23e6aee63b0a38654d25ad05a0a9c41a2b2e380aaf0a866af3de5f31ce15b5",
+    "scripts/native_motion_quality_trial.py": "30862790537ec3d574a06be6fc62bb44187e9972dd32228c8b817dcc7dc94b3e",
+    "scripts/native_motion_approval_clarification.py": "91c62fe539c7ddec033d926ffaf96bcc6c2cceab76744283b832eb94db2bcf24"
+  },
+  "changed_product_files": [
+    "chat_models.py",
+    "local_creation_tools.py",
+    "production_context.py"
+  ],
+  "added_files": [
+    "tests/test_native_motion_quality.py",
+    "scripts/native_motion_quality_trial.py",
+    "scripts/native_motion_approval_clarification.py"
+  ],
+  "frontend_unchanged": true,
+  "prior_source_manifest": "FOLLOWUP-MANIFEST.json",
+  "baseline": "quality-fix/baseline.json",
+  "tests": {
+    "before_counterexamples": {
+      "failed": 2,
+      "total": 2
+    },
+    "new_targeted": {
+      "passed": 10,
+      "total": 10
+    },
+    "final_focused": {
+      "passed": 27,
+      "total": 27
+    },
+    "final_full": {
+      "passed": 403,
+      "total": 403,
+      "non_http": 383,
+      "http": 20,
+      "seconds": 57.951
+    },
+    "nested_not_double_counted": true,
+    "python_ast_pass": true
+  },
+  "provider": {
+    "at": "2026-10-26T19:05:40.481754+00:00",
+    "model": "claude-haiku-5-5",
+    "count_calls": 6,
+    "messages": 6,
+    "previous_closed_motion_messages": 9,
+    "stage_cap_usd": ".10",
+    "this_usage_usd": "0.0061185",
+    "prior_usage_usd": "0.0320001",
+    "total_usage_usd": "0.0381186",
+    "stage_actual_micro": 6120,
+    "total_conservative_micro": 38135,
+    "open_held_micro": 0,
+    "billing_confirmed": false,
+    "output_hashes_verified": 6,
+    "full_public_inputs_rehashable": 3,
+    "private_thinking_redacted": true,
+    "fal_calls": 0,
+    "retries": 0,
+    "records": [
+      {
+        "case": "case-1",
+        "request_id": "req_011CgRMzzVNY3JzQCwj4DceX",
+        "input_sha256": "1f0e9bbd265873d6a7b59eae90d7065bae67a4db16893a0e304c44c4da4c12fb",
+        "output_sha256": "160df183b7fdb7b7de6a46f2baa6cab6be40c4d0f16d2bb8807dd5fd812dfb55",
+        "input_public_rehashable": true,
+        "usage": {
+          "input_tokens": 3179,
+          "output_tokens": 159
+        },
+        "usage_cost_usd": "0.0003974",
+        "path": "docs/qa/native-motion-20261026/quality-fix/live/case-1/turn.json"
+      },
+      {
+        "case": "case-1",
+        "request_id": "req_011CgRN1Cg6WPLBN8LNbZrVD",
+        "input_sha256": "49bf36fc89c86016674741845646d32a74845a6d34d83e79e546e16116df1a2f",
+        "output_sha256": "d4a0a2ff4c236c66323bdda1b0809f250a225ac7a6a5475913df7e3ec6fe163b",
+        "input_public_rehashable": false,
+        "usage": {
+          "input_tokens": 4954,
+          "output_tokens": 1455
+        },
+        "usage_cost_usd": "0.0012229",
+        "path": "docs/qa/native-motion-20261026/quality-fix/live/case-1/turn.json"
+      },
+      {
+        "case": "case-2",
+        "request_id": "req_011CgRN1qCoKSAmxh9nA8GWo",
+        "input_sha256": "587dab881a7af9af237cc6afa3051841b525b5502c69e4a4985fc5b94af0eb57",
+        "output_sha256": "e69d1a415d19c753ce40c157187345b716621397d8f581b61cf27c67debda186",
+        "input_public_rehashable": true,
+        "usage": {
+          "input_tokens": 6709,
+          "output_tokens": 274
+        },
+        "usage_cost_usd": "0.0008079",
+        "path": "docs/qa/native-motion-20261026/quality-fix/live/case-2/turn.json"
+      },
+      {
+        "case": "case-2",
+        "request_id": "req_011CgRN293bYNAue7HVkBpT5",
+        "input_sha256": "bbac858129069907ef4008174275b59994c116fca656fb6ed03c30167c5c5ae9",
+        "output_sha256": "ef852e3f79e9b6ea26786f0cdcd0e444146c861c8fad5d769593cd4f4e7ac50c",
+        "input_public_rehashable": false,
+        "usage": {
+          "input_tokens": 9358,
+          "output_tokens": 567
+        },
+        "usage_cost_usd": "0.0012193",
+        "path": "docs/qa/native-motion-20261026/quality-fix/live/case-2/turn.json"
+      },
+      {
+        "case": "case-2",
+        "request_id": "req_011CgRN2Rhhdk2YRqZPJggUi",
+        "input_sha256": "e2f3c4a5f2b30bf80d346ba3c12a5446bb3e83e4dda58dcbd53da54f16012903",
+        "output_sha256": "67577c53f26e1f350537f98947c7ecb2524dd1b10aeee9325b9931b9e0d181df",
+        "input_public_rehashable": false,
+        "usage": {
+          "input_tokens": 10500,
+          "output_tokens": 974
+        },
+        "usage_cost_usd": "0.001537",
+        "path": "docs/qa/native-motion-20261026/quality-fix/live/case-2/turn.json"
+      },
+      {
+        "case": "final-clarification",
+        "request_id": "req_011CgRNLnCFwLX17XpZdzpX8",
+        "input_sha256": "6bbacfa9875028c8c81a4eeb6ce6ce8aa63a8485884da1b98283dac5ea2db096",
+        "output_sha256": "57dc2246d7be741fee3d06a84da5f3395db66433cfa51a359cc298e24eda0184",
+        "input_public_rehashable": true,
+        "usage": {
+          "input_tokens": 2540,
+          "output_tokens": 1360
+        },
+        "usage_cost_usd": "0.000934",
+        "path": "docs/qa/native-motion-20261026/quality-fix/live/final-clarification/result.json"
+      }
+    ]
+  },
+  "quality": {
+    "scope": "NM-Q01/NM-Q02, synthetic Claude Haiku 5.5 explanation sample, not general model quality",
+    "reviewer": "primary agent manual comparison to actual server records; not independent/user study",
+    "criteria": [
+      {
+        "id": "NM-Q01-record",
+        "result": "PASS sampled",
+        "evidence": "live/case-1/turn.json",
+        "observation": "Existing revision1 actor local-owner, scope local-motion-candidate and scene binding recognized; pending proposal unapproved; ontology null explicitly independent."
+      },
+      {
+        "id": "NM-Q01-version",
+        "result": "initial FAIL; final targeted PASS",
+        "evidence": "live/final-clarification/result.json",
+        "observation": "First answer conflated motion composition application with timeline adoption. Final one-response server-lookup explanation correctly distinguishes them and says Take/audio not prerequisite for candidate rendering."
+      },
+      {
+        "id": "NM-Q01-revalidation",
+        "result": "PARTIAL, residual explanation error",
+        "evidence": "live/final-clarification/result.json",
+        "observation": "Correctly says execution must revalidate and final delivery is not authorized. But unnecessarily cites empty ontology/snapshot/sources as inability to know context match, despite matches_current_context=true. Exact scene record remains authoritative; no execution gate changed."
+      },
+      {
+        "id": "NM-Q02-diff",
+        "result": "PASS sampled",
+        "evidence": "live/case-2/turn.json",
+        "observation": "Correctly explains 0,1,2 → 2,0,1, old/new captions, audio offset0→1 with same version1, and unchanged Take/trim/duration. Does not interpret legacy changes=[] as no timeline changes."
+      },
+      {
+        "id": "NM-Q02-authority",
+        "result": "PASS sampled",
+        "evidence": "live/case-2/turn.json",
+        "observation": "States saved proposal only, applied=false/output_approved=false and human review required. Actual base/source state preserved; no new renderer job."
+      }
+    ],
+    "limits": [
+      "First five responses used actual model tool/result loops. Last response used a real server-invoked scoped lookup, not a new model-selected tool roundtrip.",
+      "Six-response limit exhausted; no seventh response, silent repair, model fallback or claim of perfect explanation.",
+      "Five initial responses predate final two SYSTEM sentences. Last response is final-source explanation sample. Frontend is unchanged; no fresh browser QA."
+    ]
+  },
+  "preservation": {
+    "prior_outputs_screenshots_backup_hashes_unchanged": true,
+    "approval_execution_services_unchanged": true,
+    "canonical_db_touched": false,
+    "previous_stage_journal_rows_overwritten": false
+  },
+  "cleanup": {
+    "live_processes_exited": true,
+    "new_ui_listener_started": false,
+    "http_suite_temporary_listeners_closed": true,
+    "new_browser_session": false,
+    "installs_uploads_deployments": 0
+  },
+  "handoff_documents": {
+    "README.md": "d51800ed32a4461e597cba77f9ac10bc5828dc389adabe38f0a5ce7bdc9894b5",
+    "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md": "7e4281fa519b236f27109af3b7cfeb7ec9ad3d43c7b5cf2e4f0a833c559cab0d",
+    "docs/qa/OMISSION-REGISTER.md": "af1eedcb9039a285add8d8c3485cf1bf73fb3fe425a836d602cb0429db78ec01",
+    "docs/qa/native-motion-20261026/REPORT-ko.md": "fd329dd8b502e5385dc388bfd90987ff8043db1dde101479d46f5db54c829045"
+  },
+  "handoff_completed_at_utc": "2026-10-26T19:09:19.036801+00:00",
+  "evidence_hashes": {
+    "quality-fix/before-counterexamples.log": "b87ab0f0d910b5a6ee05b88d2691a4dd2d2509c13402bbcf37103c0a99b4ebc1",
+    "quality-fix/targeted.log": "eaaa75525be2b355db39da90a300b623464d1d280af021e4bcc1ebb694e43077",
+    "quality-fix/final-focused-corrected.log": "17b2ebc65bf6660b0e10924d483bc4bfaa152ff08d1b03d771471898c5a98c90",
+    "quality-fix/final-full-regression.log": "2c6cc4f61b52591f4100331bfd62c7a5376ef43ea85d6b173fb51b2e702ce4be",
+    "quality-fix/live-provenance.json": "f394355967d1bc0f4398ed98b8d3b1a9684e9d2824fbc39624ca5188b1e00dae",
+    "quality-fix/quality-evaluation.json": "8ab12a462bb47e7572ca0c35ca211ceff815b7bbc40306e50b0070480bc009b0"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "approval": {
+    "model": "claude-haiku-5-5",
+    "workspace_id": "097cb907-7222-46e1-b60d-2839b3a4e195",
+    "project_id": "f4b71377-707c-5f06-ba07-565d88024521",
+    "synthetic_only": true,
+    "expires": 1792933020.075459,
+    "context_hash": "53375c3871b6e7bfc0560d3aa3bd49f206228861155413db91dbd9e4e1ae1f22",
+    "prompt_hashes": [
+      "878111903f7ee1d5fc9664c0cf477918dcf16ab2da43d4e494dbcb89a51839df"
+    ],
+    "price_revision": "haiku-5-5-20261025",
+    "max_rounds": 4,
+    "max_input_tokens": 8192,
+    "max_output_tokens": 4096,
+    "turn_cap_micro": 12000,
+    "stage": {
+      "id": "claude-chat-ui-live-20261025",
+      "cap_micro": 100000
+    },
+    "max_turns": 2,
+    "one_per_prompt": true,
+    "tools": [
+      "search_project_context",
+      "propose_media_plan"
+    ]
+  },
+  "prompt": "합성 Song A의 승인 온톨로지를 도구로 먼저 조회하세요. Mira의 기본 의상과 이 곡 스튜디오 장면의 예외를 구분하고, 모르는 나이는 모른다고 답하세요. Mira가 스튜디오에서 빨간 코트를 입은 장면 한 개를 propose_media_plan으로 검토 전 계획에 저장하세요. 기본 파란 코트 설정은 변경하지 마세요. 최종 답변은 한국어로 출처 ID와 실제 저장된 계획 ID, 검토 전임을 명시하세요. 영상 생성이나 비용 승인은 요청하지 않습니다. 도구 조회의 출처만 근거로 사용하세요.",
+  "prior_usage_usd": "0.0049575",
+  "max_messages": 8,
+  "worst_case_usd": "0.022944",
+  "billing_confirmed": false,
+  "external_media_calls": 0
+}

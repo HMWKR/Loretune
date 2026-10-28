@@ -1,0 +1,102 @@
+{
+  "recorded_at": "2026-10-28T00:26:21.294654+00:00",
+  "source_sha256": {
+    "index.html": "25b0097f47400eb16e24f034eb0f9ce887390e014952507ae511bf8dfb660eed",
+    "studio.css": "19851dcf5e21244fed815beb34cb11967036b44fdf0dc1e0d705b1ae5b29cd54",
+    "tests/timeline_ui_safety.cjs": "e99cf8c8dbf22fedbc2c8d6cb61cb4940cd859c90eebfbc7aa0ae1ba44e3a118",
+    "tests/timeline_motion_overlay.cjs": "a12e952cab6b00cfa6198cdea01dd4a9d4e5689f80c47b2580cc093818292507",
+    "tests/test_timeline_motion_overlay_ui.py": "ae6ea1083a2bf07dae0ac58c468b3f20036f95dec3873cc5bba5b2b9fb7fb1e0"
+  },
+  "observed_commands": [
+    {
+      "command": [
+        "node",
+        "tests/timeline_motion_overlay.cjs"
+      ],
+      "exit_code": 0,
+      "source": "functions.exec exec_command observed chunk249a03",
+      "checks": 12,
+      "scope": "Synthetic DOM/network using actual UI functions and event handlers; no live browser/media claim"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "tests.test_timeline_motion_overlay_ui",
+        "tests.test_timeline_ui_safety",
+        "tests.test_frontend_async",
+        "tests.test_media_async_lifecycle",
+        "tests.test_motion_ui",
+        "tests.test_motion_first_ui",
+        "tests.test_desktop_layout"
+      ],
+      "exit_code": 0,
+      "tests": 10,
+      "duration_seconds": 0.75,
+      "result": "OK",
+      "source": "functions.exec exec_command observed chunk98e76e"
+    },
+    {
+      "command": "node --check for all seven nonempty inline scripts extracted from index.html",
+      "exit_code": 0,
+      "scripts": 7,
+      "source": "functions.exec exec_command observed chunkcf1a7a"
+    }
+  ],
+  "regression_coverage": [
+    "approved immutable motion source and hidden grant",
+    "no internal grant ID in rendered choice labels",
+    "explicit source replacement keeps local timing/offsets",
+    "clear deletes field instead of serializing null",
+    "numeric edits mark dirty without redraw",
+    "unblurred fields captured on save",
+    "range/blank/source errors preserve inputs and withhold mutation",
+    "saved timeline frame URL includes exact version/clip/frame/conversation",
+    "dirty draft blocks saved preview",
+    "late network response ignored after draft change",
+    "late image decode ignored after conversation or selected time changes",
+    "server error shown with editing values retained",
+    "empty/outside frame time blocks network"
+  ],
+  "ui_evidence": {
+    "actual_browser_executed_by_this_worker": false,
+    "actual_PNG_or_video_render_executed_by_this_worker": false,
+    "root_integration_required": true
+  },
+  "detector": {
+    "direct_command_run_by_worker": false,
+    "reason": "Root coordinates single mechanical detector after UI finish",
+    "observed_hook_findings": [
+      {
+        "rule": "side-tab",
+        "location": "studio.css #track span border-left:3px",
+        "scope": "existing before; unchanged by this task"
+      },
+      {
+        "rule": "side-tab",
+        "location": "studio.css .production-review-error border-left:2px",
+        "scope": "existing before; unchanged by this task"
+      },
+      {
+        "rule": "reduced-motion absent",
+        "scope": "index helper names include motion; studio.css existing reduce rules at multiple locations contradict absence"
+      }
+    ]
+  },
+  "failures_preserved": [
+    {
+      "command": "first node tests/timeline_ui_safety.cjs after preview handler insertion",
+      "result": "ReferenceError showTimelineFrame is not defined in legacy slice-only VM fixture",
+      "cause": "Preview handler registration was inserted between legacy sync and clips slice; moved registration to independent handler area; legacy status harness given explicit new dependency stub",
+      "product_api_failure": false,
+      "fixed_verification": "Same existing timeline_ui_safety assertions then passed"
+    }
+  ],
+  "limits": [
+    "Live UI/layout/contrast/keyboard/recording awaits root; mechanical source checks are not visual acceptance",
+    "Actual compositor PNG/media/rights/approval functionality belongs to backend/root verification",
+    "One motion source per clip; no draggable/multitrack UI invented",
+    "Source version changes require explicit selection; newly approved head is not auto-applied"
+  ]
+}

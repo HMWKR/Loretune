@@ -1,0 +1,107 @@
+{
+  "action": {
+    "id": "dc5fe8f7fbd04403b74f2da8c1acff64",
+    "plan_id": "1b285642eecf47828910de9bc0e8a777",
+    "plan_revision": 1,
+    "context_hash": "71d2770643579bb40fa547c8c34d1409c8d6e3af81e54f2501771523e6a4c67c",
+    "context_kind": "media-v1",
+    "role": "video",
+    "release_id": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "inputs": {
+      "prompt": "Nari in teal at copper observatory, watercolor; slow forward dolly, no orbit, no lettering, original audio preserved.",
+      "asset_refs": [
+        {
+          "shot": "장면 1",
+          "take": 1,
+          "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+          "role": "start_frame"
+        }
+      ]
+    },
+    "options": {
+      "shot": "장면 1",
+      "shot_revision": 3,
+      "generation": {
+        "duration": 5,
+        "generate_audio": false
+      },
+      "quote": {
+        "provider": "fal.ai",
+        "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+        "money": {
+          "amount": "0.01",
+          "currency": "USD"
+        },
+        "input_sha256": "aabd64f25740eb01ddc6b213c6fc806964387ab188848c65308087ed04151e64",
+        "kind": "fixture",
+        "price_revision": "synthetic-only",
+        "source": "https://fal.ai/models/fal-ai/kling-video/v2.5-turbo/pro/image-to-video/api",
+        "expires": 1793029515.581141
+      },
+      "output_policy": {
+        "expiration_duration_seconds": 3600,
+        "initial_acl": {
+          "default": "forbid",
+          "rules": []
+        }
+      },
+      "selection_origin": "explicit"
+    },
+    "dependencies": [],
+    "mode": "provider",
+    "connection_id": "fal-model-queue-v1",
+    "hash": "fe7e19198116aec770eab46c6ab4c2f2753be38e4b24b3186ab5ee56b59c4e1e"
+  },
+  "preapproval": {
+    "status": "invalid_arguments",
+    "code": "INVALID_ACTION_REFERENCE",
+    "retryable": true
+  },
+  "receipt": {
+    "status": "accepted",
+    "job_id": "316d3acf-7b6e-4c36-9a81-94063b77880a",
+    "state": "prepared",
+    "mode": "contract-fake",
+    "failure_code": null,
+    "action_id": "dc5fe8f7fbd04403b74f2da8c1acff64",
+    "plan_id": "1b285642eecf47828910de9bc0e8a777",
+    "plan_revision": 1,
+    "release_id": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "grant_id": "9e80b8d7d9e54ee4b4557d8c15b3945d",
+    "external_calls": 0,
+    "provider_completed": false,
+    "result": null,
+    "result_approved": false,
+    "cost": {
+      "reservation_state": "reserved",
+      "estimate": {
+        "amount": "0.01",
+        "currency": "USD"
+      },
+      "actual": null,
+      "billing_confirmed": false,
+      "evidence": null
+    }
+  },
+  "duplicate_job": "316d3acf-7b6e-4c36-9a81-94063b77880a",
+  "payload": {
+    "prompt": "Nari in teal at copper observatory, watercolor; slow forward dolly, no orbit, no lettering, original audio preserved.",
+    "duration": "5",
+    "enable_safety_checker": true,
+    "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKklEQVR4nGOQc+uhKWIYtWDUglELRi0YtWDUglELRi0YtWDUglELhooFAKkVwC7U5YGHAAAAAElFTkSuQmCC"
+  },
+  "payload_hash": "aabd64f25740eb01ddc6b213c6fc806964387ab188848c65308087ed04151e64",
+  "fake_transport": {
+    "method": "POST",
+    "url": "https://queue.fal.run/fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "body": {
+      "prompt": "Nari in teal at copper observatory, watercolor; slow forward dolly, no orbit, no lettering, original audio preserved.",
+      "duration": "5",
+      "enable_safety_checker": true,
+      "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKklEQVR4nGOQc+uhKWIYtWDUglELRi0YtWDUglELRi0YtWDUglELhooFAKkVwC7U5YGHAAAAAElFTkSuQmCC"
+    },
+    "mode": "contract-fake",
+    "network_sent": false
+  },
+  "real_fal_calls": 0
+}

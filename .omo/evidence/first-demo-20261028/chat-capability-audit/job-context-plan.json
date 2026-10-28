@@ -1,0 +1,285 @@
+{
+  "schema": "loretune-job-context-readonly-plan/1",
+  "recorded_at": "2026-10-28T02:17:15.001101+00:00",
+  "agent": "/root/chat_capability_audit",
+  "configured_role": "codebase-explorer",
+  "model_reasoning": "session inheritance; no override requested; actual provider runtime not independently observed",
+  "status": "REPORTED_READONLY_PLAN_NOT_IMPLEMENTED",
+  "methodology_sources": [
+    "AGENT-STATUS-03 docs/design/CHAT-SESSION-PLAN.md:11",
+    "Store.state app.py:285–395",
+    "chat_sessions visibility and ownership source",
+    "actual job schemas and executor source"
+  ],
+  "applied_methodology": "task status traceability; scope-first projection; data minimization; observation provenance distinct from version-bound execution authorization",
+  "non_goals": [
+    "No source/UI/test/MD/registry changes",
+    "No browser/servers/actual DB/API/model/key access",
+    "No new member/worker identity or ACL claim",
+    "No current tool-understanding or production completion claim"
+  ],
+  "source_snapshot": {
+    "production_context.py": {
+      "sha256": "c6f05454e9ea4c85651040fb44161f109488e4545bb88cded98264adfb71c671",
+      "mtime_ns": 1793151687207102270
+    },
+    "app.py": {
+      "sha256": "a298e372bdc39589af7cb861804be796f6c78d6021ba830cc5b023c8bf3573f3",
+      "mtime_ns": 1793153016045704860
+    },
+    "action_execution.py": {
+      "sha256": "d0952b1cd194877124e9609a553ab2d8026621ce880712ad0265e3378aa8f4cd",
+      "mtime_ns": 1793028745946452929
+    },
+    "media_bridge.py": {
+      "sha256": "8b29b8b67d148ba644941a39785ec3b6111c4fa6dec3c7971e3fb265966cf1a3",
+      "mtime_ns": 1792933673771130902
+    },
+    "generation_queue.py": {
+      "sha256": "e49104e58d0606f782deff83623d06b78a0a0969c7a28326d4452aec5bb18ec0",
+      "mtime_ns": 1793100182637654324
+    },
+    "chat_sessions.py": {
+      "sha256": "589946fe3b76cdaaa4bf782a418f43f2c09e29cddf6c8f827a367ee9afec5fea",
+      "mtime_ns": 1793153016044861900
+    },
+    "chat_general.py": {
+      "sha256": "befc5f152123535a5792a1b5086c69cca20f3953e9c95477782506124b5f42d7",
+      "mtime_ns": 1793153335884024021
+    },
+    "chat_runtime.py": {
+      "sha256": "a258ca399b28989c78983d5fef35bfe134794eaef0a5e236487d650b2e7865bf",
+      "mtime_ns": 1793153335884296522
+    },
+    "model_selection.py": {
+      "sha256": "97d8c826626afc93ad65216722f9aa850415a699897ce7b72c50e6f5b1e51925",
+      "mtime_ns": 1792942354015373074
+    },
+    "guided.py": {
+      "sha256": "c21a2f573c2287819e3154adca5a610405411367dfd467953f75829739b99ebd",
+      "mtime_ns": 1792919283278975859
+    },
+    "scene_project.py": {
+      "sha256": "215d970a3c82cd69b915544e7146f99fbbb0e5710422aa6ffa218ef38f62a10e",
+      "mtime_ns": 1793129644981073359
+    },
+    "motion_scene.py": {
+      "sha256": "aec910b146d0e04d53c2e5560d312adf16c5985875c66afbb937928acc8529a3",
+      "mtime_ns": 1793029278534793092
+    },
+    "docs/design/CHAT-SESSION-PLAN.md": {
+      "sha256": "feb68061156ed20ea10eba5f1cc2d5ac9982439b37efcb6630cda0a7ca01b564",
+      "mtime_ns": 1793152829466485841
+    }
+  },
+  "db_map": [
+    {
+      "family": "local render / native motion / optional3D",
+      "table": "jobs(id TEXT PRIMARY KEY,body TEXT)",
+      "primary_sources": [
+        "app.py:247",
+        "app.py:1141",
+        "app.py:1215",
+        "motion_scene.py:107",
+        "scene_project.py:393"
+      ],
+      "scope": "require job.song==name, then explicit job.conversation_id if present and chat_sessions.owner(p,job.id)==current(p); if explicit owner conflicts, fail closed. Existing Store.state uses owner default for legacy; preserve unambiguous default-only compatibility.",
+      "fields": "id,kind(default local-render),status,revision,progress,created,started,finished,sha256,take; local timeline version is job.snapshot.timeline.id (no current top-level timeline_revision field); motion job.motion.id;3D job.scene_revision",
+      "warnings": [
+        "job.download and full snapshot contain paths/context and must not be copied",
+        "kind local-3d-still is PNG still, not MP4",
+        "same grant/existing job receipt is not new execution approval"
+      ]
+    },
+    {
+      "family": "provider video/image, real or synthetic",
+      "table": "generation_jobs(id TEXT PRIMARY KEY,request_key TEXT UNIQUE,digest TEXT,body TEXT)",
+      "primary_sources": [
+        "generation_queue.py:15",
+        "generation_queue.py:25",
+        "generation_queue.py:55",
+        "media_bridge.py:93",
+        "fal_dispatch.py:106"
+      ],
+      "scope": "require context.song==name; if context.action_binding exists require its workspace/project match store.workspace_id/contracts.project_id; require chat_sessions.owner(p,id)==current(p); use job.mode to preserve synthetic/actual distinction",
+      "fields": "id,state,revision,created,updated,context.output_kind,context.shot_revision,context.action_binding.plan_revision,asset_sha256,take; provider progress percentage absent unless explicitly recorded, return null",
+      "warnings": [
+        "receipt/provider request URLs/input/result/submission_binding/quote/cost_evidence must not be bulk-returned",
+        "provider_completed result receipt differs from imported verified platform asset",
+        "cost_confirmed is billing evidence status, not generated-media approval"
+      ]
+    },
+    {
+      "family": "rehearsal media action",
+      "table": "action_jobs(id,workspace,project,body)",
+      "primary_sources": [
+        "action_execution.py:35",
+        "action_execution.py:113",
+        "action_execution.py:137",
+        "action_execution.py:147"
+      ],
+      "scope": "SQL WHERE workspace=? AND project=? then chat_sessions.owner(p,id)==current(p)",
+      "fields": "id,state,mode,action.plan_revision,result.sha256,result.output_slot,result_approved,external_calls; stored revision/progress/created absent",
+      "warnings": [
+        "rehearsal mode is synthetic, not real AI video",
+        "result_approved is this action result review, not final output approval",
+        "rowid only provides per-table insertion order; no global creation-time claim"
+      ]
+    },
+    {
+      "family": "general model conversation",
+      "table": "general_chat_turns(id,project,conversation,body)",
+      "primary_sources": [
+        "chat_general.py:39",
+        "chat_general.py:529",
+        "chat_general.py:320",
+        "app.py:383"
+      ],
+      "scope": "SQL WHERE project=contracts.project_id(w,name) AND conversation=current(p); no prompt/history/answer copying",
+      "fields": "id,status,mode,model,round; revision/progress/created timestamps absent; optionally step_count as count only if needed, not steps content",
+      "warnings": [
+        "public_turn includes prompt/answer/error/steps and is too broad for this summary",
+        "queued/running/awaiting_continuation_approval/outcome_unknown must remain distinct",
+        "running query turn will observe itself; that is processing state, not finished work"
+      ]
+    },
+    {
+      "family": "legacy/synthetic-approved chat",
+      "table": "chat_turns(id,project,body)",
+      "primary_sources": [
+        "chat_runtime.py:15",
+        "chat_runtime.py:215",
+        "app.py:330"
+      ],
+      "scope": "SQL WHERE project=? then (conversation_id or default_id(p))==current(p)",
+      "fields": "id,status,mode,model only; never approved prompt,answer,steps,binding/private protocol",
+      "warnings": [
+        "legacy runtime capability is synthetic-only bounded approved input; not general free-form model support"
+      ]
+    }
+  ],
+  "existing_helpers": [
+    {
+      "source": "chat_sessions.py:100–105 owner/owns/item_owner",
+      "use": "reuse exact default-conversation ownership rather than caller-supplied scope"
+    },
+    {
+      "source": "chat_sessions.py:192 take_visible",
+      "use": "share explicitly approved Take metadata across conversations, separately from job visibility"
+    },
+    {
+      "source": "app.py:373–378 visible_job",
+      "use": "current UI project/conversation filtering reference; do not copy permissive not-p branch into current-project context"
+    },
+    {
+      "source": "action_execution.py:16 project_jobs",
+      "use": "existing project-level composite projection reference, not drop-in truth for new feature",
+      "limitations": [
+        "does not filter conversation itself; app.py:808 adds owns filtering",
+        "drops revision/progress/timestamps",
+        "local3D result is incorrectly labelled output_slot=video in generic projection",
+        "returns grants/cost evidence or whole rehearsal result beyond new allowlist"
+      ]
+    },
+    {
+      "source": "media_bridge.py:93 projection",
+      "use": "provider job state/result SHA semantics; reproject narrow fields because grant/cost evidence exceed needed summary"
+    },
+    {
+      "source": "app.py:449 operations",
+      "use": "local status count reference only; unscoped across projects and contains raw errors; never send unchanged to model"
+    }
+  ],
+  "shared_results_visibility": {
+    "decision": "Keep all job status rows current-conversation only. Provide approved shared media as a distinct optional shared_results projection using chat_sessions.take_visible and latest explicit approved Take review.",
+    "fields": [
+      "shot_id",
+      "take_id",
+      "sha256",
+      "review",
+      "rights_blocked"
+    ],
+    "omit": [
+      "other conversation job ID/status/errors/prompts/grants",
+      "unapproved sibling candidate",
+      "member identity"
+    ],
+    "reason": "A shared approved asset does not authorize disclosing another conversation job/history. Store.state currently filters jobs by owner even when approved Takes are shared."
+  },
+  "minimal_recommendation": {
+    "product_write_set": [
+      "production_context.py helper current_work_status + read result field only"
+    ],
+    "tests_write_set": [
+      "new focused test for work status projection and HTTP context consent; parent coordinates file ownership"
+    ],
+    "schema": "execution_targets.work_status={observed_at,scope:\"current-project-current-conversation\",items:[<=8],truncated,ordering,shared_results(optional <=8),collaboration:{available:false,reason:\"single-local-workspace; no user/team/ACL/presence\"}}",
+    "allowlist_fields": [
+      "id",
+      "kind",
+      "execution_mode",
+      "state",
+      "progress_percent(recorded numeric0..100 else null)",
+      "record_revision(recorded integer else null)",
+      "input_version(type+recorded value else null)",
+      "output_sha256(valid hex64 else null)",
+      "output_registered:boolean",
+      "result_reviewed:boolean",
+      "observed_at"
+    ],
+    "omit_fields": [
+      "asset/download/file paths",
+      "provider endpoint/request ID/receipt",
+      "keys/tokens",
+      "private prompts/answers/steps",
+      "raw error/last_error",
+      "arbitrary result/cost/snapshot/context blobs",
+      "grant IDs",
+      "people/worker identities"
+    ],
+    "ordering_limit": "Hard cap8 items plus truncation metadata. Generalchat/action rows have no comparable created timestamp, so do not claim global newest8 from merged rowids. For smallest read-only patch expose source group ordering with explicit per-source recent insertion semantics and deterministic capped interleaving; alternatively add new-record timestamps as a separately scoped change and mark legacy chronology unknown. Keep counts/truncated transparent so older active work is not silently treated as nonexistent.",
+    "query_semantics": "Existing search_project_context receives this bounded metadata. Its answer must say observed status as of this lookup and requery when user requests current status. Status receipt is not an execution grant or a completed result."
+  },
+  "freshness_and_self_stale": [
+    {
+      "source": "model_selection.py:55 snapshot + guided.py:9 context",
+      "observation": "snapshot hash includes settings/canonical context/shot selected+revision, not DB job state. Do not add work_status to stored p or snapshot."
+    },
+    {
+      "source": "chat_sessions.py:109 shared_fingerprint; app.py:1215–1230",
+      "observation": "local job progress/state updates only jobs rows and their revision; do not rewrite state project for read summary. These updates should not invalidate canonical approval solely because status changed."
+    },
+    {
+      "source": "chat_general.py:189 binding; chat_general.py:606 _current; chat_general.py:289 check_music_context",
+      "observation": "binding revalidates canonical model/context/rights/settings and exact approved body; music_context has its special freshness marker. Do not apply an always-current work_status hash marker: self queued→running or progress changes would stale its own approved continuation."
+    },
+    {
+      "source": "production_tools.py:61–68 snapshot verification; production_tools.py:77 search result",
+      "observation": "Query status is an immutable observation in persisted tool result/continuation consent. Future state changes do not rewrite old results; display as-of timestamp. Any later effect must revalidate its own exact target/version/rights/approval."
+    },
+    {
+      "source": "generation_queue.py:197–220; scene_project.py:468–479",
+      "observation": "Importing a new Take increments project/shot revision and shared state. Result creation may legitimately stale previous canonical execution context; do not exclude this just to keep status chats running."
+    }
+  ],
+  "required_verification_not_run": [
+    "Two projects, two conversations; sibling pending/error/prompt/grant not disclosed; explicitly approved shared Take limited metadata only",
+    "Synthetic local render/motion/3D/provider/general chat statuses preserve exact state and execution mode; malformed missing progress/revision timestamps stay null",
+    "All <=8 plus truncation/ordering facts; no invented global latest chronology",
+    "Key/path/private prompt sentinel values never appear in serialized projection; raw errors not returned",
+    "Actual loopback HTTP search→tool result→separate continuation consent persists snapshot; DB progress changes do not trigger self-stale; canonical version/rights/model change still blocks effects",
+    "Reopen/restart preserves job IDs/status evidence and unknown/cancel semantics; no retry or cost mutation from query",
+    "No people count/presence without identity store; output approval remains distinct from completed/result-approved"
+  ],
+  "actual_execution": {
+    "read_source_only": true,
+    "http_requests": 0,
+    "real_model_calls": 0,
+    "credentials_read": false,
+    "tests_run": false,
+    "code_changes": false,
+    "browser_access": false
+  },
+  "implementation_status": "plan only; parent backend agent currently writing shared files; do not apply concurrent source edits",
+  "whole_platform_complete": false
+}

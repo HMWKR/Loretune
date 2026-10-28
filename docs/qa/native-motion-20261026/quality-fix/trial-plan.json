@@ -1,0 +1,27 @@
+{
+  "model": "claude-haiku-5-5",
+  "endpoint": "https://api.anthropic.com/v1/messages",
+  "count_endpoint": "https://api.anthropic.com/v1/messages/count_tokens",
+  "stage": {
+    "id": "native-motion-quality-20261026",
+    "cap_micro": 100000
+  },
+  "max_messages": 6,
+  "max_input_tokens": 16384,
+  "max_output_tokens": 8192,
+  "max_response_usd": "0.0057344",
+  "max_six_usd": "0.0344064",
+  "aggregate_cap_usd": 50,
+  "prompts": [
+    "현재 합성 작품의 모션 장면을 서버에서 조회해 주세요. 저장된 모션 버전과 대기 중 변경안 각각에 대해 승인 주체, 승인 범위, 적용 버전과 아직 필요한 검토를 한국어로 설명해 주세요. 이 승인이 최종 영상 납품까지 허용하는지와 지금 렌더할 수 있다고 확정할 수 있는지도 구분해 주세요. 온톨로지 유무를 모션 승인 여부와 혼동하지 말고 조회된 근거만 쓰세요. 새 제안·승인·렌더·적용은 하지 마세요.",
+    "현재 타임라인을 조회한 다음 변경안 하나를 저장해 주세요. 세 컷을 3→1→2 순서로 바꾸고, 전체 자막을 0–1초 \"시작\", 1–2초 \"움직임\", 2–3초 \"완성\"으로 교체하세요. 원음 버전1은 유지하고 원곡 시작점을1초로 바꿔 주세요. 각 컷의 Take, trim, duration과 나머지 설정은 유지하세요. 적용·승인·렌더는 하지 마세요. 저장 후 서버가 계산한 영수증을 바탕으로 각 before/after와 그대로인 항목, 현재 적용·출력 승인 상태를 한국어로 설명해 주세요."
+  ],
+  "prompt_hashes": [
+    "b2f0eaadf29908d74dd84f7593a761d4abd5f66c01c6d7b6853ca814c3419ad2",
+    "64f422b49c394c200a77b11a87d8ebc3d06475807dc437f71f47000cae260e85"
+  ],
+  "synthetic_only": true,
+  "retries": 0,
+  "fallbacks": 0,
+  "fal_calls": 0
+}

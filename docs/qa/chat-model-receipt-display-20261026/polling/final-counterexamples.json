@@ -1,0 +1,49 @@
+{
+  "results": [
+    {
+      "name": "current selected GPT and historical Claude remain distinct",
+      "status": "PASS"
+    },
+    {
+      "name": "absent unknown wrong-role and hostile display use honest text only",
+      "status": "PASS"
+    },
+    {
+      "name": "current false only first-line warning; historical facts unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "model-only polling / Grok change",
+      "status": "PASS",
+      "serverRevision": 4,
+      "clientRevision": 4,
+      "serverSelection": "xai-grok-4-7",
+      "clientSelection": "xai-grok-4-7",
+      "initial": "기획 모델: GPT 6 Luna · 작품 기본값 · 다음 요청 기준",
+      "expected": "기획 모델: Grok 4.7 · 작품 기본값 · 다음 요청 기준",
+      "actual": "기획 모델: Grok 4.7 · 작품 기본값 · 다음 요청 기준",
+      "polls": 3,
+      "draftPreserved": true
+    },
+    {
+      "name": "model-only polling / selection cleared",
+      "status": "PASS",
+      "serverRevision": 5,
+      "clientRevision": 5,
+      "serverSelection": null,
+      "clientSelection": null,
+      "initial": "기획 모델: GPT 6 Luna · 작품 기본값 · 다음 요청 기준",
+      "expected": "기획 모델: 미선택 · 모델 설정에서 선택하세요.",
+      "actual": "기획 모델: 미선택 · 모델 설정에서 선택하세요.",
+      "polls": 3,
+      "draftPreserved": true
+    },
+    {
+      "name": "same fresh model update applies when chat progression also changes",
+      "status": "PASS"
+    }
+  ],
+  "passed": 6,
+  "failed": 0,
+  "network": "stubbed fetch; no HTTP"
+}

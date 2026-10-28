@@ -1,0 +1,19 @@
+--- tests/test_chat_live_contract.py before
++++ tests/test_chat_live_contract.py after
+@@ -182,9 +182,14 @@
+         self.assertEqual(self.action('general_chat_cancel',song='A',turn=result['turn']['id'])[0],200)
+         self.provider.message_wait.set();worker.join(10);self.assertFalse(worker.is_alive())
+         project=self.state()['projects']['A'];turn=project['general_chat_turns'][-1]
+-        self.assertEqual(turn['status'],'outcome_unknown');self.assertEqual(turn['usage'],{'input_tokens':100,'output_tokens':100})
++        self.assertEqual(turn['status'],'cancelled');self.assertEqual(turn['usage'],{'input_tokens':100,'output_tokens':100})
++        self.assertEqual(turn['pricing_status'],'priced');self.assertIsNone(turn['answer'])
+         self.assertEqual(project.get('guided_plans',[]),[]);self.assertFalse(turn['billing_confirmed'])
+-        with self.http.store.connect() as c:self.assertEqual(c.execute('SELECT state FROM reservations').fetchone()[0],'estimated')
++        with self.http.store.connect() as c:
++            stored=chat_general.get_row(c,'general_chat_turns',turn['id'])
++            self.assertNotIn('pending_tool',stored)
++            self.assertEqual(c.execute('SELECT state,actual FROM reservations WHERE id=?',(stored['reservation'],)).fetchone(),('estimated',60))
++            self.assertEqual(c.execute('SELECT operation,state FROM provider_attempts WHERE reservation=? ORDER BY operation',(stored['reservation'],)).fetchall(),[('chat-count','observed'),('chat-message','observed')])
+         self.assertFalse(self.http.store.general_chat_runtime.process_next());self.assertEqual(len(self.provider.requests),2)
+     def test_restart_does_not_repeat_interrupted_approved_round(self):
+         p=self.preview();status,result=self.approve(p);self.assertEqual(status,200)

@@ -1,0 +1,540 @@
+{
+  "updated_at": "2026-10-28T04:30:38.331293+00:00",
+  "source": "latest user first/second demonstration request",
+  "scope_preserved": true,
+  "items": [
+    {
+      "id": "D01",
+      "user_task": "빈 프로젝트에서 음원 단독 시작",
+      "screen_and_interaction": "음악 입력",
+      "internal_path": "project/audio/music_structure",
+      "expected_behavior": "사진·3D없이시작",
+      "verification_result": "Actual empty project→own12s music→native3s output/download, before optional photograph. No photo/3D prerequisite.",
+      "evidence": [
+        "rehearsal-case.json",
+        "rehearsal-solo-output.json",
+        "rehearsal-solo-playback.json",
+        "main-demo-case-r3/api-state-output-trace.json",
+        "main-demo-case-r3/music-only-result.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 0,
+          "end_seconds": 36.9
+        }
+      ],
+      "status": "verified_native_demo"
+    },
+    {
+      "id": "D02",
+      "user_task": "사진을선택적으로추가",
+      "screen_and_interaction": "장면제작/파일업로드",
+      "internal_path": "take/select/rights",
+      "expected_behavior": "음원경로에사진강제없음",
+      "verification_result": "Optional photograph added through UI after first music-only output; original music and earlier output retained.",
+      "evidence": [
+        "inputs/provenance.json",
+        "rehearsal-overlay-state.json",
+        "main-demo-case-r3/api-state-output-trace.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 57.4,
+          "end_seconds": 68.3
+        }
+      ],
+      "status": "verified_native_demo"
+    },
+    {
+      "id": "D03",
+      "user_task": "독립타이포생성·미리보기",
+      "screen_and_interaction": "모션원본편집",
+      "internal_path": "motion_propose/frame/review/render",
+      "expected_behavior": "편집원본과MP4후보구별",
+      "verification_result": "Human-authored editable native typography source→actual PNG→approved source/native Take. Not model-authored.",
+      "evidence": [
+        "rehearsal-motion-edited-state.json",
+        "rehearsal-take-comparison.png",
+        "main-demo-case-r3/after-music-only.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 7.5,
+          "end_seconds": 29.4
+        }
+      ],
+      "status": "verified_native_demo"
+    },
+    {
+      "id": "D04",
+      "user_task": "타이포문구·크기·색·위치·시간·움직임수정",
+      "screen_and_interaction": "모션원본폼",
+      "internal_path": "motion_versions/scene",
+      "expected_behavior": "수정새버전·재생성반영",
+      "verification_result": "Source1 restored into new source2; text/font/colour/position/keyframe/end-frame edits previewed, rendered and compared as real two Take videos.",
+      "evidence": [
+        "rehearsal-motion-edited-state.json",
+        "rehearsal-comparison-playback.json",
+        "main-demo-case-r3/actual-take-comparison.json",
+        "main-demo-case-r3/after-music-photo-overlay.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 37,
+          "end_seconds": 57.4
+        }
+      ],
+      "status": "verified_native_demo"
+    },
+    {
+      "id": "D05",
+      "user_task": "기존이미지·영상위타이포겹치기수정",
+      "screen_and_interaction": "타임라인겹치기/저장편집프레임",
+      "internal_path": "timeline/motion_overlay/timeline-frame/renderer",
+      "expected_behavior": "typed승인원본참조와실제RGBA합성",
+      "verification_result": "Actual approved immutable source2 composited over optional photo and existing native video; position/time edits saved and shown as full central frames. Final manual placement separates title/native subtitle.",
+      "evidence": [
+        "rehearsal-overlay-state.json",
+        "rehearsal-overlay-dirty-guard.json",
+        "rehearsal-photo-overlay-before.png",
+        "rehearsal-photo-overlay-after.png",
+        "rehearsal-video-overlay.png",
+        "rehearsal-overlay-output-result.json",
+        "main-demo-case-r2/saved-frame-visibility-inspect.json",
+        "main-demo-case-r2/saved-frame-visibility-1920.png",
+        "main-demo-case-r3/photo-overlay-before.png",
+        "main-demo-case-r3/photo-overlay-after.png",
+        "main-demo-case-r3/video-overlay.png",
+        "frontend/central-frame-preview/driver-acceptance.json",
+        "main-demo-case-r3/preview-output-frame-comparison.json",
+        "main-demo-case-r3/layout-content-review-selection.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 68.28,
+          "end_seconds": 78.02
+        },
+        {
+          "recording": "main-demo-case-r3/first-demo-layout-refinement.mp4",
+          "start_seconds": 0,
+          "end_seconds": 29.31
+        }
+      ],
+      "status": "verified_native_demo"
+    },
+    {
+      "id": "D06",
+      "user_task": "후보비교·선택·권리·검토",
+      "screen_and_interaction": "Take비교/검토",
+      "internal_path": "take/select/review_take/declare_take_rights",
+      "expected_behavior": "선택과승인별개",
+      "verification_result": "Actual two native video Take comparison, explicit selection, rights declaration and separate review through UI.",
+      "evidence": [
+        "rehearsal-comparison-playback.json",
+        "rehearsal-overlay-state.json",
+        "main-demo-case-r3/actual-take-comparison.json",
+        "main-demo-case-r3/api-state-output-trace.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 25.37,
+          "end_seconds": 29.42
+        },
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 52.61,
+          "end_seconds": 57.4
+        }
+      ],
+      "status": "verified_native_demo"
+    },
+    {
+      "id": "D07",
+      "user_task": "컷순서·길이·음원구간·자막편집",
+      "screen_and_interaction": "편집출력",
+      "internal_path": "timeline_versions/editing",
+      "expected_behavior": "저장값과실제영상시간일치",
+      "verification_result": "Three clips reordered/trimmed to3s each, music source1–10s, three subtitles; validated9s/216frames/audio offset correlation .9991288 and decoded subtitle cues.",
+      "evidence": [
+        "rehearsal-overlay-state.json",
+        "rehearsal-overlay-output-result.json",
+        "main-demo-case-r3/actual-output-media-verification.json",
+        "main-demo-case-r3/decoded-embedded-subtitles.srt",
+        "main-demo-case-r3/final-output-verification.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 57.4,
+          "end_seconds": 78.02
+        }
+      ],
+      "status": "verified_native_demo"
+    },
+    {
+      "id": "D08",
+      "user_task": "승인·출력·재생·다운로드",
+      "screen_and_interaction": "출력확인/작업/플레이어",
+      "internal_path": "approve_timeline/estimate/render_job/exports",
+      "expected_behavior": "저장해시·다운로드·실제디코드일치",
+      "verification_result": "Separate human output approval→actual native9s1080p render→platform playback to ended→real download SHA equality. Final timeline5 result is a manual native demo, not AI-generated video.",
+      "evidence": [
+        "rehearsal-solo-output.json",
+        "rehearsal-overlay-output-result.json",
+        "rehearsal-overlay-probe.json",
+        "main-demo-case-r3/music-photo-typography-result.json",
+        "main-demo-case-r3/chat-edited-output-result.json",
+        "main-demo-case-r3/layout-refined-output-result.json",
+        "main-demo-case-r3/final-output-verification.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 78.02,
+          "end_seconds": 97.39
+        },
+        {
+          "recording": "main-demo-case-r3/first-demo-synthetic-chat.mp4",
+          "start_seconds": 20.7,
+          "end_seconds": 41.68
+        },
+        {
+          "recording": "main-demo-case-r3/first-demo-layout-refinement.mp4",
+          "start_seconds": 7.5,
+          "end_seconds": 29.21
+        }
+      ],
+      "status": "verified_native_demo"
+    },
+    {
+      "id": "D09",
+      "user_task": "재열기·서버재시작후이어쓰기",
+      "screen_and_interaction": "reload/편집복원",
+      "internal_path": "SQLite/assets/jobs/manifest",
+      "expected_behavior": "원본·편집·결과보존",
+      "verification_result": "Actual reload and two server replacements preserve editable motion2/audio/allprior timeline versions/results and selected model/effort; final5 opened in normal no-model-configured server.",
+      "evidence": [
+        "rehearsal-before-restart.json",
+        "ai-tool-integration/protocol-verification.json",
+        "main-demo-case-r3/reopen-result.json",
+        "main-demo-case-r3/synthetic-chat-reopen-preservation.json",
+        "main-demo-case-r3/layout-refinement-preservation.json",
+        "main-demo-case-r3/final-server-restart-ui-verification.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 97.39,
+          "end_seconds": 100.3
+        },
+        {
+          "recording": "main-demo-case-r3/first-demo-synthetic-chat.mp4",
+          "start_seconds": 39.74,
+          "end_seconds": 41.68
+        },
+        {
+          "recording": "main-demo-case-r3/first-demo-layout-refinement.mp4",
+          "start_seconds": 26.7,
+          "end_seconds": 29.21
+        }
+      ],
+      "status": "verified_native_scoped_state"
+    },
+    {
+      "id": "D10",
+      "user_task": "선택모델·현재음원/장면/편집문맥·AI설명과도구실행",
+      "screen_and_interaction": "대화전송검토/변경안",
+      "internal_path": "general_chat/production_tools/ledger",
+      "expected_behavior": "합성/실제검증구분",
+      "verification_result": "Actual UI four consent manifests→selectedHaiku/high wire fixture→work-status/current context→typed non-delete edit→immediately unapproved agent-draft4→conditional synthetic answer. Actual Claude understanding/vision/token-fit/billing NOT performed.",
+      "evidence": [
+        "ai-tool-contract-audit/report.json",
+        "ai-tool-integration/completion.json",
+        "chat-capability-audit/report.json",
+        "main-demo-case-r3/synthetic-chat-ui-receipt.json",
+        "main-demo-case-r3/actual-chat-edit-ui-alignment.json",
+        "frontend/agent-draft-refresh/independent-review/report.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-synthetic-chat.mp4",
+          "start_seconds": 0,
+          "end_seconds": 20.7
+        }
+      ],
+      "status": "partially_verified"
+    },
+    {
+      "id": "D11",
+      "user_task": "대화이력·초안·모델선택격리와병행",
+      "screen_and_interaction": "두탭/대화선택",
+      "internal_path": "chat_sessions/CAS/workers",
+      "expected_behavior": "서로다른대화드리프트허용·혼합차단",
+      "verification_result": "Retained earlier real two-conversation/two-tab completion plus latest same-DOM sidebar/draft/model-effort lifecycle and server conversation×model preference guards. Latest full multi-conversation UI workload after sidebar relocation and actual-model concurrency are not claimed.",
+      "evidence": [
+        "../conversation-workflow-20261028/normal-both-completed.json",
+        "agent-actual-desktop-lifecycle.json",
+        "agent-actual-model-effort-and-1440.json",
+        "agent-settings/driver-acceptance.json",
+        "work-status-context/driver-acceptance.json"
+      ],
+      "recording_timecodes": [],
+      "status": "partially_verified"
+    },
+    {
+      "id": "D12",
+      "user_task": "공유타임라인충돌·공통예산",
+      "screen_and_interaction": "두탭/편집/예산",
+      "internal_path": "shared_fingerprint/reservations",
+      "expected_behavior": "오래된승인·예산우회차단",
+      "verification_result": "Latest actual isolated two-tab check preserves a dirty local edit while another tab saves a new head; explicit cancel adopts latest head. Earlier shared-fingerprint/CAS and common-budget tests retained. No final after-state receipt for the old UI shared-timeline-conflict-before case is claimed. Real paid-provider concurrent budget reconciliation/authenticated collaboration remain unverified.",
+      "evidence": [
+        "../conversation-workflow-20261028/shared-timeline-conflict-before.json",
+        "../conversation-workflow-20261028/regression/receipt.json",
+        "synthetic-chat-ui/actual-ui-probe/post-fix/dirty-poll-preservation.json",
+        "../conversation-workflow-20261028/backend-cas/report.json",
+        "agent-settings/driver-acceptance.json"
+      ],
+      "recording_timecodes": [],
+      "status": "partially_verified"
+    },
+    {
+      "id": "D13",
+      "user_task": "취소·timeout·재접속·unknown복구",
+      "screen_and_interaction": "작업취소/상태재조회",
+      "internal_path": "attempts/reservations/recovery",
+      "expected_behavior": "중복전송·비용누락없음",
+      "verification_result": "Known priced cancel/settlement corrected and focused67/48.152s checks preserved; unknown/timeout/malformedusage/wrongmodel/journal failures remain guarded in controlled/local HTTP tests. Actual700ms normal save UI shows saving and retains draft without false unknown banner. Final real server restarts preserve source/history/output; no real-provider timeout/cancel/billing test or exhaustive live recovery claim.",
+      "evidence": [
+        "cancel/legacy-contract-alignment/report.json",
+        "cancel/report.json",
+        "frontend/active-request-presentation-fix/report.json",
+        "agent-normal-save-presentation.json",
+        "frontend/agent-draft-refresh/report.json",
+        "main-demo-case-r3/final-server-restart-ui-verification.json"
+      ],
+      "recording_timecodes": [],
+      "status": "partially_verified"
+    },
+    {
+      "id": "D14",
+      "user_task": "디자인·키보드·포커스·상태",
+      "screen_and_interaction": "핵심화면/편집폼",
+      "internal_path": "tokens/frontend/stateguards",
+      "expected_behavior": "내부진단점진공개·중요결정유지",
+      "verification_result": "Actual1920 all4stages and model1440 lifecycle, keyboard/pointer width and modal focus preserved; saved PNG fullfit at1920/1280/375, original player/time and output/caption return verified. Hallmark HTTP render rawFAIL15/WARN1 retained and state-triaged, not0PASS. Final composition manually separates title and native subtitle. Zoom/screenreader/all-state WCAG/user-task validation remains incomplete; mobile→desktop toggle mouse-locator issue remains observational.",
+      "evidence": [
+        "hallmark-recheck/invocation.json",
+        "frontend/hallmark-render-triage.json",
+        "frontend/select-boundary-fix/report.json",
+        "agent-actual-desktop-lifecycle.json",
+        "agent-actual-model-effort-and-1440.json",
+        "chat-sidebar/cross-modal-focus/report.json",
+        "frontend/central-frame-preview/driver-acceptance.json",
+        "hallmark-agent-http-only/triage/report.json",
+        "main-demo-case-r3/layout-content-review-selection.json"
+      ],
+      "recording_timecodes": [],
+      "status": "partially_verified"
+    },
+    {
+      "id": "D15",
+      "user_task": "실제플랫폼화면연속녹화",
+      "screen_and_interaction": "핵심과업실조작",
+      "internal_path": "CDPscreencast/recording-sidecar",
+      "expected_behavior": "재생가능·시간보존·실패/개입공개",
+      "verification_result": "Three original actual UI recordings encoded/fulldecoded/nativeplayed and root keyframe-reviewed; main100.321s, syntheticchat41.743s, manual layout29.311s. All silent, no edits/speedup/omitted intervals. Earlier failed recordings preserved.",
+      "evidence": [
+        "recording-probe.json",
+        "recorder-validation/recording.json",
+        "main-demo-case/take-01/recording.json",
+        "main-demo-case-r2/take-01/recording.json",
+        "main-demo-case-r2/music-only-result.json",
+        "main-demo-case/partial-failed-take-01.mp4",
+        "main-demo-case-r2/partial-failed-take-01.mp4",
+        "main-demo-observer-sync/result.json",
+        "main-demo-case-r3/recording-native-playback.json",
+        "main-demo-case-r3/chat-recording-native-playback.json",
+        "main-demo-case-r3/layout-recording-native-playback.json",
+        "main-demo-case-r3/content-review-selection.json",
+        "main-demo-case-r3/chat-content-review-selection.json",
+        "main-demo-case-r3/layout-content-review-selection.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 0,
+          "end_seconds": 100.321
+        },
+        {
+          "recording": "main-demo-case-r3/first-demo-synthetic-chat.mp4",
+          "start_seconds": 0,
+          "end_seconds": 41.743
+        },
+        {
+          "recording": "main-demo-case-r3/first-demo-layout-refinement.mp4",
+          "start_seconds": 0,
+          "end_seconds": 29.311
+        }
+      ],
+      "status": "verified_scoped_recordings"
+    },
+    {
+      "id": "D16",
+      "user_task": "AI영상모델호출1차시연이후승인",
+      "screen_and_interaction": "별도승인",
+      "internal_path": "provider/pricing/inputscope",
+      "expected_behavior": "무응답승인아님·phase1실호출0",
+      "verification_result": "First demo server has no configured provider and denies external sockets; user review and per-call-scope authority still required",
+      "evidence": [
+        "server-rehearsal-2/start.json"
+      ],
+      "recording_timecodes": [],
+      "status": "approval_pending"
+    },
+    {
+      "id": "D17",
+      "user_task": "승인후실제AI뮤비/2차녹화/청구연결",
+      "screen_and_interaction": "추후실제생성→편집→출력",
+      "internal_path": "provider/jobs/ledger/artifacts",
+      "expected_behavior": "정해진모델·자료·길이·횟수·최대비용별승인필요",
+      "verification_result": "Actual AI video generation and second recording not authorized/executed",
+      "evidence": [],
+      "recording_timecodes": [],
+      "status": "approval_pending"
+    },
+    {
+      "id": "AGENT-UI-01",
+      "user_task": "All workspace stages and motion/3D dialogs expose one default-open, toggleable, resizable right agent panel",
+      "screen_and_interaction": "shared right shell; modal single-DOM portal",
+      "internal_path": "frontend context/draft/focus/resize lifecycle",
+      "expected_behavior": "Same conversation/model/draft; no duplicate controllers; keyboard and width boundaries",
+      "verification_result": "Actual1920 stage1–4 share one chat DOM and draft; pointer width360→440/max600, keyboard boundaries and motion modal chat/return checked. Separate actual motion/3D card navigation preserves unsaved modal input and arrives with correct focus after native close events. Related16/9.801s and7width checks retained. Main recorded toggling/resizing/settings/reopen confirmed. Not all-state accessibility, real-user usability or complete mobile acceptance.",
+      "evidence": [
+        "chat-sidebar/implementation/report.json",
+        "agent-actual-desktop-lifecycle.json",
+        "agent-actual-model-effort-and-1440.json",
+        "chat-sidebar/cross-modal-focus/report.json",
+        "main-demo-case-r3/reopen-result.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-native-workflow.mp4",
+          "start_seconds": 0,
+          "end_seconds": 4.472
+        }
+      ],
+      "status": "partially_verified"
+    },
+    {
+      "id": "AGENT-TOOLS-02",
+      "user_task": "Selected AI helps recommend assets, review current output, edit/create video, optional3D and general settings",
+      "screen_and_interaction": "Agent composer, tool proposals, actual result preview",
+      "internal_path": "capability-controlled schemas/dispatch; version/approval/rights/cost guards",
+      "expected_behavior": "Metadata vs actual vision, supported execution vs missing tools explicitly differentiated",
+      "verification_result": "Actual right-sidebar4consents/selectedHaiku high synthetic protocol calls work-status and current context then typed overlay+caption edits. Server diff/new unapproved agentdraft4 matches immediate UI; output denied until separate human approval, then actual9s render/play/download/reopen. Current6typed tools do not implement arbitrary video-provider generation,3D controls,general settings,frame/audio vision or external-asset search; actual Claude interpretation/tokenfit/billing not verified.",
+      "evidence": [
+        "main-demo-case-r3/synthetic-chat-ui-receipt.json",
+        "main-demo-case-r3/actual-chat-edit-ui-alignment.json",
+        "main-demo-case-r3/actual-unapproved-chat-output-denied.json",
+        "frontend/agent-draft-refresh/independent-review/report.json",
+        "chat-capability-audit/report.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-synthetic-chat.mp4",
+          "start_seconds": 0,
+          "end_seconds": 41.743
+        }
+      ],
+      "status": "in_progress"
+    },
+    {
+      "id": "AGENT-STATUS-03",
+      "user_task": "Agent can inspect actual work state and later authorized collaborators",
+      "screen_and_interaction": "Compact work context/status",
+      "internal_path": "jobs/source snapshots; future authenticated presence/ACL",
+      "expected_behavior": "No invented participant/presence; expose only confirmed visible work",
+      "verification_result": "Current-project/current-conversation bounded status query exercised through actual selected-model synthetic tool chain; scoped server+independent acceptance. Authenticated collaborators/presence absent.",
+      "evidence": [
+        "work-status-context/driver-acceptance.json",
+        "main-demo-case-r3/synthetic-chat-ui-receipt.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-synthetic-chat.mp4",
+          "start_seconds": 3,
+          "end_seconds": 7.34
+        }
+      ],
+      "status": "partially_verified"
+    },
+    {
+      "id": "AGENT-REASON-04",
+      "user_task": "Configure reasoning by selected model and conversation",
+      "screen_and_interaction": "Model-specific effort control",
+      "internal_path": "server capability table; preferences revision; approved/frozen request body",
+      "expected_behavior": "Only supported values accepted; ongoing request fixed; no silent provider/model fallback",
+      "verification_result": "Server capability/profile18 dedicated checks; actual synthetic HTTP high frozen continuation despite desired medium; actual model token-fit/quality remains unverified",
+      "evidence": [
+        "agent-settings/implementation/completion.json",
+        "agent-settings/implementation/source-freeze.json"
+      ],
+      "recording_timecodes": [],
+      "status": "partially_verified"
+    },
+    {
+      "id": "AGENT-PERM-05",
+      "user_task": "Configure permissions; account deletion always forbidden; other deletion only exact explicit authorization",
+      "screen_and_interaction": "Permission settings and target-specific confirmation",
+      "internal_path": "server-side deny and scoped deletion authorization, not prompt-only",
+      "expected_behavior": "FullAccess never permits account deletion or bypasses cost/rights/transmission/output approval",
+      "verification_result": "FullAccess explicitly saved in UI; allowed edit becomes unapproved draft4. Before human final approval output action is rejected with unchanged job count. Account deletion always denied in tool contract; file deletion API not added and exact authorization remains required for future deletion.",
+      "evidence": [
+        "agent-settings/implementation/completion.json",
+        "agent-settings/driver-acceptance.json",
+        "main-demo-case-r3/actual-unapproved-chat-output-denied.json",
+        "frontend/agent-draft-refresh/report.json"
+      ],
+      "recording_timecodes": [
+        {
+          "recording": "main-demo-case-r3/first-demo-synthetic-chat.mp4",
+          "start_seconds": 1.36,
+          "end_seconds": 14.72
+        }
+      ],
+      "status": "partially_verified"
+    },
+    {
+      "id": "AGENT-DOC-06",
+      "user_task": "Parallel maintained document updates include all user validation methods and unfinished tasks",
+      "screen_and_interaction": "Existing current documentation",
+      "internal_path": "source-preserving incremental update plus read-only document gate",
+      "expected_behavior": "No auto registry/promotion/context regeneration; coverage matrix and actual result distinction",
+      "verification_result": "Latest9 maintained docs cover81 defined subrequirements; original phrases and current-source mapping preserved. Three progress docs accepted. Final demo update and registry/classification/context approval still separate.",
+      "evidence": [
+        "document-update/driver-acceptance.json",
+        "document-update/requirements-coverage.json",
+        "document-update/progress-followup/driver-acceptance.json"
+      ],
+      "recording_timecodes": [],
+      "status": "verified_scoped_documentation"
+    }
+  ],
+  "notes": [
+    "Earlier S850/CS/public Tripo research retained as separate prior evidence; not automatically counted as this demo acceptance.",
+    "No arbitrary canvas drag or multitrack capability claimed.",
+    "Current local-owner permissions are not multiuser authentication acceptance.",
+    "Latest user deletion clarification: account deletion unconditionally forbidden; other file deletion requires explicit permission for exact target and effect, even FullAccess."
+  ],
+  "execution_scope": "Scoped first native UI demo plus explicit synthetic model protocol; not all historical platform acceptance or release",
+  "whole_platform_complete": false,
+  "real_model_calls": 0,
+  "latest_full_regression": "915/573.132 FAILED1 test VM missing draft binding under narrow corrective work; previous full receipts preserved."
+}

@@ -1,0 +1,115 @@
+{
+  "snapshot": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/aethon-motion-tool-recheck-ihr6zdh_/source",
+  "tests": 17,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "seconds": 2.385,
+  "status": "PASS",
+  "targeted_probes": [
+    {
+      "provider": "anthropic",
+      "tool": "propose_motion_scene",
+      "status": "PASS",
+      "fields": {
+        "shot_id": "string",
+        "base_motion_revision": "integer",
+        "scene": "object"
+      },
+      "rejected_cases": 9
+    },
+    {
+      "provider": "anthropic",
+      "tool": "request_motion_render",
+      "status": "PASS",
+      "fields": {
+        "shot_id": "string",
+        "motion_revision": "integer",
+        "grant_id": "string"
+      },
+      "rejected_cases": 9
+    },
+    {
+      "provider": "anthropic",
+      "tool": "propose_timeline_changes",
+      "status": "PASS",
+      "fields": {
+        "description": "string",
+        "timeline_version": "integer",
+        "commands": "array"
+      },
+      "rejected_cases": 9
+    },
+    {
+      "provider": "openai",
+      "tool": "propose_motion_scene",
+      "status": "PASS",
+      "fields": {
+        "shot_id": "string",
+        "base_motion_revision": "integer",
+        "scene": "object"
+      },
+      "rejected_cases": 9
+    },
+    {
+      "provider": "openai",
+      "tool": "request_motion_render",
+      "status": "PASS",
+      "fields": {
+        "shot_id": "string",
+        "motion_revision": "integer",
+        "grant_id": "string"
+      },
+      "rejected_cases": 9
+    },
+    {
+      "provider": "openai",
+      "tool": "propose_timeline_changes",
+      "status": "PASS",
+      "fields": {
+        "description": "string",
+        "timeline_version": "integer",
+        "commands": "array"
+      },
+      "rejected_cases": 9
+    },
+    {
+      "provider": "xai",
+      "tool": "propose_motion_scene",
+      "status": "PASS",
+      "fields": {
+        "shot_id": "string",
+        "base_motion_revision": "integer",
+        "scene": "object"
+      },
+      "rejected_cases": 9
+    },
+    {
+      "provider": "xai",
+      "tool": "request_motion_render",
+      "status": "PASS",
+      "fields": {
+        "shot_id": "string",
+        "motion_revision": "integer",
+        "grant_id": "string"
+      },
+      "rejected_cases": 9
+    },
+    {
+      "provider": "xai",
+      "tool": "propose_timeline_changes",
+      "status": "PASS",
+      "fields": {
+        "description": "string",
+        "timeline_version": "integer",
+        "commands": "array"
+      },
+      "rejected_cases": 9
+    }
+  ],
+  "blocked_operations": [],
+  "network_calls": 0,
+  "provider_calls": 0,
+  "coretext_render_executed": false,
+  "full_suite": false
+}

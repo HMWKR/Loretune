@@ -1,0 +1,262 @@
+{
+  "task_id": "paired-3d-benchmark-inputs-20261028",
+  "attempt": 1,
+  "lifecycle": "REPORTED",
+  "started_at_utc": "2026-10-27T17:01:50.094733+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    ".omo/evidence/paired-3d-benchmark-inputs-20261028/build_inputs.py"
+  ],
+  "cwd": "/Users/leesungmin/Desktop/Loretune",
+  "python": "3.15.0 (main, Oct  9 2026, 11:16:41) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "script_sha256": "652d08ce19fc27de19f0a90db99a088efa97393122cc797025157b64d77e6701",
+  "environment": {
+    "blender_root": "/private/tmp/loretune-blender-x64.jEi6qO/unpacked/blender-5.2.2-linux-x64",
+    "blender_sha256": "bafec183e960819c76fe213c000cdb2284c53a87ef6791812f8728b51f07145b",
+    "tree_sha256": "af43744906a28be0212c2615d204d88396e6cd8b09e6cb2dd7d6610cb050187f",
+    "docker_socket": "/Users/leesungmin/.docker/run/docker.sock",
+    "docker_image": {
+      "Id": "sha256:3d80954520e9890c49c488e3b739fc3aec09d1a87b91fcbdffd3fe481cb8ca51",
+      "Os": "linux",
+      "Architecture": "amd64",
+      "RepoDigests": [
+        "loretune-blender-probe@sha256:3d80954520e9890c49c488e3b739fc3aec09d1a87b91fcbdffd3fe481cb8ca51"
+      ]
+    },
+    "matches_accepted_environment": true,
+    "prior_receipt_sha256": "8a535b3955e0bc87cd3378170bebcf8eb44862ea3c56ef8eadb69d2805e8cf74"
+  },
+  "renderer": {
+    "api": "scene_renderer.render",
+    "product_source_modified": false,
+    "compiler_override": false,
+    "source_before": {
+      "scene_renderer.py": "be41e10eb8bebb43ae8ccc1f33156b3f83c4bddd5f422604707e99d7e9664353",
+      "scene_spec.py": "0f8d421fce90c1fc459ea1e71e9bcad9763db1ac3c7e6749cbd62bb218e2322f",
+      "scene_assets.py": "519c348dfa293b3127d81e015f8393435823ff3ceb537dd10025a3540656c279",
+      "scene_project.py": "388dab110193d79da8dd4178d4cfc8ebbbdc695f0bf19cc9ce2125ffcd5596dc"
+    },
+    "device": "CPU",
+    "engine": "CYCLES",
+    "samples": 4,
+    "seed": 0,
+    "world_rgb_specified": [
+      1,
+      1,
+      1
+    ],
+    "view_transform": "not explicitly set by native compiler; effective Blender default not separately inspected",
+    "png_background": "Measured pixels below; no pure RGB255 claim, no postprocessing.",
+    "source_after": {
+      "scene_renderer.py": "be41e10eb8bebb43ae8ccc1f33156b3f83c4bddd5f422604707e99d7e9664353",
+      "scene_spec.py": "0f8d421fce90c1fc459ea1e71e9bcad9763db1ac3c7e6749cbd62bb218e2322f",
+      "scene_assets.py": "519c348dfa293b3127d81e015f8393435823ff3ceb537dd10025a3540656c279",
+      "scene_project.py": "388dab110193d79da8dd4178d4cfc8ebbbdc695f0bf19cc9ce2125ffcd5596dc"
+    },
+    "background_specification_caveat": "SceneSpec world white was requested, but the unchanged native compiler yielded approximately RGB58 gray at corners. The parent accepted recording the measured result rather than requiring RGB255. The two exact PNGs, without background edits, are the future common inputs."
+  },
+  "rights": {
+    "source": "self-authored deterministic primitive scenes; no third-party input or mesh",
+    "scope": "internal evaluation inputs only",
+    "public_redistribution_permission_granted": false
+  },
+  "comparison": {
+    "common_input": "Pass these exact PNG bytes to each future image-conditioned method.",
+    "ground_truth": "Preserved original SceneSpec; deterministic geometry is not itself an AI reconstruction result.",
+    "native_best": "Must remain a separate condition from common single-image input.",
+    "benchmark_completed": false,
+    "ai_model_outputs": 0,
+    "quality_equivalence_claim": false
+  },
+  "cases": [
+    {
+      "id": "case-1-cube",
+      "scene_path": "case-1-cube.scene.json",
+      "scene_file_sha256": "77f26a49a61be512c460cca06a320cce7ba0eba0189cec7ee96c315d9fe44ad8",
+      "scene_hash": "b2714456971a378ba59deb8544b947544288029a813484f0996c5fb4b8bc7072",
+      "compiled_sha256": "70dac1c0893541bb3a70099d620383d940f881680d0488ebad4ae8344ed49fc6",
+      "primitive_count": 1,
+      "projected_geometry_bounds_px": [
+        114.60858833217091,
+        130.61121331669108,
+        389.77981193132666,
+        407.7560992085982
+      ],
+      "request_id": "93275eb2204e46a8b11e1622a9073eb6",
+      "started_at_utc": "2026-10-27T17:01:50.095501+00:00",
+      "elapsed_seconds": 48.476,
+      "completed_at_utc": "2026-10-27T17:02:38.571074+00:00",
+      "renderer_receipt": {
+        "request_id": "93275eb2204e46a8b11e1622a9073eb6",
+        "sha256": "472c4e8e77d713e5bf8f8f46fc50f99ec468b8c775803e06050be433bd9b9033",
+        "scene_hash": "b2714456971a378ba59deb8544b947544288029a813484f0996c5fb4b8bc7072",
+        "compiler_sha256": "70dac1c0893541bb3a70099d620383d940f881680d0488ebad4ae8344ed49fc6",
+        "image_id": "sha256:3d80954520e9890c49c488e3b739fc3aec09d1a87b91fcbdffd3fe481cb8ca51",
+        "blender_sha256": "bafec183e960819c76fe213c000cdb2284c53a87ef6791812f8728b51f07145b",
+        "width": 512,
+        "height": 512,
+        "kind": "local-3d-still",
+        "assets": [],
+        "external_calls": 0
+      },
+      "output_path": "case-1-cube.png",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "byte_length": 229613,
+        "sha256": "472c4e8e77d713e5bf8f8f46fc50f99ec468b8c775803e06050be433bd9b9033",
+        "corner_rgb": {
+          "top_left": [
+            58,
+            58,
+            58
+          ],
+          "top_right": [
+            62,
+            62,
+            60
+          ],
+          "bottom_left": [
+            57,
+            58,
+            58
+          ],
+          "bottom_right": [
+            59,
+            58,
+            58
+          ]
+        },
+        "foreground_bbox_rgb_difference_gt_10": [
+          114,
+          130,
+          389,
+          407
+        ],
+        "bbox_method": "Observed RGB distance from top-left background; a framing diagnostic, not a quality metric.",
+        "png_decode": "ffmpeg full RGB24 decode succeeded"
+      },
+      "manual_visual_review": {
+        "method": "direct view_image with original image",
+        "reviewed_at_utc": "2026-10-27T17:04:25.888842+00:00",
+        "observation": "파란 큐브의 윗면과 두 옆면이 구분되고 이미지 경계와 떨어져 있다. 대상 잘림이 보이지 않는다.",
+        "framing": "no visible frame-edge clipping in this PNG",
+        "background": "실제 PNG는 어두운 회색 배경이다. SceneSpec background=[1,1,1] 지정과 실제 결과를 구분한다. 원인·effective view transform은 이 실행에서 별도 계측하지 않았다."
+      }
+    },
+    {
+      "id": "case-2-chair",
+      "scene_path": "case-2-chair.scene.json",
+      "scene_file_sha256": "ab0dcb4a2bf36377fafc11855a6395853e32e9becb17a2be206ae50d2fe886e5",
+      "scene_hash": "dd50a83c77af8004fc5490e9c8edbcaf3e66a7fbe041c911b26f6257ca3151ab",
+      "compiled_sha256": "7270dc3d98e56b919077e7ec043a3f6c08bf89402a737020e6c0a3e22fc5c81c",
+      "primitive_count": 6,
+      "projected_geometry_bounds_px": [
+        110.77704332703411,
+        85.9825402172822,
+        403.6382186612405,
+        438.7296947443446
+      ],
+      "request_id": "350bd2a84d5c4fa093e7cfb99355e5f7",
+      "started_at_utc": "2026-10-27T17:02:38.752775+00:00",
+      "elapsed_seconds": 46.576,
+      "completed_at_utc": "2026-10-27T17:03:25.328483+00:00",
+      "renderer_receipt": {
+        "request_id": "350bd2a84d5c4fa093e7cfb99355e5f7",
+        "sha256": "e673407b9000388e4bb4e9cc382f1a91043468665c2170d996bdd21ad526835e",
+        "scene_hash": "dd50a83c77af8004fc5490e9c8edbcaf3e66a7fbe041c911b26f6257ca3151ab",
+        "compiler_sha256": "7270dc3d98e56b919077e7ec043a3f6c08bf89402a737020e6c0a3e22fc5c81c",
+        "image_id": "sha256:3d80954520e9890c49c488e3b739fc3aec09d1a87b91fcbdffd3fe481cb8ca51",
+        "blender_sha256": "bafec183e960819c76fe213c000cdb2284c53a87ef6791812f8728b51f07145b",
+        "width": 512,
+        "height": 512,
+        "kind": "local-3d-still",
+        "assets": [],
+        "external_calls": 0
+      },
+      "output_path": "case-2-chair.png",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "byte_length": 233742,
+        "sha256": "e673407b9000388e4bb4e9cc382f1a91043468665c2170d996bdd21ad526835e",
+        "corner_rgb": {
+          "top_left": [
+            58,
+            58,
+            58
+          ],
+          "top_right": [
+            62,
+            62,
+            60
+          ],
+          "bottom_left": [
+            57,
+            59,
+            58
+          ],
+          "bottom_right": [
+            59,
+            58,
+            58
+          ]
+        },
+        "foreground_bbox_rgb_difference_gt_10": [
+          110,
+          86,
+          403,
+          438
+        ],
+        "bbox_method": "Observed RGB distance from top-left background; a framing diagnostic, not a quality metric.",
+        "png_decode": "ffmpeg full RGB24 decode succeeded"
+      },
+      "manual_visual_review": {
+        "method": "direct view_image with original image",
+        "reviewed_at_utc": "2026-10-27T17:04:25.888989+00:00",
+        "observation": "좌판·등받이와 가는 다리 구조가 보이고 대상 전체가 이미지 경계 안에 있다. 뒤쪽 다리 하나는 좌판·앞쪽 다리에 부분적으로 가려지며 별도의 네 번째 다리 끝이 보인다. 이는 단일 시점의 자연스러운 가림이며 형상 유실 검증을 대신하지 않는다.",
+        "framing": "no visible frame-edge clipping in this PNG",
+        "background": "실제 PNG는 어두운 회색 배경이다. SceneSpec background=[1,1,1] 지정과 실제 결과를 구분한다. 원인·effective view transform은 이 실행에서 별도 계측하지 않았다."
+      }
+    }
+  ],
+  "finished_at_utc": "2026-10-27T17:03:25.510254+00:00",
+  "boundaries": {
+    "native_renders": 2,
+    "external_ai_calls": 0,
+    "model_inference_calls": 0,
+    "weights_downloads": 0,
+    "user_data_access": 0,
+    "product_imports": 0,
+    "production_data_changes": 0,
+    "servers_started": 0,
+    "renderer_postprocessing": 0
+  },
+  "execution": {
+    "shell_exit_code": 0,
+    "native_render_calls": 2,
+    "duplicate_render_starts": 0,
+    "handle": "PTY session 54479; polled until completed, never restarted",
+    "cleanup_checks": [
+      {
+        "request_id": "93275eb2204e46a8b11e1622a9073eb6",
+        "remaining_container_ids": []
+      },
+      {
+        "request_id": "350bd2a84d5c4fa093e7cfb99355e5f7",
+        "remaining_container_ids": []
+      }
+    ],
+    "temporary_publish_stores": "two owned TemporaryDirectory publish roots removed after byte-preserving artifact copy",
+    "servers_started": 0
+  },
+  "artifact_hashes": {
+    "build_inputs.py": "652d08ce19fc27de19f0a90db99a088efa97393122cc797025157b64d77e6701",
+    "case-1-cube.png": "472c4e8e77d713e5bf8f8f46fc50f99ec468b8c775803e06050be433bd9b9033",
+    "case-1-cube.scene.json": "77f26a49a61be512c460cca06a320cce7ba0eba0189cec7ee96c315d9fe44ad8",
+    "case-2-chair.png": "e673407b9000388e4bb4e9cc382f1a91043468665c2170d996bdd21ad526835e",
+    "case-2-chair.scene.json": "ab0dcb4a2bf36377fafc11855a6395853e32e9becb17a2be206ae50d2fe886e5",
+    "render.log": "6745e6f9e2c4e0747cca68afc26c6c7e762c62280fe8db0cb6dda83fe1e96b17"
+  },
+  "manual_review_completed": true
+}

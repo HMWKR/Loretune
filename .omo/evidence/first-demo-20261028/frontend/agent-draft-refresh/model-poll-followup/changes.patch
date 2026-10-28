@@ -1,0 +1,18 @@
+--- before/tests/chat_model_polling.cjs
++++ after/tests/chat_model_polling.cjs
+@@ -4,12 +4,12 @@
+ const slice=(a,b)=>html.slice(html.indexOf(a),html.indexOf(b,html.indexOf(a)));
+ const defer=()=>{let resolve;const promise=new Promise(r=>resolve=r);return{promise,resolve}};
+ function fixture(){
+- const nodes=new Map(),waits=[];let poll,name='A';
++ const nodes=new Map(),waits=[];let poll,name='A',fullDraws=0;
+  const node=k=>{if(!nodes.has(k))nodes.set(k,{textContent:'',innerHTML:'',value:'새 입력 의도',selectionStart:1,selectionEnd:4,closest:()=>null,querySelectorAll:()=>[]});return nodes.get(k)};
+- const c={state:structuredClone(input.before),stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'s',busy:false,dirty:false,song:()=>name,project:()=>c.state.projects[name],modelChatScope:'same',modelChatKey:()=>'same',$:node,esc:s=>String(s??'').replaceAll('<','&lt;'),drawProviderBadge(){},document:{querySelectorAll:()=>[],activeElement:node('#modelChatPrompt')},creatorDiagnostic:()=>'',creatorError:()=>({message:''}),setInterval:f=>poll=f,fetch:()=>{const d=defer();waits.push(d);return d.promise},drawCreationProposals(){},drawGuided(){},drawMediaCreator(){},drawImageConnection(){},drawJobs(){},drawGeneration(){},drawModelSettings(){throw Error('must not redraw unsaved model selections')},refresh:()=>{throw Error('unexpected refresh')}};
++ const c={state:structuredClone(input.before),stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'s',draft:null,busy:false,dirty:false,song:()=>name,project:()=>c.state.projects[name],modelChatScope:'same',modelChatKey:()=>'same',$:node,esc:s=>String(s??'').replaceAll('<','&lt;'),drawProviderBadge(){},document:{querySelectorAll:()=>[],activeElement:node('#modelChatPrompt')},creatorDiagnostic:()=>'',creatorError:()=>({message:''}),setInterval:f=>poll=f,fetch:()=>{const d=defer();waits.push(d);return d.promise},draw(){fullDraws++;throw Error('model-only polling must not perform a full redraw')},drawCreationProposals(){},drawGuided(){},drawMediaCreator(){},drawImageConnection(){},drawJobs(){},drawGeneration(){},drawModelSettings(){throw Error('must not redraw unsaved model selections')},refresh:()=>{throw Error('unexpected refresh')}};
+  vm.createContext(c);vm.runInContext(slice('function chatModelName(','function creatorModelReason(')+slice('function receiptFacts(',"$('#modelChatPrompt').addEventListener"),c);
+  vm.runInContext(slice('setInterval(async()=>{','},1500);')+'},1500);',c);c.drawModelChat();
+- return {c,node,waits,poll:()=>poll(),resolve:(i,value)=>waits[i].resolve({json:async()=>structuredClone(value)}),switch:n=>name=n};
++ return {c,node,waits,poll:async()=>{await poll();assert.equal(fullDraws,0,'model-only and same-head polling must preserve the editor DOM')},resolve:(i,value)=>waits[i].resolve({json:async()=>structuredClone(value)}),switch:n=>name=n};
+ }
+ const results=[];
+ async function test(name,run){await run();results.push({name,status:'PASS'})}

@@ -1,0 +1,29 @@
+[
+  {
+    "command": [
+      "node",
+      "--check",
+      "tests/chat_model_polling.cjs"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.16454,
+    "stdout": "",
+    "stderr": "",
+    "environment_overrides": {}
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "tests.test_chat_model_polling",
+      "tests.test_frontend_async",
+      "-v"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.379616,
+    "stdout": "",
+    "stderr": "test_model_only_polling_and_guards (tests.test_chat_model_polling.ChatModelPollingTest.test_model_only_polling_and_guards) ... ok\ntest_reopen_settings_reads_current_selection_before_opening (tests.test_chat_model_polling.ChatModelPollingTest.test_reopen_settings_reads_current_selection_before_opening) ... ok\ntest_poll_media_storage_regressions (tests.test_frontend_async.FrontendAsyncTest.test_poll_media_storage_regressions) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 1.116s\n\nOK\n",
+    "environment_overrides": {}
+  }
+]

@@ -1,0 +1,11 @@
+--- chat_models.py.before
++++ chat_models.py
+@@ -39,7 +39,7 @@
+  'set_motion_overlay uses an exact source_shot_id and motion_revision, clip-local start/end seconds, and offset_x/offset_y in the original1920x1080 canvas pixels. '
+  'Source frame0 starts at start; end is exclusive, source background is excluded, and source layer motion/alpha/in-out remain. clear_motion_overlay only removes the timeline reference, not the source. '
+  'A reusable immutable source is separate from a current standalone-motion execution grant: a new head does not replace a deliberately referenced older approved source. '
+- 'timeline_diff.motion_overlays is the server-computed before/after placement; human edit review applies a new unapproved timeline and final output still needs its separate approval. '
++ 'timeline_diff.motion_overlays is the server-computed before/after placement. In review mode human edit review applies a new unapproved timeline; in full_access only whitelisted nondelete edits may save a new unapproved agent-draft. Removal still needs individual human review, and both modes require separate final output approval. '
+  'TOOL_SCHEMA_REVIEW_REQUIRED means this run or its approved manifest did not authorize these new commands; start a fresh confirmed request rather than bypassing the boundary. '
+  'Only claim current declared tool capabilities; these overlay tools do not generate3D meshes, provide a drag editor, or prove real model/account/billing readiness.')
+ SYSTEM += (' Agent settings belong to the server and are frozen per logical response. read_only permits lookup tools only; review keeps proposals separate from human application. '

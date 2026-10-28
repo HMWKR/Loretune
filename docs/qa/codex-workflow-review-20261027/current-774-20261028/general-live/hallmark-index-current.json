@@ -1,0 +1,70 @@
+{
+  "summary": {
+    "fails": 3,
+    "reflex": 2,
+    "warns": 1,
+    "waived": 0,
+    "rejected": 0,
+    "answered": 0,
+    "dismissed": 0,
+    "notes": 0,
+    "files": 1,
+    "render": "not run: no puppeteer-core found locally, globally or via HALLMARK_PUPPETEER"
+  },
+  "findings": [
+    {
+      "gate": "26a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "index.html",
+      "line": 1,
+      "evidence": "no :focus-visible styling anywhere",
+      "fix": "A focus ring at 3:1 or better, instant"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "index.html",
+      "line": 1,
+      "evidence": "no overflow-x: clip on html and body",
+      "fix": "overflow-x: clip on both html and body"
+    },
+    {
+      "gate": "63",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "index.html",
+      "line": 23,
+      "evidence": "middle-dot meta string \"24fps · 원곡 48kHz · 클립 오디오 음소거 · 짧은 원곡은 무음으로 채움 선택…\"",
+      "fix": "Line breaks, columns or hairlines; one dot in a byline at most"
+    },
+    {
+      "gate": "26b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "index.html",
+      "line": 1,
+      "evidence": "no :active styling anywhere",
+      "fix": "All eight states; guard: not a form control, no aria-disabled anywhere"
+    },
+    {
+      "gate": "26b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "index.html",
+      "line": 1,
+      "evidence": "no :disabled styling anywhere",
+      "fix": "All eight states; guard: not a form control, no aria-disabled anywhere"
+    },
+    {
+      "gate": "F23",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "index.html",
+      "line": 1,
+      "evidence": "the document lacks a meta description",
+      "fix": "Name the language, title the page in its own words, and describe it in one sentence for link previews"
+    }
+  ]
+}

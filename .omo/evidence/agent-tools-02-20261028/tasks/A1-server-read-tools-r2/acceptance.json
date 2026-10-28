@@ -1,0 +1,31 @@
+{
+ "task": "A1-server-read-tools",
+ "attempt": 2,
+ "at": "2026-10-28T09:23:55.885107+00:00",
+ "state": "ACCEPTED",
+ "acceptance_owner": "lead (main)",
+ "critic_pass": true,
+ "critic_tests_rerun": "All commands ran from /Users/leesungmin/Desktop/Loretune with PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/opt/python@3.15/bin/python3.15 -B.\n(1) PYTHONPATH=tests -m unittest tests.test_fal_multimodel tests.test_execution_context tests.test_action_tool_bridge tests.test_rehearsal_workflow tests.test_chat_runtime tests.test_production_tools tests.test_general_chat_tool_invariants tests.test_general_chat_estimate tests.test_chat_preflight -q gave 'Ran 91 tests in 16.779s / OK'.\n(2) PYTHONPATH=tests -m unittest $(cat related-modules.txt) $(cat extra-modules.txt) -q gave 'Ran 564 tests in 277.490s / OK', with 0 FAIL or ERROR lines.\n(3) Runtime mutation probe (scratchpad/probe/mutants.py, method sources patched with exec, no files edited): the new estimate tests gave baseline (0,0,2), no_stale (1,0,2) and no_adapter (1,0,2). The video HTTP test gave baseline (0,0,1), no guard (2,0,1) and no visibility clause (1,0,1). The invariants module gave baseline (0,0,9) and (1,0,9) with request_media_generation appended to LEGACY_DEFAULT_TOOLS.\n(4) Edge probe (scratchpad/probe/edges.py), each row as status, total, excluded counts:\n- empty plan: incomplete, None, all 0.\n- shot revision bump: incomplete, stale=1.\n- stale+expired item plus a valid one: estimated 0.01, stale=1.\n- all held: incomplete, held=1.\n- not_connected+expired: incomplete, not_connected=1.\n(5) measure_token_budget.py <root> x for r2 and wave0 matched the recorded measure-r2.json and measure-wave0.json byte for byte: descriptions 498/189, bodies 17149/7662, continuation 18564.\n(6) Regenerated the diff of before-r2 against the current files for the 3 modules and 3 tests: it is identical to r2.diff. The other write-set modules (chat_general, agent_preferences, app, production_tools) match before-r2 under cmp. before-r2's test_chat_preflight.py equals the wave0 pristine copy.",
+ "write_set_violations": [],
+ "carried_minor_issues": [
+  "[minor] Under '남은 빈칸' result.md says estimate's stale check covers only the media snapshot, so a change to plan context alone could leave an action marked valid [추정]. That is wrong, and it overstates the gap. media_snapshot is snapshot(project) with only the chat selection removed. snapshot includes guided.context(p) (music, snapshot, ontology), which is the input to plan['context_hash'], and includes the revision of every shot. Any plan-context or shot-revision change therefore already marks the action stale.",
+  "[minor] The fix to test_chat_preflight builds its expected body from self.runtime.limits()['tools'], which comes from the code under test. If the legacy default regressed and re-added request_media_generation, preflight would still pass. Only the pin test in test_general_chat_tool_invariants would catch it. The expectation is self-referential, although the byte-boundary assertions are kept.",
+  "[minor] Cross-track citation drift. Inserting LEGACY_DEFAULT_TOOLS shifted chat_runtime.py down 3 lines. The D1-frame-observation-design-r2 result (written 17:43, after the r2 edit at 17:38) cites chat_runtime.py:175 and :331-332 using the old numbering. The cited content is now at :178 and :333-334.",
+  "[minor] The shortened descriptions dropped clauses that disambiguate before a call, such as 'Scoped snapshot, not semantic search.' and 'Catalog only; not proof of a live connection.'. The justification is that result fields (search_mode/note, live_execution=False) carry the same information, but the model only sees those after it has chosen and called the tool. The defect brief asked for exactly this kind of trim, so this complies. The effect on model behavior was not measured, and the worker marks this as an assumption."
+ ],
+ "source_sha256": {
+  "chat_general.py": "2844fc07f4621b61c5d80dee18456e7b1baea3a25745ae2d6bad02da1830e29d",
+  "agent_preferences.py": "85e94a9dfc589b9dea96edca593f65ed4a3a4a0c5331ad851a2c5cdb38c0aea4",
+  "app.py": "452ec4f2d13275ee15fb1b4ba09327cff18ce4d76f56c514099ba8b85bcab8c7",
+  "fal_dispatch.py": "4e2ff2f013e4d8a4e930b0c435037fffa983a108b689c09e82e493bb0754e3b0",
+  "production_tools.py": "419369668d178487e1e8be72c71923a228636efaa55e91a957c3a48435d5d716",
+  "chat_runtime.py": "1f03a74ad7e7cd0f317d23e898c14efcc7ca20512daf62a34550e7a49a7e444e",
+  "chat_protocols.py": "8b0520860e2723a590dfe5444bedce6f7c9f5385cf70495f4d5310566029df5a",
+  "tests/test_general_chat_tool_invariants.py": "a7189ce701839f3bedc177321759cecb83c29094a1d10a70039b972b63909c39",
+  "tests/test_general_chat_job_query.py": "ad15842b19ce41e4a13f3d167e5ee115e292daa284cdc166c0ec096451878ab1",
+  "tests/test_general_chat_estimate.py": "2d8ed88452804c1016d9f0b63c51ef8f1c0029e3f4c86aba0693000f8d3a4dcf",
+  "tests/test_agent_preferences.py": "886996274d428e928275a5b21cfd921eba76d2b1cf4fb9a6b3acdf825bff9782",
+  "tests/test_chat_preflight.py": "b9da43920438d2e4ffedc498fd356b10d174a240f1ff14712b342b4cf49adf68"
+ },
+ "note": "Accepted for integration; carried issues are defects assigned to wave 2 (A2a/A2b/B2/S14) — not closed. Full regression pending (S14)."
+}

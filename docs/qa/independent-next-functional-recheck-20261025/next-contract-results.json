@@ -1,0 +1,374 @@
+[
+  {
+    "case": "valid",
+    "status": "pass",
+    "expected": [
+      "claimed",
+      "reserved"
+    ],
+    "job": "claimed",
+    "reservation": [
+      "reserved",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "chat-only",
+    "status": "pass",
+    "expected": [
+      "claimed",
+      "reserved"
+    ],
+    "job": "claimed",
+    "reservation": [
+      "reserved",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "video-change",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": true,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "shot-change",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": true,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "foreign-asset",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "wrong-hash",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "missing-rights",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "forged-rights-flag",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "revoked-rights",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "changed-bytes",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "symlink",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "missing-file",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "price-change",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "grant-revoke",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "job-input-tamper",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "job-model-tamper",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "job-options-tamper",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "job-context-kind-tamper",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "grant-money-tamper",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "foreign-job",
+    "status": "pass",
+    "rejected": true,
+    "original_job": "prepared",
+    "reservation": "reserved"
+  },
+  {
+    "case": "unknown-then-rights-revoke",
+    "status": "pass",
+    "expected": [
+      "outcome_unknown",
+      "uncertain"
+    ],
+    "job": "outcome_unknown",
+    "reservation": [
+      "uncertain",
+      null
+    ],
+    "media_context_changed": false,
+    "actual_external_calls": 0
+  },
+  {
+    "case": "dependency-valid",
+    "status": "pass",
+    "expected": [
+      "claimed",
+      "reserved"
+    ],
+    "job": "claimed",
+    "reservation": [
+      "reserved",
+      null
+    ]
+  },
+  {
+    "case": "dependency-revoked-rights",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ]
+  },
+  {
+    "case": "dependency-unapproved",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ]
+  },
+  {
+    "case": "dependency-changed-result",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ]
+  },
+  {
+    "case": "dependency-foreign-result",
+    "status": "pass",
+    "expected": [
+      "blocked",
+      "cancelled"
+    ],
+    "job": "blocked",
+    "reservation": [
+      "cancelled",
+      null
+    ]
+  }
+]

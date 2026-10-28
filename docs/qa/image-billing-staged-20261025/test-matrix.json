@@ -1,0 +1,163 @@
+[
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_real_adapter_contract_registers_unapproved_take_and_same_action_receipt",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_concurrent_admit_and_worker_only_submit_once",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_revoked_rights_grant_and_changed_media_block_before_submit",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_chat_handoff_does_not_invalidate_media",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_unknown_submit_survives_restart_without_reissue",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_cancel_before_submit_only_and_post_submit_never_deletes",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_provider_failure_and_cancelled_are_terminal_but_not_free",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_wrong_dimensions_or_truncation_never_publish_asset",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_role_scope_and_human_gate_not_model_flags",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_payload_and_output_security_boundaries",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_image_denied_download_cannot_use_legacy_resume_endpoint",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_result_registration_rollback_is_recoverable_same_request_no_auto_submit",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_image_http_faults_redirect_and_body_boundaries_are_bounded",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_runway_image_pipeline.py::ImagePipelineTest.test_api_credential_only_on_exact_host_and_never_saved",
+    "status": "pass",
+    "evidence_class": "synthetic HTTP/real SQLite+filesystem",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_estimate_never_settles_then_exact_billed_record_settles_once",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_concurrent_record_never_double_charges",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_identity_and_numeric_validation_fail_without_mutation",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_changed_record_is_conflict_not_invented_refund",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_nano_precision_retained_with_conservative_local_rounding",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_late_charge_after_verified_unsubmitted_marks_disputed",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_fixture_cannot_authenticate_real_billing_and_record_does_not_copy_secrets",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_unknown_or_missing_receipt_never_releases",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  },
+  {
+    "test": "tests/test_provider_billing.py::BillingTest.test_overspend_record_does_not_claim_provider_budget_enforcement",
+    "status": "pass",
+    "evidence_class": "synthetic recorded provider billing",
+    "actual_provider_calls": 0,
+    "evidence": "full-regression-final.log"
+  }
+]

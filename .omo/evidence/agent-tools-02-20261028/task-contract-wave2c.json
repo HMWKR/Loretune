@@ -1,0 +1,23 @@
+{
+  "wave": "2c",
+  "written_before_spawn": "2026-10-28",
+  "source_verdicts": ["tasks/SRV-r2/verdict-wave2b.json", "tasks/UI-r2/verdict-wave2b.json", "tasks/D1-r4/verdict-wave2b.json"],
+  "tracks": {
+    "SRV-r3": "SRV-r2 serious (in-turn paging overflow) + all 6 minors + result.md §4 items 1-4",
+    "UI-r3": "UI-r2 6 minors (render-only item stays with lead S14)",
+    "D1-r5": "D1-r4 5 minors"
+  },
+  "lead_decisions": [
+    "Budget is per turn, not per page: before a tool result would push the next continuation body past a safety margin under 65,536B, return a structured CONTEXT_BUDGET_EXHAUSTED result with bytes left and next_query for a NEW turn. Never let a model-followed next_query lock the conversation.",
+    "Pre-send over-cap rejection (encode_body refuses before any byte is written to the provider socket) must not leave the conversation as outcome_unknown: nothing was transmitted, so end the turn in a recoverable state and release the reservation, proven by a test that asserts zero provider writes. If ledger semantics make this unsafe, stop and report evidence instead of inventing a path.",
+    "General search_project_context lists (shots, actions, plans) get the same explicit truncation count + next_query treatment.",
+    "Pending scene proposals beyond 10 per scene: no new model fetch path (the model never approves; humans review in Scene Studio). Keep the count + omitted flag and say so in the result.",
+    "Pending preference candidates with different values: cap open candidates (default 10, same as the scene pending limit) with a structured refusal; reversible default.",
+    "locked_fields re-check stays out of scope (needs a new lock store) and remains a user-decision defect.",
+    "OpenAI strict tool schemas: move minLength/maxLength into the description via a wire transform like anthropic_wire_schema; do not send unsupported keywords.",
+    "UI: index.html:418 and scene-studio.js:154 notices are removed/condensed and their test expectations updated in the same task (user approved structural fixes for all 52 confirmed findings).",
+    ".lt-cost-facts is only for real cost/transmission facts; non-cost scope notes move to muted text or disclosure; real warnings use the warning token.",
+    "Stray __pycache__ .pyc writes: not deleted (deletion needs explicit user permission); recorded as a finding; workers must make every subprocess they spawn inherit -B / PYTHONDONTWRITEBYTECODE=1."
+  ],
+  "forbidden": ["real model/provider/paid calls", "count_tokens", ".env", "servers on 8765/57888", "browser automation", "deleting files", "registration/promotion of documents"]
+}

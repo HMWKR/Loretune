@@ -1,0 +1,84 @@
+[
+  {
+    "id": "ASY01",
+    "status": "FAIL",
+    "error": "late older poll regressed state.revision\n\n2 !== 3\n",
+    "observed": {
+      "afterNewer": 3,
+      "afterLateOlder": 2,
+      "drawRevisions": [
+        3,
+        2
+      ],
+      "source": "index.html:564"
+    }
+  },
+  {
+    "id": "ASY02",
+    "status": "FAIL",
+    "error": "poll that started idle overwrote current state while busy\n\n2 !== 3\n",
+    "observed": {
+      "expectedRevision": 3,
+      "actualRevision": 2,
+      "busy": true,
+      "dirty": true,
+      "drawRevisions": [
+        2
+      ],
+      "source": "index.html:564"
+    }
+  },
+  {
+    "id": "MED02",
+    "status": "FAIL",
+    "error": "terminal ended media leaves playing UI/RAF active",
+    "observed": {
+      "details": [
+        {
+          "name": "current play rejection",
+          "label": "영상 재생이 차단됐습니다.",
+          "button": "편집 재생",
+          "frames": 0
+        },
+        {
+          "name": "waiting stalls clock and resumes",
+          "time": 1,
+          "frames": 0
+        },
+        {
+          "name": "ended delta 0",
+          "duration": 3,
+          "time": 2.95,
+          "button": "일시 정지",
+          "frames": 1,
+          "canonicalUnchanged": true
+        },
+        {
+          "name": "ended delta 0.025",
+          "duration": 2.975,
+          "time": 2.9250000000000003,
+          "button": "일시 정지",
+          "frames": 1,
+          "canonicalUnchanged": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "STO02",
+    "status": "FAIL",
+    "error": "startup recovery visibility throws when storage access denied\n+ actual - expected\n\n+ {\n+   message: 'synthetic storage denied',\n+   name: 'SecurityError'\n+ }\n- 'graceful'\n",
+    "observed": {
+      "startup": {
+        "name": "SecurityError",
+        "message": "synthetic storage denied"
+      },
+      "submit": {
+        "name": "SecurityError",
+        "message": "synthetic storage denied"
+      },
+      "requests": 0,
+      "source": "index.html:264,284,310"
+    }
+  }
+]

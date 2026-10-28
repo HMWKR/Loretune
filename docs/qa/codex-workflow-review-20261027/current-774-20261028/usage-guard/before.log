@@ -1,0 +1,78 @@
+test_missing_chat_table_keeps_existing_ledger_behavior (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_missing_chat_table_keeps_existing_ledger_behavior) ... 127.0.0.1 - - [28/Oct/2026 01:48:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:41] "POST /api/action HTTP/1.1" 200 -
+ok
+test_persistent_failure_blocks_other_conversation (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_persistent_failure_blocks_other_conversation) ... 127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state?song=A&conversation=60fe9b069c6e43abb6cab77145f702f2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state?song=A&conversation=60fe9b069c6e43abb6cab77145f702f2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:42] "POST /api/action HTTP/1.1" 200 -
+FAIL
+test_persistent_failure_blocks_same_scope_generation (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_persistent_failure_blocks_same_scope_generation) ... 127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "POST /api/action HTTP/1.1" 200 -
+FAIL
+test_unrelated_scope_and_normal_reserved_hold_are_not_blocked (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_unrelated_scope_and_normal_reserved_hold_are_not_blocked) ... 127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:48:43] "POST /api/action HTTP/1.1" 200 -
+ok
+
+======================================================================
+FAIL: test_persistent_failure_blocks_other_conversation (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_persistent_failure_blocks_other_conversation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_scope_journal_guard.py", line 61, in test_persistent_failure_blocks_other_conversation
+    self.assertEqual(status, 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 400
+
+======================================================================
+FAIL: test_persistent_failure_blocks_same_scope_generation (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_persistent_failure_blocks_same_scope_generation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_scope_journal_guard.py", line 71, in test_persistent_failure_blocks_same_scope_generation
+    with self.assertRaises(ledger.BudgetExposureBlocked):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: BudgetExposureBlocked not raised
+
+----------------------------------------------------------------------
+Ran 4 tests in 3.213s
+
+FAILED (failures=2)

@@ -1,0 +1,88 @@
+test_preview_tolerates_sibling_revision_and_stays_private (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_preview_tolerates_sibling_revision_and_stays_private) ... 127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "PATCH /v1/workspaces/94cc70cc-4b76-433e-bdc6-5357a72e6cc7/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "POST /api/action HTTP/1.1" 409 -
+FAIL
+test_approval_tolerates_sibling_revision_and_replay_reserves_once (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_approval_tolerates_sibling_revision_and_replay_reserves_once) ... 127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "PATCH /v1/workspaces/a396c9b8-20fc-4ce4-a1e0-c6f2813a4e90/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state?song=A&conversation=b99be12ba1f04319be0ea7f586f1d8b6 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 409 -
+FAIL
+test_queued_cancel_tolerates_sibling_revision_and_releases_once (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_queued_cancel_tolerates_sibling_revision_and_releases_once) ... 127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "PATCH /v1/workspaces/b789ff46-a85c-4d9f-89c7-9400393ae03f/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state?song=A&conversation=25b22179dfa64466966d168586b30198 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:05] "POST /api/action HTTP/1.1" 409 -
+FAIL
+
+======================================================================
+FAIL: test_preview_tolerates_sibling_revision_and_stays_private (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_preview_tolerates_sibling_revision_and_stays_private)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_conversations.py", line 73, in test_preview_tolerates_sibling_revision_and_stays_private
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 200 : {'error': '다른 화면에서 변경되었습니다. 새로고침 후 다시 시도하세요.'}
+
+======================================================================
+FAIL: test_approval_tolerates_sibling_revision_and_replay_reserves_once (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_approval_tolerates_sibling_revision_and_replay_reserves_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_conversations.py", line 85, in test_approval_tolerates_sibling_revision_and_replay_reserves_once
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 200 : {'error': '다른 화면에서 변경되었습니다. 새로고침 후 다시 시도하세요.'}
+
+======================================================================
+FAIL: test_queued_cancel_tolerates_sibling_revision_and_releases_once (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_queued_cancel_tolerates_sibling_revision_and_releases_once)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_conversations.py", line 102, in test_queued_cancel_tolerates_sibling_revision_and_releases_once
+    self.assertEqual(status, 200, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 409 != 200 : {'error': '다른 화면에서 변경되었습니다. 새로고침 후 다시 시도하세요.'}
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.739s
+
+FAILED (failures=3)

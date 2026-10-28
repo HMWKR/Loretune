@@ -1,0 +1,177 @@
+{
+  "schema": "native-workflow-benchmark-and-color-fix/1",
+  "task_id": "music-native-workflow-benchmark-20261028",
+  "status": "REPORTED",
+  "recorded_at": "2026-10-27T18:20:02.085864+00:00",
+  "agent_type": "worker",
+  "configured_model_and_reasoning": "Inherited parent session; actual provider/model not independently measured",
+  "ownership": {
+    "product": [
+      "native/motion_frame_renderer.swift",
+      "tests/test_native_motion_color.py"
+    ],
+    "evidence": ".omo/evidence/music-workflow-benchmark-20261028",
+    "temporary_data": "/tmp/loretune-native-music-benchmark-yl8hnchu"
+  },
+  "methodology_sources": [
+    "07_Chat_Directed_Multimodel_Production_Spec.md section14.1",
+    "docs/qa/codex-workflow-review-20261027/REPORT-ko.md S774",
+    "Installed harness-core:feature-verification and runtime/live-feature-verify/uncompromising-rigor",
+    "Installed harness-andrej-karpathy-skills:karpathy-guidelines and runtime"
+  ],
+  "applied_methodology": "Deterministic real HTTP task workflow, before/edited/corrected artifacts with controlled input and timing, failing color contract tests before minimal fix, source/approval/cache provenance, failure and recovery traces",
+  "verification_standard": "Actual HTTP persisted actions, real native motion candidates, 30s12cut1080p24 MP4 decode and exact subtitles/audio, immutable prior assets/outputs, denied stale approvals/rights and restored downloads; current-source actual PNG for opaque/alpha/Korean text",
+  "non_goals": [
+    "No actual AI provider or key/environment-file/user-data access",
+    "No real creator photo or subjective commercial-quality comparison",
+    "No whole original07 dataset or auth/organization acceptance",
+    "No browser/real-user test or production throughput claim",
+    "No document/registry/context changes or whole-suite rerun"
+  ],
+  "source_changes": {
+    "native/motion_frame_renderer.swift": {
+      "before_sha256": "a2f41e73a434d57e455729ccf8aad3cc6986c4f9caf1d0fcef7030633835896e",
+      "after_sha256": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d",
+      "change": "Exactly one CGColor constructor expression, explicit sRGB colorSpace matching existing sRGB bitmap"
+    },
+    "tests/test_native_motion_color.py": {
+      "sha256": "d9158bad5ebb5e599aabd4a15c41f8e49d59d7c267266f146241824954670b00",
+      "change": "New real Mac rasterizer contract tests"
+    }
+  },
+  "artifacts": {
+    "before": "attempt3/before.mp4",
+    "edited": "attempt3/after.mp4",
+    "corrected_edited": "corrected/corrected.mp4",
+    "before_edited_receipt": "attempt3/REPORT.json",
+    "color_corrected_receipt": "corrected/REPORT.json",
+    "controlled_color_probe": "color-probe/receipt.json"
+  },
+  "outputs_sha256": {
+    "before": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f",
+    "edited": "89608c3ed0002dca753d1cc733f993110aaffc343ff492e771d05cb8048bef63",
+    "corrected_edited": "4f40c79ecfa23665d096fd8fea39790bff1d767b0580d8ce5c38c963d248e349"
+  },
+  "workflow": {
+    "dataset": "30s48000Hz440Hzself-authoredWAV,12shotIDs,2native3sclipsreused,12x2.5s cuts, optionalself-authoredgreenimage",
+    "before_edited_checks": 32,
+    "before_edited_failed_checks": 0,
+    "corrected_checks": 28,
+    "corrected_failed_checks": 0,
+    "timings_seconds_local_only": {
+      "native_initial": [
+        4.852086,
+        8.232964
+      ],
+      "final_before": 4.146727,
+      "final_edited": 3.93284,
+      "native_corrected": [
+        4.893876,
+        4.827844
+      ],
+      "final_corrected": 3.796804,
+      "offline_backup_restore": 0.08182658301666379
+    },
+    "audio": "Before and edited decoded PCM SHA equal; corrected PCM equals edited. Actual440Hz~439.9643Hz, RMS~5653.17",
+    "frame_checks": "12cutcenter colors before/edited; all720 corrected decoded frames match60frame cut boundaries and declared colors with4channelcodec tolerance. Exact PNG color tests separately require exact channels.",
+    "backup": "37files; restored before/edited MP4,SRT,JSON6downloads exact",
+    "failure_recovery": [
+      "Selection change blocks old timeline approval, edited draft requires new approval",
+      "Image rights revoked blocks dependent MP4/newrender, unrelated originaloutput remains accessible, unblocking restores exact output",
+      "Changed Swift source rejects old motion grant; new identical scene requires new approval",
+      "Controlled copied-old-source queued job fails after current-source reopen with zero candidate publication"
+    ]
+  },
+  "color_fix": {
+    "id": "NATIVE-COLOR-01",
+    "before_png_rgb": [
+      34,
+      57,
+      92
+    ],
+    "declared_rgb": [
+      26,
+      42,
+      74
+    ],
+    "corrected_png_rgb": [
+      26,
+      42,
+      74
+    ],
+    "same_payload_probe_sha256": "80aa67c8fbf96f03d576e55220195c43d28d8019af2df6d07920d949d52e784c",
+    "rejected_alternative": "Changing bitmap colorSpace would change output contract; preserve it and correct only input CGColor space",
+    "revision_or_schema_bump": "Not needed. font_manifest includes actual Swift source hash; cache key, approved versions and jobs freeze it, and process/request reject mismatch. Old outputs remain downloadable and unchanged.",
+    "tests": [
+      {
+        "command": "python3 -m unittest tests.test_native_motion_color -v",
+        "phase": "before",
+        "result": "2tests/2.169s/2FAIL",
+        "log": "color-before-test.log"
+      },
+      {
+        "command": "python3 -m unittest tests.test_native_motion_color -v",
+        "phase": "after",
+        "result": "2tests/1.935s/OK",
+        "log": "color-after-test.log"
+      },
+      {
+        "command": "python3 -m unittest tests.test_motion tests.test_native_motion_quality tests.test_motion_text_controls -v",
+        "phase": "related",
+        "result": "22tests/13.131s/OK",
+        "log": "color-related-motion.log"
+      }
+    ]
+  },
+  "preserved_attempts": [
+    {
+      "attempt": 1,
+      "result": "FAILED harness rights-declaration missing sha/revision; real HTTP400; first native job completed",
+      "receipt": "attempt1-report.json",
+      "source": "run-attempt1.py",
+      "log": "attempt1.log"
+    },
+    {
+      "attempt": 2,
+      "result": "FAILED observed color fidelity mismatch after first30s output; actual native and final colors differ from declared HEX",
+      "receipt": "attempt2/REPORT.json",
+      "source": "run-attempt2.py",
+      "log": "attempt2.log"
+    },
+    {
+      "attempt": 3,
+      "result": "REPORTED continued same DB without replay; sequence compared to actual native sources while color defect stayed explicit",
+      "receipt": "attempt3/REPORT.json",
+      "source": "run.py",
+      "log": "attempt3.log"
+    },
+    {
+      "attempt": 4,
+      "result": "REPORTED fixed source, fresh approvals/candidates/third output and upgrade guard",
+      "receipt": "corrected/REPORT.json",
+      "source": "corrected-workflow.py",
+      "log": "corrected-workflow.log"
+    }
+  ],
+  "actual_provider_calls": 0,
+  "full_regression_runs": 0,
+  "manual_images_viewed": [
+    "attempt3/before-first.png",
+    "attempt3/after-first.png",
+    "attempt3/before-last.png",
+    "attempt3/after-last.png",
+    "corrected/corrected-last.png"
+  ],
+  "cleanup": {
+    "all_owned_HTTP_servers_shutdown_and_closed": true,
+    "runner_processes_terminal": true,
+    "temporary_data_preserved_for_driver": true,
+    "other_servers_or_user_tabs_affected": false
+  },
+  "limits": [
+    "Not a perceptual AI/video quality study; images and sound are synthetic known fixtures.",
+    "12shot IDs reuse2native scenes, not12distinctAI scenes.",
+    "The controlled color fix does not retroactively change historical MP4s.",
+    "Separate narrow/related checks are not added to the platform full-suite count."
+  ]
+}

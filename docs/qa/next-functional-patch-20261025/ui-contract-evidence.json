@@ -1,0 +1,300 @@
+{
+  "mode": "contract-fake",
+  "external_calls": 0,
+  "turns": [
+    {
+      "id": "dd1bb43b5e0747f5b3dabd1f45768e35",
+      "project": "868d4292-807b-50ca-a1b4-ed69c8a7c68c",
+      "name": "합성 채팅 계약 QA",
+      "run": "58d461373df64332a6c9d2dcb3d91921",
+      "prompt": "Mira의 승인된 의상 설정을 조회하고 스튜디오 장면을 제안한 뒤 저장한 계획 번호를 알려주세요.",
+      "status": "completed",
+      "mode": "contract-fake",
+      "model": "claude-haiku-5-5",
+      "binding": "25e639190ac4c5c28499607bfe0292e010340c4b6e41257177d0287c8feede9f",
+      "answer": "모의 도구 계약 검증입니다. 승인된 합성 설정은 파란 코트이며, 계획 8787664a35944a489ba0eae810e3cf58를 검토 전 상태로 저장했습니다. 실제 Claude·영상 생성·과금은 없습니다.",
+      "answer_review": "unreviewed",
+      "steps": [
+        {
+          "round": 0,
+          "mode": "contract-fake",
+          "input_sha256": "9cf60f09455a210a48879405f0e87c937c54eb91704628dbbc44bcc7d077d9ae",
+          "status": "tools_applied",
+          "request_id": "contract-fixture-0",
+          "tool_calls": [
+            {
+              "call": {
+                "id": "a00e62be7d945811a79b5201e81ceefb",
+                "name": "search_project_context",
+                "arguments": {
+                  "query": "Mira"
+                },
+                "complete": true
+              },
+              "result": {
+                "status": "succeeded",
+                "context": {
+                  "music": {
+                    "id": 1,
+                    "audio": 1,
+                    "start": 0,
+                    "end": 2,
+                    "sections": [],
+                    "source": "user",
+                    "engine": null,
+                    "created": 1792927818.272369
+                  },
+                  "snapshot": [
+                    {
+                      "text": "Mira는 파란 코트를 입는다. 합성 검증 설정.",
+                      "scope": "ip",
+                      "era": "default",
+                      "valid_from": 0,
+                      "valid_to": 2,
+                      "revision": 1,
+                      "approved": true,
+                      "ip": "default"
+                    }
+                  ],
+                  "ontology": null
+                },
+                "search_mode": "scoped-snapshot",
+                "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님"
+              }
+            }
+          ],
+          "input_tokens_counted": 300,
+          "usage": {
+            "input_tokens": 300,
+            "output_tokens": 80
+          },
+          "usage_cost_usd": "0.00007",
+          "stop_reason": "tool_use",
+          "output_sha256": "3e4e825a9b882f53167d540bcb6af7e8674ffcf93e3f87c9e5f4bc89cdc137b1",
+          "visible_response": [
+            {
+              "type": "tool_use",
+              "id": "lookup",
+              "name": "search_project_context",
+              "input": {
+                "query": "Mira"
+              }
+            }
+          ]
+        },
+        {
+          "round": 1,
+          "mode": "contract-fake",
+          "input_sha256": "813cb5f0565f3151d6ab14f070e4aec719f8d33a1512ca8966ca2369fb0b9e03",
+          "status": "tools_applied",
+          "request_id": "contract-fixture-1",
+          "tool_calls": [
+            {
+              "call": {
+                "id": "d7e5ff3ac26b58f0b91ec86175b45eed",
+                "name": "propose_media_plan",
+                "arguments": {
+                  "goal": "합성 Mira 장면",
+                  "scenes": "Mira가 파란 코트를 입고 스튜디오에 서 있다.",
+                  "style": "기하학 합성 검증",
+                  "constraints": "승인된 파란 코트 보존",
+                  "kind": "narrative"
+                },
+                "complete": true
+              },
+              "result": {
+                "status": "proposed",
+                "plan": {
+                  "id": "8787664a35944a489ba0eae810e3cf58",
+                  "version": 1,
+                  "status": "proposed",
+                  "scenes": [
+                    {
+                      "id": "a37edd18b25e412fa40deb62db3ccdd1",
+                      "description": "Mira가 파란 코트를 입고 스튜디오에 서 있다.",
+                      "duration": 2.0,
+                      "music_start": 0.0
+                    }
+                  ],
+                  "questions": []
+                },
+                "cost_approval": false
+              }
+            }
+          ],
+          "input_tokens_counted": 300,
+          "usage": {
+            "input_tokens": 300,
+            "output_tokens": 80
+          },
+          "usage_cost_usd": "0.00007",
+          "stop_reason": "tool_use",
+          "output_sha256": "64b2cbab5eb89ccb0bac68ca4560869d76c08d5227d488a0315a89160dd9196e",
+          "visible_response": [
+            {
+              "type": "tool_use",
+              "id": "plan",
+              "name": "propose_media_plan",
+              "input": {
+                "goal": "합성 Mira 장면",
+                "scenes": "Mira가 파란 코트를 입고 스튜디오에 서 있다.",
+                "style": "기하학 합성 검증",
+                "constraints": "승인된 파란 코트 보존",
+                "kind": "narrative"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "mode": "contract-fake",
+          "input_sha256": "f719c769e7376c273f1118a655e5c796692104402a2ec55389aa4258efa534b3",
+          "status": "answer_received",
+          "request_id": "contract-fixture-2",
+          "tool_calls": [],
+          "input_tokens_counted": 300,
+          "usage": {
+            "input_tokens": 300,
+            "output_tokens": 80
+          },
+          "usage_cost_usd": "0.00007",
+          "stop_reason": "end_turn",
+          "output_sha256": "30b984c2e551950eea63fc287c32d9754c270a78e1e728ead3d97db90271e1b8",
+          "visible_response": [
+            {
+              "type": "text",
+              "text": "모의 도구 계약 검증입니다. 승인된 합성 설정은 파란 코트이며, 계획 8787664a35944a489ba0eae810e3cf58를 검토 전 상태로 저장했습니다. 실제 Claude·영상 생성·과금은 없습니다."
+            }
+          ]
+        }
+      ],
+      "usage_cost_usd": "0.00021",
+      "billing_confirmed": false
+    }
+  ],
+  "plans": [
+    {
+      "id": "8787664a35944a489ba0eae810e3cf58",
+      "version": 1,
+      "engine": "contract-fake",
+      "status": "applied",
+      "goal": "합성 Mira 장면",
+      "style": "기하학 합성 검증",
+      "constraints": "승인된 파란 코트 보존",
+      "kind": "narrative",
+      "context": {
+        "music": {
+          "id": 1,
+          "audio": 1,
+          "start": 0,
+          "end": 2,
+          "sections": [],
+          "source": "user",
+          "engine": null,
+          "created": 1792927818.272369
+        },
+        "snapshot": [
+          {
+            "text": "Mira는 파란 코트를 입는다. 합성 검증 설정.",
+            "scope": "ip",
+            "era": "default",
+            "valid_from": 0,
+            "valid_to": 2,
+            "revision": 1,
+            "approved": true,
+            "ip": "default"
+          }
+        ],
+        "ontology": null
+      },
+      "context_hash": "a14deee406d3d0d8b609c5083d95413aef9048128cf2ef13ab7de8d1170b515e",
+      "created": 1792927839.13665,
+      "questions": [],
+      "scenes": [
+        {
+          "id": "a37edd18b25e412fa40deb62db3ccdd1",
+          "description": "Mira가 파란 코트를 입고 스튜디오에 서 있다.",
+          "duration": 2.0,
+          "music_start": 0.0
+        }
+      ],
+      "explanation": "도구 계약 검증용 모의 제안입니다. 실제 AI·외부 미디어 호출은 없습니다.",
+      "source": {
+        "mode": "contract-fake",
+        "model": "claude-haiku-5-5",
+        "run": "58d461373df64332a6c9d2dcb3d91921",
+        "call": "d7e5ff3ac26b58f0b91ec86175b45eed"
+      },
+      "shots": [
+        "장면 1"
+      ],
+      "approval": {
+        "actor": "local-owner",
+        "scope": "shot-plan",
+        "version": 1,
+        "at": 1792927880.854253,
+        "cost_approval": false
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "id": "cbae3313ea1447758926495b379ab3ea",
+      "action": {
+        "id": "b430c5109614484783246bf639db5d1b",
+        "plan_id": "8787664a35944a489ba0eae810e3cf58",
+        "plan_revision": 1,
+        "context_hash": "e649543c478436acadfcc7820f74bc145e6f96501e72121b23c275d4387533fb",
+        "context_kind": "media-v1",
+        "role": "image",
+        "release_id": "synthetic-solid-color-v1",
+        "inputs": {
+          "prompt": "Mira가 파란 코트를 입고 스튜디오에 서 있다."
+        },
+        "options": {
+          "width": 128,
+          "height": 128
+        },
+        "dependencies": [],
+        "mode": "rehearsal",
+        "connection_id": null,
+        "hash": "5747ee35c7b76aa750b96aedc7c987488bb9ea6d3688d4d73e635794bc203b49"
+      },
+      "grant": "f2de2afd03044aa08c5678310e7abb55",
+      "grant_hash": "b8d4147963df640948696e24f7dce7cd1dc18ea8d827c177b650559c4236c7ab",
+      "state": "collected",
+      "reservation": "d52bda66-e76f-4a5d-a76b-bb6c9fe452bc",
+      "scope": "rehearsal:project:868d4292-807b-50ca-a1b4-ed69c8a7c68c",
+      "dependencies": [],
+      "result": {
+        "sha256": "7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a",
+        "output_slot": "image"
+      },
+      "result_approved": false,
+      "mode": "rehearsal",
+      "external_calls": 0
+    }
+  ],
+  "grants": [
+    {
+      "id": "f2de2afd03044aa08c5678310e7abb55",
+      "revision": 1,
+      "state": "active",
+      "actor": "local-owner",
+      "expires": 1792928798.776074,
+      "price_revision": "rehearsal-v1",
+      "action_hashes": {
+        "b430c5109614484783246bf639db5d1b": "5747ee35c7b76aa750b96aedc7c987488bb9ea6d3688d4d73e635794bc203b49"
+      },
+      "money": {
+        "b430c5109614484783246bf639db5d1b": {
+          "amount": "0",
+          "currency": "USD"
+        }
+      },
+      "mode": "rehearsal",
+      "external_transmission": false,
+      "hash": "b8d4147963df640948696e24f7dce7cd1dc18ea8d827c177b650559c4236c7ab"
+    }
+  ]
+}

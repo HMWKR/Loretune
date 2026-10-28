@@ -1,0 +1,378 @@
+{
+  "recorded_at": "2026-10-28T00:51:46.478798+00:00",
+  "results": [
+    {
+      "case": "after-settlement-before-tool",
+      "old_expectation_failure": "'cancelled' != 'outcome_unknown'\n- cancelled\n+ outcome_unknown\n",
+      "observed": {
+        "turn": {
+          "id": "c88e2d880f9a43998edd1adf0b7138b5",
+          "binding": {
+            "workspace": "b2025c8b-baaa-4893-bf3c-d4fdead76417",
+            "project": "34b473fd-c168-54ad-9210-019a3d44f315",
+            "conversation": "542912eeba7458c09aaff91fd9e97bb2",
+            "selection": "anthropic-haiku-5-5",
+            "model": "claude-haiku-5-5",
+            "model_revision": 0,
+            "context": "679de6b046bc8ecd1dbc24f3723ca83bee4307e6e9f8d6df64dd15c45b4270e6",
+            "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "price_revision": "haiku-5-5-20261027-tiered"
+          },
+          "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+          "name": "A",
+          "run": "1ae1fd21588c4c998116a9f405fd1680",
+          "prompt": "음원에 맞는 장면을 제안해 줘",
+          "status": "cancelled",
+          "mode": "contract-fake",
+          "model": "claude-haiku-5-5",
+          "round": 0,
+          "preview_id": "fbc1c2c5bef243e78f80f9c7e7c48dc8",
+          "answer": null,
+          "error": "요청을 취소했습니다. 이미 수신한 사용량과 비용 기록은 보존했습니다.",
+          "usage": {
+            "input_tokens": 100,
+            "output_tokens": 100
+          },
+          "usage_cost_usd": "0.00006",
+          "billing_confirmed": false,
+          "steps": [
+            {
+              "round": 0,
+              "message_sha256": "98f7c071de04e0885bf9b8fbf05ebf5470b24a816c9cb73f8768e6149f567de3",
+              "pricing_status": "priced",
+              "usage": {
+                "input_tokens": 100,
+                "output_tokens": 100
+              },
+              "usage_cost_usd": "0.00006"
+            }
+          ],
+          "reservation": "f3ac4adf-4bb4-4101-b6f3-19c31bf4a02c",
+          "count_status": "response_received",
+          "submitted": true,
+          "observed_usage": {
+            "input_tokens": {
+              "status": "valid",
+              "value": "100"
+            },
+            "output_tokens": {
+              "status": "valid",
+              "value": "100"
+            },
+            "cache_creation_input_tokens": {
+              "status": "absent"
+            },
+            "cache_read_input_tokens": {
+              "status": "absent"
+            },
+            "service_tier": {
+              "status": "absent"
+            }
+          },
+          "pricing_status": "priced",
+          "provider_response_observed": true
+        },
+        "reservation": [
+          "settled",
+          60
+        ],
+        "attempts": [
+          [
+            "chat-count",
+            "observed"
+          ],
+          [
+            "chat-message",
+            "observed"
+          ]
+        ],
+        "guided_plans": {
+          "A": []
+        }
+      }
+    },
+    {
+      "case": "cancel-response-race",
+      "old_expectation_failure": "'cancelled' != 'outcome_unknown'\n- cancelled\n+ outcome_unknown\n",
+      "observed": {
+        "turn": {
+          "id": "9481497f2e4d41f7acc2bd1da1a0dee1",
+          "binding": {
+            "workspace": "242bae8a-f305-4638-93f4-22e62fdff4ee",
+            "project": "a8e66073-34d7-51fe-a547-49ffe81b2619",
+            "conversation": "bac22cddb665537b9b462a41d12648c2",
+            "selection": "anthropic-haiku-5-5",
+            "model": "claude-haiku-5-5",
+            "model_revision": 0,
+            "context": "6c190d3fc870253433f19309e75fd9729e1647f0bea7d950e500db34ae53a8fe",
+            "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "price_revision": "haiku-5-5-20261027-tiered"
+          },
+          "conversation_id": "bac22cddb665537b9b462a41d12648c2",
+          "name": "race",
+          "run": "bec9dfdcee1044bdafb975d7bf06182d",
+          "prompt": "권리 경계 합성 시험",
+          "status": "cancelled",
+          "mode": "contract-fake",
+          "model": "claude-haiku-5-5",
+          "round": 0,
+          "preview_id": "945ac2fcb4d34796b61c99b3660053eb",
+          "answer": null,
+          "error": "요청을 취소했습니다. 이미 수신한 사용량과 비용 기록은 보존했습니다.",
+          "usage": {
+            "input_tokens": 100,
+            "output_tokens": 100
+          },
+          "usage_cost_usd": "0.00006",
+          "billing_confirmed": false,
+          "steps": [
+            {
+              "round": 0,
+              "message_sha256": "3fc5c12bce1cc41c1159ec2f498eff17952a973bb7e2ea0ff4dcd0c37ee744f2",
+              "pricing_status": "priced",
+              "request_id": "req_fixture_123",
+              "usage": {
+                "input_tokens": 100,
+                "output_tokens": 100
+              },
+              "usage_cost_usd": "0.00006"
+            }
+          ],
+          "reservation": "ba1810f5-73f1-4014-9a69-0146f8e4c54c",
+          "count_status": "response_received",
+          "submitted": true,
+          "observed_usage": {
+            "input_tokens": {
+              "status": "valid",
+              "value": "100"
+            },
+            "output_tokens": {
+              "status": "valid",
+              "value": "100"
+            },
+            "cache_creation_input_tokens": {
+              "status": "absent"
+            },
+            "cache_read_input_tokens": {
+              "status": "absent"
+            },
+            "service_tier": {
+              "status": "absent"
+            }
+          },
+          "pricing_status": "priced",
+          "provider_response_observed": true
+        },
+        "reservation": [
+          "settled",
+          60
+        ],
+        "attempts": [
+          [
+            "chat-count",
+            "observed"
+          ],
+          [
+            "chat-message",
+            "observed"
+          ]
+        ],
+        "guided_plans": {
+          "race": []
+        }
+      }
+    },
+    {
+      "case": "rights-response-race",
+      "old_expectation_failure": null,
+      "observed": {
+        "turn": {
+          "id": "5556beb67d0948b38334484812a8d202",
+          "binding": {
+            "workspace": "a3de9c87-4b90-4530-a987-cefd447a1fd1",
+            "project": "9e46b3b2-d626-504d-8225-206d5be37629",
+            "conversation": "bac22cddb665537b9b462a41d12648c2",
+            "selection": "anthropic-haiku-5-5",
+            "model": "claude-haiku-5-5",
+            "model_revision": 0,
+            "context": "b0661b123253c60caf208827e8ceb58c23b5dab0172b378645d42a3bfa64cf5c",
+            "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "price_revision": "haiku-5-5-20261027-tiered"
+          },
+          "conversation_id": "bac22cddb665537b9b462a41d12648c2",
+          "name": "race",
+          "run": "9749f80a9980479f890beae9cf2612e0",
+          "prompt": "권리 경계 합성 시험",
+          "status": "outcome_unknown",
+          "mode": "contract-fake",
+          "model": "claude-haiku-5-5",
+          "round": 0,
+          "preview_id": "94cb53ba15f24a19a45ff79c16d87394",
+          "answer": null,
+          "error": "요청을 중단했습니다. 기존 결과와 비용 상태를 확인하세요. 자동 재시도하지 않습니다.",
+          "usage": {
+            "input_tokens": 100,
+            "output_tokens": 100
+          },
+          "usage_cost_usd": "0.00006",
+          "billing_confirmed": false,
+          "steps": [
+            {
+              "round": 0,
+              "message_sha256": "3fc5c12bce1cc41c1159ec2f498eff17952a973bb7e2ea0ff4dcd0c37ee744f2",
+              "pricing_status": "priced",
+              "request_id": "req_fixture_123",
+              "usage": {
+                "input_tokens": 100,
+                "output_tokens": 100
+              },
+              "usage_cost_usd": "0.00006"
+            }
+          ],
+          "reservation": "d56c70fb-87ee-412f-9aed-e81023f16236",
+          "count_status": "response_received",
+          "submitted": true,
+          "observed_usage": {
+            "input_tokens": {
+              "status": "valid",
+              "value": "100"
+            },
+            "output_tokens": {
+              "status": "valid",
+              "value": "100"
+            },
+            "cache_creation_input_tokens": {
+              "status": "absent"
+            },
+            "cache_read_input_tokens": {
+              "status": "absent"
+            },
+            "service_tier": {
+              "status": "absent"
+            }
+          },
+          "pricing_status": "priced",
+          "provider_response_observed": true
+        },
+        "reservation": [
+          "settled",
+          60
+        ],
+        "attempts": [
+          [
+            "chat-count",
+            "observed"
+          ],
+          [
+            "chat-message",
+            "observed"
+          ]
+        ],
+        "guided_plans": {
+          "race": []
+        }
+      }
+    },
+    {
+      "case": "loopback-after-message",
+      "old_expectation_failure": "'cancelled' != 'outcome_unknown'\n- cancelled\n+ outcome_unknown\n",
+      "observed": {
+        "turn": {
+          "id": "c5093e575c3f44ebaf2da318845a2ae1",
+          "binding": {
+            "workspace": "9b93e381-6f85-4518-8507-07dd7e051485",
+            "project": "fd65630c-c3e9-58ac-ac74-829de8574984",
+            "conversation": "542912eeba7458c09aaff91fd9e97bb2",
+            "selection": "anthropic-haiku-5-5",
+            "model": "claude-haiku-5-5",
+            "model_revision": 0,
+            "context": "726813984a50bbfaa919a48375774d316b38accf43ba4a067f0bddbea741f221",
+            "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+            "price_revision": "haiku-5-5-20261027-tiered",
+            "transport": {
+              "mode": "contract-live-test",
+              "connection_id": "local-test-account",
+              "connection_revision": 1,
+              "destination": "http://127.0.0.1:57319"
+            }
+          },
+          "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+          "name": "A",
+          "run": "de7c54cc3dab41eabbd441ede28aa87d",
+          "prompt": "음악에 맞는 장면을 계획해 줘",
+          "status": "cancelled",
+          "mode": "contract-live-test",
+          "model": "claude-haiku-5-5",
+          "round": 0,
+          "preview_id": "01ce2606a8924ba1896a2151bed80d14",
+          "answer": null,
+          "error": "요청을 취소했습니다. 이미 수신한 사용량과 비용 기록은 보존했습니다.",
+          "usage": {
+            "input_tokens": 100,
+            "output_tokens": 100
+          },
+          "usage_cost_usd": "0.00006",
+          "billing_confirmed": false,
+          "steps": [
+            {
+              "round": 0,
+              "message_sha256": "5dc2a7d576abad0582928a79cec7a12d621902f8061977bf4706314b50faee96",
+              "pricing_status": "priced",
+              "usage": {
+                "input_tokens": 100,
+                "output_tokens": 100
+              },
+              "usage_cost_usd": "0.00006"
+            }
+          ],
+          "total_maximum_micro": 10000,
+          "estimated_used_micro": 60,
+          "reservation": "42386426-31f0-4972-9c43-c20d9c4a26a2",
+          "count_status": "response_received",
+          "submitted": true,
+          "observed_usage": {
+            "input_tokens": {
+              "status": "valid",
+              "value": "100"
+            },
+            "output_tokens": {
+              "status": "valid",
+              "value": "100"
+            },
+            "cache_creation_input_tokens": {
+              "status": "absent"
+            },
+            "cache_read_input_tokens": {
+              "status": "absent"
+            },
+            "service_tier": {
+              "status": "absent"
+            }
+          },
+          "pricing_status": "priced",
+          "provider_response_observed": true
+        },
+        "reservation": [
+          "estimated",
+          60
+        ],
+        "attempts": [
+          [
+            "chat-count",
+            "observed"
+          ],
+          [
+            "chat-message",
+            "observed"
+          ]
+        ],
+        "guided_plans": {
+          "A": []
+        }
+      }
+    }
+  ],
+  "product_source_sha256": "edc4537ccbcd100d217ddc240f349001ddda3111324f54ba64f3edb7153c3e45",
+  "actual_provider_calls": 0,
+  "transport_scope": "contract fake or explicit local loopback HTTP"
+}

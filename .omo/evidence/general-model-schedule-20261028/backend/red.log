@@ -1,0 +1,69 @@
+test_cancelled_pending_requires_explicit_reselection (tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_cancelled_pending_requires_explicit_reselection) ... 127.0.0.1 - - [28/Oct/2026 03:35:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "PATCH /v1/workspaces/892bb551-6042-4759-8f05-eb2e6bd83e67/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:16] "POST /api/action HTTP/1.1" 200 -
+ERROR
+test_normal_selection_change_invalidates_unapproved_preview (tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_normal_selection_change_invalidates_unapproved_preview) ... 127.0.0.1 - - [28/Oct/2026 03:35:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "PATCH /v1/workspaces/b6110667-dc40-4ef5-8f9d-f6d64d6a3dbc/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:17] "POST /api/action HTTP/1.1" 400 -
+FAIL
+test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply (tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply) ... 127.0.0.1 - - [28/Oct/2026 03:35:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "PATCH /v1/workspaces/25b30fef-9ae3-45cc-9828-48f1a8af2993/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:35:18] "POST /api/action HTTP/1.1" 200 -
+ERROR
+
+======================================================================
+ERROR: test_cancelled_pending_requires_explicit_reselection (tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_cancelled_pending_requires_explicit_reselection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_model_schedule.py", line 71, in test_cancelled_pending_requires_explicit_reselection
+    tid=result['general_chat']['turn']['id']
+        ~~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'general_chat'
+
+======================================================================
+ERROR: test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply (tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_model_schedule.py", line 35, in test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply
+    tid=result['general_chat']['turn']['id']
+        ~~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'general_chat'
+
+======================================================================
+FAIL: test_normal_selection_change_invalidates_unapproved_preview (tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_normal_selection_change_invalidates_unapproved_preview)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_model_schedule.py", line 82, in test_normal_selection_change_invalidates_unapproved_preview
+    self.assertEqual(self.schedule(NEXT,0)[0],200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.646s
+
+FAILED (failures=1, errors=2)

@@ -1,0 +1,259 @@
+{
+  "schema": "loretune-agent-execution-plan/1",
+  "at": "2026-10-28T05:08:46.504071+00:00",
+  "goal_turn_audit": {
+    "previous": "no_progress",
+    "basis": "Prior turn only repeated unchanged read-only document gate; no new implementation/evidence-changing outcome",
+    "next_safe_action": "Native artifact geometry comparison and chat-to-existing-image-preparation integration, while approvals remain pending"
+  },
+  "issue": "AGENT-TOOLS-02-MEDIA-PREP",
+  "objective": "General chat prepares image actions through the existing platform approval workflow, without any provider execution; artifact benchmark separately compares actual geometry",
+  "preserved_scope": [
+    "Music-first; photos/3D optional",
+    "Real Claude/AI video/billing requires distinct user approval",
+    "Account deletion never; other destructive action exact explicit target approval",
+    "Pending thirteen document sources remain frozen during current regression; afterward additive docs only with new review-only proposal hashes, no registration execution"
+  ],
+  "decision": {
+    "chosen": "Reuse two existing typed tools and server dispatcher/SQLite/card",
+    "alternative": "New media agent/client/approval framework",
+    "reason": "Existing immutable action and human approval path already owns validation; duplicate executor would fragment state/consent"
+  },
+  "agents": [
+    {
+      "agent": "media_preparation_worker",
+      "agent_type": "worker",
+      "role": "Implement chat native media preparation and verify actual UI/API/state",
+      "model": "inherit",
+      "reasoning": "inherit",
+      "scope": [
+        "chat_general.py",
+        "general-chat-ui.js",
+        "tests/test_general_chat_media_preparation.py",
+        ".omo/evidence/chat-media-preparation-20261028/worker/",
+        "tests/test_agent_preferences.py"
+      ],
+      "methodology_sources": [
+        "Installed Karpathy Guidelines and Codex runtime",
+        "Installed feature-verification/live-feature-verify and uncompromising-rigor",
+        "Existing FalDispatch immutable action/approval path",
+        "Current chat preview manifest schema/tool_scope and agent_preferences authorization"
+      ],
+      "applied_methodology": [
+        "Minimal adapter reuse",
+        "Frozen consent and state transition tests",
+        "Actual isolated UI→HTTP→SQLite→state re-query with failures/boundaries"
+      ],
+      "limits": [
+        "No real providers or keys",
+        "No docs/registry/context/browser user-space modifications",
+        "No video execution/3D/general settings tools in this preparation step"
+      ],
+      "verification": [
+        "Prepare→same card after reload; external submits/reservations/jobs0",
+        "Idempotency; stale/foreign/current read_only refusal",
+        "Old approved manifest cannot gain newly exposed tools",
+        "Reused model capabilities stay catalog, not account/route proof"
+      ],
+      "dependency": "Baseline/source read; root integrated acceptance"
+    },
+    {
+      "agent": "geometry_benchmark_worker",
+      "agent_type": "worker",
+      "role": "Offline matched artifact geometry benchmark",
+      "model": "inherit",
+      "reasoning": "inherit",
+      "scope": [
+        ".omo/evidence/geometry-benchmark-20261028/"
+      ],
+      "methodology_sources": [
+        "Original paired SceneSpec/PNG and original TripoSR raw GLBs",
+        "CVPR2017 A Point Set Generation Network primary paper",
+        "Trimesh surface sampling/registration official docs"
+      ],
+      "applied_methodology": [
+        "Predeclare one global alignment and fixed multiview conditions",
+        "Silhouette and sampled surface difference distinct from appearance",
+        "Original meshes unchanged; no per-view fit/no new inference"
+      ],
+      "limits": [
+        "No product/docs/registry/model/weights writes or external inference",
+        "Commercial matched raw output missing, so no parity claim",
+        "Groundtruth is source primitive scene, single-image hidden geometry ambiguity retained"
+      ],
+      "verification": [
+        "Input/artifact hash match and algorithm self-controls",
+        "Same global transform allviews",
+        "Real images viewed; metrics definitions and failures reported"
+      ],
+      "dependency": "Must report alignment proposal before root authorizes computation"
+    },
+    {
+      "agent": "public_triposg_artifact_pair followup",
+      "agent_type": "worker",
+      "role": "Public commercial before-after video artifact researcher",
+      "model": "inherit",
+      "reasoning": "inherit",
+      "scope": [
+        ".omo/evidence/continuation-native-benchmark-20261028/commercial-uv-video/"
+      ],
+      "methodology_sources": [
+        "Official Tripo creator workflow https://www.tripo3d.ai/blog/tripo-to-ue5-character-walk",
+        "Existing pinned screenshot provenance and public artifact evidence distinction"
+      ],
+      "applied_methodology": [
+        "Bounded original public video retrieval and full decode/hash",
+        "Fixed-frame before-after visual review, author claims separate from observations"
+      ],
+      "limits": [
+        "Public GET only, no account/model/provider generation or execution of external code",
+        "No product or docs/registries changes; source assets not ingested",
+        "Video cannot establish raw topology or commercial/open-model parity"
+      ],
+      "verification": [
+        "OriginalURL/bytes/hash/duration/decode result",
+        "Local extracted frames actually viewed",
+        "Limit total media≤50MB, per asset≤25MB"
+      ],
+      "dependency": "Source original article inspected by root; independent of product and geometry workers"
+    },
+    {
+      "agent": "media_preparation_review",
+      "agent_type": "codebase-explorer",
+      "role": "Independent read-only permission and workflow review",
+      "model": "inherit",
+      "reasoning": "inherit",
+      "scope": [],
+      "methodology_sources": [
+        "Installed feature-verification and uncompromising-rigor",
+        "Existing consent-manifest/typed dispatcher/immutable action contracts",
+        "Current agent_preferences and conversation ownership contract"
+      ],
+      "applied_methodology": [
+        "Counterexample-based source and test review",
+        "Old approval/new scope negative capability check",
+        "Reported actual API/state/UI evidence and source hash matching"
+      ],
+      "limits": [
+        "No write/browser/server/model work",
+        "Contractual read-only; sandbox enforcement not asserted"
+      ],
+      "verification": [
+        "Source diff every change maps toAGENT-TOOLS-02-MEDIA-PREP",
+        "Human approval/read_only/idempotency/stale/cross-conversation guards",
+        "Catalog support is not execution availability",
+        "Return concrete severity/path/repro/evidence; no invented pass"
+      ],
+      "dependency": "Worker source changes; actual evidence may be pending"
+    },
+    {
+      "agent": "geometry_calibration_review",
+      "agent_type": "codebase-explorer",
+      "role": "Independent read-only calibrated artifact-method review",
+      "model": "inherit",
+      "reasoning": "inherit",
+      "scope": [],
+      "methodology_sources": [
+        "Frozen geometry v1/v2 protocols and exact primitive inputs",
+        "CVPR2017 sampled Chamfer definition and official Trimesh docs",
+        "Analytic uniform-triangle barycentric moments; unit cube5/12 and overlap box55/96 controls"
+      ],
+      "applied_methodology": [
+        "Calibration-first counterexample review",
+        "Source/formula/control/NPZ/PNG correspondence",
+        "Keep GT-assisted alignment and raw/inference/product acceptance distinct"
+      ],
+      "limits": [
+        "No product/docs/registry/browser/model writes",
+        "No cross-unit v1/v2 improvement claim",
+        "No commercial parity or representative user quality claim"
+      ],
+      "verification": [
+        "Moment covariance under rigid positive uniform transforms",
+        "Known-same-shape gate precedes raw metrics",
+        "One proper rigid transform shared all views, held-out seeds",
+        "Precise severity/evidence if method/claim mismatch"
+      ],
+      "dependency": "Completed frozen v2 artifacts; source independent from product/full regression"
+    }
+  ],
+  "root_write_set": [
+    ".omo/evidence/chat-media-preparation-20261028/",
+    ".omo/evidence/geometry-benchmark-20261028/"
+  ],
+  "protected_document_proposal_sha256": "7faa55a1dade97a094431d000789fca0c912938ceb78813c05ae868f7e378d21",
+  "state": "ACCEPTED_CURRENT_INCREMENT; FULL_THREAD_GOAL_ACTIVE",
+  "scope_extensions": [
+    {
+      "at": "2026-10-28T05:19:11.153440+00:00",
+      "path": "tests/test_agent_preferences.py",
+      "before_sha256": "e4df4092085e122fc20ab6754a5e942c576a671495234a286d61f40e366e1c49",
+      "scope": "Three exact read_only tool-list expectations: initial scope/schema and continuation scope gain get_model_capabilities; preserve all write-denial/frozen-current-body/permission-ceiling assertions",
+      "reason": "New read-only capability tool legitimately changes frozen tool declaration list; expectation stays exact, not loosened",
+      "last_updated": "2026-10-28T05:21:29.744847+00:00"
+    }
+  ],
+  "document_phase": {
+    "at": "2026-10-28T05:29:59.803284+00:00",
+    "authority": "Latest user authorizes ongoing documentation of requirements/methods/actual outcomes",
+    "state": "PREPARE_ONLY_UNTIL_ROOT_GO_AFTER_CURRENT_REGRESSION",
+    "owned_documents_after_go": [
+      "README.md",
+      "docs/design/CHAT-SESSION-PLAN.md",
+      "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+      "docs/qa/REMAINING-WORK.md",
+      "docs/qa/AI-3D-ARCHITECTURE-RESEARCH-20261027.md",
+      "docs/WORKFLOW-EXECUTION-GUIDE-ko.md"
+    ],
+    "prepare_write_set": [
+      ".omo/evidence/chat-media-preparation-20261028/document-update/"
+    ],
+    "preservation": "All old lines/order retained; pending approval proposal source hashes revised in a new proposal only after edits; old proposals immutable",
+    "sources": [
+      "worker report/internal trace/independent scoped acceptance",
+      "Current full regression receipt once terminal; not old915 substituted",
+      "Frozen public TripoSG/commercial UV and calibrated geometry v2 receipts"
+    ],
+    "applied_methodology": [
+      "Requirement/result/gap/evidence trace",
+      "Current-entry/status synchronization without history rewriting",
+      "Calibration controls before artifact quality claims"
+    ],
+    "limits": [
+      "No registry/policy/generated context or runtime ontology changes",
+      "No actual model/provider/billing calls",
+      "No final925pass until current receipt terminal and root accepted"
+    ],
+    "verification": [
+      "Before/current hashes and old lines preserved",
+      "Links resolve; prior81 phrases retained",
+      "Read-only document gate fresh exit/hash/gaps",
+      "Same13/26/4/6 registration proposal current hashes only"
+    ],
+    "ownership_correction": {
+      "agent": "chat_document_independent_review",
+      "runtime_role": "explorer/read-only",
+      "agent_write_set": [],
+      "root_write_set_after_regression": [
+        "README.md",
+        "docs/design/CHAT-SESSION-PLAN.md",
+        "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "docs/qa/REMAINING-WORK.md",
+        "docs/qa/AI-3D-ARCHITECTURE-RESEARCH-20261027.md",
+        "docs/WORKFLOW-EXECUTION-GUIDE-ko.md"
+      ],
+      "delivery": "Draft text/locations/hashes by native message only; root owns all evidence/MD writes",
+      "reason": "Preserve actual read-only role; initial draft-files instruction corrected before any write"
+    }
+  },
+  "accepted_at": "2026-10-28T05:41:16.062904+00:00",
+  "acceptance_evidence": [
+    "driver-acceptance.json",
+    "regression/driver-acceptance.json",
+    "document-update/driver-acceptance.json",
+    "../geometry-benchmark-20261028/driver-acceptance.json",
+    "../continuation-native-benchmark-20261028/public-triposg-driver-acceptance.json",
+    "../continuation-native-benchmark-20261028/commercial-uv-driver-acceptance.json"
+  ],
+  "original_goal_complete": false
+}

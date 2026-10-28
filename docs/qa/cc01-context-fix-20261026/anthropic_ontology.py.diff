@@ -1,0 +1,26 @@
+--- reconstructed-before/anthropic_ontology.py
++++ anthropic_ontology.py
+@@ -146,10 +146,13 @@
+     """
+     endpoint = ENDPOINT
+ 
+-    def __init__(self, *, opener=None, timeout=30):
++    def __init__(self, *, opener=None, timeout=30, max_request_bytes=12000):
+         if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not 0 < timeout <= 60:
+             raise ValueError('timeout must be between 0 and 60 seconds')
+         self.timeout = timeout
++        if type(max_request_bytes) is not int or not 1 <= max_request_bytes <= 65536:
++            raise ValueError('request byte limit must be between 1 and 65536')
++        self.max_request_bytes = max_request_bytes
+         self._opener = opener
+ 
+     def __call__(self, endpoint, headers, body):
+@@ -166,7 +169,7 @@
+             payload = json.dumps(body, ensure_ascii=False, allow_nan=False).encode('utf-8')
+         except Exception:
+             raise ProposalError('provider request invalid') from None
+-        if len(payload) > 12000:
++        if len(payload) > self.max_request_bytes:
+             raise ProposalError('provider request too large')
+         request = urllib.request.Request(self.endpoint, data=payload, headers=headers, method='POST')
+         opener = self._opener or urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect())

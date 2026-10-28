@@ -1,0 +1,1445 @@
+{
+  "schema": "loretune-latest-agent-demo-document-coverage/1",
+  "at": "2026-10-28T01:57:10.989804+00:00",
+  "scope": "Latest shared agent sidebar/recommendation/status/model reasoning/permission/deletion/document-update requests plus explicit first-demo user steps1–7; not all historical platform requirements.",
+  "authoritative_policy_correction": "Account deletion always forbidden to product AI including FullAccess. Other deletion requires exact target/effect-specific explicit user permission.",
+  "parent_trace": {
+    "path": ".omo/evidence/first-demo-20261028/requirements-trace.json",
+    "sha256": "fbd8ef2a7e5336e1f91fd7fec8dde0a50d09042f97ff26c9c495f712491ff7d1",
+    "items": 23
+  },
+  "defined_subrequirements": 81,
+  "documented_subrequirements": 81,
+  "missing": [],
+  "all_defined_subrequirements_documented": true,
+  "coverage_does_not_mean_implemented": true,
+  "entries": [
+    {
+      "subrequirement_id": "UI01",
+      "user_requirement": "모든 제작 단계와 작업창의 공통 오른쪽 패널",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 9,
+        "exact_phrase": "음악/계획/장면/편집·출력·모션/3D 창에서 접근"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-UI-01"
+      ],
+      "implementation_status": {
+        "AGENT-UI-01": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "UI02",
+      "user_requirement": "기본 열림",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 9,
+        "exact_phrase": "공통 우측 사이드 패널, 기본 AI 대화 열림"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-UI-01"
+      ],
+      "implementation_status": {
+        "AGENT-UI-01": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "UI03",
+      "user_requirement": "상단 토글·닫기·재열기",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 9,
+        "exact_phrase": "상단 toggle·닫기/재열기·너비 조절"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-UI-01"
+      ],
+      "implementation_status": {
+        "AGENT-UI-01": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "UI04",
+      "user_requirement": "마우스·키보드 너비 조절 및 경계/좁은 화면",
+      "document": {
+        "path": "docs/design/CURRENT-DESIGN-QA-PLAN.md",
+        "line": 9,
+        "exact_phrase": "마우스/키보드 너비 조절·재열기 선호 너비·초안/포커스 보존"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-UI-01",
+        "D14"
+      ],
+      "implementation_status": {
+        "AGENT-UI-01": "in_progress",
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "UI05",
+      "user_requirement": "대화·모델·입력 동일 DOM, 초안·포커스·너비 유지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 9,
+        "exact_phrase": "대화 선택·모델·입력을 동일 DOM으로 재사용"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-UI-01",
+        "D11"
+      ],
+      "implementation_status": {
+        "AGENT-UI-01": "in_progress",
+        "D11": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "UI06",
+      "user_requirement": "모션/3D 모달 접근·inert·복귀",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 9,
+        "exact_phrase": "modal의 외부 inert를 z-index로 우회하지 않고 같은 DOM을 허용된 host로 이동/복귀"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-UI-01",
+        "D14"
+      ],
+      "implementation_status": {
+        "AGENT-UI-01": "in_progress",
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "AI01",
+      "user_requirement": "선택 모델이 현재 음원·장면·편집·결과 도구 지원",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 10,
+        "exact_phrase": "선택한 모델이 지원 typed 도구로 현재 음원·장면·저장 편집·결과를 검색"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-TOOLS-02",
+        "D10"
+      ],
+      "implementation_status": {
+        "AGENT-TOOLS-02": "in_progress",
+        "D10": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "AI02",
+      "user_requirement": "추천 사진/자산·제안",
+      "document": {
+        "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+        "line": 12,
+        "exact_phrase": "현재 영상의 제안·추천·편집·일반 설정"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-TOOLS-02"
+      ],
+      "implementation_status": {
+        "AGENT-TOOLS-02": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "AI03",
+      "user_requirement": "영상의 내용 관찰과 metadata 조회 구분",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 10,
+        "exact_phrase": "영상/사진 metadata 조회를 실제 픽셀 관찰로 표현하지 않음"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-TOOLS-02",
+        "D10"
+      ],
+      "implementation_status": {
+        "AGENT-TOOLS-02": "in_progress",
+        "D10": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "AI04",
+      "user_requirement": "안전한 일반 설정 변경 실제 도구 연결",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 10,
+        "exact_phrase": "제안·편집·생성·안전한 설정을 지원"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-TOOLS-02"
+      ],
+      "implementation_status": {
+        "AGENT-TOOLS-02": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "AI05",
+      "user_requirement": "플랫폼 작업 현황 진행/완료/실패",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 11,
+        "exact_phrase": "작품별 실제 작업 진행·완료·실패 및 필요 시 실제 작업자 현황"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-STATUS-03"
+      ],
+      "implementation_status": {
+        "AGENT-STATUS-03": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "AI06",
+      "user_requirement": "미래 협업 작업자 현황은 실제 인증/참여/권한 데이터 기반",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 11,
+        "exact_phrase": "현재 실제 인증·팀 ACL/presence가 없으므로 사람 현황은 구현 후속"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-STATUS-03"
+      ],
+      "implementation_status": {
+        "AGENT-STATUS-03": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "AI07",
+      "user_requirement": "3D는 선택, 기존 SceneSpec와 AI 도구 연결 구별",
+      "document": {
+        "path": "docs/design/AI-MODELING-PLAN.md",
+        "line": 7,
+        "exact_phrase": "사람용 3D UI/API·SceneSpec 저장/승인/내부 렌더와 일반 AI 대화의 3D 도구 연결을 구분"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-TOOLS-02"
+      ],
+      "implementation_status": {
+        "AGENT-TOOLS-02": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "MODEL01",
+      "user_requirement": "모델별 실제 지원 추론 옵션만 표시",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 12,
+        "exact_phrase": "모델별 실제 지원 추론 강도만 제시"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-REASON-04"
+      ],
+      "implementation_status": {
+        "AGENT-REASON-04": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "MODEL02",
+      "user_requirement": "추론 실효 설정·본문·실행 중 변경·재열기",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 12,
+        "exact_phrase": "전송 본문·재열기·모델 전환·진행 중 요청 불변"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-REASON-04"
+      ],
+      "implementation_status": {
+        "AGENT-REASON-04": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "MODEL03",
+      "user_requirement": "unsupported 거절·조용한 대체 금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 12,
+        "exact_phrase": "모든 모델에 같은 옵션을 부여하거나 조용히 대체하지 않음"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-REASON-04"
+      ],
+      "implementation_status": {
+        "AGENT-REASON-04": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "MODEL04",
+      "user_requirement": "모델 공식 옵션과 현재 transport 실행지원 구분",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 23,
+        "exact_phrase": "공식 옵션의 존재를 현재 일반 대화 transport의 실행 지원으로 표시하지 않고"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-REASON-04",
+        "D10"
+      ],
+      "implementation_status": {
+        "AGENT-REASON-04": "in_progress",
+        "D10": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "PERM01",
+      "user_requirement": "permission/Full Access 권한은 서버에서 검사",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 13,
+        "exact_phrase": "UI 표시가 아닌 서버 도구·대상·버전 검사"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "PERM02",
+      "user_requirement": "Full Access에서도 계정 삭제 항상 금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 13,
+        "exact_phrase": "permission/Full Access에도 계정 삭제는 항상 금지"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "PERM03",
+      "user_requirement": "파일 등 다른 삭제는 대상·영향과 개별 명시 허용",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 13,
+        "exact_phrase": "파일 등 다른 삭제는 대상·영향을 제시한 해당 삭제의 사용자 명시 허용이 필요"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "PERM04",
+      "user_requirement": "Full Access/무응답을 개별 삭제 허용으로 해석 금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 13,
+        "exact_phrase": "포괄 권한/무응답을 삭제 허용으로 해석하지 않으며"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "PERM05",
+      "user_requirement": "옛 삭제허용의 다른 대상/버전/재시작 우회 차단",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 13,
+        "exact_phrase": "오래된 허용·변경된 대상/버전·재시작 우회 차단"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "PERM06",
+      "user_requirement": "Full Access는 비용·전송·권리·출력 승인 우회 아님",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 15,
+        "exact_phrase": "비용 상한·외부 자료 전송 동의·권리·변경안/최종 출력 승인을 자동 무효화하지 않는다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "PERM07",
+      "user_requirement": "AI의 자기 권한/비용/전송 범위 확장 차단",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 15,
+        "exact_phrase": "AI가 자신의 permission·비용·전송 범위를 몰래 넓힐 수 없어야 한다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO1A",
+      "user_requirement": "최신 요구·설계·계획·잔여·검증·코드 대조, 유효 조사 재사용",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 29,
+        "exact_phrase": "기존에 유효한 조사/실행은 재사용하고 변경된 소스·흐름만 다시 확인"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D10",
+        "D14"
+      ],
+      "implementation_status": {
+        "D10": "partially_verified",
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO1B",
+      "user_requirement": "음원 중심·음원 단독·사진/3D 선택",
+      "document": {
+        "path": "README.md",
+        "line": 5,
+        "exact_phrase": "음원만으로 시작하고 사진·3D는 선택한다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D01",
+        "D02"
+      ],
+      "implementation_status": {
+        "D01": "verified_rehearsal",
+        "D02": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO1C",
+      "user_requirement": "과업/화면/API/모듈/상태/기대/방법결과/증거타임코드/상태 추적",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 33,
+        "exact_phrase": "사용자 과업→화면/조작→API/모듈/저장 상태→기대→방법/결과→증거/녹화 타임코드→완료·실패·미검증·승인 대기를 추적"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D15"
+      ],
+      "implementation_status": {
+        "D15": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO1D",
+      "user_requirement": "요구 조용히 제외 금지·모호한 결정만 질문·독립작업 계속",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 29,
+        "exact_phrase": "합의된 요구를 제외하거나 제품 방향을 바꿀 필요가 있으면 그 부분만 질문하고 독립 작업은 계속"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D14"
+      ],
+      "implementation_status": {
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO1E",
+      "user_requirement": "최신 자료·원본·산출물 보존·등록승격문맥 승인범위",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 33,
+        "exact_phrase": "최신 사용자 자료·원본·이전 산출물을 보존하고 문서 등록/승격/생성문맥은 승인 범위 내에서만 처리"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-DOC-06"
+      ],
+      "implementation_status": {
+        "AGENT-DOC-06": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2A",
+      "user_requirement": "실제 UI→API→검증→작업→저장→재조회→preview→편집출력다운로드",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 34,
+        "exact_phrase": "실제 UI 조작→API 요청→입력·권한·권리·비용·승인 검사→내부 작업/모델 실행→작업 상태·산출물 저장→상태 재조회→화면 preview→편집·최종 출력·다운로드"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D08",
+        "D10"
+      ],
+      "implementation_status": {
+        "D08": "verified_rehearsal",
+        "D10": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2B",
+      "user_requirement": "선택 모델과 실제 실행 모델 일치",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 34,
+        "exact_phrase": "선택 모델/실행 모델 일치"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D10"
+      ],
+      "implementation_status": {
+        "D10": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2C",
+      "user_requirement": "현재 음원·장면·편집 버전·지원 도구 전달",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 34,
+        "exact_phrase": "전달된 현재 음원·장면·편집 버전·지원 도구와 실제 적용 결과를 확인"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D10"
+      ],
+      "implementation_status": {
+        "D10": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2D",
+      "user_requirement": "AI 설명·제안/preview/승인/적용/최종승인 구분",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 43,
+        "exact_phrase": "AI 설명과 실제 편집 결과, 제안·preview·사람 승인·실제 적용·최종 출력 승인을 각각 비교"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D10"
+      ],
+      "implementation_status": {
+        "D10": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2E",
+      "user_requirement": "승인 후 입력·원본·편집 버전 변경 stale 실행 차단",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 43,
+        "exact_phrase": "승인 후 입력/원본/편집 버전이 달라지면 오래된 실행을 차단"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D12"
+      ],
+      "implementation_status": {
+        "D12": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2F",
+      "user_requirement": "대화별 이력·초안·모델 선택 격리",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 44,
+        "exact_phrase": "대화별 이력·초안·모델 선택 격리"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D11"
+      ],
+      "implementation_status": {
+        "D11": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2G",
+      "user_requirement": "공유자산/타임라인 충돌·공통 예산",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 44,
+        "exact_phrase": "공유 자산·타임라인 충돌과 공통 예산 제한을 실제 요청/저장 상태로 확인"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D12"
+      ],
+      "implementation_status": {
+        "D12": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2H",
+      "user_requirement": "취소/timeout/재접속/재시작/unknown·상태전이/로그",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 45,
+        "exact_phrase": "취소·타임아웃·재접속·서버 재시작·결과 미확정에서 요청 ID·작업 ID·버전·상태 전이·원장/예약/관측 사용량을 연결"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D09",
+        "D13"
+      ],
+      "implementation_status": {
+        "D09": "partially_verified",
+        "D13": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2I",
+      "user_requirement": "중복실행·비용 누락·확인없는 자동 재호출/무제한재시도 방지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 45,
+        "exact_phrase": "중복 실행·비용 누락·확인 없는 자동 재호출/무제한 재시도를 막고"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D13"
+      ],
+      "implementation_status": {
+        "D13": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2J",
+      "user_requirement": "저장 SHA/다운로드 바이트/실제 decode·재생/재열기 유지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 46,
+        "exact_phrase": "저장 산출물 SHA와 실제 다운로드 바이트, 실제 decode/플랫폼 재생·자막·재열기 후 원본 구성·편집·출력 유지를 대조"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D08",
+        "D09"
+      ],
+      "implementation_status": {
+        "D08": "verified_rehearsal",
+        "D09": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2K",
+      "user_requirement": "진단ID 기본UI 숨김·증거 유지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 46,
+        "exact_phrase": "로그와 내부 식별자는 증거에 남기되 기본 작업 화면에 불필요하게 노출하지 않는다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D14"
+      ],
+      "implementation_status": {
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO2L",
+      "user_requirement": "합성/로컬HTTP/실제렌더/실모델/관측사용량/실청구 구분",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 47,
+        "exact_phrase": "합성 공급자 응답·로컬 HTTP·실제 내부 렌더·실제 모델 호출·관측 사용량·확정 청구는 별개"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D10",
+        "D17"
+      ],
+      "implementation_status": {
+        "D10": "partially_verified",
+        "D17": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3A",
+      "user_requirement": "빈 프로젝트에서 음악 단독·선택적 사진 실제UI",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 35,
+        "exact_phrase": "빈 프로젝트 음악 단독→사진 선택 추가"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D01",
+        "D02"
+      ],
+      "implementation_status": {
+        "D01": "verified_rehearsal",
+        "D02": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3B",
+      "user_requirement": "독립 타이포/모션 생성·preview·지원속성 수정",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 35,
+        "exact_phrase": "독립 타이포/모션 생성·플랫폼 preview→문구·크기·색·위치·표시 시간·움직임 등 실제 지원 속성 수정"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D03",
+        "D04"
+      ],
+      "implementation_status": {
+        "D03": "verified_rehearsal",
+        "D04": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3C",
+      "user_requirement": "원본 저장·재생성 실제 결과 반영",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 35,
+        "exact_phrase": "원본 저장·재생성 반영"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D04"
+      ],
+      "implementation_status": {
+        "D04": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3D",
+      "user_requirement": "후보 비교·Take 선택·검토·필요 승인",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 35,
+        "exact_phrase": "후보 비교·Take 선택·검토/필요 승인"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D06"
+      ],
+      "implementation_status": {
+        "D06": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3E",
+      "user_requirement": "타임라인 순서·길이·음원 구간·자막",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 35,
+        "exact_phrase": "타임라인 배치·순서/길이·음원 구간·자막 편집"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D07"
+      ],
+      "implementation_status": {
+        "D07": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3F",
+      "user_requirement": "기존 이미지/영상 위 타이포 합성·위치/시간 수정",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 35,
+        "exact_phrase": "기존 이미지/영상 위 타이포 겹치기·위치/시간 수정도 실제 결과로 확인"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D05"
+      ],
+      "implementation_status": {
+        "D05": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3G",
+      "user_requirement": "플랫폼 출력·재생·다운로드·재열기 이어쓰기",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 35,
+        "exact_phrase": "출력·플랫폼 재생·다운로드→재열기 이어쓰기"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D08",
+        "D09"
+      ],
+      "implementation_status": {
+        "D08": "verified_rehearsal",
+        "D09": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3H",
+      "user_requirement": "편집가능 원본과 완성MP4·실제 drag/다중레이어 지원범위",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 49,
+        "exact_phrase": "편집 가능한 타이포/모션 원본과 완성 MP4 클립 편집을 구분"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D04",
+        "D05"
+      ],
+      "implementation_status": {
+        "D04": "verified_rehearsal",
+        "D05": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3I",
+      "user_requirement": "별도앱/수동스크립트로 누락 기능 대신 성공 보고 금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 49,
+        "exact_phrase": "UI가 없는 합성·저장 기능을 별도 앱이나 수동 스크립트로 대신해 성공으로 보고하지 않는다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D08"
+      ],
+      "implementation_status": {
+        "D08": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3J",
+      "user_requirement": "로컬서버라도 UI완주·플랫폼관리 내부렌더 허용",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 49,
+        "exact_phrase": "개발 서버가 로컬이어도 사용자는 플랫폼 UI 안에서 완료해야 하며 플랫폼이 관리하는 내부 렌더 엔진은 사용할 수 있다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D08"
+      ],
+      "implementation_status": {
+        "D08": "verified_rehearsal"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO3K",
+      "user_requirement": "기존 음원·사진·후보·승인·출력 정상/오류/복구 보존",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 49,
+        "exact_phrase": "기존 음원·사진·후보·승인본·출력은 정상/오류/복구 흐름 전체에서 보존"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D09",
+        "D13"
+      ],
+      "implementation_status": {
+        "D09": "partially_verified",
+        "D13": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO4A",
+      "user_requirement": "설치스킬 actual지원/읽기·명령·수동검토 구분",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 36,
+        "exact_phrase": "스킬 읽기·명령 실행·수동 검토·실제 결과를 구분"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D14"
+      ],
+      "implementation_status": {
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO4B",
+      "user_requirement": "사용자결정 유지·진단숨김/비용권리오류복구 적시노출",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 36,
+        "exact_phrase": "내부 ID/진단은 기본 화면에서 줄이고 비용·권리·승인·오류·복구는 필요한 시점에 제공"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D14"
+      ],
+      "implementation_status": {
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO4C",
+      "user_requirement": "중복입력/단계 병합·중요 결정 임의자동화 금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 36,
+        "exact_phrase": "중복 입력/단계 병합을 검토하되 중요한 사용자 결정을 임의 자동화하지 않음"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D14"
+      ],
+      "implementation_status": {
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO4D",
+      "user_requirement": "preview·편집반영·로딩/실패/완료·키보드포커스",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 36,
+        "exact_phrase": "preview/편집 반영·로딩/실패/완료·키보드/포커스 확인"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D14"
+      ],
+      "implementation_status": {
+        "D14": "partially_verified"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO5A",
+      "user_requirement": "설치된녹화도구 실제플랫폼조작 녹화·녹화본재생/내용",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 37,
+        "exact_phrase": "설치·지원되는 녹화 도구로 실제 플랫폼 조작을 녹화하고 녹화본 자체의 재생/내용을 확인"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D15"
+      ],
+      "implementation_status": {
+        "D15": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO5B",
+      "user_requirement": "녹화 시작입력·타이포전후·편집·승인출력·재생다운로드재열기·오류복구",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 37,
+        "exact_phrase": "시작 조건·입력, 타이포 생성/수정/배치와 실제 전후 차이, 음원/장면/자막 편집, 승인·출력 진행/완료, 플랫폼 재생·다운로드·재열기, 중요한 오류·복구를 보여 줌"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D15"
+      ],
+      "implementation_status": {
+        "D15": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO5C",
+      "user_requirement": "연속정상흐름·편집배속생략/실패수동개입무음공개",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 37,
+        "exact_phrase": "연속 정상 흐름을 우선하고 편집/배속/생략·실패·수동 개입·무음 여부를 공개"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D15"
+      ],
+      "implementation_status": {
+        "D15": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO5D",
+      "user_requirement": "녹화전 키·개인정보 노출 방지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 37,
+        "exact_phrase": "녹화 전 키/개인정보 노출 방지"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D15"
+      ],
+      "implementation_status": {
+        "D15": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO5E",
+      "user_requirement": "1차 녹화·타임코드·출력·추적결과·내부설계차이·미검증 전달",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 37,
+        "exact_phrase": "녹화본·타임코드·실제 출력·요구별 검증·내부 설계 일치/차이·남은 실패/미검증/제약을 전달"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D15"
+      ],
+      "implementation_status": {
+        "D15": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO5F",
+      "user_requirement": "사용자 녹화검토+명시승인전 실제AI영상 금지/무응답승인금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 51,
+        "exact_phrase": "1차 녹화본을 사용자가 검토하고 다음 단계 진행을 명시 승인하기 전 실제 AI 영상 모델을 호출하지 않는다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D16"
+      ],
+      "implementation_status": {
+        "D16": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO5G",
+      "user_requirement": "실제Claude 모델·자료·예산 별도확인,미호출합성표기",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 51,
+        "exact_phrase": "실제 Claude는 승인된 모델·전송 자료·예산을 별도로 확인한다. 실제 호출이 없으면 합성 검증으로 남긴다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D10",
+        "D16"
+      ],
+      "implementation_status": {
+        "D10": "partially_verified",
+        "D16": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO6A",
+      "user_requirement": "1차승인≠무제한비용·모델/자료/규격/길이/횟수/최대비용/보관/실패비용 구체승인",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 38,
+        "exact_phrase": "사용할 모델·전송 자료·길이/규격·호출 횟수·최대 비용·보관 조건·실패 시 비용 처리를 제시하고 해당 범위 승인 후 호출"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D16",
+        "D17"
+      ],
+      "implementation_status": {
+        "D16": "approval_pending",
+        "D17": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO6B",
+      "user_requirement": "실제생성→수신저장preview→후보수정재생성→타이포음원자막→승인출력재생다운로드재열기",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 38,
+        "exact_phrase": "실제 영상 생성→수신/플랫폼 저장/preview→후보 검토/선택→수정/재생성→타이포/음원/자막 편집→승인→최종 출력/재생/다운로드/재열기"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D17"
+      ],
+      "implementation_status": {
+        "D17": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO6C",
+      "user_requirement": "실패취소unknown 기존상태/비용 먼저조회 예산초과 재시도금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 45,
+        "exact_phrase": "실패/취소/미확정의 기존 상태와 비용부터 조회"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D13",
+        "D17"
+      ],
+      "implementation_status": {
+        "D13": "partially_verified",
+        "D17": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO7A",
+      "user_requirement": "실제AI요청~최종출력 2차 플랫폼녹화",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 39,
+        "exact_phrase": "실제 AI 요청→수신→편집→최종 출력의 플랫폼 조작을 다시 녹화"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D17"
+      ],
+      "implementation_status": {
+        "D17": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO7B",
+      "user_requirement": "완성뮤비·2차녹화·타임코드/편집·산출물연결·관측사용량·확정청구·잔여",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 39,
+        "exact_phrase": "완성 뮤직비디오·2차 녹화본·편집/배속 여부·타임코드, 모델/입력/생성 결과/편집 버전/최종 산출물 연결, 관측 사용량·확정 청구 상태, 남은 제한/실패/미검증을 전달"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D17"
+      ],
+      "implementation_status": {
+        "D17": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO7C",
+      "user_requirement": "내부기록과 일반UI분리·시연성공과출시준비분리",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 39,
+        "exact_phrase": "내부 검증 기록은 일반 사용자 화면과 분리. 시연 성공과 플랫폼 출시 준비 완료는 별도로 판정"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D14",
+        "D17"
+      ],
+      "implementation_status": {
+        "D14": "partially_verified",
+        "D17": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DEMO7D",
+      "user_requirement": "어떤요구/실제결과·잔여·종료근거 설명가능",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 51,
+        "exact_phrase": "요구별 실제 결과·잔여·이번 시연 종료 근거를 설명할 수 있어야 하며"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D15",
+        "D17"
+      ],
+      "implementation_status": {
+        "D15": "in_progress",
+        "D17": "approval_pending"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DOC01",
+      "user_requirement": "문서 병렬갱신·기존기록보존·미구현완료금지",
+      "document": {
+        "path": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md",
+        "line": 78,
+        "exact_phrase": "문서 담당은 제품 구현과 겹치지 않는 파일에서 병렬로 갱신한다. 구현 중 항목은 완료로 쓰지 않는다"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-DOC-06"
+      ],
+      "implementation_status": {
+        "AGENT-DOC-06": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "DOC02",
+      "user_requirement": "스킬명/도구실제사용·detector실행vs합격",
+      "document": {
+        "path": "docs/design/CURRENT-DESIGN-QA-PLAN.md",
+        "line": 17,
+        "exact_phrase": "Hallmark2.0 [재검사]"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D14",
+        "AGENT-DOC-06"
+      ],
+      "implementation_status": {
+        "D14": "partially_verified",
+        "AGENT-DOC-06": "in_progress"
+      },
+      "verification_pending": "Implementation acceptance and runtime/UI/real model evidence remain as stated by the linked parent trace; this is documentation coverage, not feature pass."
+    },
+    {
+      "subrequirement_id": "PERM08",
+      "user_requirement": "3모드: read_only/review기본/full_access",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 17,
+        "exact_phrase": "`read_only`(조회만), 기본 `review`(기존 제안→사람 검토), `full_access`다."
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Plan/implementation in progress; no UI, HTTP or actual-model acceptance asserted by this documentation task."
+    },
+    {
+      "subrequirement_id": "PERM09",
+      "user_requirement": "FullAccess 비삭제성timeline화이트리스트 새미승인버전auto-save,사람/출력승인위조금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 17,
+        "exact_phrase": "명시된 비삭제성 타임라인 편집 whitelist"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05",
+        "AGENT-TOOLS-02"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress",
+        "AGENT-TOOLS-02": "in_progress"
+      },
+      "verification_pending": "Plan/implementation in progress; no UI, HTTP or actual-model acceptance asserted by this documentation task."
+    },
+    {
+      "subrequirement_id": "PERM10",
+      "user_requirement": "remove/clear는 제안·개별사람승인",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 17,
+        "exact_phrase": "`remove`/`clear`류는 자동 적용하지 않고 제안과 개별 사람 승인을 거친다."
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Plan/implementation in progress; no UI, HTTP or actual-model acceptance asserted by this documentation task."
+    },
+    {
+      "subrequirement_id": "PERM11",
+      "user_requirement": "사용자명시모드변경전review기본유지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 19,
+        "exact_phrase": "사용자가 권한 모드를 명시적으로 바꾸기 전에는 기존 review 동작을 자동 변경하지 않는다."
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Plan/implementation in progress; no UI, HTTP or actual-model acceptance asserted by this documentation task."
+    },
+    {
+      "subrequirement_id": "PERM12",
+      "user_requirement": "권한축소즉시새쓰기차단,확장새확인다음turn",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 19,
+        "exact_phrase": "권한 축소는 즉시 새 쓰기를 차단하고 확장은 새로 확인한 다음 논리 turn부터 적용한다."
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-PERM-05"
+      ],
+      "implementation_status": {
+        "AGENT-PERM-05": "in_progress"
+      },
+      "verification_pending": "Plan/implementation in progress; no UI, HTTP or actual-model acceptance asserted by this documentation task."
+    },
+    {
+      "subrequirement_id": "MODEL05",
+      "user_requirement": "Haiku low/medium/high실행계획 vsadaptive xhigh/max 후속",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 19,
+        "exact_phrase": "현재 Haiku 경로의 구현 목표는 disabled-thinking과 호환되는 low/medium/high"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-REASON-04"
+      ],
+      "implementation_status": {
+        "AGENT-REASON-04": "in_progress"
+      },
+      "verification_pending": "Plan/implementation in progress; no UI, HTTP or actual-model acceptance asserted by this documentation task."
+    },
+    {
+      "subrequirement_id": "DEMO5H",
+      "user_requirement": "실제화면녹화를결과영상파일만/재현설명영상으로대체금지",
+      "document": {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "line": 37,
+        "exact_phrase": "결과 영상 파일만 전달하거나 화면을 재현한 설명 영상으로 대체하지 않음."
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "D15"
+      ],
+      "implementation_status": {
+        "D15": "in_progress"
+      },
+      "verification_pending": "Current runtime/product acceptance remains parent ownership; documentation coverage is not implementation pass."
+    },
+    {
+      "subrequirement_id": "DOC03",
+      "user_requirement": "canonical전체계획의최신범위·순서·종료증거연결",
+      "document": {
+        "path": "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+        "line": 11,
+        "exact_phrase": "**1차 종료 증거:**"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-DOC-06"
+      ],
+      "implementation_status": {
+        "AGENT-DOC-06": "in_progress"
+      },
+      "verification_pending": "Current runtime/product acceptance remains parent ownership; documentation coverage is not implementation pass."
+    },
+    {
+      "subrequirement_id": "DOC04",
+      "user_requirement": "디자인진입점새chat/QA/plan연결과옛690/416역사구분",
+      "document": {
+        "path": "docs/qa/design-system-redesign-20261026/INDEX.md",
+        "line": 7,
+        "exact_phrase": "아래690/416·Library·과거 소스 수치는 해당 시점의 이력으로 보존"
+      },
+      "document_state": "documented_requirement_or_explicit_gap",
+      "parent_trace_ids": [
+        "AGENT-DOC-06"
+      ],
+      "implementation_status": {
+        "AGENT-DOC-06": "in_progress"
+      },
+      "verification_pending": "Current runtime/product acceptance remains parent ownership; documentation coverage is not implementation pass."
+    }
+  ],
+  "updated_at": "2026-10-28T02:03:12.760582+00:00",
+  "added_root_plan_contracts": 6
+}

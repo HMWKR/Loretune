@@ -1,0 +1,43 @@
+{
+  "agent": "/root/preservation_independent_recheck",
+  "received_at": "2026-10-28T00:08:45.769281+00:00",
+  "instructed_write_set": [],
+  "runtime_filesystem_sandbox_enforced": false,
+  "reported_tools": [
+    "Python read-only path/hash/full-text comparisons",
+    "rg content search"
+  ],
+  "reported_no_file_writes": true,
+  "observations": {
+    "requested_documents_present": 18,
+    "WF_before_documents": 9,
+    "WF_to_current_inserted_lines": 136,
+    "MR1_before_documents": 3,
+    "MR1_to_current_inserted_lines": 45,
+    "deleted_or_replaced_lines": 0,
+    "before_bytes_and_order_preserved": true,
+    "post_MR1_frozen_paths_missing": 0,
+    "post_MR1_frozen_paths_changed": 0,
+    "immutable_full_sha_matches": 544,
+    "original_in_immutable": 53,
+    "registered_snapshots_full_sha_matches": 285,
+    "T0_paths_present": 2156,
+    "T0_changed": {
+      "maintained_MD": 14,
+      "registries": 2,
+      "historical_QA_JSON": 2
+    }
+  },
+  "semantic_spot_checks_reported": [
+    "music-first creation",
+    "optional 3D",
+    "progressive disclosure of internal diagnostics",
+    "retain rights/cost/approval/recovery information"
+  ],
+  "limits": [
+    "Two historical QA JSON T0 bytes remain unrecovered",
+    "No Git; unrecorded preT0 deletion cannot be ruled out",
+    "No product tests/browser/external calls"
+  ],
+  "driver_acceptance": "ACCEPTED for bounded preservation review; quantitative observations independently reproduced by audit.py and verify.py"
+}

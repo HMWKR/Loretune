@@ -1,0 +1,805 @@
+{
+  "id": "8831cf1102b64d0cadbf1b22a5016abb",
+  "project": "6003a150-878a-5aa0-94c7-94b1448e509b",
+  "name": "A",
+  "run": "169c43d80e6348e6b1b4cff5a3df4497",
+  "prompt": "현재 문맥을 도구로 조회하고 간결히 답하세요. Nari의 현재 승인 의상·출처·모르는 나이는? 기존 두 제작 작업의 승인 기록과 현재 실행 가능성 및 최종 출력 승인 상태는 어떻게 다른가요? generate_audio=false가 원곡 보존 요청과 충돌하나요? 실제 영상이 생성됐다고 말하지 마세요. 새 제안·승인·작업 실행 없이 현재 서버 근거로만 설명하세요.",
+  "status": "completed",
+  "mode": "anthropic-live",
+  "model": "claude-haiku-5-5",
+  "binding": "f99d411512a8a47ea739a63cf4e3a5836caccef0beeeb411c2fa8366ada0124c",
+  "answer": "**Nari 현재 기준**\n- **의상:** 현재 canonical 온톨로지 revision 2에 따르면 copper observatory에서 **violet(보라색)** 의상, watercolor 스타일입니다. 출처는 `synthetic-A-v2`이며, 설명에 \"This approved correction replaces teal\"이 있어 teal은 현재 값이 아닙니다.\n- **나이:** 불확실성 상태 `unknown`, 이유 \"Age unknown\"입니다. 확인되지 않은 사실입니다.\n- 이전 답변의 \"teal, synthetic-A-v1\" 설명은 조회된 서버 근거에서 찾을 수 없어 사용하지 않습니다.\n\n**두 제작 작업의 상태 차이**\n- 두 작업(`e591895725d648dab33e8a6b78bd4985`, `0baa7457afdd4e4ba38973fdbcb2b19c`)은 모두 같은 장면 1, 같은 모델의 video 액션입니다. 각각 승인 핸들(grant)이 있고, 금액은 0.01 USD입니다.\n- 승인 핸들은 해당 액션과 원래 입력에 대한 범위 한정 승인 기록입니다. 최종 출력 승인이 아니며, 현재 실행 검사가 통과한다는 증거도 아닙니다. 실행 시 권리·입력·가격·만료가 다시 검사됩니다.\n- 작업 job 2건은 `accepted`이고 실행 모드는 `contract-fake`입니다. 실제 AI 영상이 생성되었다는 근거는 없습니다.\n- **최종 출력 승인:** 확인되지 않았습니다. `selected_take`는 `null`, timeline `clips[0].take`는 `null`, timeline `grant_id`는 `null`, timeline version은 0입니다.\n\n**generate_audio=false와 원곡 보존**\n- 제가 조회한 서버 데이터에는 두 receipt의 `generate_audio` 필드가 직접 나타나지 않습니다. 이전 답변의 해당 내용은 검증하지 못했습니다.\n- 규칙상 `generate_audio=false`는 제공자가 생성하는 오디오만 끄며, 프로젝트 오디오를 삭제하지 않습니다.\n- 원곡 보존은 영상 프롬프트 문구가 아니라 승인된 타임라인 오디오 버전(`audio_version: 1`, `audio_offset: 0`)과 렌더러에 따릅니다. 따라서 두 설정은 충돌하지 않는 것으로 보입니다.\n\n이 답변은 조회만 했으며, 새 제안·승인·작업 실행은 하지 않았습니다.",
+  "answer_review": "unreviewed",
+  "steps": [
+    {
+      "round": 0,
+      "mode": "anthropic-live",
+      "input_sha256": "d5e43a077fcafecbbd9e10d740109fc5c19b58966b86a6d347e9e67b47f0b2c3",
+      "status": "tools_applied",
+      "request_id": "req_011CgR32zHocAf8T1mh5pxqW",
+      "tool_calls": [
+        {
+          "call": {
+            "id": "c9106082ec4e55f3a918d3021cdfa4dd",
+            "name": "search_project_context",
+            "arguments": {
+              "query": "Nari current approved coat correction source age unknown"
+            },
+            "complete": true
+          },
+          "result": {
+            "status": "succeeded",
+            "context": {
+              "music": {
+                "id": 1,
+                "audio": 1,
+                "start": 0,
+                "end": 5,
+                "sections": [],
+                "source": "user",
+                "engine": null,
+                "created": 1793025939.916845
+              },
+              "snapshot": [],
+              "ontology": {
+                "revision": 2,
+                "graph": {
+                  "entities": [
+                    {
+                      "description": "A-CANARY-V2: Nari now wears violet at the copper observatory, watercolor style. Age remains unknown. This approved correction replaces teal.",
+                      "id": "db38146e-1e47-51d3-a8c5-6bffda300087",
+                      "label": "Nari",
+                      "provenance": [
+                        {
+                          "excerpt": "A-CANARY-V2: Nari now wears violet at the copper observatory, watercolor style. Age remains unknown. This approved correction replaces teal.",
+                          "source_id": "synthetic-A-v2"
+                        }
+                      ],
+                      "type": "character",
+                      "uncertainty": {
+                        "reason": "Age unknown; other facts supplied by synthetic author.",
+                        "status": "unknown"
+                      }
+                    }
+                  ],
+                  "relations": []
+                },
+                "digest": "95883063cd88a87b88c51d9573b9463937ca8fed85e36942fafd8dd94e93bccf"
+              }
+            },
+            "search_mode": "scoped-snapshot",
+            "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님",
+            "sources": [
+              {
+                "id": "ontology:db38146e-1e47-51d3-a8c5-6bffda300087",
+                "text": "A-CANARY-V2: Nari now wears violet at the copper observatory, watercolor style. Age remains unknown. This approved correction replaces teal."
+              },
+              {
+                "id": "turn:8831cf1102b64d0cadbf1b22a5016abb",
+                "text": "현재 문맥을 도구로 조회하고 간결히 답하세요. Nari의 현재 승인 의상·출처·모르는 나이는? 기존 두 제작 작업의 승인 기록과 현재 실행 가능성 및 최종 출력 승인 상태는 어떻게 다른가요? generate_audio=false가 원곡 보존 요청과 충돌하나요? 실제 영상이 생성됐다고 말하지 마세요. 새 제안·승인·작업 실행 없이 현재 서버 근거로만 설명하세요."
+              }
+            ],
+            "execution_targets": {
+              "shots": [
+                {
+                  "shot_id": "66d95e8480224167baaedd25e6ca051d",
+                  "name": "장면 1",
+                  "revision": 3,
+                  "selected_take": null,
+                  "takes": [
+                    {
+                      "take_id": 1,
+                      "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+                      "rights": "synthetic owned",
+                      "blocked": false,
+                      "review": null
+                    }
+                  ],
+                  "reference_head": 1,
+                  "reference_versions": [
+                    {
+                      "id": 1,
+                      "roles": {
+                        "start_frame": {
+                          "song": "A",
+                          "shot": "장면 1",
+                          "take": 1,
+                          "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/aethon-cc01-live-e2zimos6/assets/0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2.png",
+                          "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+                          "rights": "synthetic owned"
+                        }
+                      },
+                      "reason": "synthetic reference",
+                      "created": 1793025939.9798899,
+                      "status": "approved",
+                      "reviews": [
+                        {
+                          "decision": "approved",
+                          "reason": "synthetic human",
+                          "at": 1793025939.9833012,
+                          "actor": "local-owner"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "timeline": {
+                "version": 0,
+                "clips": [
+                  {
+                    "index": 0,
+                    "shot_id": "66d95e8480224167baaedd25e6ca051d",
+                    "shot_name": "장면 1",
+                    "take": null,
+                    "trim": 0,
+                    "duration": 5.0
+                  }
+                ],
+                "audio_version": 1,
+                "audio_offset": 0,
+                "captions": [],
+                "profile": "landscape",
+                "grant_id": null
+              },
+              "plans": [
+                {
+                  "plan_id": "307cf693f5404d738c96af9f68ab812a",
+                  "version": 1,
+                  "state": "applied"
+                }
+              ],
+              "actions": [
+                {
+                  "action_id": "e591895725d648dab33e8a6b78bd4985",
+                  "plan_id": "307cf693f5404d738c96af9f68ab812a",
+                  "plan_revision": 1,
+                  "role": "video",
+                  "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+                  "mode": "provider",
+                  "shot_id": "66d95e8480224167baaedd25e6ca051d",
+                  "approval_handles": [
+                    {
+                      "grant_id": "0f4fa4f1e6354783896a7412e920a05e",
+                      "expires": 1793026564.7594361,
+                      "price_revision": "3d288874235e88b305372e01e11ec376719881c20e7dabb36fe7bba0293b0027",
+                      "money": {
+                        "amount": "0.01",
+                        "currency": "USD"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "action_id": "0baa7457afdd4e4ba38973fdbcb2b19c",
+                  "plan_id": "307cf693f5404d738c96af9f68ab812a",
+                  "plan_revision": 1,
+                  "role": "video",
+                  "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+                  "mode": "provider",
+                  "shot_id": "66d95e8480224167baaedd25e6ca051d",
+                  "approval_handles": [
+                    {
+                      "grant_id": "220db88652994474875f3399238464bb",
+                      "expires": 1793026579.944936,
+                      "price_revision": "e28bc1ebbd54c527ba2e98afc64fb4800e30510ec767697349f0a5ee52da0e57",
+                      "money": {
+                        "amount": "0.01",
+                        "currency": "USD"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ontology_revision": 2,
+              "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+            }
+          }
+        },
+        {
+          "call": {
+            "id": "47c6d1c87b3a5024aa7fd23c2536d6e2",
+            "name": "search_project_context",
+            "arguments": {
+              "query": "video action approval handles execution targets final output approval generate_audio original audio timeline"
+            },
+            "complete": true
+          },
+          "result": {
+            "status": "succeeded",
+            "context": {
+              "music": {
+                "id": 1,
+                "audio": 1,
+                "start": 0,
+                "end": 5,
+                "sections": [],
+                "source": "user",
+                "engine": null,
+                "created": 1793025939.916845
+              },
+              "snapshot": [],
+              "ontology": {
+                "revision": 2,
+                "graph": {
+                  "entities": [
+                    {
+                      "description": "A-CANARY-V2: Nari now wears violet at the copper observatory, watercolor style. Age remains unknown. This approved correction replaces teal.",
+                      "id": "db38146e-1e47-51d3-a8c5-6bffda300087",
+                      "label": "Nari",
+                      "provenance": [
+                        {
+                          "excerpt": "A-CANARY-V2: Nari now wears violet at the copper observatory, watercolor style. Age remains unknown. This approved correction replaces teal.",
+                          "source_id": "synthetic-A-v2"
+                        }
+                      ],
+                      "type": "character",
+                      "uncertainty": {
+                        "reason": "Age unknown; other facts supplied by synthetic author.",
+                        "status": "unknown"
+                      }
+                    }
+                  ],
+                  "relations": []
+                },
+                "digest": "95883063cd88a87b88c51d9573b9463937ca8fed85e36942fafd8dd94e93bccf"
+              }
+            },
+            "search_mode": "scoped-snapshot",
+            "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님",
+            "sources": [
+              {
+                "id": "ontology:db38146e-1e47-51d3-a8c5-6bffda300087",
+                "text": "A-CANARY-V2: Nari now wears violet at the copper observatory, watercolor style. Age remains unknown. This approved correction replaces teal."
+              },
+              {
+                "id": "turn:8831cf1102b64d0cadbf1b22a5016abb",
+                "text": "현재 문맥을 도구로 조회하고 간결히 답하세요. Nari의 현재 승인 의상·출처·모르는 나이는? 기존 두 제작 작업의 승인 기록과 현재 실행 가능성 및 최종 출력 승인 상태는 어떻게 다른가요? generate_audio=false가 원곡 보존 요청과 충돌하나요? 실제 영상이 생성됐다고 말하지 마세요. 새 제안·승인·작업 실행 없이 현재 서버 근거로만 설명하세요."
+              }
+            ],
+            "execution_targets": {
+              "shots": [
+                {
+                  "shot_id": "66d95e8480224167baaedd25e6ca051d",
+                  "name": "장면 1",
+                  "revision": 3,
+                  "selected_take": null,
+                  "takes": [
+                    {
+                      "take_id": 1,
+                      "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+                      "rights": "synthetic owned",
+                      "blocked": false,
+                      "review": null
+                    }
+                  ],
+                  "reference_head": 1,
+                  "reference_versions": [
+                    {
+                      "id": 1,
+                      "roles": {
+                        "start_frame": {
+                          "song": "A",
+                          "shot": "장면 1",
+                          "take": 1,
+                          "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/aethon-cc01-live-e2zimos6/assets/0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2.png",
+                          "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+                          "rights": "synthetic owned"
+                        }
+                      },
+                      "reason": "synthetic reference",
+                      "created": 1793025939.9798899,
+                      "status": "approved",
+                      "reviews": [
+                        {
+                          "decision": "approved",
+                          "reason": "synthetic human",
+                          "at": 1793025939.9833012,
+                          "actor": "local-owner"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "timeline": {
+                "version": 0,
+                "clips": [
+                  {
+                    "index": 0,
+                    "shot_id": "66d95e8480224167baaedd25e6ca051d",
+                    "shot_name": "장면 1",
+                    "take": null,
+                    "trim": 0,
+                    "duration": 5.0
+                  }
+                ],
+                "audio_version": 1,
+                "audio_offset": 0,
+                "captions": [],
+                "profile": "landscape",
+                "grant_id": null
+              },
+              "plans": [
+                {
+                  "plan_id": "307cf693f5404d738c96af9f68ab812a",
+                  "version": 1,
+                  "state": "applied"
+                }
+              ],
+              "actions": [
+                {
+                  "action_id": "e591895725d648dab33e8a6b78bd4985",
+                  "plan_id": "307cf693f5404d738c96af9f68ab812a",
+                  "plan_revision": 1,
+                  "role": "video",
+                  "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+                  "mode": "provider",
+                  "shot_id": "66d95e8480224167baaedd25e6ca051d",
+                  "approval_handles": [
+                    {
+                      "grant_id": "0f4fa4f1e6354783896a7412e920a05e",
+                      "expires": 1793026564.7594361,
+                      "price_revision": "3d288874235e88b305372e01e11ec376719881c20e7dabb36fe7bba0293b0027",
+                      "money": {
+                        "amount": "0.01",
+                        "currency": "USD"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "action_id": "0baa7457afdd4e4ba38973fdbcb2b19c",
+                  "plan_id": "307cf693f5404d738c96af9f68ab812a",
+                  "plan_revision": 1,
+                  "role": "video",
+                  "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+                  "mode": "provider",
+                  "shot_id": "66d95e8480224167baaedd25e6ca051d",
+                  "approval_handles": [
+                    {
+                      "grant_id": "220db88652994474875f3399238464bb",
+                      "expires": 1793026579.944936,
+                      "price_revision": "e28bc1ebbd54c527ba2e98afc64fb4800e30510ec767697349f0a5ee52da0e57",
+                      "money": {
+                        "amount": "0.01",
+                        "currency": "USD"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ontology_revision": 2,
+              "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+            }
+          }
+        }
+      ],
+      "input_tokens_counted": 9720,
+      "usage": {
+        "input_tokens": 9720,
+        "output_tokens": 164
+      },
+      "usage_cost_usd": "0.001054",
+      "stop_reason": "tool_use",
+      "output_sha256": "b49f50e00d18896e7fc7aa73fb14236f671a9744d83c06e2b553ab95ab2d749b",
+      "visible_response": [
+        {
+          "type": "tool_use",
+          "id": "toolu_01EGRzd4qWyBuhE8AZ6PaCRK",
+          "name": "search_project_context",
+          "input": {
+            "query": "Nari current approved coat correction source age unknown"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        },
+        {
+          "type": "tool_use",
+          "id": "toolu_016d2yzJ4Cdw9MmyWRrzgeoV",
+          "name": "search_project_context",
+          "input": {
+            "query": "video action approval handles execution targets final output approval generate_audio original audio timeline"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "anthropic-live",
+      "input_sha256": "e9ea75c86dde282a6eff0870f3ad2e552363c5f6b4f67ddddbdbdd1e56e2f6cd",
+      "status": "answer_received",
+      "request_id": "req_011CgR33BdvvJyyTciFGCRh1",
+      "tool_calls": [],
+      "input_tokens_counted": 14016,
+      "usage": {
+        "input_tokens": 14016,
+        "output_tokens": 1590
+      },
+      "usage_cost_usd": "0.0021966",
+      "stop_reason": "end_turn",
+      "output_sha256": "94fb22e61138dad3e1776af78d918f22c414ad75d235fc6853bc6af6fa0988eb",
+      "visible_response": [
+        {
+          "type": "text",
+          "text": "**Nari 현재 기준**\n- **의상:** 현재 canonical 온톨로지 revision 2에 따르면 copper observatory에서 **violet(보라색)** 의상, watercolor 스타일입니다. 출처는 `synthetic-A-v2`이며, 설명에 \"This approved correction replaces teal\"이 있어 teal은 현재 값이 아닙니다.\n- **나이:** 불확실성 상태 `unknown`, 이유 \"Age unknown\"입니다. 확인되지 않은 사실입니다.\n- 이전 답변의 \"teal, synthetic-A-v1\" 설명은 조회된 서버 근거에서 찾을 수 없어 사용하지 않습니다.\n\n**두 제작 작업의 상태 차이**\n- 두 작업(`e591895725d648dab33e8a6b78bd4985`, `0baa7457afdd4e4ba38973fdbcb2b19c`)은 모두 같은 장면 1, 같은 모델의 video 액션입니다. 각각 승인 핸들(grant)이 있고, 금액은 0.01 USD입니다.\n- 승인 핸들은 해당 액션과 원래 입력에 대한 범위 한정 승인 기록입니다. 최종 출력 승인이 아니며, 현재 실행 검사가 통과한다는 증거도 아닙니다. 실행 시 권리·입력·가격·만료가 다시 검사됩니다.\n- 작업 job 2건은 `accepted`이고 실행 모드는 `contract-fake`입니다. 실제 AI 영상이 생성되었다는 근거는 없습니다.\n- **최종 출력 승인:** 확인되지 않았습니다. `selected_take`는 `null`, timeline `clips[0].take`는 `null`, timeline `grant_id`는 `null`, timeline version은 0입니다.\n\n**generate_audio=false와 원곡 보존**\n- 제가 조회한 서버 데이터에는 두 receipt의 `generate_audio` 필드가 직접 나타나지 않습니다. 이전 답변의 해당 내용은 검증하지 못했습니다.\n- 규칙상 `generate_audio=false`는 제공자가 생성하는 오디오만 끄며, 프로젝트 오디오를 삭제하지 않습니다.\n- 원곡 보존은 영상 프롬프트 문구가 아니라 승인된 타임라인 오디오 버전(`audio_version: 1`, `audio_offset: 0`)과 렌더러에 따릅니다. 따라서 두 설정은 충돌하지 않는 것으로 보입니다.\n\n이 답변은 조회만 했으며, 새 제안·승인·작업 실행은 하지 않았습니다."
+        }
+      ]
+    }
+  ],
+  "usage_cost_usd": "0.0032506",
+  "billing_confirmed": false,
+  "handoff": {
+    "context": {
+      "value": {
+        "model_settings": {
+          "revision": 1,
+          "selections": {
+            "chat": "anthropic-haiku-5-5",
+            "image": null,
+            "video": "fal-kling-2-5-turbo"
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "anthropic-haiku-5-5",
+                "video": "fal-kling-2-5-turbo"
+              },
+              "at": 1793025939.788223
+            }
+          ]
+        },
+        "context": {
+          "music": {
+            "id": 1,
+            "audio": 1,
+            "start": 0,
+            "end": 5,
+            "sections": [],
+            "source": "user",
+            "engine": null,
+            "created": 1793025939.916845
+          },
+          "snapshot": [],
+          "ontology": {
+            "revision": 2,
+            "graph": {
+              "entities": [
+                {
+                  "description": "A-CANARY-V2: Nari now wears violet at the copper observatory, watercolor style. Age remains unknown. This approved correction replaces teal.",
+                  "id": "db38146e-1e47-51d3-a8c5-6bffda300087",
+                  "label": "Nari",
+                  "provenance": [
+                    {
+                      "excerpt": "A-CANARY-V2: Nari now wears violet at the copper observatory, watercolor style. Age remains unknown. This approved correction replaces teal.",
+                      "source_id": "synthetic-A-v2"
+                    }
+                  ],
+                  "type": "character",
+                  "uncertainty": {
+                    "reason": "Age unknown; other facts supplied by synthetic author.",
+                    "status": "unknown"
+                  }
+                }
+              ],
+              "relations": []
+            },
+            "digest": "95883063cd88a87b88c51d9573b9463937ca8fed85e36942fafd8dd94e93bccf"
+          }
+        },
+        "approved_shots": [
+          {
+            "id": "66d95e8480224167baaedd25e6ca051d",
+            "selected": null,
+            "revision": 3
+          }
+        ]
+      },
+      "sha256": "513171cdfbba1680fcdafb6cca9b0389a1c76830e56134deade5fa96da920680"
+    },
+    "messages": [
+      {
+        "role": "user",
+        "text": "Synthetic neutral acknowledgement 5"
+      },
+      {
+        "role": "assistant",
+        "text": "Synthetic acknowledgement only.",
+        "review": "unreviewed"
+      },
+      {
+        "role": "user",
+        "text": "Synthetic neutral acknowledgement 6"
+      },
+      {
+        "role": "assistant",
+        "text": "Synthetic acknowledgement only.",
+        "review": "unreviewed"
+      },
+      {
+        "role": "user",
+        "text": "Synthetic neutral acknowledgement 7"
+      },
+      {
+        "role": "assistant",
+        "text": "Synthetic acknowledgement only.",
+        "review": "unreviewed"
+      },
+      {
+        "role": "user",
+        "text": "Synthetic neutral acknowledgement 8"
+      },
+      {
+        "role": "assistant",
+        "text": "Synthetic acknowledgement only.",
+        "review": "unreviewed"
+      },
+      {
+        "role": "user",
+        "text": "Synthetic neutral acknowledgement 9"
+      },
+      {
+        "role": "assistant",
+        "text": "Synthetic acknowledgement only.",
+        "review": "unreviewed"
+      },
+      {
+        "role": "user",
+        "text": "Continue project A scene 1 with all earlier user requests. First query the current canonical context, then prepare exactly one 5-second video action with the selected video model and the approved start frame. Write the actual English production prompt yourself from Nari, the copper observatory, watercolor style and the current requests. Use the stable shot/reference handles returned by the server. Do not approve or generate. Finally explain in Korean the saved proposal, camera motion, known coat, unknown age and approval state using actual sources and receipts."
+      },
+      {
+        "role": "assistant",
+        "text": "**결과: 제안(proposal)만 저장되었습니다. 승인도, 영상 생성도 하지 않았습니다.**\n\n**저장된 제안**\n- 작업 ID: `e591895725d648dab33e8a6b78bd4985` / 계획 ID: `307cf693f5404d738c96af9f68ab812a` (revision 1)\n- 상태: `proposed`, 승인: `required`\n- 실행 모드: `contract-fake`, 외부 호출 0회. 실제 AI 미디어가 생성되지 않았습니다.\n- 모델: 선택된 영상 모델 `fal-kling-2-5-turbo`가 서버에서 `fal-ai/kling-video/v2.5-turbo/pro/image-to-video`로 매핑되었습니다.\n- 길이: 5초. 영상 생성 오디오 옵션은 `generate_audio: false`입니다.\n- 추정 비용: 0.01 USD (`price_kind: fixture`, 즉 고정 예시 가격)\n- 대상: 장면 1 (`66d95e8480224167baaedd25e6ca051d`), shot revision 3\n- 시작 프레임: 승인된 reference version 1의 start_frame, take 1, sha256 `0cad8551…58026a8f2`\n\n**카메라 움직임**\n- 세션 요청 기록 SESSION-LONG-913에 따라 카메라는 궤도(orbit) 없이 느린 전진 돌리(slow forward dolly)로 설정했습니다.\n- 같은 요청에 따라 문자/레터링을 넣지 않도록 프롬프트에 명시했습니다.\n- 프롬프트에 \"원본 오디오 보존\"을 적었지만, 서버 receipt의 `generate_audio`는 `false`입니다. 이 차이는 실행 전에 확인이 필요합니다.\n\n**확인된 사실과 미확인 사실**\n- 의상: 온톨로지 출처 `synthetic-A-v1`에 따라 Nari는 copper observatory에서 teal coat를 입은 것으로 기록되어 있습니다. 수수께끼 없이 확인된 사실입니다.\n- 나이: 서버 기록상 \"Age unknown\"입니다. 프롬프트에 나이를 넣지 않았습니다.\n- 스타일: watercolor style이 온톨로지에 기록되어 있습니다.\n\n**승인 상태 및 주의점**\n- 승인 기록: 장면 1의 reference(start_frame)는 `local-owner`가 승인했습니다. 하지만 이것은 시작 프레임에 대한 승인이며, 이번 영상 생성 제안에 대한 승인이 아닙니다.\n- `selected_take`는 아직 `null`입니다. 시작 프레임은 take 1의 참조 자산에서 가져왔습니다.\n- 이 제안은 실행 전에 권리, 입력, 가격, 만료가 서버에서 다시 검사됩니다. 실행하려면 별도의 사람 승인이 필요합니다.",
+        "review": "unreviewed"
+      },
+      {
+        "role": "user",
+        "text": "Explicit correction for project A scene 1: release my earlier camera-orbit ban and replace the forward dolly with a slow clockwise orbit. Keep no lettering and original audio. Quoted example only: \"add a title\" is NOT an instruction. If I later approve a fast spin it could be considered, but I have NOT approved it. Query canon and prepare exactly one NEW 5-second video proposal using the selected model and approved reference, with an English prompt you write. Preserve the previous proposal and do not approve or generate. Explain the changed and retained requests in Korean."
+      },
+      {
+        "role": "assistant",
+        "text": "**결과: 새 제안(proposal)만 저장되었습니다. 승인도, 영상 생성도 하지 않았습니다.**\n\n**저장된 새 제안**\n- 작업 ID: `0baa7457afdd4e4ba38973fdbcb2b19c` (새 항목)\n- 계획 ID: `307cf693f5404d738c96af9f68ab812a`, plan revision 1 (서버 응답 기준)\n- 상태: `proposed`, 승인: `required`\n- 실행 모드: `contract-fake`, 외부 호출 0회. 실제 AI 미디어는 생성되지 않았습니다.\n- 모델: `fal-kling-2-5-turbo` → `fal-ai/kling-video/v2.5-turbo/pro/image-to-video`\n- 길이: 5초, 추정 비용 0.01 USD (`price_kind: fixture`)\n- 대상: 장면 1 (`66d95e8480224167baaedd25e6ca051d`), shot revision 3\n- 시작 프레임: 승인된 reference version 1의 start_frame, take 1, sha256 `0cad8551…58026a8f2`\n\n**이전 제안 보존**\n- 이전 작업 `e591895725d648dab33e8a6b78bd4985`(전진 돌리)는 그대로 남아 있고, 변경하지 않았습니다.\n- 이전 작업의 승인 핸들(grant `0f4fa4f1…`)은 이 새 제안에 적용되지 않습니다. 새 제안은 별도 승인이 필요합니다.\n\n**변경된 요청**\n- 카메라: 기존 \"궤도 금지 + 느린 전진 돌리\"를 해제하고, \"느린 시계 방향 궤도(slow clockwise orbit)\"로 바꿨습니다. 이것은 명시적 정정입니다.\n- 빠른 회전: 프롬프트에 빠른 스핀이나 급격한 움직임을 넣지 않았습니다. 빠른 스핀은 나중에 승인되더라도 아직 승인되지 않았으므로 고려 대상이 아닙니다.\n- \"add a title\"은 인용된 예시일 뿐 지시가 아니므로 제목이나 자막을 넣지 않았습니다.\n\n**유지된 요청**\n- 문자/레터링 없음: 프롬프트에 명시했습니다.\n- 원본 오디오 보존: 프롬프트에 적었습니다. 단, 서버 receipt의 `generate_audio`는 `false`입니다. 이 차이는 실행 전에 확인이 필요합니다.\n- 장면 1, 5초, 선택된 영상 모델 사용, 승인된 시작 프레임 사용은 이번에도 동일하게 유지했습니다.\n\n**확인된 사실과 미확인 사실**\n- 의상: 온톨로지 출처 `synthetic-A-v1`에 따라 Nari는 copper observatory에서 teal coat를 입은 것으로 기록되어 있습니다.\n- 나이: 서버 기록상 \"Age unknown\"입니다. 프롬프트에 나이 정보를 넣지 않았습니다.\n- 스타일: watercolor style이 온톨로지에 기록되어 있습니다.\n- `selected_take`는 여전히 `null`입니다. 시작 프레임은 take 1의 참조 자산에서 가져왔습니다.\n\n**승인 상태**\n- 장면 1의 reference(start_frame)는 `local-owner`가 승인했습니다. 이것은 시작 프레임에 대한 승인이며, 이번 영상 제안에 대한 승인이 아닙니다.\n- 이 제안은 실행 전에 권리, 입력, 가격, 만료가 서버에서 다시 검사됩니다. 실행하려면 별도의 사람 승인이 필요합니다.",
+        "review": "unreviewed"
+      },
+      {
+        "role": "user",
+        "text": "After reopening this project, query current approved facts. Explain in Korean Nari's current coat, its correction source and unknown age, plus the currently applicable camera and lettering requests. Do not infer facts from prior unreviewed assistant text; do not prepare, approve or generate anything. Report prior proposals as proposals, never as generated videos."
+      },
+      {
+        "role": "assistant",
+        "text": "**결과: 현재 승인된 문맥을 조회했습니다. 준비, 승인, 생성은 하지 않았습니다.**\n\n**Nari의 현재 의상**\n- 현재 canonical 온톨로지(revision 2)에 따르면 Nari는 copper observatory에서 **violet(보라색)** 의상을 입고 있습니다. 스타일은 watercolor입니다.\n- 출처는 `synthetic-A-v2`이고, 설명에 \"This approved correction replaces teal\"이라고 적혀 있습니다. 따라서 teal은 이전 기록이며 현재 값이 아닙니다.\n- 이전 assistant 답변에 있던 \"teal coat, synthetic-A-v1\" 설명은 검색 결과에서 확인되지 않았습니다. 현재 기준으로는 사용하지 않습니다.\n\n**Nari의 나이**\n- 온톨로지 불확실성 상태는 `unknown`이고, 이유는 \"Age unknown\"입니다. 나이는 확인되지 않은 사실입니다.\n\n**현재 적용되는 카메라 요청**\n- 세션 요청 기록에는 처음에 \"SESSION-LONG-913: never orbit the camera; use a slow forward dolly\"가 있었습니다.\n- 이후 명시적 정정(`bb4834b583ff4652956edee41962b616`)이 \"release my earlier camera-orbit ban\"과 \"slow clockwise orbit\"을 요청했습니다. 따라서 현재 적용되는 카메라 요청은 **느린 시계 방향 궤도(slow clockwise orbit)**입니다.\n- \"fast spin\"은 승인되지 않았으므로 적용되지 않습니다. \"add a title\"은 인용된 예시이므로 지시가 아닙니다.\n- 이 카메라 요청은 사용자 요청 기록이며, canonical 사실로 승인된 항목은 아닙니다.\n\n**현재 적용되는 레터링 및 오디오 요청**\n- 레터링: **없음**. 요청 기록에 유지되어 있습니다.\n- 원본 오디오: **보존** 요청이 기록되어 있습니다. 다만 이전 제안 receipt의 `generate_audio`는 `false`였습니다. 이 차이는 실행 전에 확인이 필요합니다.\n\n**이전 제안 (생성된 영상 아님)**\n- `e591895725d648dab33e8a6b78bd4985`: 전진 돌리 제안입니다. 상태는 `proposed`, 승인은 `required`입니다.\n- `0baa7457afdd4e4ba38973fdbcb2b19c`: 시계 방향 궤도 제안입니다. 상태는 `proposed`, 승인은 `required`입니다.\n- 두 제안 모두 실행 모드는 `contract-fake`이며, 실제 AI 미디어는 생성되지 않았습니다. 작업 job 상태 `accepted`는 생성 완료를 뜻하지 않습니다.\n- 승인 핸들(grant)은 승인 기록이 아니며, 실행 시 서버가 다시 검사합니다.\n\n**장면 1 상태**\n- 장면 1(`66d95e8480224167baaedd25e6ca051d`)의 start_frame reference는 `local-owner`가 승인했습니다. 이는 시작 프레임 승인이며, 영상 제안 승인이 아닙니다.\n- `selected_take`는 아직 `null`입니다.",
+        "review": "unreviewed"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "08778942-4f69-454e-8760-990a88b5fe86",
+        "state": "accepted",
+        "mode": "contract-fake"
+      },
+      {
+        "id": "5716661f-5b80-460b-91d7-53bbff76e44b",
+        "state": "accepted",
+        "mode": "contract-fake"
+      }
+    ],
+    "execution_targets": {
+      "shots": [
+        {
+          "shot_id": "66d95e8480224167baaedd25e6ca051d",
+          "name": "장면 1",
+          "revision": 3,
+          "selected_take": null,
+          "takes": [
+            {
+              "take_id": 1,
+              "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+              "rights": "synthetic owned",
+              "blocked": false,
+              "review": null
+            }
+          ],
+          "reference_head": 1,
+          "reference_versions": [
+            {
+              "id": 1,
+              "roles": {
+                "start_frame": {
+                  "song": "A",
+                  "shot": "장면 1",
+                  "take": 1,
+                  "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/aethon-cc01-live-e2zimos6/assets/0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2.png",
+                  "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+                  "rights": "synthetic owned"
+                }
+              },
+              "reason": "synthetic reference",
+              "created": 1793025939.9798899,
+              "status": "approved",
+              "reviews": [
+                {
+                  "decision": "approved",
+                  "reason": "synthetic human",
+                  "at": 1793025939.9833012,
+                  "actor": "local-owner"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "timeline": {
+        "version": 0,
+        "clips": [
+          {
+            "index": 0,
+            "shot_id": "66d95e8480224167baaedd25e6ca051d",
+            "shot_name": "장면 1",
+            "take": null,
+            "trim": 0,
+            "duration": 5.0
+          }
+        ],
+        "audio_version": 1,
+        "audio_offset": 0,
+        "captions": [],
+        "profile": "landscape",
+        "grant_id": null
+      },
+      "plans": [
+        {
+          "plan_id": "307cf693f5404d738c96af9f68ab812a",
+          "version": 1,
+          "state": "applied"
+        }
+      ],
+      "actions": [
+        {
+          "action_id": "e591895725d648dab33e8a6b78bd4985",
+          "plan_id": "307cf693f5404d738c96af9f68ab812a",
+          "plan_revision": 1,
+          "role": "video",
+          "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+          "mode": "provider",
+          "shot_id": "66d95e8480224167baaedd25e6ca051d",
+          "approval_handles": [
+            {
+              "grant_id": "0f4fa4f1e6354783896a7412e920a05e",
+              "expires": 1793026564.7594361,
+              "price_revision": "3d288874235e88b305372e01e11ec376719881c20e7dabb36fe7bba0293b0027",
+              "money": {
+                "amount": "0.01",
+                "currency": "USD"
+              }
+            }
+          ]
+        },
+        {
+          "action_id": "0baa7457afdd4e4ba38973fdbcb2b19c",
+          "plan_id": "307cf693f5404d738c96af9f68ab812a",
+          "plan_revision": 1,
+          "role": "video",
+          "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+          "mode": "provider",
+          "shot_id": "66d95e8480224167baaedd25e6ca051d",
+          "approval_handles": [
+            {
+              "grant_id": "220db88652994474875f3399238464bb",
+              "expires": 1793026579.944936,
+              "price_revision": "e28bc1ebbd54c527ba2e98afc64fb4800e30510ec767697349f0a5ee52da0e57",
+              "money": {
+                "amount": "0.01",
+                "currency": "USD"
+              }
+            }
+          ]
+        }
+      ],
+      "ontology_revision": 2,
+      "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+    },
+    "instructions": "서버 상태만 작업 결과로 설명하세요. 미수집 결과를 완료로 설명하지 마세요.",
+    "embedding_policy": "unchanged",
+    "session_request_history": {
+      "schema_version": 1,
+      "scope": {
+        "workspace_id": "3180fa37-b886-4294-a620-7ff6ef5438bb",
+        "project_id": "6003a150-878a-5aa0-94c7-94b1448e509b",
+        "conversation": "project-default"
+      },
+      "requests": [
+        {
+          "turn_id": "seed-1",
+          "sequence": 1,
+          "text": "SESSION-LONG-913: In project A never orbit the camera; use a slow forward dolly. No lettering. Preserve original audio.",
+          "source_hash": "9b1b4e4a6dbf6b11d4d05973602472da2c8aecc14d807df6eedda3f45d562511",
+          "status": "completed"
+        },
+        {
+          "turn_id": "seed-2",
+          "sequence": 2,
+          "text": "Synthetic neutral acknowledgement 2",
+          "source_hash": "04b40914faa3d29ce0edccfd1970c0f04b5be713deff54536e11bc2e55c4d3f1",
+          "status": "completed"
+        },
+        {
+          "turn_id": "seed-3",
+          "sequence": 3,
+          "text": "Synthetic neutral acknowledgement 3",
+          "source_hash": "716a5a6c84efccfd8e2cf2462fcbcd2324b3465ac0c2c73e4a088fcdcd859dc8",
+          "status": "completed"
+        },
+        {
+          "turn_id": "seed-4",
+          "sequence": 4,
+          "text": "Synthetic neutral acknowledgement 4",
+          "source_hash": "814a79478d8c25b2432842b9ef6c80205d9d72d034621ae94e5f6c45fec85bc9",
+          "status": "completed"
+        },
+        {
+          "turn_id": "seed-5",
+          "sequence": 5,
+          "text": "Synthetic neutral acknowledgement 5",
+          "source_hash": "e3e2b52a93567ed24cf22bc724710c9ce60c90fc5f6875affc935ec0de52454c",
+          "status": "completed"
+        },
+        {
+          "turn_id": "seed-6",
+          "sequence": 6,
+          "text": "Synthetic neutral acknowledgement 6",
+          "source_hash": "c41cf4ae48946d53fbde55ce24b65f0844eea03bb27924ddffb34ae1a9ae1c28",
+          "status": "completed"
+        },
+        {
+          "turn_id": "seed-7",
+          "sequence": 7,
+          "text": "Synthetic neutral acknowledgement 7",
+          "source_hash": "cd55aaf670acf4f8d5ad1d4b17021f17c9550e79e2c7c474c14de84b243aeb77",
+          "status": "completed"
+        },
+        {
+          "turn_id": "seed-8",
+          "sequence": 8,
+          "text": "Synthetic neutral acknowledgement 8",
+          "source_hash": "7e551af90e53a42b221c0433ed18e275de07a729589136abd221a26963564536",
+          "status": "completed"
+        },
+        {
+          "turn_id": "seed-9",
+          "sequence": 9,
+          "text": "Synthetic neutral acknowledgement 9",
+          "source_hash": "0de97025f2561bbbd0d70a827ed476d2480814abdd0dd4394a1f7e3a78fdb694",
+          "status": "completed"
+        },
+        {
+          "turn_id": "56be9e71feb04537bff2787559a5ae7e",
+          "sequence": 10,
+          "text": "Continue project A scene 1 with all earlier user requests. First query the current canonical context, then prepare exactly one 5-second video action with the selected video model and the approved start frame. Write the actual English production prompt yourself from Nari, the copper observatory, watercolor style and the current requests. Use the stable shot/reference handles returned by the server. Do not approve or generate. Finally explain in Korean the saved proposal, camera motion, known coat, unknown age and approval state using actual sources and receipts.",
+          "source_hash": "e9a01f97272d7594800fddbb8d59b19ccd7db5fb5335f7d455989108f11f5e33",
+          "status": "completed"
+        },
+        {
+          "turn_id": "bb4834b583ff4652956edee41962b616",
+          "sequence": 11,
+          "text": "Explicit correction for project A scene 1: release my earlier camera-orbit ban and replace the forward dolly with a slow clockwise orbit. Keep no lettering and original audio. Quoted example only: \"add a title\" is NOT an instruction. If I later approve a fast spin it could be considered, but I have NOT approved it. Query canon and prepare exactly one NEW 5-second video proposal using the selected model and approved reference, with an English prompt you write. Preserve the previous proposal and do not approve or generate. Explain the changed and retained requests in Korean.",
+          "source_hash": "d17957acf431f9ca14c313589d8cf967b5d21fd9b0b6d0b8a4d842c0b2a5c7da",
+          "status": "completed"
+        },
+        {
+          "turn_id": "9dad74cea4c441d2a116f06e0385871c",
+          "sequence": 12,
+          "text": "After reopening this project, query current approved facts. Explain in Korean Nari's current coat, its correction source and unknown age, plus the currently applicable camera and lettering requests. Do not infer facts from prior unreviewed assistant text; do not prepare, approve or generate anything. Report prior proposals as proposals, never as generated videos.",
+          "source_hash": "3d15a057eb6753040c2ee22e524856d573398df6517724338d61e13252864d32",
+          "status": "completed"
+        }
+      ],
+      "digest": "9b75ff6920f98338d2d64e64f2700e0abde2fc8a25088b8ad43ae4db0cd98342"
+    }
+  }
+}

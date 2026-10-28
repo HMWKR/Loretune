@@ -1,0 +1,85 @@
+{
+  "tool": "Ego browser CLI0.6.0.20",
+  "space": 34,
+  "closed": true,
+  "methods_used": [
+    "taskSpace",
+    "page.snapshot",
+    "page.click",
+    "page.selectOption",
+    "page.fill",
+    "page.focus",
+    "page.keyboard.press",
+    "page.keyboard.insertText",
+    "page.hover",
+    "page.evaluate",
+    "page.fetch",
+    "page.screenshot",
+    "page.waitForFunction",
+    "task.finish"
+  ],
+  "cdp_used": [
+    "Emulation.setDeviceMetricsOverride",
+    "Emulation.setEmulatedMedia",
+    "Accessibility.getFullAXTree",
+    "Accessibility.getPartialAXTree",
+    "DOM.enable",
+    "DOM.getDocument",
+    "DOM.querySelector",
+    "CSS.enable",
+    "CSS.getPlatformFontsForNode",
+    "Runtime.evaluate",
+    "Page.addScriptToEvaluateOnNewDocument"
+  ],
+  "confirmed_not_supported": [
+    {
+      "action": "Browser.getVersion",
+      "result": "wasn't found"
+    }
+  ],
+  "limits": [
+    {
+      "action": "Page.addScriptToEvaluateOnNewDocument",
+      "result": "identifier1 returned; later guard absent once. No assumption of persistence/full route/mock support."
+    },
+    {
+      "action": "requestAnimationFrame promise wait",
+      "result": "did not resolve; interrupted, then page state inspected. No app change or paint result claimed."
+    },
+    {
+      "action": "browser zoom keyboard shortcut",
+      "result": "no measured effect;200/400BLOCKED"
+    },
+    {
+      "action": "axe",
+      "result": "undefined; no local bundle in inspected project/tool scope; not installed"
+    }
+  ],
+  "not_used": [
+    "Playwright route/context/new browser",
+    "dependency installation",
+    "external a11y script",
+    "competitor account UI",
+    "hidden API"
+  ],
+  "browser_fingerprint": {
+    "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "platform": "MacIntel",
+    "language": "ko-KR",
+    "timezone": "Asia/Seoul",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "dpr": 1,
+    "visualScale": 1,
+    "fontStatus": "loaded",
+    "fontDeclarations": [],
+    "bodyFamily": "system-ui, -apple-system, \"Apple SD Gothic Neo\", \"Noto Sans KR\", sans-serif",
+    "guard": {
+      "blocked": [],
+      "requests": []
+    },
+    "axe": "undefined"
+  }
+}

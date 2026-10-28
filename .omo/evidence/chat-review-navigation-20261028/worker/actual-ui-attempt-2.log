@@ -1,0 +1,23 @@
+시작 조건: 자체 5초 무음 음원, 사진 없음, 두 장면, 실제 Claude·이미지 생성 없음
+재시도: 앞선 시도에서 저장한 합성 제작안과 완료 대화를 재사용
+제작안 저장 완료: 대화 결과의 명시적 장면 1 제작안 검토 버튼
+같은 장면의 정확한 기존 제작안 카드로 이동·포커스
+접어 둔 제작 도구·장면 제작에서 같은 장면 검토 재진입
+현재 장면 2에서 장면 1 제작안 검토 · Space
+모션 문구 미저장 초안에서 대화 검토 버튼 이동
+모션 재열기: 미저장 초안 보존
+3D 카메라 미저장 초안에서 대화 검토 버튼 이동
+3D 재열기: 미저장 초안 보존
+검토 이동만으로 승인·생성·예약·저장 API 호출 0
+명시적 보류: 생성 없음
+명시적 거절: 생성 없음
+거절한 저장 카드도 정확하게 열림 · 대화 초안·기존 결과 보존
+ReferenceError: reviewPromptNode is not defined
+    at evaluate (evaluate at activate (/Users/leesungmin/Desktop/Loretune/.omo/evidence/chat-review-navigation-20261028/worker/actual_navigation.cjs:60:345), <anonymous>:0:68)
+    at #evaluate (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/cdp/ExecutionContext.js:402:19)
+    at async ExecutionContext.evaluate (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/cdp/ExecutionContext.js:288:16)
+    at async IsolatedWorld.evaluate (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/cdp/IsolatedWorld.js:104:16)
+    at async CdpFrame.evaluate (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/api/Frame.js:364:20)
+    at async CdpPage.evaluate (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/api/Page.js:832:20)
+    at async activate (/Users/leesungmin/Desktop/Loretune/.omo/evidence/chat-review-navigation-20261028/worker/actual_navigation.cjs:60:334)
+    at async main (/Users/leesungmin/Desktop/Loretune/.omo/evidence/chat-review-navigation-20261028/worker/actual_navigation.cjs:104:296)

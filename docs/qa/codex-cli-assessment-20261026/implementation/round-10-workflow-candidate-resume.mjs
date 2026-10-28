@@ -1,0 +1,13 @@
+const fs=await import('node:fs/promises'),root='/Users/leesungmin/Desktop/Loretune/docs/qa/codex-cli-assessment-20261026/implementation/workflow',task=await taskSpace(42),p=task.page('p2');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await p.waitForFunction(()=>innerWidth===1920&&innerHeight===1080);
+await p.click('#productionTools>summary',{label:'준비된 시험 제작 승인 열기'});
+await p.click('[data-card][data-action="action_decide"][data-decision="approved"]',{label:'외부 비용 없는 시험 승인'});await p.waitForFunction(()=>!busy&&project().execution_cards[0].decision==='approved',undefined,{timeout:10000});
+await p.screenshot({path:root+'/candidate-approved-1920.png'});
+await p.click('[data-card][data-action="action_execute"]',{label:'승인된 로컬 시험 후보 제작'});await p.waitForFunction(()=>!busy&&project().execution_cards[0].take!==null,undefined,{timeout:10000});
+await p.click('[data-card][data-action="action_review"][data-decision="approved"]',{label:'시험 후보 검토 승인'});await p.waitForFunction(()=>!busy&&project().execution_cards[0].result_decision==='approved',undefined,{timeout:10000});
+const separated=await p.evaluate(()=>{const c=project().execution_cards[0];return{decision:c.decision,result:c.result_decision,selected:project().shots[c.shot].selected,take:c.take}});if(separated.selected!==null)throw Error('APPROVAL_AUTO_SELECTED');
+await p.click('[data-card][data-open-shot]',{label:'후보를 작업대에서 검토'});
+await p.click('#takes button[data-take="1"]',{label:'검토한 시험 Take 선택'});await p.waitForFunction(()=>!busy&&project().shots[shotName].selected===1,undefined,{timeout:10000});
+await fs.writeFile(root+'/candidate-result.json',JSON.stringify({time:new Date().toISOString(),viewport:await p.evaluate(()=>[innerWidth,innerHeight]),separated,selected:await p.evaluate(()=>({shot:shotName,take:project().shots[shotName].selected,head:project().timeline_head})),errors:await p.evaluate(()=>__flow.errors)},null,2));
+await p.screenshot({path:root+'/candidate-selected-1920.png'});console.log(await p.snapshot());

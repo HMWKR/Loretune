@@ -1,0 +1,66 @@
+{
+  "motion-1": {
+    "sha256": "24f411949a37cce6e37b6475efab0b2c711a2640dbb40a94e0dc88e206072dea",
+    "preview_vs_encoded": [
+      {
+        "frame": 0,
+        "rgb_mean_absolute_error": 0.0376758616255144
+      },
+      {
+        "frame": 24,
+        "rgb_mean_absolute_error": 0.03385866769547325
+      },
+      {
+        "frame": 60,
+        "rgb_mean_absolute_error": 0.03391541280864198
+      }
+    ],
+    "threshold": "MAE<3 RGB levels; codec loss allowed, not pixel-identical"
+  },
+  "motion-2": {
+    "sha256": "1eab5b993ef23f4d14ef0d947fe3339afbe85da2493758943db22cdc76ee3efe",
+    "preview_vs_encoded": [
+      {
+        "frame": 0,
+        "rgb_mean_absolute_error": 0.0238647762345679
+      },
+      {
+        "frame": 24,
+        "rgb_mean_absolute_error": 0.032860564557613166
+      },
+      {
+        "frame": 60,
+        "rgb_mean_absolute_error": 0.032495016718107
+      }
+    ],
+    "threshold": "MAE<3 RGB levels; codec loss allowed, not pixel-identical"
+  },
+  "edited-output": {
+    "sha256": "383d8633ffb801ecf327ad434db5f5788390d47dea6f4ed341960d18219c0e36",
+    "sampled_clip_order": [
+      {
+        "seconds": 0.5,
+        "rgb": [
+          0,
+          0,
+          255
+        ],
+        "expected": "blue"
+      },
+      {
+        "seconds": 2.5,
+        "rgb": [
+          254,
+          0,
+          0
+        ],
+        "expected": "red"
+      }
+    ],
+    "first_100ms_audio_rms": 0.17519293813765807,
+    "audio_gate": "source first second silent; offset=1 output non-silent",
+    "unicode_caption_timing_preserved": true,
+    "output": "/Users/leesungmin/Desktop/Loretune/docs/qa/native-motion-20261026/artifacts/fixture-edited-audio-captions.mp4",
+    "synthetic_fake_authorship": true
+  }
+}

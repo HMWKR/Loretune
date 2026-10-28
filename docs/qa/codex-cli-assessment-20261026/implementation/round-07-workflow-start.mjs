@@ -1,0 +1,18 @@
+const fs=await import('node:fs/promises'),root='/Users/leesungmin/Desktop/Loretune/docs/qa/codex-cli-assessment-20261026/implementation';
+const spec=JSON.parse(await fs.readFile(root+'/workflow/server-start.json','utf8')),task=await taskSpace(42),p=await task.newPage();
+await fs.writeFile(root+'/workflow/page.json',JSON.stringify({spaceId:42,page:p.label}));
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await p.cdp('Page.addScriptToEvaluateOnNewDocument',{source:`window.__flow={requests:[],blocked:[],errors:[]};window.addEventListener('error',e=>__flow.errors.push(e.message));window.addEventListener('unhandledrejection',e=>__flow.errors.push(String(e.reason?.message||e.reason)));const actualFetch=fetch.bind(window);window.fetch=(input,options={})=>{const u=new URL(input,location.href),method=options.method||'GET';if(u.origin!==location.origin){__flow.blocked.push(u.origin);throw Error('EXTERNAL_QA_BLOCKED')}let action=null;if(method==='POST')try{action=JSON.parse(options.body).action}catch{}__flow.requests.push({method,path:u.pathname,action});return actualFetch(input,options)};navigator.sendBeacon=()=>false;`});
+await p.goto(spec.url);await p.waitForFunction(()=>project()?.shots&&Object.keys(project().shots).length===3);
+const initial=await p.evaluate(async()=>{const hashes={};for(const name of ['index.html','studio.css','studio-media.js']){const b=await(await fetch(name==='index.html'?'/':'/'+name)).arrayBuffer();hashes[name]=[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')}return{time:new Date().toISOString(),hashes,project:project(),revision:state.revision,ua:navigator.userAgent,viewport:[innerWidth,innerHeight],dpr:devicePixelRatio}});
+for(const [k,v]of Object.entries(initial.hashes))if(v!==spec.source_hashes[k])throw Error('SOURCE_HASH_CHANGED');
+await fs.writeFile(root+'/workflow/initial.json',JSON.stringify(initial,null,2));
+await p.click('button[data-step="1"]',{label:'합성 음원 구간 설정'});await p.evaluate(()=>document.querySelector('#musicStructure').closest('details').open=true);
+await p.fill('#musicStructure [name=start]','0');await p.fill('#musicStructure [name=end]','1.5');await p.fill('#musicStructure [name=sections]','0,1.5,합성 검증 구간');await p.click('#musicStructure button',{label:'격리 음원 구간 확정'});
+await p.waitForFunction(()=>!busy&&project().music_head===1,undefined,{timeout:10000});
+await p.click('button[data-step="2"]',{label:'시험 제작 계획 작성'});
+await p.fill('#guidedBrief [name=goal]','Aethon 로컬 제작·출력 검증');await p.fill('#guidedBrief [name=style]','직접 제작한 시험 패턴');await p.fill('#guidedBrief [name=constraints]','기존 3개 장면과 원곡·과거 승인은 보존');await p.fill('#guidedBrief [name=scenes]','합성 추가 장면: 단색 시험 후보를 검토한다');
+await p.click('#guidedBrief button',{label:'외부 전송 없이 계획 저장'});
+await p.waitForFunction(()=>!busy&&project().guided_plans?.length===1,undefined,{timeout:10000});
+await p.screenshot({path:root+'/workflow/plan-review-1920.png'});
+console.log(await p.snapshot());

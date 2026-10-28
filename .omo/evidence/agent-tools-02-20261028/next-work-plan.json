@@ -1,0 +1,17 @@
+{
+  "task": "agent-tools-02-20261028",
+  "written": "2026-10-28",
+  "state": "stopped-by-user",
+  "user_instruction": "아니야 재작업은 하지 말고 / 지금까지 작업했던것들에 대해서 전체적으로 문서 업데이트를 진행을 한다음 핸드오프 문서를 만들어주며 과거에 있던 핸드오프 문서는 없애줘",
+  "start_only_after_user_resumes": true,
+  "next": [
+    {"order": 1, "id": "SRV-bytes", "what": "Fix SRV-r3 serious: byte-budget paging at one choke point with strictly progressing cursors (design in task-contract-wave2d.json), plus SRV-r3 minors.", "evidence_in": "tasks/SRV-r3/verdict-wave2c.json", "needs_user": false},
+    {"order": 2, "id": "UI-minors", "what": "UI-r3 critic minors (warning token scope, seek oninput test, usd() exponent strings, timeline clamp, approval sentence for past live turns, index.html:806 facts line).", "evidence_in": "tasks/UI-r3/verdict-wave2c.json", "needs_user": false},
+    {"order": 3, "id": "D1-minors", "what": "D1-r5 critic minors in docs/design/FRAME-OBSERVATION-DESIGN-ko.md.", "evidence_in": "tasks/D1-r5/verdict-wave2c.json", "needs_user": false},
+    {"order": 4, "id": "codex-gate", "what": "codex read-only final review (main direct; model gpt-6-astra; last attempt hit 429).", "needs_user": false},
+    {"order": 5, "id": "S14", "what": "Integrated verification: run_regression.py with a new delta (skip 0, Warning 0); ego lite before/after capture 1920/1280/375 dark under the same conditions and direct PNG comparison; synthetic-model end-to-end across 3 permission modes, normal/failure/edge; axe; 8765/57888/Ego Space unchanged; document checker.", "needs_user": false},
+    {"order": 6, "id": "peer-notify", "what": "Tell loretune-b2 (icon work) that Wave 2/S14 ended so it can start index.html/studio.css/app.py icon changes.", "needs_user": false},
+    {"order": 7, "id": "decisions", "what": "User decisions: 8KiB margin, list page size 8, preference candidate cap 10, locked_fields scope, stray .pyc deletion, 1:1 megapixel definition (paid measurement), 16384 token fit (paid count_tokens).", "needs_user": true}
+  ],
+  "not_in_scope_without_separate_approval": ["real Claude / AI video / paid calls", "count_tokens", "document registration/classification/promotion", "file deletion"]
+}

@@ -1,0 +1,191 @@
+[
+  {
+    "case": "F05-missing-duration-markup",
+    "status": "pass",
+    "html": "<div class=\"guided-card\"><h2>계획 v1 · 검토 대기</h2><p>g</p><p>스타일: 미지정 · 보존 조건: 미지정</p><p>synthetic</p><ol><li>s · 길이 미정</li></ol><p>계획 승인은 유료 생성 승인이 아닙니다. 기존 샷·승인본을 보존하고 새 샷으로 추가합니다.</p><button data-guided-plan=\"p\" disabled data-plan-blocked=\"true\" title=\"음악 구간 확정 후 보존된 입력으로 새 계획을 검토하세요\">이 버전 승인·샷 추가</button><p>이 계획은 음악 구간 확정 전 버전입니다. 입력은 보존됩니다. 구간 확정 후 새 계획 버전을 검토하세요.</p><button data-plan-music>음악 입력으로 이동</button></div>"
+  },
+  {
+    "case": "F05-button-policy-success",
+    "status": "pass",
+    "answer": true,
+    "blockedDisabled": true,
+    "ordinaryDisabled": false
+  },
+  {
+    "case": "F05-button-policy-server-error",
+    "status": "pass",
+    "answer": false,
+    "blockedDisabled": true,
+    "ordinaryDisabled": false
+  },
+  {
+    "case": "F05-button-policy-transport-error",
+    "status": "pass",
+    "answer": false,
+    "blockedDisabled": true,
+    "ordinaryDisabled": false
+  },
+  {
+    "case": "F05-button-policy-refresh-error",
+    "status": "pass",
+    "answer": false,
+    "blockedDisabled": true,
+    "ordinaryDisabled": false
+  },
+  {
+    "case": "F05-button-policy-cache-error",
+    "status": "pass",
+    "answer": false,
+    "blockedDisabled": true,
+    "ordinaryDisabled": false
+  },
+  {
+    "case": "F06-reload-restores-draft",
+    "status": "pass",
+    "afterReload": {
+      "at": "1.25",
+      "text": "한글 초안"
+    }
+  },
+  {
+    "case": "F06-project-scope",
+    "status": "pass",
+    "restoredA": {
+      "at": "1.25",
+      "text": "한글 초안"
+    },
+    "storedB": {
+      "at": "2.5",
+      "text": "B 초안"
+    }
+  },
+  {
+    "case": "F06-workspace-scope",
+    "status": "pass",
+    "newWorkspace": {
+      "at": "0",
+      "text": ""
+    }
+  },
+  {
+    "case": "F06-failed-save-preserves",
+    "status": "pass",
+    "field": {
+      "at": "1.25",
+      "text": "보존할 의견"
+    },
+    "stored": [
+      [
+        "loretune-comment-draft:synthetic-w1:A",
+        "{\"at\":\"1.25\",\"text\":\"보존할 의견\"}"
+      ]
+    ]
+  },
+  {
+    "case": "F06-successful-save-clears",
+    "status": "pass",
+    "field": {
+      "at": "0",
+      "text": ""
+    },
+    "stored": []
+  },
+  {
+    "case": "F06-adjacent-pending-save-must-preserve-new-edit",
+    "status": "pass",
+    "submitted": {
+      "action": "comment",
+      "data": {
+        "song": "A",
+        "at": 1.25,
+        "text": "first submitted draft"
+      },
+      "revision": 1,
+      "request_id": "synthetic-id"
+    },
+    "expectedNewText": "second unsent draft while save pending",
+    "actualField": {
+      "at": "2.5",
+      "text": "second unsent draft while save pending"
+    },
+    "actualStorage": [
+      [
+        "loretune-comment-draft:synthetic-w1:A",
+        "{\"at\":\"2.5\",\"text\":\"second unsent draft while save pending\"}"
+      ]
+    ],
+    "execution": "VM with delayed fake fetch; exact snapshot submit, act, sendRequest, pending helpers, input listener"
+  },
+  {
+    "case": "F07-project-switch",
+    "status": "pass",
+    "expected": {
+      "at": "2",
+      "text": "B unsent"
+    },
+    "actual": {
+      "at": "2",
+      "text": "B unsent"
+    },
+    "storage": [
+      [
+        "loretune-comment-draft:synthetic-w1:B",
+        "{\"at\":\"2\",\"text\":\"B unsent\"}"
+      ]
+    ]
+  },
+  {
+    "case": "F07-shot-switch",
+    "status": "pass",
+    "expected": {
+      "at": "2",
+      "text": "shot 2 unsent"
+    },
+    "actual": {
+      "at": "2",
+      "text": "shot 2 unsent"
+    },
+    "storage": [
+      [
+        "loretune-comment-draft:synthetic-w1:A",
+        "{\"at\":\"2\",\"text\":\"shot 2 unsent\"}"
+      ]
+    ]
+  },
+  {
+    "case": "F07-same-value-new-edit",
+    "status": "pass",
+    "expected": {
+      "at": "1",
+      "text": "original"
+    },
+    "actual": {
+      "at": "1",
+      "text": "original"
+    },
+    "storage": [
+      [
+        "loretune-comment-draft:synthetic-w1:A",
+        "{\"at\":\"1\",\"text\":\"original\"}"
+      ]
+    ]
+  },
+  {
+    "case": "F07-failed-new-edit",
+    "status": "pass",
+    "expected": {
+      "at": "2",
+      "text": "new on failure"
+    },
+    "actual": {
+      "at": "2",
+      "text": "new on failure"
+    },
+    "storage": [
+      [
+        "loretune-comment-draft:synthetic-w1:A",
+        "{\"at\":\"2\",\"text\":\"new on failure\"}"
+      ]
+    ]
+  }
+]

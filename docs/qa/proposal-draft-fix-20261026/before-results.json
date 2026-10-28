@@ -1,0 +1,188 @@
+{
+  "evidence": "current-source Node VM with controlled doubles; not browser",
+  "results": [
+    {
+      "name": "preferenceForm unchanged success clears",
+      "status": "PASS"
+    },
+    {
+      "name": "preferenceForm success preserves edit",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"새 한글 초안 🎬\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves switch-edit",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"B의 초안\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves switch-only",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"원문\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves ABA",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"원문\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves same-content-intent",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"원문\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves identical-input-event",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"원문\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves change-event",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"global\",\"category\":\"color\",\"value\":\"원문\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves programmatic",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"프로그램이 복원한 초안\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves workspace",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"원문\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves project-id",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"원문\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm success preserves IP",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"scope\":\"song\",\"category\":\"color\",\"value\":\"원문\",\"evidence\":\"합성 근거\",\"reason\":\"시험\",\"supersedes\":\"\"}'\n"
+    },
+    {
+      "name": "preferenceForm rejection preserves new input",
+      "status": "PASS"
+    },
+    {
+      "name": "preferenceForm unknown preserves and permits lookup only",
+      "status": "PASS"
+    },
+    {
+      "name": "preferenceForm pending duplicate does not submit or clear",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- '두번째 입력'\n"
+    },
+    {
+      "name": "preferenceForm committed refresh failure preserves",
+      "status": "PASS"
+    },
+    {
+      "name": "preferenceForm edit during committed refresh is preserved",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- '저장 후 갱신 중 새 입력'\n"
+    },
+    {
+      "name": "preferenceForm unrelated form edits do not block normal clear",
+      "status": "PASS"
+    },
+    {
+      "name": "preferenceForm same-context refresh does not invalidate normal clear",
+      "status": "PASS"
+    },
+    {
+      "name": "chatForm unchanged success clears",
+      "status": "PASS"
+    },
+    {
+      "name": "chatForm success preserves edit",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"새 한글 초안 🎬\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves switch-edit",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"B의 초안\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves switch-only",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"원문\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves ABA",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"원문\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves same-content-intent",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"원문\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves identical-input-event",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"원문\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves change-event",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"원문\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves programmatic",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"프로그램이 복원한 초안\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves workspace",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"원문\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves project-id",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"원문\"}'\n"
+    },
+    {
+      "name": "chatForm success preserves IP",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '{}'\n- '{\"prompt\":\"원문\"}'\n"
+    },
+    {
+      "name": "chatForm rejection preserves new input",
+      "status": "PASS"
+    },
+    {
+      "name": "chatForm unknown preserves and permits lookup only",
+      "status": "PASS"
+    },
+    {
+      "name": "chatForm pending duplicate does not submit or clear",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- '두번째 입력'\n"
+    },
+    {
+      "name": "chatForm committed refresh failure preserves",
+      "status": "PASS"
+    },
+    {
+      "name": "chatForm edit during committed refresh is preserved",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- '저장 후 갱신 중 새 입력'\n"
+    },
+    {
+      "name": "chatForm unrelated form edits do not block normal clear",
+      "status": "PASS"
+    },
+    {
+      "name": "chatForm same-context refresh does not invalidate normal clear",
+      "status": "PASS"
+    },
+    {
+      "name": "context observation is wired to real draw",
+      "status": "FAIL",
+      "error": "The input did not match the regular expression /proposalFormContext\\(\\)/. Input:\n\n'function draw(){stateReadEpoch++;if(typeof LoretuneMedia!==\\'undefined\\')LoretuneMedia.stop();if($(\\'#downloadPreview\\').dataset.project!==song())$(\\'#downloadPreview\\').replaceChildren();restoreCommentDraft();drawModelChat();drawModelSettings();drawChat();drawReferences();const p=project();if(!p)return;if(!p.shots[shotName])shotName=Object.keys(p.shots)[0]||\\'\\';drawReferences();location.hash=encodeURIComponent(song());$(\\'#archiveButton\\').textContent=p.archived?\\'보관됨 · 관리\\':\\'보관 관리\\';$(\\'#shotCount\\').textContent=Object.keys(p.shots).length;$(\\'#snapshot\\').innerHTML=p.snapshot.map(s=>`<p>${esc(s.text)}<br><small>${esc(s.era)} · v${s.revision}</small></p>`).join(\\'\\')||\\'<small>해당 범위에 승인된 설정 없음</small>\\';const s=p.shots[shotName],t=s?.takes.find(t=>t.id===s.selected);$(\\'#shotTitle\\').textContent=shotName||\\'첫 샷을 추가하세요\\';$(\\'#description\\').textContent=s?.description||\\'\\';$(\\'#selectedBadge\\').textContent=t?\\'편집 선택 · Take \\'+t.id:\\'편집 Take 미선택\\';$(\\'#preview\\').innerHTML=t?(image(t)?`<img src=\"${asset(t)}\" alt=\"${esc(shotName)} 선택 take\">`:`<video src=\"${asset(t)}\" controls></video>`):\\'<p class=\"muted\">기존 파일을 연결하고 take를 선택하세요.</p>\\';const review=t?[...(s.reviews||[])].reverse().find(r=>r.take===t.id):null;$(\\'#reason\\').textContent=t?`${t.reason} · ${t.rights||\\'사용권 미확인\\'}`:\\'새 take를 연결하면 이전 결과를 덮어쓰지 않습니다.\\';$(\\'#audioInfo\\').innerHTML=p.audio_versions.map(a=>`<p>v${a.id} ${esc(a.filename)}<br><small>${a.metadata.duration.toFixed(2)}초 · ${a.metadata.sample_rate}Hz</small>${audioWave(a)}<audio src=\"${asset(a)}\" controls></audio></p>`).join(\\'\\')||\\'<small>음원이 연결되지 않았습니다.</small>\\';$(\\'#comments\\').innerHTML=p.comments.map(c=>`<p>${c.at}s · ${esc(c.text)}<br>${c.resolved?\\'<small>해결됨</small>\\':`<button data-resolve=\"${c.id}\">해결 표시</button>`}</p>`).join(\\'\\');if(!draft)draft=structuredClone(p.timeline_head?p.timeline_versions[p.timeline_head-1]:fresh(p));drawTimeline();drawLibrary()}'\n"
+    }
+  ]
+}

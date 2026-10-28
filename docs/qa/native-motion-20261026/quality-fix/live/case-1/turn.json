@@ -1,0 +1,480 @@
+{
+  "id": "4c2be801fffd448584423551b1ac822c",
+  "project": "b58e3f6d-b0c2-5809-866d-6d5902e7feab",
+  "name": "A",
+  "run": "448df0b068d54da7bdf691eb7df50419",
+  "prompt": "현재 합성 작품의 모션 장면을 서버에서 조회해 주세요. 저장된 모션 버전과 대기 중 변경안 각각에 대해 승인 주체, 승인 범위, 적용 버전과 아직 필요한 검토를 한국어로 설명해 주세요. 이 승인이 최종 영상 납품까지 허용하는지와 지금 렌더할 수 있다고 확정할 수 있는지도 구분해 주세요. 온톨로지 유무를 모션 승인 여부와 혼동하지 말고 조회된 근거만 쓰세요. 새 제안·승인·렌더·적용은 하지 마세요.",
+  "status": "completed",
+  "mode": "anthropic-live",
+  "model": "claude-haiku-5-5",
+  "binding": "767e74d1c8933a61ff4b90c403530e2b3b5178349b4da98b350bed0585d129ea",
+  "answer": "## 모션 장면 조회 결과\n\n서버 조회 기준으로 모션 장면(shot_id 5019457f…, 이름 \"모션\")에는 저장된 모션 버전 1개와 대기 중 변경안 1개가 있습니다. 새 제안, 승인, 렌더, 적용은 하지 않았습니다.\n\n### 1. 저장된 모션 버전 (motion revision 1)\n\n- **승인 주체:** local-owner\n- **승인 범위:** `local-motion-candidate`만 해당합니다. 이 범위는 로컬 모션 후보에 대한 것입니다.\n- **승인 대상:** motion_revision 1, scene_hash `79570f42…ed3ef`. 조회 시점의 현재 문맥과 일치합니다(`matches_current_context: true`).\n- **approval_status:** recorded\n- **적용 버전:** 적용 기록은 없습니다. 타임라인 버전은 0이고, 클립 0이 \"모션\" 샷을 참조하지만 take는 null입니다. 오디오 버전도 null입니다.\n- **아직 필요한 검토:** `requires_revalidation: true`입니다. 실행 시 권리, 입력, 가격, 만료가 다시 검사됩니다. 승인이 있어도 현재 실행 검사를 통과한다는 보장은 아닙니다.\n\n### 2. 대기 중 변경안 (proposal a766c99d…)\n\n- **상태:** proposed. 적용되지 않았습니다(`applied: false`).\n- **기준 버전:** base_revision 1\n- **승인:** 이 변경안에 대한 승인 기록은 조회되지 않았습니다.\n- **아직 필요한 검토:** `requires_human_review: true`입니다. 사람이 검토하기 전에는 적용되지 않습니다.\n\n### 3. 질문별 구분\n\n- **최종 영상 납품 허용 여부:** 아닙니다. 저장된 모션 승인은 `local-motion-candidate` 범위에만 해당합니다. 최종 납품을 승인하는 근거가 아닙니다.\n- **지금 렌더 가능 여부:** 확정할 수 없습니다. 실행 전 재검증이 필요하고, 조회된 타임라인에는 선택된 take가 없으며 오디오도 없습니다. 작업(jobs)과 실행 액션(actions)도 모두 비어 있습니다.\n- **온톨로지:** 온톨로지는 없습니다(revision 0, 값 null). 이는 모션 승인 여부와 별개입니다. 온톨로지가 없다는 사실이 모션 승인을 없애거나 만들지 않습니다.\n- **approved_shots 항목 \"모션\":** 샷 목록일 뿐이며 선택 값도 null입니다. 승인이나 미디어 완료의 근거가 아닙니다.\n\n### 4. 현재 장면 내용 (참고)\n\n장면은 1920×1080, 24fps, 96프레임입니다. 레이어는 \"새로운 리듬\" 텍스트, 파란 막대(bar), 주황 원(dot) 세 개입니다. 서버 응답에 생성된 미디어나 완료된 결과물은 없습니다.",
+  "answer_review": "unreviewed",
+  "steps": [
+    {
+      "round": 0,
+      "mode": "anthropic-live",
+      "input_sha256": "1f0e9bbd265873d6a7b59eae90d7065bae67a4db16893a0e304c44c4da4c12fb",
+      "status": "tools_applied",
+      "request_id": "req_011CgRMzzVNY3JzQCwj4DceX",
+      "tool_calls": [
+        {
+          "call": {
+            "id": "a5e0608fb1ad512897b1e6273c3b3c3b",
+            "name": "search_project_context",
+            "arguments": {
+              "query": "모션 장면 저장된 모션 버전 대기 중 변경안 승인 주체 승인 범위 적용 버전 검토 필요 항목"
+            },
+            "complete": true
+          },
+          "result": {
+            "status": "succeeded",
+            "context": {
+              "music": null,
+              "snapshot": [],
+              "ontology": null
+            },
+            "search_mode": "scoped-snapshot",
+            "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님",
+            "sources": [
+              {
+                "id": "turn:4c2be801fffd448584423551b1ac822c",
+                "text": "현재 합성 작품의 모션 장면을 서버에서 조회해 주세요. 저장된 모션 버전과 대기 중 변경안 각각에 대해 승인 주체, 승인 범위, 적용 버전과 아직 필요한 검토를 한국어로 설명해 주세요. 이 승인이 최종 영상 납품까지 허용하는지와 지금 렌더할 수 있다고 확정할 수 있는지도 구분해 주세요. 온톨로지 유무를 모션 승인 여부와 혼동하지 말고 조회된 근거만 쓰세요. 새 제안·승인·렌더·적용은 하지 마세요."
+              }
+            ],
+            "execution_targets": {
+              "shots": [
+                {
+                  "shot_id": "5019457fbfd35f01948de78b180b0149",
+                  "name": "모션",
+                  "revision": 0,
+                  "selected_take": null,
+                  "takes": [],
+                  "reference_head": null,
+                  "reference_versions": [],
+                  "motion": {
+                    "revision": 1,
+                    "scene": {
+                      "schema_version": 1,
+                      "width": 1920,
+                      "height": 1080,
+                      "fps": 24,
+                      "frame_count": 96,
+                      "background": "#101820",
+                      "layers": [
+                        {
+                          "id": "title",
+                          "kind": "text",
+                          "text": "새로운 리듬",
+                          "font": "system-ko-regular",
+                          "font_size": 80,
+                          "width": 1000,
+                          "height": 160,
+                          "color": "#FFFFFF",
+                          "in_frame": 0,
+                          "out_frame": 96,
+                          "keyframes": [
+                            {
+                              "frame": 0,
+                              "x": 460,
+                              "y": 400,
+                              "opacity": 0,
+                              "easing": "easeInOutCubic"
+                            },
+                            {
+                              "frame": 40,
+                              "x": 460,
+                              "y": 380,
+                              "opacity": 1,
+                              "easing": "easeInOutCubic"
+                            },
+                            {
+                              "frame": 95,
+                              "x": 460,
+                              "y": 380,
+                              "opacity": 1,
+                              "easing": "linear"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "bar",
+                          "kind": "rect",
+                          "text": "",
+                          "font": "system-ko-regular",
+                          "font_size": 24,
+                          "width": 1200,
+                          "height": 12,
+                          "color": "#4F8EF7",
+                          "in_frame": 0,
+                          "out_frame": 96,
+                          "keyframes": [
+                            {
+                              "frame": 0,
+                              "x": 160,
+                              "y": 600,
+                              "opacity": 0,
+                              "easing": "easeInOutCubic"
+                            },
+                            {
+                              "frame": 30,
+                              "x": 360,
+                              "y": 600,
+                              "opacity": 1,
+                              "easing": "easeInOutCubic"
+                            },
+                            {
+                              "frame": 95,
+                              "x": 360,
+                              "y": 600,
+                              "opacity": 1,
+                              "easing": "linear"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "dot",
+                          "kind": "circle",
+                          "text": "",
+                          "font": "system-ko-regular",
+                          "font_size": 24,
+                          "width": 60,
+                          "height": 60,
+                          "color": "#F7A44F",
+                          "in_frame": 0,
+                          "out_frame": 72,
+                          "keyframes": [
+                            {
+                              "frame": 0,
+                              "x": 200,
+                              "y": 800,
+                              "opacity": 1,
+                              "easing": "linear"
+                            },
+                            {
+                              "frame": 60,
+                              "x": 1700,
+                              "y": 800,
+                              "opacity": 1,
+                              "easing": "linear"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "grant_id": "27ea64de06b849d5b3666b9cf879a191",
+                    "approval": {
+                      "id": "27ea64de06b849d5b3666b9cf879a191",
+                      "actor": "local-owner",
+                      "scope": "local-motion-candidate",
+                      "motion_revision": 1,
+                      "scene_hash": "79570f421f002e544533df4f8f7cba9d7a1c65a5c11f8d24107d1f60bb6ed3ef",
+                      "matches_current_context": true,
+                      "requires_revalidation": true
+                    },
+                    "approval_status": "recorded",
+                    "requires_revalidation": true,
+                    "proposals": [
+                      {
+                        "proposal_id": "a766c99db44a4d6687f0f67f878624b6",
+                        "base_revision": 1,
+                        "status": "proposed",
+                        "applied": false,
+                        "requires_human_review": true
+                      }
+                    ]
+                  }
+                }
+              ],
+              "timeline": {
+                "version": 0,
+                "clips": [
+                  {
+                    "index": 0,
+                    "shot_id": "5019457fbfd35f01948de78b180b0149",
+                    "shot_name": "모션",
+                    "take": null,
+                    "trim": 0,
+                    "duration": 3
+                  }
+                ],
+                "audio_version": null,
+                "audio_offset": 0,
+                "captions": [],
+                "profile": "landscape",
+                "grant_id": null
+              },
+              "plans": [],
+              "actions": [],
+              "ontology_revision": 0,
+              "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+            }
+          }
+        }
+      ],
+      "input_tokens_counted": 3179,
+      "usage": {
+        "input_tokens": 3179,
+        "output_tokens": 159
+      },
+      "usage_cost_usd": "0.0003974",
+      "stop_reason": "tool_use",
+      "output_sha256": "160df183b7fdb7b7de6a46f2baa6cab6be40c4d0f16d2bb8807dd5fd812dfb55",
+      "visible_response": [
+        {
+          "type": "tool_use",
+          "id": "toolu_01NwquCqJSfyJdBaZSq2c4do",
+          "name": "search_project_context",
+          "input": {
+            "query": "모션 장면 저장된 모션 버전 대기 중 변경안 승인 주체 승인 범위 적용 버전 검토 필요 항목"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "anthropic-live",
+      "input_sha256": "49bf36fc89c86016674741845646d32a74845a6d34d83e79e546e16116df1a2f",
+      "status": "answer_received",
+      "request_id": "req_011CgRN1Cg6WPLBN8LNbZrVD",
+      "tool_calls": [],
+      "input_tokens_counted": 4954,
+      "usage": {
+        "input_tokens": 4954,
+        "output_tokens": 1455
+      },
+      "usage_cost_usd": "0.0012229",
+      "stop_reason": "end_turn",
+      "output_sha256": "d4a0a2ff4c236c66323bdda1b0809f250a225ac7a6a5475913df7e3ec6fe163b",
+      "visible_response": [
+        {
+          "type": "text",
+          "text": "## 모션 장면 조회 결과\n\n서버 조회 기준으로 모션 장면(shot_id 5019457f…, 이름 \"모션\")에는 저장된 모션 버전 1개와 대기 중 변경안 1개가 있습니다. 새 제안, 승인, 렌더, 적용은 하지 않았습니다.\n\n### 1. 저장된 모션 버전 (motion revision 1)\n\n- **승인 주체:** local-owner\n- **승인 범위:** `local-motion-candidate`만 해당합니다. 이 범위는 로컬 모션 후보에 대한 것입니다.\n- **승인 대상:** motion_revision 1, scene_hash `79570f42…ed3ef`. 조회 시점의 현재 문맥과 일치합니다(`matches_current_context: true`).\n- **approval_status:** recorded\n- **적용 버전:** 적용 기록은 없습니다. 타임라인 버전은 0이고, 클립 0이 \"모션\" 샷을 참조하지만 take는 null입니다. 오디오 버전도 null입니다.\n- **아직 필요한 검토:** `requires_revalidation: true`입니다. 실행 시 권리, 입력, 가격, 만료가 다시 검사됩니다. 승인이 있어도 현재 실행 검사를 통과한다는 보장은 아닙니다.\n\n### 2. 대기 중 변경안 (proposal a766c99d…)\n\n- **상태:** proposed. 적용되지 않았습니다(`applied: false`).\n- **기준 버전:** base_revision 1\n- **승인:** 이 변경안에 대한 승인 기록은 조회되지 않았습니다.\n- **아직 필요한 검토:** `requires_human_review: true`입니다. 사람이 검토하기 전에는 적용되지 않습니다.\n\n### 3. 질문별 구분\n\n- **최종 영상 납품 허용 여부:** 아닙니다. 저장된 모션 승인은 `local-motion-candidate` 범위에만 해당합니다. 최종 납품을 승인하는 근거가 아닙니다.\n- **지금 렌더 가능 여부:** 확정할 수 없습니다. 실행 전 재검증이 필요하고, 조회된 타임라인에는 선택된 take가 없으며 오디오도 없습니다. 작업(jobs)과 실행 액션(actions)도 모두 비어 있습니다.\n- **온톨로지:** 온톨로지는 없습니다(revision 0, 값 null). 이는 모션 승인 여부와 별개입니다. 온톨로지가 없다는 사실이 모션 승인을 없애거나 만들지 않습니다.\n- **approved_shots 항목 \"모션\":** 샷 목록일 뿐이며 선택 값도 null입니다. 승인이나 미디어 완료의 근거가 아닙니다.\n\n### 4. 현재 장면 내용 (참고)\n\n장면은 1920×1080, 24fps, 96프레임입니다. 레이어는 \"새로운 리듬\" 텍스트, 파란 막대(bar), 주황 원(dot) 세 개입니다. 서버 응답에 생성된 미디어나 완료된 결과물은 없습니다."
+        }
+      ]
+    }
+  ],
+  "usage_cost_usd": "0.0016203",
+  "billing_confirmed": false,
+  "handoff": {
+    "context": {
+      "value": {
+        "model_settings": {
+          "revision": 1,
+          "selections": {
+            "chat": "anthropic-haiku-5-5",
+            "image": null,
+            "video": null
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "anthropic-haiku-5-5"
+              },
+              "at": 1793041167.771269
+            }
+          ]
+        },
+        "context": {
+          "music": null,
+          "snapshot": [],
+          "ontology": null
+        },
+        "approved_shots": [
+          {
+            "id": "모션",
+            "selected": null,
+            "revision": 0
+          }
+        ]
+      },
+      "sha256": "dd391c2179d114c6f99903ac668c1a4c598123d73b5ec519843af430d9831186"
+    },
+    "messages": [],
+    "jobs": [],
+    "execution_targets": {
+      "shots": [
+        {
+          "shot_id": "5019457fbfd35f01948de78b180b0149",
+          "name": "모션",
+          "revision": 0,
+          "selected_take": null,
+          "takes": [],
+          "reference_head": null,
+          "reference_versions": [],
+          "motion": {
+            "revision": 1,
+            "scene": {
+              "schema_version": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 24,
+              "frame_count": 96,
+              "background": "#101820",
+              "layers": [
+                {
+                  "id": "title",
+                  "kind": "text",
+                  "text": "새로운 리듬",
+                  "font": "system-ko-regular",
+                  "font_size": 80,
+                  "width": 1000,
+                  "height": 160,
+                  "color": "#FFFFFF",
+                  "in_frame": 0,
+                  "out_frame": 96,
+                  "keyframes": [
+                    {
+                      "frame": 0,
+                      "x": 460,
+                      "y": 400,
+                      "opacity": 0,
+                      "easing": "easeInOutCubic"
+                    },
+                    {
+                      "frame": 40,
+                      "x": 460,
+                      "y": 380,
+                      "opacity": 1,
+                      "easing": "easeInOutCubic"
+                    },
+                    {
+                      "frame": 95,
+                      "x": 460,
+                      "y": 380,
+                      "opacity": 1,
+                      "easing": "linear"
+                    }
+                  ]
+                },
+                {
+                  "id": "bar",
+                  "kind": "rect",
+                  "text": "",
+                  "font": "system-ko-regular",
+                  "font_size": 24,
+                  "width": 1200,
+                  "height": 12,
+                  "color": "#4F8EF7",
+                  "in_frame": 0,
+                  "out_frame": 96,
+                  "keyframes": [
+                    {
+                      "frame": 0,
+                      "x": 160,
+                      "y": 600,
+                      "opacity": 0,
+                      "easing": "easeInOutCubic"
+                    },
+                    {
+                      "frame": 30,
+                      "x": 360,
+                      "y": 600,
+                      "opacity": 1,
+                      "easing": "easeInOutCubic"
+                    },
+                    {
+                      "frame": 95,
+                      "x": 360,
+                      "y": 600,
+                      "opacity": 1,
+                      "easing": "linear"
+                    }
+                  ]
+                },
+                {
+                  "id": "dot",
+                  "kind": "circle",
+                  "text": "",
+                  "font": "system-ko-regular",
+                  "font_size": 24,
+                  "width": 60,
+                  "height": 60,
+                  "color": "#F7A44F",
+                  "in_frame": 0,
+                  "out_frame": 72,
+                  "keyframes": [
+                    {
+                      "frame": 0,
+                      "x": 200,
+                      "y": 800,
+                      "opacity": 1,
+                      "easing": "linear"
+                    },
+                    {
+                      "frame": 60,
+                      "x": 1700,
+                      "y": 800,
+                      "opacity": 1,
+                      "easing": "linear"
+                    }
+                  ]
+                }
+              ]
+            },
+            "grant_id": "27ea64de06b849d5b3666b9cf879a191",
+            "approval": {
+              "id": "27ea64de06b849d5b3666b9cf879a191",
+              "actor": "local-owner",
+              "scope": "local-motion-candidate",
+              "motion_revision": 1,
+              "scene_hash": "79570f421f002e544533df4f8f7cba9d7a1c65a5c11f8d24107d1f60bb6ed3ef",
+              "matches_current_context": true,
+              "requires_revalidation": true
+            },
+            "approval_status": "recorded",
+            "requires_revalidation": true,
+            "proposals": [
+              {
+                "proposal_id": "a766c99db44a4d6687f0f67f878624b6",
+                "base_revision": 1,
+                "status": "proposed",
+                "applied": false,
+                "requires_human_review": true
+              }
+            ]
+          }
+        }
+      ],
+      "timeline": {
+        "version": 0,
+        "clips": [
+          {
+            "index": 0,
+            "shot_id": "5019457fbfd35f01948de78b180b0149",
+            "shot_name": "모션",
+            "take": null,
+            "trim": 0,
+            "duration": 3
+          }
+        ],
+        "audio_version": null,
+        "audio_offset": 0,
+        "captions": [],
+        "profile": "landscape",
+        "grant_id": null
+      },
+      "plans": [],
+      "actions": [],
+      "ontology_revision": 0,
+      "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+    },
+    "instructions": "서버 상태만 작업 결과로 설명하세요. 미수집 결과를 완료로 설명하지 마세요.",
+    "embedding_policy": "unchanged",
+    "session_request_history": {
+      "schema_version": 1,
+      "scope": {
+        "workspace_id": "62cf254b-5166-4b71-a96b-4a181ec1daa9",
+        "project_id": "b58e3f6d-b0c2-5809-866d-6d5902e7feab",
+        "conversation": "project-default"
+      },
+      "requests": [],
+      "digest": "6a5c1eb5dd62f281a4122d516b73db619ec22f5a8851540ce3c8139f3a5bde62"
+    }
+  }
+}

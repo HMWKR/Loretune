@@ -1,0 +1,96 @@
+--- before/editing.py
++++ after/editing.py
+@@ -146,6 +146,12 @@
+         warnings.append('음원 없는 무음 출력입니다.')
+     elif timeline['audio_offset'] + total > audio['metadata']['duration']:
+         warnings.append('선택한 음원이 영상보다 짧아 끝부분은 무음으로 채워집니다.')
++    music = next((m for m in p.get('music_versions', []) if m['id'] == p.get('music_head')), None)
++    if audio is not None and music and music['audio'] == audio['id']:
++        selected_range = (round(music['start'], 3), round(music['end'], 3))
++        output_range = (round(timeline['audio_offset'], 3), round(timeline['audio_offset'] + total, 3))
++        if selected_range != output_range:
++            warnings.append(f'현재 음악 선택 {selected_range[0]:.3f}–{selected_range[1]:.3f}초와 이 편집의 음원 출력 {output_range[0]:.3f}–{output_range[1]:.3f}초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.')
+     return dict(ready=not errors, errors=errors, warnings=warnings, duration=total,
+                 audio_version=timeline.get('audio'), audio_start=timeline.get('audio_offset', 0),
+                 audio_end=timeline.get('audio_offset', 0)+total, profile=timeline.get('profile'),
+--- before/tests/test_editing.py
++++ after/tests/test_editing.py
+@@ -303,3 +303,78 @@
+         self.call('take',shot='a',shot_revision=rev,filename='image.png',content=base64.b64encode(self.img.read_bytes()).decode(),reason='new',rights='self')
+         self.call('select',shot='a',take=2,shot_revision=rev+1)
+         with self.assertRaises(ValueError):self.call('render_job')
++
++
++class MusicRangePreflightTest(unittest.TestCase):
++    def project(self, start=3, end=4, offset=3, duration=3):
++        timeline=dict(id=1,clips=[dict(shot='s',take=1,duration=duration,trim=0)],
++                      audio=1,audio_offset=offset,subtitles=[],profile='preview',
++                      approval=dict(selected_take_snapshot={'s':1}))
++        project=dict(timeline_versions=[timeline],timeline_head=1,
++                     audio_versions=[dict(id=1,metadata=dict(duration=10))],audio_selected=1,
++                     music_versions=[dict(id=1,audio=1,start=start,end=end)],music_head=1,
++                     shots={'s':dict(selected=1,takes=[dict(id=1)],
++                                     reviews=[dict(take=1,decision='approved')])})
++        current(project)
++        return project
++
++    def inspect(self, project):
++        before=deepcopy(project)
++        result=preflight(project)
++        self.assertEqual(project,before)
++        return result,[w for w in result['warnings'] if w.startswith('현재 음악 선택')]
++
++    def test_short_long_and_shifted_output_describe_both_ranges_without_blocking(self):
++        for start,end,offset,duration in [(3,4,3,3),(3,7,3,3),(3,6,2,3),(3,6,4,3)]:
++            with self.subTest(start=start,end=end,offset=offset,duration=duration):
++                result,warnings=self.inspect(self.project(start,end,offset,duration))
++                self.assertTrue(result['ready']);self.assertEqual(result['errors'],[])
++                self.assertEqual(len(warnings),1)
++                self.assertIn(f'현재 음악 선택 {start:.3f}–{end:.3f}초',warnings[0])
++                self.assertIn(f'이 편집의 음원 출력 {offset:.3f}–{offset+duration:.3f}초',warnings[0])
++                self.assertIn('편집의 음원 시작과 컷 길이를 확인하세요.',warnings[0])
++                self.assertEqual((result['audio_start'],result['audio_end']),(offset,offset+duration))
++
++    def test_same_range_and_fractional_arithmetic_do_not_warn(self):
++        for start,end,offset,duration in [(3,6,3,3),(.1,.3,.1,.2),(.1,.55,.1,.45)]:
++            with self.subTest(start=start,end=end):
++                result,warnings=self.inspect(self.project(start,end,offset,duration))
++                self.assertTrue(result['ready']);self.assertEqual(warnings,[])
++        project=self.project(.1,.55,.1,.2)
++        project['timeline_versions'][0]['clips'].append(dict(shot='s',take=1,duration=.25,trim=0))
++        _,warnings=self.inspect(project)
++        self.assertEqual(warnings,[])
++
++    def test_one_millisecond_difference_is_disclosed(self):
++        _,warnings=self.inspect(self.project(.1,.301,.1,.2))
++        self.assertEqual(len(warnings),1)
++        self.assertIn('0.100–0.301초',warnings[0]);self.assertIn('0.100–0.300초',warnings[0])
++
++    def test_no_selection_missing_head_and_different_audio_do_not_warn(self):
++        for mode in ('no_selection','missing_head','different_audio','silent'):
++            with self.subTest(mode=mode):
++                project=self.project()
++                if mode=='no_selection':project.pop('music_versions');project.pop('music_head')
++                elif mode=='missing_head':project['music_head']=2
++                elif mode=='different_audio':project['music_versions'][0]['audio']=2
++                else:project['timeline_versions'][0]['audio']=None
++                result,warnings=self.inspect(project)
++                self.assertTrue(result['ready']);self.assertEqual(warnings,[])
++
++    def test_source_tail_warning_and_existing_errors_are_preserved(self):
++        project=self.project(8,9,8,3)
++        result,warnings=self.inspect(project)
++        self.assertTrue(result['ready']);self.assertEqual(len(warnings),1)
++        self.assertIn('선택한 음원이 영상보다 짧아 끝부분은 무음으로 채워집니다.',result['warnings'])
++        project['comments']=[dict(resolved=False)]
++        result,_=self.inspect(project)
++        self.assertFalse(result['ready']);self.assertEqual(result['errors'],['미해결 검토 의견이 있습니다.'])
++
++    def test_current_selection_is_compared_without_rebinding_saved_timeline(self):
++        project=self.project(3,6)
++        approved=deepcopy(project['timeline_versions'])
++        project['music_versions'].append(dict(id=2,audio=1,start=2,end=5))
++        project['music_head']=2
++        result,warnings=self.inspect(project)
++        self.assertTrue(result['ready']);self.assertIn('현재 음악 선택 2.000–5.000초',warnings[0])
++        self.assertEqual(project['timeline_versions'],approved)

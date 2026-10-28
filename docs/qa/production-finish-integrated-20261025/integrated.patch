@@ -1,0 +1,832 @@
+--- a/app.py
++++ b/app.py
+@@ -120,6 +120,11 @@
+                 if job.get('context',{}).get('output_kind')=='image':
+                     public['image_recovery']=image_recovery.describe(self,job)
+                     public['retrieval_permission_blocked']=job.get('failure_code') in image_recovery.PERMISSION_ERRORS
++                if job.get('context',{}).get('dispatch')=='fal-model-queue-v1':
++                    import media_recovery
++                    public['media_recovery']=media_recovery.describe(c,self,job)
++                    public['can_recheck']=False;public['can_resume_result']=False
++                    public['retrieval_permission_blocked']=job.get('failure_code') in media_recovery.PERMISSION_ERRORS
+                 public['retention_notice']='이미지 공급자 보관·접근 계약 미선택. 기존 결과·권리·비용 기록은 보존합니다.' if job.get('context',{}).get('output_kind')=='image' else '공급자 파일 만료 1시간 요청. 정확한 삭제시각 미확인; 새 생성 없이 기존 결과만 회수합니다.' if job.get('result') else None
+                 saved['generation_jobs'].append(public)
+         saved['project_ids']={name:contracts.project_id(self.workspace_id,name) for name in saved['projects']}
+@@ -137,9 +142,11 @@
+                 p['lineage']=project_ontology.projection(self.workspace_id,identifier,p)
+                 p['chat_turns']=[chat_runtime.public(json.loads(r[0])) for r in c.execute('SELECT body FROM chat_turns WHERE project=? ORDER BY rowid',(identifier,))]
+                 p['chat_connection']=self.chat_runtime.capability(name,p) if self.chat_runtime else dict(available=False,mode='disconnected',reason='채팅 실행 연결 없음 · 로컬 계획은 계속 사용할 수 있습니다.')
+-                p['image_connection']=image_recovery.capability(self,name)
++                import media_creator
++                p['media_connections']={role:media_creator.capability(self,p,role) for role in ('image','video')}
++                p['image_connection']=p['media_connections']['image'] if model_selection.settings(p)['selections']['image'] or self.media_dispatch else image_recovery.capability(self,name)
+                 import fal_dispatch
+-                p['media_actions']=fal_dispatch.public_actions(c,self.workspace_id,identifier)
++                p['media_actions']=media_creator.project_actions(c,self,p,name)
+         for p in saved['projects'].values(): p['preflight'] = preflight(p)
+         with self.connect() as c: jobs=[json.loads(row[0]) for row in c.execute('SELECT body FROM jobs ORDER BY rowid DESC')]
+         with self.connect() as c: saved['ips']=[dict(id=row[0],name=row[1],description=row[2]) for row in c.execute('SELECT id,name,description FROM ips ORDER BY rowid')]
+@@ -388,6 +395,8 @@
+                 take.setdefault('rights_declarations',[]).append(dict(actor='local-owner',evidence=evidence,at=time.time(),prior=take.get('rights')))
+                 take['rights']=evidence;shot['revision']+=1
+                 result['rights_declared']=True
++            elif a in {'media_action_decide','recover_media_job'}:
++                name=text(d['song']);result.update(__import__('media_creator').handle(c,self,s.projects[name],name,a,d))
+             elif a in {'media_prepare','media_approve'}:
+                 if self.media_dispatch is None:raise ValueError('선택한 미디어 연결이 없습니다.')
+                 name=text(d['song']);p=s.projects[name]
+@@ -486,6 +495,7 @@
+                 if not row:raise ValueError('이미지 작업이 없습니다.')
+                 job=json.loads(row[0])
+                 if job['context']['song']!=text(d['song']):raise ValueError('작품과 작업이 다릅니다.')
++                if job['context'].get('dispatch'):raise ValueError('이 작업의 통합 미디어 복구 경로를 사용하세요.')
+                 image_recovery.enqueue(c,self,job,text(d['operation']))
+                 result['job']=job['id']
+             elif a in {'cancel_generation','resume_generation_result','resume_generation_status'}:
+@@ -493,6 +503,7 @@
+                 if not row:raise ValueError('생성 작업이 없습니다.')
+                 job=json.loads(row[0])
+                 if job['context']['song']!=text(d['song']):raise ValueError('작품과 생성 작업이 다릅니다.')
++                if job['context'].get('dispatch') and a!='cancel_generation':raise ValueError('기존 모델 작업의 통합 복구 경로를 사용하세요.')
+                 if job.get('context',{}).get('output_kind')=='image' and a!='cancel_generation':raise ValueError('이미지 제공자 복구 연결은 아직 검증되지 않았습니다. 기존 요청을 보존하며 재전송하지 않습니다.')
+                 if a=='cancel_generation':self.generation.request_cancel(job['id'],text(d['reason']),c)
+                 elif a=='resume_generation_status':
+@@ -842,9 +853,10 @@
+     store.generation_approval=generation_approval
+     if media_configuration is not None:
+         import fal_dispatch
+-        if set(media_configuration)-{'adapters','gates'}:raise ValueError('unknown trusted media configuration')
++        if set(media_configuration)-{'adapters','gates','recovery_approvals'}:raise ValueError('unknown trusted media configuration')
+         store.media_dispatch=fal_dispatch.FalDispatch(store,media_configuration['adapters'])
+         store.media_dispatch.gates=deepcopy(media_configuration.get('gates',{}))
++        store.media_dispatch.recovery_approvals=deepcopy(media_configuration.get('recovery_approvals',{}))
+     store.generation.recover()
+     store.recover_jobs()
+     with store.connect() as c:chat_runtime.recover(c)
+--- a/fal_dispatch.py
++++ b/fal_dispatch.py
+@@ -10,7 +10,7 @@
+ 
+ class FalDispatch:
+  def __init__(self,store,adapters):
+-  self.store=store;self.adapters={};self.gates={}
++  self.store=store;self.adapters={};self.gates={};self.recovery_approvals={}
+   for adapter in adapters:
+    key=adapter.contract.spec['id']
+    if key in self.adapters or adapter.connection_id!=CONNECTION:raise ValueError('duplicate/unsupported connection')
+@@ -83,9 +83,12 @@
+   if ad.mode!='contract-fake' and (g.get('live_approved') is not True or (g.get('integration_verified') is not True and g.get('synthetic_verification_trial') is not True) or q['kind']!='documented-estimate'):raise actions.ExecutionBlocked('계정·실제 모델·출력 수신 검증 전입니다.')
+   return g
+  def approve(self,c,p,name,action_id):
+-  pid=contracts.project_id(self.store.workspace_id,name);a=actions.get(c,'production_actions',self.store.workspace_id,pid,action_id);data=self.data(c,p,a);gate=self.gate(pid,a,data);q=a['options']['quote']
++  pid=contracts.project_id(self.store.workspace_id,name);a=actions.get(c,'production_actions',self.store.workspace_id,pid,action_id);__import__('media_creator').guard(p,a);data=self.data(c,p,a);gate=self.gate(pid,a,data);q=a['options']['quote']
++  plan=next((x for x in p.get('guided_plans',[]) if x['id']==a['plan_id']),None)
++  if not plan or plan['context_hash']!=guided.fingerprint(guided.context(p)) or model_selection.action_context(p,a)!=a['context_hash'] or p['shots'][a['options']['shot']]['revision']!=a['options']['shot_revision']:raise ValueError('장면·계획·모델이 변경되었습니다. 현재 조건으로 다시 준비하세요.')
+   return actions.grant(c,self.store.workspace_id,pid,[a['id']],actor='local-owner',approved=True,expires=min(gate['expires'],q['expires'],time.time()+3599),price_revision=guided.fingerprint(q),money_by_action={a['id']:q['money']})
+  def authorize(self,c,p,name,a,grant_id):
++  __import__('media_creator').guard(p,a)
+   pid=contracts.project_id(self.store.workspace_id,name);g=actions.get(c,'execution_grants',self.store.workspace_id,pid,grant_id);ad=self.adapter(a)
+   data=self.data(c,p,a);self.gate(pid,a,data);q=a['options']['quote'];price=guided.fingerprint(q)
+   actions.validate(a,g,model_selection.action_context(p,a),price)
+@@ -122,6 +125,7 @@
+    ad=next((a for a in self.adapters.values() if a.contract.MODEL==j['quote']['model']),None)
+    if ad is None:continue
+    try:
++    if j['state']=='image_recovery_pending':__import__('media_recovery').execute(self.store,j['id']);return True
+     if j['state']=='prepared':self.store.generation.dispatch(j['id'],ad,pre_submit=self.validate_submission);return True
+     if j['state']=='cancel_pending':self.store.generation.send_cancel(j['id'],ad);return True
+     if j['state'] in {'accepted','running','cancel_sent'} and time.time()-j['updated']>=5:self.store.generation.poll(j['id'],ad);return True
+@@ -129,7 +133,10 @@
+    except Exception as exc:
+     with self.store.connect() as c:
+      c.execute('BEGIN IMMEDIATE');latest=json.loads(c.execute('SELECT body FROM generation_jobs WHERE id=?',(j['id'],)).fetchone()[0])
+-     latest.update(state='import_blocked' if latest['state'] in {'result_ready','downloading'} else 'reconciliation_required',failure_code=exc.code if isinstance(exc,ProviderError) else 'local_media_validation_failed',last_error='기존 요청 확인·수집 보류. 자동 재생성 없음.')
++     import media_recovery
++     denied=exc.code if isinstance(exc,ProviderError) and exc.code in media_recovery.PERMISSION_ERRORS else media_recovery.permission_failure(latest)
++     if denied:latest['retrieval_permission_failure']=denied
++     latest.update(state='import_blocked' if latest['state'] in {'result_ready','downloading','image_recovery_running'} or (latest['state']=='image_recovery_pending' and latest.get('result')) else 'reconciliation_required',failure_code=exc.code if isinstance(exc,ProviderError) else 'local_media_validation_failed',last_error='기존 요청 확인·수집 보류. 자동 재생성 없음.')
+      row=c.execute('SELECT state FROM reservations WHERE id=?',(latest['reservation'],)).fetchone()
+      if row and row[0]=='reserved':ledger.command(c,self.store.workspace_id,latest['scope'],'uncertain',{'reservation':latest['reservation']},j['id']+':dispatch-uncertain')
+      self.store.generation.save(c,latest)
+--- a/index.html
++++ b/index.html
+@@ -557,6 +557,94 @@
+ .lt-creator .creator-output-card>header b{font-size:15px;letter-spacing:0}
+ 
+ </style>
++<style id="loretuneProductionFinish">
++/* Reference-locked finishing layer: semantic emphasis, no provider permissions. */
++.lt-finish{--finish-body:#dededb;--finish-meta:#bdbdbb;--finish-line:#383838;--finish-focus:#e4ddbe;--finish-selected:#2a2a28}
++.lt-finish :where(p,small,label,select,input,textarea){font-weight:400}
++.lt-finish :where(button,summary){font-weight:500}
++.lt-finish :where(h1,h2,h3){font-weight:600}
++.lt-finish .lt-shot-header>h1,.lt-finish .creator-review-scene{font-weight:600;letter-spacing:-.2px}
++.lt-finish .lt-scene-copy>b,.lt-finish .lt-take-copy>b,.lt-finish .lt-track-clip>b{font-weight:500}
++.lt-finish :where(.lt-scene-copy>small,.lt-take-copy>small,.lt-track-clip>small,.creator-comparison-identity>span){font-weight:400;color:var(--finish-meta)}
++.lt-finish .lt-scene-copy{gap:4px}
++.lt-finish :where(.lt-take-copy,.lt-track-clip){line-height:1.5}
++.lt-finish .lt-review-state{display:inline-flex;gap:4px;align-items:center;padding:0;border:0!important;background:transparent!important;font-weight:400;color:var(--finish-meta);line-height:1.5}
++.lt-finish .lt-review-state[data-review="approved"]{color:#dededb}
++.lt-finish .lt-review-state:is([data-review="rejected"],[data-review="changes_requested"]){color:#ffb49d}
++.lt-finish #track .lt-review-state{padding:0;border:0;background:transparent}
++.lt-finish .review-state-symbol{font-size:12px;line-height:1;width:12px;text-align:center}
++.lt-finish #track .review-state-symbol{display:inline-block;border:0;background:transparent;padding:0;overflow:visible;flex:none}
++.lt-finish .shot{border-color:transparent;background:transparent;box-shadow:none;border-radius:6px}
++.lt-finish .shot:hover{background:#222}
++.lt-finish .shot.active{border-color:transparent;background:var(--finish-selected);box-shadow:inset 2px 0 #d8d8d2}
++.lt-finish #takes button{border-color:#484848;background:#1b1b1b;box-shadow:none}
++.lt-finish #takes button:hover{background:#242424;border-color:#777}
++.lt-finish #takes button.active{border-color:#70706a;background:var(--finish-selected);box-shadow:inset 2px 0 #d8d8d2}
++.lt-finish #track>.lt-track-clip{border-color:#484848;background:#202020;box-shadow:none}
++.lt-finish #track>.lt-track-clip[data-current="true"]{background:var(--finish-selected);border-color:#70706a;box-shadow:inset 2px 0 #d8d8d2}
++.lt-finish :where(button,input,select,textarea,summary,a):focus-visible{outline:2px dashed var(--finish-focus);outline-offset:3px}
++.lt-finish #creatorSavedReason{font-weight:400;color:var(--finish-body);line-height:1.7}
++.lt-finish .inspector .lt-take-review{border-bottom:0;padding-bottom:0}
++.lt-finish #creatorEditReview{border-color:#777;background:#242424;font-weight:500}
++.lt-finish #reviewTake:not(:disabled){background:#f4f4f2!important;color:#101010!important;border-color:#f4f4f2!important;opacity:1!important;font-weight:600}
++.lt-finish #reviewTake{transition:none!important}
++.lt-finish #reviewTake:disabled{background:#292929!important;color:#a6a6a3!important;border-color:#555!important;opacity:1!important;cursor:not-allowed}
++.lt-finish #discardTakeReviewDraft{border-color:#777}
++.lt-finish .production-review-error{padding:10px 12px;margin:0 0 12px;border-left:2px solid #ffb49d;background:#28201e;color:#ffb49d;font-size:13px;line-height:1.6;font-weight:400}
++.lt-finish :where(.lt-inspector-detail,.production-tools){border:0;border-top:1px solid var(--finish-line);border-radius:0;background:transparent;margin:16px 0 0;padding:12px 0 0}
++.lt-finish .inspector .lt-inspector-detail{border:0;border-top:1px solid var(--finish-line);border-radius:0;background:transparent}
++.lt-finish .production-tools>summary{font-size:14px;line-height:1.5;min-height:40px;padding:8px 0;color:#dededb}
++.lt-finish .inspector #productionTools>summary{font-weight:500}
++.lt-finish .production-tools>summary>span{display:block;padding-left:14px;color:var(--finish-meta);font-size:12px;font-weight:400}
++.lt-finish .production-tools>.lt-inspector-detail{margin-top:8px;padding-top:8px}
++.lt-finish .production-tools .lt-inspector-detail>summary{font-size:13px;font-weight:500;min-height:36px;color:var(--finish-meta)}
++.lt-finish .production-card{border-top:0!important}
++.lt-finish .production-card>summary{color:#f4f4f2!important}
++.lt-finish .production-context{display:flex;flex-direction:column;gap:4px;padding:12px 0}
++.lt-finish .production-context>span,.lt-finish .production-role{font-size:12px;color:var(--finish-meta);font-weight:400}
++.lt-finish .production-context>b{font-size:14px;font-weight:500;word-break:keep-all;overflow-wrap:anywhere}
++.lt-finish .production-models{padding:0 12px;background:#141414;border-radius:6px}
++.lt-finish .production-model{display:grid;grid-template-columns:36px minmax(0,1fr);gap:6px 8px;padding:12px 0;border-bottom:1px solid #383838}
++.lt-finish .production-model:last-child{border-bottom:0}
++.lt-finish .production-model-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
++.lt-finish .production-model-name{font-size:14px;font-weight:500;color:#f4f4f2;overflow-wrap:anywhere}
++.lt-finish .production-readiness{font-size:12px;font-weight:400;color:var(--finish-meta)}
++.lt-finish .production-model[data-readiness="blocked"] .production-readiness{color:#ffb49d}
++.lt-finish .production-model>p{grid-column:2;margin:0;font-size:12px;line-height:1.6;color:var(--finish-meta);word-break:keep-all;overflow-wrap:anywhere}
++.lt-finish .production-model-button{margin:12px 0 0;min-height:40px;border-color:#777}
++.lt-finish .production-guidance{font-size:12px;line-height:1.6;color:var(--finish-meta);font-weight:400}
++.lt-finish #productionPrevious{border-top:1px solid #383838;margin-top:16px;padding-top:12px}
++.lt-finish #productionPrevious>summary{font-size:12px;font-weight:400;color:var(--finish-meta)}
++.lt-finish .media-action-card{border:0;border-top:1px solid #4b4b49;border-radius:0;background:transparent;padding:16px 0;margin:16px 0}
++.lt-finish .media-action-card h3{font-size:14px;font-weight:500}
++.lt-finish .media-action-card p{font-weight:400;line-height:1.6;color:var(--finish-body)}
++.lt-finish .media-action-card button{border-color:#777}
++.lt-finish .creator-comparison-identity{min-height:32px;margin:12px 0 8px;gap:8px}
++.lt-finish .creator-comparison-identity>b{font-weight:500}
++.lt-finish .comparison-media-stage{display:flex;align-items:center;justify-content:center;width:100%;height:min(32vh,300px);min-height:180px;background:#080808;border-radius:6px;overflow:hidden}
++.lt-finish #compareDialog .comparison-media-stage :is(img,video){width:100%;height:100%;max-height:100%;object-fit:contain;display:block;background:transparent}
++.lt-finish .creator-comparison-facts{margin-top:12px;font-weight:400}
++.lt-finish #compareDialog .creator-comparison-facts{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}
++.lt-finish #compareDialog .creator-comparison-facts>.creator-media-facts{grid-row:1;grid-column:1;margin:0}
++.lt-finish #compareDialog .creator-comparison-facts>.creator-test-badge{grid-row:1;grid-column:2}
++.lt-finish #compareDialog .creator-comparison-facts>p{grid-column:1/-1;margin:0;min-height:22px}
++.lt-finish #compareDialog .creator-comparison-facts>.creator-source{grid-column:1/-1;margin:0}
++.lt-finish .creator-comparison-facts p{font-weight:400;line-height:1.6}
++.lt-finish .creator-media-facts{color:var(--finish-meta);line-height:1.5}
++.lt-finish #takes .lt-take-kind,.lt-finish .shot .lt-media-kind{border:0;background:#30302e;color:#c5c5bf;font-size:12px;font-weight:400}
++@media(max-width:900px){
++ .lt-finish .production-tools>summary,.lt-finish .production-tools .lt-inspector-detail>summary,.lt-finish .production-model-button{min-height:44px}
++ .lt-finish .production-tools>summary{padding-block:10px}
++ .lt-finish #creatorMobileContext b{font-weight:500}
++ .lt-finish #creatorMobileContext small{font-weight:400}
++ .lt-finish .comparison-media-stage{height:210px;min-height:0}
++ .lt-finish .creator-comparison-identity{min-height:44px}
++ .lt-finish :where(#creatorEditReview,#reviewTake,#discardTakeReviewDraft){min-height:44px}
++}
++@media(forced-colors:active){.lt-finish :focus-visible{outline-color:Highlight}.lt-finish :is(.shot,#takes button)[aria-pressed="true"]{border:2px solid Highlight;box-shadow:none}.lt-finish .lt-review-state{color:CanvasText}}
++@media(prefers-reduced-motion:reduce){.lt-finish *{scroll-behavior:auto;animation:none;transition:none}}
++
++</style>
+ <body class="lt-system">
+ <a class="skip-link" href="#flowHeading" id="skipFlow">제작 단계로 건너뛰기</a><header><b>Loretune</b><span>제작 스튜디오</span><span id="providerBadge" class="badge">LOCAL · 모델 미연결</span></header>
+ <div class="lt-project-bar"><div class="toolbar"><select id="songs" aria-label="작품 선택"></select><button id="newProject">새 작품</button><details class="management"><summary>설정·자산·운영 더 보기</summary><label>글자 크기<select id="textScale"><option value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label><button id="ontologyButton">인물·장소·계보</button><button id="settings">IP 기준 설정</button><button id="preferencesButton">연출 취향</button><button id="archiveButton">보관 관리</button><button id="operationsButton">운영 상태</button><button id="budgetButton">예산·원장</button><button id="libraryButton">자산함</button><button id="rightsButton">사용권 관리</button></details><div class="spacer"></div><button id="review" class="primary">타임라인 승인</button><button id="render" class="primary">렌더 대기열에 추가</button></div>
+@@ -569,7 +657,14 @@
+ <main><aside><div class="shot-board"><h2>샷 보드 <span id="shotCount" class="badge">0</span></h2><div id="shotlist"></div><details><summary>샷 추가</summary><form id="shot"><label>샷 이름<input name="shot" required></label><label>장면 설명<input name="description" required></label><button>샷 추가</button></form></details></div><section class="snapshot-section"><h2>기준 스냅샷</h2><div id="snapshot"></div></section><section class="audio-section"><h2>음원 마스터</h2><div id="audioInfo"></div><details><summary>음악 구간 · 수동 확정</summary><p class="muted">자동 박자·구조 분석은 미지원입니다. 원곡 절대시간(초)으로 직접 입력하며 이전 편집은 변경하지 않습니다.</p><form id="musicStructure"><label>음원 버전<select name="audio" id="musicAudio"></select></label><div class="row"><label>시작(초)<input name="start" type="number" min="0" step=".001" value="0" required></label><label>끝(초)<input name="end" type="number" min=".001" step=".001" required></label></div><label>선택 사항: 시작,끝,구간 이름 (한 줄에 하나)<textarea name="sections" rows="3" placeholder="0,3,인트로&#10;3,6,후렴"></textarea></label><button>음악 구간 새 버전 확정</button></form><div id="musicSummary"></div></details><details><summary>새 음원 버전 연결</summary><form id="audioUpload"><label>WAV / MP3 / M4A / FLAC / OGG<input name="file" type="file" accept=".wav,.mp3,.m4a,.flac,.ogg" required></label><label>사용권 근거<input name="rights" required placeholder="직접 제작한 음원…"></label><button>원본 보존·연결</button></form></details></section></aside>
+ <article><div class="row"><h1 id="shotTitle">첫 작품을 시작하세요</h1><span id="selectedBadge" class="badge">선택된 take 없음</span></div><p id="description" class="muted"></p><div id="preview" class="preview"><div class="empty">승인된 이야기와 기존 자산으로 장면을 구성하세요.</div></div><div id="takes" class="take-strip"></div><button id="compareButton">Take 나란히 비교</button>
+ <div class="timeline"><div id="timelineProposals" aria-label="편집 변경안"></div><div class="row"><h2>타임라인 · 비파괴 편집</h2><button id="sync">현재 take 선택 가져오기</button></div><p class="muted"><small>take 선택과 출력 승인은 별개입니다. 편집을 저장하고 승인한 버전만 최종 렌더에 사용합니다.</small></p><div id="preflight" role="status"></div><div id="track" class="track"></div><div class="clip-row"><span>#</span><span>샷</span><span>take</span><span>길이(초)</span><span>시작(초)</span><span>순서</span></div><div id="clips"></div><div class="row"><label>출력 규격<select id="profile"><option value="preview">미리보기 640×360</option><option value="landscape">가로 1920×1080</option><option value="portrait">세로 1080×1920</option></select></label><label>음원 버전<select id="audioVersion"></select></label><label>음원 시작(초)<input id="audioOffset" type="number" min="0" step="0.001" value="0"></label></div><p><small>24fps · 원곡 48kHz · 클립 오디오 음소거 · 짧은 원곡은 무음으로 채움<br>선택 출력 캔버스에 맞춘 리사이즈입니다. 원본 해상도·AI 생성 해상도와 다르며 AI 업스케일은 미지원입니다.</small></p><h3>확정 자막 <small>시작·끝(초) / 내용</small></h3><div id="captions"></div><button id="addCaption">자막 줄 추가</button><div class="row"><button id="saveTimeline" class="primary">편집 새 버전 저장</button><button id="cancelTimelineDraft" type="button" hidden>편집 초안 취소</button><select id="versions" aria-label="이전 타임라인 버전"></select><button id="restore">이전 버전 복원</button></div><p id="timelineStatus" class="muted"></p></div><div id="downloadPreview"></div></article>
+-<aside class="inspector"><section><h2>실행 승인 · 모의 검증</h2><p>테스트 미디어는 단색 이미지입니다. 실제 AI 생성이나 외부 전송은 없습니다.</p><button id="prepareSelectedAction">현재 장면 모의 작업 준비 · AI 아님</button><div id="executionCards" aria-label="실행 승인과 후보 검토"></div><div id="mediaActionCards" aria-label="모델 제작 요청"></div></section><section><h2>이미지 연결·기존 결과 복구</h2><div id="imageConnection" role="status"></div><details id="imageRequirements"><summary>활성화에 필요한 조건</summary><p>사용할 모델의 연결 상태를 확인하세요. 실행 전에 입력·예상 비용·전송 범위를 검토하고 승인해야 합니다.</p><button id="showImageModels">모델 선택 확인</button></details><div id="imageRecoveryJobs"></div></section><section><h2>Kling 생성 준비</h2><p id="generationGateText">영상 생성은 현재 사용할 수 없습니다. 입력과 예상 비용 확인은 가능합니다.</p><label>움직임 지시<textarea id="generationPrompt" maxlength="1000" rows="3" placeholder="카메라가 천천히 다가가며 구름이 흐른다"></textarea></label><button id="prepareGeneration">10초 입력·견적 준비 (전송 없음)</button><div id="generationPreparations"></div></section><section><h2>샷 참고 · 첫 프레임</h2><p class="muted">선택한 이미지 take를 제작 참고로 지정합니다. 모델 생성은 미연결이며 참고 지정만으로 영상을 생성하거나 기존 take를 교체하지 않습니다.</p><label>참고 역할<select id="referenceRole"><option value="start_frame">실제 시작 프레임</option><option value="end_frame">끝 프레임</option><option value="character">캐릭터 정체성</option><option value="style">스타일 참고</option></select></label><label>지정·검토 이유<input id="referenceReason" maxlength="2000" value="샷 제작 참고 검토"></label><button id="assignReference">현재 선택 이미지를 참고로 지정</button><div id="referenceVersions"></div><label>참고 검토<select id="referenceDecision"><option value="approved">승인</option><option value="changes_requested">수정 요청</option><option value="rejected">거절</option></select></label><button id="reviewReference">현재 참고 버전 검토 기록</button><p>참고 승인은 결과 take 승인과 별개입니다. 외부 전송 없음 · 실제 생성은 마지막 승인 게이트 이후에만 실행합니다.</p></section><section><h2>Take 인스펙터</h2><div class="row"><select id="takeDecision" aria-label="테이크 검토 상태"><option value="approved">승인</option><option value="changes_requested">수정 요청</option><option value="rejected">거절</option></select><button id="reviewTake">선택 take 검토 기록</button></div><label>검토 이유<textarea id="reviewReason" rows="3" maxlength="2000">검토 완료</textarea></label><p id="reason" class="muted">샷을 선택하면 수정 이유를 확인할 수 있습니다.</p><form id="upload"><label>새 take · 기존 이미지/영상<input name="asset" type="file" accept=".png,.jpg,.jpeg,.mp4,.mov,.webm" required></label><label>수정 이유<input name="reason" required></label><label>사용권 근거<input name="rights" required placeholder="직접 제작 / 사용 허가…"></label><button>원본을 보존하고 새 take 연결</button></form><small>최대 16MB. 기존 take와 승인된 타임라인은 유지됩니다.</small></section><section><h2>검토 의견</h2><form id="comment"><label>타임코드(초)<input name="at" type="number" min="0" step="0.001" value="0" required></label><label>수정 요청<input name="text" required></label><button>의견 추가</button></form><div id="comments"></div></section><section class="render-section"><h2>렌더 작업</h2><p><small>외부 생성비 0 · 로컬 연산 비용 미계측. 자막은 선택 가능한 MP4 텍스트 트랙과 SRT로 제공됩니다.</small></p><label>납품 검토 이유<input id="deliveryReason" value="출력 영상·음원·자막 검토 완료" maxlength="2000"></label><div id="jobs"></div><button id="manifest">JSON 명세 (영상 아님)</button></section></aside></main>
++<aside class="inspector"><section><h2>실행 승인 · 모의 검증</h2><p>테스트 미디어는 단색 이미지입니다. 실제 AI 생성이나 외부 전송은 없습니다.</p><button id="prepareSelectedAction">현재 장면 모의 작업 준비 · AI 아님</button><div id="executionCards" aria-label="실행 승인과 후보 검토"></div></section><section><h2>모델 제작 · 결과</h2><div id="mediaConnections" role="status"></div>
++<details id="mediaPrepareDetails"><summary>현재 장면 제작 준비</summary><form id="mediaPrepareForm">
++<label>제작할 미디어<select id="mediaRole" name="role"><option value="image">이미지</option><option value="video">영상</option></select></label>
++<label>제작 지시<textarea name="prompt" maxlength="1000" rows="3" required placeholder="장면의 구도와 움직임을 입력하세요"></textarea></label>
++<label id="mediaRatioLabel">화면 비율<select name="ratio"><option>16:9</option><option>9:16</option><option>1:1</option></select></label>
++<label id="mediaDurationLabel" hidden>영상 길이<select name="duration"><option value="5">5초</option><option value="10">10초</option></select></label>
++<p id="mediaPreparationHint"></p><button id="prepareMedia" data-runtime-blocked disabled>입력·예상 비용 확인</button></form></details>
++<div id="mediaActionCards" aria-label="모델 제작 요청" aria-live="polite"></div></section><section><h2>이미지 연결·기존 결과 복구</h2><div id="imageConnection" role="status"></div><details id="imageRequirements"><summary>활성화에 필요한 조건</summary><p>사용할 모델의 연결 상태를 확인하세요. 실행 전에 입력·예상 비용·전송 범위를 검토하고 승인해야 합니다.</p><button id="showImageModels">모델 선택 확인</button></details><div id="imageRecoveryJobs"></div></section><section><h2>Kling 생성 준비</h2><p id="generationGateText">영상 생성은 현재 사용할 수 없습니다. 입력과 예상 비용 확인은 가능합니다.</p><label>움직임 지시<textarea id="generationPrompt" maxlength="1000" rows="3" placeholder="카메라가 천천히 다가가며 구름이 흐른다"></textarea></label><button id="prepareGeneration">10초 입력·견적 준비 (전송 없음)</button><div id="generationPreparations"></div></section><section><h2>샷 참고 · 첫 프레임</h2><p class="muted">선택한 이미지 take를 제작 참고로 지정합니다. 모델 생성은 미연결이며 참고 지정만으로 영상을 생성하거나 기존 take를 교체하지 않습니다.</p><label>참고 역할<select id="referenceRole"><option value="start_frame">실제 시작 프레임</option><option value="end_frame">끝 프레임</option><option value="character">캐릭터 정체성</option><option value="style">스타일 참고</option></select></label><label>지정·검토 이유<input id="referenceReason" maxlength="2000" value="샷 제작 참고 검토"></label><button id="assignReference">현재 선택 이미지를 참고로 지정</button><div id="referenceVersions"></div><label>참고 검토<select id="referenceDecision"><option value="approved">승인</option><option value="changes_requested">수정 요청</option><option value="rejected">거절</option></select></label><button id="reviewReference">현재 참고 버전 검토 기록</button><p>참고 승인은 결과 take 승인과 별개입니다. 외부 전송 없음 · 실제 생성은 마지막 승인 게이트 이후에만 실행합니다.</p></section><section><h2>Take 인스펙터</h2><div class="row"><select id="takeDecision" aria-label="테이크 검토 상태"><option value="approved">승인</option><option value="changes_requested">수정 요청</option><option value="rejected">거절</option></select><button id="reviewTake">선택 take 검토 기록</button></div><label>검토 이유<textarea id="reviewReason" rows="3" maxlength="2000">검토 완료</textarea></label><p id="reason" class="muted">샷을 선택하면 수정 이유를 확인할 수 있습니다.</p><form id="upload"><label>새 take · 기존 이미지/영상<input name="asset" type="file" accept=".png,.jpg,.jpeg,.mp4,.mov,.webm" required></label><label>수정 이유<input name="reason" required></label><label>사용권 근거<input name="rights" required placeholder="직접 제작 / 사용 허가…"></label><button>원본을 보존하고 새 take 연결</button></form><small>최대 16MB. 기존 take와 승인된 타임라인은 유지됩니다.</small></section><section><h2>검토 의견</h2><form id="comment"><label>타임코드(초)<input name="at" type="number" min="0" step="0.001" value="0" required></label><label>수정 요청<input name="text" required></label><button>의견 추가</button></form><div id="comments"></div></section><section class="render-section"><h2>렌더 작업</h2><p><small>외부 생성비 0 · 로컬 연산 비용 미계측. 자막은 선택 가능한 MP4 텍스트 트랙과 SRT로 제공됩니다.</small></p><label>납품 검토 이유<input id="deliveryReason" value="출력 영상·음원·자막 검토 완료" maxlength="2000"></label><div id="jobs"></div><button id="manifest">JSON 명세 (영상 아님)</button></section></aside></main>
+ <dialog id="ontologyDialog"><div class="row"><h2>인물·장소·스타일과 제작 계보</h2><button data-close>닫기</button></div><p>현재는 직접 입력·검토입니다. Anthropic 제안은 미연결이며 외부 전송하지 않습니다. 설정 승인으로 기존 영상이나 출력이 변경되지는 않습니다.</p><form id="ontologyForm"><input type="hidden" name="entity" value=""><p id="ontologyEditStatus">새 개체 제안</p><button type="button" id="ontologyNew">새 개체로 작성</button><label>역할<select name="kind"><option value="character">인물</option><option value="place">장소</option><option value="style">스타일</option></select></label><label>이름<input name="label" maxlength="200" required></label><label>설명<textarea name="description" maxlength="2000" required></textarea></label><label>출처 또는 직접 작성 근거<textarea name="evidence" maxlength="2000" required></textarea></label><button>검토 후보로 저장</button></form><div id="ontologyContent"></div><details><summary>설정·제작 연결 기록</summary><div id="lineageContent"></div></details></dialog><dialog id="projectDialog"><div class="row"><h2>다음 작품 시작</h2><button data-close>닫기</button></div><form id="project"><details><summary>이전 곡의 승인 설정을 선택 계승</summary><label>원본 작품<select name="source_song" id="inheritSource"><option value="">계승하지 않음</option></select></label><div id="inheritSettings"></div><label><input type="checkbox" name="clone_structure" style="width:auto">샷 이름·설명도 복사 (미디어·승인 제외)</label><label>계승 이유<input name="inherit_reason" value="다음 곡에 승인 설정 계승"></label><p>같은 IP의 정확한 설정 버전만 선택합니다. 음원·샷·take·승인은 새로 시작합니다.</p></details><label>세계관<select name="ip" class="ipSelect"></select></label><label>작품명<input name="name" required></label><label>시대 / 분기<input name="era" value="default" required></label><label>이야기 순서<input name="story" type="number" min="0" value="0" required></label><button class="primary">승인 설정으로 작품 만들기</button></form></dialog>
+ <dialog id="settingDialog"><div class="row"><h2>세계관 설정</h2><button data-close>닫기</button></div><p>새 승인 설정은 이후 작품에만 적용합니다. 현재는 단일 로컬 사용자 기준이며 조직 권한 기능이 아닙니다.</p><form id="setting"><label>세계관<select name="ip" class="ipSelect"></select></label><label>설정 내용<textarea name="text" required></textarea></label><label>시대 / 분기<input name="era" value="default" required></label><div class="row"><label>시작 순서<input name="valid_from" type="number" min="0" value="0" required></label><label>끝 순서 (선택)<input name="valid_to" type="number" min="0"></label></div><button class="primary">설정 승인·저장</button></form><details><summary>새 세계관 만들기</summary><p>이 로컬 작업실 안의 설정 분리입니다. 조직·계정별 접근 제어가 아닙니다.</p><form id="ipForm"><label>세계관 이름<input name="name" required></label><label>설명<input name="description" required></label><button>세계관 만들기</button></form></details><div id="canon"></div><details><summary>설정 후보 · 정정 제안</summary><p>로컬 검토입니다. 조직 승인 권한은 미지원입니다. 승인해도 기존 작품 스냅샷은 바꾸지 않습니다.</p><form id="candidateForm"><label>세계관<select name="ip" class="ipSelect"></select></label><label>새 설정<textarea name="text" maxlength="2000" required></textarea></label><label>시대 / 분기<input name="era" value="default" required></label><div class="row"><label>시작 순서<input name="valid_from" type="number" min="0" value="0" required></label><label>끝 순서 (공란=계속)<input name="valid_to" type="number" min="0"></label></div><label>정정할 버전 (신규는 공란)<input name="supersedes" type="number" min="1"></label><label>근거 / 출처<input name="evidence" required></label><label>제안 이유<input name="reason" required></label><button>검토 후보로 저장</button></form></details></dialog>
+ <dialog id="libraryDialog"><div class="row"><h2>프로젝트 자산함</h2><button data-close>닫기</button></div><label>검색<input id="assetSearch" placeholder="파일명 / 수정 이유…"></label><div class="row"><label>유형<select id="assetType"><option value="all">전체</option><option value="image">이미지</option><option value="video">영상</option></select></label><label>범위<select id="assetScope"><option value="current">현재 작품</option><option value="ip">현재 IP 전체</option><option value="all">이 로컬 작업실 전체</option></select></label></div><p class="muted">재사용 대상: 현재 작품의 선택 샷. 원본과 사용권 근거만 연결하고 승인·선택 상태는 가져오지 않습니다.</p><label>검토 상태<select id="assetReview"><option value="all">전체 take</option><option value="approved">승인된 take만</option></select></label><div id="library" class="library"></div><p class="muted">현재 작품 take의 원본 링크입니다. 연결은 새 take를 만들며, 출처 프로젝트를 수정하지 않습니다.</p></dialog>
+@@ -636,9 +731,9 @@
+ // DOM glue. IDs and backend payload/approval contracts remain unchanged.
+ const takeReviewStore=createTakeReviewStore(sessionStorage);
+ let takeReviewScope='';
+-function studioReview(s,id){const review=[...(s?.reviews||[])].reverse().find(r=>r.take===id);const labels={approved:'Take 승인됨',rejected:'Take 거절',changes_requested:'Take 수정 요청'};return {review,decision:review?.decision||'pending',label:labels[review?.decision]||'Take 검토 대기'}}
++function studioReview(s,id){const review=[...(s?.reviews||[])].reverse().find(r=>r.take===id);const labels={approved:'승인됨',rejected:'거절됨',changes_requested:'수정 요청'};return {review,decision:review?.decision||'pending',label:labels[review?.decision]||'검토 전'}}
+ function currentTakeReview(){const p=project(),s=p?.shots[shotName],take=s?.selected;if(!take||!s.takes.some(t=>t.id===take))return null;return {key:takeReviewKey(state.workspace_id,song(),shotName,take),song:song(),shot:shotName,take,review:studioReview(s,take).review}}
+-function studioBadge(s,id){const r=studioReview(s,id);return `<span class="lt-review-state" data-review="${esc(r.decision)}">${esc(r.label)}</span>`}
++function studioBadge(s,id){const r=studioReview(s,id);return `<span class="lt-review-state" data-review="${esc(r.decision)}" aria-label="Take ${esc(id)} 검토: ${esc(r.label)}"><span class="review-state-symbol" aria-hidden="true">${({approved:'✓',pending:'○',rejected:'×',changes_requested:'↺'})[r.decision]||'○'}</span>${esc(r.label)}</span>`}
+ function studioAdopted(p,name,id){const timeline=draft||(p.timeline_head?p.timeline_versions[p.timeline_head-1]:null);return !!timeline?.clips.some(c=>c.shot===name&&c.take===id)}
+ function studioUseLabel(p,name,id){return studioAdopted(p,name,id)?(dirty?'미저장 편집에 사용':'편집에 사용'):''}
+ function renderStudioShots(p){return Object.entries(p.shots).map(([name,s],i)=>{const t=s.takes.find(t=>t.id===s.selected);return `<button class="shot ${name===shotName?'active':''}" data-shot="${esc(name)}" aria-pressed="${name===shotName}">${t&&image(t)?`<img class="thumb" src="${asset(t)}" alt="">`:`<span class="thumb lt-media-kind">${t?'영상':'미연결'}</span>`}<span class="lt-scene-copy"><b>${esc(creatorSceneLabel(name,i))}</b><small>${esc(creatorSceneFacts(p,name,s))}</small>${t?studioBadge(s,t.id):'<small>미디어 연결 전</small>'}</span></button>`}).join('')}
+@@ -672,7 +767,7 @@
+  document.querySelector('#discardTakeReviewDraft').disabled=!local||takeReviewController.pending.has(c?.key);
+  renderCreatorReview(c,local);
+ }
+-const takeReviewController=createTakeReviewController({store:takeReviewStore,context:currentTakeReview,inputs:()=>({decision:document.querySelector('#takeDecision').value,reason:document.querySelector('#reviewReason').value}),save:(action,data)=>act(action,data),render:renderTakeReview,notify:(text,error)=>message(text,error)});
++const takeReviewController=createTakeReviewController({store:takeReviewStore,context:currentTakeReview,inputs:()=>({decision:document.querySelector('#takeDecision').value,reason:document.querySelector('#reviewReason').value}),save:saveReviewWithFeedback,render:renderTakeReview,notify:(text,error)=>message(text,error)});
+ function openStudioComparison(){
+  const sh=project()?.shots[shotName];
+  if(!sh?.takes.length)return message('비교할 Take가 없습니다. 기존 미디어를 먼저 연결하세요.',true);
+@@ -709,11 +804,11 @@
+  return {message:'작업을 완료하지 못했습니다. 입력과 작업 상태를 확인하세요. 자세한 원인은 오류 상세에서 볼 수 있습니다.',detail:t};
+ }
+ function creatorDiagnostic(label,value){return `<details class="creator-diagnostic"><summary>${esc(label)}</summary><pre>${esc(typeof value==='string'?value:JSON.stringify(value,null,2))}</pre></details>`}
+-function creatorTestMedia(t){return !!t&&/AI\s*생성\s*아님|로컬\s*합성|테스트 미디어|모의\s*(후보|합성)/i.test(t.reason||'')}
++function creatorTestMedia(t){return t?.provenance?.mode==='contract-fake'||!!t&&/AI\s*생성\s*아님|로컬\s*합성|테스트 미디어|모의\s*(후보|합성)/i.test(t.reason||'')}
+ function creatorMediaMarkup(t,{includeMemo=true}={}){
+  if(!t)return '';
+  const blocked=state?.asset_rights?.[t.sha256],test=creatorTestMedia(t),meta=t.metadata||{};
+- const facts=[meta.width&&meta.height?`${meta.width}×${meta.height}`:'',meta.duration>0?`${Number(meta.duration.toFixed(3))}초`:''].filter(Boolean).join(' · ');
++ const facts=[meta.width&&meta.height?`${meta.width}×${meta.height}`:'',meta.duration>0?`원본 ${Number(meta.duration.toFixed(3))}초`:''].filter(Boolean).join(' · ');
+  return `${test?'<span class="creator-test-badge">테스트 미디어</span>':''}${facts?`<small class="creator-media-facts">${esc(facts)}</small>`:''}${blocked?.blocked?`<p class="error">사용 중지 · ${esc(blocked.reason)}</p>`:!t.rights?'<p class="error">사용권 근거를 확인하세요.</p>':''}${!test&&includeMemo&&t.reason?`<p>${esc(t.reason)}</p>`:''}<details class="creator-source"><summary>출처·사용권</summary><p>${esc(t.filename||'연결된 파일')}</p><p>${esc(t.rights||'사용권 미확인')}</p>${test?`<p>${esc(t.reason)}</p>`:''}${creatorDiagnostic('파일 식별 정보',t.sha256||'기록 없음')}</details>`;
+ }
+ function creatorOutputTest(j){return Object.values(j.snapshot?.shots||{}).some(s=>creatorTestMedia(s.takes?.find(t=>t.id===s.selected)))}
+@@ -747,6 +842,8 @@
+  let source=$('#creatorReviewSource');if(!source){source=document.createElement('div');source.id='creatorReviewSource';editor.after(source)}source.replaceChildren();const sourceDetail=$('#reason .creator-source');if(sourceDetail)source.append(sourceDetail);
+  const uploadDetail=$('#upload').closest('details');if(uploadDetail){if(!c&&!uploadDetail.open){uploadDetail.dataset.creatorAutoOpen='true';uploadDetail.open=true}else if(c&&uploadDetail.dataset.creatorAutoOpen){uploadDetail.open=false;delete uploadDetail.dataset.creatorAutoOpen}}
+  const mobile=$('#creatorMobileContext');if(mobile)mobile.innerHTML=`<b>${esc(shotName||'장면 선택')}</b><small>${c?'Take '+c.take+' · '+esc(studioReview(s,c.take).label.replace('Take ','')):'미디어 연결 전'}</small>`;
++ syncProductionPresentation();
++ renderProductionReviewFeedback(c,local);
+ }
+ function creatorModelReason(role,model){
+  const target=document.getElementById(`model-${role}-reason`);if(!target)return;
+@@ -764,7 +861,7 @@
+  const labels={ontologyButton:'캐릭터·장소·스타일',settings:'세계관 설정',budgetButton:'제작 예산',operationsButton:'진단·작업 기록',manifest:'제작 기록 내보내기',sync:'선택한 Take로 편집 구성',review:'출력 버전 승인',render:'영상 출력',prepareSelectedAction:'테스트 미디어 만들기',prepareGeneration:'영상 입력·예상 비용 확인',modelChatRefresh:'대화·작업 상태 새로고침',saveTimeline:'편집 저장',restore:'이 버전으로 복원'};
+  for(const [id,text]of Object.entries(labels))if($('#'+id))$('#'+id).textContent=text;
+  const exec=$('#executionCards').closest('details');if(exec){exec.querySelector('summary').textContent='테스트 미디어';exec.open=!!project()?.execution_cards?.some(c=>!c.result_decision)}
+- for(const [id,text]of [['imageConnection','이미지 모델·기존 결과'],['generationGateText','영상 생성'],['referenceVersions','참고 이미지']]){const d=$('#'+id)?.closest('.lt-inspector-detail');if(d)d.querySelector('summary').textContent=text}
++ for(const [id,text]of [['mediaConnections','모델 제작 · 결과'],['imageConnection','이미지 모델·기존 결과'],['generationGateText','영상 생성'],['referenceVersions','참고 이미지']]){const d=$('#'+id)?.closest('.lt-inspector-detail');if(d)d.querySelector('summary').textContent=text}
+  const planIntro=$('#chatPanel>p');if(planIntro)planIntro.textContent='영상의 목표와 장면을 정리하세요. 계획을 검토한 뒤 제작을 진행합니다.';
+  const capIntro=$('#modelChatPanel>p.muted');if(capIntro)capIntro.textContent='답변과 장면 계획을 확인하세요. 계획 검토와 미디어 실행 승인은 별개입니다.';
+  $('#modelChatPrompt').placeholder='허용된 테스트 입력으로 영상 계획을 상담하세요.';
+@@ -778,6 +875,7 @@
+  const budgetIntro=$('#budgetDialog>p:not(.dialog-status)');if(budgetIntro)budgetIntro.textContent='모델 작업에 사용할 예산입니다. 예산 저장은 유료 실행 승인이 아닙니다.';$('#budgetTitle').textContent='제작 예산';$('#budgetForm button').textContent='예산 저장';
+  const projectForm=$('#project'),story=document.createElement('details');story.className='creator-context-detail';story.innerHTML='<summary>세계관·이야기 설정</summary>';const ip=projectForm.querySelector('[name=ip]').closest('label');ip.before(story);for(const name of ['ip','era','story'])story.append(projectForm.querySelector(`[name="${name}"]`).closest('label'));
+  const d=$('#renderConfirm>p:not(.dialog-status)');if(d)d.textContent='외부 모델 비용 $0 · 로컬 처리 비용은 별도입니다. 확인한 편집과 자막으로 출력합니다.';
++ initializeProductionPresentation();
+  if(state)renderTakeReview();
+ }
+ 
+@@ -844,11 +942,11 @@
+ function drawComparison(){
+  const sh=project()?.shots[shotName];$('#compareTitle').textContent=shotName+' · Take 비교';
+  for(const side of ['Left','Right']){const t=sh?.takes.find(t=>t.id===Number($('#compare'+side).value)),target=$('#compare'+side+'Preview');if(!t){target.textContent='Take 없음';continue}
+-  target.innerHTML=`<div class="creator-comparison-identity"><b>Take ${t.id}</b><span>${sh.selected===t.id?'현재 선택':'미선택'}</span>${studioBadge(sh,t.id)}</div>${image(t)?`<img style="width:100%" src="${asset(t)}" alt="${esc(shotName)} Take ${t.id}">`:`<video style="width:100%" src="${asset(t)}" controls></video>`}<div class="creator-comparison-facts">${creatorMediaMarkup(t)}</div>`;
++  target.innerHTML=`<div class="creator-comparison-identity"><b>Take ${t.id}</b><span>${sh.selected===t.id?'현재 선택':'미선택'}</span>${studioBadge(sh,t.id)}</div><div class="comparison-media-stage">${image(t)?`<img src="${asset(t)}" alt="${esc(shotName)} Take ${t.id}">`:`<video src="${asset(t)}" controls></video>`}</div><div class="creator-comparison-facts">${creatorMediaMarkup(t)}</div>`;
+  }
+ }
+ $('#compareButton').onclick=openStudioComparison;$('#compareLeft').onchange=drawComparison;$('#compareRight').onchange=drawComparison;
+-function drawGeneration(){drawImageConnection();if(state){drawProviderBadge();$('#generationGateText').textContent=state.capabilities.provider_generation?'승인된 테스트 범위의 요청만 허용됩니다. 준비 입력과 비용을 확인한 뒤 실행하세요.':'영상 생성은 현재 사용할 수 없습니다. 입력과 예상 비용 확인은 가능합니다.'}const sh=project()?.shots[shotName];$('#generationPreparations').innerHTML=(sh?.generation_preparations||[]).map(p=>`<div class="job"><b>${p.job?'작업 접수됨':'실호출 승인 대기'} · 10초 · 무음</b><p>${esc(p.estimate.model)}</p><p>예상 비용 $${esc(p.estimate.money.amount)} · ${new Date(p.estimate.expires*1000).toLocaleTimeString()} 만료</p><p>${esc(p.prompt)}</p>${p.action_id?`<p>${p.grant_id?'전송·비용 승인 연결됨':'전송·비용 승인 전'}</p>${creatorDiagnostic('계획 연결 상세',{plan:p.plan_revision,action:p.action_id})}`:''}<small>시작 참고 v${p.reference_version} · ${p.shot_revision===sh.revision?'준비한 장면과 일치':'장면이 바뀌었습니다. 실행 전 다시 확인하세요.'} · ${p.job?'작업 접수됨':'외부 전송 없음'}</small>${!p.job&&state.capabilities.provider_generation?`<p><button data-generation="${esc(p.id)}">승인된 범위로 10초 생성 요청</button></p>`:''}</div>`).join('');$('#generationPreparations').innerHTML+=(state.generation_jobs||[]).filter(j=>j.context.song===song()&&j.context.shot===shotName&&j.context.output_kind!=='image').map(j=>`<div class="job"><b>생성 작업 · ${esc(({failed:'영구 오류 · 자동 재시도 중단',prepared:'대기',submission_blocked:'제출 전 권리·승인 검사 차단',expired:'견적 만료 · 전송 안 됨',submitting:'접수 확인 중',accepted:'접수됨',running:'생성 중',reconciliation_required:'접수 여부 확인 필요',result_ready:'결과 수신 대기',downloading:'결과 연결 중',imported:'Take 연결 완료',import_blocked:'결과를 연결하지 못했습니다',cancel_pending:'취소 전송 대기',cancel_sent:'취소 요청됨 · 상태 확인 중',cancelled:'전송 전 취소',cancelled_result:'취소 후 결과 도착 · 검토 필요'})[j.state]||j.state)}</b>${j.last_error?`<p class="error">${esc(creatorError(j.last_error).message)}</p>`:''}${creatorDiagnostic('작업 상세',{request:j.provider_request_id,error:j.last_error,state:j.state})}${j.provider_completed?`<p>공급자 결과 준비 완료 · ${j.state==='imported'?'로컬 파일 연결 완료':'로컬 영상 파일 연결 전'}</p><small>${esc(j.retention_notice||'')}</small>`:''}${j.retrieval_permission_blocked?'<p>접근 권한 해결 근거 확인 대기 · 자동 다운로드/재생성 없음</p>':''}<p>${j.take?'새 Take '+j.take+' 연결됨 · 선택·승인 필요':'기존 승인 Take 유지'}</p><small>비용 ${j.cost_confirmed?'확정':['cancelled','expired','submission_blocked'].includes(j.state)?'전송 전 취소 · 환불 아님':'확인 중 · 사용 가능 예산에서 보류'}</small>${['prepared','accepted','running','submitting','reconciliation_required'].includes(j.state)&&!j.cancel_requested?`<p><button data-generation-cancel="${esc(j.id)}">생성 취소 요청</button></p>`:''}${j.can_recheck?`<p><button data-generation-recheck="${esc(j.id)}">기존 접수 상태 다시 조회 (새 생성 없음)</button></p>`:''}${j.can_resume_result?`<p><button data-generation-resume="${esc(j.id)}">기존 결과 검토용 연결 재시도 (새 생성 없음)</button></p>`:''}</div>`).join('')}
++function drawGeneration(){drawImageConnection();drawMediaCreator();if(state){drawProviderBadge();$('#generationGateText').textContent=state.capabilities.provider_generation?'승인된 테스트 범위의 요청만 허용됩니다. 준비 입력과 비용을 확인한 뒤 실행하세요.':'영상 생성은 현재 사용할 수 없습니다. 입력과 예상 비용 확인은 가능합니다.'}const sh=project()?.shots[shotName];$('#generationPreparations').innerHTML=(sh?.generation_preparations||[]).map(p=>`<div class="job"><b>${p.job?'작업 접수됨':'실호출 승인 대기'} · 10초 · 무음</b><p>${esc(p.estimate.model)}</p><p>예상 비용 $${esc(p.estimate.money.amount)} · ${new Date(p.estimate.expires*1000).toLocaleTimeString()} 만료</p><p>${esc(p.prompt)}</p>${p.action_id?`<p>${p.grant_id?'전송·비용 승인 연결됨':'전송·비용 승인 전'}</p>${creatorDiagnostic('계획 연결 상세',{plan:p.plan_revision,action:p.action_id})}`:''}<small>시작 참고 v${p.reference_version} · ${p.shot_revision===sh.revision?'준비한 장면과 일치':'장면이 바뀌었습니다. 실행 전 다시 확인하세요.'} · ${p.job?'작업 접수됨':'외부 전송 없음'}</small>${!p.job&&state.capabilities.provider_generation?`<p><button data-generation="${esc(p.id)}">승인된 범위로 10초 생성 요청</button></p>`:''}</div>`).join('');$('#generationPreparations').innerHTML+=(state.generation_jobs||[]).filter(j=>j.context.song===song()&&j.context.shot===shotName&&j.context.output_kind!=='image'&&j.context.dispatch!=='fal-model-queue-v1').map(j=>`<div class="job"><b>생성 작업 · ${esc(({failed:'영구 오류 · 자동 재시도 중단',prepared:'대기',submission_blocked:'제출 전 권리·승인 검사 차단',expired:'견적 만료 · 전송 안 됨',submitting:'접수 확인 중',accepted:'접수됨',running:'생성 중',reconciliation_required:'접수 여부 확인 필요',result_ready:'결과 수신 대기',downloading:'결과 연결 중',imported:'Take 연결 완료',import_blocked:'결과를 연결하지 못했습니다',cancel_pending:'취소 전송 대기',cancel_sent:'취소 요청됨 · 상태 확인 중',cancelled:'전송 전 취소',cancelled_result:'취소 후 결과 도착 · 검토 필요'})[j.state]||j.state)}</b>${j.last_error?`<p class="error">${esc(creatorError(j.last_error).message)}</p>`:''}${creatorDiagnostic('작업 상세',{request:j.provider_request_id,error:j.last_error,state:j.state})}${j.provider_completed?`<p>공급자 결과 준비 완료 · ${j.state==='imported'?'로컬 파일 연결 완료':'로컬 영상 파일 연결 전'}</p><small>${esc(j.retention_notice||'')}</small>`:''}${j.retrieval_permission_blocked?'<p>접근 권한 해결 근거 확인 대기 · 자동 다운로드/재생성 없음</p>':''}<p>${j.take?'새 Take '+j.take+' 연결됨 · 선택·승인 필요':'기존 승인 Take 유지'}</p><small>비용 ${j.cost_confirmed?'확정':['cancelled','expired','submission_blocked'].includes(j.state)?'전송 전 취소 · 환불 아님':'확인 중 · 사용 가능 예산에서 보류'}</small>${['prepared','accepted','running','submitting','reconciliation_required'].includes(j.state)&&!j.cancel_requested?`<p><button data-generation-cancel="${esc(j.id)}">생성 취소 요청</button></p>`:''}${j.can_recheck?`<p><button data-generation-recheck="${esc(j.id)}">기존 접수 상태 다시 조회 (새 생성 없음)</button></p>`:''}${j.can_resume_result?`<p><button data-generation-resume="${esc(j.id)}">기존 결과 검토용 연결 재시도 (새 생성 없음)</button></p>`:''}</div>`).join('')}
+ $('#generationPreparations').onclick=e=>{if(e.target.dataset.generationRecheck)act('resume_generation_status',{song:song(),job:e.target.dataset.generationRecheck});if(e.target.dataset.generationCancel)act('cancel_generation',{song:song(),job:e.target.dataset.generationCancel,reason:'사용자 화면 취소 요청'});if(e.target.dataset.generationResume)act('resume_generation_result',{song:song(),job:e.target.dataset.generationResume});if(e.target.dataset.generation)act('start_generation',{song:song(),shot:shotName,preparation:e.target.dataset.generation})};
+ $('#prepareGeneration').onclick=()=>{const sh=project()?.shots[shotName];if(!sh)return message('샷을 먼저 선택하세요.',true);act('prepare_generation',{song:song(),shot:shotName,shot_revision:sh.revision,prompt:$('#generationPrompt').value})};
+ function drawReferences(){drawGeneration();const sh=project()?.shots[shotName];const roles={character:'캐릭터',style:'스타일',start_frame:'시작 프레임',end_frame:'끝 프레임'};$('#referenceVersions').innerHTML=(sh?.reference_versions||[]).map(v=>`<div class="job"><b>참고 v${v.id} · ${{approved:'승인',unreviewed:'검토 대기',changes_requested:'수정 요청',rejected:'거절'}[v.status]}</b>${Object.entries(v.roles).map(([role,r])=>`<p>${roles[role]} · ${esc(r.song)} / ${esc(r.shot)} / T${r.take}</p><img class="thumb" src="${asset(r)}" alt="${roles[role]} 참고">`).join('')}<p>${esc(v.reason)}</p></div>`).join('')||'<p>지정된 참고가 없습니다.</p>';if(sh?.semantic_impact?.length)$('#referenceVersions').innerHTML+=`<p>연결된 설정 변경: ${sh.semantic_impact.map(x=>esc(x.label)+' · '+esc(x.reason)).join(' / ')}. 기존 Take·출력은 보존됩니다. 인물·장소·계보에서 재검토 후 연결하세요.</p>`;if(sh?.reference_head&&sh.selected){const t=sh.takes.find(t=>t.id===sh.selected);if(t?.reference_version_at_upload!==sh.reference_head)$('#referenceVersions').innerHTML+='<p>현재 take 업로드 이후 참고가 변경됐습니다. 기존 take와 출력은 보존되며 반영 여부를 직접 검토하세요.</p>';}}
+@@ -900,7 +998,7 @@
+ function memoryProposalChanges(p,x){const before=new Map((p.ontology?.graph.entities||[]).map(e=>[e.id,e]));return x.graph.entities.filter(e=>JSON.stringify(before.get(e.id))!==JSON.stringify(e))}
+ function timelineProposalMarkup(p,x){const v=timelineProposalView(p,x);return `<article class="guided-card creator-proposal" data-proposal="${esc(x.id)}"><h3>편집 변경안 <span class="lt-state-chip">${v.label}</span></h3><p>${esc(x.description)}</p><ul>${x.changes.map(c=>`<li>${esc(x.timeline.clips[c.clip_index].shot)} · Take ${c.take} · 원본 ${c.trim}초부터 ${c.duration}초</li>`).join('')}</ul><p class="muted">음원·자막 유지 · ${v.applied?'적용 완료 · 현재 출력 승인 상태는 타임라인에서 확인하세요.':`기준 편집 버전 ${x.base_version}`}</p>${v.stale&&!v.applied?'<p>기준 편집이 바뀌었습니다. 현재 편집에서 수정하거나 새 변경안을 요청하세요.</p>':''}<div class="toolbar">${v.canApply?`<button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="approved" class="primary">변경안 승인·새 버전 저장</button><button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="held">보류</button><button data-timeline-proposal="${esc(x.id)}" data-proposal-decision="rejected">거절</button><button data-edit-proposal="${esc(x.id)}">적용 전 직접 수정</button>`:''}</div>${creatorDiagnostic('변경안 기록',{proposal:x.id,source:x.source})}</article>`}
+ function memoryProposalMarkup(p,x){const applied=!!x.applied_revision,stale=!applied&&x.base_revision!==p.ontology.revision;return `<article class="guided-card creator-proposal"><h3>설정 변경 제안 <span class="lt-state-chip">${applied?'설정 승인됨':stale?'기준 설정 변경됨':'검토 대기 · 아직 반영하지 않음'}</span></h3>${memoryProposalChanges(p,x).map(e=>`<p><b>${esc(e.label)}</b> · ${({character:'인물',place:'장소',style:'스타일'})[e.type]||esc(e.type)}<br>${esc(e.description)}</p><blockquote>${e.provenance.map(v=>esc(v.excerpt)).join('<br>')}</blockquote>`).join('')||'<p>저장된 설정 내용과 같습니다.</p>'}<p class="muted">이 작품의 설정에 대한 제안입니다. 다른 작품의 설정은 자동으로 바뀌지 않습니다.</p>${!applied?`<button data-open-memory="${esc(x.id)}">근거·설정 검토</button>`:''}${creatorDiagnostic('설정 제안 기록',{proposal:x.id,base:x.base_revision,applied:x.applied_revision})}</article>`}
+-function drawCreationProposals(){const p=project();if(!p)return;$('#timelineProposals').innerHTML=(p.timeline_edit_proposals||[]).map(x=>timelineProposalMarkup(p,x)).join('');$('#memoryProposals').innerHTML=(p.ontology_proposals||[]).filter(x=>!x.applied_revision).map(x=>memoryProposalMarkup(p,x)).join('');$('#mediaActionCards').innerHTML=(p.media_actions||[]).map(x=>`<article class="guided-card"><h3>${esc(x.shot)} · ${x.role==='image'?'이미지':'영상'} 제작 요청</h3><p>${esc(x.model)} · ${esc(x.prompt)}</p><p>${x.approval==='approved'?'작업 승인됨':'검토·승인 필요'}${x.mode==='contract-fake'?' · 테스트 미디어':''}</p><p>${x.estimate_expired?'견적 만료 · 재확인 필요':'예상 비용'} ${esc(x.estimate?.amount)} ${esc(x.estimate?.currency)}</p><p>연결 검증과 실행 승인이 확인되기 전에는 실행할 수 없습니다.</p>${creatorDiagnostic('작업 기록',{action:x.id,job:x.job_id,options:x.options})}</article>`).join('');}
++function drawCreationProposals(){const p=project();if(!p)return;$('#timelineProposals').innerHTML=(p.timeline_edit_proposals||[]).map(x=>timelineProposalMarkup(p,x)).join('');$('#memoryProposals').innerHTML=(p.ontology_proposals||[]).filter(x=>!x.applied_revision).map(x=>memoryProposalMarkup(p,x)).join('');drawMediaCreator();}
+ 
+ function drawOntology(){const p=project();if(!p)return;const o=p.ontology||{revision:0,graph:{entities:[]}};$('#ontologyContent').innerHTML=`<h3>승인 버전 ${o.revision}</h3><p>현재 장면: ${esc(shotName||'선택 없음')}</p><button id="ontologyBind">선택한 설정을 현재 장면에 연결</button>${o.graph.entities.map(e=>`<p><b>${esc(e.label)}</b> · ${esc(e.type)}<br>${esc(e.description)}<br><small>${esc(e.uncertainty.reason)}</small>${creatorDiagnostic('설정 식별 정보',e.id)}<br><label><input style="width:auto" type="checkbox" data-entity-id="${esc(e.id)}">현재 장면에 연결</label><button data-ontology-edit="${esc(e.id)}">설정 수정 제안</button></p>`).join('')||'<p>저장된 설정이 없습니다.</p>'}${(p.ontology_proposals||[]).filter(x=>!x.applied_revision).map(x=>`<div class="job"><b>설정 변경 제안 · 기준 v${x.base_revision}</b>${x.graph.entities.map(e=>`<p>${esc(e.label)} · ${esc(e.description)}<br>출처: ${e.provenance.map(v=>esc(v.excerpt)).join(' / ')}</p>`).join('')}<button data-ontology-apply="${esc(x.id)}" data-revision="${x.base_revision}" ${x.base_revision!==o.revision?'disabled data-runtime-blocked':''}>검토한 설정 변경 승인</button>${x.base_revision!==o.revision?'<p>기준 설정이 바뀌었습니다. 최신 설정에서 새 제안을 작성하세요.</p>':''}</div>`).join('')}${o.revision>1?`<label>복원할 승인 버전<input id="ontologyRestoreVersion" type="number" min="1" max="${o.revision}" value="${o.revision-1}"></label><button id="ontologyRestore">선택 버전을 새 승인 버전으로 복원</button>`:''}`;$('#lineageContent').innerHTML=(p.lineage?.nodes||[]).map(n=>`<p>${esc(n.type)} · ${esc(n.label)} · ${esc(n.source)}<br><small>${esc(n.id)}</small></p>`).join('')+`<p>관계 ${(p.lineage?.edges||[]).length}개 · ${esc(p.lineage?.note||'')}</p>`;}
+ $('#ontologyButton').onclick=()=>{if(!project())return message('작품을 먼저 만드세요.',true);drawOntology();$('#ontologyDialog').showModal()};
+@@ -912,9 +1010,126 @@
+ $('#memoryProposals').onclick=e=>{const b=e.target.closest('[data-open-memory]');if(b){drawOntology();$('#ontologyDialog').showModal();const card=[...document.querySelectorAll('[data-ontology-apply]')].find(x=>x.dataset.ontologyApply===b.dataset.openMemory);if(card)card.focus();}};
+ document.querySelectorAll('dialog').forEach(d=>{d.setAttribute('aria-label',d.querySelector('h2')?.textContent||'검토');const status=document.createElement('p');status.className='dialog-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');d.prepend(status)});
+ $('#textScale').onchange=e=>document.documentElement.style.setProperty('--text-scale',e.target.value);
++/* Saved model actions: human approval, same-job recovery, separate Take review. */
++const mediaRightsDrafts=new Map(),mediaPreparationDrafts=new Map();let mediaPreparationScope='';
++function mediaDraftKey(id){return JSON.stringify([state?.workspace_id,song(),id])}
++/* Presentation only. Backend capability and command handlers remain authoritative. */
++const productionReviewErrors=new Map();
++async function saveReviewWithFeedback(action,data){
++ const key=takeReviewKey(state.workspace_id,data.song,data.shot,data.take);
++ try{const ok=await act(action,data);if(ok)productionReviewErrors.delete(key);else productionReviewErrors.set(key,true);return ok}
++ catch(error){productionReviewErrors.set(key,true);throw error}
++}
++function renderProductionReviewFeedback(c,local){
++ const editor=document.getElementById('creatorReviewEditor');if(!editor)return;
++ let note=document.getElementById('productionReviewError');if(!note){note=document.createElement('p');note.id='productionReviewError';note.className='production-review-error';note.setAttribute('role','alert');editor.prepend(note);const input=document.getElementById('reviewReason');input.setAttribute('aria-describedby','takeReviewDraftState productionReviewError')}
++ const show=!!(c&&local&&productionReviewErrors.has(c.key));note.hidden=!show;note.textContent=show?'저장 확인 필요 · 입력은 보존했습니다. 상단 알림에서 저장 상태를 확인하세요.':'';
++}
++function productionModelView(p,role){
++ const c=p?.media_connections?.[role],id=p?.model_settings?.selections?.[role];
++ const raw=c?.model||id||'';
++ const names={'fal-flux-schnell':'FLUX Schnell','fal-ai/flux/schnell':'FLUX Schnell','fal-kling-2-6-pro':'Kling 2.6 Pro','fal-ai/kling-video/v2.6/pro/image-to-video':'Kling 2.6 Pro'};
++ let state='empty',label='모델 미선택',hint='모델 설정에서 사용할 모델을 고르세요.';
++ if(raw){state='unverified';label='연결 확인 필요';hint='모델은 선택됐습니다. 실행 가능 여부는 별도로 확인합니다.'}
++ if(raw&&c?.state==='blocked'){state='blocked';label='현재 사용 불가';hint='모델 설정의 사용 조건을 확인하세요.'}
++ else if(raw&&c?.can_prepare){state='preparable';label=c.mode==='contract-fake'?'테스트 준비 가능':'입력·견적 준비 가능';hint=c.mode==='contract-fake'?'실제 AI 호출 없이 테스트합니다.':'작업별 입력·비용을 확인한 뒤 승인합니다.'}
++ return {role,raw,name:names[raw]||raw||'선택하지 않음',state,label,hint};
++}
++function productionOverviewMarkup(p,name){
++ const rows=['image','video'].map(role=>{const m=productionModelView(p,role);return `<div class="production-model" data-readiness="${m.state}"><div class="production-role">${role==='image'?'이미지':'영상'}</div><div class="production-model-copy"><span class="production-model-name">${esc(m.name)}</span><span class="production-readiness">${esc(m.label)}</span></div></div>`}).join('');
++ return `<div class="production-context"><span>현재 장면</span><b>${esc(name||'선택한 장면 없음')}</b></div><div class="production-models">${rows}</div><p class="production-guidance">모델 선택은 실행 승인이 아닙니다. 제작 준비에서 입력과 예상 비용을 확인하세요.</p>`;
++}
++function initializeProductionPresentation(){
++ document.body.classList.add('lt-finish');
++ const inspector=document.querySelector('.inspector');if(!inspector)return;
++ let tools=document.getElementById('productionTools');
++ if(!tools){tools=document.createElement('details');tools.id='productionTools';tools.className='production-tools';tools.innerHTML='<summary>제작 도구 <span>미디어·참고·모델</span></summary>';const comments=document.getElementById('comments')?.closest('.lt-inspector-detail');inspector.insertBefore(tools,comments||null)}
++ // Move the existing nodes, retaining inputs, IDs, listeners and scoped drafts.
++ for(const id of ['upload','mediaConnections','executionCards','imageConnection','generationGateText','referenceVersions']){
++  const node=document.getElementById(id);const d=node?.closest('.lt-inspector-detail')||node?.closest('details');
++  if(d&&d!==tools&&!d.contains(tools))tools.append(d);
++ }
++ const prod=document.getElementById('mediaConnections')?.closest('.lt-inspector-detail');
++ if(prod){prod.classList.add('production-card');prod.querySelector(':scope>summary').textContent='장면 제작';prod.open=true;
++  const oldImage=document.getElementById('imageConnection')?.closest('.lt-inspector-detail'),oldVideo=document.getElementById('generationGateText')?.closest('.lt-inspector-detail');
++  let history=document.getElementById('productionPrevious');if(!history){history=document.createElement('details');history.id='productionPrevious';history.innerHTML='<summary>이전 제작 경로·작업</summary>';prod.append(history)}
++  for(const d of [oldImage,oldVideo])if(d&&d!==prod){d.classList.add('production-previous-path');history.append(d)}
++  const old=document.getElementById('imageConnection');if(old)old.hidden=true;
++  // The corrected media_connections summary is authoritative. Keep old diagnostics
++  // and recovery controls in their existing containers; do not erase backend facts.
++  if(!document.getElementById('productionModelsButton')){const b=document.createElement('button');b.id='productionModelsButton';b.type='button';b.className='production-model-button';b.textContent='모델 선택 확인';b.onclick=()=>document.getElementById('editModelSettings').click();document.getElementById('mediaConnections').after(b)}
++ }
++ syncProductionPresentation();
++}
++function syncProductionPresentation(){
++ const tools=document.getElementById('productionTools');if(!tools)return;
++ const p=project(),sh=p?.shots[shotName],cards=(p?.media_actions||[]).filter(x=>x.shot===shotName);
++ // Pending approvals, running work and failures are discoverable even when the
++ // user previously collapsed tools. This only changes disclosure, not permission.
++ const attention=cards.some(x=>!x.job||!['imported','cancelled'].includes(x.job.state));
++ const legacy=(state?.generation_jobs||[]).filter(j=>j.context?.song===song()&&j.context?.shot===shotName&&j.context?.dispatch!=='fal-model-queue-v1');
++ const legacyAttention=legacy.some(j=>!['imported','cancelled'].includes(j.state));
++ if(sh&&!sh.selected||attention||legacyAttention){tools.open=true;tools.dataset.autoOpen='true'}
++ else if(tools.dataset.autoOpen){tools.open=false;delete tools.dataset.autoOpen}
++ const history=document.getElementById('productionPrevious');if(history&&legacyAttention){history.open=true;for(const d of history.querySelectorAll('.lt-inspector-detail'))d.open=true}
++ const summary=tools.querySelector(':scope>summary span');if(summary)summary.textContent=attention||legacyAttention?'진행·확인할 작업 있음':'미디어·참고·모델';
++}
++
++function mediaPreparation(p,role){
++ const cap=p?.media_connections?.[role],sh=p?.shots[shotName];let reason='장면과 승인된 계획을 먼저 준비하세요.',ready=false,refs=[];
++ if(sh&&p.guided_plans?.some(x=>x.id===sh.plan_id&&x.status==='applied')){
++  reason=cap?.reason||'선택한 모델의 연결·가격 확인이 필요합니다.';ready=!!cap?.can_prepare;
++  if(role==='video'){
++   const v=sh.reference_versions?.find(v=>v.id===sh.reference_head),r=v?.roles?.start_frame;
++   if(!r||v.status!=='approved'){ready=false;reason='사용권을 확인한 PNG 이미지를 시작 프레임으로 지정하고 참고 버전을 승인하세요.'}
++   else refs=[{shot:r.shot,take:r.take,sha256:r.sha256,role:'start_frame'}];
++  }
++ }
++ return {ready,reason,refs};
++}
++function mediaActionMarkup(x){
++ const j=x.job,labels={prepared:'실행 대기',submitting:'접수 확인 중',accepted:'접수됨',running:'생성 중',result_ready:'결과 수집 대기',downloading:'결과 검증·저장 중',imported:'새 Take 연결됨',import_blocked:'결과 연결 확인 필요',reconciliation_required:'접수 여부 확인 필요',submission_blocked:'전송 전 확인 필요',expired:'견적 만료 · 미전송',failed:'생성 실패',cancel_pending:'취소 요청 대기',cancel_sent:'취소 확인 중',cancelled:'전송 전 취소',cancelled_result:'취소 후 결과 도착',image_recovery_pending:'기존 결과 확인 대기',image_recovery_running:'기존 결과 확인 중'};
++ const decision={approved:'승인됨',held:'보류됨',rejected:'거절됨',required:'검토 필요'},test=x.mode==='contract-fake',c=x.candidate,r=j?.recovery||{};
++ const button=(decision,label)=>`<button data-media-decision="${decision}" data-action="${esc(x.id)}">${label}</button>`;
++ return `<article class="guided-card media-action-card" data-action-card="${esc(x.id)}"><h3>${esc(x.shot)} · ${x.role==='image'?'이미지':'영상'}</h3><p><b>${esc(j?(labels[j.state]||'상태 확인 필요'):(decision[x.approval]||'검토 필요'))}</b>${test?' <span class="creator-test-badge">모의 전송 · 실제 AI 호출 없음</span>':''}</p><p>${esc(x.model)}</p><p>${esc(x.prompt)}</p><p>${x.estimate_expired&&!j?'견적 만료 · 재확인 필요':test?'시험 견적 · 실제 청구 아님':'예상 비용'} ${esc(x.estimate?.amount)} ${esc(x.estimate?.currency)}${x.options?.duration?' · '+x.options.duration+'초 · 무음':''}</p><details><summary>전송·출력 조건</summary><p>표시된 지시와 ${x.role==='video'?'승인된 시작 프레임':'선택한 이미지 설정'}만 전송합니다.</p><p>${esc(x.output_policy)}</p></details>
++ ${j?`<p>${j.state==='imported'?'파일 검증과 Take 연결 완료 · 선택·검토 승인은 별도입니다.':esc(r.reason||'기존 승인 Take는 보존됩니다.')}</p><p><small>비용 ${test?'모의 원장 · 실제 청구 없음':j.cost?.billing_confirmed?'확인된 사용 기록':'확인 중 · 추정과 실청구 별도'}</small></p>${j.stale_input?'<p>작업 중 장면이 바뀌었습니다. 새 결과를 직접 비교해 주세요.</p>':''}${j.can_cancel?`<button data-media-cancel="${esc(j.id)}">취소 요청</button>`:''}${r.can_status?`<button data-media-recover="status" data-job="${esc(j.id)}">기존 요청 확인</button>`:''}${r.can_collect?`<button data-media-recover="collect" data-job="${esc(j.id)}">기존 결과 연결</button>`:''}`:`<p>${esc(x.reason)}</p><div class="row">${x.can_approve?button('approved','이 조건 승인'):''}${x.can_execute?button('execute',test?'승인한 모의 작업 실행':'승인한 작업 실행'):''}${x.can_decide?button('held','보류')+button('rejected','거절'):''}</div><button data-media-edit="${esc(x.id)}">입력 수정·새 작업 준비</button>`}
++ ${c?`<p>Take ${c.take} · ${c.selected?'현재 선택':'아직 선택하지 않음'} · ${c.review==='approved'?'검토 승인됨':'검토 필요'}</p><button data-media-take="${esc(x.id)}">${c.selected?'선택한 Take 검토로 이동':'새 Take 선택·검토'}</button>${!c.rights_known?`<form data-media-rights="${esc(x.id)}"><label>이 결과의 사용권 근거<input name="evidence" maxlength="2000" required value="${esc(mediaRightsDrafts.get(mediaDraftKey(x.id))||'')}" placeholder="사용 허가·직접 제작 등 확인한 근거"></label><button>사용권 기록</button></form>`:''}`:''}
++ ${creatorDiagnostic('작업 상세',{action:x.id,job:x.job_id,state:j?.state,failure:j?.failure_code,options:x.options})}</article>`;
++}
++function drawMediaCreator(){
++ const p=project();if(!p||!$('#mediaConnections'))return;
++ $('#mediaConnections').innerHTML=productionOverviewMarkup(p,shotName);
++ $('#mediaDurationLabel').hidden=$('#mediaRole').value!=='video';$('#mediaRatioLabel').hidden=$('#mediaRole').value!=='image';
++ const f=$('#mediaPrepareForm'),scope=mediaDraftKey(shotName+':'+f.elements.role.value);if(mediaPreparationScope!==scope){const saved=mediaPreparationDrafts.get(scope)||{prompt:'',ratio:'16:9',duration:'5'};for(const key of ['prompt','ratio','duration'])f.elements[key].value=saved[key];mediaPreparationScope=scope}
++ const prep=mediaPreparation(p,$('#mediaRole').value),b=$('#prepareMedia');b.toggleAttribute('data-runtime-blocked',!prep.ready);b.disabled=busy||!prep.ready;$('#mediaPreparationHint').textContent=prep.reason;
++ const cards=(p.media_actions||[]).filter(x=>x.shot===shotName);$('#mediaActionCards').innerHTML=cards.map(mediaActionMarkup).join('')||'<p>이 장면의 모델 제작 요청이 없습니다. 대화에서 요청하거나 입력을 준비하세요.</p>';
++ const d=$('#mediaConnections').closest('.lt-inspector-detail');if(d&&cards.some(x=>!x.job||!['imported','cancelled'].includes(x.job.state)))d.open=true;
++ syncProductionPresentation();
++}
++$('#mediaRole').onchange=drawMediaCreator;
++$('#mediaPrepareForm').oninput=e=>{if(e.target.name!=='role')mediaPreparationDrafts.set(mediaPreparationScope,Object.fromEntries(new FormData(e.currentTarget)))};
++$('#mediaActionCards').oninput=e=>{const f=e.target.closest('[data-media-rights]');if(f)mediaRightsDrafts.set(mediaDraftKey(f.dataset.mediaRights),f.elements.evidence.value)};
++$('#mediaPrepareForm').onsubmit=async e=>{
++ e.preventDefault();const p=project(),sh=p?.shots[shotName],f=new FormData(e.target),role=f.get('role'),ready=mediaPreparation(p,role);
++ if(!ready.ready)return message(ready.reason,true);
++ const options=role==='image'?{ratio:f.get('ratio')}:{duration:Number(f.get('duration')),generate_audio:false};
++ await act('media_prepare',{song:song(),shot:shotName,shot_revision:sh.revision,prompt:f.get('prompt'),options,refs:ready.refs});
++};
++$('#mediaActionCards').onclick=async e=>{
++ const decide=e.target.closest('[data-media-decision]'),recover=e.target.closest('[data-media-recover]'),cancel=e.target.closest('[data-media-cancel]'),edit=e.target.closest('[data-media-edit]'),take=e.target.closest('[data-media-take]');
++ if(decide)return act('media_action_decide',{song:song(),action_id:decide.dataset.action,decision:decide.dataset.mediaDecision});
++ if(recover)return act('recover_media_job',{song:song(),job:recover.dataset.job,operation:recover.dataset.mediaRecover});
++ if(cancel)return act('cancel_generation',{song:song(),job:cancel.dataset.mediaCancel,reason:'사용자가 생성 취소를 요청했습니다.'});
++ if(edit){const x=project().media_actions.find(x=>x.id===edit.dataset.mediaEdit);if(!x)return;const f=$('#mediaPrepareForm');f.elements.role.value=x.role;f.elements.prompt.value=x.prompt;f.elements.ratio.value=x.options.ratio||'16:9';f.elements.duration.value=x.options.duration||5;mediaPreparationScope=mediaDraftKey(shotName+':'+x.role);mediaPreparationDrafts.set(mediaPreparationScope,Object.fromEntries(new FormData(f)));$('#mediaPrepareDetails').open=true;drawMediaCreator();f.elements.prompt.focus();}
++ if(take){const x=project().media_actions.find(x=>x.id===take.dataset.mediaTake);if(!x?.candidate)return;shotName=x.shot;const sh=project().shots[shotName];if(sh.selected!==x.candidate.take&&!await act('select',{song:song(),shot:shotName,take:x.candidate.take,shot_revision:sh.revision}))return;draw();document.querySelector('[data-panel="review"]')?.click();$('#reviewTake').closest('details')?.setAttribute('open','');$('#takeReviewStatus').scrollIntoView({block:'nearest'});}
++};
++$('#mediaActionCards').onsubmit=async e=>{
++ const form=e.target.closest('[data-media-rights]');if(!form)return;e.preventDefault();const x=project().media_actions.find(x=>x.id===form.dataset.mediaRights),sh=project().shots[x?.shot],t=sh?.takes.find(t=>t.id===x.candidate?.take);if(!t)return;
++ const key=mediaDraftKey(x.id),evidence=new FormData(form).get('evidence');if(await act('declare_take_rights',{song:song(),shot:x.shot,take:t.id,sha256:t.sha256,shot_revision:sh.revision,evidence})&&mediaRightsDrafts.get(key)===evidence)mediaRightsDrafts.delete(key);
++};
+ function imageConnectionMarkup(cap){const labels={unconfigured:'이미지 모델 미선택',unverified:'이미지 연결 확인 필요',blocked:'이미지 연결 차단',available:'승인 범위에서 사용 가능'};return `<p><b>${labels[cap.state]||'이미지 연결 확인 필요'}</b>${cap.model?' · '+esc(cap.model):''}</p><p>${cap.available?'작업별 입력과 예상 비용을 확인한 뒤 승인하세요.':'지금은 기존 이미지를 연결할 수 있습니다.'}</p>${cap.mode==='contract-fake'?'<span class="creator-test-badge">테스트 연결 · 실제 AI 호출 없음</span>':''}${creatorDiagnostic('연결 상세',{reason:cap.reason,policy:cap.policy,checks:cap.checks})}`}
+ function imageRecoveryMarkup(j){const labels={imported:'Take 연결 완료',import_blocked:'결과를 연결하지 못했습니다',reconciliation_required:'접수 여부 확인 필요',image_recovery_pending:'기존 결과 확인 대기',image_recovery_running:'기존 결과 확인 중'},r=j.image_recovery||{};return `<section class="creator-recovery-card"><h3>${labels[j.state]||'작업 상태 확인 필요'}</h3>${j.mode==='contract-fake'?'<span class="creator-test-badge">테스트 미디어</span>':''}${j.state!=='imported'?`<p>${esc(creatorError(j.last_error||r.reason||'결과 상태 미확정').message)}</p>`:''}${j.retention_notice?`<p>${esc(j.retention_notice)}</p>`:''}<p>기존 결과를 확인합니다. 새 생성이나 환불은 실행하지 않습니다.</p>${r.can_status?`<button data-image-recovery="status" data-job="${esc(j.id)}">기존 요청 확인</button>`:''}${r.can_collect?`<button data-image-recovery="collect" data-job="${esc(j.id)}">기존 결과 연결</button>`:''}${!r.can_status&&!r.can_collect&&j.state!=='imported'?'<p>연결 권한을 확인해야 계속할 수 있습니다.</p>':''}${creatorDiagnostic('작업 상세',{job:j.id,request:j.provider_request_id,state:j.state,error:j.last_error,recovery:r.reason})}</section>`}
+-function drawImageConnection(){const cap=project()?.image_connection||{state:'unconfigured',reason:'연결 상태 확인 필요'};$('#imageConnection').innerHTML=imageConnectionMarkup(cap);$('#imageRecoveryJobs').innerHTML=(state?.generation_jobs||[]).filter(j=>j.context.song===song()&&j.context.shot===shotName&&j.context.output_kind==='image').map(imageRecoveryMarkup).join('')||'<p>이 장면의 외부 이미지 작업이 없습니다. 기존 이미지를 연결하거나 모의 후보 흐름을 이용할 수 있습니다.</p>'}
++function drawImageConnection(){const cap=project()?.image_connection||{state:'unconfigured',reason:'연결 상태 확인 필요'};$('#imageConnection').innerHTML=imageConnectionMarkup(cap);$('#imageRecoveryJobs').innerHTML=(state?.generation_jobs||[]).filter(j=>j.context.song===song()&&j.context.shot===shotName&&j.context.output_kind==='image'&&j.context.dispatch!=='fal-model-queue-v1').map(imageRecoveryMarkup).join('')||((project()?.media_actions||[]).some(x=>x.role==='image'&&x.shot===shotName)?'<p>현재 장면의 이미지 작업은 모델 제작 · 결과에서 확인하세요.</p>':'<p>이 장면의 외부 이미지 작업이 없습니다. 기존 이미지를 연결할 수 있습니다.</p>')}
+ $('#showImageModels').onclick=()=>$('#modelSettingsPanel').showModal();
+ $('#imageRecoveryJobs').onclick=e=>{const b=e.target.closest('[data-image-recovery]');if(b)act('recover_image_job',{song:song(),job:b.dataset.job,operation:b.dataset.imageRecovery})};
+ function showRenderPreview(download){const j=(state.jobs||[]).find(j=>j.song===song()&&j.status==='completed'&&j.download===download);if(!j)return message('완료된 현재 작품의 출력만 검토할 수 있습니다.',true);const caption=j.snapshot.subtitles||[],version=j.snapshot.timeline.id;$('#downloadPreview').dataset.project=song();$('#downloadPreview').dataset.job=j.id;$('#downloadPreview').innerHTML=`<h2>출력 미리보기</h2>${creatorOutputTest(j)?'<span class="creator-test-badge">테스트 미디어 포함</span>':''}<p>출력 타임라인 v${version} · 승인된 자막 ${caption.length}줄 · 현재 편집 초안과 별도</p><video src="${esc(j.download)}" controls aria-label="승인 출력 영상">${caption.length?`<track kind="subtitles" label="승인 자막 v${version}" srclang="ko" src="/exports/${esc(j.id)}.vtt" default>`:''}</video><p id="renderCaptionStatus" role="status">${caption.length?'승인 자막 불러오는 중…':'이 승인 출력에는 자막이 없습니다.'}</p>`;const track=$('#downloadPreview track');if(track){track.onload=()=>{if($('#downloadPreview').dataset.job===j.id)$('#renderCaptionStatus').textContent='승인 자막을 불러왔습니다. 재생 메뉴에서 표시를 켜거나 끌 수 있습니다.'};track.onerror=()=>{if($('#downloadPreview').dataset.job===j.id)$('#renderCaptionStatus').textContent='자막 미리보기를 불러오지 못했습니다. 권한·출력 상태를 확인하거나 같은 출력의 SRT를 사용하세요.'}}}
+@@ -949,7 +1164,7 @@
+ $('#guidedPlans').onclick=async e=>{if(e.target.closest('[data-plan-music]')){setStep(1);$('#musicStructure').closest('details').open=true;$('#musicAudio').focus();return;}const prepare=e.target.closest('[data-prepare-action]');if(prepare){if(await act('action_propose',{song:song(),plan:prepare.dataset.prepareAction,scene:prepare.dataset.scene}))setStep(3);return;}const b=e.target.closest('[data-guided-plan]');if(b&&await act('apply_guided_plan',{song:song(),plan:b.dataset.guidedPlan}))setStep(3)};
+ document.querySelectorAll('button[data-step]').forEach(b=>b.onclick=()=>setStep(Number(b.dataset.step)));$('#flowNext').onclick=()=>setStep(guidedStep%4+1);
+ 
+-setInterval(async()=>{if(busy||!state)return;try{const r=await fetch('/api/state');const fresh=await r.json();const name=song(),p=state.projects[name],next=fresh.projects[name];if(p&&next&&(JSON.stringify(p.chat_turns)!==JSON.stringify(next.chat_turns)||JSON.stringify(p.chat_connection)!==JSON.stringify(next.chat_connection))){state=fresh;drawModelChat();drawCreationProposals();drawGuided()}if(JSON.stringify(state.jobs)!==JSON.stringify(fresh.jobs)){state.jobs=fresh.jobs;drawJobs()}if(JSON.stringify(state.generation_jobs)!==JSON.stringify(fresh.generation_jobs)){state.generation_jobs=fresh.generation_jobs;if(!dirty&&state.revision!==fresh.revision)await refresh(song());else drawGeneration()}}catch{}},1500);refresh().then(()=>{document.body.dataset.step='1';mode(true);message('로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.')}).catch(()=>message('서버 연결을 확인하세요.',true));
++setInterval(async()=>{if(busy||!state)return;try{const r=await fetch('/api/state');const fresh=await r.json();const name=song(),p=state.projects[name],next=fresh.projects[name];if(p&&next&&(JSON.stringify(p.chat_turns)!==JSON.stringify(next.chat_turns)||JSON.stringify(p.chat_connection)!==JSON.stringify(next.chat_connection))){state=fresh;drawModelChat();drawCreationProposals();drawGuided()}if(p&&next&&(JSON.stringify(p.media_actions)!==JSON.stringify(next.media_actions)||JSON.stringify(p.media_connections)!==JSON.stringify(next.media_connections))){p.media_actions=next.media_actions;p.media_connections=next.media_connections;p.image_connection=next.image_connection;drawMediaCreator();drawImageConnection()}if(JSON.stringify(state.jobs)!==JSON.stringify(fresh.jobs)){state.jobs=fresh.jobs;drawJobs()}if(JSON.stringify(state.generation_jobs)!==JSON.stringify(fresh.generation_jobs)){state.generation_jobs=fresh.generation_jobs;if(p&&next){p.media_actions=next.media_actions;p.media_connections=next.media_connections;p.image_connection=next.image_connection}if(!dirty&&state.revision!==fresh.revision)await refresh(song());else drawGeneration()}}catch{}},1500);refresh().then(()=>{document.body.dataset.step='1';mode(true);message('로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.')}).catch(()=>message('서버 연결을 확인하세요.',true));
+ </script>
+ <script id="loretuneWorkspaceStructure">
+ /* DOM-only integration candidate. Preserve original nodes, IDs, handlers and data. */
+--- /dev/null
++++ b/media_creator.py
+@@ -0,0 +1,88 @@
++"""Creator-facing projections and human commands over existing saved fal actions."""
++import json,time
++import action_execution as actions,contracts,guided,ledger,media_bridge,model_selection,media_recovery
++from fal_models import CONNECTION
++
++def capability(store,p,role):
++ item=model_selection.validate_selection(role,model_selection.settings(p)['selections'][role]);pipe=store.media_dispatch
++ result=dict(state='unconfigured',available=False,can_prepare=False,mode='disconnected',model=item['model'] if item else None,reason='모델을 선택하면 연결 상태를 확인할 수 있습니다.',policy='출력 접근·보관 조건과 비용은 준비된 작업에서 확인합니다.')
++ if not item:return result
++ result.update(state='blocked' if item['state'] in {'integration_blocked','retired','unavailable','disabled'} else 'unverified',reason=item.get('reason') or '선택한 모델의 서버 연결·가격·결과 수신 검증이 필요합니다.')
++ ad=pipe.adapters.get(item['id']) if pipe else None
++ if ad:
++  result.update(mode=ad.mode,can_prepare=bool(ad.contract.quote and ad.contract.quote.get('expires',0)>time.time()),reason='모의 전송으로 계약만 시험합니다. 실제 모델은 활성화되지 않았습니다.' if ad.mode=='contract-fake' else '입력·견적은 준비할 수 있습니다. 고정 전송 허가와 사람 승인이 필요합니다.')
++ return result
++
++def grants(c,w,pid,a):
++ return [g for row in c.execute('SELECT body FROM execution_grants WHERE workspace=? AND project=? ORDER BY rowid DESC',(w,pid)) if (g:=json.loads(row[0])).get('action_hashes',{}).get(a['id'])==a['hash']]
++
++def valid_grant(c,store,p,name,a):
++ pipe=store.media_dispatch;pid=contracts.project_id(store.workspace_id,name)
++ if pipe is None:raise ValueError('선택 모델의 서버 연결이 없습니다.')
++ for g in grants(c,store.workspace_id,pid,a):
++  try:pipe.authorize(c,p,name,a,g['id']);return g
++  except ValueError:pass
++ raise ValueError('유효한 작업 승인이 필요합니다.')
++
++def guard(p,a):
++ if p.get('media_action_reviews',{}).get(a['id'],{}).get('decision') in {'held','rejected'}:raise ValueError('사용자가 보류·거절한 작업입니다. 다시 검토해야 합니다.')
++
++def handle(c,store,p,name,command,d):
++ if command=='recover_media_job':
++  if set(d)!={'song','job','operation'}:raise ValueError('기존 작업 복구 대상만 지정하세요.')
++  row=c.execute('SELECT body FROM generation_jobs WHERE id=?',(d['job'],)).fetchone()
++  if not row:raise ValueError('작업이 없습니다.')
++  j=json.loads(row[0])
++  if j['context']['song']!=name:raise ValueError('현재 작품의 작업이 아닙니다.')
++  return dict(job=media_recovery.enqueue(c,store,j,d['operation'])['id'])
++ if set(d)!={'song','action_id','decision'}:raise ValueError('저장된 작업과 검토 결정만 지정하세요.')
++ pid=contracts.project_id(store.workspace_id,name);a=actions.get(c,'production_actions',store.workspace_id,pid,d['action_id'])
++ if a['connection_id']!=CONNECTION:raise ValueError('지원하는 저장 작업이 아닙니다.')
++ prior=c.execute('SELECT job FROM provider_action_jobs WHERE workspace=? AND project=? AND action=?',(store.workspace_id,pid,a['id'])).fetchone()
++ decision=d['decision'];reviews=p.setdefault('media_action_reviews',{})
++ if decision=='execute':
++  if prior:
++   j=json.loads(c.execute('SELECT body FROM generation_jobs WHERE id=?',prior).fetchone()[0]);return dict(job=j['id'],existing=True)
++  guard(p,a);g=valid_grant(c,store,p,name,a)
++  result=actions.request_with_savepoint(c,store.workspace_id,pid,p,dict(plan_id=a['plan_id'],action_id=a['id'],grant_id=g['id']),provider_request=store.media_dispatch.request)
++  return dict(job=result['job_id'],existing=result['status']=='existing')
++ if prior:raise ValueError('이미 접수된 작업입니다. 진행 상태·취소·기존 결과 회수를 사용하세요.')
++ if decision in {'held','rejected'}:
++  for g in grants(c,store.workspace_id,pid,a):
++   if g['state']=='active':actions.revoke(c,store.workspace_id,pid,g['id'],g['revision'])
++  reviews[a['id']]=dict(decision=decision,actor='local-owner',at=time.time());return dict(decision=decision)
++ if decision!='approved':raise ValueError('허용되지 않은 결정입니다.')
++ if store.media_dispatch is None:raise ValueError('선택 모델의 서버 연결이 없습니다.')
++ reviews[a['id']]=dict(decision='reviewing',actor='local-owner',at=time.time())
++ try:g=valid_grant(c,store,p,name,a)
++ except ValueError:g=store.media_dispatch.approve(c,p,name,a['id'])
++ reviews[a['id']]=dict(decision='approved',actor='local-owner',at=time.time());return dict(decision='approved')
++
++def project_actions(c,store,p,name):
++ pid=contracts.project_id(store.workspace_id,name);result=[]
++ for row in c.execute('SELECT body FROM production_actions WHERE workspace=? AND project=? ORDER BY rowid DESC',(store.workspace_id,pid)):
++  a=json.loads(row[0])
++  if a['connection_id']!=CONNECTION:continue
++  q=a['options']['quote'];mapping=c.execute('SELECT job FROM provider_action_jobs WHERE workspace=? AND project=? AND action=?',(store.workspace_id,pid,a['id'])).fetchone()
++  j=json.loads(c.execute('SELECT body FROM generation_jobs WHERE id=?',mapping).fetchone()[0]) if mapping else None
++  card=dict(id=a['id'],shot=a['options']['shot'],role=a['role'],model=a['release_id'],prompt=a['inputs']['prompt'],options=a['options']['generation'],estimate=q['money'],estimate_kind=q['kind'],mode='contract-fake' if q['kind']=='fixture' else 'provider-unverified',estimate_expired=q['expires']<=time.time(),approval=p.get('media_action_reviews',{}).get(a['id'],{}).get('decision','required'),job_id=j['id'] if j else None,can_approve=False,can_execute=False,can_decide=not j,reason='입력·모델·예상 비용을 검토하세요.',output_policy='비공개 출력 · 1시간 만료 요청. 정확한 서버 삭제 시각 미확인.')
++  if j:
++   card['job']={k:j.get(k) for k in ('id','state','failure_code','take','stale_input','cancel_requested')};card['job'].update(recovery=media_recovery.describe(c,store,j),cost=media_bridge.projection(c,j)['cost'],can_cancel=j['state'] in {'prepared','accepted','running','submitting','reconciliation_required'} and not j.get('cancel_requested'))
++   if j.get('take'):
++    sh=p['shots'].get(card['shot'],{});t=next((t for t in sh.get('takes',[]) if t['id']==j['take']),None)
++    if t:card['candidate']=dict(take=t['id'],selected=sh.get('selected')==t['id'],review=next((r['decision'] for r in reversed(sh.get('reviews',[])) if r['take']==t['id']),None),rights_known=bool(t.get('rights') and t['rights']!='사용권 미확인'))
++  else:
++   pipe=store.media_dispatch
++   try:
++    if pipe is None:raise ValueError('선택 모델의 서버 연결·견적 검증이 필요합니다.')
++    data=pipe.data(c,p,a);pipe.gate(pid,a,data)
++    if p['shots'][a['options']['shot']]['revision']!=a['options']['shot_revision'] or model_selection.action_context(p,a)!=a['context_hash']:raise ValueError('장면·입력·모델이 변경되었습니다. 현재 조건으로 다시 준비하세요.')
++    plan=next((x for x in p.get('guided_plans',[]) if x['id']==a['plan_id']),None)
++    if not plan or plan['context_hash']!=guided.fingerprint(guided.context(p)):raise ValueError('계획 문맥이 변경되었습니다.')
++    card['can_approve']=True
++    try:valid_grant(c,store,p,name,a);guard(p,a);card.update(approval='approved',can_execute=True,can_approve=False)
++    except ValueError:pass
++    if not ledger.budget(c,store.workspace_id,'project:'+pid):card.update(can_execute=False,reason='제작 예산을 먼저 설정하세요. 새 지출은 실행하지 않았습니다.')
++   except (ValueError,KeyError):card['reason']='연결·전송 허가·입력·견적을 확인해야 합니다. 현재 실행할 수 없습니다.'
++  result.append(card)
++ return result
+--- /dev/null
++++ b/media_recovery.py
+@@ -0,0 +1,80 @@
++"""One-use collection/status recovery for existing fal dispatcher jobs.
++Shares GenerationQueue; never calls submit or changes an existing asset ACL.
++Only trusted runtime evidence can authorize a denied retrieval retry.
++"""
++import json,time
++from urllib.parse import urlsplit
++import action_execution as actions,action_assets,contracts,guided
++from fal_models import CONNECTION
++from fal_provider import ProviderError
++PERMISSION_ERRORS={p+str(n) for p in ('download_http_','provider_http_','provider_media_http_','cdn_token_http_') for n in (401,403)}
++RECOVERABLE={'import_blocked','reconciliation_required','cancelled_result','image_recovery_pending'}
++
++def permission_failure(job):
++ return job.get('retrieval_permission_failure') or (job.get('failure_code') if job.get('failure_code') in PERMISSION_ERRORS else None)
++
++def check(c,store,job,operation):
++ if operation not in {'status','collect'}:raise ValueError('기존 상태 조회 또는 결과 수집만 가능합니다.')
++ pipe=store.media_dispatch;b=job.get('context',{}).get('action_binding',{})
++ if pipe is None or job['context'].get('dispatch')!=CONNECTION:raise ValueError('기존 작업의 모델 연결을 확인하세요.')
++ p,pid=pipe.project(c,job['context']['song']);w=store.workspace_id
++ if (b.get('workspace'),b.get('project'),b.get('connection_id'))!=(w,pid,CONNECTION):raise ValueError('작업 귀속이 다릅니다.')
++ a=actions.get(c,'production_actions',w,pid,b['action_id']);g=actions.get(c,'execution_grants',w,pid,b['grant_id']);ad=pipe.adapter(a)
++ row=c.execute('SELECT job FROM provider_action_jobs WHERE workspace=? AND project=? AND action=?',(w,pid,a['id'])).fetchone()
++ if not row or row[0]!=job['id'] or a['hash']!=b['action_hash'] or g['state']!='active' or g['hash']!=b['grant_hash']:raise ValueError('기존 작업 승인·연결이 변경되었습니다.')
++ if job['mode']!=ad.mode:raise ValueError('시험/실제 연결을 혼용할 수 없습니다.')
++ if job['context']['shot'] not in p['shots']:raise ValueError('대상 장면이 없습니다.')
++ action_assets.validate(c,store,p,{'action':a})
++ try:
++  for field in ('status_url','response_url','cancel_url'):ad._url(job.get('receipt') or {},field)
++ except ProviderError:raise ValueError('기존 접수번호가 없습니다. 새 생성 없이 접수 확인이 필요합니다.') from None
++ gate=pipe.recovery_approvals.get(job['id'],{})
++ required=dict(workspace=w,project=pid,connection_id=CONNECTION,model=a['release_id'],job=job['id'],request_id=job['receipt']['request_id'],operation=operation)
++ if any(gate.get(k)!=v for k,v in required.items()) or not gate.get('id') or not gate.get('evidence') or gate.get('expires',0)<=time.time() or gate['id'] in job.get('retrieval_approvals_used',[]):raise ValueError('기존 요청의 일회 복구 확인이 필요합니다. 새 생성하지 않습니다.')
++ if ad.mode!='contract-fake' and (gate.get('account_verified') is not True or gate.get('integration_verified') is not True or gate.get('retrieval_authorized') is not True or not ad.live_enabled):raise ValueError('기존 모델의 실제 인증·복구 권한 검증이 필요합니다.')
++ denied=permission_failure(job)
++ if denied and (gate.get('resolves_permission') is not True or gate.get('resolved_failure')!=denied):raise ValueError('접근 거절 해결 근거 확인 전 같은 요청을 반복하지 않습니다.')
++ if operation=='collect':
++  if not job.get('result') or job.get('failure_code') in {'download_http_404','download_http_410','provider_media_http_404','provider_media_http_410'}:raise ValueError('파일이 없거나 만료됐습니다. 기존 접수 상태 확인이 먼저 필요합니다.')
++  url=urlsplit(job['result'].get('url',''))
++  if url.scheme!='https' or url.hostname!='v3b.fal.media' or url.port not in (None,443) or url.username or url.password or url.fragment:raise ValueError('승인된 비공개 결과 주소가 아닙니다.')
++  if gate.get('result_sha256')!=guided.fingerprint(job['result']):raise ValueError('확인한 기존 결과가 변경되었습니다.')
++ if job['state'] not in RECOVERABLE:raise ValueError('지금은 수동 복구 대상이 아닙니다.')
++ return gate,ad
++
++def describe(c,store,job):
++ result=dict(can_status=False,can_collect=False,reason='기존 요청만 확인하며 새로 생성하지 않습니다.')
++ if job['state']=='imported':return dict(result,reason='파일과 Take 등록 완료 · 선택과 승인은 별도입니다.')
++ if job['state'] in {'image_recovery_pending','image_recovery_running','downloading'}:return dict(result,reason='기존 결과를 처리 중입니다. 자동 재생성 없음.')
++ for op in ('status','collect'):
++  try:check(c,store,job,op);result['can_'+op]=True
++  except (ValueError,KeyError,ProviderError):pass
++ if result['can_status'] or result['can_collect']:result['reason']='확인된 기존 요청의 일회 복구를 진행할 수 있습니다.'
++ elif permission_failure(job):result['reason']='접근 권한 해결 근거 확인 대기 · 재시도·재생성 없음.'
++ elif not job.get('receipt'):result['reason']='접수번호 확인 전입니다. 중복 생성하지 않습니다.'
++ elif job['state'] in RECOVERABLE:result['reason']='기존 모델 연결과 결과 회수 권한 확인이 필요합니다.'
++ return result
++
++def enqueue(c,store,job,operation):
++ if job['state']=='image_recovery_pending':
++  if job['recovery_pending']['operation']!=operation:raise ValueError('이미 다른 복구를 처리 중입니다.')
++  return job
++ gate,_=check(c,store,job,operation)
++ job.update(state='image_recovery_pending',recovery_pending=dict(operation=operation,approval_id=gate['id'],gate_hash=guided.fingerprint(gate)),last_error=None)
++ store.generation.save(c,job);return job
++
++def execute(store,identifier):
++ with store.connect() as c:
++  c.execute('BEGIN IMMEDIATE');job=json.loads(c.execute('SELECT body FROM generation_jobs WHERE id=?',(identifier,)).fetchone()[0])
++  if job['state']!='image_recovery_pending':return False
++  pending=job['recovery_pending'];gate,ad=check(c,store,job,pending['operation'])
++  if guided.fingerprint(gate)!=pending['gate_hash']:raise ValueError('복구 확인이 변경되었습니다.')
++  job.setdefault('retrieval_approvals_used',[]).append(gate['id']);job.update(state='image_recovery_running');store.generation.save(c,job)
++ if pending['operation']=='collect':store.generation.import_result(identifier,ad.download,recovery=True)
++ else:
++  latest=store.generation.poll(identifier,ad,recovery=True)
++  if latest['state']=='result_ready':
++   with store.connect() as c:
++    c.execute('BEGIN IMMEDIATE');latest=json.loads(c.execute('SELECT body FROM generation_jobs WHERE id=?',(identifier,)).fetchone()[0])
++    if latest['state']=='result_ready':latest.update(state='import_blocked',failure_code='collection_requires_approval',last_error='기존 결과 확인됨. 결과 수집 확인 후 연결하세요.');store.generation.save(c,latest)
++ return True
+--- /dev/null
++++ b/tests/test_media_creator.py
+@@ -0,0 +1,121 @@
++import json,time,uuid,unittest,subprocess,tempfile
++from pathlib import Path
++from unittest.mock import patch
++from concurrent.futures import ThreadPoolExecutor
++from tests import test_fal_multimodel as fixtures
++import action_execution as actions,contracts,guided,media_recovery
++from fal_models import CONNECTION
++from fal_provider import ProviderError
++
++class MediaCreatorTest(unittest.TestCase):
++ @classmethod
++ def setUpClass(cls):fixtures.FalMultiTest.setUpClass()
++ def setUp(self):
++  self.f=fixtures.FalMultiTest();self.f.setUp();self.addCleanup(self.f.doCleanups);self.f.setup_model('fal-flux-schnell');self.st=self.f.st;self.pipe=self.f.pipe
++ def decide(self,d):return self.f.call('media_action_decide',song='synthetic',action_id=self.f.action['id'],decision=d)
++ def card(self):return self.f.project()['media_actions'][0]
++ def blocked(self,code='download_interrupted'):
++  j=self.decide('execute')['job'];self.st.process_generation();job=self.st.generation.poll(j,self.f.ad);job.update(state='import_blocked',failure_code=code)
++  with self.st.connect() as c:self.st.generation.save(c,job)
++  return job
++ def gate(self,j,op='collect',**extra):
++  self.pipe.recovery_approvals[j['id']]=dict(id=uuid.uuid4().hex,evidence='synthetic only',workspace=self.st.workspace_id,project=self.f.pid,connection_id=CONNECTION,model=self.f.ad.contract.MODEL,job=j['id'],request_id=j['receipt']['request_id'],operation=op,result_sha256=guided.fingerprint(j.get('result')),expires=time.time()+30,**extra)
++ def recover(self,j,op='collect'):return self.f.call('recover_media_job',song='synthetic',job=j['id'],operation=op)
++ def test_human_hold_reject_reapprove_and_single_reservation(self):
++  self.decide('held');self.assertFalse(self.card()['can_execute']);self.assertEqual(self.card()['approval'],'held')
++  with self.assertRaises(ValueError):self.decide('execute')
++  self.decide('rejected');self.assertEqual(self.card()['approval'],'rejected');self.decide('approved');self.assertTrue(self.card()['can_execute'])
++  with self.st.connect() as c:self.f.grant=json.loads(c.execute('SELECT body FROM execution_grants ORDER BY rowid DESC LIMIT 1').fetchone()[0])
++  j=self.decide('execute')['job'];self.assertEqual(self.decide('execute')['job'],j);self.assertEqual(self.f.request()['job_id'],j)
++  with self.st.connect() as c:self.assertEqual(c.execute('SELECT count(*) FROM reservations').fetchone()[0],1)
++  self.assertFalse(self.f.calls);out=self.f.finish(j);self.assertEqual(out['state'],'imported');self.assertIsNone(self.f.shot()['selected']);self.assertFalse(self.card()['candidate']['selected']);self.assertFalse(self.card()['candidate']['rights_known'])
++ def test_stale_model_cannot_be_reapproved_and_no_fallback(self):
++  self.decide('held');self.f.call('model_settings',song='synthetic',selections={'image':'fal-flux-pro-1-1'},model_revision=self.f.project()['model_settings']['revision'])
++  with self.assertRaises(ValueError):self.decide('approved')
++  self.assertFalse(self.card()['can_execute']);self.assertFalse(self.card()['can_approve']);self.assertFalse(self.f.calls)
++ def test_unknown_repeated_human_execute_only_returns_existing_job(self):
++  j=self.decide('execute')['job'];self.f.ad._transport=lambda *a:(_ for _ in ()).throw(TimeoutError());self.st.process_generation();self.st.generation.recover()
++  self.assertEqual(self.decide('execute')['job'],j);self.assertEqual(self.st.generation.get(j)['state'],'reconciliation_required');self.assertFalse(self.st.process_generation());self.assertFalse(self.card()['job']['recovery']['can_collect'])
++ def test_collect_double_click_workers_preserve_original_selection(self):
++  j=self.blocked();self.gate(j);self.recover(j);self.recover(j)
++  with patch.object(self.f.ad,'download',return_value=self.f.image) as download:
++   with ThreadPoolExecutor(2) as pool:list(pool.map(lambda _:self.st.process_generation(),range(2)))
++   self.assertEqual(download.call_count,1)
++  out=self.st.generation.get(j['id']);self.assertEqual(out['state'],'imported');self.assertEqual(out['receipt'],j['receipt']);self.assertIsNone(self.f.shot()['selected']);self.assertEqual(len(self.f.shot()['takes']),1);self.assertEqual(sum(x[0]=='POST' for x in self.f.calls),1)
++  with self.assertRaises(ValueError):self.recover(out)
++ def test_403_new_permission_evidence_only_one_retry(self):
++  j=self.blocked('download_http_403');self.gate(j)
++  with self.assertRaisesRegex(ValueError,'접근 거절'):self.recover(j)
++  self.gate(j,resolves_permission=True,resolved_failure='download_http_403');self.recover(j)
++  with patch.object(self.f.ad,'download',side_effect=ProviderError('download_http_403')) as download:self.st.process_generation();self.st.process_generation();self.assertEqual(download.call_count,1)
++  self.assertFalse(self.card()['job']['recovery']['can_collect']);self.assertEqual(self.st.generation.get(j['id'])['state'],'import_blocked')
++ def test_local_recovery_error_cannot_erase_prior_permission_denial(self):
++  j=self.blocked('cdn_token_http_403');self.gate(j,resolves_permission=True,resolved_failure='cdn_token_http_403');self.recover(j)
++  self.pipe.recovery_approvals[j['id']]['evidence']='changed after enqueue'
++  with patch.object(self.f.ad,'download',side_effect=AssertionError('no IO')):self.st.process_generation()
++  out=self.st.generation.get(j['id']);self.assertEqual(out['retrieval_permission_failure'],'cdn_token_http_403')
++  self.gate(out)
++  with self.assertRaisesRegex(ValueError,'접근 거절'):self.recover(out)
++  self.assertFalse(self.card()['job']['recovery']['can_collect'])
++ def test_status_query_needs_separate_collection_approval(self):
++  j=self.blocked('download_http_410');self.gate(j,'status');self.recover(j,'status')
++  with patch.object(self.f.ad,'download',side_effect=AssertionError('not approved')):self.st.process_generation();self.st.process_generation()
++  out=self.st.generation.get(j['id']);self.assertEqual(out['state'],'import_blocked');self.assertEqual(out['failure_code'],'collection_requires_approval');self.assertFalse(self.card()['job']['recovery']['can_collect']);self.assertEqual(sum(x[0]=='POST' for x in self.f.calls),1)
++  self.gate(out);self.recover(out)
++  with patch.object(self.f.ad,'download',return_value=self.f.image):self.st.process_generation()
++  self.assertEqual(self.st.generation.get(j['id'])['state'],'imported')
++ def test_gate_changes_and_grant_revoke_prevent_collection(self):
++  j=self.blocked();self.gate(j);self.recover(j);self.pipe.recovery_approvals[j['id']]['evidence']='changed'
++  with patch.object(self.f.ad,'download',side_effect=AssertionError('no IO')):self.st.process_generation()
++  out=self.st.generation.get(j['id']);self.assertEqual(out['state'],'import_blocked');self.gate(out);self.recover(out)
++  with self.st.connect() as c:actions.revoke(c,self.st.workspace_id,self.f.pid,j['context']['action_binding']['grant_id'],1)
++  with patch.object(self.f.ad,'download',side_effect=AssertionError('no IO')):self.st.process_generation()
++  self.assertEqual(self.f.shot()['takes'],[])
++ def test_recovery_restart_no_resubmit_and_legacy_bypasses_blocked(self):
++  j=self.blocked();j['state']='image_recovery_running'
++  with self.st.connect() as c:self.st.generation.save(c,j)
++  self.st.generation.recover();self.assertFalse(self.st.process_generation());self.assertEqual(self.st.generation.get(j['id'])['state'],'reconciliation_required')
++  for action in ('resume_generation_result','resume_generation_status','recover_image_job'):
++   with self.assertRaises(ValueError):self.f.call(action,song='synthetic',job=j['id'],operation='collect')
++ def test_cross_project_and_wrong_payload_cannot_gain_authority(self):
++  j=self.blocked();self.gate(j);self.f.call('project',name='foreign',era='default',story=0)
++  with self.assertRaises(ValueError):self.f.call('recover_media_job',song='foreign',job=j['id'],operation='collect')
++  with self.assertRaises(ValueError):self.f.call('media_action_decide',song='foreign',action_id=self.f.action['id'],decision='execute')
++  with self.assertRaises(ValueError):self.f.call('media_action_decide',song='synthetic',action_id=self.f.action['id'],decision='execute',approved=True)
++  self.assertEqual(sum(x[0]=='POST' for x in self.f.calls),1)
++ def test_model_connection_truth_and_secret_free_projection(self):
++  p=self.f.project();self.assertEqual(p['image_connection']['model'],self.f.ad.contract.MODEL);self.assertFalse(p['image_connection']['available']);self.assertTrue(p['image_connection']['can_prepare'])
++  self.st.media_dispatch=None;p=self.f.project();self.assertEqual(p['image_connection']['state'],'unverified');self.assertFalse(p['image_connection']['can_prepare']);self.assertFalse(p['media_actions'][0]['can_execute'])
++  serialized=json.dumps(p['media_actions']);self.assertNotIn('grant_id',serialized);self.assertNotIn('sha256',serialized);self.assertNotIn('Authorization',serialized)
++ def test_empty_selected_disabled_retired_and_unverified_remain_distinct(self):
++  import media_creator,model_selection
++  self.st.media_dispatch=None;p=self.f.project();selected=model_selection.validate_selection('image','fal-flux-schnell')
++  for status in ('integration_unverified','integration_blocked','retired','disabled','unavailable'):
++   with self.subTest(status=status),patch('model_selection.validate_selection',return_value=dict(selected,state=status,reason='synthetic status explanation')):
++    value=media_creator.capability(self.st,p,'image');self.assertEqual(value['model'],selected['model']);self.assertFalse(value['available']);self.assertFalse(value['can_prepare']);self.assertEqual(value['state'],'unverified' if status=='integration_unverified' else 'blocked');self.assertEqual(value['reason'],'synthetic status explanation')
++  self.f.call('model_settings',song='synthetic',selections={'image':None},model_revision=p['model_settings']['revision'])
++  value=self.f.project()['image_connection'];self.assertEqual(value['state'],'unconfigured');self.assertIsNone(value['model'])
++ def test_cancel_before_submission_no_fake_network(self):
++  j=self.decide('execute')['job'];self.f.call('cancel_generation',song='synthetic',job=j,reason='synthetic user cancellation');self.st.process_generation();self.assertEqual(self.card()['job']['state'],'cancelled');self.assertFalse(self.f.calls)
++
++class MediaCreatorUITest(unittest.TestCase):
++ def test_test_media_badge_uses_saved_provenance_not_only_reason_text(self):
++  source=(Path(__file__).resolve().parents[1]/'index.html').read_text();line=next(x for x in source.splitlines() if x.startswith('function creatorTestMedia('))
++  code="const assert=require('assert/strict');"+line+";assert(creatorTestMedia({reason:'file',provenance:{mode:'contract-fake'}}));assert(!creatorTestMedia({reason:'real file',provenance:{mode:'provider-unverified'}}));assert(!creatorTestMedia(null));"
++  subprocess.run(['node','-e',code],check=True,capture_output=True)
++ def test_actual_ui_markup_actions_model_rights_and_recovery(self):
++  source=(Path(__file__).resolve().parents[1]/'index.html').read_text();code=source[source.index('function mediaPreparation('):source.index('function drawMediaCreator(')]
++  script="const assert=require('assert/strict');const esc=x=>String(x).replaceAll('<','&lt;'),creatorDiagnostic=()=>'',shotName='scene',mediaRightsDrafts=new Map(),mediaDraftKey=x=>x;\n"+code+'''
++const p={shots:{scene:{plan_id:'p',reference_head:1,reference_versions:[]}},guided_plans:[{id:'p',status:'applied'}],media_connections:{image:{can_prepare:true},video:{can_prepare:true}}};
++assert(mediaPreparation(p,'image').ready);assert(!mediaPreparation(p,'video').ready);
++p.shots.scene.reference_versions=[{id:1,status:'approved',roles:{start_frame:{shot:'scene',take:1,sha256:'x'}}}];assert(mediaPreparation(p,'video').ready);
++const x={id:'a',shot:'scene',role:'image',model:'fal-example',prompt:'<unsafe>',options:{ratio:'16:9'},estimate:{amount:'0.01',currency:'USD'},can_approve:true,can_decide:true,mode:'contract-fake'};
++let html=mediaActionMarkup(x);assert(html.includes('data-media-decision="approved"'));assert(!html.includes('data-media-decision="execute"'));assert(!html.includes('<unsafe>'));assert(html.includes('실제 AI 호출 없음'));
++x.can_approve=false;x.can_execute=true;html=mediaActionMarkup(x);assert(html.includes('승인한 모의 작업 실행'));
++x.job={id:'j',state:'import_blocked',recovery:{can_collect:true}};html=mediaActionMarkup(x);assert(html.includes('data-media-recover="collect"'));assert(!html.includes('data-media-decision'));
++x.job={id:'j',state:'reconciliation_required',recovery:{}};html=mediaActionMarkup(x);assert(!html.includes('data-media-recover'));assert(!html.includes('data-media-decision'));
++x.job.state='imported';x.candidate={take:1,selected:false,rights_known:false};html=mediaActionMarkup(x);assert(html.includes('아직 선택하지 않음'));assert(html.includes('data-media-rights'));assert(!html.includes('data-media-decision'));
++'''
++  with tempfile.TemporaryDirectory() as tmp:
++   path=Path(tmp)/'check.cjs';path.write_text(script);subprocess.run(['node',str(path)],check=True,capture_output=True)
++  for token in ("act('media_action_decide'","act('recover_media_job'","act('declare_take_rights'","j.context.dispatch!=='fal-model-queue-v1'") :self.assertIn(token,source)
+--- /dev/null
++++ b/scripts/fal_creator_fixture_server.py
+@@ -0,0 +1,87 @@
++"""Isolated browser fixture. NO credentials/network to providers, NO production data.
++Use only for QA: canned chat and fal HTTP envelopes, local synthetic media bytes.
++It injects fixture-price/transmission evidence, never user grants or Take approvals.
++"""
++import sys,tempfile,hashlib,base64,subprocess,time,json,uuid,io
++from pathlib import Path
++from threading import Thread
++sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
++from app import server
++from fal_models import Contract,CONNECTION
++from fal_model_adapter import FalModelAdapter
++from fal_provider import BASE,ProviderError
++from fal_dispatch import FalDispatch
++import contracts,guided,ledger,chat_runtime,model_selection
++
++root=Path(tempfile.mkdtemp(prefix='loretune-fal-creator-fixture-'));events=[]
++for name,args in [('image.png',['-f','lavfi','-i','color=blue:s=1024x576','-frames:v','1']),('video.mp4',['-f','lavfi','-i','testsrc2=s=320x180:r=24:d=5','-c:v','libx264','-pix_fmt','yuv420p']),('tone.wav',['-f','lavfi','-i','sine=frequency=440:duration=5','-c:a','pcm_s16le'])]:
++ subprocess.run(['ffmpeg','-v','error',*args,str(root/name)],check=True)
++http=server(root/'data',0);st=http.store
++name='합성 모델 제작 QA'
++def call(action,**data):return st.mutate(dict(action=action,data=data,revision=st.state()['revision'],request_id=uuid.uuid4().hex))
++call('project',name=name,era='default',story=0)
++call('audio',song=name,filename='합성 신호 5초.wav',content=base64.b64encode((root/'tone.wav').read_bytes()).decode(),rights='QA synthetic generated tone')
++call('music_structure',song=name,audio=1,start=0,end=5,sections=[])
++call('model_settings',song=name,selections={'chat':'anthropic-haiku-5-5','image':'fal-flux-schnell','video':'fal-kling-2-5-turbo'},model_revision=0)
++pid=contracts.project_id(st.workspace_id,name)
++with st.connect() as c:ledger.patch_budget(c,st.workspace_id,'project:'+pid,dict(limit={'amount':'0.05','currency':'USD'},maxConcurrentJobs=2,allowAutomaticRetries=False),0)
++
++def event(**v):events.append(v);(root/'events.json').write_text(json.dumps(events,ensure_ascii=False,indent=2))
++def adapter(key,prompt,options,frames=()):
++ contract=Contract(key);payload=contract.payload(prompt,options,frames);rid=str(uuid.uuid4());prefix=BASE+'/'.join(contract.MODEL.split('/')[:2])+'/requests/'+rid
++ quote=dict(provider='fal.ai',model=contract.MODEL,money={'amount':'0.01','currency':'USD'},input_sha256=guided.fingerprint(payload),kind='fixture',price_revision='synthetic-only',source=contract.spec['source'],expires=time.time()+3600)
++ def transport(method,url,headers,body):
++  assert 'Authorization' not in headers
++  event(kind='fake-HTTP',method=method,model=key,operation='submit' if method=='POST' else 'status' if url.endswith('/status') else 'result' if method=='GET' else 'cancel')
++  if method=='POST':return dict(request_id=rid,status_url=prefix+'/status',response_url=prefix,cancel_url=prefix+'/cancel')
++  if method=='PUT':return {}
++  if url.endswith('/status'):return {'status':'COMPLETED'}
++  asset=dict(url='https://v3b.fal.media/fixture-'+key+('.png' if contract.role=='image' else '.mp4'),content_type='image/png' if contract.role=='image' else 'video/mp4')
++  return dict(images=[asset],has_nsfw_concepts=[False]) if contract.role=='image' else dict(video=asset)
++ ad=FalModelAdapter(key,quote=quote,transport=transport);downloads=0
++ def download(url):
++  nonlocal downloads
++  downloads+=1;event(kind='fake-download',model=key,attempt=downloads)
++  if contract.role=='image' and downloads==1:raise ProviderError('download_interrupted')
++  raw=(root/('image.png' if contract.role=='image' else 'video.mp4')).read_bytes()
++  class Response(io.BytesIO):pass
++  r=Response(raw);r.headers={'Content-Type':'image/png' if contract.role=='image' else 'video/mp4','Content-Length':str(len(raw))}
++  return ad.read_video(r)
++ ad.download=download;return ad
++adapters=[adapter('fal-flux-schnell','blue geometry',{'ratio':'16:9'}),adapter('fal-kling-2-5-turbo','slow geometry',{'duration':5,'generate_audio':False},[(root/'image.png').read_bytes()])]
++st.media_dispatch=FalDispatch(st,adapters)
++prompt='합성 장면을 계획하고 파란 기하학 이미지 제작을 준비해줘'
++class FakeChat:
++ mode='contract-fake'
++ def count(self,body):return 100
++ def complete(self,body):
++  p=st.state()['projects'][name];plans=p.get('guided_plans',[]);action=None
++  if not plans:action=('propose_media_plan',dict(goal='기하학 테스트 영상',scenes='파란 기하학 도형이 놓인 스튜디오',style='',constraints='원본 음악 유지',kind='visualizer'))
++  elif plans[-1]['status']=='applied' and not p['media_actions']:
++   n=plans[-1]['shots'][0];sh=p['shots'][n];action=('prepare_image_action',dict(shot_id=sh['stable_id'],model_id='fal-flux-schnell',prompt='blue geometry',ratio='16:9',shot_revision=sh['revision']))
++  content=[dict(type='tool_use',id=uuid.uuid4().hex,name=action[0],input=action[1])] if action else [dict(type='text',text='저장된 계획과 제작 요청을 검토해 주세요. 승인 전에는 실행하지 않았습니다. 모의 전송 검증입니다.')]
++  event(kind='fake-chat',tool=action[0] if action else None)
++  return dict(_request_id='synthetic-chat',stop_reason='tool_use' if action else 'end_turn',usage={'input_tokens':100,'output_tokens':100},content=content)
++approval=dict(model='claude-haiku-5-5',workspace_id=st.workspace_id,project_id=pid,synthetic_only=True,expires=time.time()+3600,context_hash=model_selection.snapshot(st.state()['projects'][name])['sha256'],prompt_hashes=[hashlib.sha256(prompt.encode()).hexdigest()],price_revision='haiku-5-5-20261025',max_rounds=4)
++st.chat_runtime=chat_runtime.ChatRuntime(st,FakeChat(),approval,root/'fake-chat-usage.sqlite3')
++def worker():
++ while True:
++  try:
++   with st.connect() as c:
++    p,_=st.media_dispatch.project(c,name)
++    for row in c.execute('SELECT body FROM production_actions'):
++     a=json.loads(row[0])
++     if a['connection_id']!=CONNECTION:continue
++     q=a['options']['quote'];data=st.media_dispatch.data(c,p,a)
++     st.media_dispatch.gates.setdefault(a['id'],dict(workspace=st.workspace_id,project=pid,action_hash=a['hash'],input_sha256=guided.fingerprint(data),model=a['release_id'],output_policy=a['options']['output_policy'],maximum_units=ledger.units(q['money']),maximum_calls=1,expires=q['expires']))
++    for row in c.execute('SELECT body FROM generation_jobs'):
++     j=json.loads(row[0])
++     if j['state']=='import_blocked' and j.get('failure_code')=='download_interrupted':
++      st.media_dispatch.recovery_approvals.setdefault(j['id'],dict(id=uuid.uuid4().hex,evidence='controlled synthetic interruption cleared',workspace=st.workspace_id,project=pid,connection_id=CONNECTION,model=j['quote']['model'],job=j['id'],request_id=j['receipt']['request_id'],operation='collect',result_sha256=guided.fingerprint(j['result']),expires=time.time()+600))
++   st.chat_runtime.approval['context_hash']=model_selection.snapshot(st.state()['projects'][name])['sha256']
++   if not st.process_next() and not st.process_generation() and not st.chat_runtime.process_next():time.sleep(.2)
++  except Exception as e:event(kind='worker-error',type=type(e).__name__,message=str(e)[:100]);time.sleep(.5)
++Thread(target=worker,daemon=True).start()
++meta=dict(url=f'http://127.0.0.1:{http.server_port}',root=str(root),source=str(Path(__file__).resolve().parents[1]),prompt=prompt,external_calls=0,real_credentials=False)
++(root/'runtime.json').write_text(json.dumps(meta,ensure_ascii=False,indent=2));print(json.dumps(meta,ensure_ascii=False),flush=True)
++http.serve_forever()

@@ -1,0 +1,200 @@
+{
+  "schema": "document-semantic-preservation-review/1",
+  "task_id": "doc-semantic-preservation-current-20261028",
+  "reviewer": "/root/general_activation_review",
+  "reviewer_role": "ce-reviewer",
+  "review_mode": "Read-only instruction; no separate OS sandbox claimed",
+  "reviewed_before_latest_supplement": true,
+  "review_input": "current-774-20261028/document-before.json for six current documents, unchanged current files for others",
+  "adoption_comparison": {
+    "documents": 13,
+    "changed_with_removed_or_replaced_lines": 8,
+    "removed_or_replaced_line_count": 91,
+    "details": [
+      {
+        "path": "README.md",
+        "removed_or_replaced_lines": [
+          "제품 이름은 Aethon입니다. 기존 프로젝트 폴더 `Loretune`과 저장·복구 식별자는 호환성을 위해 유지합니다. [현재 전체 구현·검증 계획](docs/qa/codex-cli-assessment-20261026/PLAN-ko.md)을 기준으로 후속 작업을 진행합니다. 아래의 날짜별 보고서는 해당 빌드의 증거입니다.",
+          "이전 /api/action render 경로는 초기 로컬 초안 테스트 호환용이다. UI 최종 출력은 render_job만 사용하며 take/타임라인 승인을 확인한다. JSON 명세는 영상이 아니며 기존 Studio mock 견적은 실제 렌더 운영비가 아니다. 모델 미연결, 외부 호출비0, 로컬 연산 비용 미계측. API capabilities에 실제 지원/미지원 표시.",
+          "현재22개 테스트: 기존10 + 실제 음원/자막/길이 출력, 버전복원/승인 초기화, 자막범위·trim, 댓글차단, 대기취소·재시작중단, 미디어/권리, 실행snapshot, 자산변조, take검토철회, 재사용 불변, 실행중취소 부분보존, stale선택 차단. Media 도구 없으면 해당 검증 skip. 현재 Mac에서는 전체 통과 기준으로 기록."
+        ],
+        "review_input_sha256": "f7cdf530cc2a9ca212c872ed73c5d3034eb0a3a5660584c8aa12e9f97ed2811e"
+      },
+      {
+        "path": "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+        "removed_or_replaced_lines": [
+          "### Loretune — 근거 확인 후 작은 묶음으로 진행하는 구현 계획",
+          "- **Hallmark2.0.0:** app-scope 정적 검출은 후보 목록. 이번 실제 sloplint 실행은 정적9FAIL/73REFLEX/15WARN이며 rendered 검사/독립 디자인팀의 detector 실행이 아니다. 마케팅 hero·80단어·중앙 고정컨테이너·random theme·일괄 overflow clipping/no-wrap·stamp 의무는 Loretune 요구보다 우선하지 않는다. 수치 목표로 코드를 바꾸지 않는다."
+        ],
+        "review_input_sha256": "1a3569ba809c8be042c7b81f1cbbde10a2875bba70fcf95477b1ee43c513ecd0"
+      },
+      {
+        "path": "docs/design/CHAT-SESSION-PLAN.md",
+        "removed_or_replaced_lines": [
+          "**사업계획 원문 충돌:** `docs/specification/IP_Music_Video_Platform/chapters/01_business.md:7` 및 실제 `output/01_Business_Plan_and_Validation.docx`는 “이 계획은 Aethon과 별개의 신규 사업이다”라고 쓴다. 최신 사용자는 Aethon이 Loretune의 이름 변경임을 확정했다. 이 최신 해석을 적용하고 역사적 문서를 조용히 덮어쓰지 않는다. 기존 사업계획의 제품 요구를 이름 변경으로 확장·삭제하지 않는다. 경로/호환 ID 불변. aethonSaaS 도입은 별도 제안이며 혼합하지 않는다.",
+          "## 2. 근거와 현재 빌드",
+          "## 4. 현재 구조와 실제 공백"
+        ],
+        "review_input_sha256": "4b441535111be74efacdb1882db9a801d07112b3b77fd4ab360e763ca7cb48f7"
+      },
+      {
+        "path": "docs/qa/OMISSION-REGISTER.md",
+        "removed_or_replaced_lines": [
+          "## 현재 23개 요구 최종 대조 — 2026-10-26 RECEIPT 동결본"
+        ],
+        "review_input_sha256": "00640a7127bcb976cd7d7c6b692bf0672a07374661607e55d935cb496b799842"
+      },
+      {
+        "path": "docs/qa/REMAINING-WORK.md",
+        "removed_or_replaced_lines": [
+          "## 지금 확정할 수 있는 결과"
+        ],
+        "review_input_sha256": "d1aa3809584db245d33e909e991c868a28b2adacce6a2b1be350f35e6bdf0d7a"
+      },
+      {
+        "path": "docs/qa/design-system-redesign-20261026/REFERENCE-LOCK.md",
+        "removed_or_replaced_lines": [
+          "| [Refero Frame.io captured editor](https://refero.design/pages/afd4cddd-a493-47c7-9f65-da6b74819871) | real asset/version thumbnail and adjacent player/review | no inference that Loretune already has their collaboration features |",
+          "| Existing Loretune final B | neutral media canvas, clear approval separation, native controls | no reset of fixed save/error/disclosure behavior |",
+          "[Methodology fit matrix](METHODOLOGY-FIT-MATRIX-ko.md) records task analysis, light OOUX, expert walkthrough/heuristics, risk-based disclosure, Human-AI control/failure guidance, semantic color/type/motion and accessibility. These are selective methods, not an instruction to install a new framework or add features. Captured/reference imagery remains different in viewport/content/time; no competitor score or internal token claim. New accents/gradients are not universally forbidden, but marketing effects from the inspected references are excluded from this task unless a concrete Loretune state or media purpose justifies a future proposal."
+        ],
+        "review_input_sha256": "9adfec95844cc15b25e8cbca492aaa700c9a75cb671861ab43e225435f84d9b4"
+      },
+      {
+        "path": "docs/qa/design-system-redesign-20261026/METHODOLOGY-FIT-MATRIX-ko.md",
+        "removed_or_replaced_lines": [
+          "| 방법·fit | Loretune 과업/결정 | 구현 연결 | 이번 검증 | 불확실성 |",
+          "| 방법 / fit / 출처 | Loretune 과업과 설계 결정 | 구현·문서 연결 | 검증 방법 / 불확실성 |",
+          "| 방법 / fit / 출처 | Loretune 결정 | 구현·문서 연결 | 검증 / 한계 |",
+          "| 방법 / fit / 출처 | Loretune 결정 | 구현·문서 연결 | 검증 / 한계 |"
+        ],
+        "review_input_sha256": "011f8d6f4cfb6c253fcd333e5a4090f3ba0281653aca5dbd922363ca2b141ecf"
+      },
+      {
+        "path": "docs/design/AETHONSAAS-ADOPTION-PROPOSAL.md",
+        "removed_or_replaced_lines": [
+          "# aethonSaaS → Aethon 영상 협업 플랫폼 도입 제안",
+          "2026-10-27 UTC · **사용자 검토 전, 미반영 통합 초안.** 조사·설명·계획 단계이며 구현 승인이나 기능 완료 보고가 아니다. 기존 문서 갱신과 제품 구현은 사용자의 확인 전까지 보류한다. 이 파일만 검토 초안으로 작성했다.",
+          "요청 근거: 사용자는 aethonSaaS의 **최신 문서 기준으로 가져올 항목을 먼저 설명하고 계획**하라고 요청했다(Sentinel `3a5cf55365948191857cc21462858a24`, `2f73cce3a1088191ac02efb87e6b67ce`). 이 제안서는 그 결정 입력이다. 제품 코드·DB·설정·공급자·설치·배포·기존 PLAN은 변경하지 않았다.",
+          "## 1. 먼저 제안하는 범위",
+          "가져올 핵심은 **팀원이 무엇을 이어 쓸 수 있고, 무엇은 새로 판단해야 하는지를 정확하게 연결하는 계약**이다. aethonSaaS 앱 전체나 UI를 복제하는 안은 권하지 않는다. 지금 Aethon에는 이미 역할별 모델 선택, 승인된 설정, 참조 버전, Take 비교·재사용, 타임라인·모션 제안, 사람 승인, 작업 복구가 있기 때문이다.",
+          "|순서|가져올 항목|사용자가 얻는 변화|제안 상태|",
+          "|1|AD01 **이번 제작에 적용할 자료의 역할·버전·제외 사유**|같은 캐릭터·스타일은 유지하고 이번 동작만 바꿀 때, 실제로 무엇이 전달되는지 확인|기존 참조·문맥 계약 보강 추천|",
+          "|1|AD02 **대화별 초안과 작품 공통 기준의 명시적 경계**|다른 대화의 미승인 아이디어가 자동으로 공통 설정이나 모델 지시가 되지 않음|사용자 결정은 확정, 부분 구현은 중단. 기존 작업 검토·통합 대상이며 중복 구현 금지|",
+          "|2|AD03 **개인 작업 → 팀 후보 공유 → 채택 → 승인 구분**|실험을 안전하게 보관하고 필요한 결과만 팀에 공개|실제 사용자·권한 기반과 함께 도입할 조건부 후보|",
+          "|3|AD04 **정확한 결과에서 ‘이어서 만들기’**|원본은 보존하면서 허용된 당시 입력으로 새 대안을 준비|AD01·AD03 이후 추천. 파일 재사용과 구분|",
+          "|3|AD05 **검토 의견을 선택해 변경안으로 연결**|어느 버전의 어떤 의견을 반영했는지 새 후보와 비교 가능|기존 댓글·모션/편집 제안에 연결하는 작은 확장|",
+          "|각 단계|AD06 **입력·실행·결과·비용의 서로 다른 상태**|자료를 골랐다는 사실과 실제 전송·생성·승인을 혼동하지 않음|새 시스템이 아니라 기존 영수증·원장·복구 보강|",
+          "|각 단계|AD07 **문서 권위·검증 수준·실제 인계 과업 추적**|계획을 구현으로, 내부 테스트를 팀 사용 성공으로 오인하지 않음|기존 추적표·누락 등록부에 좁게 적용 추천|",
+          "**첫 구현 후보는 AD01 + AD02의 경계 정합화**다. 참조의 역할/버전과 대화별 제안 소속이 정리되지 않은 상태에서 팀 채팅이나 공개 버튼부터 추가하면 노출·승인·비용 경계가 더 복잡해진다. AD03–05는 후속 도입 제안이며, 이 문서로 사용자 계정·권한·동시 실행 정책이 확정되지는 않는다.",
+          "최신 사용자 설명(Sentinel `83b181bda6b48191a929165f8a5cc33e`)에 따른 관계는 **기존 Aethon → 피벗한 Loretune → 현재 브랜드명 Aethon으로 변경**이다. 현재 제품·사업 판단의 기준은 피벗 이후 Loretune 사업계획이다. 과거 Aethon으로 되돌아가거나 aethonSaaS와 사업을 통합한다는 뜻은 아니다. 반복 IP 음악영상 제작, 팀 협업, 공유 승인 설정, 독립 chat/image/video 선택, fal 미디어 생성, 내부 모션·편집, 비파괴 버전, 사람 승인에 맞는 항목만 골라 가져온다. 정확한 명칭 대응과 원문 수정안은 §11에 있다.",
+          "### AD02. 대화 초안과 팀 공통 지식의 승격 경계",
+          "**근거:** S02 D03/D08, S03 WR05/06/14, S05 WJ04·WCR027. 대화/댓글은 작업 자료이며 자동 상위 지시·공통 설정이 아니다. 이번 요청에 사용하기와 팀 공통 기준으로 채택하기가 다르다.",
+          "**선택·변형:** 이 기능은 인증된 actor/workspace/project, 역할별 서버 권한, bytes 접근 정책을 선행 계약으로 둔다. ‘팀 후보로 공유’는 exact Take/version과 명시된 입력 범위를 공개하며, 비공개 메모·다른 버전·공급자 비밀은 제외한다. ‘채택’은 편집 선택이고, 기존 Take 검토·타임라인 승인·최종 납품과 분리한다. 기존 승인 완료 화면에 억지 추가 CTA를 요구하지 않는다.",
+          "**수용 AD04-A:** 원본/기존 선택/승인 hash 불변; 새 작업의 source Take·입력 revision·변경 의도·실행자 연결; 누락/철회 입력에 선택·대체 경로 제공; 반복 클릭은 같은 준비 요청으로 복귀; 명시 다른 대안은 새 의도; 비교는 실제 접근 가능한 두 버전이며 audition이 채택·승인이 되지 않음. AD03 전에는 단일 로컬 사용자 범위의 인계 준비 시험만 가능하다.",
+          "**선택·변형:** 해당 의견의 ‘변경안에 사용’에서 원본 대상·타임코드·댓글 개정을 고정하고, 사용자가 바꿀 내용을 확인한다. AI는 변경안을 제시하고 서버 diff와 기존 사람 apply/실행 승인으로 이어진다. 편집본 길이가 바뀌어도 옛 댓글을 새 영상 같은 초에 자동 이식하지 않는다. 댓글 해결·좋아요·AI 추천은 검토 승인과 다르다.",
+          "### AD07. 현재 문서 권위와 실제 팀 과업의 증거를 관리",
+          "**과업 검증 제안:** A가 권리 확인된 자료로 후보를 준비하고, B가 허용 입력으로 다른 연출을 만들어 비교·선택하는 한 과업을 정의한다. 내부 두 계정 시험은 권한/연결 검증이고, 실제 제작자 두 사람의 관찰은 별도 사용자 연구다. 입력 재구성 누락, 대상/버전 오인, 회복 성공, 찾기·전환·준비 시간 등을 동일 조건으로 기록한다. 절감률·유료 전환·‘경쟁사보다 우수’·90점은 미리 목표 사실로 만들지 않는다.",
+          "## 7. 도입 순서와 중단 조건",
+          "|단계|계획 산출·책임|다음 단계에 필요한 증거|",
+          "|---|---|---|",
+          "|P0 설명·범위 확정 — **현재**|이 통합 초안의 도입안·작업 방식·문서별 변경 목록을 설명하고 사용자 확인을 받음. 연구 담당은 기존 문서·제품 파일 수정 안 함|AD 선택 목록, 명칭/피벗 보충문, 문서 변경 묶음 승인. 이미 확정된 세션 결정을 재질문하지 않음|",
+          "|P1 입력·대화 경계|single writer가 기존 세션 구현에 AD02를 정합화하고 AD01 최소 schema/resolver·사용자 요약 설계. AD06 기존 guard 재사용|같은 프로젝트 두 대화, 공통 기준/선택/제외/늦은 응답/unknown의 격리 fixture. CC01/02·원본·승인·원장 불변|",
+          "|P2 팀 공개 기반|실제 actor/조직/프로젝트/bytes 권한 계약과 역할별 UI 범위를 먼저 확정하고 AD03 구현 범위 결정|조회·사용·생성·채택 권한의 양/음성 시험. 미디어만 공개/입력 제한/철회/타 프로젝트 반례. 계정 연결이 없으면 차단으로 기록|",
+          "|P3 한 번의 협업 완주|AD04 이어 만들기 + AD05 선택 의견의 변경안 연결. 기존 비교·승인·render 재사용|A 원본 유지→B 새 초안→승인된 실행→정확한 두 결과 비교→사람 채택→새 승인 출력. 먼저 fake/로컬, 실제 공급자는 별도 권한·예산 아래|",
+          "|P4 독립 검토·가치 확인|AD07 기존 추적표에 결과 연결. 기능·화면·live·실제 사용자 관찰을 분리|같은 과업/미디어/상태의 before/after, 1920×1080 주·1280×900 보조, 실제 참여자 여부 표시. 모바일 추가 작업은 보류|",
+          "각 구현 전에는 **근거 → 차이 → 대안/선택 이유 → 영향 파일·상태 → 수용 → 같은 조건 검증**을 primary 계획에 반영한다. 이 제안서는 기존 계획을 자동 대체하지 않는다. 기능 없는 버튼·새 role label만으로 도입 완료를 표시하지 않는다.",
+          "중단·축소 조건: private 자료 노출, 원본/승인/예약 손상, 지원하지 않는 입력의 무음 전송, unknown 자동재제출, 기존 closed 반례 재발, 사용자 입력/포커스 유실이 재현되면 후속 확장을 멈추고 그 반례만 수리한다. 권한 기반이 없으면 AD03–05를 ‘팀 협업 완료’로 내보내지 않는다. 같은 체크를 무한 반복하거나 숫자 평가를 올리기 위해 새 기능을 추가하지 않는다.",
+          "- **완료:** 정확한 별도 프로젝트 탐색, 현행 권위·사본 경계·등록 해시 대조, 7개 도입 후보/제외/대안/수용/위험/순서 문서화.",
+          "- **미실시:** 제품 구현, 양쪽 최신 화면 비교, 새 회귀/DB/브라우저/실공급자 시험, 실제 팀 사용자 연구, 외부 전달 등록.",
+          "- **다음 결정:** 부모가 AD01–07 및 §11–14 문서 변경 묶음을 사용자에게 설명하고 확인을 받는다. 그 뒤에만 기존 문서 반영과 단일 writer의 부분 세션 작업 검토·재개를 순서대로 진행한다.",
+          "- **전달 상태:** 이 파일은 로컬 Markdown이다. Library 업로드·새 ID·배포 완료로 표시하지 않는다. 기존 [CURRENT-DESIGN-QA-PLAN](CURRENT-DESIGN-QA-PLAN.md), 세션 계획, PLAN/등록부/제품 파일은 이 작업에서 수정하지 않았다.",
+          "이 절과 이후 변경 목록은 사용자 `66d9ac6d689881918277b30e9ae77747`의 **조사·제안 후 확인을 받고 반영** 지시 및 `83b181bda6b48191a929165f8a5cc33e`의 **Loretune은 기존 Aethon의 피벗** 설명을 반영한 검토 초안이다. 과거의 독립 사업 문구를 현재에도 그대로 맞다고 해석하지 않는다.",
+          "|Loretune|기존 Aethon에서 피벗한 IP 음악영상 제작 방향|**현재 제품과 사업의 내용 기준**. 반복 IP 제작·원곡/장면/승인·검토 이유 재사용의 목적을 유지|",
+          "|현재 표시명 Aethon|피벗 이후 Loretune의 브랜드명을 Aethon으로 변경|과거 Aethon 제품으로 복귀하거나 aethonSaaS 전체 기능/요금/고객을 통합한 것으로 해석하지 않음|",
+          "|Loretune 폴더·loretune 모듈·과거 내부 ID|저장·참조·복구 호환을 위해 유지된 이름|일괄 rename/migration 대상 아님. 사용자에게 보이는 이름과 내부 식별자를 구별|",
+          "### 11.3 제안하는 보충문 — 아직 반영하지 않음",
+          "> 2026-10-27 사용자 결정에 따른 해석 보충: 본 플랫폼은 기존 Aethon에서 IP 음악영상 제작 방향으로 피벗한 Loretune이며, 현재 브랜드명을 Aethon으로 사용한다. 현재 사업·제품 기준은 이 문서의 피벗 이후 목적과 요구다. 기존 Aethon/aethonSaaS의 기능은 목적 적합성을 검토한 개별 항목만 채택하며, 과거 고객·유료 의향·인력·제휴·데이터·성과·가격의 승계를 뜻하지 않는다. 아래 ‘별개의 신규 사업’은 작성 당시의 역사적 표현으로 보존하며, 현재 관계 설명에는 본 보충문을 우선 적용한다. 기존 수치의 검증 전 가정과 성과 증거 요구는 유지한다.",
+          "확인 후 권장 방식은 **날짜가 있는 사업 정체성 보충문 한 개 → 현재 문서 입구에서 링크 → 필요 시 파생 MD/DOCX에 동일 보충문을 포함한 새 개정본 생성**이다. 원본 DOCX·원문·옛 QA를 덮어쓰거나 과거 수치를 현재 성과로 승격하지 않는다. 현재 draft의 이 문구는 법인/사업자·지식재산 소유·고객 데이터 이전을 확인한 법적 판단이 아니다.",
+          "|먼저 문제→계획/이유→파이프라인→검증|183행 사용자 workflow를 읽은 기존 PLAN의 대조 기록 + 최신 사용자 확인 단계|§13 파이프라인, §14 문서 변경 묶음. **이번에는 사용자 확인을 받고 나서 반영**|",
+          "**확인된 문서 정합성 문제:** README의 최신 검증 entry는416, canonical PLAN 상단은410, REMAINING-WORK의 ‘최신’도410이다. OMISSION-REGISTER는 상단에416 후속을 추가했지만 아래 현재 분류는410 시점·세션 미구현 표현이다. 세션 계획 상단은 최신 결정을 반영했으나 이전 ‘계획만/미구현/Q1–3’ 원문과 부분 코드 상태를 함께 읽어야 한다. CURRENT-DESIGN-QA-PLAN의 CQ01/CQ02는 후속414/416 구현과 연결되지 않은 과거 관측이다. 서로 다른 목적·시점의 문서가 갱신된 결과이며 **개별 사람이 잊었다는 심리적 원인은 확인하지 않았다**. 사용자 확인 후 현재 entry와 역사 상태를 연결하는 한 번의 정합화가 필요하다.",
+          "## 13. 실제 작업 방식·스킬 적용과 제안 파이프라인",
+          "### 13.2 사용자에게 제안하는 개발 파이프라인",
+          "|G3 대안·설명·사용자 확인 — **현재 gate**|도입/제외, 최소 수정/대안, token/component/state/interaction, 파일 범위·위험·회귀·문서 변경 목록 설명|**사용자 확인 후 반영**. 현재의 명시 정지 지시를 이전 포괄 구현 권한으로 덮지 않음. 확정된 질문을 다시 묻지 않음|",
+          "## 14. 문서별 변경 제안 목록 — 전부 아직 미반영",
+          "다음 목록은 **승인 후 변경할 후보**다. 이 초안을 제외하고 README·PLAN·등록부·세션계획·원본/사업계획은 이번 작업에서 수정하지 않았다. 역사적 시험 결과를 오늘 시험한 것처럼 다시 쓰지 않는다.",
+          "|문서|현재 내용|변경 필요 이유 / 제안 수정|영향·근거|확인 필요 결정|",
+          "|---|---|---|---|---|",
+          "|D01 [README](../../README.md)|최신 검증416 entry, 과거414/410와 한계 보존|**마지막 검증 릴리스**와 **현재 중단된 세션 작업 트리**를 별도 행으로 표기. 승인된 현재 계획·피벗 보충문/도입안 링크 추가|사용자가416을 현재 partial 코드 시험으로 오해하지 않도록 함. polling manifest/세션baseline/부모중단 인계|이 문서 변경 묶음 승인.416 자체를 취소/재실행할 결정 아님|",
+          "|D02 [canonical PLAN](../qa/codex-cli-assessment-20261026/PLAN-ko.md)|183행 workflow·대안·single writer·스킬 기록 존재. 상단 현재410, 아래 여러 역사 checkpoint|맨 앞 현재 체크포인트를 ‘416 검증본 + 중단 partial + 사용자확인 gate’로 정합화. 승인 AD만 원요구와 연결하고 G0–7의 현재 단계 명시|새 PLAN을 하나 더 만들지 않음. 과거결과 보존. §12의 문서 drift와 최신 사용자 결정|도입 우선순위, 문서 반영 후 구현 재개의 승인 범위|",
+          "|D03 [CHAT-SESSION-PLAN](CHAT-SESSION-PLAN.md)|10/27 확정 결정 상단, 이전Q1–3/계획만 문구 역사 보존. partial 구현의 종료 상태 별도부재|중단 시각/변경파일/검증18 범위/새UI미완료를 표시하고 이전 결정 대체를 명확히 함. AD02/06만 필요한 계약 연결|이전 프로젝트단일실행 추천을 복원하지 않음. 07§3.2의 ‘응답완료후 적용’과 새 계획의 ‘응답중 변경거절’ UX 차이는 이유·수용을 명시적으로 대조|이미 확정된 복수/격리/병행은 재질문 안 함. 부분 코드 재개·응답 중 모델변경UX의 계약 설명을 포함한 계획 확인|",
+          "|D04 [OMISSION-REGISTER](../qa/OMISSION-REGISTER.md)|23항목·원인/예방·역사 상태, 상단416 후속·본문410 분류|OM08을 ‘부분 구현 중단/새검증미완료’로 상태전이, OM01에 피벗/명칭한계, OM19에 현재 entry 정합화 작업, OM23은 원조건 유지. OM16/20 제한 유지|모든 요구를 완료로 올리거나 단순 합계를 완료율로 표시하지 않음. 原因는 확인된 시점 drift까지만|문서 정합화 승인. 전체23행의 의미 재설계 아님|",
+          "|D05 [REMAINING-WORK](../qa/REMAINING-WORK.md)|410을 최신이라 기술, 독립세션 미구현·Q결정대기|마지막검증416/현재partial/확정세션결정으로 앞부분 갱신. AD03 권한기반 등 **승인된 후보만** 잔여작업에 등록|중단 코드를 없는 것으로도 완료로도 표시하지 않음. 현재조건과 원23요구 보존|AD 중 실제 backlog로 채택할 항목 선택|",
+          "|D06 [38AT 추적표](../qa/SPEC-MS-001-ACCEPTANCE-TRACE.md)|원본38AT·28FR,410까지 제한근거와live 미실시|414/416 모델표시·polling의 좁은 근거를 관련AT에 추가하고 세션 CS는 계획/WIP로 연결. 원 AT 통과를 새로 부여하지 않음|原文 조건과 합성/실제Claude/운영 구분. §3.2 적용시점의 계획차이도 숨기지 않음|증거 링크 추가 승인. 새 기능 실검증 이전PASS 금지|",
+          "|D07 [CURRENT-DESIGN-QA-PLAN](CURRENT-DESIGN-QA-PLAN.md)|R1/기존 pixels의 CQ01/02·가설, 당시접근제한 기록|CQ01/02에414 구현, CQ-R01에416·독립최종대기 연결. 당시관측은 보존하고 현재미해결로 반복수리하지 않음. 승인된 새UI에만 QA 범위 지정|현재부분코드에 최신실제화면 없음. 사용자가 요구한 시각QA와 기술테스트 분리|새 점수/리브랜딩 없이 영향화면 재검토 계획 확인|",
+          "|D08 [reference lock](../qa/design-system-redesign-20261026/REFERENCE-LOCK.md), [semantic token spec](../qa/design-system-redesign-20261026/SEMANTIC-TOKEN-SPEC.md), [방법론 적합표](../qa/design-system-redesign-20261026/METHODOLOGY-FIT-MATRIX-ko.md)|중성작업대/참조역할/방법 채택·조건부·제외|기본 방향 유지. aethonSaaS는 화면복제가 아닌 입력/협업 계약의 참고로 기록. AD UI가 token 역할을 새로 요구할 때만 영향절 개정|새팔레트/토큰값 복사0. Hallmark/Impeccable의 실제사용/한계와 G0–7 연결|기존방향 유지 동의. 실제값변경은 별도before/after 근거 때만|",
+          "|D09 [사업 chapter](../specification/IP_Music_Video_Platform/chapters/01_business.md), [Master](../../Master_Specification.md), [DOCX](../specification/IP_Music_Video_Platform/output/01_Business_Plan_and_Validation.docx)|‘별개의 신규 사업’ 역사 표현·검증전 가정|§11 보충문을 별도 dated amendment로 먼저 제안. 승인 시 현재입구에서 연결하고 파생 문서가 필요하면 새개정본 생성|원본/과거해시 유지. 피벗 이후 목적 보존, 선행사업 성과 자동승계 금지|보충문 문안과 파생본 반영 방식 확인|",
+          "|D10 [원본07](../../07_Chat_Directed_Multimodel_Production_Spec.md)·등록된 두사본|원본 요구/카탈로그/현재부분coverage|원문은 덮지 않음. 승인 AD와 latest결정을 별도 요구 amendment/추적표에 연결; 원본구조 수정이 필요하면 개정 제안부터|noMCP/fal·독립모델·권리/비용/승인 보존. 원문hash/registration의 의미를 소급변경하지 않음|원요구를 바꾸는 항목이 있는지 먼저 확정; 없으면 링크만|",
+          "|D11 [AI-MODELING-PLAN](AI-MODELING-PLAN.md) 및 PLAN의 ingestion/ontology 항목|계획전용|본문 기능화 안 함. 새도입안과 범위 충돌이 있을 때 ‘이번미포함’ 링크만|자료카탈로그 AD01을 신규OCR/자동학습/Blender승인으로 오인하지 않음|계획전용 유지. 추가 구현결정은 이번 질문 아님|",
+          "|D12 이 제안서·현재 문서 입구|사용자검토전·미반영|사용자 확인 이후 선택/보류/거절 AD, 결정시각·이유를 여기 한 곳에 기록. 기존색인에서 링크|새 비슷한 제안서/진척표 증식 방지. donor문서는 그대로|도입묶음과 아래 확인 질문의 답|",
+          "**변경하지 않을 원천:** `docs/originals/`, 과거 manifest/실행로그/스크린샷, aethonSaaS 문서/registry, 원본07·원본DOCX. 문서 이름·본문에 Aethon이 등장한다고 일괄 치환하지 않는다. 현재 private 데이터·계정·비밀값을 문서 비교에 끌어오지 않는다.",
+          "문서 반영의 제안 순서는 **사업 관계 보충문/선택 결정 → canonical PLAN·세션 계획 상태 → README entry → OMISSION/REMAINING/38AT → 영향 있는 디자인 기준·전달 목록**이다. 먼저 현재 관측한 사실을 고정하고, 기존 역사 결과를 보존한 채 현재 링크만 정합화한다. 구현은 그 다음 승인된 범위에서 primary가 진행한다.",
+          "## 15. 사용자에게 확인받을 결정과 현재 종료점",
+          "이미 확정된 사실은 다시 묻지 않는다: 피벗 경로, 현재 브랜드명, 독립 대화·승인 자산 공유·미승인 격리·작품 단일 AI 제한 미도입,1920주/1280보조/모바일후순위, noMCP/fal·사람승인·기존데이터보존.",
+          "부모가 제안 설명 후 확인할 질문은 다음 세 묶음이다.",
+          "1. **도입 순서:** AD01 적용 자료 계약 + 이미 확정된 AD02 세션 경계 + AD06 상태 정합화를 우선 묶음으로, AD03 팀 권한/공유 기반 → AD04 이어 만들기 → AD05 의견 연결을 후속으로 두는 안을 채택할지. 전체스택·범용메신저·요금·자동재생성은 제외한다.",
+          "2. **문서 반영:** §11의 피벗 보충문과 D01–D12의 현재/역사 상태 정합화 범위를 확인할지. 원본은 보존하며 제품 완료·90·live검증으로 올리지 않는다.",
+          "3. **재개 경계:** 문서 정합화 후 primary가 중단된 세션 diff를 먼저 검토하고, 승인된 단계만 구현·검증하도록 할지. 팀원 권한/공개 정책이 정해지지 않은 상태에서 협업 UI부터 활성화하지 않는다.",
+          "이 문서는 그 확인을 위한 준비가 끝난 초안이다. 사용자 응답을 받기 전 기존 문서·partial코드·DB·서버를 수정하지 않는다. 이번 신규 시험/공급자호출/설치/Library 업로드는 없고, 로컬 문서 읽기·등록 정합성 검사와 이 파일 작성만 수행했다. 실제 미완성 세션 기능, live/권한/zoom/스크린리더·사용자 연구·최신90·Library 전달 제한은 그대로 남는다.",
+          "최종 문서 검사: 2026-10-27 00:18:49 UTC 로컬 링크70개 중 누락0. aethonSaaS `knowledge.py check`는 전후 모두1,150파일 PASS. 세션 `before/`의7개 제품 파일 및 별도 계획 사본8/8은 BASELINE 해시와 일치했다. 종료 대조에서 앞서 읽은 선별 제품8파일과 세션 계획1파일의 해시는 변화 없었으며, 이 문서 검사가 새 기능 테스트를 대신하지 않는다. 설치 skill 정체성은 Hallmark SKILL SHA `25a1ff92d925b2389e8409f42fb8ad7e033fceca8b5d1f07ed4ca4c28da53dc3`, Impeccable SKILL SHA `c26d6963fe2278f570930ea083ec89609ba094ee93b1ae825719ff5d29b9ac3c`다. 실제 실행 여부는 이 hash가 아니라 §13의 해당 실행 기록으로 판단한다."
+        ],
+        "review_input_sha256": "9082022d851e6484514ecd16e5b7f1480930aa888ca96ef24121f846511fa4ad"
+      }
+    ],
+    "algorithm": "difflib.SequenceMatcher with autojunk=False; repeated blank/table lines remain alignment candidates"
+  },
+  "findings": [],
+  "independent_conclusion": "No observed deletion of the 13 major documents or substantial loss of core requirements. Replaced lines concerned product name, historical status, AD adoption and individual-first/optional-team sequencing. Compatibility route/id requirement remains in CHAT-SESSION-PLAN.md.",
+  "retained_requirements": {
+    "music_first_photo_optional": [
+      "README.md",
+      "docs/design/PRODUCT-IDENTITY-AMENDMENT-20261027.md"
+    ],
+    "internal_platform_ai_exception": [
+      "README.md",
+      "docs/qa/codex-workflow-review-20261027/REPORT-ko.md"
+    ],
+    "3d_optional_not_product_core": [
+      "README.md",
+      "docs/design/AI-MODELING-PLAN.md"
+    ],
+    "actual_workflow_then_ai_video": [
+      "docs/qa/codex-workflow-review-20261027/REPORT-ko.md"
+    ],
+    "hide_internal_details_keep_decisions": [
+      "docs/design/CURRENT-DESIGN-QA-PLAN.md",
+      "docs/qa/design-system-redesign-20261026/METHODOLOGY-FIT-MATRIX-ko.md"
+    ],
+    "research_methods_oss_adapt_rea_retry": [
+      "docs/qa/codex-workflow-review-20261027/REPORT-ko.md"
+    ],
+    "omission_audit_explain_finish_and_approval": [
+      "docs/qa/codex-workflow-review-20261027/REPORT-ko.md"
+    ],
+    "preserve_originals_and_other_changes": [
+      "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+      "docs/design/AETHONSAAS-ADOPTION-PROPOSAL.md"
+    ]
+  },
+  "limitations": [
+    "A standalone broadly reusable command/workflow MD was not located in this checkout; requirements remain in REPORT/PLAN/AD13, but separate-file creation or deletion is not proven.",
+    "Pre-T0 deletion, external backup and original bytes of the two historical QA JSONs remain unverified."
+  ],
+  "driver_decision": "ACCEPTED bounded to listed inputs; current supplement preserves all prior body content except explicitly renamed stage headings.",
+  "comparison_correction": {
+    "prior_artifact": "semantic-review-default-diff-attempt.json",
+    "prior_removed_or_replaced_lines": 115,
+    "corrected": 91,
+    "reason": "Default SequenceMatcher autojunk skipped repeated lines in a long document, inflating changed alignment spans; exact-text aligned comparison disables this heuristic. Both attempts retained."
+  }
+}

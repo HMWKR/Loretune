@@ -1,0 +1,48 @@
+[
+  {
+    "case": "rehearsal-audio-post-observer",
+    "actual_audio_POST": 200,
+    "observer_error": "Used nonexistent #audioVersions in wait predicate after successful upload",
+    "correction": "Inspect actual DOM and wait for rendered original-demo-music.wav; do not re-upload",
+    "product_failure": false
+  },
+  {
+    "case": "rehearsal-music-post-observer",
+    "actual_POST": 200,
+    "observer_error": "Waited for unobserved rendered literal 음악 구간 v1; actual UI label differed",
+    "correction": "Use known stored music_head plus current snapshot and semantic controls; no action replay",
+    "product_failure": false
+  },
+  {
+    "case": "rehearsal-snapshot-scope",
+    "observer_error": "Used CSS root for snapshot subtree; runtime requires snapshot ref",
+    "correction": "Use viewport snapshot/current refs or evaluate extraction; direct-start UI action already succeeded and was not replayed",
+    "product_failure": false
+  },
+  {
+    "case": "rehearsal-motion-physical-input-overlap",
+    "actual": "width/height at y749.98 are intercepted by in_frame/color at y761.98; font_size received repeated 280 characters during failed fill retries",
+    "evidence": "rehearsal-motion-inputs.png + actual getBoundingClientRect/elementFromPoint observation",
+    "classification": "real UI layout defect; invalid numeric draft caused during tool retry, no motion proposal/render sent",
+    "next": "Fix form geometry before recording; preserve invalid draft and recover using actual keyboard/UI controls"
+  },
+  {
+    "correction_of": "rehearsal-motion-physical-input-overlap",
+    "confirmed": "Text height/width controls belong to closed 텍스트 영역 조정 disclosure. Hidden descendants produce geometric rectangles but are not actionable. Screenshot showed closed disclosure, not visible overlapping controls.",
+    "classification": "Automation observer/interaction error, initial real-layout-defect hypothesis rejected",
+    "evidence": "motion-input-observer-correction.json; actual summary click then successful UI edits/propose/render",
+    "source_fix_required": false
+  },
+  {
+    "case": "source2-approval-observer",
+    "observer_error": "Waited for restore dropdown selection2 after approval; intended restore selection1 is preserved",
+    "correction": "Authoritative shot.motion_head2 and approved source version2 verified; approval was not replayed",
+    "evidence": "motion-head-observer-correction.json"
+  },
+  {
+    "case": "comparison-playback-observer",
+    "observer_error": "Attempted to focus native controls on compare videos; videos intentionally have controls=false and use shared playback button. Strict ref count stopped before touching underlying main player.",
+    "correction": "Actual compare dialog snapshot exposes 함께 재생; use shared playback control and verify both media times.",
+    "product_failure": false
+  }
+]

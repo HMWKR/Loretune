@@ -1,0 +1,18 @@
+{
+  "locked_before_execution": "2026-10-26",
+  "parent_request": "MEASUREMENT-HANDOFF.md; no application, DB or provider mutation",
+  "FQ02_BROWSER": {
+    "status": "NOT RUN",
+    "reason": "All available saved timelines in the existing authorized QA projects have audio=1. No preexisting silent sequence. No project edit or new fixture is permitted for this observation.",
+    "evidence_kind": "actual read-only metadata inventory, not natural-ended behavior"
+  },
+  "PER_OBS_30": {
+    "source": ["https://web.dev/articles/optimize-long-tasks", "https://web.dev/articles/vitals"],
+    "threshold_type": "exploratory laboratory observation; no performance pass threshold",
+    "fixture": "Existing 디자인 시스템 기능 QA 20261026; alternate first and second scene, not Take selection",
+    "steps": "Warm both selected-scene videos; record public PerformanceObserver support; observe 30 normal rail clicks, DOM/media counts at 0/15/30/end, longtask entries and data-readiness events. Remove observers.",
+    "measurement": "Click capture timestamp to post-handler microtask DOM/title. This is not paint latency. requestAnimationFrame-based paint measurement did not resolve in this tool path, so paint latency remains BLOCKED.",
+    "expected": "Only local scene context changes; canonical fingerprint unchanged; no action/save/approval/provider calls",
+    "limits": "30 local warm samples are not the functional owner's 90-case acceptance, field CWV, long-duration leak proof, decoded-frame or AV synchronization test. Full browser version unavailable; UA recorded separately."
+  }
+}

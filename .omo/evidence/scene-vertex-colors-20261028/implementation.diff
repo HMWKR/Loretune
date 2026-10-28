@@ -1,0 +1,154 @@
+--- scene_assets.py.before
++++ scene_assets.py
+@@ -14,6 +14,8 @@
+ 
+ 
+ PROFILE = 'gltf2-static-pbr-v1'
++COLOR_PROFILE = 'gltf2-static-pbr-color-v2'
++SUPPORTED_PROFILES = (PROFILE, COLOR_PROFILE)
+ MAX_BYTES = 8 * 1024 * 1024
+ MAX_JSON_BYTES = 512 * 1024
+ MAX_JSON_DEPTH = 24
+@@ -110,14 +112,18 @@
+             if depth < 0:_fail()
+     if depth or inside:_fail()
+     value=json.loads(encoded.decode('utf-8'),object_pairs_hook=_pairs,parse_constant=_constant)
+-    def check(item):
++    def check(item, path=()):
+         if isinstance(item, dict):
+             for key,child in item.items():
++                if key == 'extras' and len(path) == 2 and path[0] == 'meshes' and type(path[1]) is int:
++                    # Only a bounded exporter marker; admission below still requires COLOR_0.
++                    if type(child) is dict and set(child) == {'processed'} and child['processed'] is True:
++                        continue
+                 if key in {'uri','extensions','extras'}:
+                     _fail('외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다.')
+-                check(child)
++                check(child, path+(key,))
+         elif isinstance(item,list):
+-            for child in item:check(child)
++            for index,child in enumerate(item):check(child, path+(index,))
+         elif type(item) in (int,float):
+             if not math.isfinite(item) or abs(item)>2**53:_fail()
+         elif isinstance(item,str) and len(item)>2048:_fail()
+@@ -336,6 +342,7 @@
+ 
+ 
+ def _meshes(document,decoded,textured):
++    has_colors=False
+     meshes=_array(document,'meshes',MAX_MESHES,minimum=1);counts=[];primitives=0;vertices=triangles=0
+     roles={image['bufferView']:'image' for image in document.get('images',[])};used_materials=set()
+     def mark(accessor,role):
+@@ -343,7 +350,7 @@
+         if view in roles and roles[view]!=role:_fail()
+         roles[view]=role
+     for mesh in meshes:
+-        _object(mesh,('primitives','name'),('primitives',));items=mesh['primitives']
++        _object(mesh,('primitives','name','extras'),('primitives',));items=mesh['primitives']
+         if type(items) is not list or not items:_fail()
+         mesh_vertices=mesh_triangles=0;bounds=None
+         for primitive in items:
+@@ -351,7 +358,7 @@
+             if primitives>MAX_PRIMITIVES:_fail()
+             _object(primitive,('attributes','indices','material','mode'),('attributes',))
+             if type(primitive.get('mode',4)) is not int or primitive.get('mode',4)!=4:_fail('정적 삼각형 mesh를 포함한 GLB만 지원합니다.')
+-            attributes=_object(primitive['attributes'],('POSITION','NORMAL','TEXCOORD_0','TANGENT'),('POSITION',))
++            attributes=_object(primitive['attributes'],('POSITION','NORMAL','TEXCOORD_0','TANGENT','COLOR_0'),('POSITION',))
+             position,position_view,points=decoded[_reference(attributes['POSITION'],decoded)]
+             mark(position,'attribute')
+             if position['type']!='VEC3' or position['componentType']!=5126 or position.get('normalized',False) or not {'min','max'}<=set(position):_fail()
+@@ -361,12 +368,19 @@
+             low=[min(point[i] for point in points) for i in range(3)]
+             high=[max(point[i] for point in points) for i in range(3)]
+             bounds=([min(a,b) for a,b in zip(bounds[0],low)],[max(a,b) for a,b in zip(bounds[1],high)]) if bounds else (low[:],high[:])
+-            for key in ('NORMAL','TEXCOORD_0','TANGENT'):
++            for key in ('NORMAL','TEXCOORD_0','TANGENT','COLOR_0'):
+                 if key not in attributes:continue
+                 accessor,view,values=decoded[_reference(attributes[key],decoded)]
+                 mark(accessor,'attribute')
+                 if accessor['count']!=count or view.get('target',34962)!=34962 or (view.get('byteOffset',0)+accessor.get('byteOffset',0))%4:_fail()
+-                if key=='TEXCOORD_0':
++                if key=='COLOR_0':
++                    has_colors=True
++                    dimension=_DIMENSIONS[accessor['type']]
++                    if view.get('byteStride',dimension*_COMPONENTS[accessor['componentType']][1])%4:_fail()
++                    if accessor['type'] not in ('VEC3','VEC4') or not (accessor['componentType']==5126 or accessor['componentType'] in (5121,5123) and accessor.get('normalized') is True):_fail()
++                    maximum={5121:255,5123:65535,5126:1}[accessor['componentType']]
++                    if any(any(not 0<=v<=maximum for v in value) or len(value)==4 and value[3]!=maximum for value in values):_fail()
++                elif key=='TEXCOORD_0':
+                     if accessor['type']!='VEC2' or not (accessor['componentType']==5126 or accessor['componentType'] in (5121,5123) and accessor.get('normalized') is True):_fail()
+                 else:
+                     if accessor['type']!=('VEC3' if key=='NORMAL' else 'VEC4') or accessor['componentType']!=5126 or accessor.get('normalized',False):_fail()
+@@ -390,7 +404,8 @@
+         if vertices>MAX_VERTICES or triangles>MAX_TRIANGLES:_fail('GLB geometry가 지원 한도를 넘었습니다.')
+         counts.append((mesh_vertices,mesh_triangles,bounds))
+     if used_materials!=set(range(len(textured))):_fail('사용되지 않는 재질이 있는 GLB는 현재 지원하지 않습니다.')
+-    return counts
++    if not has_colors and any('extras' in mesh for mesh in meshes):_fail()
++    return counts,has_colors
+ 
+ 
+ def _multiply(left,right):
+@@ -481,9 +496,9 @@
+         binary=binary[:length]
+         views,decoded=_views_and_accessors(document,binary)
+         images,textured=_textures_and_materials(document,binary,views)
+-        counts=_meshes(document,decoded,textured)
++        counts,has_colors=_meshes(document,decoded,textured)
+         vertices,triangles,nodes=_nodes(document,counts)
+-        return dict(profile=PROFILE,sha256=hashlib.sha256(raw).hexdigest(),byte_length=len(raw),
++        return dict(profile=COLOR_PROFILE if has_colors else PROFILE,sha256=hashlib.sha256(raw).hexdigest(),byte_length=len(raw),
+                     vertex_count=vertices,triangle_count=triangles,image_count=images,node_count=nodes)
+     except (ValueError,TypeError,KeyError,IndexError,OverflowError,RecursionError,UnicodeError,struct.error,zlib.error) as exc:
+         if type(exc) is ValueError and str(exc).startswith(('GLB','내장','외부','압축','지원','정적','사용')):
+--- scene_spec.py.before
++++ scene_spec.py
+@@ -10,7 +10,7 @@
+ import json
+ import math
+ import re
+-from scene_assets import PROFILE as ASSET_PROFILE
++from scene_assets import SUPPORTED_PROFILES as ASSET_PROFILES
+ 
+ MAX_OBJECTS = 8
+ MAX_LIGHTS = 3
+@@ -42,7 +42,7 @@
+     _exact(value, ('id', 'sha256', 'profile'))
+     if (type(value['id']) is not str or not re.fullmatch(r'[a-f0-9]{32}', value['id']) or
+             type(value['sha256']) is not str or not re.fullmatch(r'[a-f0-9]{64}', value['sha256']) or
+-            value['profile'] != ASSET_PROFILE):
++            value['profile'] not in ASSET_PROFILES):
+         raise ValueError('invalid registered scene asset')
+     return deepcopy(value)
+ 
+--- scene_project.py.before
++++ scene_project.py
+@@ -113,7 +113,7 @@
+         blocked=False
+         try:store.check_rights(c,[sha])
+         except ValueError:blocked=True
+-        values.append(dict(id=identifier,sha256=sha,profile=scene_assets.PROFILE,filename=filename,rights=rights,metadata=json.loads(encoded),created=created,blocked=blocked))
++        values.append(dict(id=identifier,sha256=sha,profile=json.loads(encoded)['profile'],filename=filename,rights=rights,metadata=json.loads(encoded),created=created,blocked=blocked))
+     return values
+ 
+ 
+@@ -153,7 +153,7 @@
+     inputs=[]
+     for ref in scene_spec.asset_references(scene):
+         row=c.execute('SELECT sha256,rights,metadata FROM scene_model_assets WHERE id=? AND project=? AND conversation=?',(ref['id'],pid,conversation)).fetchone()
+-        if not row or row[0]!=ref['sha256'] or ref['profile']!=scene_assets.PROFILE:raise ValueError('현재 작품·대화에 가져온 3D 자산을 선택하세요.')
++        if not row or row[0]!=ref['sha256'] or ref['profile'] not in scene_assets.SUPPORTED_PROFILES or ref['profile']!=json.loads(row[2])['profile']:raise ValueError('현재 작품·대화에 가져온 3D 자산을 선택하세요.')
+         if require_rights and (row[1]=='사용권 미확인' or not row[1].strip()):raise ValueError('3D 자산 사용권을 확인한 뒤 구도를 승인하세요.')
+         store.check_rights(c,[row[0]])
+         path,raw=_model_bytes(store,row[0]);metadata=scene_assets.validate_glb(raw)
+--- scene-studio.js.before
++++ scene-studio.js
+@@ -39,7 +39,7 @@
+  function input(path,label,value,min,max,step='any'){return `<label>${label}<input type="number" data-scene-path="${path}" min="${min}" max="${max}" step="${step}" required value="${esc(value??'')}"></label>`}
+  function vector(path,label,values,min,max){return `<fieldset><legend>${label}</legend><div class="scene-studio-grid">${['X','Y','Z'].map((axis,i)=>input(path+'.'+i,axis,values[i],min,max)).join('')}</div></fieldset>`}
+  function color(value){return '#'+value.map(n=>Math.round(Math.max(0,Math.min(1,Number(n)))*255).toString(16).padStart(2,'0')).join('')}
+- function assets(){return (project()?.scene_3d_assets||[]).filter(x=>typeof x.id==='string'&&/^[a-f0-9]{64}$/.test(x.sha256||'')&&x.profile==='gltf2-static-pbr-v1')}
++ function assets(){return (project()?.scene_3d_assets||[]).filter(x=>typeof x.id==='string'&&/^[a-f0-9]{64}$/.test(x.sha256||'')&&['gltf2-static-pbr-v1','gltf2-static-pbr-color-v2'].includes(x.profile))}
+  function assetName(obj){return assets().find(x=>x.id===obj?.asset?.id)?.filename||'가져온 3D 자산'}
+  function refreshAssets(){
+   if(importScope!==scope){importScope=scope;el('sceneStudioAssetFile').value='';el('sceneStudioAssetRights').value=imports.get(scope)?.rights||'';el('sceneStudioAssetSelect').dataset.rendered=''}

@@ -1,0 +1,22 @@
+--- tests/test_agent_preferences.py.before
++++ tests/test_agent_preferences.py
+@@ -123,8 +123,8 @@
+ 
+     def test_read_only_manifest_and_direct_write_denial(self):
+         self.settings('read_only','low');preview=self.f.preview()
+-        self.assertEqual(preview['tool_scope'],['search_project_context'])
+-        self.assertEqual([x['name'] for x in preview['message_body']['tools']],['search_project_context'])
++        self.assertEqual(preview['tool_scope'],['search_project_context','get_model_capabilities'])
++        self.assertEqual([x['name'] for x in preview['message_body']['tools']],['search_project_context','get_model_capabilities'])
+         result,_=self.direct_tool('propose_media_plan',dict(goal='a',scenes='b',style='',constraints='',kind='narrative'))
+         self.assertEqual(result['code'],'AGENT_READ_ONLY');self.assertFalse(self.project().get('guided_plans'))
+ 
+@@ -175,7 +175,7 @@
+         self.assertEqual(captured[0],preview['message_body'])
+         follow=p['general_chat_previews'][-1]
+         self.assertEqual(follow['message_body']['output_config']['effort'],'high')
+-        self.assertEqual(follow['tool_scope'],['search_project_context'])
++        self.assertEqual(follow['tool_scope'],['search_project_context','get_model_capabilities'])
+         active=p['agent_preferences']['active_response'];self.assertEqual(active['effective_mode'],'read_only')
+         self.assertEqual(active['mode'],'full_access');self.assertEqual(active['effort'],'high')
+         self.assertTrue(p['agent_preferences']['settings_pending'])

@@ -1,0 +1,16 @@
+const fs=await import('node:fs/promises'),root='/Users/leesungmin/Desktop/Loretune/docs/qa/codex-cli-assessment-20261026/implementation/workflow',task=await taskSpace(42),p=task.page('p2');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await p.focus('#jobs button[data-play]');await p.keyboard.press('Enter');
+await p.waitForFunction(()=>document.querySelector('#downloadPreview video')?.readyState>=2,undefined,{timeout:10000});
+await p.waitForFunction(()=>document.querySelector('#downloadPreview track')?.readyState===2,undefined,{timeout:10000});
+await p.evaluate(()=>{const v=document.querySelector('#downloadPreview video');v.pause();v.currentTime=1.75;v.textTracks[0].mode='showing'});
+await p.waitForFunction(()=>!document.querySelector('#downloadPreview video').seeking);
+const preview=await p.evaluate(()=>{const v=document.querySelector('#downloadPreview video');return{duration:v.duration,width:v.videoWidth,height:v.videoHeight,time:v.currentTime,cues:[...v.textTracks[0].cues].map(c=>({start:c.startTime,end:c.endTime,text:c.text})),testLabel:document.querySelector('#downloadPreview').textContent.includes('테스트 미디어'),deliveryBefore:state.jobs[0].delivery_reviews||[]}});
+await p.focus('#jobs button[data-delivery]');await p.keyboard.press('Enter');await p.waitForFunction(()=>!busy&&state.jobs[0].delivery_reviews?.at(-1)?.decision==='approved',undefined,{timeout:10000});
+const before=await p.evaluate(()=>({revision:state.revision,project:project(),job:state.jobs[0],requests:__flow.requests,errors:__flow.errors,blocked:__flow.blocked}));
+await p.reload();await p.waitForFunction(()=>state.jobs?.[0]?.status==='completed',undefined,{timeout:10000});await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await p.click('button[data-step="4"]',{label:'저장한 출력 작업 재개 확인'});
+const after=await p.evaluate(()=>({revision:state.revision,project:project(),job:state.jobs[0],viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,errors:__flow.errors,blocked:__flow.blocked}));
+if(JSON.stringify(before.project)!==JSON.stringify(after.project)||JSON.stringify(before.job)!==JSON.stringify(after.job))throw Error('RELOAD_STATE_CHANGED');
+await p.screenshot({path:root+'/output-reopened-1920.png'});
+await fs.writeFile(root+'/reopen.json',JSON.stringify({time:new Date().toISOString(),preview,projectAndJobUnchanged:true,before,after},null,2));console.log({preview,reopened:true,revision:after.revision,status:after.job.status,delivery:after.job.delivery_reviews.at(-1).decision,errors:after.errors,blocked:after.blocked});console.log(await p.snapshot());

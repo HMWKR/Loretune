@@ -1,0 +1,145 @@
+--- .omo/evidence/agent-tools-02-20261028/tasks/D1-r5/start/FRAME-OBSERVATION-DESIGN-ko.md.txt	2026-10-28 21:30:09
++++ docs/design/FRAME-OBSERVATION-DESIGN-ko.md	2026-10-28 22:39:00
+@@ -5,6 +5,7 @@
+ > 2차 수정(2026-10-28): critic 판정(wf_18a38ed0-25d)과 codex 검수(`codex-gate/review-1.md`)를 반영했다. 고친 곳은 §3, §4-1~4-3, §5-1~5-2, §7, §8, §9, §10, §11이다.
+ > 3차 수정(2026-10-28): r2 critic 판정(`rework-r2-verdicts.json`의 D1 항목)을 반영했다. 프레임 바이트가 도구 실행에서 `result_message`까지 가는 경로와 보관 위치 전수(§4-4 신설), 중복·누적 상한(§4-3, §10), 공식 이미지 표 값과 등급(§4-3, §11), D20 사용자 결정(PLAN-ko.md:196)에 따른 §7 예약액 재계산, `chat_runtime.py` 줄 이동(+3) 정정(§4-1, §10)이다.
+ > 4차 수정(2026-10-28): r3 critic 판정(`tasks/D1-frame-observation-design-r3/verdict-wave2.json`)의 minor 6건을 반영했다. v1 대상을 저장된 편집 프레임으로 한정하고 모션은 거절(§1, §3, §4-4, §6), 렌더 단계를 마지막 라운드 판정(`chat_general.py:773`) 뒤로 고정(§4-4), 중복·누적 판정의 경계 정의(§4-3), 요청 도중 권한 축소 시 재인가와 읽기 도구 분류(§4-4), SQLite 삭제 잔존과 이전 백업(§4-4 표, §9 A5, §11), 인용 검사의 `eval` 제거(`tasks/D1-r4/check_citations.py`)다.
++> 5차 수정(2026-10-28): r4 critic 판정(`tasks/D1-r4/verdict-wave2b.json`)의 minor 5건을 반영했다. §3에 남은 "두 함수 호출" 문장 정정, 대화 전체 비용 상한 검사를 렌더 전으로 당김(§4-4 2단계), 2단계 재인가를 턴의 대화 범위로 판정(§4-4), 3단계 뒤 권한 축소 시 승인·전송 직전 재인가(§4-4), `secure_delete` 기본값이 SQLite 빌드에 따라 다르다는 실측과 연결별 설정·삭제 뒤 백업(§4-4 표, §9 A5, §10, §11)이다. 인용 검사는 `tasks/D1-r5/check_citations.py`를 쓴다.
+ 
+ > **줄 번호 기준**: 소스 파일(`*.py`·`*.js`)의 줄 번호는 편집 전 고정 사본 `.omo/evidence/agent-tools-02-20261028/before/<파일>` 기준이다. 문서를 쓰는 동안 다른 트랙이 `chat_general.py`·`app.py`·`chat_protocols.py`·`production_context.py`·`production_tools.py`·`general-chat-ui.js`를 동시에 고쳤고, 그 결과 현재 파일의 줄이 일부 밀렸다(예: `result_message` 줄이 before 777에서 현재 778로 이동). 구현할 때는 줄 번호를 다시 확인한다(PLAN-ko.md:164). 문서(`.md`) 줄 번호는 현재 파일 기준이다. 예외로, 앞에 `./`를 붙인 인용(예: `./chat_runtime.py:178`)은 **현재 프로젝트 파일** 기준이다. 다른 트랙의 변경 뒤 사실을 가리킬 때만 쓴다.
+ > 확신도 표기: [검증됨] 파일을 직접 읽어 확인 · [추정] 코드 패턴에서 추론 · [미확인] 공식 문서나 실제 측정이 필요함.
+@@ -39,7 +40,7 @@
+ | 모션 변경안 1프레임 | `app.py:412-419` `motion_preview` → `motion_renderer.py:28-35` `frame`. HTTP 경로는 `app.py:1351-1358` `/api/motion-frame` | 현재 작품의 저장된 변경안만 다루고 보관된 작품은 거절한다(`app.py:416`). 100,000바이트 상한은 렌더러에 넘기는 **JSON 프레임 상태 입력**에 대한 것이다(`motion_renderer.py:30-31`). 시간 제한은 10초다(`:33`). **출력 PNG 크기 상한은 없다.** `motion_renderer.frame`과 `motion_preview`(`app.py:417-419`, 크기 확인 없이 `read_bytes`)가 모두 출력 크기를 확인하지 않는다. timeline(`renderer.py:112`)과 다른 점이다. 레이어는 text·rect·circle뿐이라 외부 이미지 자산이 없다(`motion_scene.py:9,31`) |
+ 
+ 설계 결정:
+-- 도구는 위 두 함수를 **그대로 호출만** 한다. 새 FFmpeg 명령, 새 합성기, 새 해상도 경로는 만들지 않는다.
++- v1의 도구는 위 표 가운데 `timeline_preview` **하나만 그대로 호출**한다. `motion_preview`는 아래 보완을 채우고 §9 A2 승인을 받은 뒤에만 같은 방식으로 재사용한다. 새 FFmpeg 명령, 새 합성기, 새 해상도 경로는 만들지 않는다.
+ - `timeline_preview`가 이미 하는 "렌더 전후 권리·revision 재검사"를 그대로 물려받는다.
+ - `motion_preview`에는 revision 고정과 권리 검사가 없다(`app.py:412-419`) [검증됨]. 모션 장면 텍스트에 미공개 가사가 들어갈 수 있으므로, 모션 프레임을 외부로 보내기 전에는 변경안의 id와 scene 해시를 결과에 묶어야 한다. 이 부분은 새로 추가해야 할 보완이다. 모션 프레임의 출력 PNG 바이트 상한도 재사용 전에 채워야 할 공백이다(위 표). 그래서 v1은 `motion_preview`를 호출하지 않고 모션 대상을 1단계에서 거절한다(§1, §4-4). 나중에 모션을 넣을 때는 timeline과 같은 3단계 경로(1단계 영수증, 쓰기 트랜잭션 밖 렌더, 미리보기 생성 시 블록 배열)에 다음을 더한다. 변경안 id와 scene sha256을 영수증에 묶고 렌더 직후와 3단계에서 다시 대조하기, 출력 PNG 바이트 상한, 권리 검사, 그리고 §10의 timeline 테스트를 모션에도 같은 형태로 두기.
+ - 렌더 해상도는 프로젝트 profile을 따른다(`renderer.py:106`, `editing.py:10`의 preview 640×360 / landscape 1920×1080 / portrait 1080×1920). 모델에 보낼 때는 별도로 축소해야 할 수 있다(§4 바이트 상한). 축소 단계가 새로 들어가는 것이므로 승인 항목에 넣는다.
+@@ -85,12 +86,16 @@
+ 
+ **결정 (권장안 i — 영수증은 영속, 바이트는 트랜잭션 밖에서 휘발)**
+ 1. **1단계(mutate 안, 렌더 없음)**: `execute`의 프레임 분기는 렌더하지 않는다. 권한(`agent_preferences.authorize`, 기존 호출 위치 `production_tools.py:75`), 인수 검증, 대상 종류 판정(`target.kind`가 `'timeline'`이 아니면 `TARGET_KIND_UNSUPPORTED`로 거절, §1 v1 범위), §4-3의 개수·중복·누적 판정만 한다. 그다음 **바이트 없는 요청 영수증**을 결과로 돌려준다. 예: `{status:'render_pending', target:{kind:'timeline', timeline_revision, clip_index}, frames:[{frame}]}`. `run['calls']`와 `requests` 테이블에는 이 영수증만 남는다. 거절도 같은 경로로 구조화 결과가 된다(렌더 0회).
+-2. **2단계(mutate 커밋 뒤, 쓰기 트랜잭션 밖)**: **위치는 마지막 라운드 판정 뒤다.** 현재 루프는 도구 실행(`chat_general.py:771`) 직후 `turn['round']+1>=MAX_ROUNDS`(`:773`)이면 결과 메시지를 만들지 않고 턴을 끝낸다(`:774-776`). 2단계는 이 판정을 통과한 뒤, `result_message`(`:777`) 앞에서만 실행한다. 그래서 마지막 라운드의 프레임 호출은 1단계 영수증만 남고 렌더는 0회다. 그 영수증은 누적에 들어가지만 턴이 이미 끝났으므로 이후 판정에 영향이 없다. 2단계는 먼저 권한을 다시 확인한다(아래 "요청 도중 권한 축소"). 그다음 영수증의 대상으로 `timeline_preview`를 프레임마다 호출한다(`app.py:421`). 대화 범위는 서버가 turn의 `conversation_id`로 넣는다(`chat_general.py:770`에서 도구 요청에 넣는 것과 같은 값). 바이트는 이 함수의 메모리에만 있다. 렌더 결과 폴더는 렌더 직후 지워진다(`app.py:439-442`). 잠금 충돌, revision 변경, 권리 실패, 바이트 상한 초과, 권한 축소가 하나라도 생기면 **전체를 거절**한다. 이때 tool_result는 이미지 없는 문자열 결과(`status:'blocked'`와 코드)가 된다.
++2. **2단계(mutate 커밋 뒤, 쓰기 트랜잭션 밖)**: **위치는 마지막 라운드 판정 뒤다.** 현재 루프는 도구 실행(`chat_general.py:771`) 직후 `turn['round']+1>=MAX_ROUNDS`(`:773`)이면 결과 메시지를 만들지 않고 턴을 끝낸다(`:774-776`). 2단계는 이 판정을 통과한 뒤, `result_message`(`:777`) 앞에서만 실행한다. 그래서 마지막 라운드의 프레임 호출은 1단계 영수증만 남고 렌더는 0회다. 그 영수증은 누적에 들어가지만 턴이 이미 끝났으므로 이후 판정에 영향이 없다. **대화 전체 비용 상한도 렌더 전에 본다.** 지금 이 검사는 3단계 트랜잭션 안에 있다(`chat_general.py:785-787`: `total_maximum_micro`가 있고 `estimated_used_micro + reserve_micro > total_maximum_micro`이면 `limit_reached`로 끝냄). 이 검사는 렌더 뒤에 실행되므로, 그대로 두면 렌더한 프레임을 버리게 된다. 검사 입력(메모리의 `turn`과 `preview`)은 렌더 전에 이미 정해져 있다. 그래서 2단계는 맨 먼저 같은 식을 같은 값으로 계산한다. 걸리면 렌더 호출 없이 `:785-787`과 같은 처리(`limit_reached`, 같은 오류 문구, `close_run`)로 턴을 끝낸다. `:785-787`의 검사는 3단계에 그대로 남겨 최종 판정으로 쓴다. 이 경우에도 영수증은 누적에 들어가지만 턴이 끝나므로 영향이 없다. 비용 검사를 통과하면 2단계는 권한을 다시 확인한다(아래 "요청 도중 권한 축소"). 그다음 영수증의 대상으로 `timeline_preview`를 프레임마다 호출한다(`app.py:421`). 대화 범위는 서버가 turn의 `conversation_id`로 넣는다(`chat_general.py:770`에서 도구 요청에 넣는 것과 같은 값). 바이트는 이 함수의 메모리에만 있다. 렌더 결과 폴더는 렌더 직후 지워진다(`app.py:439-442`). 잠금 충돌, revision 변경, 권리 실패, 바이트 상한 초과, 권한 축소가 하나라도 생기면 **전체를 거절**한다. 이때 tool_result는 이미지 없는 문자열 결과(`status:'blocked'`와 코드)가 된다.
+ 3. **3단계(미리보기 생성)**: 다음 미리보기를 만드는 트랜잭션(`chat_general.py:783-790`) 안에서 먼저 권한을 다시 확인한다. 통과하면 프레임 도구 전용 경로로 블록 배열 tool_result를 만든다(§4-2 결정 (a)). 텍스트 블록에는 `frames[].sha256`·바이트 수·해상도를 넣는다. 같은 메타를 **바이트 없이** turn 행 step에도 기록하고, 전달된 `(timeline_revision, clip_index, frame, sha256)` 목록을 run의 `frame_deliveries`에 추가한다(§4-3 중복 판정의 기준). run 기록은 이 트랜잭션이 state 본문을 다시 쓰는 기존 방식(`close_run`, `chat_general.py:378-383`)을 따른다. 모델이 실제로 받은 최종 결과는 미리보기 행 본문에 남는다. `run['calls']`의 영수증은 "무엇을 요청했는가"의 기록이다. 이 구분을 결과 문서와 테스트에 명시한다.
+ 
+ **요청 도중 권한 축소** [검증됨: 코드 구조]
+ - 지금 권한 판정은 1단계의 `authorize`뿐이다. `authorize`는 `effective_mode`가 `read_only`이고 도구가 `READ_TOOLS`에 없으면 거절한다(`agent_preferences.py:75-79`). `effective_mode`는 실행 고정값, run의 `agent_permission_ceiling`, **현재** 프로필 모드 중 가장 낮은 값이다(`agent_preferences.py:61-67`). 사용자가 턴 진행 중에 모드를 낮추면 `update`가 진행 중 run의 상한을 낮춘다(`agent_preferences.py:93-99`). 그러므로 1단계 뒤에 권한이 낮아질 수 있다.
+-- 결정: 2단계 렌더 전과 3단계 트랜잭션 안에서 `authorize(project, run, <프레임 도구 이름>)`를 다시 부른다. 2단계는 `chat_general.py:764-766`처럼 현재 state를 읽어 판정하고, 3단계는 `_current`가 돌려준 프로젝트로 판정한다(`chat_general.py:784`). 실패하면 렌더하지 않거나(2단계) 렌더한 바이트를 버리고(3단계) 이미지 없는 `status:'blocked'`, `code:'AGENT_READ_ONLY'` 결과를 싣는다. 사람이 이어쓰기 미리보기를 승인해야 전송되므로 재인가가 없어도 무단 전송은 아니다. 그래도 사람이 낮춘 권한으로 만든 미리보기에 이미지가 들어 있으면 동의 카드가 권한 설정과 어긋나므로 재인가를 둔다.
++- 결정: 2단계 렌더 전과 3단계 트랜잭션 안에서 `authorize(project, run, <프레임 도구 이름>)`를 다시 부른다. 2단계는 현재 state를 `chat_general.py:764-766`처럼 읽되, 읽은 원본 프로젝트로 바로 판정하지 않는다. 원본에는 `_conversation_id`가 없다(저장 전에 `chat_sessions.py:180`이 지움). 그래서 `authorize` → `effective_mode` → `profile`이 `chat_sessions.current`(`chat_sessions.py:34`)를 거쳐 **기본 대화**의 모드를 읽는다(`agent_preferences.py:25-28`). 턴이 기본 대화가 아닌 대화에 있으면 다른 대화의 모드로 판정하게 된다. 따라서 2단계는 `chat_sessions.scoped(project, turn['conversation_id'])`(`chat_sessions.py:185-187`)로 범위를 정한 프로젝트와, 그 안에서 `turn['run']`으로 찾은 run으로 판정한다. `_current`가 쓰는 방식과 같다(`chat_general.py:615-616`). 3단계는 `_current`가 돌려준 프로젝트로 판정한다(`chat_general.py:784`). 이 프로젝트는 이미 범위가 정해져 있다. 실패하면 렌더하지 않거나(2단계) 렌더한 바이트를 버리고(3단계) 이미지 없는 `status:'blocked'`, `code:'AGENT_READ_ONLY'` 결과를 싣는다. 사람이 이어쓰기 미리보기를 승인해야 전송되므로 재인가가 없어도 무단 전송은 아니다. 그래도 사람이 낮춘 권한으로 만든 미리보기에 이미지가 들어 있으면 동의 카드가 권한 설정과 어긋나므로 재인가를 둔다.
++- **3단계 뒤 권한 축소(승인 때와 전송 직전 재인가)**: 3단계가 프레임이 든 미리보기를 만든 뒤에도 사람이 모드를 `read_only`로 낮출 수 있다. 지금 코드는 이 구간에서 `authorize`를 부르지 않는다. 승인(`decide`, `chat_general.py:496-546`)은 binding, 해시, 비용만 본다. 전송 전 `_current`(`:609-629`)는 고정 설정(`:617`)과, 턴 고정값으로 만든 binding(`:206-210`)만 비교한다. 위의 재인가 이유를 끝까지 지키려면 이 구간도 막아야 한다. 그래서 **본문에 이미지 블록이 든 미리보기에 한해** 두 곳에서 다시 판정한다. 판정 대상인지는 해시로 고정된 `message_body` 안에 `type:'image'` 블록을 가진 tool_result가 있는지로 정한다. 새 필드는 만들지 않는다.
++  - 승인 때: `decide`의 approve 경로에서 권리 확인(`:509`) 뒤, 예약(`:541`) 전에 `authorize(p, run, <프레임 도구>)`를 부른다. 이 `p`는 이미 대화 범위가 정해진 프로젝트다(`app.py:523`의 `chat_sessions.enter` 뒤 `app.py:790`이 `decide`를 부름). 실패하면 `AGENT_READ_ONLY`로 승인을 거절한다. 예약은 0이고, 미리보기는 `pending`, 턴은 `awaiting_continuation_approval`로 그대로 남는다. 거절 결정(`reject`, `:504-508`)은 이 검사보다 앞에 있으므로 계속 할 수 있다.
++  - 전송 직전: `process_next`의 count 전 트랜잭션(`:641`)에서 `_current` 뒤, `ledger.claim_attempt` 앞에서 같은 판정을 한다. `_current` 자체에는 넣지 않는다. `_current`는 응답을 받은 뒤(`:756`, `:762`, `:775`, `:784`)에도 불리므로, 거기서 막으면 이미 전송된 라운드를 마무리하지 못한다. 실패하면 attempt를 만들기 전이므로 기존 예외 경로가 예약을 `release`하고 턴을 `blocked_before_message`로 끝낸다(`:810-814`, `:829`). 공급자 전송은 0회다.
++  - 이 재인가가 없어도 무단 전송은 아니다. 사람 승인이 여전히 필요하기 때문이다. 그래도 이 설계는 사람 승인을 유일한 관문으로 두지 않는다. 낮춘 권한을 승인 때와 전송 직전까지 반영한다. 프레임이 없는 미리보기의 동작은 바꾸지 않는다.
+ - 분류: 프레임 도구는 **읽기 도구로 분류하지 않는다**(`READ_TOOLS`, `agent_preferences.py:14`에 넣지 않음). 따라서 `read_only`에서는 1단계에서 거절되고 도구 정의에서도 빠진다(`tools_for`, `agent_preferences.py:70-72`, 사용처 `chat_general.py:424`). 이유: 이 도구는 상태를 조회만 하는 다른 읽기 도구와 달리 로컬 FFmpeg 렌더를 일으키고, 자산에서 파생된 이미지 바이트를 외부 전송 대상으로 만든다(§8 결론). 이 분류는 §9 A2 승인 때 함께 확인한다.
+ 
+ **멱등 재실행의 의미**
+@@ -110,8 +115,8 @@
+ | 브라우저 응답 | 있음: 미리보기를 만드는 응답, 그리고 `/api/state`가 **대기 중 미리보기 전부의 두 본문**을 상태를 읽을 때마다 돌려준다 | `chat_general.py:233-234`, `:469`, `:546`, `app.py:384` |
+ | 동의 카드 화면 | 있음: "전달할 전체 내용 보기"가 두 본문을 JSON 원문으로 출력 | `general-chat-ui.js:55` |
+ | 공급자 전송 | 라운드마다 2회(count_tokens, messages) | `chat_general.py:642-646` |
+-| 오프라인 백업 | 있음: 데이터 폴더의 모든 파일(`studio.sqlite3` 포함)을 복사하므로 미리보기 행의 바이트도 복사된다. 행을 지우기 **전에** 만든 백업에는 삭제 뒤에도 바이트가 남는다(백업 쪽 삭제는 별도) | `backup.py:51`, `:63` |
+-| SQLite 파일의 빈 페이지 | 있음(행 삭제 뒤에도): 저장소 연결은 PRAGMA를 하나도 설정하지 않는다(`app.py:277-278`). 그래서 `secure_delete`는 꺼져 있고 `auto_vacuum`도 없다. 미리보기 행을 `DELETE`해도 본문 바이트가 DB 파일의 빈 페이지에 그대로 남는다. `PRAGMA secure_delete=ON` 또는 `VACUUM` 뒤에는 남지 않는다 | 실측 `tasks/D1-r4/sqlite-probe/probe.log`(SQLite 3.54.0) |
++| 오프라인 백업 | 있음: 데이터 폴더의 모든 파일(`studio.sqlite3` 포함)을 복사하므로 미리보기 행의 바이트도 복사된다. 행을 지우기 **전에** 만든 백업에는 삭제 뒤에도 바이트가 남는다(백업 쪽 삭제는 별도). 행을 지운 **뒤에** 만든 백업도, 지운 연결에서 `secure_delete`가 켜져 있지 않았고 `VACUUM`도 하지 않았다면 빈 페이지의 바이트를 그대로 복사한다. 백업은 DB 파일을 바이트 그대로 복사하기 때문이다(실측 `tasks/D1-r5/sqlite-probe/probe.log`의 A: 지운 뒤 복사한 파일에 2벌 중 2벌) | `backup.py:51`, `:63` |
++| SQLite 파일의 빈 페이지 | 남을 수 있음(행 삭제·재작성 뒤에도): 저장소는 동작마다 새 연결을 열고 PRAGMA를 하나도 설정하지 않는다(`app.py:277-278`). 그래서 `secure_delete` 값은 서버를 실행한 파이썬에 들어 있는 **SQLite가 어떻게 빌드됐는지**로 정해진다. 이 컴퓨터에서 0, 1, 2가 모두 나왔다. README의 `python3 app.py`가 가리키는 `/opt/anaconda3/bin/python3`(SQLite 3.51.0, `SECURE_DELETE` 컴파일)는 1이다. `/usr/bin/python3`(3.51.0)는 2(FAST), Homebrew python3·3.15(3.54.0)는 0이다. `auto_vacuum`은 모두 0이다. 0에서는 미리보기 행을 `DELETE`하거나 본문을 다른 값으로 `UPDATE`한 뒤에도 프레임 base64가 빈 페이지에 2벌 중 2벌 남았다. 2(FAST)도 이 실측에서는 2벌, r4 critic 실측에서는 1벌이 남아 믿을 수 없다. 지우거나 다시 쓰는 **그 연결**에서 `PRAGMA secure_delete=ON`을 켜면 0벌이다. 앞선 다른 연결에서만 켜면 남는다(연결마다 설정됨). `VACUUM` 뒤에는 0벌이다 | 실측 `tasks/D1-r5/sqlite-probe/probe.log`(인터프리터 4개), r4 실측 `tasks/D1-r4/sqlite-probe/probe.log` |
+ | SQLite 롤백 journal | 기본 `journal_mode=delete`라 커밋 뒤 `-journal` 파일은 지워진다(실측 폴더에 `-journal` 파일 없음). 지워진 파일 블록이 파일시스템에 남는지는 SQLite 밖의 문제다 [추정] | 같은 실측의 `journal_mode=delete`와 폴더 목록 |
+ | 공급자 시도 원장 | 0 (요청 해시만) | `ledger.py:135` |
+ | 렌더 임시 폴더 | 렌더 직후 삭제 | `app.py:439-442` |
+@@ -185,10 +190,10 @@
+ | # | 승인 항목 | 구체 내용 |
+ |---|---|---|
+ | A1 | 모델 | 이미지 입력을 보낼 정확한 모델 ID(예: `claude-haiku-5-5`)와, 그 모델의 이미지 지원 확인 방법(Models API 조회 = 외부 호출) |
+-| A2 | 자료 | 어떤 작품과 편집의 프레임을 보낼지. 모션 변경안 프레임은 v1에서 거절하며, 넣으려면 §3의 보완(변경안 id·scene sha256 고정, 출력 바이트 상한, 권리 검사)을 먼저 승인받는다. 프레임 도구를 읽기 도구로 보지 않아 `read_only`에서 거절하는 분류(§4-4)를 확인한다. 실제 얼굴, 미공개 곡, 공개 전 설정의 포함 여부. 외부 전송 허용 필드를 신설할지와 그 판정 단위(§5-2). **전송 지점이 두 곳**이라는 점(라운드마다 count_tokens와 messages, §4-1)과 브라우저 응답과 동의 카드에 두 본문이 노출된다는 점(`chat_general.py:233-234`, `general-chat-ui.js:55`)을 포함한다 |
++| A2 | 자료 | 어떤 작품과 편집의 프레임을 보낼지. 모션 변경안 프레임은 v1에서 거절하며, 넣으려면 §3의 보완(변경안 id·scene sha256 고정, 출력 바이트 상한, 권리 검사)을 먼저 승인받는다. 프레임 도구를 읽기 도구로 보지 않아 `read_only`에서 거절하는 분류와, 프레임이 든 미리보기의 승인 때·전송 직전 재인가(§4-4)를 확인한다. 실제 얼굴, 미공개 곡, 공개 전 설정의 포함 여부. 외부 전송 허용 필드를 신설할지와 그 판정 단위(§5-2). **전송 지점이 두 곳**이라는 점(라운드마다 count_tokens와 messages, §4-1)과 브라우저 응답과 동의 카드에 두 본문이 노출된다는 점(`chat_general.py:233-234`, `general-chat-ui.js:55`)을 포함한다 |
+ | A3 | 개수와 크기 | 호출당, 턴당 프레임 수(0 거절, ≤4). 프레임당 바이트 상한, 해상도. **실제로 묶이는 상한은 64KiB 전송 바이트**다(§4-3). 선택지는 다음과 같다. ① 축소 또는 JPEG 변환(새 축소 단계 추가) ② transport 바이트 상한 상향(`anthropic_ontology.py:175-176`의 65536 상한을 바꾸는 ontology 변경) ③ Files API(`file_id` 참조)로 요청 본문을 작게 유지. ③은 이력이 다시 전송될 때 본문 크기를 줄이지만, **공급자 저장소에 별도로 업로드하는 외부 전송**이다. 따라서 업로드·보관·삭제를 따로 승인받아야 한다. `MAX_INPUT` 상향은 D20에서 사용자가 결정했다(상한만 상향, [가정] 16384, PLAN-ko.md:196). 이 상향은 프레임의 바이트 상한을 풀지 않는다(§7) |
+ | A4 | 최대 비용 | 라운드당 예약액(D20 가정 16384 기준 3,687 micro, 한 턴 최대 14,748 micro, §7)과 대화 총상한(현재 ≤ USD 0.40). 이미지 토큰을 측정하는 `count_tokens` 호출 예산 |
+-| A5 | 보관 | base64가 남는 모든 위치의 보관 기간과 삭제 정책: 미리보기 행의 `message_body`·`count_body` 2벌, 남은 라운드의 미리보기 행마다 다시 2벌, 브라우저 응답(미리보기 생성 응답과 `/api/state`의 대기 미리보기), 그리고 그 행을 복사하는 오프라인 백업(§4-4 보관 위치 전수). **행 삭제만으로는 바이트가 지워지지 않는다**(§4-4 표의 SQLite 행, 실측). 프레임이 든 행을 지우는 정책은 `PRAGMA secure_delete=ON`(삭제 전에 켜야 함) 또는 삭제 뒤 `VACUUM`을 함께 정해야 한다. 둘 다 DB 전체에 영향을 준다(`secure_delete`는 모든 삭제의 쓰기량, `VACUUM`은 파일 재작성 동안의 잠금과 여유 공간) [추정: 영향 크기 미측정]. 또 삭제 **전에** 만든 백업에는 바이트가 남으므로, 그 백업을 어떻게 다룰지(보관 기간, 대상별 삭제 허용)도 이 승인에 넣는다. 바이트를 run·`requests` 테이블에 영속하는 대안 ii를 택한다면 스펙 `:418`의 예외 승인도 여기에 포함한다. 계정 삭제는 영구 금지이고, 다른 삭제는 대상별로 개별 허용을 받는다 |
++| A5 | 보관 | base64가 남는 모든 위치의 보관 기간과 삭제 정책: 미리보기 행의 `message_body`·`count_body` 2벌, 남은 라운드의 미리보기 행마다 다시 2벌, 브라우저 응답(미리보기 생성 응답과 `/api/state`의 대기 미리보기), 그리고 그 행을 복사하는 오프라인 백업(§4-4 보관 위치 전수). **행 삭제만으로 바이트가 지워진다고 보장할 수 없다**(§4-4 표의 SQLite 행, 실측). `secure_delete` 기본값은 런타임 SQLite 빌드에 따라 0, 1, 2로 달라지므로 기본값에 기대지 않는다. 다음 둘 중 하나를 요구한다. ① 프레임이 든 행을 지우거나 다시 쓸 수 있는 **모든 연결**이 그 연결에서 `PRAGMA secure_delete=ON`을 켠다. 저장소는 동작마다 새 연결을 열기 때문이다(`app.py:277-278`). ② 삭제나 재작성 뒤에 `VACUUM`을 한다. ②를 택하면 `VACUUM` 전까지는 바이트가 남고, 그 사이에 만든 백업에도 복사된다. 둘 다 DB 전체에 영향을 준다(`secure_delete`는 모든 삭제의 쓰기량, `VACUUM`은 파일 재작성 동안의 잠금과 여유 공간) [추정: 영향 크기 미측정]. 백업도 다뤄야 한다. 삭제 **전에** 만든 백업, 그리고 ①·② 없이 삭제한 **뒤에** 만든 백업에도 바이트가 남는다. 그 백업들을 어떻게 다룰지(보관 기간, 대상별 삭제 허용)도 이 승인에 넣는다. 바이트를 run·`requests` 테이블에 영속하는 대안 ii를 택한다면 스펙 `:418`의 예외 승인도 여기에 포함한다. 계정 삭제는 영구 금지이고, 다른 삭제는 대상별로 개별 허용을 받는다 |
+ | A6 | 재검사 수준 | 전송 직전에 다시 렌더해 해시를 대조할지, 메타데이터만 대조할지(§5-2) |
+ | A7 | 음원 측정값(S11) | 표식을 분리하는 방식과, 진행 중 이어쓰기가 무효가 되는 것을 받아들일지(§8) |
+ 
+@@ -208,7 +213,10 @@
+   - **마지막 라운드 렌더 0회**: `turn['round']+1>=MAX_ROUNDS`인 라운드(`chat_general.py:773`)에서 프레임 도구를 호출하면 렌더 호출 0회, 미리보기 생성 0회, turn 상태 `limit_reached`임을 단언한다.
+   - **모션 대상 거절**: `target.kind:'motion'`은 `TARGET_KIND_UNSUPPORTED`로 거절하고 `motion_preview` 호출 0회다.
+   - **요청 도중 권한 축소**: 1단계 통과 뒤 2단계 전에, 그리고 2단계 렌더 뒤 3단계 전에 각각 모드를 `read_only`로 낮춘다. 두 경우 모두 미리보기 행 본문에 이미지 블록 0개, 결과 `code:'AGENT_READ_ONLY'`임을 단언한다. 앞의 경우는 렌더 호출 0회도 단언한다. `read_only`로 시작한 턴에서는 도구 정의에 프레임 도구가 없음을 단언한다.
+-  - **삭제 잔존**: 프레임이 든 미리보기 행을 지우는 정책을 구현하면, 삭제 뒤 DB 파일 바이트에 프레임 base64가 남지 않음을 파일 바이트 검색으로 단언한다(`tasks/D1-r4/sqlite-probe/probe.py`와 같은 방식).
++  - **삭제 잔존**: 프레임이 든 미리보기 행을 지우는 정책을 구현하면, 삭제 뒤 DB 파일 바이트에 프레임 base64가 남지 않음을 파일 바이트 검색으로 단언한다(`tasks/D1-r4/sqlite-probe/probe.py`와 같은 방식). 다음도 함께 단언한다. 행을 지우거나 다시 쓰는(`UPDATE`) 연결마다 `PRAGMA secure_delete`가 1이다(①을 택한 경우). 테스트는 기본값이 0인 SQLite(이 컴퓨터의 Homebrew 3.15)에서도 돌린다. 기본값이 1인 빌드에서만 돌리면 통과가 우연일 수 있다. 앞선 연결에서만 켜고 새 연결로 지우면 남는다는 음성 대조도 둔다(`tasks/D1-r5/sqlite-probe/probe.py`의 C). 행을 지운 뒤 만든 백업 파일에도 0벌임을 단언한다.
++  - **대화 비용 상한이면 렌더 0회**: `estimated_used_micro + reserve_micro > total_maximum_micro`가 되게 대화 전체 상한을 두고 프레임 도구를 호출한다. 렌더 호출 0회, 미리보기 생성 0회, turn 상태 `limit_reached`와 `chat_general.py:786`의 오류 문구, run 닫힘을 단언한다. 합이 상한과 같으면 렌더한다는 경계도 함께 둔다.
++  - **두 대화의 권한 범위**: 기본 대화를 `read_only`, 턴의 대화를 `review`(그리고 `full_access`)로 둔다. 턴의 대화에서 프레임 도구를 부르면 2단계가 거절하지 않고 렌더함을 단언한다. 반대로 기본 대화를 `full_access`로 두고 턴의 대화를 1단계 뒤 `read_only`로 낮추면 렌더 0회, `AGENT_READ_ONLY`임을 단언한다.
++  - **3단계 뒤 권한 축소**: 프레임이 든 이어쓰기 미리보기를 만든 뒤 (a) 승인 전에 `read_only`로 낮추고 승인하면 `AGENT_READ_ONLY`로 거절되고, 예약 0, 미리보기 `pending`, 거절 결정은 여전히 가능함을 단언한다. (b) 승인한 뒤 전송 전에 낮추면 turn `blocked_before_message`, 예약 `release`, count·messages 전송 0회, 공급자 시도 원장 행 0개임을 단언한다. (c) 프레임이 없는 미리보기에서는 같은 축소가 승인·전송 결과를 바꾸지 않음을 단언한다(기존 동작 회귀).
+   - 권리가 blocked이거나 unconfirmed이면 전송을 거절한다.
+   - 렌더 후 편집 revision이 바뀌면 거절한다.
+   - data_scope 문구가 프레임 수와 일치한다.
+@@ -228,7 +236,7 @@
+ ## 11. 미확인·가정
+ 
+ - [검증됨: 문서] 토큰 계산식 `⌈width / 28⌉ × ⌈height / 28⌉`, 등급 표(High-resolution = "Claude 4.7 and later models", 2,576px·4,784 / Standard = "All other models", 1,568px·1,568), 1920×1080 예시(Standard 1456×819·1,560 / High-resolution 축소 없음·2,691). platform.claude.com/docs/en/build-with-claude/vision을 2026-10-28에 다시 열어 확인했다. 이 표에 따르면 Haiku 5.5는 고해상도 등급이다.
+-- [검증됨: 실측] SQLite 3.54.0(이 작업의 python3.15)에서 PRAGMA 없이 연 DB는 `journal_mode=delete`, `secure_delete=0`, `auto_vacuum=0`이다. 미리보기 행 형태의 본문을 `DELETE`한 뒤에도 파일에서 표식 문자열이 삭제 전과 같은 65회 검출됐고, `VACUUM` 뒤 0회, `secure_delete=ON`에서는 삭제 직후 0회였다(`tasks/D1-r4/sqlite-probe/probe.log`). 실제 `studio.sqlite3`가 아니라 같은 연결 방식의 축소 모형이다.
++- [검증됨: 실측] `secure_delete` 기본값은 런타임 SQLite 빌드에 따라 다르다. 이 컴퓨터에서 `/opt/anaconda3/bin/python3`(SQLite 3.51.0)는 1, `/usr/bin/python3`(3.51.0)는 2, Homebrew python3·3.15(3.54.0)는 0이었다. `journal_mode=delete`, `auto_vacuum=0`은 모두 같았다. 무작위 표식을 행마다 2벌 넣은 미리보기 행 모형으로 쟀다. 기본값 0과 2에서는 `DELETE`·`UPDATE` 뒤 2벌이 남았고, 지운 뒤 복사한 파일에도 2벌이 있었다. 같은 연결에서 `secure_delete=ON`을 켜면 0벌, 앞선 연결에서만 켜면 2벌, `VACUUM` 뒤에는 0벌이었다(`tasks/D1-r5/sqlite-probe/probe.log`). r4 실측의 "65회"는 64자 주기 표식이 **한 벌 안에서** 맞은 횟수이며, 65벌이라는 뜻이 아니다(`tasks/D1-r4/sqlite-probe/probe.py`의 `MARK`는 같은 10바이트의 반복이고, 표식 문자열 자체에서도 66회 맞는다). 잔존이 있다는 결론은 같다. 두 실측 모두 실제 `studio.sqlite3`가 아니라 같은 연결 방식의 축소 모형이다.
+ - [미확인] Haiku 5.5가 이미지 입력을 지원하는지(Models API 조회 = 외부 호출). count_tokens 호출의 과금 여부. 640×360 프레임 PNG의 실제 바이트. FFmpeg 렌더 출력이 같은 입력에서 같은 바이트인지(§4-4 멱등 재실행).
+ - [추정] 64KiB에서 남는 여유가 48,387바이트라는 값. A1 r2 측정(첫 요청 17,149바이트, 이력 없음)을 기준으로 했으며, Wave 2 도구 추가와 이어쓰기 이력에 따라 줄어든다.
+ - [가정] `MAX_INPUT` = 16384(D20, PLAN-ko.md:196). 사용자가 값을 바꾸면 §7 표를 같은 공식으로 다시 계산한다. 렌더 시간(4장 최대 약 120초 잠금)은 FFmpeg 시간 제한에서 나온 상한이며 측정값이 아니다.
+--- .omo/evidence/agent-tools-02-20261028/tasks/D1-r5/start/check_citations.py.txt	2026-10-28 21:30:38
++++ .omo/evidence/agent-tools-02-20261028/tasks/D1-r5/check_citations.py	2026-10-28 22:39:38
+@@ -1,8 +1,8 @@
+-"""D1 r4 citation check for docs/design/FRAME-OBSERVATION-DESIGN-ko.md (read-only).
++"""D1 r5 citation check for docs/design/FRAME-OBSERVATION-DESIGN-ko.md (read-only).
+ 
+ Run from the project root:
+   PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/opt/python@3.15/bin/python3.15 -B \
+-    .omo/evidence/agent-tools-02-20261028/tasks/D1-r4/check_citations.py [doc-path]
++    .omo/evidence/agent-tools-02-20261028/tasks/D1-r5/check_citations.py [doc-path]
+ 
+ Part 1 (range): every explicit `name.ext:N[-M][,K]` anchor in the doc must name an
+ existing file whose length covers every cited line. Source files resolve to the
+@@ -11,6 +11,7 @@
+ given by context, must contain the expected substring on the cited line.
+ r3: every expected substring is non-empty (asserted); './' entries check current files.
+ r4: no eval(); the legacy default list is parsed with ast.literal_eval (literal only).
++r5: copy of the r4 script; all r4 checks kept, r5 anchors and r4-corrected phrases added.
+ An optional doc-path argument checks a copy (used for the negative run). Exit 1 on any failure. Writes nothing.
+ """
+ import ast
+@@ -169,6 +170,27 @@
+     ('production_tools.py', 75, 'agent_preferences.authorize(project,run'),
+     ('app.py', 277, 'def connect'), ('app.py', 278, 'sqlite3.connect(self.db, timeout=30)'),
+     ('app.py', 417, "prefix='motion-preview-'"),
++    # r5 additions: budget check before render, scoped step-2 authorize, approval/send re-authorize.
++    ('chat_general.py', 785, "turn.get('estimated_used_micro',0)+preview['reserve_micro']>preview['total_maximum_micro']"),
++    ('chat_general.py', 786, "status='limit_reached'"), ('chat_general.py', 786, '대화 전체 비용 상한에 도달해 추가 전송을 중단했습니다.'),
++    ('chat_general.py', 787, 'close_run(c,turn,turn['), ('chat_general.py', 787, 'return True'),
++    ('chat_sessions.py', 34, "def current(p):return p.get('_conversation_id') or default_id(p)"),
++    ('chat_sessions.py', 180, "p.pop('_conversation_id',None)"), ('chat_sessions.py', 185, 'def scoped'),
++    ('chat_sessions.py', 186, 'enter(result,identifier)'), ('chat_sessions.py', 187, 'return result'),
++    ('agent_preferences.py', 25, 'def profile'), ('agent_preferences.py', 28, 'chat_sessions.current(project)'),
++    ('chat_general.py', 615, "chat_sessions.scoped(p,turn['conversation_id'])"), ('chat_general.py', 616, "x['id']==turn['run']"),
++    ('chat_general.py', 617, 'agent_preferences.frozen(p,run)!=agent_preferences.frozen(p,turn)'),
++    ('chat_general.py', 206, 'if turn:'), ('chat_general.py', 207, "'agent_settings' in turn['binding']"), ('chat_general.py', 210, "value['agent_settings']=settings"),
++    ('chat_general.py', 496, 'def decide'), ('chat_general.py', 546, 'return dict(preview=public_preview(item),turn=public_turn(turn))'),
++    ('chat_general.py', 609, 'def _current'), ('chat_general.py', 629, 'return p'),
++    ('chat_general.py', 504, "data['decision']=='reject'"), ('chat_general.py', 508, 'turn=None'),
++    ('chat_general.py', 509, "data['rights_confirmed']"), ('chat_general.py', 541, "'reserve'"),
++    ('chat_general.py', 641, 'self._current(c,turn,preview)'), ('chat_general.py', 642, 'ledger.claim_attempt('),
++    ('chat_general.py', 756, 'self._current(c,turn,preview)'), ('chat_general.py', 762, 'self._current(c,turn,preview)'),
++    ('chat_general.py', 775, 'self._current(c,turn,preview)'),
++    ('chat_general.py', 810, "row[0]=='reserved'"), ('chat_general.py', 813, "'release'"), ('chat_general.py', 814, "':stop:'"),
++    ('chat_general.py', 829, 'blocked_before_message'),
++    ('app.py', 523, 'chat_sessions.enter(target,cid)'), ('app.py', 790, 'chat_general.decide(c,self,p,name,d)'),
+ ]
+ assert all(expected for _, _, expected in CHECKS), 'empty expected substring is a vacuous check'
+ assert 'request_media_generation' not in lines(resolve('./chat_runtime.py'))[16], 'legacy default must exclude execution tool'
+@@ -190,7 +212,11 @@
+               # r3 statements corrected in r4
+               "kind:'timeline'|'motion'", 'timeline_revision|proposal_id+scene_sha256',
+               '렌더가 나중에 실패한 요청도 누적에 넣는다', '이전 라운드에서 이미 요청한 같은',
+-              '어떤 작품, 편집, 모션의 프레임을 보낼지'):
++              '어떤 작품, 편집, 모션의 프레임을 보낼지',
++              # r4 statements corrected in r5
++              '도구는 위 두 함수를 **그대로 호출만** 한다', '그래서 `secure_delete`는 꺼져 있고',
++              '2단계는 `chat_general.py:764-766`처럼 현재 state를 읽어 판정', '삭제 전과 같은 65회',
++              '**행 삭제만으로는 바이트가 지워지지 않는다**', '`PRAGMA secure_delete=ON`(삭제 전에 켜야 함)'):
+     if stale in doc:
+         fails += 1; print('STALE', stale)
+ 

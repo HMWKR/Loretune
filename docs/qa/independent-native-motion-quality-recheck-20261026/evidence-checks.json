@@ -1,0 +1,191 @@
+{
+  "at": "2026-10-26T19:13:43.032707+00:00",
+  "rows": [
+    {
+      "case": "case-1",
+      "request_id": "req_011CgRMzzVNY3JzQCwj4DceX",
+      "visible_hash_match": true,
+      "public_input_rehashable": true,
+      "usage_match": true,
+      "tools": [
+        {
+          "name": "search_project_context",
+          "status": "succeeded",
+          "result": null
+        }
+      ]
+    },
+    {
+      "case": "case-1",
+      "request_id": "req_011CgRN1Cg6WPLBN8LNbZrVD",
+      "visible_hash_match": true,
+      "public_input_rehashable": false,
+      "usage_match": true,
+      "tools": []
+    },
+    {
+      "case": "case-2",
+      "request_id": "req_011CgRN1qCoKSAmxh9nA8GWo",
+      "visible_hash_match": true,
+      "public_input_rehashable": true,
+      "usage_match": true,
+      "tools": [
+        {
+          "name": "search_project_context",
+          "status": "succeeded",
+          "result": null
+        }
+      ]
+    },
+    {
+      "case": "case-2",
+      "request_id": "req_011CgRN293bYNAue7HVkBpT5",
+      "visible_hash_match": true,
+      "public_input_rehashable": false,
+      "usage_match": true,
+      "tools": [
+        {
+          "name": "propose_timeline_changes",
+          "status": "proposed",
+          "result": {
+            "status": "proposed",
+            "proposal_id": "5b51095feff14327a4ac3924b70f9de0",
+            "base_version": 1,
+            "changes": [],
+            "changes_scope": "clip_take_trim_duration",
+            "changes_semantics": "legacy requested clip fields; no-op entries possible; timeline_diff is computed from base and candidate",
+            "timeline_diff": {
+              "base_version": 1,
+              "clip_order": {
+                "changed": true,
+                "before": [
+                  0,
+                  1,
+                  2
+                ],
+                "after": [
+                  2,
+                  0,
+                  1
+                ]
+              },
+              "clips": [],
+              "captions": {
+                "changed": true,
+                "before": [
+                  {
+                    "start": 0,
+                    "end": 3,
+                    "text": "수정 전"
+                  }
+                ],
+                "after": [
+                  {
+                    "start": 0,
+                    "end": 1,
+                    "text": "시작"
+                  },
+                  {
+                    "start": 1,
+                    "end": 2,
+                    "text": "움직임"
+                  },
+                  {
+                    "start": 2,
+                    "end": 3,
+                    "text": "완성"
+                  }
+                ]
+              },
+              "audio": {
+                "changed": true,
+                "before": {
+                  "version": 1,
+                  "source_offset_seconds": 0
+                },
+                "after": {
+                  "version": 1,
+                  "source_offset_seconds": 1
+                }
+              }
+            },
+            "commands": [
+              {
+                "op": "reorder_clips",
+                "order": [
+                  2,
+                  0,
+                  1
+                ]
+              },
+              {
+                "op": "set_captions",
+                "cues": [
+                  {
+                    "start": 0,
+                    "end": 1,
+                    "text": "시작"
+                  },
+                  {
+                    "start": 1,
+                    "end": 2,
+                    "text": "움직임"
+                  },
+                  {
+                    "start": 2,
+                    "end": 3,
+                    "text": "완성"
+                  }
+                ]
+              },
+              {
+                "op": "set_audio_offset",
+                "audio_version": 1,
+                "source_offset_seconds": 1
+              }
+            ],
+            "audio_version": 1,
+            "audio_offset": 1,
+            "captions_preserved": false,
+            "applied": false,
+            "output_approved": false
+          }
+        }
+      ]
+    },
+    {
+      "case": "case-2",
+      "request_id": "req_011CgRN2Rhhdk2YRqZPJggUi",
+      "visible_hash_match": true,
+      "public_input_rehashable": false,
+      "usage_match": true,
+      "tools": []
+    },
+    {
+      "case": "final-clarification",
+      "request_id": "req_011CgRNLnCFwLX17XpZdzpX8",
+      "visible_hash_match": true,
+      "public_input_rehashable": true,
+      "usage_match": true,
+      "server_lookup_not_model_tool_roundtrip": true
+    }
+  ],
+  "response_count": 6,
+  "visible_hash_matches": 6,
+  "full_public_input_rehashable": 3,
+  "input_tokens": 37240,
+  "output_tokens": 4789,
+  "calculated_usage_usd": "0.0061185",
+  "rounded_micro_sum": 6120,
+  "aggregate_with_reported_prior_usd": "0.0381186",
+  "expected_usage_matches": true,
+  "only_changed_product_files": [
+    "chat_models.py",
+    "local_creation_tools.py",
+    "production_context.py"
+  ],
+  "unchanged_source_count": 22,
+  "preserved_media_and_screenshot_hash_mismatches": [],
+  "shared_ledger_or_backup_db_opened": false,
+  "invoice_verified": false
+}

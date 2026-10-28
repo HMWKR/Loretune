@@ -1,0 +1,187 @@
+{
+  "status": "PASS after separately owned poll fix; original failure retained",
+  "recorded_at": "2026-10-28T04:07:55.741434+00:00",
+  "scope": "Actual isolated browser UI and internal persisted-state chain, synthetic Claude HTTP transport, no paid/provider/model validation",
+  "product_files_edited_by_this_worker": [],
+  "main_servers_or_data_accessed": false,
+  "Space91_accessed": false,
+  "root_user8765_accessed": false,
+  "browser_path": {
+    "first": "Ego agent-owned fixture-onlySpace92; saved review/high; closed with finish keep[] after parent clarified one whole-goalSpace91 rule",
+    "lifecycle": "browser-path-change.json",
+    "then": "existing Puppeteer+independent ChromeForTesting headless, new browser user data; source/DOM/media observed",
+    "real_user_testing": false
+  },
+  "issue": {
+    "id": "DEMO-AI-UI-001",
+    "severity": "Medium",
+    "location": "index.html poll/generalChatChanged",
+    "observation": "Third approved synthetic response saved unapproved timeline4 while clean UI retained draft3 approval/offset/caption/preflight",
+    "before": {
+      "head": 4,
+      "draft_id": 3,
+      "displayed_status": "3.000초 · 저장 버전 3 · 출력 승인됨",
+      "stored_approval": false,
+      "displayed_x": "0",
+      "source": "f79217bd9778af472f00c095a1152e259420a05f40c3b85cfd3cc293870175d9"
+    },
+    "cause": "generalChatChanged assigned state=fresh but redrew chat only; editor draft, timeline controls and preflight stayed old",
+    "evidence": [
+      "immediate-agent-draft-checkpoint.json",
+      "immediate-agent-draft.png"
+    ],
+    "fix_owner": "separate UI worker; this worker did not edit product source",
+    "after": {
+      "head": 4,
+      "draft_id": 4,
+      "displayed_x": "240",
+      "displayed_y": "120",
+      "displayed_caption": "음악의 여운을 이어서",
+      "displayed_status": "3.000초 · 저장 버전 4 · 출력 승인 대기",
+      "stored_approval": false,
+      "draft_approval": false,
+      "source": "be666645e2fb8d48ff18b5278cbadfb9614267c4283164a36761c80e9aed7410"
+    },
+    "acceptance": "PASS actual fresh fixture before any extra UI refresh; same loaded source before/after; post-fix/immediate-agent-draft-checkpoint.json and .png"
+  },
+  "actual_UI_flow": {
+    "fixture_preparation": "16 explicit Store API setup actions on entirely new inputs; not counted as user UI completion",
+    "steps": [
+      "selected Haiku high then FullAccess through UI",
+      "entered designated request and prepared exact manifest",
+      "4 rights-checkbox/exact-manifest consent actions",
+      "actual localhost work-status lookup then fresh timeline/source2 lookup",
+      "fixture built typed set_motion_overlay and set_captions from actual tool results",
+      "production tool dispatcher saved unapproved actor-agent-draft version4",
+      "checked stored head/draft/DOM offsets/caption/version/status/preflight/unapproved consistency",
+      "actual UI render estimate denied400 and separate negative HTTP render_job denied400 before output approval",
+      "fourth provider response conditionally reported real saved draft; not provider model reasoning",
+      "saved-frame preview at0.75s loaded through platform UI",
+      "separate human output approval and UI estimate/render confirmation",
+      "actual local render completion",
+      "actual result-review UI in 작업설정 tab created media player; native video playback advanced with readyState4/errornull",
+      "actual UI download anchor, completed file SHA matched stored job",
+      "reload/reopen kept version4/new overlay/new caption/output"
+    ],
+    "trace": "post-fix/server-run/ui-actions.jsonl",
+    "provider_wire": "post-fix/server-run/synthetic-wire.jsonl",
+    "no_reload_workaround": true,
+    "playback": {
+      "currentTime": 0.312847,
+      "duration": 3,
+      "readyState": 4,
+      "videoWidth": 640,
+      "videoHeight": 360,
+      "error": null
+    },
+    "output_job": "a7baf4d1f6a5456b92d5e8ed756c9d6b",
+    "output_sha256": "f90f6f0712f179679b1901b8e0df63bb7057f82252aa243b0328d20706b69092",
+    "output": "post-fix/downloads/a7baf4d1f6a5456b92d5e8ed756c9d6b.mp4",
+    "ffmpeg_complete_decode": true,
+    "errors": [],
+    "blocked_browser_requests": []
+  },
+  "dirty_and_poll": {
+    "status": "PASS actual two-tab sequence",
+    "evidence": "post-fix/dirty-poll-preservation.json",
+    "same_head_reference_preserved": true,
+    "local_dirty_value": {
+      "state_head": 4,
+      "draft_id": 4,
+      "dirty": true,
+      "local_x": 240.001,
+      "displayed_x": "240.001"
+    },
+    "concurrent_other_tab_saved_version": {
+      "head": 5,
+      "offset_x": 240,
+      "approved": false
+    },
+    "after_explicit_cancel_and_poll": {
+      "head": 5,
+      "draft_id": 5,
+      "dirty": false,
+      "x": 240,
+      "status": "3.000초 · 저장 버전 5 · 출력 승인 대기"
+    },
+    "distinction": "This separate manual UI save added version5 only after version4 workflow completed; original version4 and outputs remain. No extra model request."
+  },
+  "cost_and_model_distinctions": {
+    "actual_provider_calls": 0,
+    "real_credentials_read": 0,
+    "actual_billing_calls": 0,
+    "synthetic_protocol": "explicit production LiveTransport(test_only=True)+LoopbackTransport;4messages/4counts per fixture;100/100 usage is synthetic",
+    "budget": "disclosed fixture-only rehearsal-live scopeUSD0.04; normal budget UI does not support that scope; not proof of actual spend permission or real token fit",
+    "real_Claude_semantic_or_vision_quality": "unverified",
+    "AI_video_calls": 0
+  },
+  "preserving": [
+    {
+      "workspace_id": "6e734714-0656-4538-a6f3-b86851895822",
+      "data": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-actual-ui-probe-ktvt5hav/data",
+      "url": "http://127.0.0.1:58175/",
+      "server_stopped": true,
+      "stop": {
+        "recorded_at": "2026-10-28T04:06:53.651165+00:00",
+        "external_attempts": [],
+        "real_credentials_read": 0,
+        "constant_synthetic_credential_returns": 8,
+        "real_provider_calls": 0,
+        "billing_calls": 0,
+        "distinct_synthetic_messages": 4,
+        "worker_threads_still_alive": [],
+        "source_changed_during_run": [
+          "index.html"
+        ]
+      },
+      "structured_preservation": {
+        "original_timeline_versions_preserved": true,
+        "original_shots_and_motion_sources_preserved": true,
+        "original_audio_versions_preserved": true,
+        "final_timeline_head": 4
+      },
+      "all_original_asset_export_hashes_match": true
+    },
+    {
+      "workspace_id": "c61e4d28-e0dd-42a9-83c4-d90c671bd5ae",
+      "data": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-actual-ui-post-fix-p4a4cyfp/data",
+      "url": "http://127.0.0.1:63518/",
+      "server_stopped": true,
+      "stop": {
+        "recorded_at": "2026-10-28T04:06:53.456647+00:00",
+        "external_attempts": [],
+        "real_credentials_read": 0,
+        "constant_synthetic_credential_returns": 8,
+        "real_provider_calls": 0,
+        "billing_calls": 0,
+        "distinct_synthetic_messages": 4,
+        "worker_threads_still_alive": [],
+        "source_changed_during_run": []
+      },
+      "structured_preservation": {
+        "original_timeline_versions_preserved": true,
+        "original_shots_and_motion_sources_preserved": true,
+        "original_audio_versions_preserved": true,
+        "final_timeline_head": 5
+      },
+      "all_original_asset_export_hashes_match": true
+    }
+  ],
+  "limits": [
+    "Actual provider/Claude semantic quality/account/token fit/billing remain unverified",
+    "Synthetic fixture supports exactly designated request; not generic model understanding",
+    "This is isolated browser/API/media verification, not main demo recording, production deployment or real participant user test",
+    "Fixture photo is a one-pixel owned image and audio is an owned generated tone; rendering/interaction proof, not production creative-quality evaluation"
+  ],
+  "attempts": {
+    "initial": "Old await condition observed previous awaiting status too early; corrected automation wait to require new pending preview ID, not a product failure",
+    "pre_fix_output": "Result review lived under 작업설정 tab; automation initially clicked hidden control, then actual UI tab used successfully; source unchanged",
+    "dirty": "Inactive headless tab readiness and select-all keyboard experiments did not modify server state; final native number-spinner ArrowUp made exact local240.001 and two-tab preservation passed"
+  },
+  "narrow_commands": [
+    "node actual-ui-probe/post-fix/run_actual_ui.cjs",
+    "node actual-ui-probe/post-fix/dirty_poll_preservation.cjs",
+    "FFmpeg -xerror full decode of both actual UI downloads"
+  ],
+  "methodology": "feature-verification actual UI→request→dispatcher→saved version→render→download; compare same1920x1080 state and source hash, separate controlled fixture/provider/UI/media facts"
+}

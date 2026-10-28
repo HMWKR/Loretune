@@ -1,0 +1,114 @@
+{
+  "schema": "agent-settings-design/1",
+  "recorded_at": "2026-10-28T01:54:17.046792+00:00",
+  "phase": "DIAGNOSIS_PLAN_ONLY; product edits await parent instruction",
+  "methodology_sources": [
+    "Latest user model-specific permissions/reasoning requirements",
+    "Existing conversation revision/pending selection and immutable manifest/run bindings",
+    "Parent-verified official Anthropic effort/thinking troubleshooting, OpenAI gpt-6-luna, xAI reasoning docs (2026-10-28)",
+    "Karpathy and feature-verification protocols"
+  ],
+  "vendor_capability_sources": [
+    "https://platform.claude.com/docs/en/build-with-claude/effort",
+    "https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting",
+    "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "https://docs.x.ai/developers/model-capabilities/text/reasoning"
+  ],
+  "current_source_hashes": {
+    "app.py": "d41f4160529674bd74a562e1dba502a06705fdc8fcc6b7cb46cb63ad9ca9de74",
+    "chat_sessions.py": "f9e578aa0bf4a7ab8ccb04b8c64556929c979ca3a232de87f6e217fe3c2933f6",
+    "chat_general.py": "edc4537ccbcd100d217ddc240f349001ddda3111324f54ba64f3edb7153c3e45",
+    "chat_models.py": "86806f32ec1d6720db1c29620735da84191320e12cef0183d5b86a69e8fb0f0b",
+    "chat_runtime.py": "e1d8b7e0b694fe91a420333925ffe44972de063359bddaf0470e908eb2e01ec1",
+    "production_tools.py": "63a0fd75ed28d78c8524acc3e0e38ec66906a870b923f64fd6c11aa83e2036df",
+    "model_selection.py": "97d8c826626afc93ad65216722f9aa850415a699897ce7b72c50e6f5b1e51925"
+  },
+  "facts": {
+    "general_chat": "Anthropic-only; six allowlisted tools; per-round transmission consent and cost/rights checks",
+    "reasoning": "chat_models.body hardcodes low; general live sets thinking disabled and rejects unexpected private thinking",
+    "preferences": "No existing model-specific agent mode/effort preferences",
+    "conversation_control": "model_revision + server-bound pending selection already preserves current general turn; completion applies only matching reservation",
+    "full_access": "No existing safe distinct full-mode auto-apply behavior; cannot advertise a label-only mode",
+    "delete": "No account or file-delete model API; unknown tool/argument shape rejected; no need to create delete endpoints"
+  },
+  "options": [
+    {
+      "id": "A",
+      "name": "Mode labels with only tool filtering",
+      "benefit": "Smallest change; readonly can restrict to lookup",
+      "problem": "Review and FullAccess remain behaviorally identical with current six tools; does not satisfy honest differentiated modes",
+      "recommend": false
+    },
+    {
+      "id": "B",
+      "name": "Bounded FullAccess with versioned agent draft edits",
+      "benefit": "Real mode difference without faking human approval or bypassing final output/cost/rights",
+      "details": "readonly lookup only; review preserves current six-tool semantics; full permits only explicitly whitelisted reversible timeline edits to save a new unapproved draft with agent provenance. Motion proposals stay proposals until existing human source approval; render still requires real existing scoped grant.",
+      "recommend": true
+    },
+    {
+      "id": "C",
+      "name": "Adaptive thinking plus broad autonomous internal tool execution",
+      "benefit": "Could support Haiku xhigh/max and more agent actions",
+      "problem": "Private thinking/signature/continuation/usage and broader permission policy require substantial separate contracts; exceeds minimal safe scope",
+      "recommend": false
+    }
+  ],
+  "recommended_contract": {
+    "storage": "Conversation-local per-model settings map with per-model revision, default review/low; do not change shared image/video settings or media approval fingerprint",
+    "request": "New exact conversation_agent_settings action with selected model, expected setting revision and exact mode/effort; normal conversation CAS; unknown models/values/fields rejected",
+    "general_Anthropic_efforts": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "general_Haiku_xhigh_max": "vendor supports them, current disabled-thinking path does not; show reason/unimplemented rather than silently coerce",
+    "legacy_OpenAI_efforts": [
+      "none",
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ],
+    "legacy_xAI_efforts": [
+      "low",
+      "medium",
+      "high",
+      "xhigh"
+    ],
+    "route_projection": "Vendor-supported values distinct from runtime route/configuration/account verification. General route cannot execute OpenAI/xAI even if catalogued.",
+    "frozen_request": "Freeze effective selected-model settings/revision in new previews, runs and turns; message/count bodies and all continuations use same effective effort/mode; settings upgrades never broaden existing manifest/run",
+    "active_setting_change": "Effort/current model setting changes become pending for the next new logical turn; never rewrite approved or submitted bodies. Keep cancellation/unknown pending recovery explicit.",
+    "security_decision_needed": "Permission downgrade can either wait for current logical turn or immediately intersect current write permission. Recommend immediate write revocation while keeping message/effort frozen; widening only on new confirmed turn. Parent must choose before implementation.",
+    "invariants": [
+      "Account deletion prohibited in every mode",
+      "File/asset/project deletion needs target-specific explicit user permission; currently unsupported, no new delete APIs",
+      "Full mode is not cost/rights/transmission/final-output approval",
+      "Agent auto-apply must never call human review as local-owner or create source/output grant",
+      "Default review behavior and old snapshots/approvals preserved",
+      "No real provider/key/account/billing calls"
+    ]
+  },
+  "tentative_minimum_write_set": [
+    "agent_preferences.py (new centralized capability/validation/gating to avoid duplicate policy)",
+    "app.py (scoped action and state projection only; preserve current static registrations)",
+    "chat_sessions.py (conversation-local settings and pending/application hooks)",
+    "chat_general.py (freeze settings into binding/manifest/run/turn, filter tools, continuation checks)",
+    "chat_models.py (validated model-specific effort body argument; no prices/client changes)",
+    "chat_runtime.py (legacy frozen preference/body enforcement)",
+    "production_tools.py (server permission gate for direct/general/legacy routes)",
+    "tests (new scoped HTTP/negative cases)"
+  ],
+  "optional_file_not_needed": "model_selection.py can remain unchanged if dynamic capability lives in agent_preferences projection",
+  "verification_plan": [
+    "Actual HTTP settings save/reload and two-conversation/two-model isolation with CAS mismatch rejection",
+    "Actual synthetic low/medium/high message/count/continuation body differences and model mapping; invalid Haiku xhigh/max and vendor-specific none/max rejection",
+    "Old preview/run cannot gain permissions; idle stale preview blocks; in-flight request body and pending next selection remain exact",
+    "Read-only model write attempts blocked; Review proposal not applied; Full bounded edit creates agent draft and preserves old version/output approval remains absent",
+    "Account/file delete and unknown arbitrary tools always rejected; no grant/cost/rights bypass",
+    "Cancel/timeout/outcome_unknown and server restart preserve settings and pending intent without retransmission",
+    "Actual local preview/render of agent draft after separate final approval; real-model quality/token-fit/billing remain unverified"
+  ],
+  "product_files_changed": []
+}

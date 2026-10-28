@@ -1,0 +1,80 @@
+[
+  {
+    "id": "UI01",
+    "scenario": "1920 initial saved Claude proposals and frame",
+    "result": "PASS",
+    "evidence": "actual Chrome DOM/frame"
+  },
+  {
+    "id": "UI02",
+    "scenario": "invalid HEX rejection, input retained and approval disabled",
+    "result": "PASS after fix",
+    "evidence": "actual HTTP400/browser; initial disabled guard failed"
+  },
+  {
+    "id": "UI03",
+    "scenario": "save new text proposal, hold, human approval v4",
+    "result": "PASS",
+    "evidence": "actual browser→DB"
+  },
+  {
+    "id": "UI04",
+    "scenario": "local candidate render, old Take1 remains selected",
+    "result": "PASS",
+    "evidence": "actual browser→worker→Take3"
+  },
+  {
+    "id": "UI05",
+    "scenario": "publication state refresh permits next restore without reload",
+    "result": "PASS after fix",
+    "evidence": "initial stale revision conflict; corrected worker→Take4→restore"
+  },
+  {
+    "id": "UI06",
+    "scenario": "restore creates proposal, reject preserved, explicit reapproval",
+    "result": "PASS",
+    "evidence": "actual browser and DB"
+  },
+  {
+    "id": "UI07",
+    "scenario": "Escape returns focus; same-context draft retained",
+    "result": "PASS",
+    "evidence": "actual Chrome1280"
+  },
+  {
+    "id": "UI08",
+    "scenario": "different scene empty state and original scene draft isolation",
+    "result": "PASS",
+    "evidence": "actual Chrome1280"
+  },
+  {
+    "id": "UI09",
+    "scenario": "1280 internal dialog scrolling and keyboard focus visibility",
+    "result": "PASS sampled",
+    "evidence": "DPR1;1280×900;document1280×900;motionRender fully visible"
+  },
+  {
+    "id": "UI10",
+    "scenario": "reload revisions/proposals/Takes preserved; no automatic adoption",
+    "result": "PASS",
+    "evidence": "actual browser→DB versions5 proposals7 takes4 selected1"
+  },
+  {
+    "id": "UI11",
+    "scenario": "unknown and committed-refresh-failed outcomes preserve draft/reconcile",
+    "result": "PASS offline only",
+    "evidence": "Node controlled responses; not injected in actual browser"
+  },
+  {
+    "id": "UI12",
+    "scenario": "1920 saved frame48 visibly matches trusted local output",
+    "result": "PASS",
+    "evidence": "motion-final-1920.jpg;DOM1920×1080/DPR1"
+  },
+  {
+    "id": "UI13",
+    "scenario": "screen reader, actual browser zoom, other browsers, mobile",
+    "result": "NOT RUN",
+    "evidence": "outside this bounded acceptance"
+  }
+]

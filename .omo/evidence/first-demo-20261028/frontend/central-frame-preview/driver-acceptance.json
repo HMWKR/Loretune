@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-28T03:53:17.481612+00:00",
+  "status": "ACCEPTED_SCOPED_CENTRAL_FRAME_PREVIEW",
+  "source_final_sha256": "a2a94ee7b628babbd5bdc14ef5c715983b4a3748f69576cb1d08f45053ff4af8",
+  "sources": {
+    "index.html": "f79217bd9778af472f00c095a1152e259420a05f40c3b85cfd3cc293870175d9",
+    "studio.css": "8e9b9acf939cdeb2a99626db29dc3a54c850ef099d29a8f45c6b1b82bb25904a",
+    "studio-media.js": "f9b4ff6bde0990336dafa9cf76087f7a259566f8f37864dbe3916fc1ecb521d6",
+    "tests/timeline_motion_overlay.cjs": "2efa8ae4bc03c93d92f696f10e5f2e1986956515c9f42d0be1a9c0762ec2b5aa",
+    "tests/central_frame_preview.cjs": "0a399d1c8a054c2842b71ee1bcc1e04268bcedc0856d0b984f0b07f5772c2788",
+    "tests/test_central_frame_preview.py": "96c70bfbebb612b34d940a9f32ecba766ffc4901b692792c66b1354959292dd8"
+  },
+  "worker_actual": "1/28.057s/OK actual tempHTTP+browser+real PNG",
+  "related_guard_tests": "11/10.479s/OK",
+  "root_actual": "Existing R2 real1920x1080 PNG full fit; existing output click nativeplay.959s/ready4/captiontrack1; jobs/head unchanged",
+  "root_evidence": "../../resume-central-preview/root-actual-central-frame-and-output.json",
+  "independent_review": "agent_docs_review completed source/actual captures/adversarial read, High/Medium0; final JSON pending",
+  "limits": [
+    "PNG is one visual frame without music/final subtitle playback",
+    "New failure/race guards are controlled tests, not all production network faults",
+    "375-to-desktop toggle mouse locator issue observer hypothesis retained",
+    "Whole current-source full regression and full main demo pending"
+  ],
+  "real_model_calls": 0
+}

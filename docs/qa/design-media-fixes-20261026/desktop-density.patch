@@ -1,0 +1,24 @@
+--- before/studio.css
++++ studio.css
+@@ -771,7 +771,7 @@
+ #sequenceCaption { text-align:center; white-space:pre-line; font-size:var(--ui-body-size); color:var(--ui-strong); }
+ #sequenceCaption:empty { display:none; }
+ #timeAxis { position:relative; margin-block:var(--ui-space-3); isolation:isolate; }
+-#timeRuler { position:relative; height:2rem; border-bottom:1px solid var(--ui-line); font-size:var(--ui-meta); font-variant-numeric:tabular-nums; }
++#timeRuler { position:relative; height:calc(var(--ui-meta) * 2.2); border-bottom:1px solid var(--ui-line); font-size:var(--ui-meta); font-variant-numeric:tabular-nums; }
+ #timeRuler span { position:absolute; bottom:var(--ui-space-1); transform:translateX(-50%); white-space:nowrap; }
+ #timeRuler [data-edge=start] { transform:none; }
+ #timeRuler [data-edge=end] { transform:translateX(-100%); }
+@@ -819,4 +819,11 @@
+  #mobileReviewPreview #sequenceTransport {display:none;}
+  #mobileReviewPreview:not([open])>#preview {display:none!important;}
+ }
+-#timeRuler {height:calc(var(--ui-meta) * 2.2);}
++/* Desktop overview: retain type and controls, recover space around the media. */
++@media(min-width:901px) {
++ .lt-ui { --lt-preview-height:clamp(220px,28vh,300px); }
++ .lt-ui .timeline { padding:var(--ui-space-3); }
++ #timeAxis { margin-block:var(--ui-space-2); }
++ #timeWave { height:36px; }
++ #timeRuler { height:calc(var(--ui-meta) * 1.8); }
++}

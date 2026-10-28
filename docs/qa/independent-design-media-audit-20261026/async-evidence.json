@@ -1,0 +1,52 @@
+{
+  "fixture": "Node VM minimal DOM; controlled asynchronous media events; no browser or media IO",
+  "source_change": "exports only",
+  "findings": [
+    {
+      "case": "DM01-seek-while-loading",
+      "expected_source": 3.5,
+      "actual_loaded_source": 2,
+      "expected_timeline": 1.5,
+      "actual_timeline_after_play": 1.5,
+      "play_reseeks_correctly": true,
+      "unchanged": true
+    },
+    {
+      "case": "DM02-detached-old-video-error",
+      "old_connected": false,
+      "active_video_paused": true,
+      "active_label": "영상을 읽지 못했습니다. 다른 장면과 편집은 유지됩니다.",
+      "scheduled_frames": 0,
+      "unchanged": true
+    },
+    {
+      "case": "DM02-detached-old-video-waiting",
+      "old_connected": false,
+      "expected_timeline": 4,
+      "actual_timeline": 3,
+      "active_video_source": 2
+    },
+    {
+      "case": "DM02-replaced-controller-error",
+      "before": "B · Take 1 · 편집 미리보기 · 승인 버전",
+      "after": "영상을 읽지 못했습니다. 다른 장면과 편집은 유지됩니다.",
+      "new_video_still_playing": true,
+      "button": "편집 재생"
+    },
+    {
+      "case": "DM02-replaced-compare-canplay",
+      "new_ready": [
+        4,
+        4
+      ],
+      "button_disabled": true
+    },
+    {
+      "case": "DM03-comparison-does-not-stop-sequence-audio",
+      "detached_audio": true,
+      "sequence_audio_still_playing": true,
+      "sequence_time": 1,
+      "comparison_videos_muted": true
+    }
+  ]
+}

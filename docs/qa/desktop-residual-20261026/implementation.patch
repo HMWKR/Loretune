@@ -1,0 +1,23 @@
+--- before/index.html
++++ index.html
+@@ -409,7 +409,7 @@
+ function reviewSaveFeedback(value,saveLabel){
+  if(!value)return '';
+  if(value.status==='committed'||value.status==='committed_refresh_failed')return '이전 요청은 저장 완료되었습니다. 남아 있는 새 초안은 보존했습니다. 새로고침해 저장된 검토를 확인하세요.';
+- if(value.status==='unknown'||value.status==='unknown_checked')return (value.status==='unknown_checked'?'아직 저장 여부를 확인하지 못했습니다.':'서버 응답을 받지 못해 저장 여부가 미확정입니다.')+' 입력은 보존했습니다. 연결이 돌아오면 아래 ‘기존 저장 확인’으로 같은 요청을 조회하세요. 확인 전에는 새로 제출하지 않습니다.';
++ if(value.status==='unknown'||value.status==='unknown_checked')return (value.status==='unknown_checked'?'아직 저장 여부를 확인하지 못했습니다.':'저장 결과가 아직 확인되지 않았습니다.')+' 입력은 보존했습니다. 아래 ‘기존 저장 확인’으로 같은 요청의 처리 결과를 조회하세요. 확인 전에는 새로 제출하지 않습니다.';
+  if(value.status==='rejected')return '서버가 저장을 거절했습니다. 입력은 보존했습니다. '+(value.httpStatus===403?'새로고침한 뒤 보존된 초안을 확인하고 ‘'+saveLabel+'’을 누르세요.':value.httpStatus===409?'새로고침해 최신 검토와 보존된 초안을 확인한 뒤 ‘'+saveLabel+'’을 누르세요.':'입력을 확인·수정한 뒤 ‘'+saveLabel+'’을 누르세요.');
+  return '저장 요청을 보내지 못했습니다. 입력은 보존했습니다. 미확정 요청이나 미저장 편집을 먼저 확인한 뒤 ‘'+saveLabel+'’을 누르세요.';
+ }
+--- before/studio.css
++++ studio.css
+@@ -868,3 +868,9 @@
+ .lt-ui[data-desktop-shell=bounded] #sequenceTransport #sequenceStatus { grid-column:1; margin:0; }
+ .lt-ui[data-desktop-shell=bounded] #sequenceTransport #sequenceCaption { grid-column:2; grid-row:3; text-align:end; }
+ .lt-ui[data-desktop-shell=bounded] #sequenceTransport #sequenceSeek { margin:0; }
++
++/* Secondary compact desktop: trade 40px of the scrollable precision pane for
++   media height. The 1920 primary layout, type and control sizes stay unchanged. */
++@media (min-width:1100px) and (max-width:1400px) and (max-height:950px) {
++ .lt-ui[data-desktop-shell=bounded]:is([data-step="3"],[data-step="4"]) .lt-media-pane:has(.lt-timeline-controls[open]) { grid-template-rows:minmax(0,1fr) minmax(300px,38%); }
++}

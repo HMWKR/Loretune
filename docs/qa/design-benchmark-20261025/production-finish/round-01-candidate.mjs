@@ -1,0 +1,18 @@
+import fs from 'node:fs/promises';
+const D='/Users/leesungmin/Desktop/Loretune/docs/qa/design-benchmark-20261025/production-finish';
+const t=await taskSpace(18),p=t.page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
+await p.click('button[data-step="3"]');
+await p.evaluate(async()=>{const v=document.querySelector('#preview video');if(v){v.muted=true;await v.play();await new Promise(r=>{const f=()=>{if(v.currentTime>.1){v.removeEventListener('timeupdate',f);v.pause();r()}};v.addEventListener('timeupdate',f)})}});
+await p.screenshot({path:D+'/before-desktop-1280.png'});
+await fs.writeFile(D+'/before-style.json',JSON.stringify(await p.evaluate(()=>({width:innerWidth,styles:['#shotTitle','.lt-scene-copy>b','.lt-scene-copy>small','.lt-take-copy>b','.lt-review-state','#creatorSavedReason'].map(s=>{const e=document.querySelector(s),c=getComputedStyle(e);return{s,weight:c.fontWeight,color:c.color,size:c.fontSize}})})),null,2));
+let html=await fs.readFile(D+'/candidate-index.html','utf8');
+const guard=`<script>window.__writes=[];window.__errors=[];window.addEventListener('error',e=>__errors.push(e.message));window.addEventListener('unhandledrejection',e=>__errors.push(String(e.reason)));const f=window.fetch.bind(window);window.fetch=(u,o={})=>{const m=o.method||'GET';if(m!=='GET'){__writes.push({url:String(u),method:m});return Promise.reject(new Error('Candidate is read-only'))}return f(u,o)};window.setInterval=()=>0;const mem=new Map();Object.defineProperty(window,'sessionStorage',{value:{getItem:k=>mem.get(k)||null,setItem:(k,v)=>mem.set(k,String(v)),removeItem:k=>mem.delete(k)}});<\/script>`;
+html=html.replace('<script>',guard+'<script>');
+await p.evaluate(html=>{const f=document.createElement('iframe');f.id='productionCandidate';f.title='Loretune presentation candidate — not integrated';f.style='position:fixed;inset:0;width:100%;height:100%;border:0;background:#101010';document.body.replaceChildren(f);f.srcdoc=html;},html);
+await p.waitForFunction(()=>document.querySelector('iframe')?.contentDocument?.querySelector('#songs option[value="디자인 다중장면 QA 20261025 1330"]'),undefined,{timeout:15000});
+await p.selectOption('#songs','디자인 다중장면 QA 20261025 1330');await p.click('button[data-step="3"]');
+await p.evaluate(async()=>{const w=document.querySelector('iframe').contentWindow,v=w.document.querySelector('#preview video');if(v){v.muted=true;await v.play();await new Promise(r=>{const f=()=>{if(v.currentTime>.1){v.removeEventListener('timeupdate',f);v.pause();r()}};v.addEventListener('timeupdate',f)})}});
+await p.screenshot({path:D+'/candidate-desktop-1280.png'});
+console.log(await p.snapshot());
+console.log(await p.evaluate(()=>{const w=document.querySelector('iframe').contentWindow;return {errors:w.__errors,writes:w.__writes,viewport:w.innerWidth,tools:w.document.querySelector('#productionTools')?.outerHTML.slice(0,350)}}));

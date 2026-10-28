@@ -1,0 +1,59 @@
+{
+  "status": "ACCEPTED_APPROVED_SCOPE_ONLY",
+  "scope": "Loretune only",
+  "approved_and_applied": {
+    "snapshot_registrations": 26,
+    "authored_classifications": 5,
+    "new_current_contexts": 6
+  },
+  "verification": {
+    "registry_validations_passed": 2,
+    "fresh_context_checks_passed": 6,
+    "context_selected_each": 15,
+    "context_omitted_each": 0,
+    "preserved_original_files": 785,
+    "registered_source_hash_mismatches": [],
+    "independent_review": "independent-review.json"
+  },
+  "gate_at_handoff": {
+    "status": "blocked",
+    "exit_code": 1,
+    "findings": {
+      "UNCLASSIFIED_DOCUMENT": 14
+    },
+    "warnings": {
+      "CONTEXT_STALE": 58
+    },
+    "evidence_sha256": "8a6d88062dbbbb577875c73f5b4fcaad53278d1804bac72008d97a0af63dfa8d",
+    "excluded": [],
+    "scope": "classification, membership, bytes and receipt freshness; not semantic truth, product ontology or implementation acceptance"
+  },
+  "remaining_unclassified_paths": [
+    ".omo/evidence/agent-tools-02-20261028/PLAN-ko.md",
+    ".omo/evidence/agent-tools-02-20261028/PLAN-ko.v1-20261028.md",
+    ".omo/evidence/agent-tools-02-20261028/before/README.md",
+    ".omo/evidence/agent-tools-02-20261028/before/docs/qa/REMAINING-WORK.md",
+    ".omo/evidence/agent-tools-02-20261028/before/session-handoff.md",
+    ".omo/evidence/agent-tools-02-20261028/codex-gate/review-1.md",
+    ".omo/evidence/agent-tools-02-20261028/design-audit/hallmark-triage.md",
+    ".omo/evidence/agent-tools-02-20261028/design-audit/impeccable-audit.md",
+    ".omo/evidence/agent-tools-02-20261028/design-audit/impeccable-critique.md",
+    ".omo/evidence/agent-tools-02-20261028/tasks/A1-server-read-tools/result.md",
+    ".omo/evidence/agent-tools-02-20261028/tasks/B1-chat-ui/result.md",
+    ".omo/evidence/agent-tools-02-20261028/tasks/C1-3d-read-schema/result.md",
+    ".omo/evidence/agent-tools-02-20261028/tasks/D1-frame-observation-design/result.md",
+    "docs/design/FRAME-OBSERVATION-DESIGN-ko.md"
+  ],
+  "parallel_work_is_still_changing": true,
+  "earlier_nine_document_proposal": "Review-only snapshot; superseded by growing parallel file set, do not execute without fresh scope/source review and approval",
+  "global_settings_changed": false,
+  "claude_hook": {
+    "configured": false,
+    "native_dispatch_verified": false,
+    "protected_path_rejection_not_bypassed": true,
+    "prepared_project_only_proposal": "../claude-document-gate-20261028/claude-settings.local.proposed.json"
+  },
+  "product_goal_resumed": false,
+  "next_action": "After concurrent document-producing work settles, review/classify its actual changed set within its own user authority. Claude native settings deployment still needs authorized user-side placement. Do not reapply this completed26/5/6 operation.",
+  "at": "2026-10-28T08:38:18.673253+00:00"
+}

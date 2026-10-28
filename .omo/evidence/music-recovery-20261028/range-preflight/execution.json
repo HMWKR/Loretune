@@ -1,0 +1,21 @@
+{
+  "runtime_status": {
+    "command": "omo-agent-toolkit ulw-loop status --json",
+    "exit_code": 127,
+    "reason": "bun runtime and node fallback missing",
+    "fallback_evidence": ".omo/evidence/music-recovery-20261028/range-preflight"
+  },
+  "skills_read": [
+    "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-andrej-karpathy-skills/1.2.1/skills/karpathy-guidelines/SKILL.md",
+    "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/skills/feature-verification/SKILL.md"
+  ],
+  "references_read": [
+    "both package CODEX-RUNTIME.md",
+    "harness-core/rules/live-feature-verify.md",
+    "harness-core/rules/uncompromising-rigor.md"
+  ],
+  "before_command": "python3 .omo/evidence/music-recovery-20261028/range-preflight/probe.py before",
+  "before_exit_code": 0,
+  "source_changes": false,
+  "prior_probe_failure": "FFmpeg rejected .1 option; probe corrected to 0.1, whole scenario rerun. Failure log retained."
+}

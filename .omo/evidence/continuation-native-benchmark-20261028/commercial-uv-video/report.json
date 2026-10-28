@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-28T05:15:10.135257+00:00",
+  "status": "bounded public video artifact collection and sampled visual review complete; raw UV/mesh and live editing unverified",
+  "scope": {
+    "owned_directory": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/continuation-native-benchmark-20261028/commercial-uv-video",
+    "purpose": "Inspect an officially published commercial Tripo creator before/after UV comparison artifact, separate from open TripoSG examples.",
+    "methodology_sources": [
+      "https://www.tripo3d.ai/blog/tripo-to-ue5-character-walk",
+      "Existing pinned public screenshot provenance method; actual bytes and manual frame inspection distinct from publisher claims"
+    ],
+    "applied_methodology": [
+      "Public source element→original CDN video URL→HTTP and byte hash",
+      "Full video decode using preinstalled FFmpeg",
+      "Three original full-size single-frame extracts; before/after visible simultaneously inside the final comparison frame",
+      "Article author/date/model labels recorded independently from raw asset creation tag",
+      "Observations, author claims, inferences and unknowns separated"
+    ],
+    "non_goals": [
+      "No product/UI/source/MD/registry/pending-proposal changes",
+      "No browser, AI/model/provider generation calls, accounts, credentials, packages or external code execution",
+      "No sample asset copied into product",
+      "No download of unrelated idle/walking clips",
+      "No same-geometry or open-model/commercial-service parity claim"
+    ]
+  },
+  "source": {
+    "article_url": "https://www.tripo3d.ai/blog/tripo-to-ue5-character-walk",
+    "source_html": "source.html",
+    "source_receipt": "source-http.json",
+    "publication_metadata": "publication-metadata.json",
+    "author": "Se3yCake",
+    "author_affiliation": "Tripo Ambassador · 2D & 3D Motion Design Creator",
+    "cms_date": "2026-10-20T09:09:52.849Z",
+    "publishedAt": "2026-10-20T16:00:00.000Z",
+    "updatedAt": "2026-10-22T09:21:40.769Z",
+    "bias_limit": "An ambassador/creator example published by the vendor, not an independent controlled benchmark.",
+    "version_matching": {
+      "observed_in_article": "P2 and new Smart UV; earlier Tripo on left and Smart UV on right as described in Stage One.",
+      "not_disclosed": [
+        "Exact old build/API model ID",
+        "Exact new P2 build/revision",
+        "Generation request IDs, settings and artifact hashes",
+        "Identical mesh or input bytes for both sides"
+      ],
+      "asset_creation_time_tag": "2026-09-19T04:38:24.000000Z",
+      "creation_time_limit": "Embedded timestamp is earlier than article publication and is not independent proof of generation date or product version."
+    }
+  },
+  "artifact": {
+    "original_public_url": "https://cdn-blog.holymolly.ai/media/production/UV(2).mp4",
+    "article_location": "Stage One, following the paragraph describing left old UV and right new Smart UV.",
+    "original_local_path": "UV(2).mp4",
+    "http_status": 200,
+    "http_content_type": "video/mp4",
+    "bytes": 23394576,
+    "sha256": "75fe1d31322e00b48a3bdbb850f8ff0cecfcab2e78d98df2f6f95cdf4007cc11",
+    "duration_seconds": 12.433333,
+    "codec": "h264",
+    "width": 1920,
+    "height": 1080,
+    "frame_rate": "60/1",
+    "frame_count_metadata": 746,
+    "audio_streams": 0,
+    "original_preserved": true,
+    "reencoded_or_edited": false,
+    "screen_recorded_by_us": false,
+    "presented_as_our_platform_demo": false,
+    "source_is": "Vendor-published edited comparison clip; not a recording of us operating the commercial Tripo UI."
+  },
+  "verification": {
+    "tools": {
+      "ffmpeg": "/opt/homebrew/bin/ffmpeg",
+      "ffprobe": "/opt/homebrew/bin/ffprobe",
+      "version_receipt": "ffmpeg-version.txt",
+      "installation_performed": false
+    },
+    "metadata_receipt": "ffprobe.json",
+    "full_decode": {
+      "step": "full_decode",
+      "command": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-nostdin",
+        "-hide_banner",
+        "-v",
+        "error",
+        "-xerror",
+        "-threads",
+        "2",
+        "-i",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/continuation-native-benchmark-20261028/commercial-uv-video/UV(2).mp4",
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a?",
+        "-f",
+        "null",
+        "-"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.7517154170200229,
+      "stderr_path": "full-decode.stderr.txt",
+      "all_video_audio_streams": true
+    },
+    "frames_receipt": "frames.json",
+    "actual_local_view_image_paths": [
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/continuation-native-benchmark-20261028/commercial-uv-video/frame-0001.000.png",
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/continuation-native-benchmark-20261028/commercial-uv-video/frame-0006.217.png",
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/continuation-native-benchmark-20261028/commercial-uv-video/frame-0011.433.png"
+    ],
+    "actual_frame_review": "Each extracted full 1920x1080 PNG viewed through tools.view_image with original detail. This is sampled frame inspection, not a claim that a human watched the entire clip.",
+    "frame_time_note": "frames.json timestamps are requested FFmpeg seek positions; left/right in a full frame share one source frame. No pose, camera or surface normalization was performed."
+  },
+  "observations": [
+    {
+      "id": "UVV-OBS-01",
+      "at_seconds_requested": 1.0,
+      "frame": "frame-0001.000.png",
+      "fact": "A single colored stylized character is shown on a graphic background; no editor or UV diagram is visible."
+    },
+    {
+      "id": "UVV-OBS-02",
+      "at_seconds_requested": 6.217,
+      "frame": "frame-0006.217.png",
+      "fact": "Left character carries a checker test pattern with visible direction/scale discontinuities and promotional negative labels. Right character is still colored and differently posed. This instant is not a matched checker-to-checker comparison."
+    },
+    {
+      "id": "UVV-OBS-03",
+      "at_seconds_requested": 11.433,
+      "frame": "frame-0011.433.png",
+      "fact": "Both left and right characters display checker patterns simultaneously. Left has visibly fragmented/differently oriented patches around face, neck and limbs. Right shows larger more coherent checker regions across head/torso/legs in this view; transitions remain visible near joints.",
+      "limit": "The poses and visible surface regions differ. The visual observation does not establish distortion area, texture density, seam count or all-surface quality."
+    },
+    {
+      "id": "UVV-OBS-04",
+      "fact": "The inspected frames show rendered character surfaces and callout graphics, not a 2D UV editor, packing boundaries, an unwrap operation or real edit handles."
+    },
+    {
+      "id": "UVV-OBS-05",
+      "fact": "Original clip is decodable end to end with FFmpeg -xerror, exit code 0 and empty error log. No audio stream exists."
+    }
+  ],
+  "author_claims": [
+    {
+      "claim": "Left is an earlier Tripo UV result and right is the new Smart UV result; author considers the latter more suitable for tiling.",
+      "source": "Stage One paragraphs around UV video"
+    },
+    {
+      "claim": "P2 was used for base mesh with a target around 10k–15k quad faces; mesh parts were later downloaded as FBX and refined in Blender.",
+      "source": "Stage One"
+    },
+    {
+      "claim": "Some skinning and bone adjustment still required manual work; more complex animation capability remains under exploration.",
+      "source": "Stage Three and FAQ"
+    },
+    {
+      "claim": "Smart UV does not remove all seams; close-view head/hands may need manual island work and checker inspection.",
+      "source": "FAQ"
+    }
+  ],
+  "inferences": [
+    {
+      "claim": "A checker-based asset validation step is relevant before an optional internal 3D asset is textured or rendered into a music-video scene.",
+      "confidence": "moderate",
+      "limit": "This evidence supports a QA pattern, not adoption or a product architecture change."
+    },
+    {
+      "claim": "The rendered comparison illustrates appearance differences attributed to UV changes but does not document actual user edit operations.",
+      "confidence": "high",
+      "limit": "Generation/UV-edit provenance and raw data are missing."
+    }
+  ],
+  "unverified": [
+    "Raw mesh/FBX/GLB pair, identical base geometry/input, exact P2 release and old version",
+    "2D UV island layout, overlap, tile utilization, seam placement and packing efficiency",
+    "Numeric checker distortion or texel-density consistency over the complete mesh",
+    "Controlled lighting, camera, pose, mapping scale and material equality",
+    "Actual click-by-click commercial user edit operation, elapsed workflow time and render configuration",
+    "Native platform import/edit/save/reopen/render round trip and runtime AI control",
+    "Republication/product-ingestion rights to the video and character assets"
+  ],
+  "limits_and_next_steps": {
+    "media_license": "Downloaded as bounded public research evidence only; no product asset ingestion or license clearance.",
+    "real_before_after_status": "Published comparison video bytes are verified; actual UV editing workflow and matched raw asset equivalence are not.",
+    "required_for_stronger_claim": "Rights-cleared paired FBX/GLB plus exact run/version/settings and actual UI edit capture, then normalized checker views and UV data inspection.",
+    "relevance_limit": "3D remains optional support for music-video production; this task does not make 3D or photos a required creation step."
+  },
+  "bounded_download": {
+    "per_asset_limit_bytes": 25000000,
+    "total_media_limit_bytes": 50000000,
+    "original_video_download_count": 1,
+    "original_video_bytes": 23394576,
+    "all_other_video_urls_discovered": [
+      "https://cdn-blog.holymolly.ai/media/production/GPT-6 Astra动画制作.mp4",
+      "https://cdn-blog.holymolly.ai/media/production/UV(2).mp4",
+      "https://cdn-blog.holymolly.ai/media/production/角色导入UE5迈出了第一步.mp4"
+    ],
+    "other_videos_downloaded": false,
+    "download_failure": null
+  },
+  "completion_basis": "Original video retrieved within bounds, provenance and dates recorded, all frames decoded, three actual extracted frames reviewed, and limitations documented. No model inference or product acceptance claim."
+}

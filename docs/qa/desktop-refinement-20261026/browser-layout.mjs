@@ -1,0 +1,24 @@
+const fs=await import('node:fs/promises'),crypto=await import('node:crypto');const out='/Users/leesungmin/Desktop/Loretune/docs/qa/desktop-refinement-20261026/';const p=(await taskSpace(31)).page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});await p.reload();await p.waitForFunction(()=>document.body.dataset.desktopShell==='bounded');
+const before=crypto.createHash('sha256').update(await p.evaluate(()=>JSON.stringify(project()))).digest('hex');
+await p.click('button[aria-label="3 장면 제작·검토"]');await p.waitForFunction(()=>document.querySelector('#preview video')?.readyState>=2);
+const measurements=[];
+async function measure(name){const r=await p.evaluate(()=>{const v=document.querySelector('#preview video'),b=v.getBoundingClientRect(),s=getComputedStyle(v),cw=v.clientWidth,ch=v.clientHeight,k=Math.min(cw/v.videoWidth,ch/v.videoHeight),t=document.getElementById('ltTimelineDock').getBoundingClientRect();return {viewport:[innerWidth,innerHeight],doc:[document.documentElement.scrollWidth,document.documentElement.scrollHeight],shell:document.body.dataset.desktopShell,preview:{width:b.width,height:b.height,x:b.x,y:b.y},actualMedia:{width:v.videoWidth*k,height:v.videoHeight*k,readyState:v.readyState,objectFit:s.objectFit},timeline:{y:t.y,bottom:t.bottom},selected:document.getElementById('selectedBadge').textContent,playing:document.getElementById('sequenceStatus').textContent,caption:document.getElementById('sequenceCaption').textContent}});measurements.push({name,...r});await p.screenshot({path:out+name+'.png'});return r}
+await measure('final-selected-1920');
+await p.selectOption('#previewMode','sequence');await p.fill('#sequenceSeek','2.172');await p.waitForFunction(()=>document.querySelector('#preview video')?.readyState>=2);await measure('final-sequence-1920');
+await p.click('button[aria-label="4 편집·출력"]');
+if(!await p.evaluate(()=>document.querySelector('.lt-timeline-controls').open))await p.click('.lt-timeline-controls>summary');
+await p.fill('#sequenceSeek','2.172');await p.waitForFunction(()=>document.querySelector('#preview video')?.readyState>=2);const expanded=await measure('final-expanded-sequence-1920');
+await p.focus('.lt-timeline-controls>summary');const keys=[];
+for(let i=0;i<50;i++){await p.keyboard.press('Tab');const r=await p.evaluate(()=>{const e=document.activeElement,d=document.querySelector('.lt-timeline-controls');if(!d.contains(e))return null;const b=e.getBoundingClientRect(),top=document.elementFromPoint(b.x+b.width/2,b.y+b.height/2);return {id:e.id||e.getAttribute('aria-label')||e.textContent.trim(),tag:e.tagName,inside:b.y>=0&&b.bottom<=innerHeight,visible:!!top&&(e===top||e.contains(top)),rect:{x:b.x,y:b.y,w:b.width,h:b.height},scrollY,detailScroll:d.scrollTop}});if(!r)break;keys.push(r)}
+const expected=await p.evaluate(()=>[...document.querySelectorAll('.lt-timeline-controls input,.lt-timeline-controls select,.lt-timeline-controls button')].filter(e=>!e.disabled&&e.getClientRects().length).length);
+// Stress the displayed caption only. Never changes stored captions or media timing.
+const captionStress=await p.evaluate(()=>{const c=document.getElementById('sequenceCaption');window.qaCaption=c.textContent;c.textContent='긴 한국어 자막이 여러 줄로 이어져도 내용과 조작을 보존합니다. '.repeat(5);return {doc:document.documentElement.scrollHeight,scrollWidth:document.documentElement.scrollWidth,captionScroll:c.scrollHeight,captionClient:c.clientHeight,mediaStage:document.querySelector('.lt-preview-stage').clientHeight}});
+await p.evaluate(()=>document.getElementById('sequenceCaption').textContent=qaCaption);
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});await p.waitForFunction(()=>innerWidth===1280&&document.body.dataset.desktopShell==='bounded');await measure('secondary-expanded-1280');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});await p.waitForFunction(()=>innerWidth===1920&&document.body.dataset.desktopShell==='bounded');
+const after=crypto.createHash('sha256').update(await p.evaluate(()=>JSON.stringify(project()))).digest('hex');
+const result={at:new Date().toISOString(),before,after,measurements,keys,expectedControls:expected,captionStress,keyboardMethod:'precision segment begins with explicit focus(summary); initial-page no-focus keyboard journey recorded separately'};
+await fs.writeFile(out+'layout-keyboard.json',JSON.stringify(result,null,2));
+if(before!==after||expanded.doc[1]!==1080||expanded.actualMedia.height<260||keys.filter(x=>x.tag!=='SUMMARY').length!==expected||keys.some(x=>!x.inside||!x.visible)||captionStress.scrollWidth>1920)throw Error('layout/keyboard invariants failed '+JSON.stringify({expected,keys:keys.filter(x=>!x.inside||!x.visible),expanded}));
+console.log({pass:true,measurements,keyboardTargets:keys.length,expectedControls:expected,captionStress});

@@ -1,0 +1,17 @@
+{
+  "wave": "2d",
+  "written_before_spawn": "2026-10-28",
+  "why_approach_change": "Same failure class (continuation body cap) failed 3 times: A2b, SRV-r2, SRV-r3. Root cause (lead analysis; codex consult failed with 429 rate limit and is retried at the post-workflow gate): producers bound by COUNT while the transport binds by BYTES, and the over-budget notice carries no progressing cursor, so the model can loop on the same query forever.",
+  "source_verdicts": ["tasks/SRV-r3/verdict-wave2c.json", "tasks/UI-r3/verdict-wave2c.json", "tasks/D1-r5/verdict-wave2c.json"],
+  "lead_decisions": [
+    "One byte-budget choke point: before a tool result enters the continuation, serialize it exactly the way compact_result/result_message/continuation do and fit it to the bytes left in THIS turn (cap 65,536 minus the existing margin). Lists inside the result (shots, actions, plans, timeline.clips, server_receipts, sources, scene-status scenes, estimate items, nested takes/reference_versions) are trimmed item by item until it fits; never drop silently — report total, shown, not_shown and a cursor next_query.",
+    "Progress guarantee: every next_query must strictly advance (cursor = last shown stable id, ORDER BY rowid/stable key) or strictly narrow (item-scoped query). It must never equal the query that just failed. Test this as an invariant.",
+    "A single item larger than the budget: split its nested lists with an item-scoped query (e.g. one shot's takes after=<id>); if even the item shell cannot fit, return a structured ITEM_TOO_LARGE with the item id and the narrow query, not an endless repeat.",
+    "Non-search tools (estimate_media_plan etc.) replaced by the notice get the equivalent search_project_context query (media-estimate plan=<id> after=<cursor>); if none exists, the notice text must not tell the model to pass next_query.",
+    "Old 'scene-status offset=N' and 'context-* offset=N' forms return a structured QUERY_FORMAT_CHANGED with the cursor-form restart query, never silently the plain query.",
+    "Keep SRV-r3 behavior that already passed: no outcome_unknown lock, recoverable limit_reached with zero provider writes, preference candidate cap 10, OpenAI wire transform. Also apply the same description transform to xAI strict schemas (support unverified, safer to not send the keywords).",
+    "UI and D1 minors from wave 2c are all in scope.",
+    "Defaults that remain user decisions (do not change without asking): margin 8KiB, candidate cap 10, locked_fields out of scope, stray .pyc not deleted."
+  ],
+  "forbidden": ["real model/provider/paid calls", "count_tokens", ".env", "servers on 8765/57888", "browser automation", "deleting files", "registration/promotion of documents"]
+}

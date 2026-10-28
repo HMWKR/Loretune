@@ -1,0 +1,11 @@
+--- before/production_context.py
++++ production_context.py
+@@ -23,6 +23,8 @@
+    row=c.execute('SELECT blocked FROM asset_rights WHERE sha256=?',(t['sha256'],)).fetchone()
+    takes.append(dict(take_id=t['id'],sha256=t['sha256'],rights=t.get('rights','사용권 미확인'),blocked=bool(row and row[0]),review=next((r['decision'] for r in reversed(s.get('reviews',[])) if r['take']==t['id']),None)))
+   shots.append(dict(shot_id=shot_id(p,n),name=n,revision=s['revision'],selected_take=s['selected'],takes=takes,reference_head=s.get('reference_head'),reference_versions=deepcopy(s.get('reference_versions',[]))))
++  motion=next((v for v in s.get('motion_versions',[]) if v['id']==s.get('motion_head')),None)
++  shots[-1]['motion']=dict(revision=s.get('motion_head',0),scene=deepcopy(motion['scene']) if motion else None,grant_id=motion['approval']['id'] if motion else None)
+  t=editing.current(p);approval=t.get('approval',{})
+  timeline=dict(version=t['id'],clips=[dict(index=i,shot_id=shot_id(p,x['shot']),shot_name=x['shot'],take=x['take'],trim=x['trim'],duration=x['duration']) for i,x in enumerate(t['clips'])],audio_version=t['audio'],audio_offset=t['audio_offset'],captions=deepcopy(t['subtitles']),profile=t['profile'],grant_id=approval.get('id') if approval.get('actor')=='local-owner' and approval.get('execution_scope')=='local-render' else None)
+  grants=[json.loads(r[0]) for r in c.execute('SELECT body FROM execution_grants WHERE workspace=? AND project=?',(w,pid))];actions=[]

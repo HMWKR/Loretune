@@ -1,0 +1,16 @@
+{
+  "phase": "preflight before tests started",
+  "execution_handle_terminal": 15482,
+  "exit": 1,
+  "test_process_started": false,
+  "actual_full_test_executions": 0,
+  "error": "Source inventory assertion: unexpected added tests/motion_text_controls.cjs",
+  "cause": "MR1 driver tracked old214 dictionary only; new MR1 helper file was not enumerated, so prior claim changed3product+3tests omitted this added helper",
+  "scope_correction": "MR1 =214existingtracked+1newhelper=215 files; current adds2newtestmodules, total217",
+  "missing_source": "tests/motion_text_controls.cjs",
+  "actual_current_sha256": "99c359225325d930cbf90aa64d10b8815b0ec5c2b370b1163c02e93aad4055b4",
+  "prior_recorded_source": "docs/qa/codex-workflow-review-20261027/music-recovery-20261028/motion-default/report.json",
+  "prior_recorded_source_sha256": "6aff9c27cb8bb412aa1eba0360c5bed1a4f41ab819a0aba5d54b11599baf045c",
+  "preservation": "Old manifests/reports remain unchanged. Current later MD supplement will explicitly correct inventory scope.",
+  "runner_hypothesis_change": "Use independently recorded MR1 helper hash in complete baseline, retain exact4tasksource diff and all previous gates"
+}

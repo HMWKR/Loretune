@@ -1,0 +1,47 @@
+{
+  "files": [
+    {
+      "path": "tests/test_chat_general_http.py",
+      "changed_functions": [
+        "_observed_usage_race",
+        "test_cancel_after_settlement_before_tool_does_not_create_proposal"
+      ],
+      "unchanged_functions": 61,
+      "test_method_names_unchanged": true,
+      "assertions": [
+        {
+          "function": "_observed_usage_race",
+          "assertions_before": 11,
+          "assertions_after": 14
+        },
+        {
+          "function": "test_cancel_after_settlement_before_tool_does_not_create_proposal",
+          "assertions_before": 9,
+          "assertions_after": 16
+        }
+      ],
+      "before_sha256": "419804147c7ff010cc626618becc6f8e877483623707dcd108c167070425e7e4",
+      "after_sha256": "8339573d7fd87367507aa07544da4be8e8d09c4959000fecf8c7eb567ea3d5ff"
+    },
+    {
+      "path": "tests/test_chat_live_contract.py",
+      "changed_functions": [
+        "test_cancel_after_message_preserves_observed_estimate_and_blocks_tools"
+      ],
+      "unchanged_functions": 23,
+      "test_method_names_unchanged": true,
+      "assertions": [
+        {
+          "function": "test_cancel_after_message_preserves_observed_estimate_and_blocks_tools",
+          "assertions_before": 11,
+          "assertions_after": 15
+        }
+      ],
+      "before_sha256": "977c669b5a271cbdc633d44152434b8b4f046d8c5e8c6cf1ba88f54132c9c769",
+      "after_sha256": "dad5a321bef029a3941c9bfd9ff5f6430b05fb47c5c25f43d64fc94a3f7cde4a"
+    }
+  ],
+  "product_source_unchanged": true,
+  "no_test_added_removed_skipped": true,
+  "limits": "Assertion counts do not prove semantic equivalence; exact diff plus actual negative rights/unknown cases are retained."
+}

@@ -1,0 +1,86 @@
+{
+  "mode": "before",
+  "actual_provider_calls": 0,
+  "socket_operations": "forbidden",
+  "shared_database_opened": false,
+  "sources": {
+    "chat_runtime": {
+      "path": "/Users/leesungmin/Desktop/Loretune/docs/qa/cc02-preflight-fix-20261026/before/chat_runtime.py",
+      "sha256": "bd47f1779e9c210064e396773bf8d03fce558c8a3f8e27be46d3a587ecd0a8cd"
+    },
+    "anthropic_ontology": {
+      "path": "/Users/leesungmin/Desktop/Loretune/docs/qa/cc02-preflight-fix-20261026/before/anthropic_ontology.py",
+      "sha256": "952159519d939e2ef4f156b415a737d0199b95130cca8272b120eeee18c61fdf"
+    }
+  },
+  "cases": [
+    {
+      "case": "original_65529_65549",
+      "count_body_bytes": 65529,
+      "messages_body_bytes": 65549,
+      "count_opener_calls": 1,
+      "messages_opener_calls": 0,
+      "synthetic_credential_supplier_calls": 2,
+      "status": "outcome_unknown",
+      "ledger": [
+        [
+          "outcome_unknown",
+          5735,
+          null
+        ]
+      ],
+      "subsequent_enqueue_blocked": true
+    },
+    {
+      "case": "exact_messages_65536",
+      "count_body_bytes": 65516,
+      "messages_body_bytes": 65536,
+      "count_opener_calls": 1,
+      "messages_opener_calls": 1,
+      "synthetic_credential_supplier_calls": 2,
+      "status": "completed",
+      "ledger": [
+        [
+          "completed",
+          5735,
+          60
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    },
+    {
+      "case": "count_timeout",
+      "count_body_bytes": null,
+      "messages_body_bytes": null,
+      "count_opener_calls": 1,
+      "messages_opener_calls": 0,
+      "synthetic_credential_supplier_calls": 1,
+      "status": "blocked_before_message",
+      "ledger": [
+        [
+          "blocked_before_message",
+          0,
+          null
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    },
+    {
+      "case": "messages_timeout",
+      "count_body_bytes": null,
+      "messages_body_bytes": null,
+      "count_opener_calls": 1,
+      "messages_opener_calls": 1,
+      "synthetic_credential_supplier_calls": 2,
+      "status": "outcome_unknown",
+      "ledger": [
+        [
+          "outcome_unknown",
+          5735,
+          null
+        ]
+      ],
+      "subsequent_enqueue_blocked": true
+    }
+  ]
+}

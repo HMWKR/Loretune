@@ -1,0 +1,157 @@
+test_global_reservation_cap_still_rejects_another_conversation (tests.test_worker_scheduling.WorkerConversationTest.test_global_reservation_cap_still_rejects_another_conversation) ... 127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state?song=A&conversation=fba84d5d7af349bebbe5f7859b36b23f HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state?song=A&conversation=fba84d5d7af349bebbe5f7859b36b23f HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 400 -
+ok
+test_held_conversation_does_not_block_other_dispatch_or_actual_render (tests.test_worker_scheduling.WorkerConversationTest.test_held_conversation_does_not_block_other_dispatch_or_actual_render) ... 127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state?song=A&conversation=24e3a0177b854d8085c27124cd2a8010 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state?song=A&conversation=24e3a0177b854d8085c27124cd2a8010 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:42] "GET /api/state HTTP/1.1" 200 -
+ok
+test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches (tests.test_worker_scheduling.WorkerConversationTest.test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches) ... 127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state?song=A&conversation=51f7ddc768bb437eac4958196c15abba HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state?song=A&conversation=51f7ddc768bb437eac4958196c15abba HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state?song=A&conversation=b42ac131a97248988782cd5dee87a264 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state?song=A&conversation=b42ac131a97248988782cd5dee87a264 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state?song=A&conversation=b42ac131a97248988782cd5dee87a264 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:43] "POST /api/action HTTP/1.1" 200 -
+ok
+test_failed_queue_recovers_without_private_error_or_stalling_others (tests.test_worker_scheduling.WorkerSchedulingTest.test_failed_queue_recovers_without_private_error_or_stalling_others) ... ok
+test_fixed_domains_and_preset_stop_never_process (tests.test_worker_scheduling.WorkerSchedulingTest.test_fixed_domains_and_preset_stop_never_process) ... ok
+test_http_validation_and_local_boundary (tests.test_app.HttpTest.test_http_validation_and_local_boundary) ... 127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/operations HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /exports/record.json HTTP/1.1" 404 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/requests/http-1 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/requests/unknown HTTP/1.1" 404 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 403 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /../.env HTTP/1.1" 404 -
+ok
+test_registered_manifest_http_preserves_content_and_rights (tests.test_app.HttpTest.test_registered_manifest_http_preserves_content_and_rights) ... 127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /exports/e090f7c7317e41dca555d92d456a9365.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:44] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:45] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:45] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:33:45] "GET /exports/e090f7c7317e41dca555d92d456a9365.json HTTP/1.1" 403 -
+ok
+test_concurrent_writers (tests.test_app.PersistenceTest.test_concurrent_writers) ... ok
+test_invalid_rolls_back (tests.test_app.PersistenceTest.test_invalid_rolls_back) ... ok
+test_real_render_and_immutable_takes (tests.test_app.PersistenceTest.test_real_render_and_immutable_takes) ... ok
+test_restart_duplicate_and_conflict (tests.test_app.PersistenceTest.test_restart_duplicate_and_conflict) ... ok
+test_failed_chat_does_not_stop_other_queues_or_log_private_error (tests.test_app.WorkerCycleTest.test_failed_chat_does_not_stop_other_queues_or_log_private_error) ... ok
+test_failed_render_still_processes_generation_and_chat (tests.test_app.WorkerCycleTest.test_failed_render_still_processes_generation_and_chat) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 4.976s
+
+OK

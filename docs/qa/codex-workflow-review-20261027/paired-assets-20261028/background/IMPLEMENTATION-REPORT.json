@@ -1,0 +1,102 @@
+{
+  "task": "SCENE-BG-01",
+  "status": "REPORTED",
+  "changed_files": [
+    "scene_renderer.py",
+    "scene_project.py",
+    "scene-studio.js",
+    "tests/test_scene_background.py"
+  ],
+  "source_freeze": "source-freeze.json",
+  "choices": {
+    "background": "Set active factory World Background node Color to validated scene-linear RGBA; preserve factory Strength1, Cycles, AgX/look/exposure/gamma, material and light settings.",
+    "renderer_pin": "At import hash marshal of sys._getframe().f_code (actual loaded module code object), not disk bytes; expose renderer_fingerprint and include in existing approval context and job environment.",
+    "reapproval": "Existing review/render/context/job preflight/postflight checks reject legacy context/environment; restore stored version as new proposal and explicitly approve. No saved-row migration, deletion, or automatic reapproval.",
+    "public_projection": "Add requires_review to projected versions/proposals only; stale render/candidate guards and old-result labels reuse existing UI. Head0 old draft can be replaced and reviewed."
+  },
+  "verification": [
+    {
+      "scenario": "Red before fix",
+      "invocation": "PYTHONPATH=.:tests python3 -m unittest test_scene_background -v",
+      "observable": "3 tests fail before implementation (1 failure,2 errors); original3native background colors have identical RGB SHA",
+      "artifact": "red.log / renders.json"
+    },
+    {
+      "scenario": "Related tests on final frozen source",
+      "invocation": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-m",
+        "unittest",
+        "test_scene_background",
+        "test_scene_workflow",
+        "test_scene_asset_workflow",
+        "test_scene_contract",
+        "test_scene_ui",
+        "test_scene_config",
+        "-v"
+      ],
+      "observable": "71 tests /114.078s /OK /exit0 /skips0; before==after source hashes",
+      "artifact": "related.log / related-exit.json"
+    },
+    {
+      "scenario": "Controlled actual background A/B/C",
+      "invocation": "/opt/homebrew/opt/python@3.15/bin/python3.15 .omo/evidence/paired-assets-platform-20261028/background/fixed-run.py",
+      "observable": "black corner[0,0,0],white[193,193,195],blue[118,152,186];3different decoded RGB hashes;192x192",
+      "artifact": "fixed-renders/renders.json"
+    },
+    {
+      "scenario": "Actual separate old/current processes with persisted HTTP state",
+      "invocation": [
+        "http_probe.py legacy",
+        "http_probe.py current"
+      ],
+      "observable": "archived before-modules process created oldcompleted/queued/rejecteddraft; newprocess oldrender400,oldreview409,oldqueuedfailed with noTake/download; priorPNG samehash; restore+approve+nativeoutput completed; rejecteddraftreplace+approve succeeded",
+      "artifact": "legacy-http.json / new-http.json"
+    },
+    {
+      "scenario": "Post-native prepublication invalidation",
+      "invocation": "publication_race.py race",
+      "observable": "Real native render returned, then controlled fingerprint mutation;jobfailed,Takecount unchanged,privatePNG preserved. This injection is not a reload test.",
+      "artifact": "publication-race.json"
+    },
+    {
+      "scenario": "Loaded-code vs changed disk",
+      "invocation": "BackgroundContractTest.test_fingerprint_uses_loaded_code_not_current_disk and isolated copy probe",
+      "observable": "disk source alteration leaves existing loaded fingerprint/compiledscript unchanged;reload changes both",
+      "artifact": "loaded-code-probe.json / related.log"
+    },
+    {
+      "scenario": "Stale UI behavioral contract",
+      "invocation": "node .omo/evidence/paired-assets-platform-20261028/background/ui-stale-contract.cjs",
+      "observable": "oldcandidate not described current-ready;oldimage retained;renderhandler guarded;initial stale draft can be replaced",
+      "artifact": "ui-stale-contract.log"
+    },
+    {
+      "scenario": "Original evidence preservation",
+      "invocation": "SHA256 comparison against preserved-originals.json and original diagnostic manifest.json",
+      "observable": "7 priorPNG files including4vertex-colorPNG unchanged;3original native claims unchanged",
+      "artifact": "preserved-originals.json / manifest.json"
+    }
+  ],
+  "manual_visual_review": {
+    "path": "new-approved.png",
+    "observation": "Actual192px product render shows light-gray background and blue cube. No claim that white scene-linear1 equals display255; no new viewport/browser acceptance performed."
+  },
+  "limits": [
+    "Fingerprint conservatively changes across Python bytecode/compiler/path/line-table changes; such changes require explicit reapproval. It represents loaded code, not disk metadata or remote package authenticity.",
+    "In-process monkeypatching trusted renderer constants is not a supported deployment mechanism; loaded module fingerprint is not claimed to detect arbitrary hostile Python mutation. Separate actual old/newprocess verification is recorded independently from injected tests.",
+    "Background surface also illuminates objects; foreground shading can change with background. Color management and lighting parameters were not changed.",
+    "Node lookup relies on observed pinned factory-startup Background graph; broad Blender version compatibility not claimed.",
+    "Existing completed scenes/PNG/Take/claims retained. Stale queued/running check does not auto-rewrite old jobs or approve replacements.",
+    "No full suite executed by this worker. Root owns final independent browser/whole-platform acceptance.",
+    "No provider calls, external editor connection, original benchmark input regeneration, document/registry changes, or v1/v2 asset metadata rewrite."
+  ],
+  "sources": [
+    "https://docs.blender.org/api/5.2/bpy.types.World.html",
+    "https://docs.blender.org/manual/en/latest/render/lights/world.html",
+    "factory.json",
+    "implementation-before/*",
+    "actual separateprocess HTTP receipts"
+  ],
+  "root_owned_file_preserved": "tests/test_scene_vertex_colors_native.py not edited in this task"
+}

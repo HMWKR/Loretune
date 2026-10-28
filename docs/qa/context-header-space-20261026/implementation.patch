@@ -1,0 +1,25 @@
+--- before/index.html
++++ index.html
+@@ -226,6 +226,7 @@
+  const heading=$('#flowHeading');heading.classList.add('creator-skip-target');$('.lt-stage-bar').append(heading);$('.lt-status-line')?.remove();
+  const mobile=document.createElement('div');mobile.id='creatorMobileContext';$('.lt-panel-nav').before(mobile);
+  const description=$('#description'),detail=document.createElement('details');detail.className='creator-scene-description';detail.innerHTML='<summary>장면 설명</summary>';description.before(detail);detail.append(description);
++ const sceneHeader=$('.lt-shot-header'),sceneContext=document.createElement('div');sceneContext.className='lt-scene-context';sceneHeader.before(sceneContext);sceneContext.append(sceneHeader,detail);
+  const labels={ontologyButton:'캐릭터·장소·스타일',settings:'세계관 설정',budgetButton:'제작 예산',operationsButton:'진단·작업 기록',manifest:'제작 기록 내보내기',sync:'선택한 Take로 편집 구성',review:'출력 버전 승인',render:'영상 출력',prepareSelectedAction:'테스트 미디어 만들기',prepareGeneration:'영상 입력·예상 비용 확인',modelChatRefresh:'대화·작업 상태 새로고침',saveTimeline:'편집 저장',restore:'이 버전으로 복원'};
+  for(const [id,text]of Object.entries(labels))if($('#'+id))$('#'+id).textContent=text;
+  const exec=$('#executionCards').closest('details');if(exec){exec.querySelector('summary').textContent='테스트 미디어';exec.open=!!project()?.execution_cards?.some(c=>!c.result_decision)}
+--- before/studio.css
++++ studio.css
+@@ -866,6 +866,12 @@
+ .lt-ui[data-desktop-shell=bounded] .lt-shot-header { margin:0; min-height:36px; }
+ .lt-ui[data-desktop-shell=bounded] .lt-shot-header h1 { margin:0; }
+ .lt-ui[data-desktop-shell=bounded] .creator-scene-description { margin:0 0 var(--ui-space-2); }
++.lt-ui[data-desktop-shell=bounded] .lt-scene-context { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:var(--ui-space-3); margin-bottom:var(--ui-space-2); }
++.lt-ui[data-desktop-shell=bounded] .lt-scene-context>.lt-shot-header { min-width:0; }
++.lt-ui[data-desktop-shell=bounded] .lt-scene-context #shotTitle { overflow-wrap:anywhere; }
++.lt-ui[data-desktop-shell=bounded] .lt-scene-context>.creator-scene-description { min-width:0; margin:0; }
++.lt-ui[data-desktop-shell=bounded] .lt-scene-context>.creator-scene-description[open] { grid-column:1/-1; }
++.lt-ui[data-desktop-shell=bounded] .lt-scene-context #description { overflow-wrap:anywhere; }
+ .lt-ui[data-desktop-shell=bounded] #sequenceTransport { margin-block:var(--ui-space-1); }
+ .lt-ui[data-desktop-shell=bounded] #sequenceTransport #sequenceStatus { grid-column:1; margin:0; }
+ .lt-ui[data-desktop-shell=bounded] #sequenceTransport #sequenceCaption { grid-column:2; grid-row:3; text-align:end; }

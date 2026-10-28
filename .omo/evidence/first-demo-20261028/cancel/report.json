@@ -1,0 +1,341 @@
+{
+  "schema": "received-cancel-fix-report/1",
+  "recorded_at": "2026-10-28T00:31:34.492006+00:00",
+  "status": "REPORTED; root acceptance pending",
+  "outcome_ko": "이번 회차의 완전 응답 수신과 비용 기록 commit이 증명된 실행 중 취소만 cancelled로 종료한다. 관측 비용·사용량·steps를 보존하며 다음 독립 요청이 가능하다.",
+  "ownership": [
+    "chat_general.py",
+    "tests/test_general_chat_cancel_received.py"
+  ],
+  "before_source_sha256": "580d4a7046add89ecd251bf5e5324c4656fb617b99e0d3ba7d12455bb8f79f17",
+  "source_hashes": {
+    "chat_general.py": "edc4537ccbcd100d217ddc240f349001ddda3111324f54ba64f3edb7153c3e45",
+    "tests/test_general_chat_cancel_received.py": "845a4f13180d05b97aa410caa2a564eeb8dbf48642c2dc4675aca4ad034c1c47"
+  },
+  "diagnosis": {
+    "cause_path": "transport.complete→observe response/finish provider attempt→validate model and billing→commit estimate/settle→_current rejects cancel_requested→except classified all submitted requests as outcome_unknown",
+    "competing_hypothesis_rejected": {
+      "hypothesis": "Provider deadline exceeded",
+      "baseline_elapsed_seconds": 0.013260915991850197,
+      "deadline_seconds": 30,
+      "conclusion": "Current deterministic actual HTTP reproduction completed in about0.013seconds, below deadline; post-accounting status classification is the cause."
+    },
+    "baseline_status": "outcome_unknown",
+    "baseline_reservation": [
+      "estimated",
+      60
+    ],
+    "after_status": "cancelled",
+    "after_reservation": [
+      "estimated",
+      60
+    ]
+  },
+  "decision": {
+    "chosen": "Per-process/per-round response_accounted marker set only after successful accounting commit; cancelled only for matching latest cancel_requested turn with healthy journal, no pending tool/active attempt/AttemptExists and settled-or-estimated reservation.",
+    "rejected": "Classify all submitted cancels as cancelled or loosen usage/pricing/hold checks; this could hide unknown effects or costs."
+  },
+  "actual_verification": {
+    "baseline.log": {
+      "sha256": "031266e09976dc3bad32808e91a010b2a8bf7d604f3633a8aa0fb07d03e1093e",
+      "tests": 1,
+      "seconds": 0.557,
+      "status": "EXPECTED_BASELINE_FAILURE",
+      "command": "CANCEL_RECEIVED_EVIDENCE=.omo/evidence/first-demo-20261028/cancel/baseline python3 -m unittest tests.test_general_chat_cancel_received.GeneralChatCancelReceivedTest.test_received_priced_cancel_preserves_cost_and_allows_next_request -v"
+    },
+    "verification-with-restart.log": {
+      "sha256": "6cac2d493b469fb74c7e94b10807de473a9c34a312066caae9eda33fd91d9613",
+      "tests": 12,
+      "seconds": 7.448,
+      "status": "OK",
+      "command": "CANCEL_RECEIVED_EVIDENCE=.omo/evidence/first-demo-20261028/cancel/after-restart python3 -m unittest tests.test_general_chat_cancel_received -v"
+    },
+    "related-regression.log": {
+      "sha256": "ee5e6ed1b551a0e3b4aeeadd3f9283e58dc07bc8f15c06335d5aa5cb9cb1ad8a",
+      "tests": 46,
+      "seconds": 26.939,
+      "status": "OK",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_general_chat_activation tests.test_general_chat_conversations tests.test_general_scope_journal_guard -v"
+    }
+  },
+  "checks": [
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/cancel-after-count.json",
+      "status": "cancelled",
+      "pricing_status": null,
+      "reservation": [
+        "cancelled",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/continuation-approval-cancel.json",
+      "status": "cancelled",
+      "pricing_status": "priced",
+      "reservation": [
+        "estimated",
+        60
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/incomplete-usage-remains-unknown.json",
+      "status": "outcome_unknown",
+      "pricing_status": "insufficient_billing_evidence",
+      "reservation": [
+        "uncertain",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/late-response-after-recovery.json",
+      "status": "outcome_unknown",
+      "pricing_status": null,
+      "reservation": [
+        "uncertain",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "unknown"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/ledger-failure-remains-unknown.json",
+      "status": "outcome_unknown",
+      "pricing_status": "ledger_update_failed",
+      "reservation": [
+        "uncertain",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/pending-tool-remains-unknown.json",
+      "status": "outcome_unknown",
+      "pricing_status": "priced",
+      "reservation": [
+        "estimated",
+        60
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/queued-cancel.json",
+      "status": "cancelled",
+      "pricing_status": null,
+      "reservation": [
+        "cancelled",
+        null
+      ],
+      "attempts": [],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/received-priced-cancel.json",
+      "status": "cancelled",
+      "pricing_status": "priced",
+      "reservation": [
+        "estimated",
+        60
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/received-tool-not-applied.json",
+      "status": "cancelled",
+      "pricing_status": "priced",
+      "reservation": [
+        "estimated",
+        60
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/replay-reopen-after.json",
+      "status": "cancelled",
+      "pricing_status": "priced",
+      "reservation": [
+        "estimated",
+        60
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/replay-reopen-before.json",
+      "status": "cancelled",
+      "pricing_status": "priced",
+      "reservation": [
+        "estimated",
+        60
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/timeout-remains-unknown.json",
+      "status": "outcome_unknown",
+      "pricing_status": null,
+      "reservation": [
+        "uncertain",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "unknown"
+        ]
+      ],
+      "actual_provider_calls": 0
+    },
+    {
+      "path": ".omo/evidence/first-demo-20261028/cancel/after-restart/wrong-model-remains-unknown.json",
+      "status": "outcome_unknown",
+      "pricing_status": "pricing_contract_changed",
+      "reservation": [
+        "uncertain",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "actual_provider_calls": 0
+    }
+  ],
+  "negative_guards_preserved": [
+    "incomplete billing evidence",
+    "wrong response model",
+    "transport timeout",
+    "ledger update failure",
+    "recovery-before-late-response remains unknown with late observation",
+    "pending tool uncertainty",
+    "queued cancel has no dispatch/cost",
+    "after-count cancel has no message dispatch",
+    "continuation approval cancel preserves earlier cost",
+    "same request replay has no extra attempt/events; actual HTTP server stop/reopen retains cancelled turn and accounting"
+  ],
+  "root_retest_note": "Already-running browser fixtures imported pre-fix code. Restart an owned fixture with new source for a new UI scenario; historical outcome_unknown rows intentionally remain unmigrated.",
+  "observer_attempts": [
+    {
+      "path": "observer-attempt1.log",
+      "cause": "Test observer selected nonexistent ledger_events.body column; corrected to existing kind/amount/note. Not a product failure.",
+      "preserved_test": "observer-attempt1-test.py"
+    },
+    {
+      "cause": "Report summary assumed pricing_status on queued-cancel turn; corrected to optional field. All tests had already passed; source and evidence were unchanged."
+    }
+  ],
+  "limitations": [
+    "All provider sockets synthetic; actual provider calls0; account/billing acceptance unverified.",
+    "No browser operations in this subtask; actual API/SQLite/worker state verified.",
+    "Full suite not run; root coordinates final source freeze/regression.",
+    "Existing historical unknown rows not auto-reclassified or reconciled.",
+    "No UI/app/render/native/MD/registry/generated-context edits by worker."
+  ],
+  "fablize_narrow_verification": "New12 actualHTTP boundary tests and existing46 related cases passed; failure-before/fix-after facts retained."
+}

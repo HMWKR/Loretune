@@ -1,0 +1,17 @@
+--- index.html before fractional fix
++++ index.html after fractional fix
+@@ -402,11 +402,13 @@
+ let timelineFrameGeneration=0,timelineFrameScope='',timelineFrameObjectUrl=null,timelineFramePending=false;
+ function timelineFrameContext(){const p=project();return JSON.stringify([state?.workspace_id,song(),p?.active_conversation?.id,p?.timeline_head,draft,dirty])}
+ function invalidateTimelineFrame(){timelineFrameGeneration++;const img=$('#timelineFrameImage');if(img)img.hidden=true;if(timelineFrameObjectUrl){URL.revokeObjectURL(timelineFrameObjectUrl);timelineFrameObjectUrl=null}}
++// Saved durations are normalized to milliseconds by editing.validate; use its cumulative frame policy.
++function timelineClipFrameCounts(clips){let millis=0,previous=0;return clips.map((clip,index)=>{millis+=Math.round(clip.duration*1000);const end=index===clips.length-1?Math.ceil(millis*24/1000):Math.floor((millis*24+500)/1000),frames=end-previous;previous=end;return frames})}
+ function updateTimelineFrameControls(){
+  const p=project(),select=$('#timelineFrameClip'),time=$('#timelineFrameTime'),button=$('#timelineFrameView'),status=$('#timelineFrameStatus');if(!select||!time||!button||!status)return;
+  const ctx=timelineFrameContext();if(ctx!==timelineFrameScope){timelineFrameScope=ctx;invalidateTimelineFrame();status.textContent=dirty?'편집 초안을 먼저 저장하세요. 미리보기는 저장한 편집만 확인합니다.':p?.timeline_head?'저장 버전 '+p.timeline_head+'의 컷과 시각을 선택하세요. 출력 승인은 별도입니다.':'편집을 저장하면 실제 합성 프레임을 확인할 수 있습니다.'}
+  const clips=p?.timeline_versions?.find(t=>t.id===p.timeline_head)?.clips||[],signature=JSON.stringify(clips.map(c=>[c.shot,c.duration]));if(select.dataset.clips!==signature){const old=select.value;select.innerHTML=clips.map((c,i)=>`<option value="${i}">${i+1}. ${esc(c.shot)} · ${c.duration}초</option>`).join('');if([...select.options].some(x=>x.value===old))select.value=old;select.dataset.clips=signature}
+- const clip=clips[Number(select.value)],max=clip?Math.max(0,(Math.floor(clip.duration*24)-1)/24):0;time.max=String(max);select.disabled=!clips.length;time.disabled=!clips.length;button.disabled=timelineFramePending||dirty||!p?.timeline_head||!clip;
++ const clip=clips[Number(select.value)],frameCounts=timelineClipFrameCounts(clips),max=clip?Math.max(0,(frameCounts[Number(select.value)]-1)/24):0;time.max=String(max);select.disabled=!clips.length;time.disabled=!clips.length;button.disabled=timelineFramePending||dirty||!p?.timeline_head||!clip;
+ }
+ async function showTimelineFrame(){
+  const p=project(),select=$('#timelineFrameClip'),time=$('#timelineFrameTime'),status=$('#timelineFrameStatus'),img=$('#timelineFrameImage');if(!p||dirty||timelineFramePending||!p.timeline_head){updateTimelineFrameControls();return}

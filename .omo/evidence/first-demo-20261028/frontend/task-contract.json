@@ -1,0 +1,52 @@
+{
+  "task": "approved-motion-overlay-ui",
+  "state": "REPORTED",
+  "timestamp": "2026-10-28T00:18:06.817595+00:00",
+  "owner": "/root/demo_overlay_ui",
+  "Model": "session inherited",
+  "Reasoning": "session inherited",
+  "write_set": [
+    "index.html",
+    "studio.css",
+    "tests/timeline_ui_safety.cjs",
+    "tests/timeline_motion_overlay.cjs",
+    "tests/test_timeline_motion_overlay_ui.py"
+  ],
+  "evidence_write_set": ".omo/evidence/first-demo-20261028/frontend/**",
+  "contract": {
+    "motion_overlay": "omitted or {shot,motion_revision,start,end,offset_x,offset_y}",
+    "time": "clip-local seconds; source starts at frame0; range inside clip and source duration",
+    "position": "1920x1080 logical pixels, offsets x±1920/y±1080",
+    "source": "same-project approved immutable motion_versions reference",
+    "preview": "actual saved/approved output preview; no fake realtime composite"
+  },
+  "Methodology sources": [
+    "latest user phase1 demo request",
+    "docs/WORKFLOW-EXECUTION-GUIDE-ko.md",
+    "docs/qa/design-system-redesign-20261026/REFERENCE-LOCK.md",
+    "docs/qa/design-system-redesign-20261026/SEMANTIC-TOKEN-SPEC.md",
+    "Impeccable installed operate.md and craft-floor.md",
+    "Hallmark2 app-screen guidance, read in inherited parent context",
+    "feature-verification and Karpathy installed SKILL.md"
+  ],
+  "Applied methodology": "task-oriented progressive disclosure; old saved references retained; state-safe source/numeric editing; direct serialization/dirty/reload/cancel regression checks",
+  "Non-goals/limits": [
+    "no browser owned by child",
+    "no product-wide redesign",
+    "no real provider",
+    "no registry or document changes",
+    "no draggable or multi-track affordance invented"
+  ],
+  "Verification standard": "actual event handlers and serialization tests plus root actualUI/render recording acceptance",
+  "decision": "clip-local details control, selected-source info and honest non-realtime preview notice",
+  "backend_contract_received": true,
+  "source_before": "before.json",
+  "backend_preview_contract": "GET /api/timeline-frame?song=...&timeline_revision=<savedhead>&clip_index=<0based>&frame=<floor(seconds*24)>&conversation=<cid>",
+  "source_sha256": {
+    "index.html": "25b0097f47400eb16e24f034eb0f9ce887390e014952507ae511bf8dfb660eed",
+    "studio.css": "19851dcf5e21244fed815beb34cb11967036b44fdf0dc1e0d705b1ae5b29cd54",
+    "tests/timeline_ui_safety.cjs": "e99cf8c8dbf22fedbc2c8d6cb61cb4940cd859c90eebfbc7aa0ae1ba44e3a118",
+    "tests/timeline_motion_overlay.cjs": "a12e952cab6b00cfa6198cdea01dd4a9d4e5689f80c47b2580cc093818292507",
+    "tests/test_timeline_motion_overlay_ui.py": "ae6ea1083a2bf07dae0ac58c468b3f20036f95dec3873cc5bba5b2b9fb7fb1e0"
+  }
+}

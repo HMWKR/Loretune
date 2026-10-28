@@ -1,0 +1,63 @@
+{
+  "schema": "document-preservation-final-verification/1",
+  "checked_at": "2026-10-27T19:23:21.558791+00:00",
+  "task_state": "ACCEPTED for documented preservation scope",
+  "documentation_changes": [
+    {
+      "path": "README.md",
+      "before_sha256": "fe3c5f4c3da48c3ef3f609266137b12cc23db9d64c7c384b2fc1671f4e2d2770",
+      "after_sha256": "2fbeaa124ea154c6908883864872da88c65b35e4421244d02e9ec81d748c6785",
+      "existing_body_exactly_preserved": true
+    },
+    {
+      "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+      "before_sha256": "7b37570f5e60c2d70af5ea6f518692d06765c481a54bb85f12f46c151270e2bf",
+      "after_sha256": "f1382b69923857a11e1f1f80cfa8d0d3f714c42f91e0c8a330021b171c98d05a",
+      "existing_body_exactly_preserved": true
+    }
+  ],
+  "new_local_links_checked": 7,
+  "missing_links": [],
+  "immutable_sha256_rechecked": 544,
+  "governance_files": [
+    {
+      "path": ".document-gate.json",
+      "sha256": "513ce5591f5d898b87af6549b2acb86d4971618fb6f3f40acb5d6576c4b1d9d4",
+      "unchanged": true
+    },
+    {
+      "path": "docs/knowledge/project_kit/registry/knowledge.json",
+      "sha256": "b239679b15dbf9f4d19ad3d67d9b76973d68274ce3967db837043190fe21a2ec",
+      "unchanged": true
+    },
+    {
+      "path": "docs/specification/IP_Music_Video_Platform/project_kit/registry/knowledge.json",
+      "sha256": "8b4bb00294f8d348758414b77a8b80525a58132b2518925938b72de839257896",
+      "unchanged": true
+    }
+  ],
+  "context_receipts_unchanged_since_start": 58,
+  "historical_artifacts_unchanged": 4,
+  "proposal_sources_current": true,
+  "proposed_snapshot_destinations_not_created": 24,
+  "independent_semantic_acceptance": "driver-acceptance.json",
+  "document_gate": {
+    "status": "blocked",
+    "exit_code": 1,
+    "findings": {
+      "REGISTERED_SOURCE_OUTDATED": 24,
+      "UNCLASSIFIED_DOCUMENT": 3
+    },
+    "historical_context_warnings": 52
+  },
+  "registration_promotion_context_regeneration_performed": false,
+  "product_tests_run_by_this_document_recheck": false,
+  "fablize_narrow_verification": "Documentation-only audit/supplement. Executed read-only document checker, T0 path and SHA comparisons, exact before/current body retention, local-link resolution, current reviewer-source and proposal hashes; no product behavior test applies to these documentation changes. Parallel product work has separate receipts.",
+  "limitations": [
+    "No Git history or unknown preT0 deletion proof",
+    "Two historical QA JSON originals remain unrecovered",
+    "No private/data/secrets/external backup/Trash inspection",
+    "Gate remains blocked pending concrete registration/classification/context approval",
+    "Not a whole-platform or design acceptance"
+  ]
+}

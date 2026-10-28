@@ -1,0 +1,50 @@
+--- a/index.html
++++ b/index.html
+@@ -484,7 +484,7 @@
+ function drawFlow(){const p=project(),shots=Object.values(p?.shots||{}),selected=shots.filter(x=>x.selected);const labels=['음악과 사용할 구간을 확인하세요','직접 쓴 계획을 검토하세요','각 장면의 영상과 승인 상태를 확인하세요','음악·자막·출력 버전을 확인하세요'];$('#flowHeading').textContent=labels[guidedStep-1];document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-current',Number(b.dataset.step)===guidedStep?'step':'false'));$('#flowSummary').textContent=!p?'새 작품을 만든 뒤 시작하세요.':`음원 ${p.audio_versions.length}개 · 음악 구간 ${p.music_head?'확정 v'+p.music_head:'미확정'} · 장면 ${shots.length}개 · 선택된 영상/이미지 ${selected.length}개 · 출력 ${p.timeline_head?'저장 v'+p.timeline_head:'저장 전'} · AI 영상 수신은 별도 공급자 검증 대기`;$('#flowNext').textContent=guidedStep===4?'1 음악 입력으로 돌아가기':'다음: '+labels[guidedStep];}
+ 
+ $('#prepareSelectedAction').onclick=async()=>{const s=project()?.shots[shotName];if(!s?.plan_id)return message('계획을 승인해 추가한 장면을 먼저 선택하세요.',true);await act('action_propose',{song:song(),plan:s.plan_id,scene:s.stable_id})};
+-function drawExecutionCards(){const p=project();$('#executionCards').innerHTML=(p?.execution_cards||[]).map(c=>{const t=p.shots[c.shot]?.takes.find(t=>t.id===c.take),job=p.rehearsal_jobs?.find(j=>j.id===c.job),states={pending:'승인 대기',held:'보류',rejected:'거절',approved:'실행 승인됨',blocked:'문맥 변경으로 차단'};return `<article class="guided-card"><h2>${esc(c.shot)} · ${states[c.decision]||esc(c.decision)}</h2><p>${esc(c.description)}</p><p>${esc(c.model)} · 공급자 비용 $0 · 외부 전송 없음 · 로컬 연산비 미계측</p><p>이 작업은 제작 파이프라인 검증용 단색 이미지를 만듭니다. 장면 내용을 그리거나 실제 모델을 호출하지 않습니다.</p>${c.job?`<p>작업 영수증 ${esc(c.job)} · ${esc(job?.state||'상태 확인 중')}</p>`:''}${t?`<img src="${asset(t)}" alt="모의 합성 단색 후보" width="128" height="128"><p>Take ${t.id} · 선택본과 이전 출력은 유지됩니다.</p>`:''}<div class="toolbar">${['pending','held'].includes(c.decision)&&!c.job?`<button data-card="${c.id}" data-action="action_decide" data-decision="approved">$0 모의 작업 승인</button><button data-card="${c.id}" data-action="action_decide" data-decision="held">보류</button><button data-card="${c.id}" data-action="action_decide" data-decision="rejected">거절</button>`:''}${c.decision==='approved'&&!t?`<button data-card="${c.id}" data-action="action_execute">승인한 모의 작업 실행</button><button data-card="${c.id}" data-action="action_decide" data-decision="rejected">실행 전 승인 철회</button>`:''}${t&&!c.result_decision?`<button data-card="${c.id}" data-action="action_review" data-decision="approved">후보 검토 승인</button><button data-card="${c.id}" data-action="action_review" data-decision="rejected">후보 거절</button>`:''}${t?`<button data-card="${c.id}" data-open-shot>작업대에서 Take 비교·선택</button>`:''}</div>${c.result_decision?`<p>후보 ${c.result_decision==='approved'?'승인됨':'거절됨'} · 타임라인 선택은 별도입니다.</p>`:''}</article>`}).join('')}
++function drawExecutionCards(){const p=project();$('#executionCards').innerHTML=(p?.execution_cards||[]).map(c=>{const t=p.shots[c.shot]?.takes.find(t=>t.id===c.take),job=p.rehearsal_jobs?.find(j=>j.id===c.job),states={pending:'승인 대기',held:'보류',rejected:'거절',approved:'실행 승인됨',blocked:'문맥 변경으로 차단'};return `<article class="guided-card lt-execution-card" data-decision="${esc(c.decision)}"><h2>${esc(c.shot)} <span class="lt-state-chip">${states[c.decision]||esc(c.decision)}</span></h2><p>${esc(c.description)}</p><p class="lt-cost-facts">${esc(c.model)} · 공급자 비용 $0 · 외부 전송 없음 · 로컬 연산비 미계측</p><details class="lt-provenance-detail"${c.job&&job?.state!=='collected'?' open':''}><summary>모의 방식·작업 영수증</summary><p>이 작업은 제작 파이프라인 검증용 단색 이미지를 만듭니다. 장면 내용을 그리거나 실제 모델을 호출하지 않습니다.</p>${c.job?`<p>작업 영수증 ${esc(c.job)} · ${esc(job?.state||'상태 확인 중')}</p>`:''}</details>${t?`<img src="${asset(t)}" alt="모의 합성 단색 후보" width="128" height="128"><p>Take ${t.id} · 선택본과 이전 출력은 유지됩니다.</p>`:''}<div class="toolbar">${['pending','held'].includes(c.decision)&&!c.job?`<button data-card="${c.id}" data-action="action_decide" data-decision="approved">$0 모의 작업 승인</button><button data-card="${c.id}" data-action="action_decide" data-decision="held">보류</button><button data-card="${c.id}" data-action="action_decide" data-decision="rejected">거절</button>`:''}${c.decision==='approved'&&!t?`<button data-card="${c.id}" data-action="action_execute">승인한 모의 작업 실행</button><button data-card="${c.id}" data-action="action_decide" data-decision="rejected">실행 전 승인 철회</button>`:''}${t&&!c.result_decision?`<button data-card="${c.id}" data-action="action_review" data-decision="approved">후보 검토 승인</button><button data-card="${c.id}" data-action="action_review" data-decision="rejected">후보 거절</button>`:''}${t?`<button data-card="${c.id}" data-open-shot>작업대에서 Take 비교·선택</button>`:''}</div>${c.result_decision?`<p>후보 ${c.result_decision==='approved'?'승인됨':'거절됨'} · 타임라인 선택은 별도입니다.</p>`:''}</article>`}).join('')}
+ $('#executionCards').onclick=async e=>{const b=e.target.closest('[data-card]');if(!b)return;const c=project()?.execution_cards.find(c=>c.id===b.dataset.card);if(!c)return;if(b.hasAttribute('data-open-shot')){shotName=c.shot;mode(false);draw();return}await act(b.dataset.action,{song:song(),id:c.id,card_revision:c.revision,...(b.dataset.decision?{decision:b.dataset.decision}:{})});};
+ 
+ function drawGuided(){restoreBrief();const p=project();$('#guidedPlans').innerHTML=(p?.guided_plans||[]).slice().reverse().map(plan=>`<div class="guided-card"><h2>계획 v${plan.version} · ${plan.status==='applied'?'샷 반영됨':'검토 대기'}</h2><p>${esc(plan.goal)}</p><p>스타일: ${esc(plan.style||'미지정')} · 보존 조건: ${esc(plan.constraints||'미지정')}</p><p>${esc(plan.explanation)}</p><ol>${plan.scenes.map(x=>`<li>${esc(x.description)} · ${x.duration===null?'길이 미정':x.duration.toFixed(3)+'초 / 원곡 '+x.music_start.toFixed(3)+'초'}${plan.status==='applied'?` <button data-prepare-action="${esc(plan.id)}" data-scene="${esc(x.id)}">모의 후보 작업 준비 · AI 아님</button>`:''}</li>`).join('')}</ol>${plan.questions.map(q=>`<p>${esc(q)}</p>`).join('')}<p>계획 승인은 유료 생성 승인이 아닙니다. 기존 샷·승인본을 보존하고 새 샷으로 추가합니다.</p>${plan.status==='applied'?'':`<button data-guided-plan="${esc(plan.id)}" ${plan.scenes.some(x=>x.duration===null)?'disabled data-plan-blocked="true" title="음악 구간 확정 후 보존된 입력으로 새 계획을 검토하세요"':''}>이 버전 승인·샷 추가</button>${plan.scenes.some(x=>x.duration===null)?'<p>이 계획은 음악 구간 확정 전 버전입니다. 입력은 보존됩니다. 구간 확정 후 새 계획 버전을 검토하세요.</p><button data-plan-music>음악 입력으로 이동</button>':''}`}</div>`).join('')}
+@@ -631,4 +631,38 @@
+   });
+ })();
+ 
++</script>
++<script id="loretuneCraftUI">
++/* UI-only enhancement; original nodes, event handlers and values remain intact. */
++(() => {
++ if (document.body.classList.contains('lt-craft')) return;
++ document.body.classList.add('lt-craft');
++ const shortStages={'1':'1 음악','2':'2 계획','3':'3 장면','4':'4 출력'};
++ document.querySelectorAll('.flow-nav button[data-step]').forEach(button=>{
++  const label=button.textContent,short=shortStages[button.dataset.step]; if(!short)return;
++  button.setAttribute('aria-label',label);
++  const full=document.createElement('span'); full.className='lt-stage-full';full.textContent=label;
++  const compact=document.createElement('span');compact.className='lt-stage-short';compact.textContent=short;compact.setAttribute('aria-hidden','true');
++  button.replaceChildren(full,compact);
++ });
++ const notice = document.querySelector('#notice');
++ if (notice) {
++  const detail = document.createElement('details'); detail.className='lt-notice-detail';
++  const summary = document.createElement('summary'); summary.textContent='저장 상태';
++  notice.before(detail); detail.append(summary,notice);
++  const baseline='로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.';
++  const reveal = () => {
++   const routine=notice.textContent.trim()===baseline && !notice.classList.contains('error');
++   summary.textContent=routine?'저장 상태':'알림';
++   if (!routine) detail.open=true;
++  };
++  // Initial routine connection detail is collapsed. New errors or messages are
++  // immediately expanded; their original live region and wording are retained.
++  new MutationObserver(reveal).observe(notice,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']});
++  reveal();
++ }
++ const upload=document.querySelector('#upload'),hint=document.querySelector('.lt-take-review>small');
++ if (upload && hint) upload.after(hint);
++})();
++
+ </script></html>

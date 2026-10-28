@@ -1,0 +1,12 @@
+import pathlib,json,subprocess,time,os
+out=pathlib.Path(__file__).resolve().parent;c=json.loads((out/'preflight.json').read_text())['environment'];docker=['docker','--host','unix://'+c['LORETUNE_3D_DOCKER_SOCKET']];name='loretune-color-controlled-'+str(os.getpid());cmd=docker+['create','--name',name,'--platform=linux/amd64','--network=none','--read-only','--cap-drop=ALL','--security-opt=no-new-privileges','--pids-limit=256','--memory=2g','--cpus=2','--tmpfs','/tmp:rw,noexec,nosuid,size=256m','--mount','type=bind,src='+c['LORETUNE_3D_BLENDER']+',dst=/opt/blender,readonly','--mount','type=bind,src='+str(out/'input')+',dst=/input,readonly','--mount','type=bind,src='+str(out/'output')+',dst=/output','--entrypoint','/opt/blender/blender',c['LORETUNE_3D_IMAGE'],'--background','--factory-startup','--disable-autoexec','--python','/input/experiment.py']
+r=subprocess.run(cmd,capture_output=True,text=True,timeout=30);assert r.returncode==0,r.stderr;cid=r.stdout.strip();(out/'container.json').write_text(json.dumps({'id':cid,'name':name,'create_argv':cmd},indent=2));print('CONTAINER',cid,name,flush=True);inspect=json.loads(subprocess.check_output(docker+['inspect',cid],text=True))[0];(out/'container-config.json').write_text(json.dumps({'NetworkMode':inspect['HostConfig']['NetworkMode'],'ReadonlyRootfs':inspect['HostConfig']['ReadonlyRootfs'],'Memory':inspect['HostConfig']['Memory'],'NanoCpus':inspect['HostConfig']['NanoCpus'],'Mounts':inspect['Mounts']},indent=2));assert inspect['HostConfig']['NetworkMode']=='none';start=time.monotonic();timed_out=False
+try:
+ with (out/'render.log').open('w') as log:r=subprocess.run(docker+['start','-a',cid],stdout=log,stderr=log,timeout=420)
+except subprocess.TimeoutExpired:
+ timed_out=True;subprocess.run(docker+['kill',cid],capture_output=True,timeout=30)
+finally:
+ state=json.loads(subprocess.check_output(docker+['inspect',cid],text=True))[0]['State'];(out/'execution.json').write_text(json.dumps({'wall_seconds':time.monotonic()-start,'timed_out':timed_out,'state':state,'container':cid},indent=2));print(json.dumps(state),flush=True)
+ if not state['Running']:
+  clean=subprocess.run(docker+['rm',cid],capture_output=True,text=True,timeout=30);(out/'cleanup.json').write_text(json.dumps({'container':cid,'remove_exit':clean.returncode,'stdout':clean.stdout.strip(),'stderr':clean.stderr.strip()},indent=2))
+assert not timed_out and state['ExitCode']==0 and (out/'output/settings.json').exists()

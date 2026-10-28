@@ -1,0 +1,58 @@
+--- original-independent-suite.cjs
++++ after/original-replay.cjs
+@@ -23,7 +23,7 @@
+   return handler(url,options,body);
+  };
+ }
+-async function test(id,body){const observed={};try{await body(observed);results.push({id,status:'PASS',observed});}catch(e){results.push({id,status:'FAIL',observed,error:e.message,stack:e.stack.split('\n').slice(0,6)});}}
++async function test(id,body){if(!['ASY01','ASY02','MED02','STO02'].includes(id))return;const observed={};try{await body(observed);results.push({id,status:'PASS',observed});}catch(e){results.push({id,status:'FAIL',observed,error:e.message,stack:e.stack.split('\n').slice(0,6)});}}
+ const mutationCode=slice('async function sendRequest(',"$('#recoverRequest').onclick=");
+ function requestFixture(id,handler=async()=>response(200,{})){
+  const data=new Map(),nodes=new Map(),calls=[],messages=[],cache=new Map();let serial=0;
+@@ -35,24 +35,24 @@
+   requestCache:async(action,key,value)=>{calls.push({action,key});if(action==='put')cache.set(key,clone(value));if(action==='delete')cache.delete(key);return cache.get(key);},
+   message:(...x)=>messages.push(x),drawModelChat(){},renderTakeReview(){},refresh:async()=>{},song:()=> 'A',
+   productionReviewErrors:new Map(),takeReviewStore:{clearRevision(){}},fetch:strictTransport(handler,id)};
+- vm.createContext(ctx);vm.runInContext(line('function pendingId(')+'\n'+line('function clearPending(')+'\n'+mutationCode,ctx);
++ Object.assign(ctx,{stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'A'});vm.createContext(ctx);if(html.includes('function updateRecovery('))vm.runInContext(line('function updateRecovery('),ctx);vm.runInContext(line('function pendingId(')+'\n'+line('function clearPending(')+'\n'+mutationCode,ctx);
+  return {ctx,data,nodes,node,calls,messages,cache};
+ }
+ const reviewCode=slice('function createTakeReviewStore(', '// DOM glue.');
+-function reviewContext(){const ctx={};vm.createContext(ctx);vm.runInContext(reviewCode,ctx);return ctx;}
++function reviewContext(){const ctx={};Object.assign(ctx,{stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'A'});vm.createContext(ctx);if(html.includes('function updateRecovery('))vm.runInContext(line('function updateRecovery('),ctx);vm.runInContext(reviewCode,ctx);return ctx;}
+ function memory(){const m=new Map();return {map:m,getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};}
+ function pollFixture(caseId){
+  const waits=[],draws=[];let poll,current='A';
+  const state=revision=>({revision,projects:Object.fromEntries(['A','B'].map(name=>[name,{chat_turns:revision===1?[]:[{text:name+' revision '+revision}],chat_connection:{state:'synthetic'},media_actions:[],media_connections:[],image_connection:null,model_settings:{revision}}])),jobs:[],generation_jobs:[]});
+  const ctx={state:state(1),busy:false,dirty:false,song:()=>current,JSON,fetch:(url,options={})=>{const allowed=url==='/api/state'&&(!options.method||options.method==='GET');ledger.push({caseId,url,method:options.method||'GET',disposition:allowed?'synthetic-only':'blocked',forwarded:false});if(!allowed)throw Error('QA_TRANSPORT_BLOCKED');const d=defer();waits.push(d);return d.promise;},
+   setInterval:fn=>poll=fn,drawModelChat:()=>draws.push(ctx.state.revision),drawCreationProposals(){},drawGuided(){},drawMediaCreator(){},drawImageConnection(){},drawJobs(){},drawGeneration(){},refresh:async()=>{throw Error('unexpected refresh');}};
+- vm.createContext(ctx);const a=html.indexOf('setInterval(async()=>{'),b=html.indexOf('},1500);',a);assert.ok(a>=0&&b>a);vm.runInContext(html.slice(a,b+'},1500);'.length),ctx);
++ Object.assign(ctx,{stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'A'});vm.createContext(ctx);if(html.includes('function updateRecovery('))vm.runInContext(line('function updateRecovery('),ctx);const a=html.indexOf('setInterval(async()=>{'),b=html.indexOf('},1500);',a);assert.ok(a>=0&&b>a);vm.runInContext(html.slice(a,b+'},1500);'.length),ctx);
+  return {ctx,waits,draws,poll,state,setProject:x=>current=x};
+ }
+ const loaded=(f,s,t=0)=>{s.seek(t);const v=f.q('#preview').children[0];v.onloadeddata();return v;};
+ (async()=>{
+  await test('ENV01',async o=>{
+-  const expected='0bfdbbb815c631f23e9188a02a1308aa87430d2db33ab61f4a60f8b7adfdf109';o.html=crypto.createHash('sha256').update(html).digest('hex');assert.equal(o.html,expected);
++  const expected='07535dfd93c359de25a6bccdd2713635733ea51063beb6ecebb124867667eed3';o.html=crypto.createHash('sha256').update(html).digest('hex');assert.equal(o.html,expected);
+   const transport=strictTransport(async()=>response(200,{synthetic:true}),'ENV01');
+   await transport('/api/action',{method:'POST',body:JSON.stringify({action:'comment',data:{song:'A'},request_id:'synthetic-1'})});
+   await assert.rejects(()=>transport('/api/action',{method:'POST',body:JSON.stringify({action:'render_job',data:{song:'A'}})}),/BLOCKED/);
+@@ -72,7 +72,7 @@
+  await test('FUN03',async o=>{
+   const calls=[],node={},p={model_settings:{revision:7},timeline_head:2,approval:'human-only'};const before=sha(p);
+   const ctx={$:()=>node,project:()=>p,song:()=> 'A',FormData:class{constructor(form){this.rows=form.rows;}[Symbol.iterator](){return this.rows[Symbol.iterator]();}},act:async(action,payload)=>calls.push(clone({action,payload}))};
+-  vm.createContext(ctx);vm.runInContext(line("$('#modelSettingsForm').onsubmit="),ctx);
++  Object.assign(ctx,{stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'A'});vm.createContext(ctx);if(html.includes('function updateRecovery('))vm.runInContext(line('function updateRecovery('),ctx);vm.runInContext(line("$('#modelSettingsForm').onsubmit="),ctx);
+   await node.onsubmit({preventDefault(){},target:{rows:[['chat','synthetic-chat'],['image',''],['video','synthetic-blocked-video']]}});
+   assert.deepEqual(calls[0].payload,{song:'A',selections:{chat:'synthetic-chat',image:null,video:'synthetic-blocked-video'},model_revision:7});assert.equal(sha(p),before);
+   o.payload=calls[0];o.canonicalUnchanged=true;o.providerDispatch=0;
+@@ -80,7 +80,7 @@
+  await test('STA02',async o=>{
+   const nodes={},p={timeline_head:2,shots:{s1:{selected:2}}},job={id:'synthetic-output',song:'A',status:'completed',snapshot:{timeline:{id:1,clips:[{shot:'s1',take:1}]}},delivery_reviews:[],download:'/exports/synthetic-output.mp4'};
+   const before=sha({p,job}),ctx={state:{jobs:[job]},project:()=>p,song:()=> 'A',drawChatProgress(){},creatorOutputTest:()=>true,creatorError:x=>({message:x}),esc:String,$:s=>nodes[s]||(nodes[s]={innerHTML:''})};
+-  vm.createContext(ctx);vm.runInContext(slice('function drawJobs(){','let pendingRequest=null;'),ctx);ctx.drawJobs();
++  Object.assign(ctx,{stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'A'});vm.createContext(ctx);if(html.includes('function updateRecovery('))vm.runInContext(line('function updateRecovery('),ctx);vm.runInContext(slice('function drawJobs(){','let pendingRequest=null;'),ctx);ctx.drawJobs();
+   o.markup=nodes['#jobs'].innerHTML;assert.match(o.markup,/이전 편집 결과/);assert.match(o.markup,/출력 버전 1/);assert.match(o.markup,/테스트 미디어/);assert.doesNotMatch(o.markup,/출력 버전 2/);assert.equal(sha({p,job}),before);o.canonicalUnchanged=true;
+  });
+  await test('ASY01',async o=>{

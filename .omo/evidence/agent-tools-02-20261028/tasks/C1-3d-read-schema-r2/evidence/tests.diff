@@ -1,0 +1,107 @@
+--- .omo/evidence/agent-tools-02-20261028/tasks/C1-3d-read-schema-r2/before-r2/tests/test_general_chat_scene_context.py	2026-10-28 17:38:55
++++ tests/test_general_chat_scene_context.py	2026-10-28 17:40:27
+@@ -6,15 +6,21 @@
+ import os
+ from pathlib import Path
+ import tempfile
++from types import SimpleNamespace
+ import unittest
+ from unittest.mock import patch
+ import uuid
+ 
+ from app import Store
+ import chat_sessions
++import contracts
++import local_creation_tools
++from loretune import Conflict
+ import model_selection
++import ontology
+ import production_context
+ import production_tools
++import project_ontology
+ import scene_project
+ import scene_renderer
+ from scene_asset_fixtures import textured_glb
+@@ -77,11 +83,11 @@
+         self.assertEqual(set(value),{'scene_status'});status=value['scene_status']
+         self.assertEqual(status['scope'],'current-project-current-conversation')
+         self.assertEqual(status['scenes_3d'],[dict(scene_id=mine['scene_id'],shot_id=self.shot_id(),head=1,approval_status='recorded',requires_review=False,
+-            pending_proposals=[dict(proposal_id=proposal['proposal_id'],base_revision=1,status='proposed')])])
++            pending_proposals=[dict(proposal_id=proposal['proposal_id'],base_revision=1,status='proposed')],pending_total=1,pending_truncated=False,stale_total=0)])
+         self.assertEqual(status['connection'],dict(available=False,external_transmission=False))
+         sibling=self.read(self.other)['scene_status']['scenes_3d']
+         self.assertEqual(sibling,[dict(scene_id=theirs['scene_id'],shot_id=self.shot_id('second'),head=0,approval_status='none',requires_review=False,
+-            pending_proposals=[dict(proposal_id=theirs['proposal_id'],base_revision=0,status='proposed')])])
++            pending_proposals=[dict(proposal_id=theirs['proposal_id'],base_revision=0,status='proposed')],pending_total=1,pending_truncated=False,stale_total=0)])
+         self.assertNotIn(theirs['scene_id'],json.dumps(value));self.assertNotIn(mine['scene_id'],json.dumps(sibling))
+         record('scope',dict(default=status,sibling=sibling))
+ 
+@@ -147,9 +153,58 @@
+         self.approved(shot='second')
+         value=self.read();size=len(json.dumps(value,ensure_ascii=False).encode())
+         self.assertEqual(len(value['scene_status']['scenes_3d'][0]['pending_proposals']),10)
++        self.assertEqual((value['scene_status']['scenes_3d'][0]['pending_total'],value['scene_status']['scenes_3d'][0]['pending_truncated']),(12,True))
+         self.assertLess(size,4096)
+         record('size',dict(bytes=size,scenes=len(value['scene_status']['scenes_3d']),value=value))
+ 
++    def test_proposal_on_an_older_head_is_stale_not_pending(self):
++        mine=self.approved()
++        a,b=(self.call('scene_propose',song='A',scene_id=mine['scene_id'],base_revision=1,operations=[dict(target='camera',id='camera',field='lens_mm',value=v)])['scene'] for v in (30,40))
++        self.call('scene_review',song='A',scene_proposal_id=a['proposal_id'],decision='approved')
++        scene=self.read()['scene_status']['scenes_3d'][0]
++        self.assertEqual((scene['head'],scene['approval_status'],scene['requires_review']),(2,'recorded',False))
++        self.assertEqual((scene['pending_proposals'],scene['pending_total'],scene['pending_truncated'],scene['stale_total']),([],0,False,1))
++        # The stale proposal is still stored as 'proposed', and approval refuses it.
++        self.assertEqual([x['status'] for x in self.full()[0]['proposals'] if x['id']==b['proposal_id']],['proposed'])
++        with self.assertRaises(Conflict):self.call('scene_review',song='A',scene_proposal_id=b['proposal_id'],decision='approved')
+ 
++    def test_ontology_revision_drift_requires_review(self):
++        mine=self.approved()
++        proposal=self.call('scene_propose',song='A',scene_id=mine['scene_id'],base_revision=1,operations=[dict(target='camera',id='camera',field='lens_mm',value=35)])['scene']
++        scope=project_ontology.scope(self.store.workspace_id,contracts.project_id(self.store.workspace_id,'A'))
++        with self.store.connect() as c:
++            # Advance only the ontology head; the shot context fingerprint stays the same.
++            draft=ontology.propose(c,scope,dict(entities=[],relations=[]),0,'test');ontology.apply(c,scope,draft['id'],0,'test',approved=True)
++        full=self.full()[0]
++        self.assertFalse(any(x['requires_review'] for x in full['versions']+full['proposals']))
++        scene=self.read()['scene_status']['scenes_3d'][0]
++        self.assertEqual((scene['approval_status'],scene['requires_review'],scene['pending_total']),('stale_context',True,1))
++        with self.assertRaises(Conflict):self.call('scene_review',song='A',scene_proposal_id=proposal['proposal_id'],decision='approved')
++
++    def test_scene_list_is_empty_then_capped_with_totals(self):
++        status=self.read()['scene_status']
++        self.assertEqual((status['scenes_3d'],status['scenes_3d_total'],status['scenes_3d_truncated']),([],0,False))
++        limit=production_context.SCENE_STATUS_LIMIT;created=[]
++        for i in range(limit+2):
++            shot='extra-%02d'%i;self.call('shot',song='A',shot=shot,description='synthetic 3D')
++            created.append(self.call('scene_create',song='A',shot_id=self.shot_id(shot),scene=sample())['scene']['scene_id'])
++        status=self.read()['scene_status']
++        self.assertEqual((len(status['scenes_3d']),status['scenes_3d_total'],status['scenes_3d_truncated']),(limit,limit+2,True))
++        self.assertEqual([x['scene_id'] for x in status['scenes_3d']],created[-limit:])
++        size=len(json.dumps(dict(scene_status=status),ensure_ascii=False).encode())
++        record('size-capped',dict(bytes=size,scenes=len(status['scenes_3d']),scenes_total=status['scenes_3d_total'],pending_per_scene=1))
++
++    def test_scene_status_through_local_creation_tool_execute(self):
++        mine=self.approved()
++        self.call('scene_propose',song='A',scene_id=mine['scene_id'],base_revision=1,operations=[dict(target='camera',id='camera',field='lens_mm',value=35)])
++        p=self.project();studio=SimpleNamespace(projects={'A':p})
++        with self.store.connect() as c:
++            changes=c.total_changes;dump='\n'.join(c.iterdump())
++            result=local_creation_tools.execute(self.store,c,studio,'A','execution_context',dict(query='scene-status'),dict(id='run',engine='test'),dict(id='call'))
++            self.assertEqual(c.total_changes,changes);self.assertEqual('\n'.join(c.iterdump()),dump)
++        self.assertEqual(result,self.read())
++        self.assertEqual(result['scene_status']['scenes_3d'][0]['pending_total'],1)
++
++
+ if __name__=='__main__':
+     unittest.main()
+--- .omo/evidence/agent-tools-02-20261028/tasks/C1-3d-read-schema-r2/before-r2/tests/test_scene_spec_proposal_schema.py	2026-10-28 17:38:55
++++ tests/test_scene_spec_proposal_schema.py	2026-10-28 17:40:20
+@@ -29,6 +29,7 @@
+         schema=scene_spec.PROPOSAL_SCHEMA
+         self.assertEqual((schema['required'],schema['additionalProperties']),(['shot_id','base_revision','operations'],False))
+         self.assertEqual(schema['properties']['base_revision']['minimum'],1)
++        self.assertIn('scene-status',schema['properties']['base_revision']['description'])
+         ops=schema['properties']['operations'];self.assertEqual((ops['minItems'],ops['maxItems']),(1,16))
+         branches=ops['items']['anyOf'];self.assertEqual(len(branches),13)
+         pairs=set()

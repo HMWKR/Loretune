@@ -1,0 +1,112 @@
+{
+  "tests": 20,
+  "passed": true,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "receipts": [
+    {
+      "test": "test_later_round_message_credentials_failure_preserves_earlier_observed_usage",
+      "boundary": "later-round credential failure",
+      "reservation": [
+        "cancelled",
+        null
+      ],
+      "current_attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "not_sent"
+        ]
+      ],
+      "prior_reservation": [
+        "estimated",
+        60
+      ],
+      "live_model_called_preserves_prior_observation": true,
+      "automatic_retry": false
+    },
+    {
+      "test": "test_missing_credential_acquisition_stays_lazy_and_does_not_open_provider",
+      "boundary": "credential missing before provider transport",
+      "mode": "anthropic-live",
+      "provider_network_requests": 0,
+      "reservation": [
+        "cancelled",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "not_sent"
+        ]
+      ],
+      "turn_status": "blocked_before_message"
+    },
+    {
+      "test": "test_missing_message_credential_after_successful_count",
+      "boundary": "message credential missing after observed count",
+      "mode": "anthropic-live",
+      "provider_network_requests": 1,
+      "reservation": [
+        "cancelled",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "not_sent"
+        ]
+      ],
+      "turn_status": "blocked_before_message",
+      "live_model_called": false
+    },
+    {
+      "test": "test_production_branch_music_edit_human_approval_render_and_verified_receipt",
+      "workflow": "real platform HTTP -> production adapter branch -> synthetic provider socket -> human edit approval -> real local MP4 -> receipt",
+      "actual_AI_requests": 0,
+      "runtime_mode": "anthropic-live",
+      "mp4_sha256": "7ef4b67f2a013615678bbc104679beb34d513f6410180fdd6d543e65b4a1732d",
+      "stream_types": [
+        "audio",
+        "subtitle",
+        "video"
+      ],
+      "approved_audio_version": 1,
+      "audio_offset": 0.25,
+      "output_approved": false,
+      "provider_socket_requests": 16
+    },
+    {
+      "test": "test_real_mode_exact_wire_bytes_and_estimate_without_verified_account_claim",
+      "mode": "anthropic-live",
+      "provider_network": "synthetic stdlib opener only",
+      "wire_hashes": [
+        "042a382ab5814658c16eda3b47e95d752222a1b8cc33efe17ff95a3324330f06",
+        "8fc65fbebc2f3649f4b172ced9a7e97739a261bfb9e84a6fffeaa26f034d9500"
+      ],
+      "reservation": [
+        "estimated",
+        60
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "billing_confirmed": false
+    }
+  ]
+}

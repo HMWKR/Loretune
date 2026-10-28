@@ -1,0 +1,47 @@
+{
+  "phase": "diagnosis-awaiting-GO",
+  "source_sha256": "6aa01005559181d1f755c3837279111e0cebac2f56a41870073b1a78192df6aa",
+  "scope": [
+    "app.py",
+    "tests/test_worker_scheduling.py"
+  ],
+  "observation": "CLI single worker calls all synchronous queues sequentially. General provider wait blocks next render cycle and another conversation dispatch.",
+  "recommendation": "Fixed per-domain workers: render=1 generation=1 legacy-chat=1 only if configured general-chat=2 only if configured. Existing worker_cycle compatible. Event shutdown and returned thread handles.",
+  "alternatives": [
+    {
+      "name": "generic 2 workers",
+      "rejected": "Two blocking provider calls still starve render and unnecessarily enable concurrent generation processing."
+    },
+    {
+      "name": "external queue framework",
+      "rejected": "Unnecessary new dependencies and service for bounded local runtime."
+    }
+  ],
+  "thread_safety": [
+    "General queued-to-running claim BEGIN IMMEDIATE committed before transport I/O.",
+    "Store.connect opens independent connection per operation with timeout=30.",
+    "Production BoundedMessagesTransport constructs local opener per request; live config rejects shared injected opener.",
+    "Anthropic adapter holds per-call key headers result in locals."
+  ],
+  "risks": [
+    "Database writes remain serialized and may return busy after timeout; queue logs sanitize exception type and worker retries next cycle.",
+    "Stop Event prevents subsequent claims; cannot forcibly interrupt active network/render call.",
+    "Runtime objects must be configured before workers start; no hot config requirement.",
+    "Two general slots are a bound; third queues until one becomes free."
+  ],
+  "methodology_sources": [
+    "docs/design/CHAT-SESSION-PLAN.md CS09 CS12 CS15 CS16",
+    "https://www.sqlite.org/isolation.html",
+    "https://www.sqlite.org/lang_transaction.html",
+    "https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead"
+  ],
+  "attempt_status": "omo-agent-toolkit unavailable: bun runtime and fallback CLI missing; assigned evidence directory used.",
+  "skills_read": [
+    "karpathy-guidelines",
+    "harness-core:feature-verification"
+  ],
+  "tests_run": [],
+  "limitations": [
+    "Source inspection only; parent owns real browser baseline."
+  ]
+}

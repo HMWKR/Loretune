@@ -1,0 +1,836 @@
+{
+ "confirmed": [
+  {
+   "title": "분할바 너비 조절이 포인터 끌기 전용 (WCAG 2.5.7)",
+   "location": "chat-sidebar.js:248-254 (키보드 241-247)",
+   "reason": "키보드 대안은 있지만 2.5.7 AA는 끌기 없는 단일 포인터 대안을 요구한다. 운동 장애·트랙패드 사용자는 AI 패널 너비를 바꿀 수 없다",
+   "evidence": "pointerdown/pointermove/pointerup 핸들러만 있고, 클릭으로 너비를 바꾸는 경로는 grep 결과 0건",
+   "fix": "사이드바 헤더(.agent-sidebar-header)에 기존 버튼 스타일로 '좁게/넓게' 버튼을 넣고, 이미 있는 width(현재값 ± 48, true)를 호출한다(키보드 Shift 단계와 같은 값)",
+   "severity": "High",
+   "source": "수동 정적 점검 (sloplint가 .js를 검사하지 않아 기준선 밖)",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "High",
+    "why": "이 결함은 반박 시도를 견뎠습니다. 사실 확인 결과입니다.\n\n[검증됨] 인용한 줄 번호가 정확합니다. 대상 파일은 `/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/chat-sidebar.js`입니다.\n- 241-247행: keydown 처리. 화살표 키는 16px씩, Shift를 누르면 48px씩 움직이고 Home/End도 처리합니다.\n- 248-254행: pointerdown·pointermove·pointerup·pointercancel·lostpointercapture 처리.\n- 핸들은 17행에서 `div.agent-resizer`로 만들어지며 role=separator, tabIndex=0입니다.\n\n[검증됨] 다른 곳에서 이미 처리하고 있지 않습니다. 너비를 정하는 `width()` 함수(192행)를 부르는 곳은 다섯 군데뿐입니다.\n- 246행: 키보드\n- 252·253행: 끌기\n- 292행: 창 크기 변경 시 저장값 복원\n- 295행: 초기화\n\nclick·dblclick 처리나 너비 버튼은 없습니다. 너비 저장값(`WIDTH_KEY`)과 `aria-valuenow`가 나오는 파일은 스냅샷의 *.js·*.html 중 chat-sidebar.js 하나입니다. studio.css 1003-1005행은 `cursor:col-resize`와 `touch-action:none` 스타일만 정의하므로 CSS에도 대체 경로가 없습니다. 끌기 없이 너비를 바꾸는 단일 포인터 경로는 0건입니다.\n\n반박을 시도한 근거와 실패한 이유는 다음과 같습니다.\n1. 키보드 대안으로 충분하다는 반론: WCAG 2.5.7(AA)은 끌기를 대신할 단일 포인터 수단을 요구하므로 키보드는 그 대안이 되지 못합니다. 실패.\n2. 끌기가 필수적이라는 예외: 패널 너비 조절은 단일 포인터 단계 버튼으로도 구현할 수 있어 필수에 해당하지 않습니다. 사용자 에이전트가 제공하는 기능도 아닙니다. 실패.\n3. 순수 취향이거나 랜딩 페이지에만 해당한다는 반론: 실제 작업 화면(스튜디오)의 기능입니다. 끌기를 못 하는 사용자는 너비를 기본값 360px이나 저장된 값에서 바꿀 수 없습니다. 실패.\n4. 모바일에서만 문제라는 반론: 좁은 화면에서는 핸들이 아예 숨겨집니다(`handle.hidden = narrow.matches` 등). 이 결함은 데스크톱 범위에서 성립합니다.\n\n등급: rules/uncompromising-rigor.md §2에 따라 WCAG AA 위반은 High이고 강등할 수 없습니다. 패널 너비가 부가 기능이라 체감 영향이 작다는 점은 사실이지만, 사용자가 등급을 낮추겠다고 명시한 적이 없으므로 High를 유지합니다.\n\n수정안에 관한 메모(결함 판정과는 무관):\n- 헤더(18·24행)에는 이미 탭 2개와 닫기 버튼이 있습니다. 최소 너비 288px에서 버튼 2개를 더 넣으면 헤더가 넘칠 수 있습니다. [미확인] 실제 렌더링 확인이 필요합니다.\n- '넓게'는 현재값 +48입니다. 키보드에서 ArrowLeft가 +step인 것과 같은 방향이므로 값은 맞습니다."
+   }
+  },
+  {
+   "title": "비활성 컨트롤 글자색 4.21:1, 비활성 규칙 4벌이 충돌",
+   "location": "studio.css:505 (함께 286, 421, 730)",
+   "reason": "전용 토큰 --ui-disabled(6.36:1)가 있는데 505가 --ui-control로 덮어쓴다. 비활성 글자색이 --ui-disabled/--ui-control/--ui-muted로 제각각이다. WCAG 1.4.3은 비활성 컨트롤을 예외로 두므로 위반은 아니다. 이전 HTTP 실행의 FAIL 40(HHTTP-01)과 원인이 같다",
+   "evidence": "#858585 on #242424 = 4.21:1 계산. sloplint WARN 40 @505. 이전 stdout.json에서도 4.21:1",
+   "fix": "505를 color:var(--ui-disabled)!important로 바꾸고 730도 --ui-disabled로 맞춘다. 286·421은 505로 흡수한다",
+   "severity": "Medium",
+   "source": "sloplint WARN 40 + 이전 HTTP FAIL 40",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "why": "이 발견은 반박하지 못했습니다. 인용 위치, 덮어쓰기 관계, 대비 수치가 스냅샷과 모두 맞습니다.\n\n**인용 확인** (`/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/studio.css`)\n- 286, 421: `color:var(--ui-disabled)`이고 `!important`가 없다.\n- 505: `.lt-ui :where(button:disabled,input:disabled,select:disabled){... color:var(--ui-control)!important ...}`\n- 730: `#reviewTake:disabled{... color:var(--ui-muted)!important ...}`\n- 토큰 값: `--ui-raised` #242424, `--ui-disabled` #A6A6A3, `--ui-control` #858585, `--ui-muted` #BDBDBB\n\n**실제로 적용되는 값**\n- 505의 `!important`가 286과 421의 color를 이긴다. 그래서 두 규칙의 color 선언은 적용되지 않는다. 일반 비활성 버튼은 #858585가 되고, `#flowNext`, `#render`, `#saveTimeline`도 마찬가지다.\n- 730은 ID 선택자에 `!important`까지 있어 505를 이긴다. 그래서 `#reviewTake`만 #BDBDBB가 된다.\n\n**대비 직접 계산** (#242424 배경, WCAG 상대휘도 공식)\n- #858585: 4.21:1\n- #A6A6A3: 6.36:1\n- #BDBDBB: 8.25:1\n\n발견에 적힌 4.21과 6.36이 그대로 맞다.\n\n**다른 곳에서 이미 처리됐는지 확인**\n- 스냅샷의 CSS는 `studio.css` 하나뿐이다(`index.html`이 링크하는 파일도 이것 하나).\n- `:disabled` 규칙 13개 중 505를 덮는 것은 730뿐이다.\n- `*.js`, tests, docs, `session-handoff.md`에서 `ui-disabled`, `ui-control`, 858585, `style.color`를 검색했으나 결과가 없다.\n- 따라서 다른 곳에서 이미 처리된 것은 아니다.\n\n**취향 문제인지**\n- 아니다. 전용 토큰 `--ui-disabled`가 있는데도 505가 그 의도를 덮고 있다.\n- 사용자에게 보이는 결과도 있다. 같은 화면의 비활성 버튼끼리 글자 밝기가 다르다. 일반 버튼은 4.21이고 `#reviewTake`는 8.25다. `#reviewTake`의 비활성 글자는 활성 본문색(#DEDEDB)에 가까워 비활성 상태가 덜 구별된다.\n- 랜딩 페이지 전용이 아니라 스튜디오 앱 UI다.\n\n**한계와 등급 메모**\n- 발견 스스로 밝혔듯 WCAG 1.4.3은 비활성 컨트롤을 예외로 두므로 접근성 위반(High)은 아니다.\n- \"이전 HTTP 실행 FAIL 40\"과 \"이전 stdout.json\"은 스냅샷 근처에서 찾지 못해 [미확인]이다. 다만 4.21은 직접 계산해 확인했다.\n- 실제 문제는 비활성 상태가 서로 다르게 보이는 시각 결함과 토큰 충돌이다. 규칙 §2의 시각 결함 기본 등급이 Medium이므로 Medium을 유지한다.\n- 고칠 때 주의할 점: 730은 728의 `!important`에 맞서야 하므로 `!important`를 남긴 채 색만 `--ui-disabled`로 바꿔야 한다.",
+    "corrected_severity": "Medium"
+   }
+  },
+  {
+   "title": "재생 헤드를 매 프레임 left로 이동 (Floor 10a)",
+   "location": "studio-media.js:72 (122 tick→seek→updatePlayhead)",
+   "reason": "재생 중 rAF마다 레이아웃 속성을 바꿔 레이아웃을 다시 계산한다. 영상 디코딩과 겹치면 재생 헤드가 끊길 수 있다",
+   "evidence": "updatePlayhead(){q('#timePlayhead').style.left=`${t/total*100}%`}가 tick 안의 seek(next)에서 매 프레임 호출됨",
+   "fix": "#timePlayhead를 축 전체 폭 래퍼로 두고 transform:translateX(calc(var(--playhead)*100%))로 옮긴다. JS는 --playhead만 설정한다",
+   "severity": "Medium",
+   "source": "수동 정적 점검 (JS)",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "판정: 인용은 맞지만, 끊김이 생긴다는 주장과 수정안은 반박됩니다.\n\n**확인한 사실 [검증됨]**\n- 위치 인용은 정확합니다. studio-media.js:72의 updatePlayhead가 `#timePlayhead.style.left`를 바꿉니다.\n- 호출 경로도 맞습니다. tick(:122)이 매 rAF마다 seek(next)를 부르고, seek(:86-88)가 updatePlayhead를 부릅니다.\n- 다른 곳에서 처리되지 않았습니다. studio.css:821은 `#timePlayhead { position:absolute; ... }`이고, transform·will-change·`--playhead`는 어디에도 없습니다.\n- 그래서 결함은 남습니다. 재생 중에 레이아웃 속성을 매 프레임 애니메이션하는 것은 Floor 10a 규칙 위반이고, 랜딩 페이지가 아닌 편집기 화면에 해당합니다.\n\n**반박: 등급이 Medium으로 과대평가됨**\n1. 수정안을 적용해도 매 프레임 레이아웃 무효화가 사라지지 않습니다. 같은 updatePlayhead(:72)가 매 프레임 다음 값을 함께 씁니다.\n   - `#sequenceSeek.value`\n   - `#sequenceTime.textContent`: timecode(:20)가 밀리초 정밀도라 거의 매 프레임 바뀝니다.\n   - seek(:89, :92)의 `caption.textContent`와 `label.textContent`\n\n   left를 transform으로 바꿔도 프레임당 레이아웃 재계산은 계속됩니다. 주된 비용이 left라는 근거도 없습니다.\n2. absolute 요소의 left 변경은 가장 싼 축에 드는 레이아웃입니다. 영상 디코딩은 대부분 메인 스레드 밖에서 일어납니다. 재생 헤드 끊김은 측정되지 않은 추측입니다 [미확인]. 성능 계측이나 trace 증거가 없습니다.\n\n**수정 권고**\n- transform으로 옮기는 수정안 자체는 유효합니다.\n- 실제로 효과를 보려면 함께 바꿔야 합니다.\n  - 매 프레임 쓰는 텍스트를 줄이기: 바뀔 때만 쓰기, 시간 표시 갱신 주기 낮추기\n  - `#timeAxis`에 `contain:layout`을 두는 것 검토\n\n**등급 메모**: 사용자 영향이 입증되지 않았고 수정 범위도 불완전해서 Low를 제안합니다. rigor §2에 따라 실제 등급을 낮추는 것은 사용자가 명시해야만 확정됩니다. 이 값은 critic의 권고일 뿐입니다."
+   }
+  },
+  {
+   "title": "모바일 첫 진입 시 AI 패널이 작업 영역 전체를 가림",
+   "location": "chat-sidebar.js:46 (let opened = true), 215",
+   "reason": "900px 이하에서 opened 기본값이 true라 work.hidden=true가 된다. 음악 입력(1단계)이 첫 화면에서 보이지 않아 작업 진행에 영향을 준다",
+   "evidence": "work.hidden = narrow.matches && opened && !activeDialog. 이전 HTTP WARN F25(HHTTP-16: 1440에서 보이던 62단어가 375에서 숨김)와 원인이 같다",
+   "fix": "초기값을 opened = !narrow.matches로 바꾼다(데스크톱 동작은 그대로)",
+   "severity": "Medium",
+   "source": "수동 정적 점검 + 이전 HTTP F25",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "[살아남음] 판정은 Medium이며, 네 가지 기각 조건을 하나씩 대 보았지만 모두 통과하지 못했습니다.\n\n(1) 인용 위치는 정확합니다 [검증됨]. before/chat-sidebar.js의 위치는 다음과 같습니다.\n- 46행: `let opened = true`\n- 11행: `narrow = matchMedia('(max-width: 900px)')`\n- 215행: `work.hidden = narrow.matches && opened && !activeDialog`\n- 294행: 초기화 때 `apply()`가 실행됩니다.\n\n(2) 다른 곳에서 처리되는지 찾아봤지만 없습니다 [검증됨].\n- `opened`를 false로 바꾸는 곳은 232행 closeAgent, 289행 preview 클릭, 290행 stageObserver뿐입니다. 셋 다 사용자 조작이나 settings 선택 상태에서만 동작하고, 첫 로드에는 개입하지 않습니다.\n- 292행의 narrow change 리스너는 `opened`를 다시 계산하지 않습니다.\n- studio.css 160행과 637행의 `[hidden]{display:none!important}` 규칙이 숨김을 오히려 강제합니다. 1027~1029행의 ≤900px 블록에도 `.agent-work`를 다시 보이게 하는 규칙은 없습니다.\n- index.html과 general-chat-ui.js에는 `LoretuneAgentSidebar.close` 같은 초기 닫기 호출이 없습니다. refresh와 reviewMediaAction 호출만 있습니다.\n\n(3) 취향 문제가 아니라 실제 사용자 영향이 있습니다. 이전 실측 기록 first-demo-20261028/hallmark-agent-http-only/triage/report.json의 HHTTP-16에 375x900 화면에서 `default_agent_open_work_hidden: true`가 남아 있습니다. 닫기를 누른 뒤에야 오디오 섹션이 보였고, F25(1440px에서 보이던 62단어가 375px에서 숨음)도 같은 현상입니다. 음악 입력(1단계)이 담긴 `.agent-work` 전체가 첫 화면에서 사라지므로, 진행하려면 추가 조작과 발견 비용이 듭니다.\n\n(4) 랜딩 페이지 문제가 아닙니다. 앱 작업 화면 자체의 문제입니다.\n\n반박을 시도한 근거는 하나였습니다. 이전 트리아지가 이것을 \"intentional narrow-screen single-workspace tradeoff\"로 해석한 점입니다. 하지만 이는 에이전트의 해석일 뿐입니다. 사용자 확인이나 코드 주석에 의도가 명시된 곳을 찾지 못했습니다. 1행과 287행의 주석은 기본으로 열린다는 의도를 밝히지 않습니다. 그 트리아지도 발견 가능성 비용을 미검증 잔여 항목으로 남겼습니다. rigor §2는 의도된 동작이라는 추정을 금지하므로 강등 근거가 되지 않습니다. 또 docs/design-ux-benchmark-ko.md 62행의 \"모바일은 검토·승인·다운로드 우선\" 방침과도 어긋납니다.\n\n[누락] 수정안의 부작용입니다.\n- `opened = !narrow.matches`는 첫 로드 값만 바꿉니다. 그래서 좁은 화면에서 진입한 뒤 창을 넓히면, 데스크톱에서도 사이드바가 닫힌 채로 남습니다(292행 리스너가 opened를 재계산하지 않음). \"데스크톱 동작 그대로\"는 데스크톱에서 직접 로드한 경우에만 맞습니다. 이 부작용은 결함이 아니라 수정 범위에 대한 메모입니다.\n- 수정 후 375px 화면을 실제 브라우저로 다시 검증하지는 않았습니다 [미확인]."
+   }
+  },
+  {
+   "title": "버튼 호버 테두리가 '비활성' 토큰을 써서 오히려 흐려짐",
+   "location": "studio.css:503",
+   "reason": "호버가 평상시보다 약해 보여 비활성처럼 읽히는 역신호가 된다",
+   "evidence": "평상시 --ui-control on raised 4.21:1 → 호버 --ui-disabled-edge on --ui-hover 1.77:1",
+   "fix": "border-color:var(--ui-control)을 유지하거나 --ui-marker를 쓴다",
+   "severity": "Medium",
+   "source": "수동 정적 점검",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "[검증됨] 인용 정확: studio.css:503 `.lt-ui :where(button:hover:not(:disabled)) { background:var(--ui-hover); border-color:var(--ui-disabled-edge); }`. 토큰 실값은 --ui-control #858585, --ui-raised #242424, --ui-hover #303030, --ui-disabled-edge #555555 (studio.css:8,11,20,63). 대비를 직접 계산해 보니 평상시 테두리 4.21:1, 호버 테두리 1.77:1로 finding의 수치와 일치하고, 호버 테두리는 비텍스트 대비 3:1에 못 미친다. 다른 곳에서 이미 처리된 문제도 아니다. 기본 버튼 규칙(:282 border var(--ui-control), :502)은 특이도 0,1,0인데 :503이 같은 특이도로 뒤에 오므로 호버 시 테두리가 실제로 #555555로 덮인다. :283의 hover 규칙은 배경만 바꾼다. 비활성 상태(:505, :730)가 같은 --ui-disabled-edge 테두리를 쓰므로, 호버 테두리가 비활성 테두리와 같아지는 역신호도 사실이다. 특이도가 더 높은 일부 버튼(#takes button:hover :721, .media-action-card button :760, .production-model-button :753, #discardTakeReviewDraft :731, #creatorEditReview :727)은 border-color를 다시 지정해 이 문제를 피한다. 그래서 버튼마다 호버 테두리가 흐려지기도 하고 유지되기도 해 동작이 일관되지 않다. 이것도 결함 근거다. 랜딩 페이지 전용이 아니라 스튜디오 앱 UI이고, 취향 문제가 아니라 대비와 상태 신호의 문제다. 다만 호버 시 배경은 #242424에서 #303030으로 밝아지므로 호버 피드백이 아예 없지는 않다. 이 점은 심각도 판단에 참고만 할 사항이고, 강등은 사용자 선언 사항이므로 Medium을 유지한다. 권장 수정안(--ui-control 유지)은 #takes button:hover(:721)의 기존 패턴과 같아서 타당하다."
+   }
+  },
+  {
+   "title": "분할바 평상시 표시 대비 1.62:1",
+   "location": "studio.css:1004 (.agent-resizer::after)",
+   "reason": "컨트롤을 알아볼 시각 정보가 3:1에 못 미친다. WCAG 1.4.11 위반일 수 있다",
+   "evidence": "--ui-line #383838 on --ui-canvas #101010 = 1.62:1. 호버·포커스 때만 --ui-control(5.16:1)",
+   "fix": "평상시에도 var(--ui-control)을 쓴다",
+   "severity": "Medium (WCAG 해석이 확정되면 High) [추정]",
+   "source": "수동 정적 점검",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium (WCAG 1.4.11 적용 여부는 해석 문제로 남아 [추정]. 1.4.11 위반으로 확정되면 rigor §2에 따라 High)",
+    "why": "발견은 반박 시도를 견뎠다. 인용·수치·적용 범위 모두 맞다.\n\n**인용 [검증됨]**\n- 스냅샷 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/studio.css 1004행이 `.lt-ui .agent-resizer::after { content:\"\"; position:absolute; inset:0 5px; background:var(--ui-line); }`이다.\n- 1005행에서 hover와 focus-visible일 때만 `var(--ui-control)`로 바뀐다.\n- 토큰 값은 6행 `--ui-canvas:#101010`, 19행 `--ui-line:#383838`, 20행 `--ui-control:#858585`이다.\n\n**수치 [검증됨]**\n- 상대휘도를 직접 계산했다. #383838은 약 0.0396, #101010은 약 0.0052이다. 대비는 (0.0896)/(0.0552), 약 1.62:1로 맞다.\n- 배경 근거: body(67행)와 .lt-ui(497행)의 배경이 `--ui-canvas`이고, `.agent-workspace`(959행)는 별도 배경이 없다.\n- 이 발견이 놓친 것이 하나 있다. 대화상자 안 분할바(chat-sidebar.js가 만들고 1016행 `.agent-dialog .agent-resizer`가 적용됨)의 배경은 dialog의 `--ui-panel #1B1B1B`(148·559행)이다. 거기서는 대비가 약 1.45:1로 더 낮다.\n\n**다른 곳에서 처리되는지 [검증됨]**\n- `--ui-line`, `--ui-control`의 재정의를 찾았다. prefers-contrast나 라이트 테마로 바꾸는 규칙은 없다.\n- forced-colors 블록(363·595·783행)에는 분할바 규칙이 없다. 784행은 focus outline만 바꾼다.\n- 다른 CSS·HTML·JS에서 resizer 스타일을 덮어쓰는 곳도 없다.\n- 평상시 상태는 처리되지 않았다. 바로 옆 사이드바 border-left(962행)도 같은 `--ui-line`이라 대비가 똑같이 낮다. 보강해 주는 시각 단서가 없다는 뜻이다.\n\n**취향 문제나 랜딩 전용인지**\n- 둘 다 아니다. 분할바는 tabIndex=0, role=separator인 조작 컨트롤이다(chat-sidebar.js:17). tests/chat_sidebar.cjs:18-19에서 키보드와 마우스로 너비를 조절하는 것이 실제 기능으로 검증된다.\n- 데스크톱(901px 이상) 스튜디오 작업 화면 전체에 적용된다.\n- 평상시에 이 컨트롤을 알아볼 수 있는 시각 단서는 2px 선 하나뿐이다. cursor:col-resize는 포인터를 올린 뒤에야 보이고, 키보드 사용자에게는 보이지 않는다.\n\n**남은 반론 [추정]**\n- WCAG 1.4.11 이해 문서는 컨트롤에 시각적 경계를 두라고 요구하지 않는다. 이 선을 장식용 구획선으로 보면 1.4.11의 대상이 아니라는 해석도 가능하다.\n- 그래서 High로 확정하지 않고 Medium으로 둔다. 다만 이 선은 분할바를 알아볼 수 있는 유일한 시각 정보다. 실제로 쓰는 데 지장이 있으므로 결함이라는 판정은 유지한다.\n\n**수정안에 대한 부수 지적**\n- 평상시에도 `--ui-control`을 쓰면 hover 상태와 시각적으로 구분되지 않는다. hover와 focus에는 별도 단서(예: `--ui-marker`나 굵기 변화)가 필요하다.\n- focus는 289행의 전역 outline(`--ui-focus`)이 이미 보장하므로 문제가 없다."
+   }
+  },
+  {
+   "title": "' · '로 이어붙인 버튼·제목·메타 문구 (Floor 63)",
+   "location": "index.html:23 (sloplint), chat-sidebar.js:37 '에이전트 설정 저장 · 호출 없음', general-chat-ui.js:7 '전송 내용 준비 · 전송 없음', index.html:19 '계획 미리보기 · 외부 전송 없음', 띄어 쓴 ' · '가 전체 285곳",
+   "reason": "행동 라벨에 면책 문구가 붙어 라벨이 길어진다(이전 49a 줄바꿈의 원인 중 하나). 출력 규격 4개가 한 줄에 섞여 놓치기 쉽다. 붙여 쓴 열거(설정·자산·운영)는 표준 가운뎃점이라 결함이 아니다",
+   "evidence": "파일별 띄어 쓴 ' · ' 수: index 215 / general-chat 12 / chat-sidebar 19 / scene 9 / motion 13 / studio-media 17",
+   "fix": "버튼은 동사만 남기고 면책은 기존 .muted/small 도움말 + aria-describedby로 옮긴다. index.html:23은 <dl>이나 줄 목록으로 바꾼다",
+   "severity": "Medium",
+   "source": "sloplint FAIL 63 + 수동 집계",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "이 발견은 무너뜨리지 못했고, 인용도 모두 맞다. 다만 285곳이라는 수치는 '버튼에 붙은 면책 문구'의 규모로 읽으면 과장이다.\n\n[검증됨] 스냅샷 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/ 에서 띄어 쓴 ' · '를 grep으로 세었다. 결과는 index.html 215, general-chat-ui.js 12, chat-sidebar.js 19, scene-studio.js 9, motion-studio.js 13, studio-media.js 17, late-evidence-ui.js 5로 합계 290이다. 앞의 6개 파일만 더하면 285라서 발견의 수치와 맞는다.\n\n인용한 줄은 다음과 같다.\n- chat-sidebar.js:37에 '에이전트 설정 저장 · 호출 없음' 버튼(type=submit)이 있다.\n- general-chat-ui.js:7에 '전송 내용 준비 · 전송 없음' 버튼이 있다.\n- index.html:19에 primary 버튼 '계획 미리보기 · 외부 전송 없음'이 있다.\n- index.html:23(2295자짜리 한 줄)에 `<small>24fps · 원곡 48kHz · 클립 오디오 음소거 · 짧은 원곡은 무음으로 채움</small>`이 있다. 출력 규격 4개가 한 줄에 이어붙어 있다는 주장이 사실이다.\n- index.html 정적 버튼 가운데 ' · '로 면책 문구를 붙인 것은 3개다. 위의 '계획 미리보기 · 외부 전송 없음' 외에 '기본 선택 저장 · 호출 없음'과 '현재 장면 모의 작업 준비 · AI 아님'이 있다.\n\n반박 시도와 실패 이유:\n(1) 다른 곳에서 이미 처리되는지: studio.css:187의 `button { white-space:normal; word-break:keep-all; }`은 긴 라벨이 줄바꿈되도록 허용할 뿐 라벨을 줄이지 않는다. 인용된 버튼에는 aria-describedby나 별도 도움말이 연결되어 있지 않다. 따라서 처리되지 않았다.\n(2) 순수 취향 문제인지: 아니다. 면책 문구가 버튼의 접근 가능한 이름에 포함되어 스크린리더가 매번 끝까지 읽는다. 행동 동사도 뒤의 문구에 묻힌다. 사용자에게 실제 영향이 있다.\n(3) 랜딩 페이지에만 해당하는지: 아니다. 앱 작업 화면(작업대, 채팅, 인스펙터)이다.\n\n과장된 부분:\n- 285곳 대부분은 제목·메타·상태 문구다. 면책 문구를 단 버튼은 index.html 정적 3개와 JS 2곳 정도로 소수다. 발견의 핵심 결함은 '버튼 + 면책' 몇 곳과 index.html:23의 규격 나열이다. 285는 규모 지표로 쓰면 안 된다.\n- '이전 49a 줄바꿈의 원인' 주장은 스냅샷 docs와 session-handoff.md에서 49a를 찾지 못해 [미확인]이다.\n- tests/test_media_creator.py가 '호출 없음'이나 '전송 없음' 문자열을 참조한다. 라벨을 고치면 테스트도 같이 바꿔야 할 수 있다. 결함 판정에는 영향이 없다.\n\n등급: 문구 모호와 접근성 이름 문제라서 rigor §2 기준 Medium을 유지한다."
+   }
+  },
+  {
+   "title": "토글 라벨이 행동이 아닌 상태를 표시함",
+   "location": "chat-sidebar.js:218",
+   "reason": "'AI 대화 · 열림' 버튼을 누르면 패널이 닫히는데(235) 라벨만 보면 그걸 알 수 없다. aria-expanded와 같은 내용이 중복으로 낭독된다",
+   "evidence": "toggle.textContent = opened ? 'AI 대화 · 열림' : 'AI 대화 열기'",
+   "fix": "열린 상태 라벨을 'AI 대화 닫기'로 바꾸고, 상태는 aria-expanded에만 맡긴다",
+   "severity": "Medium",
+   "source": "수동 정적 점검",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "판정: 살아남았습니다. 다만 제안된 수정안에는 결함이 있습니다.\n\n[검증됨] 인용이 맞습니다. 스냅샷의 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/chat-sidebar.js 218행은 `toggle.setAttribute('aria-expanded', String(opened)); toggle.textContent = opened ? 'AI 대화 · 열림' : 'AI 대화 열기';` 입니다. 그래서 열린 상태의 라벨은 '열림'이라는 상태어이고, aria-expanded=\"true\"(펼쳐짐)와 같은 정보를 다시 읽어 줍니다.\n\n[검증됨] 이 문제를 다른 곳에서 처리하고 있지 않습니다. studio.css에서 .agent-toggle 규칙은 1007행과 1032행 두 개이고, 둘 다 margin만 지정합니다. data-agent-open=\"true\"일 때 토글을 숨기는 규칙도 없습니다. 그래서 패널이 열려 있는 동안 이 버튼은 항상 보이고 '· 열림' 라벨이 그대로 노출됩니다. 테스트(tests/chat_sidebar.cjs, tests/work_status.cjs)는 #agentToggle 클릭과 aria-expanded만 확인하고 라벨 문구는 검사하지 않습니다.\n\n[검증됨] 취향 문제도, 랜딩 페이지에만 해당하는 문제도 아닙니다. 실제 앱 스튜디오 셸(.lt-studio-shell)에 붙는 기능 토글입니다. 시각 사용자는 이 버튼을 누르면 무슨 일이 생기는지 알 수 없고, 스크린리더 사용자는 상태를 두 번 듣습니다. '문구 모호'에 해당하므로 rigor §2에 따라 Medium을 유지합니다.\n\n[반박 — 수정안] 근거에 부정확한 부분이 있어 수정안을 그대로 쓰면 새 결함이 생깁니다. 235행 클릭 핸들러는 `if (opened && selected === 'chat') closeAgent(); else { choose('chat'); chatTab.focus(); }` 입니다. 패널이 열려 있어도 '작업 설정' 탭이 선택된 상태라면 버튼을 눌러도 패널이 닫히지 않고 AI 대화 탭으로 바뀝니다. 그래서 '누르면 닫힌다'는 설명은 chat 탭이 선택된 경우에만 맞습니다. 열린 상태 전체에 'AI 대화 닫기'를 쓰면 settings 상태에서 라벨과 실제 동작이 어긋납니다. 라벨은 selected 값까지 보고 나눠야 합니다. opened && chat이면 'AI 대화 닫기', opened && settings이면 'AI 대화 보기' 또는 'AI 대화 열기', 닫혀 있으면 'AI 대화 열기'입니다. 동작 자체를 단순하게 바꾸는 방법도 있습니다.\n\n[미확인] 실제 브라우저와 스크린리더에서 어떻게 낭독되는지는 실행해 보지 않았습니다. 이 결론은 정적 판독에 근거합니다."
+   }
+  },
+  {
+   "title": "간격 척도 이탈 72건 (24b) + 20px·rem 원시값",
+   "location": "studio.css (레거시층 1-279: 25건, .lt-ui층 280-: 47건). 예: 72, 77, 109, 113, 302, 383, 501, 527, 544, 945-955",
+   "reason": "하나씩은 1~2px 차이지만 누적 72건이라 Medium으로 올린다. .timeline 패딩만 정의가 5벌이다",
+   "evidence": "값 분포: 6px 27, 10px 25, 14px 7, 3px 7, 7px 5, 5px 3, 9px 2, 2px 1. 별도로 20px 원시값 11곳",
+   "fix": "2-3px→--ui-space-1, 5-7px→space-1(칩)/space-2(바), 9-10px→space-2(높이는 min-height가 보장), 14px→space-3/4로 바꾼다. 20px는 space-4/6에 맞추고, 꼭 유지해야 할 때만 --ui-space-5 추가를 소유자가 결정한다",
+   "severity": "Medium (누적 승격)",
+   "source": "sloplint REFLEX 24b",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "I tried to knock this finding down and it held. One part of the fix is wrong for inputs.\n\n**Citations are correct [검증됨].** In before/studio.css, the scale tokens at lines 31-36 are --ui-space-1/2/3/4/6/8, i.e. 4, 8, 12, 16, 24 and 32px. There is no 20px step. Every cited line has an off-scale raw value:\n- 72: padding 9px\n- 77: padding 9px\n- 109: gap 10px and padding 14px\n- 113: margin-top 20px and padding 14px\n- 302: padding 6px\n- 383: gap 20px and padding 6px 20px\n- 501: padding 10px\n- 527: padding 14px\n- 544: padding 14px\n- 945-955: raw rem values .65, .35, .8 and .8rem\n\n**The value distribution reproduces [검증됨].** I scanned the spacing properties with a script. These counts match the finding exactly: 6px 27, 10px 25, 14px 7, 3px 7, 7px 5, 9px 2. 20px appears 11 times, also exact (lines 99, 105, 113, 242, 255, 367, 379, 383 x2, 387, 444). My scan also included top/left/inset, so its counts for 2px and 5px and its total come out higher than the finding's. The finding's figure of 72 is not overstated.\n\n**The claim of five .timeline padding definitions holds [검증됨].** They are at lines 113 (14px), 314 (space-4), 487 (10px), 527 (14px) and 860 (space-3, inside a media query). Within the same .lt-ui layer, 487 is overridden by 527, so dead and conflicting definitions are piled on top of each other.\n\n**It is not handled elsewhere.** Later rules don't bring these back onto the scale. Line 860 converts one value to a token, and only inside a media query.\n\n**It is not just taste.** The values drift from the token scale and conflict with each other, which is a real maintainability problem. The rigor rule says 1-2px differences are Low but get promoted to Medium when they accumulate, so Medium is justified. This is an app UI (studio), not a landing page.\n\n**Flaw in the fix [검증됨].** The fix says changing 9-10px to space-2 is fine because \"min-height guarantees the height\". That is true for buttons (line 72, min-height 40px). It is false for general inputs at lines 77 and 501: they have no min-height. The min-height:var(--ui-control-min) at line 864 only applies to specific selectors such as .clip-row input. So padding 10px to 8px would shrink input height by about 4px. When applying the fix, inputs need min-height:var(--ui-control-min) added, or their padding needs to be handled separately."
+   }
+  },
+  {
+   "title": "순백·순흑 리터럴 6건 (7a)",
+   "location": "studio.css:72, 77 (사문화), 146 .job a, 148 dialog, 220 .skip-link ×2",
+   "reason": "72·77은 .lt-ui층이 덮어 화면에 나오지 않는다. 146·148·220은 실제로 적용되어 대화상자·작업 링크만 #FFF로 보인다(미세한 불일치)",
+   "evidence": "dialog color:white를 덮는 .lt-ui 규칙이 없다. 대비는 충분하다",
+   "fix": "--ui-strong / --ui-canvas로 바꾼다(앱 팔레트는 무채색이라 '색조 입히기' 수정안은 맞지 않음)",
+   "severity": "Low",
+   "source": "sloplint FAIL 7a",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "발견은 반박되지 않았습니다. 인용한 6건을 하나씩 확인했고, 화면에 실제로 적용되는 리터럴도 아직 남아 있습니다. 확인 대상은 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/studio.css 스냅샷입니다.\n\n[검증됨] 인용 위치\n- 72행: `button,.download {... color:white ...}`\n- 77행: `input,select,textarea {... color:white ...}`\n- 146행: `.job a { color:white }`\n- 148행: `dialog {... color:white ...}`\n- 220행: `.skip-link {... background:white; color:black }`\n- 합계 6건으로, 인용과 개수가 맞습니다.\n\n[검증됨] 72행과 77행은 화면에 나오지 않음\n- 이 문서의 body에는 `class=\"lt-ui lt-system\"`이 붙어 있습니다(index.html:12).\n- `.lt-ui :where(button,.download){color:var(--ui-strong)}`(282행)와 `.lt-ui :where(button){...color:var(--ui-strong)}`(502행)는 명시도가 (0,1,0)입니다. 원래 규칙의 `button`(0,0,1)보다 높습니다. `.download`는 명시도가 같은 (0,1,0)이지만 뒤에 선언된 쪽이 이깁니다.\n- 입력 요소도 같습니다. `.lt-ui :where(input,select,textarea){color:var(--ui-strong)}`(290행)가 덮습니다.\n- 따라서 72행과 77행은 화면에 영향이 없습니다.\n\n[검증됨] 146·148·220행은 실제로 적용됨\n- `.lt-ui dialog` 규칙은 318·354·559행에 있지만 셋 다 color를 정하지 않습니다. 그래서 148행의 `color:white`가 살아 있고, 대화상자 안 본문과 제목은 #FFF로 표시됩니다. 앱 나머지는 `.lt-ui{color:var(--ui-strong)}`(497행)의 #F4F4F2입니다.\n- `.job a`의 color를 덮는 `.lt-ui` 규칙도 없습니다. 792·888행은 포커스 외곽선과 스크롤 여백만 다룹니다. 대상 링크는 실제로 존재합니다. index.html 오프셋 83233의 `.job` 안에 `<a href=\"${j.download}\" download>`가 있습니다.\n- `.skip-link`를 덮는 규칙은 없습니다.\n\n[검증됨] 수정안\n- 토큰이 정의되어 있습니다(6행 `--ui-canvas:#101010`, 15행 `--ui-strong:#F4F4F2`).\n- 이 토큰으로 바꾸면 기존 버튼(`button.primary`, 74행)의 흰 바탕·검은 글씨 반전 패턴과도 맞습니다.\n\n반박 시도와 실패 이유\n- 인용 오류: 아닙니다. 행 번호와 내용이 모두 일치합니다.\n- 다른 곳에서 이미 처리됨: 72·77행에 대해서만 맞는 말입니다. 발견도 이 두 줄을 이미 사문화로 분류했습니다. 146·148·220행은 처리되어 있지 않습니다.\n- 랜딩 페이지 전용: 아닙니다. 대상은 앱 스튜디오 화면입니다.\n- 순수 취향: 영향이 아주 작은 것은 사실입니다. #FFF와 #F4F4F2 차이는 눈으로 겨우 구분됩니다. 그래도 대화상자와 다운로드 링크에서 실제 렌더 색이 토큰 체계와 어긋나는 측정 가능한 불일치입니다. 또 사문화된 리터럴 2건은 `.lt-ui` 층이 빠지면 다시 드러나는 유지보수 결함입니다.\n\n등급은 Low가 맞습니다. 대비는 충분하고 기능에는 영향이 없습니다.\n\n[미확인] 실제 렌더러에서 계산된 색 값은 측정하지 않았습니다. 이번 판정은 CSS 명시도 분석에 근거합니다."
+   }
+  },
+  {
+   "title": "정의되지 않은 --border 폴백 #d5d5d5와 미토큰 블록",
+   "location": "studio.css:946 (945-955), 654 font 리터럴, 936/938/949 font-weight 600",
+   "reason": "--border가 어디에도 없어 폴백 색이 쓰인다. 평소엔 988이 덮지만 사이드바 스크립트가 실패하면 어두운 화면에 밝은 테두리가 나온다",
+   "evidence": "grep '--border' 결과 946 한 곳뿐",
+   "fix": "var(--ui-line), --ui-radius-control, --ui-space-*, --ui-weight-heading, var(--ui-font-timecode)로 바꾼다",
+   "severity": "Low",
+   "source": "sloplint FAIL 48 + 수동",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "스냅샷 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/에서 직접 확인했고, 이 결함은 실재한다. 다만 결함으로 볼 수 있는 부분은 --border 폴백 하나뿐이다.\n\n인용 위치: [검증됨] studio.css:946 `.general-chat-card { border: 1px solid var(--border, #d5d5d5); border-radius: .65rem; padding: 1rem; ... }`가 맞다. 스냅샷 전체를 grep해 보니 `--border`(접미사 없는 것)는 946에만 나온다. CSS 정의도, JS setProperty도 없다. 그래서 늘 폴백 #d5d5d5가 쓰인다.\n\n다른 곳에서 처리되는가: 일부만 처리된다 [검증됨]. 988 `.lt-ui .agent-chat-pane .general-chat-card { border-color:var(--ui-line); border-radius:var(--ui-radius-control); padding:var(--ui-space-3); }`이 덮는 것은 카드가 .agent-chat-pane 안에 있을 때뿐이다. 카드를 그 안으로 옮기는 것은 chat-sidebar.js다. 이 스크립트가 window.LoretuneGeneralChat.mount({container})를 부르면 general-chat-ui.js:21 layout()이 sidebarHost.append(panel)을 실행한다. 이 경로가 빠지면 패널은 general-chat-ui.js:8 `document.getElementById('modelChatPanel').after(panel)` 위치에 남는다. 이때는 988이 적용되지 않는다. 즉 index.html:1109 chat-sidebar.js가 로드되지 않거나 init 중 예외가 나면 카드에 밝은 #d5d5d5 테두리가 나온다. 페이지는 :root color-scheme:dark이고 --ui-panel은 #1B1B1B, --ui-line은 #383838이다. 이런 실패 경로에서 사용자가 실제로 보게 되므로 취향 문제가 아니다. 대시보드 UI이고 랜딩 페이지 전용 지적도 아니다.\n\n뺄 부분: 인용된 654 `font:12px/1.55 ui-monospace,monospace`와 936/938/949 `font-weight:600`은 값이 이미 토큰과 같다(--ui-font-timecode:ui-monospace,monospace 58행, --ui-weight-heading:600 51행). 그래서 화면에는 차이가 없다. 토큰을 쓰지 않았다는 일관성 문제일 뿐이고, 사용자에게 미치는 영향은 0이다. 이 부분까지 같은 결함으로 세면 하나를 두 번 세는 셈이다.\n\n등급: 정상 경로에서는 988이 덮으므로 영향이 실패 경로로 한정된다. 그래서 Low를 유지한다.\n\n[미확인] 실제 렌더러에서 확인하지 않았다. chat-sidebar.js가 실패하게 만든 상태로 화면을 띄워 보지 않았다."
+   }
+  },
+  {
+   "title": "오탐 기각 제안 묶음",
+   "location": "39a@728, 56@962, 76@index.html:23, 41@314/474/544, F4@index.html:19, F6@715, 38iii@112",
+   "reason": "728은 활성 상태 선택자다. 56은 서로 다른 스크롤 컨테이너에 있다(HHTTP-15와 같은 판단). img는 PNG 로드에 성공한 뒤에만 보인다(index.html:418). 41은 --ui-strong 상속으로 13-16:1이다. F4는 서로 다른 <details> 안의 비primary 버튼이다. 38iii는 개수 칩이다",
+   "evidence": "각 줄을 코드로 확인했고 대비는 계산했다",
+   "fix": "Hallmark polish를 채택할 때 스탬프의 dismissed/waive 줄에 기록한다. 기각 확정은 소유자 몫",
+   "severity": "해당 없음(기각 제안)",
+   "source": "sloplint 기준선 트리아지",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "해당 없음(기각 제안 유지). 56번 근거 문구만 보정이 필요하다(minor)",
+    "why": "7개 기각 제안을 모두 반박해 보려 했지만 무너진 것은 없다. 이 판정은 before/ 스냅샷과 design-audit/sloplint-snapshot-rerun.json의 원 경고를 직접 대조한 결과다. 경로 기준은 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/이다.\n\n- **39a (studio.css:728)** [검증됨]: 이 규칙의 선택자는 `#reviewTake:not(:disabled)`이고 opacity를 1로 되돌리는 활성 상태 규칙이다. 비활성 상태는 730행 `#reviewTake:disabled`가 따로 처리한다. 배경 raised, 글자 muted, cursor:not-allowed가 들어 있다. 린터가 `:not(:disabled)`를 비활성 상태로 잘못 읽었다.\n- **56 (studio.css:962)** [검증됨, 근거 보정 필요]: 린터가 짝지은 것은 887행 `.lt-ui[data-desktop-shell=bounded]:is([data-step=\"3\"],[data-step=\"4\"]) .lt-timeline-controls>summary`와 962행 `.agent-sidebar`다. 제안이 든 사이드바와 963행 헤더 짝이 아니다. 그래도 결론은 그대로다.\n  - bounded는 index.html:1074에서 폭 1100 이상일 때만 켜진다.\n  - 그 조건에서는 @media(min-width:901px) 안의 1023행이 사이드바를 position:relative로 바꾼다. 두 sticky가 동시에 성립하지 않는다.\n  - 887의 summary는 overflow:auto인 .lt-timeline-controls(885행) 안에 있어 스크롤 컨테이너도 다르다.\n  - 스탬프에 기록할 때는 887과 962 짝이 상호 배타라는 근거로 고쳐 써야 한다.\n- **76 (index.html:23)** [검증됨]: img는 `hidden`으로 시작한다. hidden이 풀리는 곳은 index.html:418 `pending.onload` 안의 `img.hidden=false` 하나뿐이다. CSS 137행 `.saved-frame-canvas>#timelineFrameImage{display:block}`이 hidden을 덮을 것처럼 보이지만 덮지 못한다. 160행 `[hidden]{display:none!important}`와 637행 `.lt-ui [hidden]{display:none!important}`가 이기기 때문이다.\n- **41 (314/474/544)** [검증됨]: 세 곳 모두 497행 `.lt-ui{color:var(--ui-strong)}`(#F4F4F2) 상속을 받는다. 474행 버튼은 :where(button)의 --ui-strong을 받는다. 대비를 직접 계산한 값은 다음과 같다.\n  - #1B1B1B: 15.64:1\n  - #2A2A28: 13.06:1\n  - #141414: 16.73:1\n  - muted 글자도 7.6:1 이상이다.\n  - prefers-color-scheme 라이트 분기는 없다.\n- **F4 (index.html:19)** [검증됨]: 두 버튼은 서로 다른 `<details>` 안의 type=submit 버튼이고 `class=\"primary\"`가 아니다. chat-sidebar.js:31이 #conversationControls를 사이드바로 옮긴 뒤에도 두 details는 블록으로 세로 배치된다. 린터 문구가 전제한 \"hero\"는 이 앱에 없다.\n- **F6 (studio.css:715)** [검증됨]: index.html:110을 보면 이 요소에는 ✓ ○ × ↺ 기호만 들어가고 숫자는 들어가지 않는다.\n- **38iii (studio.css:112)** [검증됨]: 제목 안의 .badge는 index.html:21 `#shotCount` 하나뿐이다. index.html:388이 여기에 `Object.keys(p.shots).length` 숫자를 넣는다. 강조 단어가 아니라 개수 칩이다.\n\n남은 것:\n- 56번 근거 문구가 실제 린터 짝을 다루지 않는다. 결론은 그대로이고 기록 문구만 고치면 된다.\n- 기각 확정은 소유자 몫이다.\n- 모든 판정은 정적 코드와 계산으로 했다. 브라우저 렌더링 확인은 하지 않았다 [미확인]."
+   }
+  },
+  {
+   "title": "기타 Low: 트랙 좌측 줄무늬 잔재, 측정폭, 초점 링 2벌, generic aria-label, 24px summary, 인라인 style과 !important, 축소 모션 5벌, 출력 primary 중복, tabular-nums",
+   "location": "studio.css:529, 446, 289/792, 697, 230/335/444/492, 277/494/586/788/844, 411; index.html:110, 14, 19; general-chat-ui.js:7",
+   "reason": "일관성과 유지보수 문제, 그리고 하네스 목표(44px) 미달. 697의 24px는 WCAG 2.5.8을 경계에서 통과한다",
+   "evidence": "hallmark-triage.md §3, §5 X-8~X-14",
+   "fix": "보고서 표의 개별 수정안을 따른다(모두 기존 토큰·규칙을 재사용)",
+   "severity": "Low",
+   "source": "sloplint WARN + 수동",
+   "audit": "hallmark-triage",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "I checked every citation against the before/ snapshot, and each one points to the code it describes. studio.css:529 has `border-left:3px solid` on `#track span`. :446 has `#chatPanel>p{max-width:76ch}`. :289 and :792 define two different focus rings (solid with offset 3, dashed with offset 2). :697 sets summary min-height to 24px. :230, :335, :444 and :492 use `!important`. :277, :494, :586, :788 and :844 are five separate prefers-reduced-motion blocks, and the one at 788 has no `!important`. :411 makes three output buttons primary. index.html:19 has an inline style on #chatPanel. index.html:110 puts aria-label on a span with no role. general-chat-ui.js:7 puts aria-label on divs with no role (#generalChatReviews, #generalChatTurns). index.html:14 has `#review.primary`.\n\nNothing else in the CSS already fixes these. The 24px rule at :697 applies only at max-width 900px. The `--ui-control-min` (36px) rule at :864 only applies at min-width 901px, and :572 sets 44px but :697 lowers it, so on mobile the open summary really is 24px. tabular-nums appears in only three places (:124, :327, :809). `.lt-status`, `.lt-state-chip` and `.agent-work-status` do not have it.\n\nThe bundle is mixed, and the \"real\" verdict rests on the items that affect users:\n(1) The generic aria-labels. ARIA 1.2 does not allow naming the generic role, so a screen reader may ignore them. The visible text at index.html:110 has no Take number, so that identifier can be lost when read aloud.\n(2) The mobile summary at 24px. It passes WCAG 2.5.8 only at the limit and misses the harness 44px target.\n(3) Numbers that update (`.agent-work-status`) shift in width without tabular-nums.\n(4) Two or three primary buttons blur which action comes next. Whether they are actually active at the same time is [미확인] (the report itself marks this as an estimate).\n\nThe other items would fail one by one under the rules in this task. The duplicated reduced-motion blocks, the `!important` rules overriding the inline style, and the two focus rings (both have enough contrast) are maintainability or consistency issues with no user impact. The left stripe and the 76ch line length (1ch over the limit) are mostly taste. None of the items applies only to landing pages. Bundling nine different items makes the \"real\" call hard to read; the orchestrator should split the user-facing items (aria-label, 24px, tabular-nums, primary buttons) from the maintenance and taste items (reduced-motion, !important, focus rings, stripe, line length). Low severity stands."
+   }
+  },
+  {
+   "title": "연출 취향 적용 범위의 'IP 기본 취향' 옵션이 마크업 오류로 사라짐",
+   "location": "index.html:40",
+   "reason": "두 번째 option의 여는 태그가 없고, 그 자리에 속성이 붙은 닫는 태그 </option value=\"ip\">가 있다. 그래서 select에는 '현재 작품의 예외' 하나만 보인다. 제출 로직(index.html:599)은 IP 단위 취향을 지원하지만 UI에서 그 값을 고를 수 없어 기능 전체에 도달할 수 없다.",
+   "evidence": "html5lib로 파싱한 결과 옵션은 [('song','A')] 1개이고, 두 번째 텍스트는 select 안의 떠도는 텍스트 노드가 된다. 원문: <option value=\"song\">현재 작품의 예외</option value=\"ip\">이 IP의 기본 취향</option>",
+   "fix": "</option><option value=\"ip\">이 IP의 기본 취향</option>로 고친다.",
+   "severity": "High",
+   "source": "impeccable audit (정적 코드 + html5lib 파서 검증)",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "High",
+    "why": "I tried to refute this and could not. It is a real defect.\n\n1. **Citation is accurate.** I read index.html:40 in the before/ snapshot myself. It contains `<select name=\"scope\"><option value=\"song\">현재 작품의 예외</option value=\"ip\">이 IP의 기본 취향</option></select>`. The second `<option>` has no opening tag. In its place is a closing tag carrying an attribute.\n\n2. **Parser result.** I ran `python3 -I` with html5lib on that file. The select's options came out as `[('song', '현재 작품의 예외')]`, so there is only one. The string '이 IP의 기본 취향' ends up as a stray text node (the tail) inside the select, not as an option. The finding's quoted parse output, `('song','A')`, is a placeholder and not the real text. The conclusion is still the same: 1 option.\n\n3. **Not fixed anywhere else.** In index.html and the *.js files, nothing touches the scope select dynamically. I found no `elements.scope`, `[name=scope]` or `name=\"scope\"` beyond line 40. The other scope-related hits are unrelated (assetScope, the budget data.scope, motion a.scope).\n\n4. **There is user impact.**\n   - **Frontend:** index.html:599 `preferenceForm.onsubmit` sends `song:f.get('scope')==='song'?song():null`, so the only way to send null (IP scope) is to pick the value 'ip'.\n   - **Backend:** app.py:574-581 `preference_propose` accepts `scope=d.get('song') or None` as IP-wide and passes it to `preferences.propose(...song=None)`. preferences.py:37-41 `resolve` really does use the `song=None` scope as the base layer.\n   - **Result:** the IP default-preference feature works in the backend, but users cannot reach it from the UI. The dialog's own intro text also says it works \"on the IP of the current work\" (현재 작품의 IP 기준), so this is not a taste issue.\n\n5. **Not limited to landing pages.** This is a form inside the app's preferencesDialog.\n\n6. **Severity.** \"Feature does not work\" maps to High under rigor §2, and that grade cannot be lowered. High stands.\n\nI did not edit any files. [Unverified] I did not observe how a real browser renders it with aside. This conclusion rests on parsing per the HTML spec (html5lib) plus the code path."
+   }
+  },
+  {
+   "title": "≤359px 단계 버튼 '4 출력'이 접근 가능한 이름 '4 편집·출력'에 포함되지 않음 (WCAG 2.5.3 A)",
+   "location": "index.html:1061-1066, studio.css:589-594",
+   "reason": "≤359px에서는 짧은 라벨만 보이는데, aria-label은 원래의 긴 라벨이다. '4 출력'은 '4 편집·출력'의 부분 문자열이 아니어서, 음성 제어 사용자가 보이는 이름을 말해도 버튼이 반응하지 않는다.",
+   "evidence": "shortStages={'1':'1 음악','2':'2 계획','3':'3 장면','4':'4 출력'}; button.setAttribute('aria-label',label). 원래 라벨은 index.html:17의 '4 편집·출력'이다.",
+   "fix": "짧은 라벨을 긴 이름의 앞부분으로 바꾼다('4 편집'). 또는 aria-label을 제거하고 전체 라벨 span에 기존 .sr-only(studio.css:798)를 적용한다.",
+   "severity": "High",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "High (WCAG 2.5.3 Level A failure. Under rules §2 an accessibility violation is High and cannot be downgraded. The impact is limited to viewports of 359px or narrower.)",
+    "why": "The finding holds. I read the snapshot files myself and only one detail is wrong: the index.html line numbers.\n\nChecked and true:\n- index.html:12 has `<body class=\"lt-ui lt-system\">`, so the `.lt-ui` media rules apply.\n- index.html:17 has the original label `<button data-step=\"4\">4 편집·출력</button>`.\n- index.html:1051 has `shortStages={'1':'1 음악','2':'2 계획','3':'3 장면','4':'4 출력'}`.\n- index.html:1054 has `button.setAttribute('aria-label',label)`, where `label` is the original long text.\n- index.html:1056-1057 put the full label in `.lt-stage-full` and the short label in `.lt-stage-short` with `aria-hidden`.\n- studio.css:507 hides the short label by default (`.lt-stage-short{display:none}`).\n- studio.css:589-594 is `@media(max-width:359px)`. It hides `.lt-stage-full` and shows `.lt-stage-short`.\n- studio.css:798 `.sr-only` exists.\n\nResult: at 359px or narrower, the visible label is '4 출력' and the accessible name is '4 편집·출력'. '4 출력' is not a contiguous substring of '4 편집·출력', because '편집·' sits between '4 ' and '출력'. This matches the WCAG 2.5.3 failure pattern (F96), so a voice-control command using the visible label may not match the button. The other three buttons are fine: '1 음악', '2 계획' and '3 장면' are each a prefix of their long name.\n\nWays I tried to break the finding, all failed:\n1. Handled elsewhere? I searched for `flow-nav` and `lt-stage` across index.html and *.js. Lines 296 and 936-939 only move the nav into `.lt-stage-bar`. Nothing changes the label or aria-label again, and no CSS overrides the 359px rule.\n2. Taste preference or landing-page-only? Neither. It is an accessibility conformance failure in the app's step navigation.\n3. Wrong citation? Partly. The index.html range given as 1061-1066 is off by about 10 lines. Lines 1061-1066 are the `#notice` details code; the real code is at 1051-1057. The quoted code, the studio.css:589-594 range, index.html:17 and studio.css:798 are all correct. Since the substance is accurate, I treat this as line-number drift and do not reject the finding. The location should be corrected to index.html:1051-1057.\n\nFix check: changing the short label to '4 편집' makes it a prefix of the long name, which is enough. The alternative (remove aria-label and put .sr-only on the full label) is also valid. In that case, the visible short span must also be hidden from assistive tech, as it already is with aria-hidden, so the name does not include both labels.\n\nNot checked: I did not test this with a real speech-recognition tool or a narrow-viewport render. This review is code reading only."
+   }
+  },
+  {
+   "title": "시간 비례 컷 버튼이 24px보다 작아질 수 있음 (WCAG 2.5.8 AA)",
+   "location": "studio-media.js:62, studio.css:816-817",
+   "reason": "버튼 폭이 길이 비율(%)이고 min-width:0, 간격 0, overflow:hidden이다. 짧은 컷은 몇 px 폭이 되어 터치 사용자가 누를 수 없거나 옆 컷을 잘못 누른다. 간격 예외는 성립하지 않고, 동등한 컨트롤(#sequenceSeek)도 컷 시작점으로 정확히 이동하는 기능이 아니라고 판단했다 [추정].",
+   "evidence": "style=\"width:${c.duration/total*100}%\"; .lt-ui #track.time-clips button { min-width:0 … }; #track.time-clips { gap:0; overflow:hidden }",
+   "fix": "버튼에 min-width:24px를 주고 #track.time-clips의 overflow:hidden을 overflow-x:auto로 바꾼다. 기존 토큰을 재사용한다.",
+   "severity": "High",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "High",
+    "why": "[살아남음] 지적한 위치가 스냅샷과 맞다 [검증됨]. studio-media.js:62는 각 컷 버튼에 style=\"width:${total?c.duration/total*100:0}%\"를 준다. studio.css:816은 #track.time-clips에 gap:0과 overflow:hidden을 준다. studio.css:817은 버튼에 flex:none과 min-width:0을 준다.\n\n반박을 세 방향으로 시도했고 모두 실패했다.\n(1) 다른 곳에서 이미 처리하는지 찾았다. grep 결과 time-clips 버튼에 min-width를 덮어쓰는 규칙은 없다. 모바일 미디어쿼리(@media max-width:900px, 864행 :is 목록)도 #sequenceSeek와 .clip-row만 키우고 이 버튼은 다루지 않는다. 614·635행의 #track 규칙은 min-width:144px와 overflow-x:auto를 주지만 .lt-track-clip 대상이라, 816행의 더 구체적인 .time-clips 규칙이 overflow를 hidden으로 덮는다.\n(2) 실제로 몇 px까지 줄어드는지 확인했다. index.html의 길이 입력은 min=\".125\" step=\".001\"이다. 그래서 60초 편집 안의 0.125초 컷은 폭의 약 0.2%, 수백 px 트랙에서 1~2px가 된다. 가설이 아니라 입력 규약상 도달 가능한 상태다.\n(3) WCAG 2.5.8의 '동등 컨트롤' 예외를 검토했다. 버튼은 previewMode를 sequence로 바꾸고 seek(data-time)로 컷 시작점으로 정확히 이동한다(160행). 대안인 #sequenceSeek는 'selected' 모드에서 disabled이고(69행), step=0.001 range 슬라이더다. 터치로는 컷 시작점을 겨냥할 수 없고, 키보드로도 0.001초 단위로 이동해야 해 같은 기능이라 보기 어렵다. .clip-row에는 '이 컷 미리보기' 버튼이 없다(clip-row 마크업 grep에서 button 0건). '간격' 예외는 gap:0 + 인접 컷 때문에 성립하지 않는다. '필수 표현(essential)' 예외는 시간 비례 표현을 근거로 주장할 여지가 있지만, 이 기능은 이동이고 비례 막대는 시각화일 뿐이라 예외를 인정하기 약하다.\n순수 취향 문제도 아니고 랜딩 페이지 전용도 아니다. 스튜디오 편집 UI에서 대상을 누를 수 없거나 옆 컷을 잘못 누르는 실제 영향이 있다. rigor §2에 따라 접근성(AA) 위반은 High이며 강등할 수 없다.\n\n[미확인] 실제 렌더러로 측정하지 않았다(정적 판독만 함).\n\n[반박: 제안한 수정안 — serious] min-width:24px + overflow-x:auto를 적용하면 버튼 폭이 더는 시간 비례가 아니다. 그러면 퍼센트 기준으로 배치되는 #timeRuler·#timeWave·#timePlayhead(65·72행, left:%)와 컷 위치가 어긋난다. 트랙이 스크롤되면 축 오버레이와도 분리된다. 결함은 실재하지만 수정은 (a) 시각 막대는 비례로 유지하고 최소 24px 히트 영역(투명 확장이나 겹침 방지 로직)을 따로 주거나, (b) 같은 기능의 별도 컨트롤(컷 목록에 '여기서 미리보기' 버튼 등)을 두는 방식으로 다시 설계해야 한다."
+   }
+  },
+  {
+   "title": "모든 모달의 첫 포커스와 시각 최상단이 'AI 대화 열기' 버튼",
+   "location": "chat-sidebar.js:257-258, studio.css:1008",
+   "reason": "prepareDialog가 렌더 확인·보관·사용권 대화상자를 포함한 모든 dialog의 맨 앞에 런처를 넣는다. showModal은 첫 포커스 가능 요소에 포커스를 주므로, 모달을 열 때마다 작업과 무관한 버튼에서 시작하고 제목보다 런처가 먼저 보인다.",
+   "evidence": "main.prepend(launcher); .agent-dialog-launcher { display:block; margin:0 0 var(--ui-space-3) auto }",
+   "fix": "런처를 기존 .row(h2 + 닫기) 안, 닫기 앞으로 옮긴다. 확인 대화상자의 기본 포커스는 기존 버튼에 autofocus로 지정한다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "[검증됨] 이 지적은 실제 문제입니다. 인용한 위치도 맞습니다. 다만 줄 번호가 조금 다르고, 제안한 수정은 모든 대화상자에 그대로 맞지 않습니다.\n\n**코드에서 확인한 내용**\n- before/chat-sidebar.js:255에서 `prepareDialog`가 정의됩니다. 258행에서 'AI 대화 열기' 버튼을 만들고 `main.prepend(launcher)`로 대화상자 맨 앞에 넣습니다. 인용된 257행은 `.agent-dialog-main`을 만들고 기존 자식들을 그 안으로 옮기는 줄이라, 1줄 정도 어긋납니다.\n- `syncDialogs()`(282행 부근)는 `document.querySelectorAll('dialog')`로 찾은 모든 대화상자에 이 함수를 무조건 적용합니다. 실행 시점은 처음 불러올 때와 `MutationObserver`가 반응할 때입니다. 제외하는 조건은 없습니다.\n- index.html:1109에서 `/chat-sidebar.js`를 실제로 불러옵니다. 그래서 index.html에 정적으로 있는 대화상자 13개가 모두 대상입니다. 렌더 확인, 보관, 사용권, 예산 대화상자도 포함됩니다.\n- studio.css:1008의 `.lt-ui .agent-dialog-launcher { display:block; margin:0 0 var(--ui-space-3) auto; }`는 인용과 똑같습니다. 이 버튼을 숨기는 규칙은 CSS와 JS 어디에도 없습니다. `agent-dialog-launcher`를 검색하면 정의 1곳과 CSS 1곳만 나옵니다.\n\n**이미 처리된 곳이 있는지 확인한 결과**\n- `autofocus`는 JS, HTML 어디에도 없습니다.\n- 대화상자를 연 뒤 포커스를 따로 옮기는 코드는 두 곳뿐입니다.\n  - ontologyDialog: 메모리 제안에서 열 때(index.html:701) 카드에 포커스를 줍니다.\n  - 런처 자체: 대화상자에서 채팅을 닫을 때 `host.launcher.focus()`로 런처에 포커스를 돌립니다.\n- 나머지 `showModal` 호출(index.html:153, 553, 554, 592, 596-598, 695, 840, 851)은 모두 기본 첫 포커스를 따릅니다. HTML의 대화상자 포커스 규칙상, `autofocus`가 없으면 키보드로 포커스할 수 있는 첫 요소가 포커스를 받습니다. 그 요소가 바로 맨 앞에 넣은 런처입니다.\n- 따라서 이미 처리된 문제가 아니고, 랜딩 페이지 문제도 아니고, 단순한 취향 문제도 아닙니다. 키보드와 스크린리더 사용자는 대화상자를 열 때마다 작업과 무관한 버튼에서 시작하고, 제목보다 런처 버튼을 먼저 듣습니다.\n\n**영향을 정확히 하면**\n- 지적이 암시하는 것과 달리, 원래 상태에서도 대부분의 대화상자는 첫 포커스가 작업 요소가 아니라 `.row` 안의 '닫기' 버튼이었습니다. renderConfirm도 하단의 `#dismissRender` '닫기'였습니다.\n- 그러니 실제로 늘어난 피해는 두 가지입니다.\n  - 첫 포커스가 '닫기'에서 무관한 'AI 대화 열기'로 바뀝니다.\n  - 오른쪽 정렬된 런처가 h2 제목보다 위에 보입니다.\n- renderConfirm은 비용 확인 대화상자이고 위쪽에 `.row`가 없습니다. 그래서 런처가 제목 바로 위에 놓이고 첫 포커스도 가져갑니다. 영향이 가장 큰 곳입니다.\n\n**제안된 수정의 문제**\n- '런처를 기존 .row(h2 + 닫기) 안으로 옮긴다'는 renderConfirm에는 맞지 않습니다. 이 대화상자는 h2가 대화상자 바로 아래에 있고 위쪽 `.row`가 없습니다.\n- 대화상자마다 구조가 다르므로, 넣을 위치를 정하는 대체 규칙이 필요합니다. 예를 들어 h2 뒤에 넣거나, 대화상자 끝에 넣는 방법이 있습니다.\n- 'autofocus를 기존 버튼에 지정한다'는 방안도 문제가 있습니다. renderConfirm에서 확인 버튼에 기본 포커스를 주면 실수로 실행될 위험이 있습니다. 확인 대화상자는 '닫기'나 제목에 포커스를 주는 쪽이 맞습니다.\n\n**심각도**: Medium을 그대로 둡니다. 모든 모달에서 키보드 포커스 순서와 시각적 위계가 망가지는 문제이고, 규칙상 사용자가 직접 낮추라고 하지 않으면 등급을 내리지 않습니다.\n\n**확인하지 못한 것**: 현재 Chrome, Safari, Firefox에서 첫 포커스가 정말 어디로 가는지는 실행해 보지 않았습니다. 브라우저마다 동작이 다르다는 보고가 있지만, 모든 대화상자에 `autofocus`가 없으므로 첫 요소에 포커스가 가는 것으로 추정합니다.\n\n출처: [Implement dialog initial focus proposal](https://chromium.googlesource.com/external/w3c/web-platform-tests/+/refs/tags/merge_pr_36831%5E%21/), [O dialog focus, where art thou?](https://www.matuzo.at/blog/2023/focus-dialog), [Chromium Code Reviews](https://codereview.chromium.org/112553002/)"
+   }
+  },
+  {
+   "title": "작업 설정(검토) 패널에서 Esc를 누르면 오른쪽 패널 전체가 닫힘",
+   "location": "chat-sidebar.js:285",
+   "reason": "sidebar의 Escape 처리가 settings pane까지 적용된다. 검토 이유를 입력하던 중 Esc를 누르면 패널이 닫히고 포커스가 토글로 이동해 작업 맥락을 잃는다. chat pane(286행)에는 details를 먼저 닫는 처리가 있지만 settings pane에는 없다.",
+   "evidence": "sidebar.addEventListener('keydown', e => { if (e.key==='Escape' && !e.defaultPrevented) { …closeAgent(); } })",
+   "fix": "286행의 details 우선 처리를 settings pane에도 적용한다. 또는 대상이 input, textarea, select이면 무시한다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "사실이다. 인용된 코드와 위치가 맞고, 다른 곳에서 이 문제를 처리하는 코드도 찾지 못했다.\n\n근거 [검증됨]:\n- chat-sidebar.js:285에서 sidebar의 keydown 핸들러는 Escape가 오고 defaultPrevented가 아니면 바로 preventDefault 후 closeAgent()를 호출한다. 이벤트를 받은 요소(입력 필드인지 여부)나 열린 details를 전혀 따지지 않는다.\n- closeAgent()(232행)는 opened=false로 바꾸고 apply()를 호출한 뒤 toggle.focus()를 한다. 따라서 패널 전체가 숨겨지고 포커스는 토글 버튼으로 이동한다.\n- 24행에서 settings pane은 sidebar의 자식이고, 45행에서 settings.append(inspector)로 index.html의 `.inspector`가 그 안으로 들어간다.\n- index.html 24~31행의 `.inspector`에는 실제로 다음 입력 요소가 있다:\n  - textarea#reviewReason(라벨 \"검토 이유\")\n  - input#referenceReason\n  - details#mediaPrepareDetails 안의 제작 지시 textarea\n  그러므로 \"검토 이유를 입력하던 중 Esc\"라는 시나리오가 실제로 가능하다.\n- 286행의 chat 핸들러는 details를 먼저 닫고 stopPropagation도 한다. 하지만 chat 요소에만 등록되어 있어 settings pane에는 그런 처리가 없다. 지적 내용이 정확하다.\n\n이미 처리된 곳이 있는지 확인한 결과:\n- 스냅샷 전체에서 Escape, keyCode, 'Esc'를 검색했다.\n- 다른 Escape 핸들러는 index.html:1040의 document 핸들러뿐이다. 이 핸들러는 management·context 두 details만 다루고 inspector는 다루지 않는다.\n- 게다가 document는 sidebar보다 바깥 조상이라 sidebar 핸들러가 먼저 실행된다.\n- general-chat-ui.js:69의 핸들러는 일반 대화 패널 안에서만 동작한다.\n- textarea와 input은 Escape를 기본 동작으로 막지 않으므로 defaultPrevented 조건도 걸리지 않는다.\n- tests/chat_sidebar.cjs의 Escape 테스트는 #generalChatPrompt(대화 쪽)만 확인하고 settings pane은 확인하지 않는다.\n\n취향 문제나 랜딩 페이지 한정 문제가 아니다. 작업 앱에서 키보드 사용자의 작업 맥락과 포커스가 사라지므로 사용자에게 실제 영향이 있다.\n\n등급은 Medium을 유지한다. 패널은 숨겨지기만 하고 입력값이 지워지는 것은 아니어서 데이터 손실은 확인되지 않았다 [추정]. 대신 패널이 닫히고 포커스가 이탈하는 문제라 Medium이 맞다.\n\n한계: 실제 브라우저에서 재현하지는 않았다. 코드 경로만 따라가 확인했다."
+   }
+  },
+  {
+   "title": "≤900px 첫 진입 시 작업 영역이 숨겨지고 AI 사이드바가 화면을 차지함 [추정]",
+   "location": "chat-sidebar.js:46, chat-sidebar.js:215",
+   "reason": "초기값이 opened=true라 모바일에서 work.hidden=true가 된다. 음악 입력과 첫 작품 안내가 가려져 신규 사용자가 시작 위치를 찾기 어렵다.",
+   "evidence": "let opened = true; work.hidden = narrow.matches && opened && !activeDialog; (렌더는 확인하지 않음)",
+   "fix": "초기값을 opened = !narrow.matches로 바꾼다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "이 지적은 반박 시도를 견뎠습니다. 인용 위치와 동작은 정확하고, 화면 너비 900px 이하에서 처음 열면 작업 영역이 실제로 숨겨집니다. 다만 개발자가 일부러 그렇게 만들고 테스트까지 고정해 둔 동작이라, 제안한 수정은 그대로 적용할 수 없습니다.\n\n인용 확인 [검증됨]\n- 파일: /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/chat-sidebar.js\n- 46행에 `let opened = true`, 215행에 `work.hidden = narrow.matches && opened && !activeDialog;`가 있습니다. 화면 폭 기준은 11행 `matchMedia('(max-width: 900px)')`입니다.\n- 페이지가 처음 뜰 때 295행의 `apply()`가 실행되므로, 좁은 화면에서는 시작하자마자 work.hidden이 true가 됩니다.\n\n다른 곳에서 이미 처리하는지 확인 [검증됨: 처리하는 곳 없음]\n- 같은 파일에서 opened를 false로 만드는 곳은 세 군데뿐입니다.\n  - 232행 closeAgent: 사용자가 직접 닫을 때\n  - 289행 preview 클릭\n  - 290행 stageObserver\n- 289행과 290행은 둘 다 `selected === 'settings'`일 때만 동작합니다. 처음 상태는 selected='chat'이므로 가이드 1단계에 들어가도 사이드바가 닫히지 않습니다.\n- CSS도 이 동작을 뒤집지 않습니다. studio.css 160행 `[hidden] { display:none!important; }`와 637행 `.lt-ui [hidden]`가 숨김을 강제하고, 1026–1029행(≤900px)에서 사이드바는 order:0, width:100%로 맨 위 전체 폭을 차지합니다.\n- native 폴더에는 motion_frame_renderer.swift 하나뿐이고, 창 최소 너비를 강제하는 코드가 없습니다. 그래서 좁은 화면 상황이 실제로 생길 수 없다는 반론은 성립하지 않습니다.\n\n취향 문제나 랜딩 페이지 한정인지 확인\n- 둘 다 아닙니다. 이 화면은 스튜디오 작업 화면이고, 처음 들어온 사용자는 음악 입력이나 작업 영역이 전혀 보이지 않는 상태로 시작합니다.\n\n반박 근거가 될 뻔한 점: 의도된 동작\n- tests/chat_sidebar.cjs:52는 너비 ≤900일 때 `.agent-work` 숨김과 'default open'을 단언합니다.\n- tests/work_status.cjs:38과 tests/central_frame_preview.cjs:19도 375px에서 work가 숨겨진 상태를 전제로 동작합니다.\n- 그래도 이것만으로 지적을 기각할 수는 없습니다. rigor §2는 의도된 동작으로 보려면 사용자 확인이나 코드 주석 인용이 필요하다고 규정하는데, 둘 다 없고 테스트 단언만 있습니다. 화면을 가린다는 사용자 영향도 그대로 남습니다.\n\n지적 내용의 보정이 필요한 부분\n1. 수정 제안 `opened = !narrow.matches`를 적용하면 위 테스트 세 개(chat_sidebar.cjs:52, work_status.cjs:38, central_frame_preview.cjs:19)가 깨집니다. 수정 범위에 테스트와 기대값 변경을 함께 넣어야 하고, 기존 'default open' 설계 결정을 바꾸는 일이므로 사용자 확인이 필요합니다.\n2. 이 수정은 처음 로드할 때만 opened를 정합니다. 좁은 화면으로 열었다가 창을 넓히면 데스크톱에서 사이드바가 닫힌 채로 남습니다. 이 부작용은 아무도 다루지 않았습니다.\n3. 닫기 버튼과 사이드바 열기·닫기 버튼(#agentToggle)이 보이므로 사용자가 빠져나갈 수는 있습니다. 그래서 등급은 High가 아니라 Medium이 맞습니다.\n\n검증하지 못한 부분 [미확인]\n- 실제 렌더링 화면은 저도 보지 않았습니다. 처음 들어온 사용자가 시작 위치를 찾기 어렵다는 부분은 여전히 [추정]입니다."
+   }
+  },
+  {
+   "title": "오류 필드에 aria-invalid가 설정되지 않음 (스타일만 존재)",
+   "location": "studio.css:291, index.html·*.js(설정 0회)",
+   "reason": "오류를 전역 문장으로만 알리고 필드와 연결하지 않는다. 스크린리더 사용자는 오류가 난 필드를 직접 찾아야 한다.",
+   "evidence": "grep 결과 aria-invalid 설정 0회. CSS에는 .lt-ui :where(input,textarea)[aria-invalid=\"true\"] 스타일만 있다.",
+   "fix": "기존 검증 경로(scene-studio.js:99 등)에서 aria-invalid와, .dialog-status를 가리키는 aria-describedby를 설정한다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "The finding holds. I checked it against the before/ snapshot.\n\nWhat the snapshot shows:\n- The citation is accurate. studio.css:291 has the rule `.lt-ui :where(input,textarea)[aria-invalid=\"true\"] { border-color:var(--ui-error); }`.\n- `grep -rln aria-invalid` across the snapshot matches only studio.css. No JS or HTML file ever sets aria-invalid, so this CSS rule never applies.\n- No other code handles it. Nothing calls setCustomValidity. The only aria-describedby links in index.html (lines 19, 126, 729, 844) connect fields to help or draft-state text. None links a failed field to its error.\n- At scene-studio.js:100, the custom check (`showError`) and the asset-permission error (`status(...)`) do the same thing: they write a generic sentence to the shared #sceneStudioStatus or .dialog-status (index.html:57-58) and move focus to the field. The field is never marked invalid and never linked to the message.\n\nTwo parts of the finding are overstated:\n1. \"Screen reader users have to find the failed field themselves\" goes too far. scene-studio.js:99-100 moves focus to the failed field (`invalid.focus()`), and for native constraint checks it also calls `reportValidity()`, which shows the browser's own error bubble. The real gaps are the custom-check and server-error paths. There the focused field is not announced as invalid, and the message is a vague shared sentence like \"대상 입력 범위를 확인하세요\" that is not tied to the field.\n2. For the native path, the browser may already report the field as invalid without the attribute. I did not confirm this for any specific browser.\n\nIt is not just a matter of taste: it affects assistive-technology users (WCAG 3.3.1 / 4.1.2 area), and the error styling the designers wrote never shows up. It is also not limited to landing pages, since this is the app's editor dialogs. Keeping Medium, because focus does move to the field and a text message exists, so this is not a blocking failure."
+   }
+  },
+  {
+   "title": "한국어 어절 줄바꿈(keep-all)이 버튼에만 적용됨",
+   "location": "studio.css:185, 187, 293",
+   "reason": "제목·안내·라벨·summary가 음절 단위로 끊긴다. 버튼과 일부 요소만 어절 단위라 줄바꿈 방식이 섞여 읽기 어렵다.",
+   "evidence": "button { word-break:keep-all }만 전역이다. p,li,h1,h2,label에는 overflow-wrap:anywhere만 있고, keep-all은 6개 개별 선택자에만 있다.",
+   "fix": ".lt-ui :where(p,li,h1,h2,h3,label,summary,dd,small) { word-break:keep-all }를 추가하고 overflow-wrap:anywhere는 유지한다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "이 발견은 반박에 실패했고 그대로 유효합니다. 근거는 스냅샷 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/ 안의 파일을 직접 읽고 grep한 결과입니다.\n\n[검증됨] 인용한 줄이 맞습니다.\n- studio.css:185 `p,li,h1,h2,label { overflow-wrap:anywhere; }`\n- studio.css:187 `button { white-space:normal; word-break:keep-all; }`\n- studio.css:293 `.lt-ui :where(p,li) { line-height:1.6; overflow-wrap:anywhere; }`\n- 185·187은 182행에서 닫힌 미디어쿼리 밖에 있어 전역으로 적용됩니다.\n\n[검증됨] \"다른 곳에서 이미 처리됨\"으로 반박하려 했지만 실패했습니다.\n- 스냅샷 전체(css·js·html)에서 keep-all은 7곳뿐입니다. 전역 button 규칙(187)과 개별 선택자 6곳입니다.\n- 개별 선택자 6곳: 623 #reviewReason, 647 .creator-review-scene, 656 #creatorSavedReason, 684 #creatorMobileContext b, 744 .production-context>b, 752 .production-model>p. 발견이 말한 \"6개 개별 선택자\"와 정확히 맞습니다.\n- body, .lt-ui, html에는 word-break 지정이 없습니다. JS 인라인 스타일과 index.html에도 없습니다.\n- 그래서 그 밖의 p·li·h1~h3·label·summary·dd·small은 기본값(word-break:normal)으로 남습니다.\n- line-break 같은 다른 대체 규칙도 없습니다.\n\n[검증됨] \"랜딩 페이지에만 해당\"으로 반박하려 했지만 실패했습니다. index.html은 `<html lang=\"ko\">`, `<body class=\"lt-ui lt-system\">`인 \"제작 스튜디오\" 앱 화면입니다. 제안한 `.lt-ui :where(...)` 범위는 실제 루트 클래스와 맞습니다.\n\n[추정] \"취향 문제\"로 반박하려 했지만 실패했습니다.\n- word-break:normal에서는 한글이 음절 사이 어디서나 줄이 바뀝니다.\n- 그래서 좁은 폭에서 제목·라벨·안내가 단어 중간에서 끊깁니다.\n- 같은 화면의 버튼과 일부 요소는 어절 단위로 끊겨, 한 화면 안에 두 방식이 섞입니다. 실제 읽기에 영향을 주므로 취향 문제로 볼 수 없습니다.\n- 다만 이 판단은 브라우저의 알려진 동작에 근거한 것이고, 렌더링으로 확인하지는 않았습니다.\n\n[미확인] 실제 화면 폭에서 어느 요소가 단어 중간에서 끊기는지는 렌더링해서 보지 않았습니다.\n\n등급 Medium은 rigor §2의 시각 결함 기본 등급과 같아 그대로 둡니다.\n\n참고로 제안한 수정은 keep-all과 overflow-wrap:anywhere를 함께 써서 긴 URL이나 영문 토큰이 넘치는 것도 막습니다. 다만 tests/test_frontend_visual_residual.py와 tests/test_chat_display.py는 overflow-wrap 문자열만 확인합니다. 그래서 수정 규칙을 더해도 이 테스트들은 깨지지 않지만, 수정이 제대로 됐는지도 검증하지 못합니다."
+   }
+  },
+  {
+   "title": "앱 글자 크기 150·200%에서 고정 폭 컨트롤이 넘침 [추정]",
+   "location": "studio.css:483, 631, 658, 380-381",
+   "reason": "#compareButton은 max-width:112px와 min-width:144px+nowrap이 충돌해 폭이 고정되고, 80px 열 버튼과 >900px nowrap 단계 바도 넘친다. 저시력 사용자가 '글자 크기'를 켜면 레이아웃이 깨진다.",
+   "evidence": "#compareButton { max-width:112px } / { min-width:144px; white-space:nowrap }; #creatorReviewEditor>.row { grid-template-columns:1fr 80px }; .flow-nav nowrap(>900px)",
+   "fix": "483행 max-width를 제거하고 nowrap을 해제한다. 열을 minmax(80px,auto)로 바꾸고, .flow-nav의 overflow-x:auto를 모든 폭에 적용한다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "핵심 주장은 맞지만, 세 하위 항목 가운데 하나는 틀렸고 하나는 범위가 좁다. 렌더링은 하지 않았고 정적 계산으로만 판정했다.\n\n[검증됨] '글자 크기' 기능은 실제로 있다. index.html:14의 #textScale에 100/150/200% 옵션이 있고, index.html:703이 --text-scale 값을 설정하며, studio.css:42-48의 글꼴 크기 변수가 모두 이 값을 곱한다. 랜딩 페이지가 아니라 앱 화면이고, 사용자에게 영향이 없는 취향 문제도 아니다.\n\n(1) #compareButton: 살아남음. 483행(max-width:112px)과 631행(min-width:144px; width:auto; white-space:nowrap)은 둘 다 @media(max-width:900px) 블록(459-493, 628-635) 안에 있다. CSS 규칙상 min-width가 max-width보다 우선하므로 폭은 144px로 고정된다. 글꼴은 526행의 --ui-item(13px×배율)이고 좌우 padding은 401행의 10px다. 'Take 나란히 비교'의 폭을 추산하면 150%에서 약 170px, 200%에서 약 220px로 144px를 넘는다. 줄바꿈이 막혀 있어 글자가 버튼 테두리 밖으로 넘친다 [추정, 렌더링 미확인]. 다른 곳에서 이를 처리하는 규칙은 없다. #compareButton 규칙 401·436·483·526·580·631행을 모두 확인했다.\n\n(2) #creatorReviewEditor>.row의 80px 열: 반박됨. 이 열에 들어가는 요소는 #discardTakeReviewDraft 하나다(659·661행). 이 버튼의 글자는 index.html:264에서 '취소'로 바뀐다. 200%에서 글꼴은 --ui-meta 24px, padding은 72행 기준 12px×2이므로 너비는 48+24+테두리 2 = 약 74px로 80px 안에 들어간다. 넘침 주장은 틀렸다.\n\n(3) .flow-nav, 900px 초과 폭: 일부만 성립한다. 380-381행의 nowrap에는 900px 초과 폭에서 overflow 처리가 없다. overflow-x:auto(468행)와 white-space:normal(837행)은 900px 이하 폭에만 적용된다. 379행의 .lt-stage-bar는 줄바꿈 없는 flex라서 nav와 #flowNext(최대 280px)가 한 줄에 놓인다. 버튼 4개('3 장면 제작·검토' 등)는 150%에서 합계 약 520px로 넘치지 않는다. 200%에서는 약 690px가 되어 대략 901-1030px 폭에서 nav가 줄어들고, 줄바꿈이 막힌 버튼이 #flowNext와 겹칠 가능성이 있다 [추정]. 그 범위 밖에서는 문제가 없다.\n\n판정과 등급: (1)이 실제로 성립하므로 real=true다. 등급은 Medium을 유지한다. 넘친 글자가 잘리지 않고 버튼 밖으로 보이는 시각 결함으로 보았고, 렌더링으로 확인한 것이 아니라 정적 추산이다. 렌더링해서 글자가 잘리거나 다른 요소에 가려지면 WCAG 1.4.4(글자 크기 조정) 위반이 되어 High 후보다.\n\n수정안 보정:\n- 80px 열을 minmax로 바꾸는 수정은 근거가 없으니 뺀다.\n- .flow-nav의 overflow-x:auto는 900px 초과 폭에서 스크롤만 생기게 한다. 그보다 .lt-stage-bar에 flex-wrap을 주거나, 200% 배율에서 줄바꿈을 허용하는 쪽이 낫다.\n- 483행의 max-width는 631행이 덮어쓰고 있어 사실상 효과가 없다. 제거해도 부작용은 없다.\n\n근거 파일: /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/studio.css, /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/index.html"
+   }
+  },
+  {
+   "title": "숨겨진 탭에서도 1.5초마다 전체 상태를 폴링",
+   "location": "index.html:874-875",
+   "reason": "document.hidden 검사가 없어 백그라운드 탭에서도 네트워크 요청과 재렌더가 계속돼 배터리와 CPU를 쓴다. 같은 저장소의 chat-sidebar.js:298에는 검사가 있다.",
+   "evidence": "setInterval(async()=>{ if(busy||!state||pollReadsInFlight>=2)return; … },1500)",
+   "fix": "document.hidden 조건을 추가하고, visibilitychange에서 즉시 1회 갱신한다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "발견은 실제 결함이다. 다만 설명 중 한 부분은 과장이다.\n\n인용 위치가 맞다 [검증됨]. index.html:874에서 `setInterval(async()=>{`가 시작하고, 875는 `if(busy||!state||pollReadsInFlight>=2)return;`, 907은 `},1500);`이다. 이 조건에는 document.hidden 검사가 없다.\n\n다른 곳에서도 처리되지 않는다 [검증됨]. 스냅샷 전체에서 `document.hidden`, `visibilityState`, `visibilitychange`를 찾으면 3곳만 나온다.\n- chat-sidebar.js:298: `setInterval(() => { if (!document.hidden) renderWorkStatus(); }, 1500);` (발견이 인용한 그대로이며, 표시만 하고 요청은 보내지 않는다)\n- studio-media.js:165: 미디어를 멈추는 코드\n- 테스트 파일\n\nindex.html의 폴링 루프를 숨김 상태에서 멈추거나 건너뛰는 코드는 없다.\n\n취향 문제나 랜딩 페이지 전용 문제도 아니다. 앱의 작업 화면이 숨겨진 탭에서도 1.5초마다 다음을 계속한다.\n- `/api/state` 요청 (scopedStateUrl)\n- 응답 JSON 전체 파싱\n- 약 15회의 JSON.stringify 비교\n\n과장된 부분은 \"재렌더가 계속돼\"다. 라인 885-905를 보면 draw* 호출은 비교 결과가 달라졌을 때만 일어난다. 상태가 변하지 않으면 다시 그리지 않으므로, 계속 쓰는 비용은 요청, 파싱, 비교다.\n\n서버는 127.0.0.1에 바인딩되어 있어(app.py:1508) 네트워크 비용은 작다. 또 Chrome은 숨긴 지 5분이 지난 탭의 연쇄 타이머를 1분 간격으로 줄인다 [추정: 브라우저와 native 래퍼에 따라 다름, 미측정]. 그래서 실제 배터리·CPU 영향은 발견이 말한 것보다 작을 수 있다. 그래도 낭비가 0은 아니고, 같은 저장소 안에서 처리 방식도 일관되지 않다.\n\n등급은 Medium으로 유지한다. rigor §2는 성능 문제를 기본 Medium으로 두고, 강등은 사용자 선언으로만 허용한다. 수정안은 타당하다. document.hidden 조건을 넣고, visibilitychange 때 즉시 1회 갱신하면 된다."
+   }
+  },
+  {
+   "title": "원본 미디어를 썸네일로 쓰고 지연 로딩이 없음, 자산 검색이 키 입력마다 전체 재렌더",
+   "location": "index.html:114, 115, 425, 554",
+   "reason": "최대 16MB 원본을 48px 썸네일에 그대로 쓰고, lazy·decoding·width/height가 없다. 자산함 '전체' 범위에서는 모든 이미지를 불러와 끊김과 레이아웃 이동이 생긴다.",
+   "evidence": "<img class=\"thumb\" src=\"${asset(t)}\" alt=\"\">; library <img src=\"${asset(t)}\">; $('#assetSearch').oninput=drawLibrary",
+   "fix": "loading=\"lazy\" decoding=\"async\" width height를 추가하고 검색 입력을 150ms 디바운스한다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "핵심 주장은 맞지만, 레이아웃 이동 부분과 width/height 수정안은 틀렸습니다.\n\n인용한 줄은 직접 읽어 확인했습니다 [검증됨].\n- index.html:114: 샷 썸네일이 `<img class=\"thumb\" src=\"${asset(t)}\" alt=\"\">`입니다.\n- index.html:115: Take 이미지가 `<img src=\"${asset(t)}\" alt=\"\">`입니다.\n- index.html:425: drawLibrary가 `$('#library').innerHTML=`로 목록 전체를 다시 그리고, 이미지마다 `<img src=\"${asset(t)}\">`를 씁니다.\n- index.html:554: `$('#assetSearch').oninput=drawLibrary;`입니다. 디바운스는 없습니다.\n- index.html:44: `asset=a=>'/assets/'+a.asset.split('/').pop()`입니다. 썸네일을 따로 만들지 않고 원본 경로를 그대로 씁니다. app.py:1381은 `/assets/`를 원본 그대로 내보냅니다. 업로드 상한은 `MAX_UPLOAD = 16 * 1024 * 1024`(app.py:51)이라 '최대 16MB'도 맞습니다.\n\n다른 곳에서 이미 처리했는지 찾아봤지만 없었습니다 [검증됨]. index.html과 JS 파일 전체를 검색해도 `loading=lazy`·`decoding`·debounce가 없습니다. 이미지에 속성을 붙이는 MutationObserver도 없습니다. 서버 쪽 썸네일 생성(resize, PIL)도 없습니다.\n\n취향 문제도 아니고 랜딩 페이지 전용 지적도 아닙니다. 작업실 앱의 자산함과 샷 목록 이야기입니다. '이 로컬 작업실 전체' 범위를 고르면 모든 작품의 이미지 Take가 한 번에 원본으로 디코딩되고, 글자를 칠 때마다 innerHTML을 통째로 다시 만듭니다.\n\n반박된 부분 (발견 문서를 고쳐야 함):\n1. \"레이아웃 이동이 생긴다\"는 틀렸습니다. CSS가 이미 크기를 고정합니다.\n   - studio.css:104 `.thumb { width:68px; height:44px; object-fit:cover; }`\n   - studio.css:486 `76x48`, studio.css:522 `48x40`\n   - studio.css:153 `.library img { width:100%; height:90px; object-fit:cover; }`\n   박스 크기가 정해져 있으니 이미지가 로드돼도 레이아웃은 밀리지 않습니다 [검증됨, 정적 분석. 실제 렌더러에서 측정하지는 않음].\n2. 따라서 수정안의 'width/height 추가'는 레이아웃 이동 방지 효과가 없습니다. 적어도 이 근거로는 필요하지 않습니다.\n\n영향의 크기는 한정해야 합니다.\n- app.py가 로컬에서 서빙하므로 네트워크 비용은 작습니다 [추정].\n- 실제 비용은 대형 원본의 디코딩·메모리와 키 입력마다 전체를 다시 만드는 작업입니다. 다시 만들 때 이미지는 브라우저 캐시에서 오지만, 디코딩은 다시 일어날 수 있습니다 [추정].\n- 버벅임은 실제로 측정하지 않았습니다 [미확인].\n\n남는 결함은 셋입니다. 원본을 썸네일로 씀, 지연 로딩·비동기 디코딩 없음, 디바운스 없는 전체 재렌더. 성능 계열 결함은 규칙상 기본 Medium이고, 사용자가 강등을 선언하지 않았으므로 Medium을 유지합니다. 수정안은 loading=lazy + decoding=async + 디바운스로 줄이고, 근본 해결책으로 서버 쪽 썸네일 생성을 덧붙이는 것이 맞습니다."
+   }
+  },
+  {
+   "title": "CSS 재정의 누적 (!important 58개, reduced-motion 블록 5중복, 인라인 스타일 vs !important)",
+   "location": "studio.css:277,494,586,788,844; studio.css:72/282/502; index.html:19 vs studio.css:335,444,492; index.html:36; motion-studio.js:6-7,44",
+   "reason": "사용자에게 직접 보이지는 않지만, 다음 수정이 의도치 않은 화면에 새고 상태 스타일이 일관되지 않을 위험이 크다.",
+   "evidence": "grep 결과 '!important' 58개, prefers-reduced-motion:reduce 블록 5개",
+   "fix": "레이아웃 변경 없이 중복 블록을 하나로 합치고 인라인 스타일을 기존 클래스·토큰으로 옮긴다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "I checked every citation against the before/ snapshot, and all of them hold. This is a real code-quality problem, not a matter of taste, but it does no visible harm to users today.\n\n1. The 58 `!important` count is correct. `grep -o '!important' studio.css | wc -l` gives 58. (They sit on 35 lines.)\n\n2. There are exactly five `prefers-reduced-motion:reduce` blocks, at studio.css lines 277, 494, 586, 788 and 844.\n   - Lines 277 and 844 are the same global `*,*::before,*::after{animation:none!important…}` rule.\n   - Lines 494 and 586 are the same rule limited to `.lt-ui`, so they add nothing the global rule doesn't already cover.\n   - Line 788 is a version without `!important`, so the other blocks always override it.\n   - Net effect: the duplication is redundant, but reduced-motion still works.\n\n3. Button styles are defined three times, on lines 72, 282 and 502 (`min-height:40px`, background and border colors repeated each time).\n\n4. The inline styles on `#chatPanel` are overridden by `!important` rules. index.html:19 sets `style=\"max-width:900px;margin:auto;padding:24px\"`.\n   - Line 335 overrides the width with `max-width:1280px!important` (only at 1100px wide and up).\n   - Padding is overridden four times: line 230 (`var(--ui-space-3)!important`, not mentioned in the finding), line 444 (`20px!important`, applies everywhere), and line 492 (`var(--ui-space-3)!important`, only at 900px wide and below).\n   - So the inline 24px is never used. That confirms the specificity fight.\n\n5. Other inline styles also check out:\n   - index.html:36 sets the width of `#compareDialog` inline.\n   - motion-studio.js:6 sets `dialog.style.width`.\n   - motion-studio.js:7 has `style=\"width:100%;height:auto;max-height:360px;object-fit:contain\"` inside the innerHTML.\n   - motion-studio.js:44 has `style=\"width:100%;max-height:280px\"` inside the template literal.\n\n6. None of the dismissal criteria apply:\n   - This is not a landing-page-only issue; it is the main app UI.\n   - Nothing elsewhere consolidates these rules. The duplicates are still there.\n   - It is not a taste preference. Inline values that can never take effect, padding redefined four times, and five copies of one rule are objectively measurable debt.\n\n7. Why I recommend Low instead of Medium: the finding itself says \"사용자에게 직접 보이지는 않지만\" (not directly visible to users), and my check agrees. None of the overlaps change what the screen shows right now, and reduced-motion still applies. The impact is a future risk (the next edit could break unexpectedly) and maintenance cost, not a current defect. Under rules/uncompromising-rigor.md §2 a severity can only be lowered when the user explicitly says so, so this is a recommendation and the orchestrator decides whether to keep Medium."
+   }
+  },
+  {
+   "title": "선택 가능한 카드형 버튼의 경계가 거의 보이지 않음 [추정]",
+   "location": "studio.css:720, 381, 717",
+   "reason": "take 버튼 테두리 --ui-line은 panel 대비 1.47:1이고 배경 차이는 약 1.1:1이다. 텍스트가 있어 1.4.11 위반으로 단정하지는 않지만, 저시력 사용자에게 누를 수 있는 요소인지가 잘 보이지 않는다.",
+   "evidence": "대비 계산: line #383838 대 canvas 1.62, 대 panel 1.47",
+   "fix": "비선택 테두리를 --ui-control(panel 대비 4.67:1)로 통일한다.",
+   "severity": "Medium",
+   "source": "impeccable audit (토큰 대비 계산)",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "핵심 주장은 살아남았다. 다만 인용 일부가 틀렸고 수정안에는 부작용이 있다.\n\n[검증됨] studio.css:720에서 `.lt-ui #takes button`은 `border-color:var(--ui-line)`(#383838)과 `background:var(--ui-panel)`(#1B1B1B)을 쓴다. 이 규칙을 덮어쓰는 비선택 상태 규칙은 없다. 721은 hover, 722는 .active다. `prefers-contrast` 처리는 없고, forced-colors(783-786)는 aria-pressed=true인 선택 상태만 다룬다. 어디에서도 따로 처리되지 않는다.\n\n[검증됨] 부모 .lt-media-pane(392)에는 배경이 없어 뒤로 canvas #101010이 보인다. WCAG 공식으로 직접 계산한 값은 이렇다.\n- 테두리 대 canvas 1.62, 대 panel 1.47\n- 버튼 면 대 canvas 1.10\n- --ui-control 대 panel 4.67\n\n발견에 적힌 수치와 모두 일치한다. 랜딩 페이지가 아니라 스튜디오의 take 선택 UI(index.html:115 renderStudioTakes)이므로 제외 조건에 해당하지 않는다. 경계와 면이 모두 3:1에 크게 못 미쳐 저시력 사용자가 버튼 모양을 알아보기 어렵다. 단순 취향 문제가 아니다.\n\n[반박 — 부분] 인용한 줄 중 381(.flow-nav button)과 717(.shot)은 `border-color:transparent`다. --ui-line을 쓰지 않으므로 1.47이라는 근거와 연결되지 않는다. 둘은 탭과 목록 행이라 패턴도 다르다. 유효한 인용은 720 하나다. 같은 --ui-line 테두리는 전역 button 규칙(72)에도 있어, 문제는 take 버튼에만 있는 게 아니라 전체에 걸쳐 있다.\n\n[반박 — 수정안] 비선택 테두리를 --ui-control로 바꾸면 문제가 하나 생긴다. hover(721)와 .active(722)도 --ui-control을 쓰기 때문에, 선택과 비선택이 테두리로는 구분되지 않는다. 남는 단서는 배경(#2A2A28 대 #1B1B1B, 약 1.1:1)과 inset 2px 마커뿐이다. 선택 상태가 덜 눈에 띄게 되므로, 선택 상태 테두리를 따로 강화하는 조치가 함께 필요하다.\n\n[살아남음 — 등급] 버튼 안에 'Take N'과 '선택하기' 텍스트가 있어 WCAG 1.4.11 위반은 아니다. 이 점은 발견 스스로도 인정한다. 그래도 시각 결함이므로 uncompromising-rigor §2에 따라 기본 등급 Medium을 유지한다. 사용자의 강등 선언은 없다.\n\n[미확인] 실제 렌더링은 관찰하지 않았다. 토큰 값으로 계산한 결과다."
+   }
+  },
+  {
+   "title": "일반 div·span의 aria-label이 보조기술에서 무시됨",
+   "location": "index.html:19, 23, 24, 31, 110; general-chat-ui.js:7; studio-media.js:156",
+   "reason": "ARIA 1.2는 generic 역할의 이름 지정을 금지한다. 붙여 둔 영역 이름이 낭독되지 않는다.",
+   "evidence": "<div id=\"timelineProposals\" aria-label=\"편집 변경안\">, <div id=\"generalChatTurns\" aria-label=\"대화 결과\"> 등",
+   "fix": "role=region이나 group을 추가하거나 section으로 바꾼다. 배지 span은 aria-label을 지우고 보이는 텍스트를 쓴다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "이 결함은 실제로 있습니다. 인용한 일곱 곳을 모두 직접 열어 확인했고 위치가 정확합니다. [검증됨]\n\n- **index.html**: 19행 `<div id=\"memoryProposals\" aria-label=\"설정 변경 제안\">`, 23행 `<div id=\"timelineProposals\" aria-label=\"편집 변경안\">`, 24행 `<div id=\"executionCards\" aria-label=...>`, 31행 `<div id=\"mediaActionCards\" aria-label=\"모델 제작 요청\" aria-live=\"polite\">`, 110행 `<span class=\"lt-review-state\" ... aria-label=\"Take ${id} 검토: ${label}\">`\n- **general-chat-ui.js:7**: `<div id=\"generalChatReviews\" aria-label=\"전송 내용 검토\">`, `<div id=\"generalChatTurns\" aria-label=\"대화 결과\">`\n- **studio-media.js:156**: `<div id=\"sequenceCaption\" aria-label=\"편집 자막 미리보기\">`\n\n**다른 곳에서 이미 처리했는지 확인했습니다.** 스냅샷 안의 JS 전체에서 `setAttribute('role'`을 찾아봤습니다. 역할을 붙이는 코드는 chat-sidebar.js 17~38행 하나뿐이고, 대상은 사이드바 안에서 새로 만드는 요소(separator, tablist, tabpanel, tab, status)입니다. 위 div·span에 role을 붙이는 코드는 없습니다. 따라서 이 요소들은 여전히 generic 역할이고, ARIA 1.2 규정상 이름을 붙일 수 없어 보조기술이 aria-label을 낭독하지 않습니다. 대부분의 스크린리더도 같은 식으로 무시합니다. [추정, 실제 스크린리더로는 확인 안 함]\n\n**취향 문제나 랜딩 페이지 전용 문제가 아닙니다.** 이 앱의 작업 화면(편집 변경안, 실행 승인 카드, 대화 결과)에서 붙여 둔 영역 이름이 사라지는 것이라 사용자에게 실제 영향이 있습니다.\n\n**영향을 줄여 보는 요소도 있습니다.**\n- 31행의 aria-live는 이름과 관계없이 동작합니다.\n- 110행 배지 span은 보이는 텍스트(승인됨 등)는 읽히고 \"Take N\" 문맥만 빠집니다. 이 Take 번호는 take 버튼 안 바로 옆 `<b>`에 있습니다. 반면 shot 버튼 안의 같은 배지에는 Take 번호가 따로 없어서, 그 문맥은 실제로 사라집니다.\n\n이런 점을 감안해도 발견 자체는 무너지지 않습니다. 등급은 사용자가 낮추겠다고 명시하지 않았으므로 Medium으로 유지합니다."
+   }
+  },
+  {
+   "title": "일반 대화 결과를 다시 그릴 때 포커스를 잃음",
+   "location": "general-chat-ui.js:58",
+   "reason": "폴링으로 innerHTML 전체를 교체하면 '대화 작업 중단'이나 '제작안 검토' 버튼의 포커스가 body로 사라진다(2.4.3). 같은 파일의 검토 카드는 포커스를 복원한다.",
+   "evidence": "el('generalChatTurns').innerHTML=turns.map(…) — 53-56행의 포커스 복원 로직이 이 부분에는 없음",
+   "fix": "56행 복원 패턴을 data-general-cancel, data-general-review-action 키로 재사용한다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "이 지적은 반박되지 않았습니다. 인용 위치가 정확하고, 다른 곳에서 처리되지도 않으며, 키보드·스크린리더 사용자가 실제로 영향을 받습니다. [검증됨] 근거는 before/general-chat-ui.js 58행입니다. 이 줄은 turnData(JSON.stringify([turns,targets]))가 바뀔 때마다 el('generalChatTurns').innerHTML을 통째로 다시 씁니다. 그 직전 53-56행의 검토 카드에는 document.activeElement의 dataset을 저장했다가 focus({preventScroll:true})로 되돌리는 로직이 있지만, 58행에는 없습니다. 실제로 다시 그려지는 경로도 확인했습니다. index.html 874행의 setInterval 폴링이 generalChatChanged를 감지하면 902행에서 LoretuneGeneralChat.refresh()를 부릅니다. 그래서 진행 중인 turn의 status(queued에서 running으로)나 사용량·답변이 바뀌면 58행이 다시 실행되고, 포커스가 가 있던 '대화 작업 중단'(data-general-cancel)이나 '제작안 검토'(data-general-review-action) 버튼이 DOM에서 빠지면서 포커스가 body로 떨어집니다. 이미 처리된 곳이 있는지 찾아봤지만 없었습니다. index.html과 chat-sidebar.js에서 activeElement를 쓰는 곳은 모두 다른 영역입니다(chat-sidebar.js 88행은 agentWork 행, index.html 500·524행은 sendRequest 요청 경로). 폴링 경로에서 #generalChatTurns의 포커스를 되돌리는 코드는 없습니다. 랜딩 페이지에만 해당하는 문제나 단순한 취향 문제도 아닙니다. 다만 제안된 수정안에는 한계가 두 가지 있습니다. (1) 중단을 누르면 status가 cancel_requested로 바뀌고, 58행 조건(['queued','running','awaiting_continuation_approval'])에 따라 버튼 자체가 렌더되지 않습니다. 이 경우 56행 패턴(같은 키의 요소를 다시 찾아 포커스)으로는 복원할 대상이 없으므로, 카드 제목이나 상태 영역 같은 대체 포커스 대상이 필요합니다. (2) 제작안 검토 버튼은 data-general-review-action 값만으로는 유일하지 않을 수 있으므로 data-general-review-turn까지 묶은 키를 써야 합니다. 등급은 접근성 위반으로 Medium을 유지하며, 강등할 근거가 없습니다."
+   }
+  },
+  {
+   "title": "음원 파일 입력의 라벨이 용도가 아니라 형식 목록임",
+   "location": "index.html:21",
+   "reason": "접근 가능한 이름이 'WAV / MP3 / M4A / FLAC / OGG'라서 무엇을 올리는 칸인지 말하지 않는다(2.4.6).",
+   "evidence": "<label>WAV / MP3 / M4A / FLAC / OGG<input name=\"file\" type=\"file\" …>",
+   "fix": "라벨을 '음원 파일 (WAV·MP3·M4A·FLAC·OGG)'로 바꾼다.",
+   "severity": "Medium",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "이 발견은 실제 결함으로 판정한다. 인용 위치가 정확하고, 다른 곳에서 처리되지도 않았으며, 랜딩 페이지가 아니라 앱 화면이다.\n\n[검증됨] /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/index.html 21행의 마크업은 다음과 같다.\n`<details id=\"audioInputPanel\" open><summary>음원 연결</summary><form id=\"audioUpload\"><label>WAV / MP3 / M4A / FLAC / OGG<input name=\"file\" type=\"file\" accept=\".wav,.mp3,.m4a,.flac,.ogg\" required></label>`\n입력란을 감싼 label의 글자는 형식 목록뿐이고, aria-label·aria-labelledby·aria-describedby가 하나도 없다.\n\n[검증됨] 실행 중에 이름이 바뀌는지 확인했다. JS 안에서 #audioUpload를 쓰는 곳은 558행의 onsubmit 핸들러 하나다(`upload(e.target,'audio')`). 실행 중에 이름이나 설명을 붙이는 코드는 없다. 같은 폴더의 *.js 파일에서도 이 입력에 aria나 setAttribute를 거는 곳은 찾지 못했다.\n\n반박을 시도했지만 무너지지 않았다.\n- \"<summary>음원 연결>과 <h2>음원 마스터>가 맥락을 주니 충분하다\"는 반박: 이 맥락은 화면을 보는 사용자에게만 전달된다. 스크린리더가 폼 모드에서 Tab으로 이동하면 'WAV / MP3 / M4A / FLAC / OGG, 파일 선택, 필수'만 읽고 용도는 알려 주지 않는다. 형식 목록으로 '오디오'라는 것은 짐작할 수 있지만, '원곡 마스터 음원을 연결하는 칸'이라는 목적은 전달되지 않는다.\n- \"취향 문제일 뿐이다\"라는 반박: 같은 파일의 take 업로드 칸은 `<label>새 take · 기존 이미지/영상<input name=\"asset\" type=\"file\">`처럼 용도와 형식을 함께 적는다. 화면 안에서 표기가 일관되지 않으므로 사용자 영향이 없는 취향으로 볼 수 없다.\n\n등급은 Medium을 유지한다. 형식 목록이 '음원'임을 일부 암시하므로 WCAG 2.4.6을 명백히 위반했다고 보기는 경계선이다. 그래서 기능이 고장 난 결함(High)으로 올리지는 않았다. 다만 rigor §2는 WCAG AA 위반을 High(강등 불가)로 정한다. 오케스트레이터가 이를 2.4.6 위반으로 확정하면 High로 올려야 한다. 이 판단은 [추정]이다."
+   }
+  },
+  {
+   "title": "포커스 링 형태 혼재 (실선·점선)",
+   "location": "studio.css:159, 289, 792-793",
+   "reason": "요소마다 실선 2px/offset 3과 점선 2px/offset 2가 섞여 시각 일관성이 떨어진다. 대비는 둘 다 충분하다.",
+   "evidence": "outline:2px solid var(--ui-focus) / outline:2px dashed var(--ui-focus)",
+   "fix": "하나로 통일한다.",
+   "severity": "Low",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "반박에 실패했으므로 이 발견은 유효하다. 인용한 줄은 스냅샷과 일치한다(/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/studio.css). 159행은 `:focus-visible { outline:2px solid var(--ui-focus); outline-offset:3px; }`, 289행은 같은 실선 규칙의 `.lt-ui` 버전이다. 792행은 `.lt-ui :where(button,input,select,textarea,summary,a):focus-visible { outline:2px dashed var(--ui-focus); outline-offset:2px; }`, 793행은 summary용 점선 규칙이다.\n\n다른 곳에서 이미 해결됐는지도 확인했지만 해결되지 않았다. index.html:12에서 `<body class=\"lt-ui lt-system\">`이므로 화면 전체가 .lt-ui 범위다. 289행과 792행은 명시도가 (0,2,0)으로 같아서 나중에 나오는 792행이 이긴다. 그래서 button·input·select·textarea·summary·a에는 점선에 offset 2px가 적용된다. 반면 tabindex로 포커스를 받는 비컨트롤 요소에는 실선에 offset 3px가 그대로 남는다. 해당 요소는 다음과 같다.\n- chat-sidebar.js:17의 `.agent-resizer`(tabIndex=0, role=separator)\n- index.html:1083의 `.lt-preview-stage`(tabIndex=0)\n- index.html:1004의 모바일 tabpanel(tabIndex=0)\n- index.html:17의 `#flowHeading`(tabindex=-1)\n- 오류 시 포커스를 받는 status·note 요소(index.html:514, 715)\n\n여기에 덧붙여 offset이 다른 예외도 있다. 692행 `.lt-stage-bar:has(...)`는 실선에 offset -3px, 820행 `#track.time-clips button`은 offset -3px다. 포커스 링 형태는 실제로 세 가지 이상 섞여 있다. 784행 forced-colors 규칙은 색만 바꾸고 형태는 통일하지 않는다. JS에서 outline을 따로 지정하는 곳도 없다(grep 결과 0건).\n\n두 형태가 의도적으로 나뉘었다는 근거도 없다. 점선 규칙 주변에 의도를 밝힌 주석이 없어 `의도된 동작` 추정은 할 수 없다. 이 화면은 랜딩 페이지가 아니라 스튜디오 앱이다. 키보드 사용자가 Tab으로 이동하면 같은 화면 안에서 링 형태가 바뀌므로 단순한 취향 문제를 넘어 실제 일관성 결함이다.\n\n다만 두 형태 모두 같은 `--ui-focus` 색, 같은 2px 두께로 보이므로 접근성 위반(WCAG 2.4.7·2.4.11)은 아니다. 그래서 Low 등급을 유지한다.\n\n수정할 때 주의할 점이 있다. 발견에 적힌 수정안 `하나로 통일한다`는 159·289·792·793행만 고치면 끝나는 것처럼 보이지만, 692행과 820행의 offset -3px 예외도 함께 검토해야 한다. 이 두 예외는 잘림 방지 같은 목적이 있을 수 있어 [미확인] 상태다."
+   }
+  },
+  {
+   "title": "하드코딩 색 잔존 (white/black)",
+   "location": "studio.css:72, 77, 146, 148, 220",
+   "reason": "dialog(148)와 .job a(146)는 실제로 적용되어 토큰 밖 색을 쓴다.",
+   "evidence": "color:white; skip-link background:white; color:black",
+   "fix": "--ui-strong, --ui-canvas로 바꾼다.",
+   "severity": "Low",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "The finding holds, but its location list is too long: two of the five cited lines are already overridden. I checked it against before/studio.css (1037 lines) and before/index.html.\n\n**Line numbers** — all five are correct.\n- 72: `button,.download{color:white}`\n- 77: `input,select,textarea{color:white}`\n- 146: `.job a{color:white}`\n- 148: `dialog{color:white}`\n- 220: `.skip-link{background:white;color:black}`\n\n**Lines 72 and 77 never reach the screen.** index.html:12 is `<body class=\"lt-ui lt-system\">`. So these later rules win on specificity (0,1,0 beats 0,0,1) and set the color back to `var(--ui-strong)`:\n- 282, 502: `.lt-ui :where(button,.download)` and `.lt-ui :where(button)`\n- 290: `.lt-ui :where(input,select,textarea)`\n\nThe finding's own reason only names 146 and 148, so 72 and 77 should come off the location list. They are dead declarations, not rendered defects.\n\n**Lines 146, 148 and 220 do apply.**\n- **148 (dialog):** the `.lt-ui dialog` rules at 318, 354 and 559 never set `color`. All 11 dialogs in index.html (lines 18 to 41) therefore inherit pure #FFF for their text, while body text uses `--ui-strong` #F4F4F2.\n- **146 (.job a):** no other rule colors these links, including `.creator-downloads a`. The output-card download links (index.html:437) are pure white.\n- **220 (.skip-link):** no other rule overrides it. It shows a white/black chip outside the token set, used on index.html:13.\n\n**Why this isn't just taste.** studio.css:1 states \"One semantic token authority\", so these lines break the project's own contract. The effect on screen is small: dialogs and links render a slightly different white from the rest of the UI. It is not a landing-page-only issue; it is the studio app.\n\n**Why Low.** Contrast is fine everywhere and nothing stops working. There is no light theme or `prefers-color-scheme` rule, so a theme change can't currently break it either. Low is the rigor table's ~1-2px-class grade (studio.css has 3 forced-colors blocks, at 363, 595 and 783).\n\n**The fix is sound.** Change 146 and 148 to `var(--ui-strong)`. Change the skip-link to `background:var(--ui-strong); color:var(--ui-canvas)`, the same pair `button.primary` uses at line 74."
+   }
+  },
+  {
+   "title": "측면 강조 테두리 (디텍터 side-tab)",
+   "location": "studio.css:529, 732",
+   "reason": "craft-floor는 1px를 넘는 측면 색 테두리를 금지한다.",
+   "evidence": "impeccable detect: border-left:3px solid var(--ui-control); border-left:2px solid var(--ui-error)",
+   "fix": "1px 또는 전체 테두리로 바꾼다.",
+   "severity": "Low",
+   "source": "impeccable detect (정적)",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "이 결함은 일부만 맞습니다. studio.css:732는 실제 결함이지만, studio.css:529는 실행 화면에서 적용되지 않는 규칙입니다. 그래서 위치를 732 한 곳으로 좁혀 결함으로 남깁니다.\n\n[반박] studio.css:529 (`.lt-ui #track span { border-left:3px solid var(--ui-control) }`) — 인용한 줄 자체는 정확하지만 사용자에게 영향이 없습니다.\n- index.html:116의 renderStudioTrack이 `<span class=\"lt-track-clip\">`을 만듭니다.\n- 그런데 같은 함수 updateClipPreview(index.html:559)와 drawTimeline(index.html:424)이 끝에서 곧바로 `LoretuneMedia.timeline()`을 부릅니다.\n- studio-media.js:61-62의 timeline()이 `track.innerHTML`을 버튼(`<button><b>…</b><small>…</small></button>`)으로 통째로 바꿉니다. 그러면 #track 안에 span이 하나도 남지 않습니다.\n- `#timeRuler`의 span은 #timeAxis 안에 있고, #track의 형제 요소입니다.\n- 이 교체는 같은 동기 흐름에서 일어나서, 그 사이에 화면이 그려지지 않습니다. studio-media.js는 index.html:3에서 불러오고, setup은 index.html:1071에서 항상 실행됩니다.\n- 따라서 3px 측면 테두리는 화면에 나타나지 않습니다. 이 규칙은 쓰이지 않는 CSS이고, 정적 디텍터의 거짓 양성입니다.\n\n[살아남음] studio.css:732 (`.lt-ui .production-review-error { border-left:2px solid var(--ui-error); background:var(--ui-error-bg) }`)\n- 이 클래스는 실제로 쓰입니다. index.html:728이 `p#productionReviewError.production-review-error[role=alert]`를 만들어 편집기 맨 앞에 넣습니다.\n- 뒤에 이 규칙을 덮어쓰는 규칙이 없습니다. studio.css 전체를 grep해서 확인했고, CSS 파일은 studio.css 하나뿐입니다.\n- craft-floor.md:35의 금지 문구와 그대로 맞습니다: \"A colored border-left or border-right above 1px on cards, list items, callouts, or alerts\". 이 요소는 그 목록의 alert에 해당하고, 2px 오류색 측면 줄입니다.\n- 랜딩 페이지가 아니라 앱(스튜디오) 화면입니다. 그래서 랜딩 전용이라는 반박은 성립하지 않습니다.\n- 사용자 영향이 작은 시각 습관 문제이므로 Low를 유지합니다.\n\n[누락]\n- studio.css:622 `#reason { border-left:2px }`는 studio.css:649의 `border:0`이 덮어쓰기 때문에 결함이 아닙니다. 확인했습니다.\n- 권장 수정 범위는 732를 1px 또는 전체 테두리로 바꾸는 것입니다. 529는 쓰이지 않는 규칙이니 정리 대상으로만 언급하면 됩니다.\n\n근거 경로: /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/studio.css, .../before/index.html, .../before/studio-media.js, /Users/leesungmin/.claude/skills/impeccable/reference/craft-floor.md"
+   }
+  },
+  {
+   "title": "모바일 알림 summary 높이 24px (AA 통과, 44px 목표 미달)",
+   "location": "studio.css:697",
+   "reason": "WCAG AA 최소치는 통과하지만 하네스 목표 44px에 못 미친다. 같은 파일 572행의 44px 값과도 충돌한다.",
+   "evidence": ".lt-ui .lt-notice-detail[open]>summary { min-height:24px }",
+   "fix": "44px로 통일한다.",
+   "severity": "Low",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "[검증됨] 스냅샷 studio.css:697은 두 번째 `@media(max-width:900px)` 블록(695행에서 시작) 안에 있고, 내용은 `.lt-ui .lt-notice-detail[open]>summary { min-height:24px; padding:0; font-size:var(--ui-meta); }`입니다. 인용한 위치와 값이 정확합니다.\n\n이 규칙이 실제로 적용되는지 확인했습니다. 명시도는 0,3,1입니다. 572행 `.lt-notice-detail>summary{min-height:44px}`(0,2,1)와 579행 `:where(button,input,select,summary){min-height:44px}`(명시도가 더 낮음)보다 높고, 파일에서도 뒤에 나옵니다. 그래서 모바일에서 알림을 열면 summary가 24px로 덮어써집니다. 698~797행에 이 규칙을 다시 덮는 min-height 규칙은 없습니다. 797행에는 white-space만 있습니다. JS 쪽 index.html:294와 1062는 요소를 만들고 배치만 하며 높이는 다루지 않습니다. 따라서 다른 곳에서 이미 처리된 문제도 아닙니다.\n\n닫힌 상태에서는 44px(572행)이지만 열면 24px로 줄어듭니다. 알림을 다시 닫으려면 바로 이 summary를 눌러야 하므로 실제로 터치하기가 불편해집니다. 단순 취향 문제가 아닙니다. 랜딩 페이지가 아니라 스튜디오 앱 UI(.lt-studio-shell)에 해당합니다. 코드에 의도를 밝힌 주석도 없습니다.\n\n등급은 Low로 유지합니다. 24px는 WCAG SC 2.5.8 AA를 통과하므로 WCAG 위반은 아닙니다. ~/.claude/rules/ui-ux-craft.md:66은 하네스의 44px 목표 미달을 WCAG 위반과 구분해 적도록 정하고 있으며, 이 지적도 그렇게 구분해 적었습니다.\n\n남은 반론 하나: 하네스 목표의 대상은 '주요 컨트롤'인데, 열린 알림의 summary가 주요 컨트롤인지는 해석의 여지가 있습니다. 다만 같은 요소가 닫힌 상태에서는 이미 44px로 처리되어 있습니다. 그러니 열린 상태에서만 줄어드는 것은 일관성이 깨진 것이고, 결함으로 남습니다.\n\n참고로 실제 렌더된 높이는 측정하지 않았습니다[미확인]. min-height가 24px, padding이 0이고 meta 글꼴 크기의 줄 높이가 24px보다 작다고 보아 약 24px로 [추정]했습니다."
+   }
+  },
+  {
+   "title": "자산함 카드 버튼 이름이 모두 '선택 샷에 연결', 영문 배지 'VIDEO'",
+   "location": "index.html:425",
+   "reason": "버튼 목록으로 탐색하면 구분되지 않는다. 한국어 UI에 영문 배지가 섞여 있다.",
+   "evidence": "<button data-reuse-…>선택 샷에 연결</button>, <span class=\"badge\">VIDEO</span>",
+   "fix": "aria-label에 파일명을 포함하고 배지를 '영상'으로 바꾼다.",
+   "severity": "Low",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "확인 결과 이 발견은 유효하다. before/index.html:425의 drawLibrary가 카드마다 `<button data-reuse-song=… data-reuse-shot=… data-reuse-take=…>선택 샷에 연결</button>`을 만드는데, aria-label이 없어 접근 가능한 이름이 모든 카드에서 똑같다. 영상 카드에는 `<span class=\"badge\">VIDEO</span>`가 들어간다. 이미 다른 곳에서 처리됐는지 찾아봤으나 없었다. 스냅샷 전체에서 data-reuse·VIDEO·#library를 검색하면 425행 말고는 index.html:554의 클릭 핸들러 하나만 나온다. 이 핸들러는 dataset을 읽어 reuse_take를 호출할 뿐이고 aria-label을 붙이거나 배지 문구를 바꾸지 않는다. studio.css의 .badge 규칙(112·188·258·297·317행)도 크기·테두리 같은 스타일만 정하고 문구에는 손대지 않는다. 취향 문제라는 반론도 성립하지 않는다. 페이지가 `<html lang=\"ko\">`이고 바로 옆 필터 select(#assetType)는 '영상'이라고 표시하므로, 배지만 'VIDEO'인 것은 같은 화면 안의 용어 불일치다. 랜딩 페이지가 아니라 제작 도구의 자산함 화면이므로 랜딩 전용이라는 제외 조건에도 걸리지 않는다. 등급은 Low가 맞다. 버튼과 같은 카드 컨테이너 안에 파일명(<p>)과 '작품 / 샷 · Take' 정보가 있어서 문맥까지 보면 목적은 알 수 있다(WCAG 2.4.4 in-context). 다만 스크린리더의 버튼 목록 탐색에서는 같은 이름이 반복돼 구분할 수 없다. 기능 결함이 아니므로 등급을 올리지 않는다. 수정안(aria-label에 파일명·샷·Take 포함, 배지를 '영상'으로)은 타당하다. 렌더링된 화면을 브라우저나 스크린리더로 직접 확인하지는 않았고, 위 판정은 코드를 읽은 결과다."
+   }
+  },
+  {
+   "title": "인스펙터 섹션 h2가 summary로 바뀌어 제목 계층 상실, aside 랜드마크 중첩",
+   "location": "index.html:980-982, chat-sidebar.js:45",
+   "reason": "헤딩 탐색이 줄고 랜드마크 구조가 중첩된다.",
+   "evidence": "if (title) title.remove(); d.append(section); settings.append(inspector)",
+   "fix": "summary 안에 h2를 유지하고, 인스펙터를 aside가 아닌 div/section으로 감싼다.",
+   "severity": "Low",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "스냅샷 파일을 직접 읽어 두 가지 주장을 모두 확인했고, 반박하려던 시도는 성립하지 않았습니다. [검증됨]\n\n(1) 제목 계층 상실: index.html:979-982에서 인스펙터의 각 섹션(검토 Take 섹션과 render-section 제외)이 `disclosure()`(index.html:915, details 안에 summary만 만드는 함수)로 감싸집니다. 이때 h2 텍스트는 summary로 복사되고, `if (title) title.remove()`로 h2는 실제로 삭제됩니다. index.html:24-31의 원래 섹션 h2 대부분(실행 승인, 모델 제작, 이미지 연결, Kling, 샷 참고, 검토 의견)이 헤딩 탐색에서 사라집니다. h2를 되살리거나 summary에 role=\"heading\"·aria-level을 다는 코드는 HTML·JS 어디에도 없습니다(grep 결과 0건). index.html:303이 summary 텍스트만 고쳐 쓸 뿐입니다.\n\n(2) aside 랜드마크 중첩: 인스펙터는 `<aside class=\"inspector\">`(index.html:24)입니다. chat-sidebar.js:16에서 `make('aside','agent-sidebar')`에 aria-label을 붙여 만들고, :22에서 settings를 section role=tabpanel로 만든 뒤, :45 `settings.append(inspector)`로 aside.inspector를 aside.agent-sidebar 안으로 옮깁니다. chat-sidebar.js는 index.html:1109에서 로드되고 app.py:1337에서 서빙되므로 실제 런타임 경로입니다. inspector의 role을 바꾸는 코드도 없습니다. 결과적으로 complementary 랜드마크가 중첩되고, 안쪽 랜드마크에는 접근 가능한 이름이 없습니다.\n\n인용은 정확하고, 다른 곳에서 처리되지 않으며, 스크린리더의 헤딩·랜드마크 탐색에 실제 영향이 있습니다. 취향 문제나 랜딩 페이지 전용 사안이 아닙니다. 등급은 Low가 적절합니다. 섹션 이름이 summary로 남아 있고 aside 중첩 자체는 HTML상 허용되므로(axe의 best-practice 위반 수준) 기능이 깨지지는 않기 때문입니다."
+   }
+  },
+  {
+   "title": "앱 글자 크기를 따르지 않는 고정 값",
+   "location": "studio.css:654, 936, 938",
+   "reason": "12px와 font-weight 600 리터럴이라 --text-scale과 토큰을 따르지 않는다.",
+   "evidence": ".creator-diagnostic pre { font:12px/1.55 … }; font-weight:600",
+   "fix": "--ui-meta, --ui-weight-heading으로 바꾼다.",
+   "severity": "Low",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "[검증됨] 세 군데 인용 줄은 스냅샷(/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/studio.css)과 정확히 맞습니다. 654행은 `.lt-ui .creator-diagnostic pre { font:12px/1.55 ui-monospace,monospace; ... }`, 936행은 `.scene-studio-section>summary { font-weight:600; ... }`, 938행은 `#sceneStudioDialog legend { font-weight:600; }`입니다. 제안된 토큰도 실제로 있습니다. 5행 `--text-scale:1`, 42행 `--ui-meta:calc(.75rem * var(--text-scale))`, 51행 `--ui-weight-heading:600`입니다.\n\n무너뜨리려고 시도한 방법과 결과는 다음과 같습니다.\n(1) 다른 곳에서 이미 처리되는지: 스냅샷 전체를 `creator-diagnostic`, `scene-studio-section`, `sceneStudioDialog legend`로 grep했습니다. 689·699·700·864행은 summary 높이와 여백만 다룹니다. `pre`의 글자 크기를 덮어쓰는 규칙은 없고, 600 굵기를 덮는 규칙도 없습니다.\n(2) 취향 문제일 뿐인지: 아닙니다. 사용자 앞에 실제 '글자 크기' 설정(100/150/200%)이 있습니다(index.html:14). 이 값은 `--text-scale`을 바꿉니다(index.html:703). 12px 리터럴은 rem도 아니고 `--text-scale`도 따르지 않습니다. 그래서 200%를 골라도 진단·비용 상세 `<pre>`만 12px로 남습니다. 이 `<pre>`는 index.html:197의 creatorDiagnostic과 313의 비용 상세 기록에서 그려집니다. 바로 위 summary(652행)는 `--ui-meta`로 커지므로 크기가 어긋나는 것도 사용자 눈에 보입니다.\n(3) 랜딩 페이지에만 해당하는지: 아닙니다. 앱 스튜디오 화면의 CSS입니다.\n\n반박된 부분: 936·938행의 `font-weight:600`은 토큰값 600과 같습니다. 지금은 화면에 차이가 없고 토큰 일관성(유지보수) 문제일 뿐입니다. '--text-scale을 따르지 않는다'는 설명은 12px에만 맞고 굵기에는 맞지 않습니다. 굵기는 원래 배율과 상관이 없습니다.\n\n종합: 사용자 영향은 654행 하나뿐입니다. 접근성 설정이 보조 진단 텍스트에만 적용되지 않는 정도라 Low 등급을 유지합니다. 등급을 올릴 근거로는 부족하다고 봤습니다."
+   }
+  },
+  {
+   "title": "단일 선택 목록에 aria-pressed 사용",
+   "location": "index.html:114-115",
+   "reason": "하나만 선택되는 샷·take 목록에는 토글 의미(aria-pressed)보다 aria-current가 정확하다.",
+   "evidence": "aria-pressed=\"${name===shotName}\"",
+   "fix": "aria-current=\"true\"로 바꾸는 것을 검토한다.",
+   "severity": "Low",
+   "source": "impeccable audit",
+   "audit": "impeccable-audit",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "[살아남음] 인용 정확 [검증됨]: before/index.html:114 renderStudioShots는 `aria-pressed=\"${name===shotName}\"`, :115 renderStudioTakes는 `aria-pressed=\"${s.selected===t.id}\"`. 다른 곳에서 처리되었는지 반박 시도: JS 파일 전체 grep에서 aria-pressed 재설정 없음, #takes 컨테이너에 role(listbox/radiogroup) 없음, aria-current/aria-selected 대체 없음 — 미처리. 순수 취향 반박 시도: 클릭 핸들러가 `shotName=b.dataset.shot;draw()` / `act('select',{...take})`로 이미 선택된 항목을 다시 눌러도 해제되지 않음(단일 선택, 토글 아님). 스크린리더는 \"전환 버튼, 눌림\"으로 읽어 다시 누르면 해제될 것처럼 알리지만 실제로는 해제되지 않으므로 보조기술 사용자에게 실제 의미 불일치가 있다 — 취향 문제가 아니다. 다만 선택 상태는 전달되므로 기능이 깨지는 것은 아니어서 Low 유지. 랜딩 전용 아님(스튜디오 작업 UI). [보강 — 수정안 불완전] 제시된 수정(aria-current=\"true\"로 교체)만 적용하면 스타일이 퇴행한다. studio.css:251 `button[aria-pressed=true]`, :364 및 :785 강제 색상 모드 `border:2px solid Highlight`(`.shot`·`#takes button`의 aria-pressed=true), :525 `#takes button[aria-pressed=\"true\"]`가 aria-pressed에 묶여 있다. :288은 `.active`도 함께 잡지만 나머지는 그렇지 않아서, 특히 고대비/강제 색상 모드의 선택 표시가 사라진다. 그래서 CSS 선택자도 함께 바꿔야 한다. 또 엄밀히는 aria-current보다 radiogroup+aria-checked나 listbox+aria-selected가 더 정확한 패턴일 수 있다[추정, APG 기준]."
+   }
+  },
+  {
+   "title": "연출 취향 적용 범위에서 'IP' 선택지가 마크업 오류로 사라짐",
+   "location": "index.html:40",
+   "reason": "끝 태그에 속성이 붙은 </option value=\"ip\"> 때문에 두 번째 option이 만들어지지 않는다. 'IP 전체 기본 취향' 저장 기능이 동작하지 않는다(기능 고장).",
+   "evidence": "html5lib 파싱 결과 선택지가 [('song','현재 작품의 예외')] 하나뿐이고, 오류는 attributes-in-end-tag(40:352)와 unexpected-end-tag-in-select(40:372) 2건이다. 파일 전체 파싱 오류도 이 2건뿐이다.",
+   "fix": "<option value=\"song\">현재 작품의 예외</option><option value=\"ip\">이 IP의 기본 취향</option>로 고친다.",
+   "severity": "High",
+   "source": "impeccable critique (정적 + html5lib 검증)",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "High",
+    "why": "이 지적은 맞습니다. 등급은 High로 유지합니다.\n\n**인용 위치 확인 [검증됨]**\n- `before/index.html` 40번째 줄에 `<select name=\"scope\"><option value=\"song\">현재 작품의 예외</option value=\"ip\">이 IP의 기본 취향</option></select>`가 그대로 있습니다.\n- 두 번째 선택지를 여는 `<option` 시작 태그가 없고, 그 자리에 속성이 붙은 끝 태그 `</option value=\"ip\">`가 들어가 있습니다.\n- Python 표준 HTMLParser로 다시 파싱해 보니 scope 선택 상자의 option은 `[{'value': 'song'}]` 하나뿐이었습니다. 지적에 적힌 html5lib 결과와 같습니다.\n\n**다른 곳에서 처리되는지 확인 [검증됨]**\n- `name=\"scope\"`를 grep해 보니 index.html의 마크업 1곳에만 나옵니다. JS 파일 6개(chat-sidebar, late-evidence-ui, general-chat-ui, scene-studio, motion-studio, studio-media)에서는 0건입니다. 스크립트가 option을 나중에 추가하는 경로는 없습니다.\n- 제출 처리기는 599번째 줄 `$('#preferenceForm').onsubmit`입니다. 여기서 `song: f.get('scope')==='song' ? song() : null`로 보내므로, `song=null`(IP 전체 기본 취향)을 보내는 방법은 'ip' 값을 고르는 것뿐입니다.\n- 서버 쪽 `app.py:575` `scope=d.get('song') or None`과 `preferences.py:39` `for scope in [None,song]`은 IP 전체 범위(None)를 실제로 받아서 사용합니다.\n- `preference_propose`를 보내는 곳은 index.html:599 한 곳뿐이라, 화면에서 이 기능에 닿을 다른 경로가 없습니다.\n\n**반박하려 했지만 성립하지 않은 근거**\n- 단순한 취향 문제가 아닙니다. 사용자가 고를 선택지가 사라져서 기능에 도달할 수 없습니다.\n- 랜딩 페이지에만 해당하는 문제가 아닙니다. 앱 안의 대화상자 폼입니다.\n- 인용 위치도 정확합니다.\n\nrules/uncompromising-rigor.md §2에 따르면 '기능 작동 안 함'은 High이고 강등할 수 없습니다.\n\n**확인하지 못한 것 [미확인]**\n- 실제 브라우저에서 렌더된 DOM은 보지 않았습니다. 다만 HTML5 파싱 규칙상 속성이 붙은 끝 태그는 속성을 버리고 끝 태그로 처리되므로, 결과는 같다고 봅니다 [추정].\n\n**제안된 수정**\n- `<option value=\"ip\">이 IP의 기본 취향</option>`으로 바꾸는 수정은 맞습니다."
+   }
+  },
+  {
+   "title": "creatorError가 정확한 검증 문구를 엉뚱한 복구 안내로 바꿈",
+   "location": "index.html:169-196 (특히 :184, :186, :194, :195), 호출부 index.html:148, :634, :49, :521",
+   "reason": "정규식 /연결|fetch|network/이 오류 원문 전체에 적용된다. 그래서 '기존 미디어를 먼저 연결하세요'나 '승인된 모델 연결이 없습니다' 같은 문구가 네트워크 오류 안내로 바뀐다. 사용자는 틀린 복구 행동을 하게 되고, 원래 원인은 접힌 '오류 상세'에만 남는다.",
+   "evidence": "index.html:148 message('비교할 Take가 없습니다. 기존 미디어를 먼저 연결하세요.',true) → :194 매칭 → '연결을 확인하지 못했습니다. 저장 상태를 확인한 뒤 다시 진행하세요.' :634 '서버에 승인된 모델 연결이 없습니다. 입력은 보존됩니다.'도 같은 문구로 치환된다. 정적 추적이며 렌더는 관측하지 않았다.",
+   "fix": "서버 오류 코드에만 매핑하고, 클라이언트가 만든 검증 문구는 원문 그대로 통과시킨다(message에 raw 통과 경로를 추가). 최소 수정은 :193 통과 패턴에 '연결하세요|보존됩니다'를 추가하는 것이다.",
+   "severity": "High",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "[살아남음, 결함은 실재. 직접 실행으로 확인함] 대상은 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/index.html 이다. index.html:55-60의 message(t,true)는 문구를 항상 creatorError(t)로 보낸다. 거기서 나온 presentation.message는 #notice의 textContent가 되고, 원문은 접힌 <details>('오류 상세', creatorDiagnostic :197)에만 남는다. :169-196 함수를 그대로 잘라 node로 실행했더니 두 인용 문구 모두 같은 결과가 나왔다. message는 '연결을 확인하지 못했습니다. 저장 상태를 확인한 뒤 다시 진행하세요.'이고, detail은 원문이다. 대상 문구는 :148 '비교할 Take가 없습니다. 기존 미디어를 먼저 연결하세요.'와 :634 '서버에 승인된 모델 연결이 없습니다. 입력은 보존됩니다.'다. 앞쪽 통과 패턴 :193(/선택하세요|입력하세요|…|Take를 먼저|…/)은 두 문구 중 어느 것도 잡지 못한다. 결국 :194의 /연결|fetch|network|timeout/i에 걸린다. 이 결함이 다른 곳에서 처리되는지도 찾아봤다. message나 creatorError를 재정의하는 곳은 없었다(grep 결과 late-evidence-ui.js의 지역 변수 message뿐). 두 문구를 다루는 테스트도 없다. 랜딩 전용 문제나 취향 문제도 아니다. 사용자는 '저장 상태 확인'이라는 틀린 복구 행동을 안내받는다. 실제로 해야 할 일은 미디어 연결(:148)이나 서버 모델 설정(:634)이다. [반박: 인용 일부, minor] location의 '특히 :184, :186'은 틀렸다. 두 문구는 :184(권한)와 :186(사용권) 정규식에 걸리지 않는다. 실제로 치환하는 줄은 :194뿐이다. 호출부로 적힌 :49와 :521에서도 이 경로와 관련된 내용을 확인하지 못했다. 진입점은 :55, :148, :634다. [등급] rigor §2 표에 따르면 기능 자체는 동작한다. 비교가 막히고 제출이 막히는 것은 의도대로 일어난다. 문제는 안내 문구가 원인과 다르다는 데 있으므로 '문구 모호'에 해당하는 Medium이 맞다. 기능 미작동·4xx·5xx·WCAG 위반을 뜻하는 High 근거는 없다. 이 판정은 정적 추출과 node 실행으로 얻었고, 화면 렌더는 관측하지 않았다. [수정안 주의] 최소 수정으로 제안된 '보존됩니다'를 :193 통과 패턴에 넣으면 범위가 지나치게 넓다. 서버나 예외에서 온 원문 중 이 단어를 포함한 문구까지 원문 그대로 노출된다(예: :484의 error.message 경로). raw 통과 플래그를 쓰는 근본 수정이 더 낫다. 같은 경로를 타는 :907 '서버 연결을 확인하세요.'는 실제 연결 문제라 :194 치환이 무해하다."
+   }
+  },
+  {
+   "title": "안내형 흐름의 '다음 단계' 버튼이 접힌 disclosure 안에 숨음",
+   "location": "index.html:295 (context.append(#flowNext)), :938, :1030, :995",
+   "reason": "순차 흐름의 핵심 행동이 기본적으로 보이지 않는다. 단계가 바뀔 때마다 disclosure가 다시 닫히고, 모바일에서는 두 겹 안에 들어간다.",
+   "evidence": "index.html:938에서 stage bar에 배치된 뒤 initializeCreatorUI(:295)가 '제작 진행·도움말' details로 옮긴다. stageChanged(:1030)는 context.open=false로 닫는다. CSS(studio.css:382,470)는 이 버튼이 단계 막대 안에 있다고 가정한다.",
+   "fix": "index.html:295의 이동을 제거해 .lt-stage-bar에 둔다. 마지막 단계 문구 '1 음악 입력으로 돌아가기'(:860)는 출력 확인 행동으로 바꾼다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "이 발견은 실제 결함이 맞습니다. 다만 인용한 줄 번호 하나가 1줄 어긋나 있고, 같은 기능을 하는 다른 경로가 보인다는 점 때문에 \"핵심 행동이 보이지 않는다\"는 표현은 실제보다 강합니다.\n\n[검증됨] 버튼이 옮겨지는 경로 (before 스냅샷 index.html 기준)\n1. :17에서 #flowNext는 .flow-summary 안에 있습니다.\n2. 구조 스크립트(#loretuneWorkspaceStructure)의 :938 `stage.append(q('.flow-nav'), q('#flowNext'))`가 이 버튼을 .lt-stage-bar로 옮깁니다.\n3. :931은 `disclosure('프로젝트 상태','lt-project-context')`로 .lt-project-context를 만듭니다. :915에 따르면 이 요소는 `<details>`이고 기본으로 닫혀 있습니다.\n4. :1071이 `initializeCreatorUI()`를 무조건 호출합니다.\n5. 그 함수의 :294(발견에는 :295로 적힘, 1줄 차이) `context.append($('#flowNext'))`가 버튼을 접힌 details 안으로 다시 옮깁니다. 이때 summary 문구도 '제작 진행·도움말'로 바뀝니다.\n6. :1030 stageChanged는 data-step이 바뀔 때마다 `context.open = false`로 details를 다시 닫습니다. 이것을 바꾸는 MutationObserver는 :1035에 있습니다.\n7. :998 applyPanels는 화면 폭이 900px 이하일 때 context를 .management(이것도 details) 안으로 옮깁니다. 그래서 모바일에서는 버튼이 두 겹 안에 들어갑니다. 이 부분도 확인했습니다.\n8. CSS를 보면 studio.css:382(max-width:280px)와 :470(display:block; width:100%)는 버튼이 단계 막대 안에 있다고 가정합니다. 반면 :642의 `.lt-project-context #flowNext`는 이동한 뒤의 위치를 위한 스타일입니다. 이 이동이 의도된 것일 수는 있지만, 사용자가 받는 영향은 사라지지 않습니다. CSS나 JS 어디에서도 다시 펼치거나 버튼을 노출하는 처리는 찾지 못했습니다.\n9. :860의 마지막 단계 문구 '1 음악 입력으로 돌아가기'도 확인했습니다.\n\n[반박] 버튼에 닿을 다른 경로가 있음 (등급 판단에만 반영)\n- .flow-nav 단계 버튼(1~4)은 :938 이후로도 .lt-stage-bar에 계속 보입니다. 클릭하면 :872에서 같은 setStep을 호출합니다.\n- 모바일에서도 :468의 overflow-x:auto 덕분에 계속 보입니다.\n- 따라서 \"다음으로 가기\" 기능 자체가 사라진 것은 아니고, 눈에 띄는 주 행동 버튼만 숨겨진 것입니다. 사용자는 탭을 눌러 진행할 수 있습니다.\n\n판정과 등급\n- 인용이 실질적으로 맞습니다. 다른 곳에서 해결되지 않았습니다. 순차 흐름의 주 행동(CTA)이 숨는 문제이므로 단순한 취향 문제가 아니고, 랜딩 페이지가 아니라 앱 화면입니다. 그래서 real=true로 판정합니다.\n- 위의 다른 경로가 있어서 영향은 줄어듭니다. 하지만 등급 강등은 사용자가 명시적으로 선언한 경우에만 인정되므로 Medium을 유지합니다.\n\n보정할 점\n- 인용 줄 번호를 :295에서 :294로 고쳐야 합니다.\n- CSS 근거에 studio.css:642를 같이 적어야 합니다. 이동이 의도된 것임을 보여주는 흔적입니다.\n- 수정안대로 :294의 이동을 제거하면 :642 규칙은 쓰이지 않게 되므로 함께 정리해야 합니다."
+   }
+  },
+  {
+   "title": "비용 표기 형식·위치가 카드마다 다르고 실제 과금 카드의 승인 버튼에 금액이 없음",
+   "location": "index.html:801-802 (mediaActionMarkup), index.html:866, general-chat-ui.js:11, :55, index.html:316",
+   "reason": "같은 '비용 감수 후 실행' 결정인데 $0 / '0.42 USD' / $0.010000(6자리)로 표기가 다르다. 실제 청구가 있는 모델 제작 카드에서 금액이 4번째 문단에 있어 가장 덜 보이고, 버튼은 '이 조건 승인'뿐이다. 견적이 비면 '예상 비용  '처럼 빈칸으로 표시된다.",
+   "evidence": "index.html:801 `예상 비용 ${esc(x.estimate?.amount)} ${esc(x.estimate?.currency)}`, :802 button('approved','이 조건 승인'); :866 '$0 테스트 작업 승인'; general-chat-ui.js:11 money=n=>'$'+(n/1e6).toFixed(6)",
+   "fix": ".lt-cost-facts(studio.css:549)를 모델 제작·대화 전송 카드에 공통 적용하고, 승인 버튼 라벨에 금액을 넣는다. 금액 형식 함수는 하나로 통일하고, 견적이 없으면 '견적 없음 · 승인 불가'로 표시한다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "why": "The core claim holds up, and I checked the cited lines in the before/ snapshot myself.\n\n(1) index.html:801 (mediaActionMarkup) shows the cost as `${amount} ${currency}`, which renders as e.g. \"0.42 USD\". It is in the 4th <p>, after the status, model and prompt paragraphs.\n(2) index.html:802 has approve and execute buttons with no amount: '이 조건 승인' and '승인한 작업 실행'.\n(3) The $0 test execution card at index.html:866 states the amount in its button ('$0 테스트 작업 승인') and has a separate .lt-cost-facts line. The same pattern does not reach the card that actually bills.\n(4) general-chat-ui.js:11 has `money=n=>'$'+(Number(n)/1000000).toFixed(6)`, used in the :55 review card, so values show with 6 decimals like \"$0.010000\".\n(5) index.html:316 shows '외부 모델 비용 $0'.\n\nSo the same \"approve after seeing the cost\" decision uses three different formats.\n\nRebuttal attempts that failed:\n- Taste only? No. On a card that triggers a real fal charge (mode provider-unverified), the amount is buried and missing from the approve button. That affects the user's decision.\n- Handled elsewhere? I found no other formatter or cost summary. studio.css:549 .lt-cost-facts is applied only to the test execution card at :866.\n- Landing page only? No, this is the app's main screen.\n\nOne part does not hold: \"an empty estimate shows as a blank '예상 비용  '\". media_creator.py:68 sets `estimate=q['money']` outside the try block, and fal_models.py:55 raises unless money is USD and greater than 0. So a missing estimate makes the whole card list fail with a KeyError rather than showing a blank. The blank-field case is effectively unreachable [추정]. That sub-claim and its fix ('견적 없음 · 승인 불가') should be removed.\n\nMedium is appropriate under rigor §2 (wording, information hierarchy).",
+    "corrected_severity": "Medium"
+   }
+  },
+  {
+   "title": "승인 사유가 미리 채워져 있고 기본 결정이 '승인'",
+   "location": "index.html:31 (#referenceDecision 첫 option approved, #referenceReason, #deliveryReason), :32 inherit_reason, :40 #preferenceReviewReason",
+   "reason": "버튼 한 번이면 미리 쓰인 사유로 승인이 기록되어 감사 기록의 의미가 약해진다. 참고 이미지 승인은 유료 영상 생성의 전제조건이다(index.html:791). Take 검토는 이미 빈 선택으로 시작하게 고쳐져 있어(index.html:122,133) 원칙이 일관되지 않다.",
+   "evidence": "value=\"샷 제작 참고 검토\", value=\"출력 영상·음원·자막 검토 완료\", <option value=\"approved\">승인</option>이 첫 선택지다.",
+   "fix": "Take 검토와 같은 패턴을 적용한다. 빈 선택지 '검토 결정 선택'을 앞에 두고 사유는 비우며, 둘 다 입력하기 전에는 버튼을 비활성화한다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "발견은 실제로 있습니다. 인용한 위치가 모두 맞고, 이 문제를 처리하는 코드도 어디에도 없습니다. 근거는 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/ 아래 파일에서 직접 확인했습니다.\n\n[검증됨] 인용 위치\n- index.html:31에 `<input id=\"referenceReason\" ... value=\"샷 제작 참고 검토\">`가 있습니다.\n- 같은 줄의 `<select id=\"referenceDecision\">`은 첫 선택지가 `<option value=\"approved\">승인</option>`이고, 빈 선택지가 없습니다.\n- 같은 줄에 `<input id=\"deliveryReason\" value=\"출력 영상·음원·자막 검토 완료\">`가 있습니다.\n- index.html:32에 `inherit_reason value=\"다음 곡에 승인 설정 계승\"`, :40에 `preferenceReviewReason value=\"명시적 연출 취향 검토\"`가 있습니다.\n- index.html:122와 :133에서는 Take 검토 select에 '검토 결정 선택' 빈 선택지를 JS로 앞에 넣고, 사유를 저장된 값 또는 빈 값으로 덮어씁니다. 발견이 말한 '원칙 비일관성'은 사실입니다.\n- index.html:791의 생성 준비 판정은 참고 버전이 approved가 아니면 생성을 막습니다. 참고 승인이 영상 생성의 전제조건이라는 주장도 맞습니다.\n\n[검증됨] 다른 곳에서 처리하는지\ngrep 결과 referenceDecision과 referenceReason은 :575(assign)와 :576(review_reference)에서 `.value`를 그대로 보낼 뿐, 빈 선택지 삽입이나 값 초기화, 버튼 비활성화가 없습니다. 백엔드도 막지 않습니다. references.py의 review()는 decision이 허용값인지만 검사하고 reason은 비어 있는지조차 검사하지 않습니다. 그래서 '참고를 지정한 뒤 버튼 1회'면 미리 채워진 사유로 approved가 기록됩니다. 또 같은 referenceReason 입력란이 지정 사유와 검토 사유에 함께 쓰여서, 기본 문구가 두 기록에 모두 남습니다.\n\n납품 검토는 상황이 더 나쁩니다. :561의 #jobs 클릭 핸들러가 `decision:'approved'`를 하드코딩해 보내고, 사유로 미리 채워진 deliveryReason 값을 씁니다. app.py:1027-1043에서 사유 검증이 없습니다. 결과적으로 수정 없이 '출력 영상·음원·자막 검토 완료'라는 승인이 결과 승인(result_approved/output_approved)으로 기록됩니다.\n\n반박 시도와 실패한 이유\n- 인용 오류: 아닙니다.\n- 이미 처리됨: 아닙니다.\n- 순수한 취향 문제: 아닙니다. 사람의 확인 없이 감사 기록과 승인 게이트의 의미가 약해지고, 유료 생성의 전제조건 승인에 영향을 줍니다.\n- 랜딩 페이지에만 해당: 아닙니다. 앱 내부의 검토 도구입니다.\n\n과장된 부분(minor)\n- inherit_reason은 승인 결정이 아니라 계승 사유일 뿐입니다.\n- preferenceReviewReason은 결정 자체를 항목별 버튼(data-decision)에서 명시적으로 고르므로, 문제는 사유가 미리 채워진 것에 그칩니다.\n- 이 두 항목은 '기본 결정이 승인'이라는 핵심 주장에는 해당하지 않습니다. 그래서 핵심 근거는 referenceDecision과 deliveryReason입니다.\n\n누락\n제안한 수정이 납품 검토를 다루지 않습니다. 이 경로는 decision이 하드코딩되어 있어서 빈 선택지 패턴만 넣어서는 고쳐지지 않습니다. 사유를 비워 두고 입력 전에는 버튼을 비활성화하는 처리, 그리고 서버의 reason 필수 검증이 함께 필요합니다.\n\n등급은 Medium을 유지합니다."
+   }
+  },
+  {
+   "title": "검토 패널 이름이 '작업 설정'/'검토'로 갈리고 AI 대화와 동시에 볼 수 없음",
+   "location": "chat-sidebar.js:19, :45, :154, :214; index.html:989; general-chat-ui.js:58",
+   "reason": "Take 검토·실행 승인·출력이 '설정' 탭 아래에 있다. 대화의 '제작안 검토'를 누르면 대화가 숨겨지고 카드만 남아, 제안과 실제 조건(비용·지시문)을 나란히 비교할 수 없다.",
+   "evidence": "settings.append(inspector)(:45), chat.hidden = selected !== 'chat'(:214), reviewMediaAction → choose('settings')(:154). 모바일 탭은 같은 패널을 '검토'로 부른다(index.html:989).",
+   "fix": "탭 이름을 '검토'로 통일한다. 검토 진입 시 '대화로 돌아가기' 버튼을 남기거나, 대화 카드 안에 비용·상태 요약을 함께 보여 준다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "why": "인용한 줄은 모두 맞고, 이 문제를 다른 곳에서 처리하는 코드도 찾지 못했습니다. 다만 이름 문제는 원래 주장보다 약하고, 동시에 볼 수 없다는 문제가 핵심입니다.\n\n**직접 확인한 근거** (snapshot `before/`)\n- `chat-sidebar.js:19`: 탭 이름은 `make('button','', '작업 설정')`입니다.\n- `chat-sidebar.js:45`: `settings.append(inspector)`로 검토 패널이 '작업 설정' 탭 안에 들어갑니다. `index.html:24`을 보면 이 패널의 첫 섹션은 '실행 승인 · 모의 검증'이고 그 다음이 '모델 제작 · 결과'입니다. 탭 이름은 '설정'인데 내용은 승인·결과입니다.\n- `chat-sidebar.js:214`: `chat.hidden = !activeDialog && selected !== 'chat'; settings.hidden = selected !== 'settings'`. 두 창 중 하나만 보입니다.\n- `general-chat-ui.js:58`: '<shot> 제작안 검토' 버튼을 만듭니다. `:67`에서 `reviewMediaAction`을 부르고, 이 함수가 `chat-sidebar.js:154`에서 `choose('settings')`를 실행해 대화 창을 숨깁니다.\n- `index.html:989`: 모바일 탭은 같은 inspector를 '검토'라고 부릅니다(`['review','검토',inspector]`). `chat-sidebar.js:226`과 `:288`에서 이 탭이 `settings`와 연결되는 것도 확인했습니다.\n\n**다른 곳에서 처리하는지 확인**\n- `studio.css:962-995`에 `.agent-chat-pane`·`.agent-settings-pane`를 나란히 보여 주는 규칙이 없습니다. 넓은 화면에서도 두 창이 동시에 보이는 경로는 없습니다.\n- 대화 카드(`general-chat-ui.js:58`)에는 대화 요청의 사용량·청구 정보만 있습니다. 제작안의 비용·지시문은 대화 쪽에 요약되지 않습니다.\n\n**반박이 일부 성립한 부분**\n1. '대화로 돌아가기'가 필요하다는 주장은 약합니다. 'AI 대화' 탭이 항상 보이므로 한 번만 누르면 대화로 돌아갑니다. 문제는 돌아갈 수 없다는 것이 아니라 둘을 나란히 비교할 수 없다는 것입니다.\n2. 이름이 '작업 설정'과 '검토'로 갈리는 문제도 약합니다. 900px 경계를 사이에 두고 한쪽 이름만 보이므로 한 사용자가 두 이름을 동시에 볼 일은 드뭅니다. 다만 데스크톱의 '작업 설정'은 승인·출력이 들어 있는 패널을 잘못 설명합니다. 대화 창 안에도 '에이전트 설정'(`chat-sidebar.js:33`)이 따로 있어 '설정'이 두 곳을 가리킵니다. 그래서 이름 문제는 다른 이유로 여전히 결함입니다.\n\n**판정**\n랜딩 페이지가 아니라 실제 작업 화면의 문제입니다. 비용·승인 판단 흐름을 끊는 영향이 있으므로 단순한 취향 문제도 아닙니다. 등급은 Medium을 유지합니다.",
+    "corrected_severity": "Medium"
+   }
+  },
+  {
+   "title": "승인→실행 카드 4종의 버튼 위계가 서로 다름(모델 제작 카드는 최대 5개 동등 버튼)",
+   "location": "studio.css:557-558 vs studio.css:760, studio.css:418-419, index.html:802, general-chat-ui.js:55",
+   "reason": "테스트 카드만 승인·실행 버튼을 강조한다. 모델 제작 카드는 승인·실행·보류·거절·입력 수정이 같은 크기로 세로로 쌓인다. 작업 기억 한도를 넘어 오클릭 위험이 있다.",
+   "evidence": ".lt-execution-card [data-action=action_execute] 강조(557-558) vs .media-action-card button { border-color } 만(760). .inspector .row{display:block}(418) 때문에 세로로 쌓인다.",
+   "fix": "557-558 규칙을 [data-media-decision=approved|execute], [data-general-decision=approve]로 확장한다. 보류·거절은 보조 버튼, 입력 수정은 텍스트형 버튼으로 낮춘다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "발견은 유효하다. 다만 버튼 개수 하나가 틀렸다. 최대 5개가 아니라 4개다. 코드를 직접 읽고 grep으로 확인했다 [검증됨].\n\n**살아남은 부분**\n- **테스트 카드:** studio.css:557-558이 `.lt-execution-card`의 `[data-action=action_execute]`와 `action_decide[data-decision=approved]`에만 강조색(`--ui-strong` 배경)을 준다.\n- **모델 제작 카드:** index.html:797-802의 `mediaActionMarkup`이 만든다. 이 카드의 버튼(`data-media-decision`)에는 studio.css:760의 `.media-action-card button { border-color }` 외에 다른 규칙이 없다. CSS와 JS 전체에서 `data-media-decision`·`.media-action-card`를 검색해도 강조 규칙은 나오지 않는다. 버튼 클래스는 `primary`도 아니어서 studio.css:74·284도 적용되지 않는다.\n- **세로 쌓임:** `#mediaActionCards`는 `<aside class=\"inspector\">` 안에 있다(index.html 오프셋 계산으로 확인). 그래서 studio.css:418-419의 `.inspector .row{display:block}`와 `.row>*{width:100%}`가 적용되어 결정 버튼이 전폭으로 세로로 쌓인다. 입력 수정 버튼도 같은 모양이다.\n- **일반 대화 승인 카드:** general-chat-ui.js:55가 만든다. 승인(`approve`)과 거절(`reject`)이 `.general-chat-actions`(studio.css:953·991)에서 같은 스타일로 놓이고 강조가 없다.\n- **결론:** 같은 승인→실행 흐름인데 테스트 카드만 위계가 있다. 이 불일치는 사실이다. 실제 비용이 드는 작업 화면이고 랜딩 페이지가 아니다. 다른 곳에서 처리된 흔적도 없다. 오클릭 위험과 위계 모호성이라는 사용자 영향이 있으므로 Medium(rigor §2: 시각 결함·문구 모호)이 맞다.\n\n**반박된 세부 내용 (minor)**\n- \"최대 5개 동등 버튼\"은 틀렸다. media_creator.py:82-83에서 `can_approve=True` 다음에 승인 grant가 유효하면 `can_execute=True, can_approve=False`가 된다. 즉 승인과 실행은 같이 나타나지 않는다. tests/test_media_creator.py:113도 approved가 있을 때 execute가 없음을 단언한다.\n- `can_decide=not j`(media_creator.py:68)이므로 job이 생기기 전 최대 구성은 다음 4개다.\n  - 승인 또는 실행 중 하나\n  - 보류\n  - 거절\n  - 입력 수정\n- 제목의 \"4종\"도 맞지 않는다. 결정 카드는 실행·모델 제작·일반 대화 3종이다. general-chat-ui.js:58의 turn 카드는 결정 카드가 아니다.\n\n**수정안 타당성**\n- 557-558 선택자를 `.media-action-card [data-media-decision=approved|execute]`와 `[data-general-decision=approve]`로 넓히고 보류·거절·입력 수정을 낮추는 방향은 근거와 맞는다.\n- 단 `.row` 안의 모든 자식이 `width:100%`이므로, 보조 버튼을 실제로 낮추려면 별도 규칙이 필요하다.\n\n등급 강등은 하지 않았다(사용자 선언 없음)."
+   }
+  },
+  {
+   "title": "처리 결과 알림이 머리글의 접힌 '저장 상태' disclosure에 있고 오류 요약은 '알림'뿐",
+   "location": "index.html:1060-1065, :294, :155-162, :17",
+   "reason": "사이드바 카드에서 한 행동의 결과가 화면 반대편에 표시된다. 오류도 polite 상태 영역과 '알림' 라벨로만 전달된다.",
+   "evidence": "notice를 details.lt-notice-detail로 감싼다(:1062-1064). 오류가 아닌 일반 알림이 아니면 summary가 '알림'이 된다(:161). #notice는 role=status다.",
+   "fix": "모델 제작 카드에도 테스트 카드(:866)처럼 카드 안 role=status 문단을 둔다. 오류 요약 라벨은 '오류 · {원인}'으로 바꾼다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "The citations are accurate, but the main claim mostly falls apart. Only a narrow labeling problem remains. [검증됨] All reads are from before/index.html and studio.css.\n\nWhat falls apart:\n(1) Errors are not in a collapsed disclosure. In installStudioNotice (index.html:161), any non-routine notice (error class, or text not in the labels map) sets `detail.open=true`. Only routine notices stay collapsed. Those are 저장됨, 저장 중…, 불러옴 and 출력 접수됨, and their summary already shows the full meaning.\n(2) Failed actions are not left silent off to the side. The act() finally block at index.html:514 handles `!completed` by opening the parent DETAILS, setting tabIndex=-1 and calling focus() on #notice. So the error gets both visual and screen-reader focus. The claim that errors are passed only through a polite status region is therefore wrong.\n(3) The model production cards already show their state inside the card. #mediaActionCards has `aria-live=\"polite\"` (index.html:31). mediaActionMarkup (index.html:800) prints the job state label per card in bold: 접수됨, 생성 중, 생성 실패, 미확정 비용…전송 전 차단, and so on. The fix to add role=status to the card like the test card at :866 largely repeats what already exists.\n(4) Error text has its own styling: `.lt-ui #notice.error` uses the error color and bold weight (studio.css:386).\n\nWhat holds up:\n- The summary label for errors and other non-routine notices is the generic '알림' (index.html:161). It does not say 오류 or give the cause, so the heading of the opened panel does not separate errors from ordinary messages. That is a wording problem, and it remains.\n- Focus jumps from the sidebar to the top-header notice on failure (index.html:514, with :294 moving the notice into the shell). That is a jump in position, but it is a deliberate way to get the error noticed, not a hidden result. I can't confirm from code alone whether this disorients users. [미확인]\n\nSo only the second fix suggestion survives: change the error summary to '오류 · {원인}'. The premise about collapsing and the suggestion to add a status paragraph inside the card fall apart. I've corrected the severity to Low because what remains is limited to the label wording."
+   }
+  },
+  {
+   "title": "고지 문구 과밀로 중요한 경고가 묻힘",
+   "location": "index.html 전반 (예: :866, :31 렌더 섹션), scene-studio.js, motion-studio.js, chat-sidebar.js:40",
+   "reason": "카드마다 '별도/외부 전송 없음/미계측' 문구가 반복되어, 실제 비용·전송 경고가 다른 문구와 같은 무게로 보인다(H8).",
+   "evidence": "index.html에서 '별도/별개' 21회, '전송 없음' 5회, '미계측' 6회, '승인' 134회. scene-studio.js '별도/별개' 5회. 버튼 129개, details 25개, dialog 12개.",
+   "fix": "카드당 고지는 .lt-cost-facts 1줄만 남기고 나머지는 .lt-provenance-detail(studio.css:550) 안으로 옮긴다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "The finding mostly holds, but it needs two corrections.\n\n[검증됨] The counts match exactly in the before/ snapshot: index.html has '별도|별개' 21 times, '전송 없음' 5, '미계측' 6, '승인' 134, `<button` 129, `<details` 25 and `<dialog` 12. scene-studio.js has '별도|별개' 5 times. chat-sidebar.js:40 says \"최종 출력·비용·전송·사용권 승인은 별도입니다\" as stated.\n\n[검증됨] The repetition is real and spread across sections. index.html lines 18, 19, 31, 37, 38 and 41 each carry their own plain-text notes like \"외부 전송 없음\", \"로컬 연산비 미계측\" and \"…과 별개입니다\". Line 31 alone has \"(전송 없음)\" on a button, \"참고 승인은 결과 take 승인과 별개입니다. 외부 전송 없음\" and \"외부 생성비 0 · 로컬 연산 비용 미계측\". The notes also repeat in motion-studio.js:7 and 59, and in index.html 135/259/409/418 (\"출력 승인은 별도입니다\").\n\n[검증됨] The H8 claim also holds: lines that matter for real cost are not set apart. These include \"실청구 ${…'확인':'미확인'}\", \"추정과 실청구 별도\" (index.html:802) and \"외부 전송·유료 호출 승인이 아닙니다\" (:37). They are plain `<p>`/`<small>` with no warning class. studio.css defines --ui-warning and --ui-error, but only for status, review, error and readiness states. No cost or transfer warning gets that styling, so it carries the same weight as the \"전송 없음\" notes.\n\nCorrection 1: the :866 citation does not support the finding. It is the one place already fixed. drawExecutionCards keeps one `.lt-cost-facts` line (`외부 모델 비용 $0 · 외부 전송 없음 · 로컬 처리비 미계측`) and moves the details into `<details class=\"lt-provenance-detail\">` (studio.css:549-552). That is the very pattern the fix proposes. The fix is already applied on the execution card and is missing everywhere else (lines 18-41, 135/259/409/418, scene/motion-studio, chat-sidebar).\n\nCorrection 2: the '승인' count of 134 includes state labels and code strings (for example '승인 대기' and '실행 승인됨' in the states map). It overstates how many notices there are and should not be read as a notice count.\n\nThis is not a matter of taste and not landing-page-only. These are operating screens of the app (studio, dialogs, sidebar), where real-cost and transfer warnings are hard to tell apart. I kept Medium, matching rigor §2 (unclear wording / visual defect). I did not edit any files."
+   }
+  },
+  {
+   "title": "모호하거나 전문적인 라벨, HTML 원문과 런타임 라벨 이중 정본",
+   "location": "index.html:22 '시작(초)' ↔ :424 data-field=trim; chat-sidebar.js:40, :158, :176; general-chat-ui.js:4, :46; index.html:14 vs :300",
+   "reason": "'시작(초)'은 실제로 원본 trim이라 타임라인상 위치로 오해할 수 있다. FullAccess·xhigh·'일반 대화 전송 검토 · 시험' 같은 용어가 그대로 노출된다. 라벨 정본이 둘이라 문구가 어긋날 위험이 있다.",
+   "evidence": "헤더 <span>시작(초)</span>, input data-field=\"trim\"; modeNames full_access:'FullAccess'; labels{review:'출력 버전 승인',render:'영상 출력'} vs HTML '타임라인 승인'/'렌더 대기열에 추가'",
+   "fix": "'원본 시작(초)', '전체 편집' 등 한국어 라벨로 바꾸고 HTML 원문을 런타임 라벨과 일치시킨다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "무너뜨리지 못했다. 세 하위 주장 중 둘은 실제 사용자 영향이 있고, 나머지 하나는 사용자 영향이 약하다. 랜딩 페이지가 아니라 앱 작업 화면 이야기이고, 다른 곳에서 이미 처리된 문제도 아니다.\n\n(1) '시작(초)'가 trim이라는 지적 [검증됨]. index.html:424의 클립 행은 `<span class=\"clip-field-name\">시작(초)</span>` + `data-field=\"trim\"`이다(aria-label은 '${shot} 시작'). 열 머리글은 :22가 아니라 :23에 있다(`<span>길이(초)</span><span>시작(초)</span>`). 인용 줄 번호가 하나 어긋난 것은 사소한 오류다. 같은 값을 앱의 다른 곳에서는 '원본 N초부터'라고 부른다(index.html:672 `원본 ${v.trim}초부터`, :690). 같은 줄의 오디오 필드도 '음원 시작(초)'로 대상을 밝힌다. 그래서 클립 행의 '시작(초)'만 어느 시작인지 알 수 없다. 길이 옆에 놓여 있어 타임라인상 위치로 읽힐 수 있고, 같은 값이 화면마다 다른 이름으로 불린다. 실제 사용성 문제다.\n\n(2) 전문 용어가 그대로 노출된다는 지적 [검증됨]. chat-sidebar.js:158 `full_access: 'FullAccess'`, agent_preferences.py:137 백엔드 라벨도 'FullAccess', chat-sidebar.js:40 정책 문구, :172 요약 '에이전트 설정 · FullAccess · xhigh'가 있다. :167은 effort_options 원시값(none/low/high/xhigh/max)을 option 텍스트로 그대로 쓰고, :176은 'xhigh·max는…'을 출력한다. general-chat-ui.js:4와 :46의 '일반 대화 전송 검토 · 시험'도 확인했다. 이런 값을 번역하는 CSS나 JS는 찾지 못했다.\n\n(3) 라벨 정본이 두 곳이라는 지적은 사실이지만 사용자 영향은 약하다. index.html:14의 HTML은 '타임라인 승인'·'렌더 대기열에 추가'다. :300의 labels는 '출력 버전 승인'·'영상 출력'이고, :301이 textContent로 덮어쓴다. 이 코드는 initializeCreatorUI 안에 있고, 그 함수는 :1071에서 무조건 호출된다. 그래서 사용자가 보는 최종 문구는 런타임 라벨 하나다. 실제로는 스크립트 실행 전 원문이 잠깐 보이는 깜박임과 유지보수 때 문구가 어긋날 위험 정도다. 이 부분만 떼면 Low에 가깝다. 다만 (1)과 (2)가 실재하므로 Medium은 유지한다.\n\n분할 판정. 줄 번호 하나가 어긋난 것 말고 인용은 정확하다. 순수 취향 문제도 아니다. 한국어 사용자에게 원시 열거값과 영문 내부 용어가 노출되고, 같은 개념이 서로 다른 이름으로 불린다. 근거 파일: /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/index.html, /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/chat-sidebar.js, /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/general-chat-ui.js, /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/agent_preferences.py"
+   }
+  },
+  {
+   "title": "대화 비용 상한 검증 메시지가 허용 범위를 알려주지 않음",
+   "location": "general-chat-ui.js:65, :6, :66, :7",
+   "reason": "'비용 상한을 확인하세요.'만 표시되고 실제 조건(회차 ≤0.1, 총 ≥회차 그리고 ≤0.4 USD)은 보이지 않는다. 권한 체크 없이 승인했을 때의 오류도 카드 밖 상태 줄에 표시된다.",
+   "evidence": "if(!maximum||maximum>100000||(bounded&&(!total||total<maximum||total>400000))) → '비용 상한을 확인하세요.'",
+   "fix": "범위를 명시하는 문구로 바꾸고, 권한 체크 전에는 승인 버튼을 비활성화한 뒤 그 이유를 버튼 옆에 둔다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "인용은 맞고 결함도 실재한다. 다만 근거 서술 일부는 과장이다.\n\n[검증됨] 맞는 부분\n- general-chat-ui.js:65의 onsubmit 검사가 `!maximum||maximum>100000||(bounded(cap.mode)&&(!total||total<maximum||total>400000))`일 때 범위 설명 없이 '비용 상한을 확인하세요.'만 출력한다.\n- 6행 라벨('한 회차 비용 상한 (USD)', '이번 요청 총 비용 상한 (USD)')에도 범위가 적혀 있지 않다.\n- 66행은 권한 체크 없이 승인하면 generalChatStatus에 '내용의 사용 및 전달 권한을 확인해 주세요.'를 쓴다. 이 #generalChatStatus는 7행에서 폼 바로 아래, 검토 카드 컨테이너(#generalChatReviews) 바깥에 있다.\n- 42행 controls()는 승인 버튼을 busy, inFlight, dirty 같은 전역 상태로만 비활성화한다. 권한 체크 여부와는 연결되어 있지 않다. 따라서 \"체크 전에는 버튼이 비활성\"이라는 처리는 어디에도 없다.\n- 원인을 찾으려고 noValidate·novalidate, CSS, chat-sidebar.js, index.html을 검색했지만 이 메시지를 대신 보완하는 코드는 없었다.\n\n[추정] 과장된 부분\n- 두 입력에 min과 max(0.1 / 0.4)가 지정되어 있고 form에 novalidate가 없다. 그래서 상한 초과나 step 위반은 대부분 브라우저 기본 검증이 먼저 막는다. 이 경우 브라우저 툴팁이 허용 범위를 보여 준다. 결과적으로 maximum>100000과 total>400000 분기에는 실제로 거의 도달하지 않는다.\n- 일반 메시지가 실제로 뜨는 경우는 주로 둘이다. ①총 상한이 회차 상한보다 작을 때(total<maximum) ②bounded 모드에서 총 상한이 비어 있을 때. #generalChatTotal은 required가 아니다.\n- 그러니 \"조건이 전혀 보이지 않는다\"는 표현은 과장이다. 그래도 사용자가 가장 헷갈릴 '총 상한 ≥ 회차 상한' 조건은 어디에도 안내되지 않는다.\n\n[미확인] 실제 브라우저에서 기본 검증 툴팁이 뜨는지는 실행해 보지 않았다.\n\n판정: 취향 문제가 아니라 사용자가 입력을 고칠 수 없게 만드는 모호한 문구이고, 랜딩 페이지가 아닌 실제 앱 화면이다. 그래서 real=true다. 규칙의 '문구 모호' 기본 등급에 따라 Medium을 유지한다.\n\n수정 범위: 문구에 '총 상한은 회차 상한 이상, 0.4 USD 이하'를 명시하는 것이 핵심이다. 상한 초과 범위 안내는 기본 검증이 일부 대신하고 있다.\n\n근거 파일: /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/general-chat-ui.js (6, 7, 42, 55, 65, 66행)"
+   }
+  },
+  {
+   "title": "비활성 '입력·예상 비용 확인' 버튼의 이유가 프로그램적으로 연결되지 않음",
+   "location": "index.html:30, :811; general-chat-ui.js:42",
+   "reason": "비활성 버튼은 탭 순서에서 빠져, 화면낭독기 사용자가 왜 실행할 수 없는지 듣지 못한다.",
+   "evidence": "<button id=\"prepareMedia\" data-runtime-blocked disabled> — #mediaPreparationHint와 aria-describedby 연결이 없다.",
+   "fix": "aria-describedby=\"mediaPreparationHint\"를 추가하거나, aria-disabled와 클릭 시 이유 안내로 바꾼다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "핵심 지적은 맞다. 위치 인용 3개 중 하나만 틀렸다. [검증됨] before/index.html:30 원문은 `<p id=\"mediaPreparationHint\"></p><button id=\"prepareMedia\" data-runtime-blocked disabled>입력·예상 비용 확인</button>`이다. 버튼에는 aria-describedby가 없고 힌트 <p>에는 role=status도 aria-live도 없다. 811행은 `b.disabled=busy||!prep.ready;$('#mediaPreparationHint').textContent=prep.reason;`로 이유 텍스트만 바꾸고 버튼과 연결하지 않는다. 스냅샷 전체를 grep한 결과 aria-describedby는 index.html:126, 729, 844와 scene-studio.js:13에만 있고 prepareMedia/mediaPreparationHint를 연결하는 코드는 없다(CSS·JS 어디에도 없음). 따라서 '이미 다른 곳에서 처리됨'으로 반박할 수 없다. mediaPreparation()(785행)이 돌려주는 이유는 '장면과 승인된 계획을 먼저 준비하세요', '사용권을 확인한 PNG 이미지를 시작 프레임으로 지정하고 참고 버전을 승인하세요' 같은 실질 안내다. 사용자가 다음에 할 일을 알려 주는 내용이라 취향 문제가 아니고, 랜딩 페이지가 아닌 앱 UI다.\n반박이 성립하는 부분: (1) 위치 인용 general-chat-ui.js:42는 틀렸다. 이 줄은 다른 버튼(generalChatPrepare)의 disabled 계산이고 prepareMedia와 관계가 없다. 정확한 위치는 index.html:30, :811이다. (2) 영향 범위는 일부 줄어든다. 힌트 <p>가 DOM에서 버튼 바로 앞에 있어서 낭독기의 가상 커서(browse mode)로 차례대로 읽으면 이유를 들을 수 있다. 다만 Tab 이동이나 버튼 단위 이동을 쓰는 사용자는 이유를 듣지 못하고, 이유가 바뀌어도 live region이 없어 알림이 없다. 그래서 결함은 남는다. 등급은 Medium을 유지한다. WCAG AA를 명확히 어긴 기능 장애(High)라기보다 이유 안내가 불완전한 문제다."
+   }
+  },
+  {
+   "title": "반복 행 컨트롤의 접근 가능한 이름이 고유하지 않음",
+   "location": "index.html:424",
+   "reason": "'앞으로 이동/뒤로 이동', '자막 시작/끝/내용/삭제'가 행마다 같아 화면낭독기 목록에서 구분되지 않는다. 컷 제외 버튼만 '${shot} ${i+1}번 컷 제외'로 고쳐져 기준이 섞여 있다(SC 2.4.6 위반 판정은 보류).",
+   "evidence": "aria-label=\"앞으로 이동\", aria-label=\"자막 시작\", aria-label=\"자막 삭제\"",
+   "fix": "컷 제외 패턴을 적용한다(예: `${c.shot} ${i+1}번 컷 앞으로 이동`, `자막 ${i+1} 시작`).",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "why": "발견이 성립합니다. 인용 위치, 다른 곳에서 처리되는지, 취향 문제인지, 랜딩 페이지에만 해당하는지 네 가지로 반박을 시도했고 모두 실패했습니다.\n\n1) 인용 위치는 정확합니다 [검증됨]. before/index.html:424의 drawTimeline()이 문제의 마크업을 만듭니다.\n- 컷 행: 위·아래 이동 버튼이 행 번호 없이 고정 이름 aria-label=\"앞으로 이동\"과 aria-label=\"뒤로 이동\"을 씁니다.\n- 컷 제외 버튼만 aria-label=\"${esc(c.shot)} ${i+1}번 컷 제외\"로 행마다 다른 이름을 받습니다.\n- 자막 행: aria-label=\"자막 시작\", \"자막 끝\", \"자막 내용\", \"자막 삭제\"가 행마다 똑같고, 샷 이름도 번호도 없습니다.\n\n2) 다른 곳에서 처리되지 않습니다 [검증됨].\n- 스냅샷의 모든 .html과 .js에서 data-move, data-caption, caption-row, clip-row, aria-label 설정 코드를 grep했습니다. 이 버튼과 입력의 이름을 나중에 바꾸는 코드는 없습니다.\n- setAttribute('aria-label') 호출은 사이드바·탭·다이얼로그·flow-nav(1055행) 같은 다른 요소에만 있습니다.\n- MutationObserver도 #clips나 #captions를 감시하지 않습니다(162, 1036, 1099, 1100행, chat-sidebar.js, studio-media.js).\n- .clip-row와 .caption-row에는 role=group이나 aria-labelledby 같은 그룹 맥락이 없습니다. CSS(studio.css 114~228, 864, 921행)는 배치만 다룹니다.\n\n3) 취향 문제가 아닙니다. 화면낭독기의 폼 컨트롤·버튼 목록이나 Tab 이동에서는 이름만 읽히므로 행을 구분할 수 없습니다. 특히 \"자막 삭제\"는 되돌릴 수 없을 수 있는 동작인데 어느 행을 지우는지 알 수 없습니다. 같은 파일의 컷 제외 버튼이 이미 이 문제를 인정하고 고쳐 둔 기준이므로, 기준이 섞여 있다는 지적도 사실입니다.\n\n4) 랜딩 페이지가 아닙니다. 앱의 타임라인 편집 화면(#clips, #captions)입니다.\n\n발견 원문이 다루지 않은 점 두 가지 [추정]:\n- 컷 행의 Take, 길이, 시작 입력은 aria-label이 \"${shot} take\"처럼 샷 이름만 씁니다. 같은 샷을 두 번 배치하면 이 이름들도 겹칠 수 있습니다. 제외 버튼에 i+1을 붙인 이유가 바로 이것으로 보입니다.\n- 자막 행에는 샷 이름조차 없어 해당 행 컨트롤 4개가 모두 겹칩니다.\n\n화면에서 직접 확인하지는 않았습니다 [미확인]. 이것은 정적 코드 판정입니다. 화면낭독기나 브라우저 접근성 트리로 재현하지 않았습니다.\n\n등급은 Medium을 유지합니다. 기능은 동작하고 행 안에서 순서대로 읽으면 맥락을 얻을 수 있습니다. 대신 화면낭독기 사용자의 조작 오류(엉뚱한 자막 삭제나 컷 이동) 위험이 있습니다. rigor §2 기준에서 사용자 강등 선언은 없었습니다.",
+    "corrected_severity": "Medium"
+   }
+  },
+  {
+   "title": "단계 탐색에 완료 표시가 없고 마지막 단계의 '다음'이 처음으로 순환",
+   "location": "index.html:860, :872",
+   "reason": "진행 상황을 단계 버튼에서 알 수 없다. 출력 단계의 다음 행동이 '1 음악 입력으로 돌아가기'라 완료감이 없다.",
+   "evidence": "drawFlow는 aria-current만 설정한다. $('#flowNext').onclick=()=>setStep(guidedStep%4+1).",
+   "fix": "flowSummary 수치를 이용해 단계별 완료 표시를 붙이고, 마지막 단계 버튼은 렌더 작업 확인으로 연결한다.",
+   "severity": "Medium",
+   "source": "impeccable critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Medium",
+    "why": "I tried to knock this finding down and it held up. I read the snapshot in /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/.\n\n[검증됨] The citations are correct.\n- index.html:860: drawFlow only sets aria-current='step' or 'false' on each [data-step] button. It also sets flowNext's label to '1 음악 입력으로 돌아가기' when guidedStep===4.\n- index.html:872: `$('#flowNext').onclick=()=>setStep(guidedStep%4+1)`, so step 4 wraps back to step 1.\n- index.html:17: the step buttons are plain text (\"1 음악 입력\" and so on), with no completion state.\n\n[검증됨] Nothing else in the code handles completion. I searched studio.css and every JS file (chat-sidebar.js, late-evidence-ui.js, studio-media.js, scene-studio.js, general-chat-ui.js, motion-studio.js) for flow-nav, data-step, aria-current, flowNext, done and completed.\n- In studio.css, the flow-nav rules only style the current step (198, 288, 364, 380-382).\n- chat-sidebar.js:291 watches data-step only to toggle the sidebar and never marks a step as done.\n- No completed-step class, attribute or icon exists anywhere.\n\n[검증됨] The impact is worse than the finding says. Lines 933-941 move #flowSummary, the only progress readout, into a \"프로젝트 상태\" disclosure (an expandable section) inside the shell bar, and remove .flow-summary itself. The flow-nav and #flowNext go into lt-stage-bar. So the step bar a user actually sees has no progress signal at all, and the counts are only visible if the user opens that section.\n\nIt is not a taste preference. Hiding system status (progress) and sending the user back to the start after the final output step affect how users find their way through a 4-step production wizard. This is an app screen, not a landing page, so neither exclusion applies.\n\nMedium (the original grade) is kept. Downgrading needs an explicit user statement, and there is none."
+   }
+  },
+  {
+   "title": "오류 표기 방식이 2종(왼쪽 띠 vs 텍스트색)",
+   "location": "studio.css:732 vs studio.css:96",
+   "reason": "같은 오류인데 모양이 달라 일관성이 떨어진다. 검출기 side-tab 결과와도 일치한다.",
+   "evidence": "impeccable detect: side-tab studio.css:732 border-left:2px solid var(--ui-error)",
+   "fix": "카드형 오류는 --ui-error-bg 배경 + 텍스트로 통일하고 띠는 제거한다.",
+   "severity": "Low",
+   "source": "impeccable detect + critique",
+   "audit": "impeccable-critique",
+   "verdict": {
+    "real": true,
+    "corrected_severity": "Low",
+    "why": "반박을 시도했지만 무너지지 않았습니다. 다만 근거 중 일부는 과장되어 있습니다. 근거 위치: /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/\n\n[검증됨] 인용 위치는 정확합니다. studio.css:96은 `.error { color:var(--ui-error)!important; }`로 글자색만 바꿉니다. studio.css:732는 `.lt-ui .production-review-error { ... border-left:2px solid var(--ui-error); background:var(--ui-error-bg); color:var(--ui-error); ... }`입니다.\n\n[검증됨] 다른 곳에서 이미 처리된 문제가 아닙니다. 스냅샷 전체에서 `production-review-error`와 `--ui-error-bg`를 검색한 결과는 정의(studio.css:26), 규칙(studio.css:732), 그리고 생성 지점인 index.html:728(`note.className='production-review-error'`, role=alert) 셋뿐입니다. 덮어쓰는 규칙은 없습니다.\n\n[검증됨] 랜딩 페이지 문제도 아닙니다. index.html:12의 `<body class=\"lt-ui lt-system\">` 스튜디오 앱 화면에 적용됩니다.\n\n[검증됨] 불일치는 실제로 있습니다. 오류를 표시하는 나머지 지점은 모두 테두리 없이 글자색만 씁니다. scene-studio.js:89, motion-studio.js:44, index.html:203/437/571/629의 `<p class=\"error\">`, studio.css:324 `.lt-inline-error`, studio.css:386 `#notice.error`가 그렇습니다. 띠와 배경을 함께 쓰는 오류 상자는 732 하나뿐입니다.\n\n[검증됨] 띠가 오류를 뜻하지도 않습니다. 같은 2~3px 왼쪽 띠가 오류가 아닌 요소에도 쓰입니다. studio.css:622 `#reason`(--ui-control), 529 `#track span`, 719/722/724의 선택 마커(inset 2px 0)가 그 예입니다. 오류 상자만의 표지가 되지 못하므로, 사용자 입장에서 \"선택/메모\"인지 \"오류\"인지 모양만으로는 구분하기 어렵습니다. 그래서 순수 취향 문제로 볼 수 없습니다.\n\n과장된 부분:\n- \"같은 오류\"라는 표현은 정확하지 않습니다. 732는 편집기 맨 위에 붙는 role=alert 블록 알림이고, `.error`는 카드 안에 들어가는 문장입니다. 맥락이 다르므로 모양이 달라도 될 여지가 있습니다.\n- 다만 블록 알림끼리 비교해도 `#notice.error`(386, 글자색과 굵기만 사용)와 732가 서로 다릅니다. 그래서 불일치 자체는 여전히 성립합니다.\n\n등급: 기능, 접근성, 상태 표시가 틀린 것이 아니라 시각적 일관성 문제입니다. Low가 맞습니다.\n\n제안된 수정(\"배경과 글자로 통일하고 띠는 제거\")은 다른 오류 표시와 맞추는 방향이며 문제가 없습니다. 다만 다른 문장형 오류에 배경을 추가하는지 여부는 범위가 정해지지 않았습니다. 띠만 제거할지, 블록 알림 2종을 맞출지 범위를 정해야 합니다."
+   }
+  }
+ ],
+ "rejected": [
+  {
+   "title": "sloplint 기준선이 JS 파일을 하나도 검사하지 않음",
+   "audit": "hallmark-triage",
+   "why": "The facts in the finding check out, but it is a caveat about the audit method, not a design defect, and the existing records already handle it.\n\n[Verified] /Users/leesungmin/.claude/skills/hallmark/scripts/sloplint.mjs:42 has DOC_EXT = {.html,.jsx,.tsx,.vue,.svelte,.astro}, and collectFiles only accepts .css or DOC_EXT. Line 29 is the usage message saying it reads only these extensions. So .js files passed as arguments are dropped silently. All four JSON outputs report summary.files=2 and 18/73/16, and their findings come only from index.html and studio.css: design-gate/sloplint-before.json, design-audit/sloplint-snapshot-rerun.json, design-gate/sloplint-after-r2.json and tasks/B1-chat-ui/sloplint-after.json. The snapshot before/ holds six .js files (chat-sidebar, general-chat-ui, late-evidence-ui, motion-studio, scene-studio, studio-media), and none of them was checked.\n\n[Rebuttal 1: already handled] This finding restates /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/design-audit/hallmark-triage.md (line 13 summary, line 20 coverage table, line 23 \"the baseline's 0 does not mean the JS-generated DOM is clean\"). Section 5 of that file (from line 103) already did the fix the finding proposes: a manual static review of the JS, 14 extra items, X-1 to X-14. tasks/B1-chat-ui/result.md:101 and :112 also record \"files: 2, the two JS files were not checked\" and say Floor 10 was checked by hand. The finding's fix (\"check manually or via the render tier, and list the checked files when reporting\") is therefore already done in both documents. Separately, an earlier HTTP render run (--url, files 0, render ran) did look at the JS-built DOM in the rendered state, though against older source with different hashes (triage line 129).\n\n[Rebuttal 2: no user impact] The defect is in how far the checker reaches. Nothing changes on screen for the user, so it is not a design-improvement item. The real defects that live in the JS (drag-only splitter, ambiguous toggle label, and so on) are already filed as their own items (X-1, X-6, etc.). Counting this finding as well would double-count the same fact.\n\n[Remaining gap, if kept] PLAN-ko.md:106 records the static sloplint numbers as the design-gate baseline without the files=2 caveat. The triage text does not clearly show that late-evidence-ui.js was among the six files reviewed by hand [unconfirmed]. If the item is kept, its severity should be Low: a process note about reporting coverage."
+  },
+  {
+   "title": "html/body overflow-x 보호장치 없음, 100vw 기반 폭 3곳",
+   "audit": "hallmark-triage",
+   "why": "[반박] 주장된 결함은 실제로 생기지 않는다. 등급은 minor. 아래는 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/ 스냅샷을 직접 읽고 grep으로 확인한 내용이다.\n\n(1) 인용 위치는 맞다 [검증됨].\n- studio.css:318 `.lt-ui dialog{width:min(640px,calc(100vw - 32px))}`\n- studio.css:640 `.lt-notice-detail[open]{position:absolute;right:16px;width:min(500px,calc(100vw - 24px))}`\n- studio.css:1010 agent-dialog `width:min(1320px,calc(100vw - 32px))`\n- index.html:36 compareDialog `style=\"width:min(1000px,95vw)\"`\n- motion-studio.js:6 `dialog.style.width='min(900px,95vw)'`\n\n부정확한 점도 있다. 제목은 \"100vw 3곳\"이라 했지만 실제로 나열된 위치는 5곳이고, 그중 2곳은 95vw다. studio.css:1은 주석 헤더다. html/body에 overflow-x 규칙이 없다는 지적은 맞다. body 규칙은 studio.css:67에만 있다.\n\n(2) dialog 4곳(318, 1010, index.html:36, motion-studio.js:6)은 문서를 가로로 넘치게 하지 못한다.\n- index.html에는 showModal()이 14회 있고, scene-studio.js와 motion-studio.js에도 각각 1회씩 있다.\n- `.show()`나 `<dialog open>`으로 여는 곳은 0건이다(grep 확인).\n- 모달 dialog는 top layer의 fixed 요소다. 그래서 문서의 스크롤 넘침 영역에 들어가지 않는다.\n- agent-dialog는 chat-sidebar.js의 portal()이 이미 열린 dialog에 클래스만 붙이는 방식이다.\n- 따라서 이 4곳 때문에 1.4.10(리플로) High 시나리오가 생기지 않는다.\n\n(3) studio.css:640은 @media 밖의 전역 규칙이다. @media(max-width:900px)는 628~636에서 닫힌다. 이 요소는 `right:16px`로 오른쪽에 붙어 있어서, 넘친다면 왼쪽으로 넘친다. 왼쪽 넘침은 스크롤이 생기지 않는다. 남는 위험은 하나다. 폭이 524px 미만인 데스크톱 창에서 스크롤바가 화면 폭을 차지하는 방식(classic scrollbar)이면, 100vw에 스크롤바 폭이 포함되어 왼쪽 끝이 몇 px 잘릴 수 있다 [추정·미측정]. 이것은 주장된 \"가로 스크롤 넘침\"이 아니다. 제안된 fix인 overflow-x:clip으로도 고쳐지지 않는다.\n\n(4) 보호장치가 없다는 것만으로는 사용자에게 영향이 없다. finding도 스스로 \"넘침 가능성 낮음[추정]\"이라 했다. 증거도 \"320px에서 body_horizontal_overflow 0\"(이전 소스), \"현재 소스는 미측정\"이 전부다. 제안된 `html,body{overflow-x:clip}`은 오히려 역효과가 날 수 있다. 실제로 넘침이 생기면 그것을 고치는 대신 잘라서 가린다. 그러면 1.4.10 위반이 측정에 잡히지 않게 된다.\n\n[누락] 실제 렌더 측정은 하지 않았다 [미확인]. 판정을 확정하려면 aside repl로 320px에서 `document.documentElement.scrollWidth > clientWidth`인지 재보면 된다. 그 측정에서 넘침이 나오면 그때 원인 요소를 찾아 새 결함으로 올리는 것이 맞다. 이 finding은 그 근거가 될 수 없다."
+  },
+  {
+   "title": "오류 메시지 요소에 role=status를 메시지 삽입 시점에 붙임 (4.1.3)",
+   "audit": "impeccable-audit",
+   "why": "위치 인용은 맞다. studio-media.js:28에 `const err=(el,text)=>{el.textContent=text;el.setAttribute('role','status');};`가 그대로 있다. 하지만 지적한 결함은 실제로 일어나지 않는다. 이 문제는 다른 곳에서 이미 처리돼 있다.\n\n`err`는 4곳에서 호출된다. 대상 요소는 `#sequenceStatus`(:78의 `label`)와 `#compareSyncStatus`(:131 직접 지정, :137의 `label`) 두 개뿐이다.\n\n- 두 요소 모두 처음 만들 때부터 `role=\"status\"`를 갖는다. :156의 innerHTML에 `<p id=\"sequenceStatus\" role=\"status\">`, :162에 `<p id=\"compareSyncStatus\" role=\"status\">`가 있다. [검증됨]\n- 따라서 라이브 영역은 텍스트가 바뀌기 전에 이미 존재한다. 첫 오류가 낭독되지 않는 경우는 생기지 않는다.\n- `err` 안의 `setAttribute('role','status')`는 이미 있는 값을 다시 쓸 뿐이라 효과가 없다.\n- 제안된 수정(생성 시 부여)도 이미 적용된 상태다.\n\n남은 것은 쓸모없는 코드 한 줄이 남아 있다는 정도다. 사용자에게 미치는 영향은 없다.\n\n[미확인] 앞으로 `err`를 미리 role이 없는 다른 요소에 쓰면 이 지적이 다시 유효해질 수 있다. 다만 지금 스냅샷에는 그런 호출이 없다."
+  },
+  {
+   "title": "general-chat 블록이 토큰을 쓰지 않음 (#d5d5d5 폴백, 미정의 --border)",
+   "audit": "impeccable-audit",
+   "why": "I tried to break the finding and it fell apart. The citation itself is accurate. In before/studio.css:946, `.general-chat-card` uses `border:1px solid var(--border, #d5d5d5); border-radius:.65rem; padding:1rem`, and line 947 has `gap:.35rem .8rem`. `--border` is also not defined in any CSS, HTML or JS file in the snapshot. But the finding's main claim, a light-grey border on a dark screen when the card renders outside the sidebar, can't happen in the snapshot.\n\n(1) These cards only ever render inside the sidebar. The panel is created in general-chat-ui.js:3, and nothing places it in the DOM when the script loads. layout() is only called from refresh (line 46, after async state arrives) and from mount (line 72). chat-sidebar.js loads right after general-chat-ui.js (index.html:1108-1109). Its only early return is a guard against running twice (line 6). At line 294 it calls `LoretuneGeneralChat.mount({container: generalHost})` unconditionally, and generalHost is created inside `.agent-chat-pane` (line 42). When sidebarHost is set, layout() always appends the panel to the sidebar host (line 21). The non-sidebar branch (`guidedBrief.before`/`legacy.after`) is code that never runs in practice. Even when the chat pane is moved into a dialog, it keeps its `.agent-chat-pane` class.\n\n(2) The styling is already overridden with tokens elsewhere. studio.css:988 has `.lt-ui .agent-chat-pane .general-chat-card { border-color:var(--ui-line); border-radius:var(--ui-radius-control); padding:var(--ui-space-3); }`. Line 989 sets the dl gap to `var(--ui-space-1)`, line 991 sets the actions gap to `var(--ui-space-2)`, and line 986 sets the margin of `.general-chat` to `var(--ui-space-4)`. `body.lt-ui` is always present (index.html:12). So the #d5d5d5 fallback, the .65rem radius and the .35rem/.8rem gap are all overridden and never show up on screen.\n\nWhat's left is minor tidying with no visible effect on users. The base rule at 946-955 still has a dead `--border` fallback. Some values sit outside the token scale and are not overridden: card `margin-block:.75rem` (same value as space-3), `.general-chat-rights` `gap:.5rem` (same value as space-2) and `margin-block:.8rem` (not on the scale). These only bear on code consistency, so they don't support the finding as reported, and it's not real. If they're kept as a cleanup item, Low is the right rating."
+  },
+  {
+   "title": "다크 테마만 있음 (라이트 분기 0개)",
+   "audit": "impeccable-audit",
+   "why": "인용 자체는 맞다. 다만 결함이라는 판정은 무너진다. [검증됨] before/studio.css:4가 `:root { color-scheme:dark;`이고, 스냅샷의 css·js·html 전체에서 grep한 결과 `prefers-color-scheme`·`data-theme`·`theme` 분기는 0건이다(유일하게 걸린 것이 studio.css:4). 따라서 '다른 곳에서 처리됨'은 해당하지 않는다. 하지만 이 발견은 기준 중 '사용자 영향 없는 순수 취향' 조건에 걸린다. (1) 발견 자신이 reason에 '제작 도구에서는 타당한 선택일 수 있어 사용자 결정이 필요'라고 적었다. 즉 결함 근거가 아니라 제품 방향을 묻는 질문이고, fix도 '요구가 있으면'이라는 조건부다. (2) 다크 전용에서 생기는 기능 장애나 접근성 장애를 찾지 못했다. `color-scheme:dark`가 있어 네이티브 컨트롤·스크롤바가 다크 배경과 맞게 그려지므로 OS가 라이트 설정이어도 섞여 깨지지 않는다. 고대비 필요 사용자는 studio.css:363·595·783의 `@media(forced-colors:active)`로 처리되고 있다. WCAG AA는 라이트 테마를 요구하지 않는다. (3) 영상 제작 스튜디오(index.html 제목 'Aethon · 제작 스튜디오')에서 다크 전용은 업계 관행이고, 결과물 색 판단에 배경 휘도를 고정하는 기능적 이유도 있다. 라이트 분기가 없어서 깨지는 화면이나 상호작용은 제시되지 않았고 찾지도 못했다. 결함 목록에서는 빼고, 필요하면 사용자 결정 항목(라이트 테마 요구가 있는지)으로 따로 올리는 것이 맞다. [미확인] 프로젝트 문서에서 다크 전용을 명시적으로 결정한 기록은 찾지 못했다. grep에 걸린 것은 감사 산출물 3개뿐이다(PLAN-ko.md, design-audit/hallmark-triage.md, design-audit/impeccable-audit.md)."
+  },
+  {
+   "title": "트랙 클립 장면명이 말줄임되고 전체 이름은 title로만 제공",
+   "audit": "impeccable-audit",
+   "why": "[검증됨] 인용한 두 줄은 실제로 존재한다. studio.css:616에 `.lt-track-clip>b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}`가 있고, index.html:116의 renderStudioTrack은 `<span class=\"lt-track-clip\" … title=\"${esc(c.shot)}\">`를 만든다. 그러나 이 마크업은 사용자에게 보이는 DOM이 아니다. index.html:559의 updateClipPreview가 `$('#track').innerHTML=renderStudioTrack(p)` 직후 같은 함수 안에서 바로 `LoretuneMedia.timeline()`을 부르고, studio-media.js:62가 #track.innerHTML을 통째로 다시 쓴다. 새로 들어가는 것은 `<button type=\"button\" data-time=… aria-label=\"${shot} · 시작–끝 · 길이\" title=…>`이다. studio-media.js는 index.html:3에서 항상 로드되고, setup은 index.html:1071에서 무조건 실행된다. 따라서 \"title이 포커스 불가 span에 있다\"는 근거는 실제 화면에서는 거짓이다. 클립은 포커스할 수 있는 button이고, 전체 장면명은 aria-label로 스크린리더에 전달된다. 제안한 수정안인 \"선택 시 전체 이름을 보여 준다\"도 이미 구현되어 있다. 클립을 클릭하거나 키보드로 실행하면(studio-media.js:160) sequence.seek가 호출되고, studio-media.js:93이 #sequenceStatus에 `재생 장면: ${c.shot} · Take …`로 전체 이름을 표시한다. 인용이 덮어쓰기되는 죽은 렌더 경로를 가리키고 핵심 주장과 수정안이 다른 곳에서 이미 처리되어 있으므로 real=false로 판정한다. [누락] 실제로 보이는 버튼도 studio.css:818에서 말줄임되고 width가 duration 비율(min-width:0)이라 짧은 클립은 이름이 거의 보이지 않는다. 다만 이 문제는 이번 발견이 인용한 위치나 메커니즘과 다르다. 필요하면 별도 발견으로 다시 제기해야 한다."
+  },
+  {
+   "title": "영상 생성 진입점 중복(모델 제작 vs Kling 생성 준비), 생성 관련 구역 4개",
+   "audit": "impeccable-critique",
+   "why": "This finding doesn't hold. It describes the static HTML, but the page's own scripts already rearrange that HTML into exactly the fix it proposes. The line numbers it cites are correct, but the claim is out of date. I checked the snapshot directly.\n\n1. **The static markup is as described.** In `/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/index.html`, lines 24-31 hold four headings: '실행 승인 · 모의 검증', '모델 제작 · 결과', '이미지 연결·기존 결과 복구' and 'Kling 생성 준비'. Both `#mediaPrepareForm` (5 or 10 seconds) and `#prepareGeneration` (a \"10초 입력·견적 준비\" button) exist.\n\n2. **The scripts change it on page load, in this order:**\n   - **Wrapping (lines 979-984, the `loretuneWorkspaceStructure` script that runs immediately):** every heading inside the inspector is removed. Each section becomes a collapsible block with class `lt-inspector-detail`.\n   - **Renaming (lines 302-303, `initializeCreatorUI`, called at line 1071):** the Kling block's title becomes '영상 생성', so \"Kling\" never appears as a section title. The `prepareGeneration` button becomes '영상 입력·예상 비용 확인', and the test-media block becomes '테스트 미디어'.\n   - **Regrouping (lines 749-766, `initializeProductionPresentation`, called at line 317):**\n     - All the production sections move under one '제작 도구' block.\n     - The model-production section becomes '장면 제작' and opens by default.\n     - The image section and the Kling (video) section move into a '이전 제작 경로·작업' block (`#productionPrevious`), which is collapsed. Its CSS is at `studio.css:755-756`.\n\n   That is the proposed fix almost word for word: make '모델 제작' the single main path, and fold the Kling area away as previous work, collapsed. The claims about \"4 parallel sections\" and \"a provider name in the heading\" are both wrong at runtime.\n\n3. **One small leftover issue.** The old video path's button ('영상 입력·예상 비용 확인') still works inside that collapsed '이전 제작 경로' block, so two entry points technically remain. But the old one is collapsed and clearly labeled as the previous path, so there is little user impact. That deserves at most a separate Low finding, not the Medium given here.\n\nI did not check this in a real browser. The conclusion comes from reading the code and its execution order, not from looking at the rendered page."
+  },
+  {
+   "title": "현재 단계 제목이 13px 흐린색으로 가장 약하게 표시됨",
+   "audit": "impeccable-critique",
+   "why": "[반박] 인용한 줄 자체는 맞지만, 렌더된 화면에서는 전제가 성립하지 않는다. 확인한 근거는 다음과 같다.\n(1) 인용은 실제로 존재한다 [검증됨]. studio.css:511 `.lt-ui #flowHeading { font-size:var(--ui-item); color:var(--ui-muted) }`가 :246과 :294의 --ui-title 지정을 덮는다. 다만 지적이 빠뜨린 규칙이 하나 더 있다. 폭 900px 이하에서는 :571이 `font-size:var(--ui-meta)`(12px)로 한 번 더 덮는다.\n(2) 그런데 이 제목은 화면에 보이지 않는다 [검증됨]. index.html:1071이 `initializeCreatorUI()`를 조건 없이 호출하고, index.html:296이 `heading.classList.add('creator-skip-target')`를 붙인 뒤 제목을 `.lt-stage-bar`로 옮기고 `.lt-status-line`을 제거한다. studio.css:644 `.lt-ui .creator-skip-target { position:absolute!important; width:1px!important; height:1px!important; overflow:hidden!important; clip-path:inset(50%) }`는 스크린리더 전용 숨김 패턴이다. 그래서 #flowHeading은 1px 크기로 잘려 화면에 나타나지 않는다. 결국 :511의 크기와 색은 화면에 반영되지 않고, '화면에서 가장 약한 글자'라는 시각 위계 주장은 무너진다.\n(3) 건너뛰기 링크의 목적지라는 점도 이미 따로 처리돼 있다 [검증됨]. studio.css:692 `.lt-ui .lt-stage-bar:has(.creator-skip-target:focus-visible) { outline:2px solid var(--ui-focus) }`가 포커스가 이동하면 단계 바 전체에 외곽선을 그린다. 또 현재 단계는 :383에 있는 `.flow-nav button[aria-current=\"step\"]` 강조로 화면에 보인다.\n(4) 제안한 수정(font-size:var(--ui-section); color:var(--ui-body))은 숨김 클래스가 `!important`로 크기를 1px에 고정하므로 효과가 없다.\n[미확인] 브라우저에서 직접 렌더해 보지는 않았다. 그래도 initializeCreatorUI 호출과 !important 숨김 규칙이 정적으로 확인되므로, 이 지적은 이미 다른 곳에서 처리된 사안(제목을 의도적으로 숨김)에 해당한다. 진짜 쟁점이 있다면 '현재 단계 안내 문구가 시각 사용자에게 보이지 않는다'는 별개의 지적이고, 이 지적과는 다른 문제다."
+  },
+  {
+   "title": "일반 대화 카드가 사이드바 밖에서 미정의 토큰 대체값 #d5d5d5 밝은 테두리를 씀",
+   "audit": "impeccable-critique",
+   "why": "The citation is accurate, but the user-facing effect the finding describes does not happen in the shipped snapshot. The case it depends on, cards rendered outside the sidebar, is never reached.\n\nWhat checks out:\n- studio.css:946 is `border: 1px solid var(--border, #d5d5d5); border-radius: .65rem; padding: 1rem`.\n- `--border` is defined nowhere in the snapshot, so the #d5d5d5 fallback would apply.\n- `:root` is `color-scheme:dark` with `--ui-line:#383838` (studio.css:4, :19).\n- studio.css:988 overrides the border colour, radius and padding with tokens, but only under `.lt-ui .agent-chat-pane`.\n\nWhy the fallback border never renders:\n1. index.html:1108-1109 loads general-chat-ui.js, then chat-sidebar.js right after it. Both are plain synchronous scripts.\n2. chat-sidebar.js:294 calls `window.LoretuneGeneralChat.mount({ container: generalHost, ... })` at top level with no condition. The only early return before it is the duplicate-load guard at line 6.\n3. `generalHost` is created at chat-sidebar.js:42 and appended to `chat`, the `section.agent-chat-pane` from line 21.\n4. `mount()` (general-chat-ui.js:72) sets `sidebarHost`. From then on, `layout()` at general-chat-ui.js:21 always takes the sidebar branch, which appends the panel to the host and returns.\n5. Cards are only drawn when `refresh()` writes the reviews and turns HTML (general-chat-ui.js:55, :58), which happens after the panel has moved.\n6. `<body class=\"lt-ui\">` (index.html:12) supplies the `.lt-ui` ancestor. When a native dialog is open, `portal()` moves the `chat` element itself, so it keeps the `agent-chat-pane` class.\n\nSo every rendered `.general-chat-card` matches the override at studio.css:988 and gets `--ui-line`. The light-grey border would only show if chat-sidebar.js threw before line 294. That is a fault-path scenario, not normal use.\n\nWhat remains is code hygiene, not a user-facing defect: an undefined `--border` token and rem values in base rules that are dead in practice. At most Low, as a latent issue.\n\nNot checked: no live render was observed. This conclusion comes from static code-path tracing only."
+  },
+  {
+   "title": "빈 상태가 다음 행동을 알려주지 않음",
+   "audit": "impeccable-critique",
+   "why": "이 발견은 무너진다. 인용한 세 빈 상태 모두 다음 행동이 이미 화면에 나오고 있다. 근거는 /Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/before/ 스냅샷을 직접 읽고 grep한 결과다.\n\n(1) index.html:22 `#preview .empty`: 정적 문구는 index.html:388 draw()가 덮어쓴다 [검증됨].\n- 작품이 있으면 테이크(take, 촬영본) 유무에 따라 '아래에서 사용할 Take를 선택하세요.' 또는 '기존 파일을 연결하거나 직접 모션을 만들어 시작하세요.'로 바뀐다. 둘 다 다음 행동을 알려 준다.\n- 작품이 없으면 draw()가 일찍 반환하므로 정적 문구가 남는다. 하지만 이때 같은 draw()가 `$('#projectEmpty').hidden=!!p`로 #projectEmpty를 띄운다. 거기에 '첫 작품을 만들어 보세요'와 '새 작품 만들기' 버튼이 있어, 제안한 수정안의 형식이 이미 들어가 있다.\n- 남아 있는 정적 문구('…장면을 구성하세요')도 명령형이다. '무엇을 해야 하는지 알려주지 않는다'는 주장에 맞지 않는다.\n\n(2) index.html:21 `#shotlist`: 인용 위치에 빈 상태 문구 자체가 없다. renderStudioShots(index.html:114)는 샷이 0개이면 빈 문자열을 반환한다. 그런데 바로 아래 '샷 추가' 폼이 있고, 헤더 배지는 '0'을 보여 준다. draw()는 제목을 '첫 샷을 추가하세요'로 바꾼다(:388). 다음 행동과 그 행동의 버튼이 같은 화면에 있다. 인용 근거가 틀렸다.\n\n(3) chat-sidebar.js:29 `workEmpty`: 이것은 빈 화면이 아니라 AI 대화 사이드바 안의 '현재 대화의 제작 작업' 상태 표시 줄이다(aria-label, :28). 작품이 없으면 숨겨지고(:84 `workStatus.hidden = !p`), 작업이 생기면 '작업 보기' 버튼이 있는 행으로 바뀐다. 작업은 대화나 다른 제작 동작의 결과로 생기므로, 여기에 행동 버튼을 다는 것은 사용자 영향이 없는 취향 문제다.\n\n남은 사소한 점(이번 발견의 주장과는 다른 축이라 별도 등재 여부는 오케스트레이터가 판단): 작품이 없는 상태에서 #preview 정적 문구 '승인된 이야기와 기존 자산으로…'가 #projectEmpty와 함께 보인다. 아직 존재하지 않는 대상을 가리키는 문구다. 문구 일관성 문제일 뿐, '다음 행동 없음'은 아니다."
+  }
+ ]
+}

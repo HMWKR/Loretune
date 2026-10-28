@@ -1,0 +1,147 @@
+{
+  "task_id": "GC-HISTORY-01",
+  "attempt": 1,
+  "status": "REPORTED",
+  "reviewer": "/root/general_activation_review",
+  "agent_type": "ce-reviewer",
+  "verdict": "No independently confirmed high or medium finding in the reviewed history change. Actual isolated HTTP producer transitions retained the prior request and public answer only within the same conversation, with explicit consent and exact approved-body transmission.",
+  "scope": {
+    "read_only_product": true,
+    "write_set": [".omo/evidence/general-chat-history-20261028/independent-review.json"],
+    "read_only_enforcement": "Task-level restriction; a separate operating-system read-only sandbox was not verified.",
+    "non_goals": ["Source modification", "RAG or framework introduction", "New providers", "Authentication or registry changes", "Markdown changes", "Full-suite rerun", "Parent browser or server access", "Real keys, environment credentials, paid calls or real provider traffic"]
+  },
+  "methodology": {
+    "sources": [
+      "docs/design/CHAT-SESSION-PLAN.md: CS02/03/04/05/06/13/15",
+      "chat_runtime.py: request_history",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/skills/feature-verification/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/CODEX-RUNTIME.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-andrej-karpathy-skills/1.2.1/skills/karpathy-guidelines/SKILL.md"
+    ],
+    "applied": [
+      "Trace accepted request producers into same-scope history, exact preview manifest and explicit consent, then count/message/tool boundary rechecks.",
+      "Distinguish direct isolated execution, inspected worker logs, and source reasoning.",
+      "Use actual conversation creation and approval paths for scope reachability, rather than treating only seeded rows as real user workflow evidence.",
+      "Check CE Poisoning, Distraction, Confusion and Clash; preserve historical corrections and withdrawals as source text without inventing active constraints.",
+      "Keep review surgical and separate previously known model-selection and scheduling issues from new history defects."
+    ]
+  },
+  "source_sha256_at_start_and_final": {
+    "chat_general.py": "f5f5885b69ab0b85a13d07b826c9a503a854334a9b16600d905ebce2249d4516",
+    "general-chat-ui.js": "229ff67878f39d847c8f12c362b08478ac403328540ff2c53a315d89af005bbd",
+    "tests/test_general_chat_history.py": "341b762b902d44585ae05288ca3e6f07f6c90f7b81bc81e29f56070923f35f59",
+    "tests/general_chat_history_ui.cjs": "cec06a87546d2c54c1f6aeb3fcd0eabcf04ef931148499a1fd61e9b71bff1df9",
+    "tests/test_general_chat_history_ui.py": "7dce6aa701e46b57fa7a666068f3afd4373ca99bcc9fbabaa6c4e39a51f172cb"
+  },
+  "source_drift_observed": false,
+  "diff_baselines_read": [
+    ".omo/evidence/general-chat-history-20261028/backend/before-chat_general.py",
+    ".omo/evidence/general-chat-history-20261028/ui-source-before.js"
+  ],
+  "source_findings": [
+    {
+      "id": "HISTORY-SCOPE",
+      "observation": "conversation_history selects general rows by project/conversation, then requires matching workspace/project/conversation in the stored binding. A row is admitted only when the original consumed, rights-confirmed, non-continuation preview names that turn and has the same prompt. The current turn is excluded from its own inherited snapshot.",
+      "effect": "Pending previews, unmatched draft rows, legacy chat_turns and other conversation bindings are not newly added history sources."
+    },
+    {
+      "id": "HISTORY-SEMANTICS",
+      "observation": "Existing request_history preserves every admitted prompt verbatim in insertion order, with sequence, source hash and processing status. A separate list contains only the last eight completed string answers, labeled unreviewed and canon=false. The history envelope explicitly distinguishes evidence from current canonical project state and new instructions.",
+      "effect": "Corrections, withdrawals and quotations are not heuristically rewritten into inferred active constraints. Public answers do not become approved project state."
+    },
+    {
+      "id": "HISTORY-CONSENT-BOUNDARIES",
+      "observation": "history_snapshot and history_context are included in manifest_digest. check_history validates both counts/digest and current same-scope producer output at preview creation, approval and Runtime._current. _current runs before count, before message, after observed response, and in claim_tool within the same transaction as the tool side effect.",
+      "effect": "A history change cannot silently alter an already approved new preview or authorize a stale tool side effect. Once submission intent is committed, later changes do not undo an already authorized transport; subsequent tool effects are still rechecked."
+    },
+    {
+      "id": "HISTORY-BOUNDS-LEGACY",
+      "observation": "Bounded transport count/message encoders still enforce the independent 65536-byte request ceiling before credential acquisition. Existing token, reservation, rights, pricing and total-request budget paths remain. A preview without history_snapshot skips new history injection and keeps its original body/hash contract. Continuations inherit the original snapshot rather than rebuilding it from newer conversation data.",
+      "effect": "Long histories are rejected through the bounded path rather than silently truncated or sent outside the visible manifest; existing approved previews are not retroactively enlarged."
+    },
+    {
+      "id": "HISTORY-UI",
+      "observation": "Public preview.prompt is the current prompt included in the manifest, so history-prefixed messages no longer cause comparison with the first historical envelope. The fallback accepts only an unambiguous single-user-string old body. Missing bound prompt on a multi-message body, changed current draft, or missing explicit rights blocks approval. Rejection and continuation do not overwrite the next draft. History counts are summarized and the full count/message bodies remain available in escaped details. The budget copy now says this request and its tool-result continuation.",
+      "effect": "The user can approve an unchanged current request with history while stale or ambiguous review cannot authorize it through this UI handler."
+    }
+  ],
+  "independent_execution": [
+    {
+      "id": "HTTP-REAL-PRODUCER-SCOPE",
+      "method": "Existing GeneralChatActivationHTTPTest fixture creates an isolated real local HTTP server, temporary Store, server configuration, synthetic supplier and synthetic stdlib opener. Use server actions to complete A1, create an unapproved A preview, create conversation B and complete B1, then prepare and complete A2. No direct history/plan insertion was used in this probe.",
+      "result": {
+        "exit_code": 0,
+        "conversations": 2,
+        "completed_turns": 3,
+        "A_second_history": {"request_count": 1, "answer_count": 1, "sha256": "9ae0a8de65dad2c8de15671ffcd7c38e94d15589e4196eb16d52dca50f3574cd"},
+        "B_first_history": {"request_count": 0, "answer_count": 0, "sha256": "00b0ead30fc11eec5da6668ad65c737e00c3bd601a4d1b02d51d4ee1ca7b893a"},
+        "A_history_scope_correct": true,
+        "A_request_verbatim_and_ordered": true,
+        "A_public_answer_unreviewed_and_noncanonical": true,
+        "pending_preview_and_other_conversation_excluded": true,
+        "count_and_message_history_identical": true,
+        "synthetic_wire_JSON_equals_approved_body": true,
+        "synthetic_transport_requests": 6,
+        "real_provider_calls": 0
+      },
+      "cleanup": "case.doCleanups() in finally shut down the isolated server and removed temporary Store and stdlib patch."
+    },
+    {
+      "id": "HTTP-LEGACY-OVERSIZE",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_general_chat_history.GeneralChatHistoryTest.test_old_preview_keeps_exact_body_without_retroactive_injection tests.test_general_chat_history.GeneralChatHistoryTest.test_oversized_history_rejected_before_credentials_and_network -v",
+      "result": "2 tests / 1.158s / OK",
+      "limits": "The old preview case constructs an old-schema fixture; it is not migration of real user data. The oversized case seeds accepted rows to exercise the bound."
+    },
+    {
+      "id": "NODE-HISTORY-CONSENT",
+      "command": "node tests/general_chat_history_ui.cjs",
+      "result": "8 history approval scenarios and scoped history/cost copy passed",
+      "limits": "A Node VM using actual extracted UI definitions/handler and synthetic nodes; not a live browser, keyboard or visual test."
+    },
+    {
+      "id": "WORKER-RECEIPT-INTEGRITY",
+      "method": "Read the worker two-turn-http-receipt.json and independently recompute both manifest digests, count/message JSON hashes, and compare four captured synthetic count/message bodies to the two approved previews.",
+      "result": {
+        "both_turns_completed": true,
+        "history_request_counts": [0, 1],
+        "history_answer_counts": [0, 1],
+        "approved_manifests_valid": true,
+        "count_message_hashes_valid": true,
+        "captured_count_message_match_previews": true,
+        "real_provider": false
+      }
+    }
+  ],
+  "worker_evidence_read_not_rerun_as_suites": [
+    {"path": "backend/final-history-tests.log", "observed_result": "12 tests / 6.944s / OK"},
+    {"path": "backend/related-tests.log", "observed_result": "80 tests / 46.805s / OK"},
+    {"path": "ui-after.log", "observed_result": "8 history approval scenarios and scoped history/cost copy passed"}
+  ],
+  "confirmed_high_medium_findings": [],
+  "false_positives_or_corrections": [],
+  "known_residuals_outside_this_change": [
+    {"id": "GC-MODEL-02", "status": "Parent-declared known residual: capability/selected-model mismatch. Not fixed or independently reaccepted by this history review."},
+    {"id": "GC-SCHEDULE-03", "status": "Parent-declared known residual: queued model-selection mismatch. Not fixed or independently reaccepted by this history review."}
+  ],
+  "ce_checks": {
+    "Poisoning": "Historical text remains quoted request evidence and unreviewed answers, not canonical project state. Current model tools remain server controlled; actual model understanding remains unverified.",
+    "Distraction": "No unrelated framework/provider/UI work or full-suite duplication was introduced by reviewer.",
+    "Confusion": "Accepted user history, processing status, public answer, model proposal, human approval and provider/account evidence remain separate states. Request-level total-budget wording matches its scope.",
+    "Clash": "Legacy exact consent is preserved without retroactive history. Existing session separation and current request evidence are checked together. Known model/scheduling residuals are not hidden by history acceptance."
+  },
+  "limits": [
+    "No actual Claude call, real credential, account authorization, invoice, paid API or external AI traffic was used.",
+    "No live browser interaction, visual typography review, mobile, assistive technology, performance measurement or actual-user test was performed by this reviewer.",
+    "No full774 regression or platform-wide production acceptance is claimed.",
+    "Existing database integrity and trusted administrator boundaries remain assumptions. Arbitrary simultaneous malicious rewriting of historical consent, turns, bodies and hashes is not proven safe by this review.",
+    "The independent actual producer probe covered three requests in two conversations; long-history, mutation and cancellation matrix evidence additionally uses worker fixtures and bounded source review.",
+    "Real-model interpretation of prior corrections, withdrawals and tool editing remains unverified. Preserving their source text is distinct from proving model behavior.",
+    "Parent acceptance of this REPORTED result is a separate step."
+  ],
+  "source_modified_by_reviewer": false,
+  "markdown_registry_or_context_modified": false,
+  "browser_used": false,
+  "full_suite_rerun": false,
+  "memory_files_used": false
+}

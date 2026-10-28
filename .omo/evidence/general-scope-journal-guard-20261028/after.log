@@ -1,0 +1,61 @@
+test_missing_chat_table_keeps_existing_ledger_behavior (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_missing_chat_table_keeps_existing_ledger_behavior) ... 127.0.0.1 - - [28/Oct/2026 01:49:03] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:03] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:03] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:03] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:03] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:03] "POST /api/action HTTP/1.1" 200 -
+ok
+test_persistent_failure_blocks_other_conversation (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_persistent_failure_blocks_other_conversation) ... 127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state?song=A&conversation=e626b1b2814a44638722e0f94e738b79 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state?song=A&conversation=e626b1b2814a44638722e0f94e738b79 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 01:49:04] "GET /api/state HTTP/1.1" 200 -
+ok
+test_persistent_failure_blocks_same_scope_generation (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_persistent_failure_blocks_same_scope_generation) ... 127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "POST /api/action HTTP/1.1" 200 -
+ok
+test_unrelated_scope_and_normal_reserved_hold_are_not_blocked (tests.test_general_scope_journal_guard.GeneralScopeJournalGuardTest.test_unrelated_scope_and_normal_reserved_hold_are_not_blocked) ... 127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:49:05] "POST /api/action HTTP/1.1" 200 -
+ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 3.257s
+
+OK

@@ -1,0 +1,1441 @@
+{
+  "summary": {
+    "checks": {
+      "two_completed_turns": true,
+      "one_saved_plan": true,
+      "canonical_ontology_unchanged": true,
+      "no_action_or_grant_before_human_approval": true,
+      "one_grant_one_job_one_take": true,
+      "registered_hash_matches_file": true,
+      "no_external_media_calls": true,
+      "unapproved_result_preserved": true,
+      "foreign_project_persisted_fields_unchanged": true
+    },
+    "revision": 22,
+    "turn_ids": [
+      "b49039e0508c437eadbc90721c67a1a0",
+      "7a97202aeeb5402aa2724e01e65d7fb6"
+    ],
+    "request_ids": [
+      "req_011CgNv2n52a81Mdb5eajsyr",
+      "req_011CgNv3SsedF8jN8sbQRxHD",
+      "req_011CgNv3j4EHSWyGjqvaMMDQ",
+      "req_011CgNvBmRajQMN6gywvohNL",
+      "req_011CgNvCE8g6wcamaRtNcGeW"
+    ],
+    "usage_this_stage_usd": "0.0023044",
+    "usage_total_usd": "0.0072619",
+    "billing_confirmed": false,
+    "plan": "595787d6ebc649448d47843c8dbb4a3f",
+    "job": "e6b8a59e35634dfba9811b99763fc2ac",
+    "take": 1,
+    "asset_sha256": "7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a",
+    "live_plan_receipt_gap": true,
+    "comparison_correction": {
+      "read_only_projection_fields": [
+        "chat_connection",
+        "chat_turns",
+        "lineage",
+        "model_settings",
+        "ontology",
+        "ontology_proposals",
+        "preflight",
+        "rehearsal_jobs"
+      ],
+      "persisted_common_fields_changed": []
+    },
+    "count_requests": 5,
+    "message_requests": 5,
+    "live_server_stopped": true
+  },
+  "turns": [
+    {
+      "id": "b49039e0508c437eadbc90721c67a1a0",
+      "project": "f4b71377-707c-5f06-ba07-565d88024521",
+      "name": "Claude 실제 채팅 · Synthetic Song A",
+      "run": "79a69fad10b94745bbfff6d9e705948f",
+      "prompt": "합성 Song A의 승인 온톨로지를 도구로 먼저 조회하세요. Mira의 기본 의상과 이 곡 스튜디오 장면의 예외를 구분하고, 모르는 나이는 모른다고 답하세요. Mira가 스튜디오에서 빨간 코트를 입은 장면 한 개를 propose_media_plan으로 검토 전 계획에 저장하세요. 기본 파란 코트 설정은 변경하지 마세요. 최종 답변은 한국어로 출처 ID와 실제 저장된 계획 ID, 검토 전임을 명시하세요. 영상 생성이나 비용 승인은 요청하지 않습니다. 도구 조회의 출처만 근거로 사용하세요.",
+      "status": "completed",
+      "mode": "anthropic-live",
+      "model": "claude-haiku-5-5",
+      "binding": "e5204cf39b0cb05e36f5d2eeb96ee1d0c904684c0b733b17621c522924ec1cb7",
+      "answer": "**조회 결과 (승인 온톨로지, revision 2)**\n\n- **기본 의상:** Mira는 기본적으로 파란 코트를 입습니다. 출처 `manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd`\n- **스튜디오 예외:** Song A 스튜디오 장면에서만 빨간 코트를 입습니다. 이는 전역 파란 코트 설정을 대체하지 않습니다. 출처 `manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388`\n- **나이:** 모름입니다. 조회된 출처에 나이 정보가 없습니다.\n- 두 항목 모두 로컬 사용자가 직접 작성한 진술이며 외부 사실 검증은 되지 않았습니다.\n\n**저장된 계획 (검토 전)**\n\n- 계획 ID: `595787d6ebc649448d47843c8dbb4a3f`\n- 상태: `proposed` (검토 전, 버전 1)\n- 장면: Song A 스튜디오 장면 1개, Mira가 빨간 코트를 착용, 길이 2.0초, 음악 시작 0.0초\n- 비용 승인: `cost_approval: false`\n\n이 계획은 검토 전 저장일 뿐이며 사람의 승인이 아닙니다. 영상 생성이나 비용 승인도 이루어지지 않았습니다. 기본 파란 코트 설정은 변경하지 않았습니다.",
+      "answer_review": "unreviewed",
+      "steps": [
+        {
+          "round": 0,
+          "mode": "anthropic-live",
+          "input_sha256": "ae034a455a4f6f29c39acbfdfcb4bb1a64406bb7912005faa7f834335bf049aa",
+          "status": "tools_applied",
+          "request_id": "req_011CgNv2n52a81Mdb5eajsyr",
+          "tool_calls": [
+            {
+              "call": {
+                "id": "306302ebdc79578ebc4850a7c8abe11d",
+                "name": "search_project_context",
+                "arguments": {
+                  "query": "합성 Song A 승인 온톨로지 Mira 기본 의상 스튜디오 장면 예외 나이"
+                },
+                "complete": true
+              },
+              "result": {
+                "status": "succeeded",
+                "context": {
+                  "music": {
+                    "id": 1,
+                    "audio": 1,
+                    "start": 0,
+                    "end": 2,
+                    "sections": [],
+                    "source": "user",
+                    "engine": null,
+                    "created": 1792929420.072087
+                  },
+                  "snapshot": [
+                    {
+                      "text": "Mira wears a blue coat by default. Age is unknown.",
+                      "scope": "ip",
+                      "era": "default",
+                      "valid_from": 0,
+                      "valid_to": 2,
+                      "revision": 1,
+                      "approved": true,
+                      "ip": "default"
+                    }
+                  ],
+                  "ontology": {
+                    "revision": 2,
+                    "graph": {
+                      "entities": [
+                        {
+                          "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+                          "label": "Mira",
+                          "provenance": [
+                            {
+                              "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                              "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+                            }
+                          ],
+                          "type": "character",
+                          "uncertainty": {
+                            "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                            "status": "asserted"
+                          }
+                        },
+                        {
+                          "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+                          "label": "Studio — Song A only",
+                          "provenance": [
+                            {
+                              "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                              "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+                            }
+                          ],
+                          "type": "place",
+                          "uncertainty": {
+                            "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                            "status": "asserted"
+                          }
+                        }
+                      ],
+                      "relations": []
+                    },
+                    "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+                  }
+                },
+                "search_mode": "scoped-snapshot",
+                "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님"
+              }
+            }
+          ],
+          "input_tokens_counted": 957,
+          "usage": {
+            "input_tokens": 957,
+            "output_tokens": 88
+          },
+          "usage_cost_usd": "0.0001397",
+          "stop_reason": "tool_use",
+          "output_sha256": "97becc851d9ec7376ebe6cf3eb7c487bf93a5dd91a92f8d17edc74dbf4ac4e56",
+          "visible_response": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01XaRqiCxg4pUjjFHTjUfjU7",
+              "name": "search_project_context",
+              "input": {
+                "query": "합성 Song A 승인 온톨로지 Mira 기본 의상 스튜디오 장면 예외 나이"
+              },
+              "caller": {
+                "type": "direct"
+              }
+            }
+          ]
+        },
+        {
+          "round": 1,
+          "mode": "anthropic-live",
+          "input_sha256": "d1f67689abb57add5a885a0d36aa2261236f11588ab3fb76b9e179a572dcdfd9",
+          "status": "tools_applied",
+          "request_id": "req_011CgNv3SsedF8jN8sbQRxHD",
+          "tool_calls": [
+            {
+              "call": {
+                "id": "4687edb041415ce9aecbeb494c2b2079",
+                "name": "propose_media_plan",
+                "arguments": {
+                  "goal": "합성 Song A 스튜디오 장면에서 Mira가 빨간 코트를 입은 장면 1개 검토",
+                  "scenes": "Song A 스튜디오 장면 (Studio — Song A only): Mira가 빨간 코트를 착용. 이 장면에만 적용되는 예외이며 전역 기본 의상(파란 코트)은 변경하지 않음.",
+                  "style": "승인 온톨로지 설정 준수; 기본 파란 코트 유지, 스튜디오 장면 예외로만 빨간 코트 적용",
+                  "constraints": "기본 의상: 파란 코트 (전역 canon, 변경 금지). 예외: Song A 스튜디오 장면에서만 빨간 코트. Mira의 나이는 모름(unknown). 검토 전 계획이며 영상 생성 및 비용 승인 요청 아님.",
+                  "kind": "narrative"
+                },
+                "complete": true
+              },
+              "result": {
+                "status": "proposed",
+                "plan": {
+                  "id": "595787d6ebc649448d47843c8dbb4a3f",
+                  "version": 1,
+                  "status": "proposed",
+                  "scenes": [
+                    {
+                      "id": "08dffad9e258475b83487d5becd00ba8",
+                      "description": "Song A 스튜디오 장면 (Studio — Song A only): Mira가 빨간 코트를 착용. 이 장면에만 적용되는 예외이며 전역 기본 의상(파란 코트)은 변경하지 않음.",
+                      "duration": 2.0,
+                      "music_start": 0.0
+                    }
+                  ],
+                  "questions": []
+                },
+                "cost_approval": false
+              }
+            }
+          ],
+          "input_tokens_counted": 1886,
+          "usage": {
+            "input_tokens": 1886,
+            "output_tokens": 416
+          },
+          "usage_cost_usd": "0.0003966",
+          "stop_reason": "tool_use",
+          "output_sha256": "34ee84fe06df0600cdaf8364d40ab7a2f6c566da9af6ea1288da6b5cced364b0",
+          "visible_response": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01WTWqSPcqtVKrPyXcg4z48t",
+              "name": "propose_media_plan",
+              "input": {
+                "goal": "합성 Song A 스튜디오 장면에서 Mira가 빨간 코트를 입은 장면 1개 검토",
+                "scenes": "Song A 스튜디오 장면 (Studio — Song A only): Mira가 빨간 코트를 착용. 이 장면에만 적용되는 예외이며 전역 기본 의상(파란 코트)은 변경하지 않음.",
+                "style": "승인 온톨로지 설정 준수; 기본 파란 코트 유지, 스튜디오 장면 예외로만 빨간 코트 적용",
+                "constraints": "기본 의상: 파란 코트 (전역 canon, 변경 금지). 예외: Song A 스튜디오 장면에서만 빨간 코트. Mira의 나이는 모름(unknown). 검토 전 계획이며 영상 생성 및 비용 승인 요청 아님.",
+                "kind": "narrative"
+              },
+              "caller": {
+                "type": "direct"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "mode": "anthropic-live",
+          "input_sha256": "07993ae86c3573e721f8d9aa2f416251026cc4bd8102b19e8edbcaf717e667ab",
+          "status": "answer_received",
+          "request_id": "req_011CgNv3j4EHSWyGjqvaMMDQ",
+          "tool_calls": [],
+          "input_tokens_counted": 2515,
+          "usage": {
+            "input_tokens": 2515,
+            "output_tokens": 698
+          },
+          "usage_cost_usd": "0.0006005",
+          "stop_reason": "end_turn",
+          "output_sha256": "63e5750ae426aa969cb70163b91f805692c069437a8bb13fcb586be891200270",
+          "visible_response": [
+            {
+              "type": "text",
+              "text": "**조회 결과 (승인 온톨로지, revision 2)**\n\n- **기본 의상:** Mira는 기본적으로 파란 코트를 입습니다. 출처 `manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd`\n- **스튜디오 예외:** Song A 스튜디오 장면에서만 빨간 코트를 입습니다. 이는 전역 파란 코트 설정을 대체하지 않습니다. 출처 `manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388`\n- **나이:** 모름입니다. 조회된 출처에 나이 정보가 없습니다.\n- 두 항목 모두 로컬 사용자가 직접 작성한 진술이며 외부 사실 검증은 되지 않았습니다.\n\n**저장된 계획 (검토 전)**\n\n- 계획 ID: `595787d6ebc649448d47843c8dbb4a3f`\n- 상태: `proposed` (검토 전, 버전 1)\n- 장면: Song A 스튜디오 장면 1개, Mira가 빨간 코트를 착용, 길이 2.0초, 음악 시작 0.0초\n- 비용 승인: `cost_approval: false`\n\n이 계획은 검토 전 저장일 뿐이며 사람의 승인이 아닙니다. 영상 생성이나 비용 승인도 이루어지지 않았습니다. 기본 파란 코트 설정은 변경하지 않았습니다."
+            }
+          ]
+        }
+      ],
+      "usage_cost_usd": "0.0011368",
+      "billing_confirmed": false
+    },
+    {
+      "id": "7a97202aeeb5402aa2724e01e65d7fb6",
+      "project": "f4b71377-707c-5f06-ba07-565d88024521",
+      "name": "Claude 실제 채팅 · Synthetic Song A",
+      "run": "040bded3e91d46bea5f6d4ff2871ebc7",
+      "prompt": "합성 Song A의 승인 온톨로지와 작업 e6b8a59e35634dfba9811b99763fc2ac를 각각 도구로 조회하세요. 실제 저장된 계획 595787d6ebc649448d47843c8dbb4a3f와 후보 Take를 확인해서 최종 상태를 한국어로 설명하세요. 기본 파란 코트와 곡 한정 빨간 코트가 유지됐는지 출처 ID로 설명하고 작업 ID·Take 번호·자산 SHA256을 정확히 인용하세요. 모의 단색 이미지 작업은 실제 AI 영상 생성이 아니며 외부 미디어 호출은 0회임을 명시하세요. 결과 승인은 작업 영수증 그대로 설명하고 새 계획이나 생성은 요청하지 마세요.",
+      "status": "completed",
+      "mode": "anthropic-live",
+      "model": "claude-haiku-5-5",
+      "binding": "972216a99e7551a7041e63583951e716368c952c7b69176aa57353c255c841a1",
+      "answer": "## 최종 상태\n\n**1. 승인 온톨로지 (Song A 문맥)**\n- 온톨로지 revision 2가 반환되었고, 승인된 스냅샷의 `ip: default` 항목도 있습니다.\n- **기본 파란 코트 유지:** 인물 \"Mira\"는 출처 `manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd`에 따라 기본적으로 파란 코트를 입습니다. 이 진술은 로컬 사용자가 직접 작성한 것이며 외부 검증된 사실이 아닙니다.\n- **곡 한정 빨간 코트 유지:** 장소 \"Studio — Song A only\"는 출처 `manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388`에 따라 Song A 스튜디오 장면에서만 빨간 코트를 허용합니다. 이 출처는 \"전역 파란 코트를 대체하지 않는다\"고 명시합니다.\n\n**2. 생성 작업 `e6b8a59e35634dfba9811b99763fc2ac`**\n- 상태: `collected`, 실패 코드 없음, 모드 `rehearsal`\n- `external_calls`: **0**\n- 결과 슬롯: `image`, 결과 SHA256 `7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a`\n- 등록된 후보 Take: **장면 1, Take 1**, SHA256 `7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a`\n- `result_approved`: **false**. 영수증 기준으로 결과는 아직 승인되지 않았습니다.\n\n## 확인되지 않은 항목\n- **계획 `595787d6ebc649448d47843c8dbb4a3f`:** 조회한 문맥 응답에도 작업 영수증에도 이 계획 ID가 나타나지 않았습니다. 따라서 저장된 계획의 존재와 내용은 이 도구 결과로 확인되지 않습니다.\n- **\"모의 단색 이미지\":** 영수증에는 `rehearsal` 모드와 `image` 슬롯만 있고, 단색이라는 설명은 없습니다. 이 작업이 리허설 영수증이라는 점과 외부 호출 0회는 확인되지만, 단색 여부는 확인되지 않습니다.\n- 이 작업은 실제 AI 영상 생성이 아니며, 현재 미디어 도구는 리허설 영수증만 만듭니다.\n\n이 결과는 작업 영수증에 기록된 그대로이며, 승인 상태는 `result_approved: false`입니다. 새 계획이나 생성은 요청하지 않았습니다.",
+      "answer_review": "unreviewed",
+      "steps": [
+        {
+          "round": 0,
+          "mode": "anthropic-live",
+          "input_sha256": "77517d64ddeadd5f962f5a6b701947b85f253aba035785cf6de91b2efb1f7825",
+          "status": "tools_applied",
+          "request_id": "req_011CgNvBmRajQMN6gywvohNL",
+          "tool_calls": [
+            {
+              "call": {
+                "id": "e3356d29bd5c58bfa3885d67f78b1dae",
+                "name": "search_project_context",
+                "arguments": {
+                  "query": "합성 Song A 승인 온톨로지 기본 파란 코트 곡 한정 빨간 코트 계획 595787d6ebc649448d47843c8dbb4a3f 후보 Take"
+                },
+                "complete": true
+              },
+              "result": {
+                "status": "succeeded",
+                "context": {
+                  "music": {
+                    "id": 1,
+                    "audio": 1,
+                    "start": 0,
+                    "end": 2,
+                    "sections": [],
+                    "source": "user",
+                    "engine": null,
+                    "created": 1792929420.072087
+                  },
+                  "snapshot": [
+                    {
+                      "text": "Mira wears a blue coat by default. Age is unknown.",
+                      "scope": "ip",
+                      "era": "default",
+                      "valid_from": 0,
+                      "valid_to": 2,
+                      "revision": 1,
+                      "approved": true,
+                      "ip": "default"
+                    }
+                  ],
+                  "ontology": {
+                    "revision": 2,
+                    "graph": {
+                      "entities": [
+                        {
+                          "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+                          "label": "Mira",
+                          "provenance": [
+                            {
+                              "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                              "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+                            }
+                          ],
+                          "type": "character",
+                          "uncertainty": {
+                            "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                            "status": "asserted"
+                          }
+                        },
+                        {
+                          "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+                          "label": "Studio — Song A only",
+                          "provenance": [
+                            {
+                              "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                              "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+                            }
+                          ],
+                          "type": "place",
+                          "uncertainty": {
+                            "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                            "status": "asserted"
+                          }
+                        }
+                      ],
+                      "relations": []
+                    },
+                    "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+                  }
+                },
+                "search_mode": "scoped-snapshot",
+                "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님"
+              }
+            },
+            {
+              "call": {
+                "id": "3c3b2d33083b55209dfed057c9c0d96e",
+                "name": "get_generation_job",
+                "arguments": {
+                  "job_id": "e6b8a59e35634dfba9811b99763fc2ac"
+                },
+                "complete": true
+              },
+              "result": {
+                "status": "succeeded",
+                "job": {
+                  "id": "e6b8a59e35634dfba9811b99763fc2ac",
+                  "state": "collected",
+                  "failure_code": null,
+                  "mode": "rehearsal",
+                  "action_id": "c4f318c93ad9418e822c83129cb5d69d",
+                  "grant_id": "b255712ab40849f4820cc288e2130329",
+                  "external_calls": 0,
+                  "result": {
+                    "sha256": "7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a",
+                    "output_slot": "image"
+                  },
+                  "result_approved": false,
+                  "registered_takes": [
+                    {
+                      "shot": "장면 1",
+                      "take": 1,
+                      "sha256": "7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "input_tokens_counted": 899,
+          "usage": {
+            "input_tokens": 899,
+            "output_tokens": 275
+          },
+          "usage_cost_usd": "0.0002274",
+          "stop_reason": "tool_use",
+          "output_sha256": "5d648d85ac027d42428786c8c76ec98056648ca178e69e80acdefd2d5d113fc3",
+          "visible_response": [
+            {
+              "type": "tool_use",
+              "id": "toolu_01JvUWb9qQYF7Yo9dWVTMXiw",
+              "name": "search_project_context",
+              "input": {
+                "query": "합성 Song A 승인 온톨로지 기본 파란 코트 곡 한정 빨간 코트 계획 595787d6ebc649448d47843c8dbb4a3f 후보 Take"
+              },
+              "caller": {
+                "type": "direct"
+              }
+            },
+            {
+              "type": "tool_use",
+              "id": "toolu_01PGX9ddUEURAR3aGnmpLxqS",
+              "name": "get_generation_job",
+              "input": {
+                "job_id": "e6b8a59e35634dfba9811b99763fc2ac"
+              },
+              "caller": {
+                "type": "direct"
+              }
+            }
+          ]
+        },
+        {
+          "round": 1,
+          "mode": "anthropic-live",
+          "input_sha256": "6845af9690d0715602c6aa4dbeeeff0d4d023b4771f1122fa3980575c5e63b99",
+          "status": "answer_received",
+          "request_id": "req_011CgNvCE8g6wcamaRtNcGeW",
+          "tool_calls": [],
+          "input_tokens_counted": 2352,
+          "usage": {
+            "input_tokens": 2352,
+            "output_tokens": 1410
+          },
+          "usage_cost_usd": "0.0009402",
+          "stop_reason": "end_turn",
+          "output_sha256": "19050f2e676540bcfad90e19d01e3d144b5f69aba8b905431ea46cfde2076591",
+          "visible_response": [
+            {
+              "type": "text",
+              "text": "## 최종 상태\n\n**1. 승인 온톨로지 (Song A 문맥)**\n- 온톨로지 revision 2가 반환되었고, 승인된 스냅샷의 `ip: default` 항목도 있습니다.\n- **기본 파란 코트 유지:** 인물 \"Mira\"는 출처 `manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd`에 따라 기본적으로 파란 코트를 입습니다. 이 진술은 로컬 사용자가 직접 작성한 것이며 외부 검증된 사실이 아닙니다.\n- **곡 한정 빨간 코트 유지:** 장소 \"Studio — Song A only\"는 출처 `manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388`에 따라 Song A 스튜디오 장면에서만 빨간 코트를 허용합니다. 이 출처는 \"전역 파란 코트를 대체하지 않는다\"고 명시합니다.\n\n**2. 생성 작업 `e6b8a59e35634dfba9811b99763fc2ac`**\n- 상태: `collected`, 실패 코드 없음, 모드 `rehearsal`\n- `external_calls`: **0**\n- 결과 슬롯: `image`, 결과 SHA256 `7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a`\n- 등록된 후보 Take: **장면 1, Take 1**, SHA256 `7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a`\n- `result_approved`: **false**. 영수증 기준으로 결과는 아직 승인되지 않았습니다.\n\n## 확인되지 않은 항목\n- **계획 `595787d6ebc649448d47843c8dbb4a3f`:** 조회한 문맥 응답에도 작업 영수증에도 이 계획 ID가 나타나지 않았습니다. 따라서 저장된 계획의 존재와 내용은 이 도구 결과로 확인되지 않습니다.\n- **\"모의 단색 이미지\":** 영수증에는 `rehearsal` 모드와 `image` 슬롯만 있고, 단색이라는 설명은 없습니다. 이 작업이 리허설 영수증이라는 점과 외부 호출 0회는 확인되지만, 단색 여부는 확인되지 않습니다.\n- 이 작업은 실제 AI 영상 생성이 아니며, 현재 미디어 도구는 리허설 영수증만 만듭니다.\n\n이 결과는 작업 영수증에 기록된 그대로이며, 승인 상태는 `result_approved: false`입니다. 새 계획이나 생성은 요청하지 않았습니다."
+            }
+          ]
+        }
+      ],
+      "usage_cost_usd": "0.0011676",
+      "billing_confirmed": false
+    }
+  ],
+  "project": {
+    "name": "Claude 실제 채팅 · Synthetic Song A",
+    "ip": "default",
+    "snapshot": [
+      {
+        "text": "Mira wears a blue coat by default. Age is unknown.",
+        "scope": "ip",
+        "era": "default",
+        "valid_from": 0,
+        "valid_to": 2,
+        "revision": 1,
+        "approved": true,
+        "ip": "default"
+      }
+    ],
+    "shots": {
+      "장면 1": {
+        "description": "Song A 스튜디오 장면 (Studio — Song A only): Mira가 빨간 코트를 착용. 이 장면에만 적용되는 예외이며 전역 기본 의상(파란 코트)은 변경하지 않음.",
+        "takes": [
+          {
+            "id": 1,
+            "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-claude-live-ui-n_jxxkqa/assets/7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a.png",
+            "sha256": "7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a",
+            "reason": "모의 합성 단색 이미지 · AI 생성 아님",
+            "metadata": {
+              "duration": 0.0,
+              "codec": "png",
+              "width": 128,
+              "height": 128,
+              "sample_rate": null,
+              "channels": null
+            },
+            "rights": "로컬 합성 fixture",
+            "filename": "synthetic-candidate.png",
+            "provenance": "synthetic-solid-color-fixture; not AI",
+            "action_id": "c4f318c93ad9418e822c83129cb5d69d"
+          }
+        ],
+        "selected": null,
+        "revision": 1,
+        "stable_id": "08dffad9e258475b83487d5becd00ba8",
+        "plan_id": "595787d6ebc649448d47843c8dbb4a3f",
+        "planned_duration": 2.0,
+        "music_start": 0.0,
+        "music_version": 1
+      }
+    },
+    "revision": 3,
+    "profile": "landscape",
+    "audio_versions": [
+      {
+        "id": 1,
+        "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-claude-live-ui-n_jxxkqa/assets/e294409b36a8ac1893b23336eeab5202d3e84ce4f66c7572aa1589c43d43c1ff.wav",
+        "sha256": "e294409b36a8ac1893b23336eeab5202d3e84ce4f66c7572aa1589c43d43c1ff",
+        "filename": "synthetic-silence-2s.wav",
+        "metadata": {
+          "duration": 2.0,
+          "codec": "pcm_s16le",
+          "width": null,
+          "height": null,
+          "sample_rate": "48000",
+          "channels": 1,
+          "waveform": {
+            "status": "measured",
+            "source": "decoded-pcm-8khz-mono",
+            "duration": 2.0,
+            "peaks": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rms": 0.0,
+            "quiet": true,
+            "note": "최대 첫 600초의 간이 진폭 표시. 비트·BPM·구간 분석이 아닙니다."
+          }
+        },
+        "rights": "synthetic owned"
+      }
+    ],
+    "audio_selected": 1,
+    "audio_offset": 0,
+    "timeline_versions": [],
+    "timeline_head": null,
+    "subtitles": [],
+    "comments": [],
+    "ontology_snapshot": {
+      "revision": 2,
+      "graph": {
+        "entities": [
+          {
+            "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+            "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+            "label": "Mira",
+            "provenance": [
+              {
+                "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+              }
+            ],
+            "type": "character",
+            "uncertainty": {
+              "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+              "status": "asserted"
+            }
+          },
+          {
+            "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+            "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+            "label": "Studio — Song A only",
+            "provenance": [
+              {
+                "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+              }
+            ],
+            "type": "place",
+            "uncertainty": {
+              "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+              "status": "asserted"
+            }
+          }
+        ],
+        "relations": []
+      },
+      "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+    },
+    "music_versions": [
+      {
+        "id": 1,
+        "audio": 1,
+        "start": 0,
+        "end": 2,
+        "sections": [],
+        "source": "user",
+        "engine": null,
+        "created": 1792929420.072087
+      }
+    ],
+    "music_head": 1,
+    "model_settings": {
+      "revision": 1,
+      "selections": {
+        "chat": "anthropic-haiku-5-5",
+        "image": null,
+        "video": null
+      },
+      "history": [
+        {
+          "revision": 1,
+          "actor": "local-owner",
+          "changed": {
+            "chat": "anthropic-haiku-5-5"
+          },
+          "at": 1792929420.07504
+        }
+      ]
+    },
+    "production_runs": [
+      {
+        "id": "79a69fad10b94745bbfff6d9e705948f",
+        "state": "completed",
+        "engine": "anthropic-live",
+        "snapshot": {
+          "value": {
+            "model_settings": {
+              "revision": 1,
+              "selections": {
+                "chat": "anthropic-haiku-5-5",
+                "image": null,
+                "video": null
+              },
+              "history": [
+                {
+                  "revision": 1,
+                  "actor": "local-owner",
+                  "changed": {
+                    "chat": "anthropic-haiku-5-5"
+                  },
+                  "at": 1792929420.07504
+                }
+              ]
+            },
+            "context": {
+              "music": {
+                "id": 1,
+                "audio": 1,
+                "start": 0,
+                "end": 2,
+                "sections": [],
+                "source": "user",
+                "engine": null,
+                "created": 1792929420.072087
+              },
+              "snapshot": [
+                {
+                  "text": "Mira wears a blue coat by default. Age is unknown.",
+                  "scope": "ip",
+                  "era": "default",
+                  "valid_from": 0,
+                  "valid_to": 2,
+                  "revision": 1,
+                  "approved": true,
+                  "ip": "default"
+                }
+              ],
+              "ontology": {
+                "revision": 2,
+                "graph": {
+                  "entities": [
+                    {
+                      "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                      "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+                      "label": "Mira",
+                      "provenance": [
+                        {
+                          "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+                        }
+                      ],
+                      "type": "character",
+                      "uncertainty": {
+                        "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                        "status": "asserted"
+                      }
+                    },
+                    {
+                      "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                      "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+                      "label": "Studio — Song A only",
+                      "provenance": [
+                        {
+                          "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+                        }
+                      ],
+                      "type": "place",
+                      "uncertainty": {
+                        "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                        "status": "asserted"
+                      }
+                    }
+                  ],
+                  "relations": []
+                },
+                "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+              }
+            },
+            "approved_shots": []
+          },
+          "sha256": "53375c3871b6e7bfc0560d3aa3bd49f206228861155413db91dbd9e4e1ae1f22"
+        },
+        "calls": [
+          {
+            "id": "306302ebdc79578ebc4850a7c8abe11d",
+            "digest": "ef50d4196cf37d1d381c1e7bf45a11378d25f78a3c2f064915faf4c85c4964f6",
+            "name": "search_project_context",
+            "result": {
+              "status": "succeeded",
+              "context": {
+                "music": {
+                  "id": 1,
+                  "audio": 1,
+                  "start": 0,
+                  "end": 2,
+                  "sections": [],
+                  "source": "user",
+                  "engine": null,
+                  "created": 1792929420.072087
+                },
+                "snapshot": [
+                  {
+                    "text": "Mira wears a blue coat by default. Age is unknown.",
+                    "scope": "ip",
+                    "era": "default",
+                    "valid_from": 0,
+                    "valid_to": 2,
+                    "revision": 1,
+                    "approved": true,
+                    "ip": "default"
+                  }
+                ],
+                "ontology": {
+                  "revision": 2,
+                  "graph": {
+                    "entities": [
+                      {
+                        "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                        "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+                        "label": "Mira",
+                        "provenance": [
+                          {
+                            "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                            "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+                          }
+                        ],
+                        "type": "character",
+                        "uncertainty": {
+                          "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                          "status": "asserted"
+                        }
+                      },
+                      {
+                        "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                        "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+                        "label": "Studio — Song A only",
+                        "provenance": [
+                          {
+                            "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                            "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+                          }
+                        ],
+                        "type": "place",
+                        "uncertainty": {
+                          "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                          "status": "asserted"
+                        }
+                      }
+                    ],
+                    "relations": []
+                  },
+                  "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+                }
+              },
+              "search_mode": "scoped-snapshot",
+              "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님"
+            }
+          },
+          {
+            "id": "4687edb041415ce9aecbeb494c2b2079",
+            "digest": "30d4cbb6e5eb1e2515eb89f0ac87adada7c66703ebcf749c3c4d593d9213e678",
+            "name": "propose_media_plan",
+            "result": {
+              "status": "proposed",
+              "plan": {
+                "id": "595787d6ebc649448d47843c8dbb4a3f",
+                "version": 1,
+                "engine": "model-authored",
+                "status": "proposed",
+                "goal": "합성 Song A 스튜디오 장면에서 Mira가 빨간 코트를 입은 장면 1개 검토",
+                "style": "승인 온톨로지 설정 준수; 기본 파란 코트 유지, 스튜디오 장면 예외로만 빨간 코트 적용",
+                "constraints": "기본 의상: 파란 코트 (전역 canon, 변경 금지). 예외: Song A 스튜디오 장면에서만 빨간 코트. Mira의 나이는 모름(unknown). 검토 전 계획이며 영상 생성 및 비용 승인 요청 아님.",
+                "kind": "narrative",
+                "context": {
+                  "music": {
+                    "id": 1,
+                    "audio": 1,
+                    "start": 0,
+                    "end": 2,
+                    "sections": [],
+                    "source": "user",
+                    "engine": null,
+                    "created": 1792929420.072087
+                  },
+                  "snapshot": [
+                    {
+                      "text": "Mira wears a blue coat by default. Age is unknown.",
+                      "scope": "ip",
+                      "era": "default",
+                      "valid_from": 0,
+                      "valid_to": 2,
+                      "revision": 1,
+                      "approved": true,
+                      "ip": "default"
+                    }
+                  ],
+                  "ontology": {
+                    "revision": 2,
+                    "graph": {
+                      "entities": [
+                        {
+                          "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+                          "label": "Mira",
+                          "provenance": [
+                            {
+                              "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                              "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+                            }
+                          ],
+                          "type": "character",
+                          "uncertainty": {
+                            "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                            "status": "asserted"
+                          }
+                        },
+                        {
+                          "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+                          "label": "Studio — Song A only",
+                          "provenance": [
+                            {
+                              "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                              "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+                            }
+                          ],
+                          "type": "place",
+                          "uncertainty": {
+                            "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                            "status": "asserted"
+                          }
+                        }
+                      ],
+                      "relations": []
+                    },
+                    "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+                  }
+                },
+                "context_hash": "20649abc7670064bca399f04dac1a92ce8a903cedb128358b07e4a090d325ce9",
+                "created": 1792929479.460892,
+                "questions": [],
+                "scenes": [
+                  {
+                    "id": "08dffad9e258475b83487d5becd00ba8",
+                    "description": "Song A 스튜디오 장면 (Studio — Song A only): Mira가 빨간 코트를 착용. 이 장면에만 적용되는 예외이며 전역 기본 의상(파란 코트)은 변경하지 않음.",
+                    "duration": 2.0,
+                    "music_start": 0.0
+                  }
+                ],
+                "explanation": "모델 도구 인수로 제안된 장면을 저장했습니다. 확정 음악 구간은 서버가 균등 배분합니다. 사람의 검토·승인 전이며 미디어 생성은 실행하지 않았습니다.",
+                "source": {
+                  "mode": "anthropic-live",
+                  "model": "claude-haiku-5-5",
+                  "run": "79a69fad10b94745bbfff6d9e705948f",
+                  "call": "4687edb041415ce9aecbeb494c2b2079"
+                }
+              },
+              "cost_approval": false
+            }
+          }
+        ],
+        "repair_count": 0,
+        "limits": {
+          "tool_rounds": 8,
+          "repairs": 2
+        },
+        "live_model_called": true,
+        "provider_model": "claude-haiku-5-5"
+      },
+      {
+        "id": "040bded3e91d46bea5f6d4ff2871ebc7",
+        "state": "completed",
+        "engine": "anthropic-live",
+        "snapshot": {
+          "value": {
+            "model_settings": {
+              "revision": 1,
+              "selections": {
+                "chat": "anthropic-haiku-5-5",
+                "image": null,
+                "video": null
+              },
+              "history": [
+                {
+                  "revision": 1,
+                  "actor": "local-owner",
+                  "changed": {
+                    "chat": "anthropic-haiku-5-5"
+                  },
+                  "at": 1792929420.07504
+                }
+              ]
+            },
+            "context": {
+              "music": {
+                "id": 1,
+                "audio": 1,
+                "start": 0,
+                "end": 2,
+                "sections": [],
+                "source": "user",
+                "engine": null,
+                "created": 1792929420.072087
+              },
+              "snapshot": [
+                {
+                  "text": "Mira wears a blue coat by default. Age is unknown.",
+                  "scope": "ip",
+                  "era": "default",
+                  "valid_from": 0,
+                  "valid_to": 2,
+                  "revision": 1,
+                  "approved": true,
+                  "ip": "default"
+                }
+              ],
+              "ontology": {
+                "revision": 2,
+                "graph": {
+                  "entities": [
+                    {
+                      "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                      "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+                      "label": "Mira",
+                      "provenance": [
+                        {
+                          "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+                        }
+                      ],
+                      "type": "character",
+                      "uncertainty": {
+                        "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                        "status": "asserted"
+                      }
+                    },
+                    {
+                      "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                      "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+                      "label": "Studio — Song A only",
+                      "provenance": [
+                        {
+                          "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                          "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+                        }
+                      ],
+                      "type": "place",
+                      "uncertainty": {
+                        "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                        "status": "asserted"
+                      }
+                    }
+                  ],
+                  "relations": []
+                },
+                "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+              }
+            },
+            "approved_shots": [
+              {
+                "id": "08dffad9e258475b83487d5becd00ba8",
+                "selected": null,
+                "revision": 1
+              }
+            ]
+          },
+          "sha256": "332571640123709ba34dd59aef5100e196d960c2c2764ae9eecad9d570ff9bf1"
+        },
+        "calls": [
+          {
+            "id": "e3356d29bd5c58bfa3885d67f78b1dae",
+            "digest": "5167645f0b575e5c4a04abe794a1e1e9842a5adf2595c348ed9f75e98aa5c307",
+            "name": "search_project_context",
+            "result": {
+              "status": "succeeded",
+              "context": {
+                "music": {
+                  "id": 1,
+                  "audio": 1,
+                  "start": 0,
+                  "end": 2,
+                  "sections": [],
+                  "source": "user",
+                  "engine": null,
+                  "created": 1792929420.072087
+                },
+                "snapshot": [
+                  {
+                    "text": "Mira wears a blue coat by default. Age is unknown.",
+                    "scope": "ip",
+                    "era": "default",
+                    "valid_from": 0,
+                    "valid_to": 2,
+                    "revision": 1,
+                    "approved": true,
+                    "ip": "default"
+                  }
+                ],
+                "ontology": {
+                  "revision": 2,
+                  "graph": {
+                    "entities": [
+                      {
+                        "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                        "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+                        "label": "Mira",
+                        "provenance": [
+                          {
+                            "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                            "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+                          }
+                        ],
+                        "type": "character",
+                        "uncertainty": {
+                          "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                          "status": "asserted"
+                        }
+                      },
+                      {
+                        "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                        "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+                        "label": "Studio — Song A only",
+                        "provenance": [
+                          {
+                            "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                            "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+                          }
+                        ],
+                        "type": "place",
+                        "uncertainty": {
+                          "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                          "status": "asserted"
+                        }
+                      }
+                    ],
+                    "relations": []
+                  },
+                  "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+                }
+              },
+              "search_mode": "scoped-snapshot",
+              "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님"
+            }
+          },
+          {
+            "id": "3c3b2d33083b55209dfed057c9c0d96e",
+            "digest": "c9018a3011d5d2e4a392d9cccc8309848b73bd726b0f180eb8c52c6f1a56f11d",
+            "name": "get_generation_job",
+            "result": {
+              "status": "succeeded",
+              "job": {
+                "id": "e6b8a59e35634dfba9811b99763fc2ac",
+                "state": "collected",
+                "failure_code": null,
+                "mode": "rehearsal",
+                "action_id": "c4f318c93ad9418e822c83129cb5d69d",
+                "grant_id": "b255712ab40849f4820cc288e2130329",
+                "external_calls": 0,
+                "result": {
+                  "sha256": "7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a",
+                  "output_slot": "image"
+                },
+                "result_approved": false,
+                "registered_takes": [
+                  {
+                    "shot": "장면 1",
+                    "take": 1,
+                    "sha256": "7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "repair_count": 0,
+        "limits": {
+          "tool_rounds": 8,
+          "repairs": 2
+        },
+        "live_model_called": true,
+        "provider_model": "claude-haiku-5-5"
+      }
+    ],
+    "guided_plans": [
+      {
+        "id": "595787d6ebc649448d47843c8dbb4a3f",
+        "version": 1,
+        "engine": "model-authored",
+        "status": "applied",
+        "goal": "합성 Song A 스튜디오 장면에서 Mira가 빨간 코트를 입은 장면 1개 검토",
+        "style": "승인 온톨로지 설정 준수; 기본 파란 코트 유지, 스튜디오 장면 예외로만 빨간 코트 적용",
+        "constraints": "기본 의상: 파란 코트 (전역 canon, 변경 금지). 예외: Song A 스튜디오 장면에서만 빨간 코트. Mira의 나이는 모름(unknown). 검토 전 계획이며 영상 생성 및 비용 승인 요청 아님.",
+        "kind": "narrative",
+        "context": {
+          "music": {
+            "id": 1,
+            "audio": 1,
+            "start": 0,
+            "end": 2,
+            "sections": [],
+            "source": "user",
+            "engine": null,
+            "created": 1792929420.072087
+          },
+          "snapshot": [
+            {
+              "text": "Mira wears a blue coat by default. Age is unknown.",
+              "scope": "ip",
+              "era": "default",
+              "valid_from": 0,
+              "valid_to": 2,
+              "revision": 1,
+              "approved": true,
+              "ip": "default"
+            }
+          ],
+          "ontology": {
+            "revision": 2,
+            "graph": {
+              "entities": [
+                {
+                  "description": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                  "id": "7be39bda-7b44-47e6-b4d4-45bcd30cc14d",
+                  "label": "Mira",
+                  "provenance": [
+                    {
+                      "excerpt": "Global canon: Mira wears a blue coat by default. Age is unknown. Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                      "source_id": "manual:e709f9e543b06c109679a8fe25e9eb86c9fda4fed7c8005df407cf96d0200cbd"
+                    }
+                  ],
+                  "type": "character",
+                  "uncertainty": {
+                    "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                    "status": "asserted"
+                  }
+                },
+                {
+                  "description": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                  "id": "f39bb448-a53d-4897-ac58-f298b3a1267b",
+                  "label": "Studio — Song A only",
+                  "provenance": [
+                    {
+                      "excerpt": "Only in Song A studio scene, Mira wears a red coat; this does not replace the global blue coat.",
+                      "source_id": "manual:6aef7991973ab7a1bb7815f2ed4b180b43cee02e845aa6352d049fc29679f388"
+                    }
+                  ],
+                  "type": "place",
+                  "uncertainty": {
+                    "reason": "로컬 사용자가 직접 작성한 진술; 외부 사실 검증 아님",
+                    "status": "asserted"
+                  }
+                }
+              ],
+              "relations": []
+            },
+            "digest": "7410f17617f11c0b3267aada939a40c063ddb379935e13bd040c96d90e97748f"
+          }
+        },
+        "context_hash": "20649abc7670064bca399f04dac1a92ce8a903cedb128358b07e4a090d325ce9",
+        "created": 1792929479.460892,
+        "questions": [],
+        "scenes": [
+          {
+            "id": "08dffad9e258475b83487d5becd00ba8",
+            "description": "Song A 스튜디오 장면 (Studio — Song A only): Mira가 빨간 코트를 착용. 이 장면에만 적용되는 예외이며 전역 기본 의상(파란 코트)은 변경하지 않음.",
+            "duration": 2.0,
+            "music_start": 0.0
+          }
+        ],
+        "explanation": "모델 도구 인수로 제안된 장면을 저장했습니다. 확정 음악 구간은 서버가 균등 배분합니다. 사람의 검토·승인 전이며 미디어 생성은 실행하지 않았습니다.",
+        "source": {
+          "mode": "anthropic-live",
+          "model": "claude-haiku-5-5",
+          "run": "79a69fad10b94745bbfff6d9e705948f",
+          "call": "4687edb041415ce9aecbeb494c2b2079"
+        },
+        "shots": [
+          "장면 1"
+        ],
+        "approval": {
+          "actor": "local-owner",
+          "scope": "shot-plan",
+          "version": 1,
+          "at": 1792929519.0022368,
+          "cost_approval": false
+        }
+      }
+    ],
+    "execution_cards": [
+      {
+        "id": "c4f318c93ad9418e822c83129cb5d69d",
+        "plan": "595787d6ebc649448d47843c8dbb4a3f",
+        "scene": "08dffad9e258475b83487d5becd00ba8",
+        "shot": "장면 1",
+        "shot_revision": 0,
+        "description": "Song A 스튜디오 장면 (Studio — Song A only): Mira가 빨간 코트를 착용. 이 장면에만 적용되는 예외이며 전역 기본 의상(파란 코트)은 변경하지 않음.",
+        "context_hash": "46a3c9b89cec08bb5b5b424d90490d3cec1c0f4780b8bc1f848da54c70d21764",
+        "revision": 3,
+        "decision": "approved",
+        "mode": "rehearsal",
+        "model": "합성 단색 이미지 · AI 아님",
+        "money": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "grant": "b255712ab40849f4820cc288e2130329",
+        "job": "e6b8a59e35634dfba9811b99763fc2ac",
+        "take": 1,
+        "history": [
+          {
+            "command": "action_decide",
+            "decision": "approved",
+            "actor": "local-owner",
+            "at": 1792929537.2834802
+          },
+          {
+            "command": "action_execute",
+            "decision": null,
+            "actor": "local-owner",
+            "at": 1792929549.479087
+          }
+        ]
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "id": "e6b8a59e35634dfba9811b99763fc2ac",
+      "action": {
+        "id": "c4f318c93ad9418e822c83129cb5d69d",
+        "plan_id": "595787d6ebc649448d47843c8dbb4a3f",
+        "plan_revision": 1,
+        "context_hash": "46a3c9b89cec08bb5b5b424d90490d3cec1c0f4780b8bc1f848da54c70d21764",
+        "context_kind": "media-v1",
+        "role": "image",
+        "release_id": "synthetic-solid-color-v1",
+        "inputs": {
+          "prompt": "Song A 스튜디오 장면 (Studio — Song A only): Mira가 빨간 코트를 착용. 이 장면에만 적용되는 예외이며 전역 기본 의상(파란 코트)은 변경하지 않음."
+        },
+        "options": {
+          "width": 128,
+          "height": 128
+        },
+        "dependencies": [],
+        "mode": "rehearsal",
+        "connection_id": null,
+        "hash": "9eaac3ac98a75bfad4f4950fe0ebb8fa6cfd4c4b244a87e216001bad7c3d766a"
+      },
+      "grant": "b255712ab40849f4820cc288e2130329",
+      "grant_hash": "07e43623da0d38d5bba79b7c219da89c5d1c2df88f76c0414b18d11689bcff8b",
+      "state": "collected",
+      "reservation": "e64dfe12-1bd1-4563-ab86-092d5d51413e",
+      "scope": "rehearsal:project:f4b71377-707c-5f06-ba07-565d88024521",
+      "dependencies": [],
+      "result": {
+        "sha256": "7ca5909eefb620d62704cae14d64850dc7bf4cc21f6d05ca465300f800cd7a6a",
+        "output_slot": "image"
+      },
+      "result_approved": false,
+      "mode": "rehearsal",
+      "external_calls": 0
+    }
+  ],
+  "grants": [
+    {
+      "id": "b255712ab40849f4820cc288e2130329",
+      "revision": 1,
+      "state": "active",
+      "actor": "local-owner",
+      "expires": 1792930437.282921,
+      "price_revision": "rehearsal-v1",
+      "action_hashes": {
+        "c4f318c93ad9418e822c83129cb5d69d": "9eaac3ac98a75bfad4f4950fe0ebb8fa6cfd4c4b244a87e216001bad7c3d766a"
+      },
+      "money": {
+        "c4f318c93ad9418e822c83129cb5d69d": {
+          "amount": "0",
+          "currency": "USD"
+        }
+      },
+      "mode": "rehearsal",
+      "external_transmission": false,
+      "hash": "07e43623da0d38d5bba79b7c219da89c5d1c2df88f76c0414b18d11689bcff8b"
+    }
+  ]
+}

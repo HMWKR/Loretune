@@ -1,0 +1,112 @@
+{
+  "turn": {
+    "id": "b5f0e1faa47f48c7aef807a3de668b6a",
+    "binding": {
+      "workspace": "e10c36f0-3952-4845-ade0-6246d14432a3",
+      "project": "f8f0ff25-d380-5f34-b7fd-e1262f83593c",
+      "conversation": "542912eeba7458c09aaff91fd9e97bb2",
+      "selection": "anthropic-haiku-5-5",
+      "model": "claude-haiku-5-5",
+      "model_revision": 0,
+      "context": "cea51cd27128340e605992a4031f5bc6af04cb98bf0d472c2bc4076612caf129",
+      "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "price_revision": "haiku-5-5-20261027-tiered",
+      "transport": {
+        "mode": "anthropic-live",
+        "connection_id": "synthetic-account-declaration",
+        "connection_revision": 1,
+        "destination": "https://api.anthropic.com",
+        "activation_sha256": "6eb4d3988948b929fd3e9fe85479cf1765af8423500176c2dd3a38b4240223d1"
+      }
+    },
+    "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+    "name": "A",
+    "run": "66ffe786cdac48c1b320b74102eb72a1",
+    "prompt": "현재 음원으로 내부 편집을 도와줘",
+    "status": "cancelled",
+    "mode": "anthropic-live",
+    "model": "claude-haiku-5-5",
+    "round": 0,
+    "preview_id": "902a794e1f934b7b955e800b37e3a537",
+    "answer": null,
+    "error": "요청을 중단했습니다. 기존 결과와 비용 상태를 확인하세요. 자동 재시도하지 않습니다.",
+    "usage": null,
+    "usage_cost_usd": "0",
+    "billing_confirmed": false,
+    "steps": [],
+    "total_maximum_micro": 10000,
+    "estimated_used_micro": 0,
+    "reservation": "f0a25722-0ec4-4804-9d19-94abd96804eb",
+    "count_status": "response_received"
+  },
+  "reservation": [
+    "cancelled",
+    null
+  ],
+  "attempts": [
+    [
+      "chat-count",
+      "observed"
+    ]
+  ],
+  "budget": [
+    {
+      "id": "d3632ff7-4152-4fb1-a97c-31211f937020",
+      "revision": 1,
+      "state": "active",
+      "data": {
+        "scope": "project:f8f0ff25-d380-5f34-b7fd-e1262f83593c",
+        "limit": {
+          "amount": "1",
+          "currency": "USD"
+        },
+        "reserved": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "netConfirmed": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "netEstimated": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "available": {
+          "amount": "1",
+          "currency": "USD"
+        },
+        "overrun": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "maxConcurrentJobs": 4,
+        "allowAutomaticRetries": false,
+        "activeReservations": 0,
+        "uncertainReservations": 0,
+        "costScope": "provider-only; local compute unmetered"
+      }
+    }
+  ],
+  "during_cancel": null,
+  "ledger_events": [
+    [
+      "budget_changed",
+      1000000,
+      "금액 설정은 실제 지출 또는 외부 전송 승인이 아님"
+    ],
+    [
+      "reserved",
+      2458,
+      "요청액 예약; 실제 차감 아님"
+    ],
+    [
+      "released",
+      2458,
+      "미전송 예약 해제; 환불 아님"
+    ]
+  ],
+  "synthetic_socket_requests": 1,
+  "actual_provider_calls": 0,
+  "elapsed_seconds": null
+}

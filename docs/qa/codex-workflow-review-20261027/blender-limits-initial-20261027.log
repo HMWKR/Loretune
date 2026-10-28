@@ -1,0 +1,27 @@
+{"name": "cpu", "exit": 0, "timed_out": false, "output": "00:00.238  translation      | WARNING Falling back to standard locale (\"C\")\nCPU_STARTED\nCPU_COMPLETED\nBlender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:49:19)\n\nBlender quit\n"}
+Traceback (most recent call last):
+  File "/private/tmp/loretune-limits-3XzMNP/probe.py", line 52, in <module>
+    bounded('memory', '''import resource\nprint('RSS_BEFORE', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss, flush=True)\ndata=bytearray(128*1024*1024)\nfor i in range(0,len(data),4096): data[i]=1\nprint('RSS_AFTER', resource.getrusage(resource.RUSAGE_SELF).ru_maxrss, flush=True)\nprint('MEMORY_ALLOCATION_COMPLETED',len(data), flush=True)\n''',
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            {resource.RLIMIT_RSS: (64 * 1024 * 1024, 64 * 1024 * 1024)})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/loretune-limits-3XzMNP/probe.py", line 37, in bounded
+    proc = start(name, script, limits)
+  File "/private/tmp/loretune-limits-3XzMNP/probe.py", line 33, in start
+    return subprocess.Popen(args, cwd=str(work), env=env, stdout=subprocess.PIPE,
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            stderr=subprocess.STDOUT, text=True, preexec_fn=prepare)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 1213, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 2159, in _execute_child
+    raise child_exception_type(err_msg)
+subprocess.SubprocessError: Exception occurred in preexec_fn.

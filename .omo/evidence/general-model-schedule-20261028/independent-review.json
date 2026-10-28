@@ -1,0 +1,159 @@
+{
+  "task_ids": ["GC-MODEL-02", "GC-SCHEDULE-03"],
+  "attempt": 1,
+  "status": "REPORTED",
+  "reviewer": "/root/general_activation_review",
+  "configured_role": "ce-reviewer",
+  "verdict": "검토한 동결 소스에서 확정된 high/medium 결함은 없다. 실제 격리 HTTP에서 count 중 예약, 후속 전송 중 재예약, 공유 문맥 변경, 합성 메시지 timeout을 확인했다. 기존 실행의 모델·동의 본문을 유지하고 완료 시점에만 마지막 예약 선택을 적용하는 경로가 관측됐다.",
+  "scope": {
+    "product_tests_markdown_registry": "읽기 전용",
+    "write_set": [".omo/evidence/general-model-schedule-20261028/independent-review.json"],
+    "read_only_enforcement": "작업 계약상의 제한이다. 별도 OS 읽기 전용 sandbox가 강제됐다고 주장하지 않는다.",
+    "non_goals": ["제품·테스트·문서·registry 수정", "전체789 검사 재실행", "부모 브라우저·서버 접근", "모델 실험 작업자의 임시 파일·다운로드 접근", "환경/.env/실제 credential 접근", "실제 공급자·유료 호출", "다른 모델의 실제 지원 또는 플랫폼 전체 완료 판정"]
+  },
+  "methodology": {
+    "sources": [
+      "07_Chat_Directed_Multimodel_Production_Spec.md: 채팅 모델 변경은 다음 응답부터, 현재 응답 완료 뒤 적용",
+      "docs/design/CHAT-SESSION-PLAN.md: 최신 보충 및 CS07/09/11/12/15",
+      "backend/backend.diff",
+      "backend/SOURCE-FREEZE-v3.json",
+      "backend/SOURCE-VERIFY.json",
+      "UI-SOURCE-FREEZE.json",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-andrej-karpathy-skills/1.2.1/skills/karpathy-guidelines/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/skills/feature-verification/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/CODEX-RUNTIME.md"
+    ],
+    "applied": [
+      "새 요청의 현재 모델 admission과 이미 승인된 실행의 고정 binding을 분리해 상태 전이를 추적한다.",
+      "예약 revision 정규화가 정확한 turn/run/대화/실행 선택에만 적용되는지, 다른 문맥·권리·이력·가격·transport 검사는 유지되는지 대조한다.",
+      "실제 서버 생성·승인 경로와 합성 stdlib transport를 이용한 좁은 정상/실패/경계 반례를 실행한다.",
+      "소스 읽기, worker 로그 읽기, 독립 HTTP/Node 실행, 실제 공급자·브라우저·사용자 수용 증거를 구별한다.",
+      "이전 테스트의 의미 변경을 원본 요구와 연결해 검증 약화와 구분한다."
+    ]
+  },
+  "frozen_source_sha256": {
+    "app.py": "6aa01005559181d1f755c3837279111e0cebac2f56a41870073b1a78192df6aa",
+    "chat_general.py": "580d4a7046add89ecd251bf5e5324c4656fb617b99e0d3ba7d12455bb8f79f17",
+    "chat_sessions.py": "4491a5feaf09d06a7ad1861ed8a8a959e2bba52007851103a8a33d422903448f",
+    "production_tools.py": "452d12050748f8edd49da8fcaf7a88c82e421aeecc830400a2a9f451b044118d",
+    "tests/test_general_model_schedule.py": "b5909d8aae37a12eb505fbd0ecabd46278c1c9a8ccf8a33bc2cb0e4eb4d214e2",
+    "tests/test_general_model_capability.py": "2efb91ff8b5b0f4b9b4d2c5cd9baeb35890fbd72b02cdc2c85cf89e6f7e79676",
+    "tests/test_chat_general_http.py": "419804147c7ff010cc626618becc6f8e877483623707dcd108c167070425e7e4",
+    "index.html": "698c8bef00f29679a9bc94915caae08642765d635531c67c2661df8b3615f5c6",
+    "general-chat-ui.js": "97fcf05ed3fcf7f355d5e0f21f07ca307de8191d7b2598b59ae995dfab25c854",
+    "tests/general_model_schedule_ui.cjs": "23b6818a8485d03c1ea7ac53b5ff87f7770869184ccd3ed38c56254ff66ca005",
+    "tests/test_general_model_schedule_ui.py": "7a32e711f34d27a2746ffd0023ec563c850dfa73af846087565418e7061f745c"
+  },
+  "source_drift_observed": false,
+  "source_review": [
+    {
+      "id": "CURRENT-MODEL-ADMISSION",
+      "observation": "state API는 해당 대화로 scoped한 프로젝트를 capability에 전달한다. 현재 선택 없음·다른 공급자·disabled/retired/integration_blocked 모델은 available=false이며 자동 fallback하지 않는다. trusted runtime 설정 유무인 configured와 현재 선택의 admission을 구분하고 account_verified/billing_verified=false를 유지한다.",
+      "limit": "설정 및 선택 적합성이다. 실제 모델 접근권한·공급자 실행·청구 검증을 뜻하지 않는다."
+    },
+    {
+      "id": "FROZEN-BINDING-NORMALIZATION",
+      "observation": "binding의 model_revision만 pending.after_turn=현재 turn, execution_run=현재 run, execution_selection=원 binding selection, reserved_model_revision=현재 session revision, execution_model_revision=원 binding revision 및 현재 selection/model=원 binding일 때 정규화한다. 대화는 turn.conversation_id로 scoped되며 최종 전체 binding 비교는 workspace/project/conversation/context/rights/price/transport를 계속 포함한다.",
+      "effect": "예약 때문에 올라간 session revision을 실행 중 원 binding과 호환시키되 다른 문맥 변경까지 승인하는 경로로 확대하지 않는다."
+    },
+    {
+      "id": "TOOL-BOUNDARY",
+      "observation": "production_tools의 execution_model_revision은 동일 대화/run·서버 소유 after_turn·현재 실행 selection·정확한 예약/실행 revision을 요구한다. 일반 도구 실행은 그 전에 claim_tool의 SQL turn/preview/pending_tool 및 Runtime._current 재검사를 같은 거래에서 거친다. context snapshot·manifest·wire hash·history/music context 검사는 유지된다.",
+      "effect": "모델이 임의 도구 요청이나 다른 run에 예약 revision을 전용해 승인할 수 있다는 구체 경로는 발견하지 못했다."
+    },
+    {
+      "id": "TERMINAL-SELECTION",
+      "observation": "general finish_run은 status=completed일 때만 apply_completed_selection을 호출한다. 정상 최종 응답 검사·turn 완료·close_run·예약 반영이 같은 DB 거래에 있다. awaiting_continuation_approval에서는 원 모델을 유지하며 unknown/cancel/failure/limit/rejected continuation은 예약을 적용하지 않는다. 미적용 pending은 새 preview를 막고 알려진 종료 뒤 명시 재선택으로 정리한다. unknown/cancel_requested에서는 재선택도 막는다.",
+      "effect": "예약을 실행 모델 변경이나 취소·미확정 정산으로 오인하지 않는다."
+    },
+    {
+      "id": "UI-RECOVERY",
+      "observation": "new_preview_available=false는 새 요청 준비만 차단하고 원 모델의 승인된 continuation은 막지 않는다. 현재 모델 unavailable에서도 기존 preview의 로컬 reject와 turn cancel을 허용한다. configured인 actual 연결은 primary 배치를 유지한다. 모델 선택기는 general/legacy turn을 함께 읽어 unknown/cancel_requested를 잠그고, general-only poll 변화에서도 다시 그린다. 동적 이유는 textContent로 표시한다.",
+      "limit": "실제 브라우저 조작은 부모 소유 검증이며 이번 독립 실행은 source/Node 범위다."
+    }
+  ],
+  "existing_test_contract_change": {
+    "file": "tests/test_chat_general_http.py",
+    "changed_tests": ["test_model_change_reserves_until_completion_and_cancel_requires_reselection", "test_running_model_change_does_not_invalidate_approved_reply"],
+    "reason": "구 unconditional 400은 현재 응답 고정과 다음 응답 예약을 구분하지 않았다. 원본07의 다음 응답부터 적용 요구에 맞춰 대화 예약 200으로 변경했다.",
+    "preserved_or_strengthened_assertions": [
+      "공유 project model_settings 변경은 계속 400",
+      "오래된 model revision은 409",
+      "원 preview/binding/model 보존",
+      "현재 실행 모델 유지 후 완료 때만 다음 선택 적용",
+      "취소 뒤 pending 보존 및 최신 revision의 명시 재선택",
+      "현재 응답 전송 횟수와 원문 보존"
+    ],
+    "assessment": "요구 변경에 연결된 의미 조정이며 확인한 diff에서 검사를 약화해 기존 오류를 숨긴 변경은 발견하지 못했다."
+  },
+  "independently_executed": [
+    {
+      "id": "COUNT-TIME-RESERVATION-FOLLOWUP",
+      "method": "기존 activation HTTP fixture의 별도 TempStore/server와 합성 stdlib opener를 사용. count 응답 직후 실제 conversation_model API로 예약하고, 실제 search_project_context 후속 승인 대기 중 두 번 다른 선택으로 재예약한 뒤 승인·완료.",
+      "result": {"status": "completed", "synthetic_count_message_requests": 4, "all_wire_models_original_haiku": true, "both_approved_bodies_and_wire_hashes_preserved": true, "only_final_pending_target_applied_after_completion": true, "configured": true, "available_after_unsupported_selection": false, "other_conversation_unchanged": true, "real_provider_calls": 0},
+      "direct_state_tamper": false
+    },
+    {
+      "id": "RESERVATION-DOES-NOT-BYPASS-CONTEXT",
+      "method": "별도 fixture에서 count 응답 직후 예약 API와 정상 shot API로 공유 문맥 변경. 제품 guard나 binding을 직접 수정하지 않음.",
+      "result": {"status": "blocked_before_message", "count_requests": 1, "message_requests": 0, "pending_not_applied": true, "new_preview_available": false, "other_conversation_unchanged": true, "real_provider_calls": 0},
+      "direct_state_tamper": false
+    },
+    {
+      "id": "RUNTIME-TIMEOUT-UNKNOWN",
+      "method": "별도 fixture의 실제 queued 승인 뒤 다음 모델을 예약하고 합성 message transport에서 TimeoutError를 반환해 실제 Runtime 예외 경로 실행.",
+      "result": {"status": "outcome_unknown", "effective_selection": "anthropic-haiku-5-5", "pending_preserved": true, "new_preview_available": false, "explicit_reselection_http_status": 400, "reservation": ["uncertain", null], "attempts": [["chat-count", "observed"], ["chat-message", "unknown"]], "body_binding_unchanged": true, "no_automatic_resend": true, "synthetic_transport_requests": 2, "real_provider_calls": 0},
+      "direct_state_tamper": false
+    },
+    {
+      "id": "NODE-UI",
+      "command": "node tests/general_model_schedule_ui.cjs",
+      "result": "scoped model availability, local recovery, and general/legacy reservation UI scenarios passed",
+      "limit": "실제 UI 정의/handler를 추출하는 Node VM과 합성 nodes이며 브라우저 사용자 시험이 아니다."
+    },
+    {
+      "id": "SOURCE-FREEZE",
+      "result": "backend 7개와 UI 4개 모두 지정 동결 SHA256과 일치. v2→v3 변경은 tests/test_general_model_schedule.py의 새 limit 사례뿐이며 제품 소스는 동일."
+    }
+  ],
+  "review_probe_error_and_correction": [
+    {
+      "id": "PROBE-RESERVATION-TUPLE",
+      "initial": "RUNTIME-TIMEOUT-UNKNOWN 첫 실행에서 검토 스크립트가 fixture reservation tuple을 dict로 읽어 TypeError로 종료했다. 이 시점 이전의 outcome_unknown·재선택400·binding 보존·재전송 없음 assertion은 통과했다.",
+      "correction": "fixture 반환형을 실제 소스에서 확인하고 tuple 비교로 수정한 별도 격리 probe가 통과했다. 제품 소스나 테스트는 수정하지 않았다.",
+      "classification": "검토 코드 오류. 제품 결함으로 판정하지 않음.",
+      "initial_failed_probe_synthetic_transport_requests": 2,
+      "real_provider_calls": 0
+    }
+  ],
+  "worker_evidence_read_not_rerun_as_suites": [
+    {"path": "backend/related-final-v2.log", "result": "104 tests / 59.569s / OK", "scope": "v2이며 제품 코드는 v3와 동일. 새 limit HTTP 사례 추가 전 결과다."},
+    {"path": "backend/http-verification-v3.log", "result": "13 tests / 8.086s / OK"},
+    {"path": "backend/http-result.json", "result": {"tests": 13, "passed": true, "failures": 0, "errors": 0, "real_provider_calls": 0}},
+    {"path": "backend/http-receipts.json", "result": "테스트별 실제 격리 HTTP 요청/상태 기록 377개; 공급자 성공이나 운영 인증으로 해석하지 않음."},
+    {"path": "backend/REPORT.json", "result": "현재 v3 보고서와 v2 historical 결과·test contract change·한계 구분 확인."},
+    {"path": "ui-current.log", "result": "독립 Node 재실행 결과와 같은 성공 문구 확인."}
+  ],
+  "confirmed_high_medium_findings": [],
+  "ce_review": {
+    "Poisoning": "서버 소유 예약 metadata와 SQL turn을 함께 확인한다. 모델 원문이 실행 모델·권리·승인을 변경하지 않는다.",
+    "Distraction": "신규 공급자·RAG·실험 데이터셋·외부 모델 실행으로 범위를 확장하지 않았다.",
+    "Confusion": "configured/available/new_preview_available와 현재 실행/다음 선택/예약 미적용/unknown을 구분한다. synthetic wire를 실제 모델 결과로 부르지 않는다.",
+    "Clash": "원본07의 완료 후 적용과 구 unconditional 거절 테스트의 차이를 명시했다. 기존 manifest/문맥/권리/예산 검사를 유지한 채 예약 revision만 한정 정규화한다."
+  },
+  "limits": [
+    "실제 Claude·다른 선택 모델·계정 접근·청구·유료 데이터셋 시험은 수행하지 않았다. 설정 적합성은 실제 모델 지원 완료가 아니다.",
+    "독립 브라우저·모바일·접근성·실무자 시험과 전체789 회귀는 반복하지 않았다.",
+    "대화 분리는 기존 single-local-workspace 범위이며 실제 팀 인증·ACL 수용을 의미하지 않는다.",
+    "임의의 신뢰된 관리자/DB 다중 변조·새 공급자·미래 catalog 변경까지 안전하다는 주장은 하지 않는다.",
+    "직접 반례는 예약/count/followup·실제 공유 문맥 변경·합성 timeout을 검증했다. 취소·limit·legacy·잘못된 pending 필드의 전체 행렬은 worker source/저장 로그로 구분했다.",
+    "이번 범위의 high/medium 미발견은 플랫폼 전체 완성이나 모든 CS 수용을 뜻하지 않는다.",
+    "REPORTED는 부모의 별도 수락을 대체하지 않는다."
+  ],
+  "cleanup": "모든 독립 HTTP fixture는 finally에서 doCleanups()로 서버·임시 Store·stdlib patch를 정리했다.",
+  "product_tests_markdown_registry_modified": false,
+  "browser_used": false,
+  "full_suite_rerun": false,
+  "real_provider_calls": 0,
+  "memory_files_used": false
+}

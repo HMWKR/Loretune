@@ -1,0 +1,106 @@
+{
+ "schema": "loretune-agent-execution-plan/1",
+ "at": "2026-10-28T08:28:23.456184+00:00",
+ "issue_id": "AGENT-TOOLS-02",
+ "lead": "main session (Claude Code, session model inherited; reasoning not independently observed)",
+ "acceptance_owner": "lead after critic verify + codex read-only gate (S14)",
+ "status_lifecycle": "PLANNED→READY→RUNNING→REPORTED→ACCEPTED (worker report ≠ lead acceptance)",
+ "note_post_hoc": "Wave1 contracts were written AFTER spawn (2026-10-28 project-guide self-audit); the worker prompts carried objective/write set/rules/verification/evidence path but not methodology sources, model/reasoning record, stop condition or acceptance owner explicitly. Recorded here, not back-dated.",
+ "authoritative_inputs": [
+  "session-handoff.md",
+  "docs/qa/REMAINING-WORK.md",
+  "next-work-plan.json (chat-review-navigation-20261028)",
+  "docs/WORKFLOW-EXECUTION-GUIDE-ko.md",
+  "PLAN-ko.md (user-approved 'recommended' decisions, D15 changed by user)"
+ ],
+ "methodology_sources": [
+  "Karpathy Guidelines (installed skill andrej-karpathy-skills)",
+  "WORKFLOW-EXECUTION-GUIDE-ko.md delegation contract",
+  "Hallmark 2.0.0 Floor + static sloplint (no --render, global browser rule)",
+  "Impeccable 4.8.0 craft-floor/audit/critique (Operate mode)",
+  "Internal pattern abstraction + Refero/official docs research (wf_d7cf8986-d38)",
+  "rigor: all findings are defects; live-feature-verify via aside repl"
+ ],
+ "tasks": [
+  {
+   "id": "A1-server-read-tools",
+   "attempt": 1,
+   "state": "RUNNING",
+   "objective": "S1/A-pre/S2/S3/D1/D2/D11/D14 + token budget",
+   "write_set": [
+    "chat_general.py",
+    "agent_preferences.py",
+    "app.py",
+    "fal_dispatch.py",
+    "production_tools.py",
+    "chat_runtime.py",
+    "chat_protocols.py",
+    "new tests"
+   ],
+   "stop_condition": "targeted tests pass + result.md; critic verdict",
+   "evidence": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/tasks/A1-server-read-tools/"
+  },
+  {
+   "id": "B1-chat-ui",
+   "attempt": 1,
+   "state": "RUNNING",
+   "objective": "I1-I6 + toolLabels",
+   "write_set": [
+    "general-chat-ui.js",
+    "chat-sidebar.js",
+    "studio.css",
+    "index.html (media card/setStep)",
+    "navigation tests"
+   ],
+   "stop_condition": "VM+related tests pass, sloplint no new findings",
+   "evidence": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/tasks/B1-chat-ui/"
+  },
+  {
+   "id": "C1-3d-read-schema",
+   "attempt": 1,
+   "state": "RUNNING",
+   "objective": "S6/S7a",
+   "write_set": [
+    "production_context.py",
+    "scene_project.py",
+    "scene_spec.py",
+    "new tests"
+   ],
+   "stop_condition": "tests pass + result.md",
+   "evidence": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/tasks/C1-3d-read-schema/"
+  },
+  {
+   "id": "D1-frame-observation-design",
+   "attempt": 1,
+   "state": "RUNNING",
+   "objective": "S13 doc",
+   "write_set": [
+    "docs/design/FRAME-OBSERVATION-DESIGN-ko.md"
+   ],
+   "stop_condition": "doc with file:line citations",
+   "evidence": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/tasks/D1-frame-observation-design/"
+  },
+  {
+   "id": "DESIGN-AUDIT",
+   "attempt": 1,
+   "state": "RUNNING",
+   "objective": "read-only Hallmark/Impeccable static audit of before/ snapshot",
+   "write_set": [
+    "/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/design-audit/"
+   ],
+   "stop_condition": "critic-verified findings"
+  }
+ ],
+ "non_goals": [
+  "real Claude/AI video/paid calls",
+  "document registration/promotion",
+  "touching 8765/57888/Ego Space",
+  "deleting files"
+ ],
+ "known_gaps_self_audit": [
+  "no before-state screenshots taken before UI edits → will capture from before/ snapshot on an owned fixture port",
+  "codex plan review not done at plan stage → run now (main direct, read-only)",
+  "harness-orchestration:orchestrate skill referenced by guide is not installed in this Claude runtime",
+  "METHODOLOGY-FIT-MATRIX-ko.md not yet read by lead"
+ ]
+}

@@ -1,0 +1,180 @@
+{
+  "project_agent_preferences": {
+    "current": {
+      "selection": "anthropic-haiku-5-5",
+      "revision": 1,
+      "mode": "full_access",
+      "effort": "high"
+    },
+    "by_model": {
+      "anthropic-haiku-5-5": {
+        "selection": "anthropic-haiku-5-5",
+        "revision": 1,
+        "mode": "full_access",
+        "effort": "high"
+      },
+      "openai-gpt-6-luna": {
+        "selection": "openai-gpt-6-luna",
+        "revision": 0,
+        "mode": "review",
+        "effort": "low"
+      },
+      "xai-grok-4-7": {
+        "selection": "xai-grok-4-7",
+        "revision": 0,
+        "mode": "review",
+        "effort": "low"
+      }
+    },
+    "active_response": null,
+    "active_response_conflict": false,
+    "next_request": {
+      "selection": "anthropic-haiku-5-5",
+      "revision": 1,
+      "mode": "full_access",
+      "effort": "high"
+    },
+    "settings_pending": false,
+    "capabilities": {
+      "models": {
+        "anthropic-haiku-5-5": {
+          "provider": "anthropic",
+          "model": "claude-haiku-5-5",
+          "effort_options": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "unsupported_efforts": [
+            {
+              "value": "xhigh",
+              "reason": "공급자는 지원하지만 현재 disabled thinking 경로는 high까지만 지원합니다. adaptive thinking은 미구현입니다."
+            },
+            {
+              "value": "max",
+              "reason": "공급자는 지원하지만 현재 disabled thinking 경로는 high까지만 지원합니다. adaptive thinking은 미구현입니다."
+            }
+          ],
+          "general_route_supported": true,
+          "general_route_configured": true,
+          "legacy_route_supported": true,
+          "legacy_route_configured": false,
+          "account_verified": false,
+          "billing_verified": false,
+          "reason": "현재 일반 경로는 low/medium/high와 disabled thinking을 사용합니다. 실제 계정·청구는 별도 검증입니다."
+        },
+        "openai-gpt-6-luna": {
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "effort_options": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "unsupported_efforts": [],
+          "general_route_supported": false,
+          "general_route_configured": false,
+          "legacy_route_supported": true,
+          "legacy_route_configured": false,
+          "account_verified": false,
+          "billing_verified": false,
+          "reason": "일반 채팅은 현재 Claude 경로만 지원합니다. 다른 모델은 별도 legacy 연결·검증이 필요합니다."
+        },
+        "xai-grok-4-7": {
+          "provider": "xai",
+          "model": "grok-4.7",
+          "effort_options": [
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ],
+          "unsupported_efforts": [],
+          "general_route_supported": false,
+          "general_route_configured": false,
+          "legacy_route_supported": true,
+          "legacy_route_configured": false,
+          "account_verified": false,
+          "billing_verified": false,
+          "reason": "일반 채팅은 현재 Claude 경로만 지원합니다. 다른 모델은 별도 legacy 연결·검증이 필요합니다."
+        }
+      },
+      "modes": [
+        {
+          "id": "read_only",
+          "label": "읽기 전용"
+        },
+        {
+          "id": "review",
+          "label": "검토 후 편집"
+        },
+        {
+          "id": "full_access",
+          "label": "FullAccess"
+        }
+      ],
+      "full_auto_draft_commands": [
+        "reorder_clips",
+        "set_audio_offset",
+        "set_captions",
+        "set_clip",
+        "set_motion_overlay"
+      ],
+      "human_review_only_commands": [
+        "remove_clips",
+        "clear_motion_overlay"
+      ],
+      "account_deletion": false,
+      "file_deletion": false,
+      "destructive_scope": "삭제 도구는 제공하지 않습니다. 계정 삭제는 항상 금지하며 파일 등 삭제는 대상별 별도 명시 허가가 필요합니다.",
+      "final_output_approval": "always separate",
+      "provider_cost_and_transmission_consent": "always separate"
+    },
+    "note": "현재 응답의 추론·본문은 고정합니다. 권한 축소는 즉시 적용하며 확장은 다음 새 요청부터 적용합니다."
+  },
+  "setting_action_response": {
+    "agent_settings": {
+      "selection": "anthropic-haiku-5-5",
+      "revision": 1,
+      "mode": "full_access",
+      "effort": "high"
+    },
+    "revision": 3
+  },
+  "preview_binding": {
+    "workspace": "3fb3b69d-de42-4148-9682-382e86b2aa66",
+    "project": "8ba50578-ea30-5102-8a6d-4df137b32301",
+    "conversation": "542912eeba7458c09aaff91fd9e97bb2",
+    "selection": "anthropic-haiku-5-5",
+    "model": "claude-haiku-5-5",
+    "model_revision": 0,
+    "context": "26312b6363600ce7be7d3cee3b4a6d40f772e136256b457cc4bb7d4c183b1edb",
+    "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "price_revision": "haiku-5-5-20261027-tiered",
+    "agent_settings": {
+      "selection": "anthropic-haiku-5-5",
+      "revision": 1,
+      "mode": "full_access",
+      "effort": "high"
+    }
+  },
+  "preview_tool_scope": [
+    "propose_media_plan",
+    "search_project_context",
+    "propose_timeline_changes",
+    "request_render",
+    "propose_motion_scene",
+    "request_motion_render"
+  ],
+  "message_effort": {
+    "effort": "high"
+  },
+  "count_effort": {
+    "effort": "high"
+  },
+  "actual_provider_calls": 0,
+  "fixture": "explicit FixtureTransport, own ephemeral HTTP store"
+}

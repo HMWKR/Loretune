@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-26T03:21:06.183Z",
+  "fixture": "Controlled browser fetch responses only; both POSTs intercepted and NEVER forwarded; final committed status is simulated receipt cleanup, not database commit.",
+  "before": "8ac30524626fcd58457cb62a2616710426e7ec33c1958f3d271bc3dca42a740d",
+  "after": "8ac30524626fcd58457cb62a2616710426e7ec33c1958f3d271bc3dca42a740d",
+  "rejected": {
+    "message": "서버가 저장을 거절했습니다. 입력은 보존했습니다. 입력을 확인·수정한 뒤 ‘검토 변경 저장’을 누르세요.",
+    "reason": "QA 모의 400 · 이 초안은 서버에 전송하지 않았습니다.",
+    "pending": false,
+    "saveDisabled": false
+  },
+  "unknown": {
+    "message": "저장 결과가 아직 확인되지 않았습니다. 입력은 보존했습니다. 아래 ‘기존 저장 확인’으로 같은 요청의 처리 결과를 조회하세요. 확인 전에는 새로 제출하지 않습니다.",
+    "reason": "QA 모의 응답 유실 · 기존 요청 조회만 허용",
+    "pending": true,
+    "saveDisabled": true,
+    "checkHidden": false
+  },
+  "checked": {
+    "calls": [
+      {
+        "method": "POST",
+        "action": "review_take",
+        "id": "5ae3df7c-2604-4bf4-9cb0-a760297059b8"
+      },
+      {
+        "method": "POST",
+        "action": "review_take",
+        "id": "d3ae6e76-ff80-4cf3-a966-b88c518029e8"
+      },
+      {
+        "method": "GET",
+        "id": "d3ae6e76-ff80-4cf3-a966-b88c518029e8"
+      }
+    ],
+    "message": "아직 저장 여부를 확인하지 못했습니다. 입력은 보존했습니다. 아래 ‘기존 저장 확인’으로 같은 요청의 처리 결과를 조회하세요. 확인 전에는 새로 제출하지 않습니다.",
+    "pending": true
+  },
+  "other": {
+    "shot": "02 움직임과 만남",
+    "reason": "합성 테스트. 실제 인물·모델 생성 결과 아님.",
+    "errorHidden": true
+  },
+  "returned": {
+    "shot": "01 빛의 시작",
+    "reason": "QA 모의 응답 유실 · 기존 요청 조회만 허용",
+    "errorHidden": false
+  },
+  "recovered": {
+    "reason": "QA 새로운 초안 · 이전 요청 확인 후에도 보존",
+    "pending": false,
+    "calls": [
+      {
+        "method": "POST",
+        "action": "review_take",
+        "id": "5ae3df7c-2604-4bf4-9cb0-a760297059b8"
+      },
+      {
+        "method": "POST",
+        "action": "review_take",
+        "id": "d3ae6e76-ff80-4cf3-a966-b88c518029e8"
+      },
+      {
+        "method": "GET",
+        "id": "d3ae6e76-ff80-4cf3-a966-b88c518029e8"
+      },
+      {
+        "method": "GET",
+        "id": "d3ae6e76-ff80-4cf3-a966-b88c518029e8"
+      }
+    ]
+  }
+}

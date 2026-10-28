@@ -1,0 +1,45 @@
+FAIL: test_cancel_after_settlement_before_tool_does_not_create_proposal (test_chat_general_http.GeneralChatHTTPTest.test_cancel_after_settlement_before_tool_does_not_create_proposal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 304, in test_cancel_after_settlement_before_tool_does_not_create_proposal
+    self.assertEqual(project['general_chat_turns'][-1]['status'],'outcome_unknown')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'cancelled' != 'outcome_unknown'
+- cancelled
++ outcome_unknown
+
+
+======================================================================
+FAIL: test_response_usage_survives_cancellation_or_rights_change (test_chat_general_http.GeneralChatHTTPTest.test_response_usage_survives_cancellation_or_rights_change) (change='cancel')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 521, in test_response_usage_survives_cancellation_or_rights_change
+    self._observed_usage_race(folder, change)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_general_http.py", line 658, in _observed_usage_race
+    self.assertEqual(turn['status'],'outcome_unknown')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'cancelled' != 'outcome_unknown'
+- cancelled
++ outcome_unknown
+
+
+======================================================================
+FAIL: test_cancel_after_message_preserves_observed_estimate_and_blocks_tools (test_chat_live_contract.LiveContractHTTPTest.test_cancel_after_message_preserves_observed_estimate_and_blocks_tools)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_live_contract.py", line 185, in test_cancel_after_message_preserves_observed_estimate_and_blocks_tools
+    self.assertEqual(turn['status'],'outcome_unknown');self.assertEqual(turn['usage'],{'input_tokens':100,'output_tokens':100})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'cancelled' != 'outcome_unknown'
+- cancelled
++ outcome_unknown
+
+
+----------------------------------------------------------------------
+Ran 874 tests in 510.970s
+
+FAILED (failures=3)
+BACKGROUND_NATIVE_OBSERVATIONS=[{"color": [0, 0, 0], "corner": [0, 0, 0], "pixel_sha256": "f1fb8c95e575425e9b79409917002fb408e23663ce4608f3327723fcd9123cda"}, {"color": [1, 1, 1], "corner": [193, 193, 195], "pixel_sha256": "393dd66c8e484b5f7366e6f5c0d954193504247c5caaf926be9d46d7ff845dc9"}, {"color": [0.1, 0.3, 0.8], "corner": [118, 152, 186], "pixel_sha256": "9c89feb440986be9af792233f782bf0987f4bc75af663787b875924e55055796"}]
+HTTP_FAILURE scene_render 409 {"error": "현재 구도 버전을 확인하세요."}
+HTTP_FAILURE scene_render 409 {"error": "현재 구도 버전을 확인하세요."}

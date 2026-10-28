@@ -1,0 +1,37 @@
+{
+  "schema": "driver-worker-contract/1",
+  "task_id": "document-preservation-final-20261028",
+  "created_at": "2026-10-27T20:33:17.473472+00:00",
+  "objective": "최신 파일을 보존 기준과 대조하여 문서 삭제·내용 손실 및 미해결 보존 문제를 구분",
+  "state": "ACCEPTED for preservation review; governance and original-byte recovery unresolved",
+  "Methodology sources": [
+    ".document-gate.json",
+    "docs/qa/DOCUMENT-INVENTORY-20261027.md",
+    "docs/qa/adoption-docs-20261027/verification.json",
+    "docs/qa/codex-workflow-review-20261027/paired-assets-20261028/document-before.json",
+    "/Users/leesungmin/.agents/skills/document-completion-gate/SKILL.md"
+  ],
+  "Applied methodology": "기준 목록의 경로 대조, 불변 SHA256 대조, 등록 사본 원문 대조, before 전문 증분·요구사항 추적의 독립 검토",
+  "Non-goals/limits": [
+    "삭제/복구/등록/승격/생성문맥 변경 없음",
+    "Git 또는 T0 이전 미기록 삭제 증명 불가",
+    "개인 데이터·외부 백업·키 접근 없음"
+  ],
+  "Verification standard": "누락과 수정·등록 지연을 구분하고 변경/미확인 경로와 근거 해시를 기록",
+  "driver": {
+    "scope": "기계적 전체 경로/해시 및 gate 검사",
+    "write_set": [
+      ".omo/evidence/document-preservation-final-20261028/**"
+    ]
+  },
+  "reviewer": {
+    "agent": "/root/general_activation_review",
+    "role": "ce-reviewer",
+    "Model": "session inherited; provider not independently measured",
+    "Reasoning": "session inherited",
+    "Scope": "최근 before 전문과 현재 문서의 의미 손실, 핵심 요구와 역사 보존 독립 확인",
+    "Write set": [],
+    "Verification": "기존 조사 재사용 후 최신 SHA와 증분만 확인, 결과 root 전달",
+    "Dependency": "root mechanical audit와 독립"
+  }
+}

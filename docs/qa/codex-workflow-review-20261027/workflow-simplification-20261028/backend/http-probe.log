@@ -1,0 +1,94 @@
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 05:52:42] "GET /api/state HTTP/1.1" 200 -
+{
+  "scope": "actual loopback HTTP import, validation and persistence only; no model generation/native render/UI test",
+  "requests": [
+    {
+      "action": "project",
+      "status": 200,
+      "error": null
+    },
+    {
+      "action": "shot",
+      "status": 200,
+      "error": null
+    },
+    {
+      "action": "take",
+      "status": 200,
+      "error": null
+    },
+    {
+      "action": "select",
+      "status": 200,
+      "error": null
+    },
+    {
+      "action": "scene_asset_import",
+      "status": 200,
+      "error": null
+    },
+    {
+      "action": "scene_asset_import",
+      "status": 400,
+      "error": "입력을 확인하세요: GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요."
+    },
+    {
+      "action": "scene_asset_import",
+      "status": 400,
+      "error": "입력을 확인하세요: 지원하지 않거나 손상된 GLB 모델입니다."
+    }
+  ],
+  "origin": "http://127.0.0.1:54512",
+  "valid_original": {
+    "path": ".omo/evidence/triposr-cpu-artifact-20261028/chair-attempt-1/chair-resolution256-original.glb",
+    "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+    "metadata": {
+      "profile": "gltf2-static-pbr-color-v2",
+      "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+      "byte_length": 1686596,
+      "vertex_count": 42186,
+      "triangle_count": 84216,
+      "image_count": 0,
+      "node_count": 2
+    },
+    "saved_original_bytes_equal": true
+  },
+  "rejections": [
+    {
+      "case": "resource-overflow",
+      "input_sha256": "b21a787c86346ff3a3f090beb32e41e5dc0a2a120fe5cd106de1512dc617b937",
+      "input_bytes": 5189600,
+      "status": 400,
+      "error": "입력을 확인하세요: GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.",
+      "projects_revision_assets_selection_equal": true
+    },
+    {
+      "case": "malformed-count",
+      "input_sha256": "27d6f20edde64bc6afbd38b84e1451e4fd516f3cf12f993fb57382e76a079464",
+      "input_bytes": 1686592,
+      "status": 400,
+      "error": "입력을 확인하세요: 지원하지 않거나 손상된 GLB 모델입니다.",
+      "projects_revision_assets_selection_equal": true
+    }
+  ],
+  "result": "PASS",
+  "server_closed": true
+}

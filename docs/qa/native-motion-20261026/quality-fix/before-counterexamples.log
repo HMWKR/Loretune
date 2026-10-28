@@ -1,0 +1,25 @@
+test_recorded_approval_and_pending_proposal_are_distinct_in_search_and_handoff (tests.test_native_motion_quality.MotionApprovalContextTest.test_recorded_approval_and_pending_proposal_are_distinct_in_search_and_handoff) ... ERROR
+test_order_caption_audio_before_after_without_apply_and_duplicate_same_receipt (tests.test_native_motion_quality.TimelineDiffTest.test_order_caption_audio_before_after_without_apply_and_duplicate_same_receipt) ... ERROR
+
+======================================================================
+ERROR: test_recorded_approval_and_pending_proposal_are_distinct_in_search_and_handoff (tests.test_native_motion_quality.MotionApprovalContextTest.test_recorded_approval_and_pending_proposal_are_distinct_in_search_and_handoff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_native_motion_quality.py", line 25, in test_recorded_approval_and_pending_proposal_are_distinct_in_search_and_handoff
+    self.assertEqual(h['approval']['actor'],'local-owner');self.assertEqual(h['approval']['scope'],'local-motion-candidate');self.assertEqual(h['approval']['motion_revision'],1)
+                     ~^^^^^^^^^^^^
+KeyError: 'approval'
+
+======================================================================
+ERROR: test_order_caption_audio_before_after_without_apply_and_duplicate_same_receipt (tests.test_native_motion_quality.TimelineDiffTest.test_order_caption_audio_before_after_without_apply_and_duplicate_same_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_native_motion_quality.py", line 65, in test_order_caption_audio_before_after_without_apply_and_duplicate_same_receipt
+    d=r['timeline_diff'];self.assertEqual(r['changes'],[]);self.assertEqual(r['changes_scope'],'clip_take_trim_duration')
+      ~^^^^^^^^^^^^^^^^^
+KeyError: 'timeline_diff'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.444s
+
+FAILED (errors=2)

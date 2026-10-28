@@ -1,0 +1,17 @@
+const fs = await import('node:fs/promises');
+const crypto = await import('node:crypto');
+const root='/Users/leesungmin/Desktop/Loretune/docs/qa/frontend-fq-vq-fixes-20261026/authorized-verification';
+const html=await fs.readFile(root+'/browser-fixture.html','utf8');
+const hash=crypto.createHash('sha256').update(html).digest('hex');
+if(hash!=='6f7837799306643fc6484fed078120da2bf867e25b4138755cd2c38c3f600f46')throw Error('CURRENT_FIXTURE_HASH_MISMATCH');
+const task=await taskSpace('Loretune authorized FQ-VQ final verification 20261026');
+console.log({spaceId:task.spaceId,fixtureHash:hash});
+const p=task.page('p1');
+await p.goto('about:blank');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
+await p.evaluate(html=>{document.open();document.write(html);document.close()},html);
+await p.waitForSelector('#takes button');
+const meta=await p.evaluate(()=>({time:new Date().toISOString(),url:location.href,ua:navigator.userAgent,viewport:[innerWidth,innerHeight],errors:window.__fixtureErrors,requests:window.__fixtureRequests,sceneCount:document.querySelectorAll('.lt-scene-copy>b').length,takeCount:document.querySelectorAll('#takes button').length}));
+await fs.writeFile(root+'/browser-load.json',JSON.stringify({spaceId:task.spaceId,fixtureHash:hash,...meta},null,2));
+console.log(meta);
+console.log(await p.snapshot());

@@ -1,0 +1,188 @@
+{
+  "mask_rule": "Fixed baseline scene-linear pixels differing from corner background by>1e-5, eroded3x3; heuristic subject interior proxy, not ground-truth material ID. Same mask allcases. NPY/EXR bottom-up flipped to PNG orientation.",
+  "background_linear": [
+    0.09470617771148682,
+    0.10116289556026459,
+    0.09909646958112717
+  ],
+  "mask_pixel_count": 128103,
+  "total_pixel_count": 129600,
+  "summaries": {
+    "native-byte-pbr": {
+      "subject_linear_rgb_mean": [
+        0.20534497148946435,
+        0.1627945984982342,
+        0.13801328507674904
+      ],
+      "subject_linear_Y_mean": 0.1700515969671385,
+      "subject_png_rgb_mean": [
+        102.57376486108835,
+        99.00786086196264,
+        96.25653575638354
+      ],
+      "subject_png_median": [
+        87.0,
+        87.0,
+        87.0
+      ],
+      "linear_center": [
+        0.9652530550956726,
+        0.6277608275413513,
+        0.4384237229824066
+      ],
+      "png_center": [
+        196.0,
+        178.0,
+        166.0
+      ]
+    },
+    "raw-float-pbr": {
+      "subject_linear_rgb_mean": [
+        0.20537658766979658,
+        0.16284480792393016,
+        0.1380080041794512
+      ],
+      "subject_linear_Y_mean": 0.17009384706755,
+      "subject_png_rgb_mean": [
+        102.57609111418155,
+        99.0105227824485,
+        96.25698851705269
+      ],
+      "subject_png_median": [
+        87.0,
+        87.0,
+        87.0
+      ],
+      "linear_center": [
+        0.9619502425193787,
+        0.6273829936981201,
+        0.43771278858184814
+      ],
+      "png_center": [
+        196.0,
+        178.0,
+        166.0
+      ]
+    },
+    "inverse-srgb-float-pbr": {
+      "subject_linear_rgb_mean": [
+        0.16217619186479412,
+        0.1158301833422111,
+        0.0994880577756769
+      ],
+      "subject_linear_Y_mean": 0.12450344328820848,
+      "subject_png_rgb_mean": [
+        99.42429919674012,
+        91.25081379827171,
+        86.21938596285801
+      ],
+      "subject_png_median": [
+        87.0,
+        87.0,
+        87.0
+      ],
+      "linear_center": [
+        0.6488238573074341,
+        0.26871809363365173,
+        0.13444823026657104
+      ],
+      "png_center": [
+        185.0,
+        138.0,
+        110.0
+      ]
+    },
+    "raw-float-emission": {
+      "subject_linear_rgb_mean": [
+        0.20399369804707507,
+        0.1639114529326327,
+        0.13834472672298675
+      ],
+      "subject_linear_Y_mean": 0.1705870206116267,
+      "subject_png_rgb_mean": [
+        103.67044487638853,
+        100.30573835117055,
+        97.57846420458537
+      ],
+      "subject_png_median": [
+        87.0,
+        87.0,
+        87.0
+      ],
+      "linear_center": [
+        0.7546179890632629,
+        0.5136339664459229,
+        0.3682801127433777
+      ],
+      "png_center": [
+        187.0,
+        170.0,
+        157.0
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "comparison": "byte_to_float_bridge",
+      "baseline": "native-byte-pbr",
+      "variant": "raw-float-pbr",
+      "linear_Y_mean_ratio": 1.0002484545935766,
+      "linear_Y_mean_percent_change": 0.024845459357658584,
+      "linear_rgb_mean_difference": [
+        3.1616180332208784e-05,
+        5.020942569598362e-05,
+        -5.2808972978485275e-06
+      ],
+      "png_channel_mean_difference": [
+        0.0023262530932140544,
+        0.002661920485859035,
+        0.00045276066914904414
+      ],
+      "png_channel_mean_absolute_difference": 0.014267165223817293,
+      "png_channel_max_absolute_difference": 1.0
+    },
+    {
+      "comparison": "A_transfer_function",
+      "baseline": "raw-float-pbr",
+      "variant": "inverse-srgb-float-pbr",
+      "linear_Y_mean_ratio": 0.7319691184288633,
+      "linear_Y_mean_percent_change": -26.803088157113674,
+      "linear_rgb_mean_difference": [
+        -0.043200395805002435,
+        -0.04701462458171908,
+        -0.03851994640377428
+      ],
+      "png_channel_mean_difference": [
+        -3.1517919174414337,
+        -7.759708984176795,
+        -10.037602554194672
+      ],
+      "png_channel_mean_absolute_difference": 7.005599660689706,
+      "png_channel_max_absolute_difference": 87.0
+    },
+    {
+      "comparison": "B_material_lighting",
+      "baseline": "raw-float-pbr",
+      "variant": "raw-float-emission",
+      "linear_Y_mean_ratio": 1.0028994202469936,
+      "linear_Y_mean_percent_change": 0.28994202469936337,
+      "linear_rgb_mean_difference": [
+        -0.0013828896227215093,
+        0.001066645008702529,
+        0.00033672254353556483
+      ],
+      "png_channel_mean_difference": [
+        1.0943537622069741,
+        1.295215568722044,
+        1.3214756875326885
+      ],
+      "png_channel_mean_absolute_difference": 2.776156686416399,
+      "png_channel_max_absolute_difference": 120.0
+    }
+  ],
+  "interpretation_limits": [
+    "Pairwise sensitivity under these fixed settings; not additive contribution percentages to original input difference",
+    "No training-output encoding ground truth; darkening is not correctness",
+    "Four samples per pixel, one deterministic seed; no convergence/noise confidence intervals"
+  ]
+}

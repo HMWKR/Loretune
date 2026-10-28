@@ -1,0 +1,1622 @@
+[
+  {
+    "id": "FR-001",
+    "title": "조직과 계정 분리",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "두 조직에서 같은 IP 이름을 사용해도 검색·다운로드·생성 문맥이 섞이지 않는다.",
+    "negative_acceptance": "다른 조직의 자산 ID를 URL과 API에 직접 넣어도 제목·썸네일·서명 URL을 받지 못한다.",
+    "spec_tests": [
+      "AT-001-A",
+      "AT-001-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-002",
+    "title": "구성원 초대와 세부 권한",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "초대된 외주자는 배정 프로젝트만 보고 담당 샷에만 업로드한다.",
+    "negative_acceptance": "프로듀서 역할만 있고 canon.approve가 없는 사용자가 설정을 승인하면 거부되고 데이터가 변경되지 않는다.",
+    "spec_tests": [
+      "AT-002-A",
+      "AT-002-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-003",
+    "title": "권한 철회와 세션 갱신",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "열린 검토 화면에서 권한이 철회되면 새 댓글·승인·파일 요청이 차단된다.",
+    "negative_acceptance": "철회 전에 얻은 장기 URL이 계속 유효하지 않도록 짧은 URL 만료와 미디어 게이트를 검사한다.",
+    "spec_tests": [
+      "AT-003-A",
+      "AT-003-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-004",
+    "title": "조직 제작 정책",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "조직에서 실존 인물 합성을 막으면 프로젝트의 허용 설정으로 다시 켤 수 없다.",
+    "negative_acceptance": "정책 변경 전 견적을 이용해 금지된 새 작업을 시작하려고 하면 재검증으로 차단된다.",
+    "spec_tests": [
+      "AT-004-A",
+      "AT-004-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-005",
+    "title": "감사 기록과 활동 이력",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "로컬 변경 기록만; 신원·권한 감사 미지원",
+    "acceptance": "어떤 설정과 비용 승인으로 특정 테이크를 생성했는지 요청 ID로 추적된다.",
+    "negative_acceptance": "지원자가 감사 기록을 수정·삭제하려고 하면 불가하고 해당 시도도 기록된다.",
+    "spec_tests": [
+      "AT-005-A",
+      "AT-005-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-006",
+    "title": "계정 탈퇴와 조직 이전",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "소유권을 수락한 사용자에게만 이전되고 기존 소유자의 후속 접근이 정책에 맞게 바뀐다.",
+    "negative_acceptance": "마지막 소유자가 후임 없이 탈퇴하면 차단되고 다른 구성원의 작업은 유지된다.",
+    "spec_tests": [
+      "AT-006-A",
+      "AT-006-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-007",
+    "title": "IP 생성과 최소 등록",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "로컬 다중 IP 생성과 설정 스냅샷 분리; 조직 권한·전체 등록 필드 미지원",
+    "acceptance": "이름과 권한 있는 자료로 시작해 후보 검토를 거쳐 최초 제작 준비를 마친다.",
+    "negative_acceptance": "공식 자료가 없을 때 임의의 멤버 관계가 공식 설정으로 저장되지 않는다.",
+    "spec_tests": [
+      "AT-007-A",
+      "AT-007-B"
+    ],
+    "evidence": [
+      "tests/test_ips.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-008",
+    "title": "멤버와 시각적 정체성",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "동명 멤버가 있는 다른 IP와 참조를 혼합하지 않고 선택한 의상 버전을 사용한다.",
+    "negative_acceptance": "실제 연락처·계약 정보가 프롬프트 문맥이나 외부 공급자 입력으로 전달되지 않는다.",
+    "spec_tests": [
+      "AT-008-A",
+      "AT-008-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-009",
+    "title": "활동기와 캠페인",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "시대 문자열만; 캠페인 엔티티 미지원",
+    "acceptance": "지난 활동기의 붉은 의상 규칙을 종료한 뒤 다음 활동기에 자동 재사용하지 않는다.",
+    "negative_acceptance": "미래 활동기의 설정이 과거 시점 프로젝트에 들어오면 충돌로 표시하고 제외한다.",
+    "spec_tests": [
+      "AT-009-A",
+      "AT-009-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-010",
+    "title": "세계와 분기 관리",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "실험 분기에서 변경한 성격이 본편의 새 기획에 반영되지 않는다.",
+    "negative_acceptance": "같은 사건을 상반되게 정의한 분기를 병합하면 자동 덮어쓰기 없이 충돌 목록을 반환한다.",
+    "spec_tests": [
+      "AT-010-A",
+      "AT-010-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-011",
+    "title": "IP 자산함과 검색",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "현재 작품/IP/작업실·이미지/영상·승인 take 필터; 태그·캐릭터·권한 검색 미지원",
+    "acceptance": "동일 파일을 재업로드하면 기존 파일과 연결할 수 있으며 권리 정보는 별도 확인한다.",
+    "negative_acceptance": "즐겨찾기만 한 미승인 이미지가 승인 자산 전용 선택기에 나타나지 않는다.",
+    "spec_tests": [
+      "AT-011-A",
+      "AT-011-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-012",
+    "title": "프로젝트 간 인계 요약",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "원본 작품의 설정 버전 선택 계승·같은 IP 검증·새 음악/샷/승인 초기화; 자동 인계 요약 미지원",
+    "acceptance": "두 번째 작품 시작 시 재입력 없이 이전 승인 규칙을 확인하고 일부만 제외한다.",
+    "negative_acceptance": "이전 영상의 한 장면에만 적용한 확대 지시가 전체 IP의 영구 취향이 되지 않는다.",
+    "spec_tests": [
+      "AT-012-A",
+      "AT-012-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-013",
+    "title": "파일 업로드와 중단 복구",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "16MB 업로드; 중단 복구 미지원",
+    "acceptance": "중단된 대용량 파일을 이어 올려도 원본 체크섬이 일치하고 자산이 중복 생성되지 않는다.",
+    "negative_acceptance": "실행 파일을 이미지 이름으로 올려도 분석 워커에서 실행되지 않고 격리된다.",
+    "spec_tests": [
+      "AT-013-A",
+      "AT-013-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-014",
+    "title": "문서와 영상에서 정보 추출",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "승인 전에는 추출된 관계가 공식 설정 검색 문맥에 들어가지 않는다.",
+    "negative_acceptance": "문서에 포함된 외부 전송·권한 변경 지시가 실행되거나 도구 호출로 이어지지 않는다.",
+    "spec_tests": [
+      "AT-014-A",
+      "AT-014-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-015",
+    "title": "외부 자료와 링크 가져오기",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "허용된 공개 파일 또는 사용자 승인 연결 파일을 동일한 자료 검토 흐름으로 가져온다.",
+    "negative_acceptance": "허용 URL에서 내부망으로 리다이렉트하면 서버가 요청하지 않고 실패 사유를 반환한다.",
+    "spec_tests": [
+      "AT-015-A",
+      "AT-015-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-016",
+    "title": "사용 권리와 동의 관리",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "권리 진술·해시별 사용 중지/재개 이력·렌더/다운로드 제한; 법적 검증/자동 만료 미지원",
+    "acceptance": "AI 처리 불허 자료는 보관·일반 편집 가능 여부와 외부 생성 전송 가능 여부가 구분된다.",
+    "negative_acceptance": "상업 이용 불가 음원을 포함한 상업 납품이 자동 통과하지 않고 관련 항목을 지목한다.",
+    "spec_tests": [
+      "AT-016-A",
+      "AT-016-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-017",
+    "title": "분석 작업과 수동 보정",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "가사 일부 전사 실패에도 성공 구간을 보존하고 실패 구간만 다시 분석한다.",
+    "negative_acceptance": "수동으로 고친 멤버명이 재분석 후 이전 오인식으로 되돌아가지 않는다.",
+    "spec_tests": [
+      "AT-017-A",
+      "AT-017-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-018",
+    "title": "사용 중지와 삭제 영향 추적",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "사용 중지의 재사용/큐취소/다운로드 전파; 물리 삭제·외부 제공자 삭제 미지원",
+    "acceptance": "권리 철회된 얼굴 참조로 예약된 새 작업이 실행 직전 검증에서 차단된다.",
+    "negative_acceptance": "원본만 지우고 검색 색인·썸네일·임베딩을 남기는 삭제가 완료로 기록되지 않는다.",
+    "spec_tests": [
+      "AT-018-A",
+      "AT-018-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-019",
+    "title": "인물 관계와 사건 모델",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "A가 B의 리더라는 관계를 이름이 비슷한 다른 B와 혼동하지 않는다.",
+    "negative_acceptance": "생성 모델이 제시한 존재하지 않는 사건 ID를 근거로 채택하면 저장이 거부된다.",
+    "spec_tests": [
+      "AT-019-A",
+      "AT-019-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-020",
+    "title": "설정 후보 검토와 승인",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "설정 후보/승인/거절과 근거 저장; 조직 승인 권한 미지원",
+    "acceptance": "뮤비에서 등장한 새 물건이 후보로 저장되고 승인 전 후속 기획의 사실로 사용되지 않는다.",
+    "negative_acceptance": "결과물 승인 API 호출만으로 설정 후보가 승인 상태로 바뀌지 않는다.",
+    "spec_tests": [
+      "AT-020-A",
+      "AT-020-B"
+    ],
+    "evidence": [
+      "tests/test_settings.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-021",
+    "title": "시간과 분기별 사실 적용",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "시대/순서 범위 스냅샷; 날짜·관계 모델 미지원",
+    "acceptance": "탈퇴 전 시점 회상 장면에는 당시 멤버 구성을 적용하고 현재 활동기 장면에는 현재 구성을 적용한다.",
+    "negative_acceptance": "공개 전 설정이 외주자에게 보이는 프롬프트 근거와 검토 링크에 노출되지 않는다.",
+    "spec_tests": [
+      "AT-021-A",
+      "AT-021-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-022",
+    "title": "충돌과 설정 정정",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "정정 버전과 경합 차단·기존 작품 스냅샷 보존; 의미 충돌 자동 탐지 미지원",
+    "acceptance": "눈 색이 두 값으로 승인되면 어느 기준을 쓸지 해결하기 전 해당 인물 샷을 생성하지 않는다.",
+    "negative_acceptance": "정정 후 이미 승인된 과거 영상이 새 내용으로 자동 변경되지 않는다.",
+    "spec_tests": [
+      "AT-022-A",
+      "AT-022-B"
+    ],
+    "evidence": [
+      "tests/test_settings.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-023",
+    "title": "근거 검색과 설명 가능한 문맥",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "각 장면에서 실제 사용한 설정 원문과 버전을 열 수 있고 제외하면 새 문맥 스냅샷이 생성된다.",
+    "negative_acceptance": "낮은 관련도의 오래된 설정이 검색됐다는 이유만으로 필수 규칙을 덮어쓰지 않는다.",
+    "spec_tests": [
+      "AT-023-A",
+      "AT-023-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-024",
+    "title": "설정 영향 분석과 복원",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "정정 대상 버전의 작품 영향 목록; 관계 그래프/일괄 재계획 미지원",
+    "acceptance": "의상 설정 변경 시 해당 의상을 참조한 샷만 재검토 대상으로 표시한다.",
+    "negative_acceptance": "이전 설정으로 복원해도 이미 발생한 과금과 작업 이력은 삭제되거나 재계산되지 않는다.",
+    "spec_tests": [
+      "AT-024-A",
+      "AT-024-B"
+    ],
+    "evidence": [
+      "tests/test_settings.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-025",
+    "title": "스타일 규칙과 예시",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "별도 취향 후보·근거·IP/작품 범위·명시적 승인; 이미지-텍스트 충돌 분석 미지원",
+    "acceptance": "차가운 색감과 느린 카메라를 선호하되 한 프로젝트의 예외를 별도로 지정한다.",
+    "negative_acceptance": "한 번 선택한 밝은 테이크가 전체 IP의 색감 규칙을 즉시 바꾸지 않는다.",
+    "spec_tests": [
+      "AT-025-A",
+      "AT-025-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-026",
+    "title": "피드백을 규칙 후보로 변환",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "원문과 해석을 사람이 입력하는 후보; 자동 의미 추출 미지원",
+    "acceptance": "너무 차갑다는 댓글을 색온도 수정인지 감정 연출인지 검토 후 저장한다.",
+    "negative_acceptance": "예산 때문에 고른 저가 후보가 미적 선호로 학습되지 않는다.",
+    "spec_tests": [
+      "AT-026-A",
+      "AT-026-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-027",
+    "title": "규칙 우선순위와 예외",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "작품 예외 우선·권리/공식설정 변경 없음; 활동기·기한 자동화 미지원",
+    "acceptance": "이번 곡의 빠른 편집 예외가 적용되고 종료 후 기본 느린 편집 취향이 유지된다.",
+    "negative_acceptance": "사용자가 더 예쁘게라는 지시를 해도 비공개 얼굴 참조 전송 제한이 해제되지 않는다.",
+    "spec_tests": [
+      "AT-027-A",
+      "AT-027-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-028",
+    "title": "취향 검토와 되돌리기",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "승인·중지·재활성 이력·새 초안 제외·과거 문맥 보존; 근거철회 자동 전파 미지원",
+    "acceptance": "잘못 저장된 금색 선호를 중지하면 새 기획에서 쓰이지 않고 과거 결과는 유지된다.",
+    "negative_acceptance": "보류된 선호가 내부 캐시 때문에 다음 생성에 다시 주입되지 않는다.",
+    "spec_tests": [
+      "AT-028-A",
+      "AT-028-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-029",
+    "title": "새로운 연출의 탐색",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "세 후보가 단순 색상 복제에 그치지 않고 서로 다른 허용 연출을 제안한다.",
+    "negative_acceptance": "탐색 결과를 한 번 승인해도 전체 IP 스타일이 자동 교체되지 않는다.",
+    "spec_tests": [
+      "AT-029-A",
+      "AT-029-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-030",
+    "title": "기억 효과 비교와 설명",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "세 번째 프로젝트에서 지난 두 번의 피드백 중 무엇이 적용됐는지 원문까지 추적한다.",
+    "negative_acceptance": "단순 파일 재사용만으로 취향 학습 성공으로 집계하지 않는다.",
+    "spec_tests": [
+      "AT-030-A",
+      "AT-030-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-031",
+    "title": "곡 등록과 원본 관리",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "음원 원본 버전/메타·실제 PCM 간이 파형/무음 감지; LUFS·별도 프리뷰 인코딩 미지원",
+    "acceptance": "프리뷰 생성 후에도 원본 음원은 변하지 않고 최종 렌더의 오디오 버전을 확인할 수 있다.",
+    "negative_acceptance": "새 마스터를 올렸다고 이미 승인된 타임라인의 음원이 무음 교체되지 않는다.",
+    "spec_tests": [
+      "AT-031-A",
+      "AT-031-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-032",
+    "title": "곡 구조와 박자 분석",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "음원 구간·구조 수동 확정 버전; 자동 비트/구조 분석 미지원",
+    "acceptance": "템포가 바뀌는 곡에서 구간별 마커를 수정하고 해당 샷 타이밍만 갱신한다.",
+    "negative_acceptance": "신뢰도 낮은 박자 추정이 승인된 컷 위치를 자동 이동시키지 않는다.",
+    "spec_tests": [
+      "AT-032-A",
+      "AT-032-B"
+    ],
+    "evidence": [
+      "tests/test_music.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-033",
+    "title": "가사 정렬과 교정",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "수동 자막 구간 교정·버전; 전사 후보·장면 마커 자동 연동 미지원",
+    "acceptance": "가사 한 줄의 시작을 교정하면 자막과 관련 장면 마커가 새 버전으로 맞춰진다.",
+    "negative_acceptance": "비속어처럼 오인식한 단어를 자동 납품 자막에 확정하지 않는다.",
+    "spec_tests": [
+      "AT-033-A",
+      "AT-033-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-034",
+    "title": "멤버 파트와 등장 계획",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "A의 파트에서 A를 우선 배치하되 승인된 B의 서사 장면 예외를 남긴다.",
+    "negative_acceptance": "자동 화자 추정이 같은 음색의 두 멤버를 공식 멤버 ID로 확정 연결하지 않는다.",
+    "spec_tests": [
+      "AT-034-A",
+      "AT-034-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-035",
+    "title": "음악 구간과 파생 영상",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "음원 시작 오프셋과 타임라인 길이; 파생 관계·페이드 미지원",
+    "acceptance": "동일 곡의 30초 홍보용과 전체곡 버전이 서로의 승인 상태를 덮어쓰지 않는다.",
+    "negative_acceptance": "구간 밖 가사가 자막으로 남거나 이전 타임코드가 그대로 적용되지 않는다.",
+    "spec_tests": [
+      "AT-035-A",
+      "AT-035-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-036",
+    "title": "가사 의미와 연출의 분리",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "나는 별이 된다는 가사를 상징적 연출로 쓰고 인물이 실제로 사망했다는 설정을 만들지 않는다.",
+    "negative_acceptance": "가사 속 1인칭이 반드시 실제 가수의 개인 사실로 저장되지 않는다.",
+    "spec_tests": [
+      "AT-036-A",
+      "AT-036-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-037",
+    "title": "브리프와 제작 모드",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "동일 프로젝트 채팅형/작업대 전환·로컬 줄 단위 초안; AI 기획 미지원",
+    "acceptance": "후속 프로젝트에서 새 곡과 달라진 조건만 입력하고 나머지 적용 내용을 검토한다.",
+    "negative_acceptance": "모바일 검토자가 브리프를 열었다는 이유로 유료 제작이 시작되지 않는다.",
+    "spec_tests": [
+      "AT-037-A",
+      "AT-037-B"
+    ],
+    "evidence": [
+      "tests/test_chat.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-038",
+    "title": "콘셉트 후보와 비교",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "후보별 등장 인물·주요 모티프·곡 구간·필수 자산이 비교된다.",
+    "negative_acceptance": "출처가 없는 멤버 성격을 확정 사실처럼 설명한 후보는 검토 경고로 잡힌다.",
+    "spec_tests": [
+      "AT-038-A",
+      "AT-038-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-039",
+    "title": "곡 구간별 장면 구성",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "채팅 초안→검토→샷 추가·음악 버전 스냅샷; AI 구간별 연출 미지원",
+    "acceptance": "전체 선택 구간을 빈 틈 없이 계획하고 의도적 중첩은 전환으로 명시한다.",
+    "negative_acceptance": "곡 길이보다 긴 장면 합계가 검증 없이 생성 견적으로 넘어가지 않는다.",
+    "spec_tests": [
+      "AT-039-A",
+      "AT-039-B"
+    ],
+    "evidence": [
+      "tests/test_chat.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-040",
+    "title": "스토리보드와 기준 프레임",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "참고 이미지 역할/버전·별도 승인·변경 표시; AI 첫 프레임 생성 미연결",
+    "acceptance": "머리색이 틀린 프레임을 수정한 뒤 승인한 프레임만 해당 샷 생성에 사용한다.",
+    "negative_acceptance": "보류된 프레임이 다른 탭의 오래된 상태 때문에 유료 영상 생성에 전달되지 않는다.",
+    "spec_tests": [
+      "AT-040-A",
+      "AT-040-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-041",
+    "title": "계획 승인과 변경 차이",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "초안 수동 적용·참고 승인·불변 이전 버전; 전체 계획 diff 미지원",
+    "acceptance": "두 사용자가 다른 버전을 보고 승인하면 서로 다른 승인 대상으로 남는다.",
+    "negative_acceptance": "승인된 30초 계획을 180초로 바꿔도 기존 비용 승인으로 실행되지 않는다.",
+    "spec_tests": [
+      "AT-041-A",
+      "AT-041-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-042",
+    "title": "누락 자료와 제작 가능성 검사",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "미선택/자산해시/미디어 검증; 모델·권리 전체 preflight 미지원",
+    "acceptance": "생성 전에 미지원 다인 립싱크와 누락 동의를 표시하고 가능한 대체 장면을 제안한다.",
+    "negative_acceptance": "모델이 지원하지 않는 길이를 임의로 잘라 비용 견적과 다른 결과를 만들지 않는다.",
+    "spec_tests": [
+      "AT-042-A",
+      "AT-042-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-043",
+    "title": "모델 기능 목록과 선택",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "참조 이미지 수 제한을 초과하면 호출 전 줄이거나 다른 지원 모델을 제안한다.",
+    "negative_acceptance": "장애로 더 비싼 모델로 바뀔 때 기존 한도와 동의를 우회하지 않는다.",
+    "spec_tests": [
+      "AT-043-A",
+      "AT-043-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-044",
+    "title": "견적과 예산 예약",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "로컬 렌더 입력/비용범위 확인·만료·입력 해시 검증; 유료 견적/예약원장 미구현",
+    "acceptance": "동시에 두 요청을 해도 조직의 남은 예산 이상을 예약하지 않는다.",
+    "negative_acceptance": "가격이 바뀐 오래된 견적은 추가 동의 없이 더 높은 금액으로 실행되지 않는다.",
+    "spec_tests": [
+      "AT-044-A",
+      "AT-044-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-045",
+    "title": "실행 스냅샷과 재현 정보",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "렌더 실행 스냅샷; 외부 모델 호출 재현 정보 없음",
+    "acceptance": "과거 테이크에서 실제 사용한 의상·기획·가격 버전을 확인할 수 있다.",
+    "negative_acceptance": "생성 중 IP 프로필 변경이 진행 중 작업의 스냅샷을 바꾸지 않는다.",
+    "spec_tests": [
+      "AT-045-A",
+      "AT-045-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-046",
+    "title": "샷별 후보 생성",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "샷별 첫 결과와 후보별 비용·소요 시간을 비교하고 하나를 선택할 수 있다.",
+    "negative_acceptance": "세 후보 모두 불합격이면 무한 재생성하지 않고 조건 수정·다른 모드·수동 제작 선택을 제공한다.",
+    "spec_tests": [
+      "AT-046-A",
+      "AT-046-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-047",
+    "title": "승인 자산 합성 제작",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "기존 자산 컷 합성; 보호 레이어/복합 합성 미지원",
+    "acceptance": "원본 캐릭터의 눈·로고를 재생성하지 않고 허용된 이동과 배경 효과만 적용한다.",
+    "negative_acceptance": "보호 레이어가 생성 이미지에 의해 덮어써지지 않고 최종 렌더에도 유지된다.",
+    "spec_tests": [
+      "AT-047-A",
+      "AT-047-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-048",
+    "title": "생성 결과의 품질 검사",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "기술적으로 재생 불가한 테이크는 편집 채택이 차단되고 올바른 재생 파일로 교체한다.",
+    "negative_acceptance": "얼굴 유사도 점수가 높아도 잘못된 의상·인원수에 대한 사람의 반려가 무시되지 않는다.",
+    "spec_tests": [
+      "AT-048-A",
+      "AT-048-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-049",
+    "title": "작업 진행과 상태 복원",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "로컬 렌더 작업 상태·진행·재시작 중단 복원; 공급자 상태 미지원",
+    "acceptance": "새로고침과 다른 기기 접속 후 동일 작업 ID와 비용 상태를 확인한다.",
+    "negative_acceptance": "브라우저 연결 끊김을 작업 실패로 간주해 새 유료 요청을 만들지 않는다.",
+    "spec_tests": [
+      "AT-049-A",
+      "AT-049-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-050",
+    "title": "안전한 재시도와 중복 방지",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "서버 idempotency와 브라우저 원래 요청 복구·유실 재조회; 외부 provider 중복 미검증",
+    "acceptance": "동일 버튼 요청이 여러 번 도착해도 내부 작업과 비용 예약이 하나다.",
+    "negative_acceptance": "같은 멱등 키에 다른 입력을 보내면 충돌로 거부하고 기존 결과를 새 요청 결과로 가장하지 않는다.",
+    "spec_tests": [
+      "AT-050-A",
+      "AT-050-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-051",
+    "title": "취소와 일부 완료 보존",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "로컬 렌더 취소·부분 클립 보존; 공급자 취소/비용 미지원",
+    "acceptance": "10개 중 4개 완료 때 취소하면 4개 결과를 보존하고 미전송분 예약만 해제한다.",
+    "negative_acceptance": "취소 후 늦게 도착한 완료 콜백으로 프로젝트가 무단 재개되거나 비용이 두 번 기록되지 않는다.",
+    "spec_tests": [
+      "AT-051-A",
+      "AT-051-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-052",
+    "title": "오류 분류와 복구 안내",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "입력/디코딩/충돌/작업 실패 안내; 공급자 분류 미지원",
+    "acceptance": "음원 길이 초과는 구간 수정으로, 공급자 장애는 대기 또는 허용 대체 경로로 안내한다.",
+    "negative_acceptance": "과금 미확정 작업에 단순 다시 시도 버튼만 보여 이중 결제를 유도하지 않는다.",
+    "spec_tests": [
+      "AT-052-A",
+      "AT-052-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-053",
+    "title": "부분 재생성과 의존성 유지",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "새 take 연결로 비파괴 부분 수정; AI 재생성 미지원",
+    "acceptance": "12개 샷 중 3번의 의상만 고치면 다른 11개 테이크 ID와 승인 이력이 유지된다.",
+    "negative_acceptance": "샷 길이가 달라져 뒤 가사가 밀리는 경우 자동 반영하지 않고 타이밍 재검토로 막는다.",
+    "spec_tests": [
+      "AT-053-A",
+      "AT-053-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-054",
+    "title": "큐 우선순위와 공급자 장애",
+    "gate": "G2",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "공급자 장애 후 복구해도 미확정 요청을 먼저 조정하고 새 요청을 제한적으로 재개한다.",
+    "negative_acceptance": "워커가 죽고 작업을 회수한 뒤 기존 공급자 작업을 확인하지 않고 중복 제출하지 않는다.",
+    "spec_tests": [
+      "AT-054-A",
+      "AT-054-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-055",
+    "title": "타임라인 조립과 수동 편집",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "순서·트림·길이·타임라인 버전 복원; 전환/자동 초안 미지원",
+    "acceptance": "타임라인 순서를 바꿔도 원본 테이크와 이전 버전으로 되돌릴 수 있다.",
+    "negative_acceptance": "미리보기에서 보인 테이크와 최종 렌더에서 사용한 테이크가 달라지지 않는다.",
+    "spec_tests": [
+      "AT-055-A",
+      "AT-055-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-056",
+    "title": "음원과 영상 동기화",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "원곡 믹스·클립 음소거·24fps/48kHz; 정량 동기화 마커 평가 미완료",
+    "acceptance": "샘플 마커에서 목표 허용 오차 안의 동기화를 확인하고 결과를 기록한다.",
+    "negative_acceptance": "공급자 클립 배경음이 원곡과 겹쳐 최종 음질을 훼손하지 않도록 트랙 상태를 검사한다.",
+    "spec_tests": [
+      "AT-056-A",
+      "AT-056-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-057",
+    "title": "가사와 타이포그래피",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "수동 확정 자막·SRT·MP4 자막 트랙; 폰트/세로 안전영역 미검증",
+    "acceptance": "확정 가사와 자막 내보내기 내용이 일치하고 세로 화면에서도 잘리지 않는다.",
+    "negative_acceptance": "고객이 고친 가사가 자동 전사 원문으로 되돌아가 출력되지 않는다.",
+    "spec_tests": [
+      "AT-057-A",
+      "AT-057-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-058",
+    "title": "가로 세로 파생 편집",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "16대9와 9대16 버전이 같은 원본 타임라인 계보를 가지면서 각자 승인된다.",
+    "negative_acceptance": "세로 크롭으로 두 멤버 중 한 명이 사라지면 검토 항목으로 드러난다.",
+    "spec_tests": [
+      "AT-058-A",
+      "AT-058-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-059",
+    "title": "테이크와 버전 비교",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "여러 take 보존·선택; 차이 분석 미지원",
+    "acceptance": "의상만 변경된 새 테이크와 이전 테이크를 같은 시점에 보고 선택할 수 있다.",
+    "negative_acceptance": "새 후보를 열어보기만 했는데 기존 채택 테이크가 바뀌지 않는다.",
+    "spec_tests": [
+      "AT-059-A",
+      "AT-059-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-060",
+    "title": "자동 저장과 동시 편집",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "SQLite 저장·전역 revision 충돌; 필드별 autosave/공동편집 미지원",
+    "acceptance": "두 사용자가 같은 클립을 바꾸면 마지막 저장으로 조용히 덮어쓰지 않는다.",
+    "negative_acceptance": "기기 종료 직전 미저장 상태를 저장 완료라고 표시하지 않는다.",
+    "spec_tests": [
+      "AT-060-A",
+      "AT-060-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-061",
+    "title": "검토 링크와 모바일 접근",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "아티스트가 휴대폰에서 영상을 보고 타임코드 댓글을 남길 수 있다.",
+    "negative_acceptance": "검토 링크 소지자가 유료 생성·전체 IP 자료·다른 버전 다운로드에 접근하지 못한다.",
+    "spec_tests": [
+      "AT-061-A",
+      "AT-061-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-062",
+    "title": "타임코드 댓글과 수정 요청",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "타임코드 댓글·해결; 계정 권한/멘션 미지원",
+    "acceptance": "12초의 얼굴 수정 요청이 해당 샷과 연결되고 수정 테이크에서 해결 여부를 확인한다.",
+    "negative_acceptance": "다른 버전의 같은 타임코드 댓글을 현재 장면의 승인 의견으로 오인하지 않는다.",
+    "spec_tests": [
+      "AT-062-A",
+      "AT-062-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-063",
+    "title": "기획 샷 최종본 승인 단계",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "로컬 최종 타임라인 승인; 지정 승인자·다단계 권한 미지원",
+    "acceptance": "최종본은 정해진 승인자 모두가 같은 버전을 승인해야 납품 가능해진다.",
+    "negative_acceptance": "댓글 해결이나 좋아요가 최종 승인으로 간주되지 않는다.",
+    "spec_tests": [
+      "AT-063-A",
+      "AT-063-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-064",
+    "title": "외주 작업 배정과 회수",
+    "gate": "G2",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "담당 샷의 원본·가이드만 내려받고 제출한 새 버전이 기존 승인본을 보존한다.",
+    "negative_acceptance": "외주 권한이 회수되면 기존 브라우저 탭의 새 다운로드도 차단된다.",
+    "spec_tests": [
+      "AT-064-A",
+      "AT-064-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-065",
+    "title": "알림과 변경 요약",
+    "gate": "G2",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "승인자가 필요한 버전과 변경점으로 바로 이동한다.",
+    "negative_acceptance": "공급자 콜백 중복 때문에 같은 완료 알림이 여러 번 발송되지 않는다.",
+    "spec_tests": [
+      "AT-065-A",
+      "AT-065-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-066",
+    "title": "승인 이력과 책임 인계",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "새 프로듀서가 이전 결정과 미해결 수정 요청을 보고 이어서 작업한다.",
+    "negative_acceptance": "승인자 계정 삭제가 작품의 승인 이력을 제거하지 않도록 최소 기록을 보존한다.",
+    "spec_tests": [
+      "AT-066-A",
+      "AT-066-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-067",
+    "title": "출력 규격과 렌더",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "640/1080/세로 출력과 오디오·자막; 프로덕션 프리셋 품질평가 미완료",
+    "acceptance": "출력 파일의 길이·해상도·FPS·음원·자막이 승인 사양과 일치한다.",
+    "negative_acceptance": "720p를 확대했을 뿐인 영상을 원래 4K 생성물이라고 표시하지 않는다.",
+    "spec_tests": [
+      "AT-067-A",
+      "AT-067-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-068",
+    "title": "납품 전 검사와 승인 잠금",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "스냅샷·파일해시 검증; 다중 승인자 납품 잠금 미지원",
+    "acceptance": "검토한 출력 파일 해시와 다운로드할 파일 해시가 같다.",
+    "negative_acceptance": "승인 후 렌더 파일이 바뀌면 기존 승인을 재사용할 수 없다.",
+    "spec_tests": [
+      "AT-068-A",
+      "AT-068-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-069",
+    "title": "납품 파일과 제작 기록",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "렌더 기록·파일·SRT; 권한 기반 납품 묶음 미지원",
+    "acceptance": "어떤 모델·참조·타임라인·음원이 사용됐는지 납품 기록으로 추적된다.",
+    "negative_acceptance": "내보내기 묶음에 다른 IP의 원본이나 외부 공급자 인증 정보가 포함되지 않는다.",
+    "spec_tests": [
+      "AT-069-A",
+      "AT-069-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-070",
+    "title": "외부 공개와 예약 게시",
+    "gate": "G3",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "예약 시점에도 승인·권리·채널 권한을 확인한 같은 버전만 게시한다.",
+    "negative_acceptance": "검토 승인이나 내보내기만으로 공개 채널에 자동 게시되지 않는다.",
+    "spec_tests": [
+      "AT-070-A",
+      "AT-070-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-071",
+    "title": "아카이브와 복제",
+    "gate": "G2",
+    "status": "부분구현",
+    "scope": "작품 보관/해제·진행렌더중 보관거부·선택 샷구성 복제; 원본/승인/예산미계승·기한자동화미지원",
+    "acceptance": "지난 프로젝트의 구성은 재사용하면서 새 곡과 새 견적을 가진 별도 프로젝트가 생성된다.",
+    "negative_acceptance": "복제된 프로젝트가 이전 승인·결제 동의를 자동 승계하지 않는다.",
+    "spec_tests": [
+      "AT-071-A",
+      "AT-071-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-072",
+    "title": "프로젝트 마감과 설정 후보",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "새 장면의 소품은 자산함에는 남고, 공식 설정 포함 여부는 별도 선택한다.",
+    "negative_acceptance": "초안에서만 등장했다가 삭제된 사건을 완성본의 공식 서사로 저장하지 않는다.",
+    "spec_tests": [
+      "AT-072-A",
+      "AT-072-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-073",
+    "title": "제작 시간과 비용 계측",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "3개 프로젝트의 준비 시간과 최종 승인까지의 비용을 같은 정의로 비교한다.",
+    "negative_acceptance": "중도 포기 프로젝트를 성공률과 원가 집계에서 빼지 않는다.",
+    "spec_tests": [
+      "AT-073-A",
+      "AT-073-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-074",
+    "title": "팀 정체성 평가",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "동일 모델·예산의 기준 도구 결과와 제품 결과를 출처를 숨겨 비교한다.",
+    "negative_acceptance": "평가 화면의 제품명·순서·작업자 설명 때문에 실험 조건이 드러나지 않도록 검사한다.",
+    "spec_tests": [
+      "AT-074-A",
+      "AT-074-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-075",
+    "title": "반복 프로젝트와 유지율",
+    "gate": "G2",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "유료 팀이 다음 곡에서도 자체적으로 사용했는지 구분할 수 있다.",
+    "negative_acceptance": "무료로 대신 제작해준 팀을 자립적 유료 재사용으로 집계하지 않는다.",
+    "spec_tests": [
+      "AT-075-A",
+      "AT-075-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-076",
+    "title": "오류 수정의 다음 작품 반영",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "지난 작품에서 승인된 왼쪽 눈 색 교정이 다음 계획·참조에서 유지된다.",
+    "negative_acceptance": "참조는 올바르나 영상이 틀린 경우 온톨로지 저장 성공만으로 문제 해결 처리하지 않는다.",
+    "spec_tests": [
+      "AT-076-A",
+      "AT-076-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-077",
+    "title": "벤치마크와 모델 변경 검증",
+    "gate": "G2",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "모델 변경 후 품질·비용·지연·필수 오류가 기준 안일 때만 단계 배포한다.",
+    "negative_acceptance": "더 싼 모델이 얼굴 유지 기준에 미달하면 기존 고객에게 무음 전환하지 않는다.",
+    "spec_tests": [
+      "AT-077-A",
+      "AT-077-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-078",
+    "title": "고객별 학습 설정과 내보내기",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "고객이 공식 설정·선호·출처 관계를 JSON으로 내려받아 검토할 수 있다.",
+    "negative_acceptance": "학습 중지 이후 새 이벤트가 해당 학습 처리에 계속 들어가지 않는다.",
+    "spec_tests": [
+      "AT-078-A",
+      "AT-078-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-079",
+    "title": "플랜과 사용 권한",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "요금 화면에서 월 고정액과 이번 달 생성 확정·예약액을 구분한다. 해지해도 약정된 이용 기간과 자료 회수 경로가 유지되며 다음 갱신이 멈춘다.",
+    "negative_acceptance": "저가 플랜 변경이 이미 지급한 생성비를 사라지게 하거나 이중 청구하지 않는다. 중복 해지가 이중 환불이나 남은 이용 기간 삭제를 만들지 않는다.",
+    "spec_tests": [
+      "AT-079-A",
+      "AT-079-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-080",
+    "title": "조직과 프로젝트 한도",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "잔여 예산보다 큰 배치가 들어오면 가능한 일부 실행을 제안하되 자동 축소 실행하지 않는다.",
+    "negative_acceptance": "서로 다른 프로젝트가 동시에 실행돼도 조직 총한도를 넘지 않는다.",
+    "spec_tests": [
+      "AT-080-A",
+      "AT-080-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-081",
+    "title": "원장과 공급자 비용 조정",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "각 생성의 고객 사용량과 공급자 비용을 추적하고 불일치를 운영 사건으로 만든다.",
+    "negative_acceptance": "중복 콜백이나 청구 파일 재수신으로 확정 금액이 두 번 더해지지 않는다.",
+    "spec_tests": [
+      "AT-081-A",
+      "AT-081-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-082",
+    "title": "실패 과금과 환불 기준",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "사용자는 실패 작업의 청구 상태와 이의제기 경로를 확인한다.",
+    "negative_acceptance": "취소 버튼을 누른 것만으로 아직 확정되지 않은 공급자 비용을 전액 환불 완료로 표시하지 않는다.",
+    "spec_tests": [
+      "AT-082-A",
+      "AT-082-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-083",
+    "title": "사용량 내역과 비용 보고",
+    "gate": "G2",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "선택된 최종 영상뿐 아니라 폐기한 후보를 포함한 실제 프로젝트 원가를 확인한다.",
+    "negative_acceptance": "외주자는 자신의 배정 비용만 허용된 경우에 보고 조직 전체 매출·청구를 보지 못한다.",
+    "spec_tests": [
+      "AT-083-A",
+      "AT-083-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-084",
+    "title": "결제 실패와 제한 해제",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "실패한 결제를 해결한 뒤 중복 프로젝트 없이 새 생성 권한이 복원된다.",
+    "negative_acceptance": "반복된 결제 웹훅이 좌석이나 크레딧을 중복 지급하지 않는다.",
+    "spec_tests": [
+      "AT-084-A",
+      "AT-084-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-085",
+    "title": "지원 사건과 임시 접근",
+    "gate": "G1",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "지원자는 특정 작업 오류를 확인하고 필요한 조정만 수행한다.",
+    "negative_acceptance": "지원 만료 후 원본 미디어나 고객 전체 IP 검색이 되지 않는다.",
+    "spec_tests": [
+      "AT-085-A",
+      "AT-085-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-086",
+    "title": "입력 안전과 사용 정책",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "localhost 경계·입력 제한·미디어 디코딩; 악성파일 격리/정책 이의 미지원",
+    "acceptance": "문서에 포함된 권한 해제 문구가 실행 정책으로 해석되지 않는다.",
+    "negative_acceptance": "생성 요청 텍스트를 통해 시스템 도구·테넌트·결제 권한을 변경하지 못한다.",
+    "spec_tests": [
+      "AT-086-A",
+      "AT-086-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-087",
+    "title": "보관과 완전 삭제 처리",
+    "gate": "G1",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "삭제 후 검색·직접 URL·미리보기·복원 환경에서 새 접근이 막힌다.",
+    "negative_acceptance": "DB 행만 삭제하고 객체 저장소와 임베딩이 남아 있는데 완료로 표시하지 않는다.",
+    "spec_tests": [
+      "AT-087-A",
+      "AT-087-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-088",
+    "title": "관측과 장애 대응",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "작업 상태·오류 기록; 운영 경보/SLO 미지원",
+    "acceptance": "공급자 지연과 자체 큐 지연을 분리해 원인을 파악한다.",
+    "negative_acceptance": "성공 HTTP 응답만 집계해 실제 렌더 실패가 정상으로 보이지 않는다.",
+    "spec_tests": [
+      "AT-088-A",
+      "AT-088-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-089",
+    "title": "백업과 재해 복구",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "실제 로컬 데이터 백업·새경로 복원과 모든 자산 해시 확인; 운영 RPO/RTO·암호화 미검증",
+    "acceptance": "복원 환경에서 승인본과 원장 합계가 지정 복구 지점에 맞게 재현된다.",
+    "negative_acceptance": "복구 후 예전 공급자 작업을 새 유료 작업으로 중복 제출하지 않는다.",
+    "spec_tests": [
+      "AT-089-A",
+      "AT-089-B"
+    ],
+    "evidence": [
+      "tests/test_backup.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-090",
+    "title": "배포와 변경 관리",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "기존 프로젝트 기본값 호환; 배포/rollback 검증 미지원",
+    "acceptance": "버전 변경 후 이전 프로젝트를 열고 내보내는 호환 경로가 유지된다.",
+    "negative_acceptance": "롤백이 현재 실행 중인 작업의 상태·비용을 잃게 만들지 않는다.",
+    "spec_tests": [
+      "AT-090-A",
+      "AT-090-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-091",
+    "title": "제작 템플릿과 반복 배치",
+    "gate": "G3",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "같은 형식의 티저 여러 개를 만들되 각 IP 참조와 비용 원장이 분리된다.",
+    "negative_acceptance": "다른 IP용 템플릿에 남은 인물 이름과 참조가 새 IP로 누출되지 않는다.",
+    "spec_tests": [
+      "AT-091-A",
+      "AT-091-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-092",
+    "title": "외부 제작 도구와 편집 교환",
+    "gate": "G3",
+    "status": "미구현",
+    "scope": "구현 및 수용 테스트 없음",
+    "acceptance": "외부 편집 후 받은 최종 파일을 새 테이크·버전으로 연결하고 기존 계보를 보존한다.",
+    "negative_acceptance": "지원되지 않는 효과가 조용히 사라진 교환 결과를 동일 편집이라고 표시하지 않는다.",
+    "spec_tests": [
+      "AT-092-A",
+      "AT-092-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-093",
+    "title": "연동 API와 웹훅",
+    "gate": "G3",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "외부 자동화가 승인된 범위에서 상태를 조회하고 지정 이벤트를 받는다.",
+    "negative_acceptance": "폐기된 키와 위조 웹훅으로 생성·승인·원장 변경을 할 수 없다.",
+    "spec_tests": [
+      "AT-093-A",
+      "AT-093-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-094",
+    "title": "기업 인증과 정책 관리",
+    "gate": "G3",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "기업 계정 비활성화가 서비스의 새 접근 권한에도 반영된다.",
+    "negative_acceptance": "SSO 이메일 일치만으로 서로 다른 조직의 계정을 자동 통합하지 않는다.",
+    "spec_tests": [
+      "AT-094-A",
+      "AT-094-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-095",
+    "title": "다국어와 접근성",
+    "gate": "G1",
+    "status": "부분구현",
+    "scope": "한국어 label/focus/반응형; 다국어/보조기술 전체 검증 미완료",
+    "acceptance": "키보드로 주요 생성·검토·취소 흐름을 완료하고 현지 시간과 UTC를 구분한다.",
+    "negative_acceptance": "일본어 긴 이름과 200% 확대에서 승인 버튼·비용 정보가 잘려 접근 불가해지지 않는다.",
+    "spec_tests": [
+      "AT-095-A",
+      "AT-095-B"
+    ],
+    "evidence": [
+      "tests/test_workflow.py",
+      "tests/test_app.py",
+      "tests/test_editing.py"
+    ],
+    "full_acceptance_verified": false
+  },
+  {
+    "id": "FR-096",
+    "title": "고급 인물과 퍼포먼스 제작",
+    "gate": "G3",
+    "status": "외부 승인 필요",
+    "scope": "외부 연동/운영 승인과 로컬 구현 모두 필요",
+    "acceptance": "한 명의 지원 조건부터 품질·권리·원가 기준을 통과한 후 인원과 길이를 확장한다.",
+    "negative_acceptance": "한 명 성공 사례로 다섯 명의 동시 안무와 얼굴 유지가 검증됐다고 간주하지 않는다.",
+    "spec_tests": [
+      "AT-096-A",
+      "AT-096-B"
+    ],
+    "evidence": [],
+    "full_acceptance_verified": false
+  }
+]

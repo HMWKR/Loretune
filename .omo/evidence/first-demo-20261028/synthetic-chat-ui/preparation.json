@@ -1,0 +1,136 @@
+{
+  "status": "READY FOR ROOT INVOCATION ONLY AFTER MAIN RECORDING AND OLD SERVER STOP",
+  "recorded_at": "2026-10-28T03:15:32.079980+00:00",
+  "product_source_modified": false,
+  "existing_main_data_accessed": false,
+  "existing_main_server_accessed": false,
+  "actual_ui_recording_performed": false,
+  "invoke_argv": [
+    "python3",
+    "/Users/leesungmin/Desktop/Loretune/.omo/evidence/first-demo-20261028/synthetic-chat-ui/serve_synthetic_chat.py",
+    "serve",
+    "--data",
+    "<root-confirmed current completed case data folder>",
+    "--evidence",
+    "<new synthetic-chat-ui/run folder>",
+    "--song",
+    "<exact existing project name>",
+    "--expected-workspace-id",
+    "<matching workspace UUID from root main start receipt>",
+    "--port",
+    "<root-selected app port; old server must already be stopped>",
+    "--expected-timeline",
+    "3",
+    "--expected-motion",
+    "2",
+    "--authorize-existing-data-after-main-stop",
+    "--seed-rehearsal-budget"
+  ],
+  "future_data_access": "No target path is hardcoded. Only explicit CLI invocation with both flags permits opening existing data; occupied port is rejected. Current workspace UUID and target timeline must match before opening production server.",
+  "root_start_conditions": [
+    "Main continuous recording completed and preserved; root stops old server before invocation",
+    "Existing exact target project has timeline3 with clip0 overlay source matching approved immutable motion2 and nonempty captions",
+    "No unfinished local jobs or general/legacy chat turns",
+    "Source2/photo/audio/timeline1-3/prior outputs are retained; source and data hashes captured before server initialization",
+    "UI select Haiku high/review then explicitly save FullAccess before preparing the new transmission"
+  ],
+  "fixture_transport": {
+    "type": "production app.server with LiveTransport(test_only=True) and exact LoopbackTransport count/message adapters",
+    "mode": "contract-live-test",
+    "workers": "production app.start_workers: render1/generation1/general-chat2",
+    "route": "actual local HTTP /count_tokens and /messages only",
+    "real_provider_calls": 0,
+    "real_credentials_read": 0,
+    "real_billing_calls": 0,
+    "synthetic_credential": "constant fake string returned in memory8times; no secret lookup",
+    "isolation": "child environment retains only PATH/HOME/TMPDIR/LANG/LC_ALL values; no .env or activation config loaded; Python socket/connect and DNS nonloopback denied by runtime audit hook"
+  },
+  "budget": {
+    "authorization": "root expressly allowed this one synthetic fixture scope at future invocation only",
+    "scope": "rehearsal-live:project:<derived exact project UUID>",
+    "limit_USD": "0.04",
+    "maxConcurrentJobs": 4,
+    "allowAutomaticRetries": false,
+    "update": "production ledger.patch_budget with exact observed scope revision under BEGIN IMMEDIATE; other budget scopes unchanged",
+    "UI_gap": "current project budget UI/PATCH supports project/month and cannot configure rehearsal-live scope; fixture seed is disclosed setup, not UI-budget completion or real spend approval"
+  },
+  "user_prompt": "현재 작업을 확인하고 사진 위 타이포 위치와 마지막 자막을 바꿔줘",
+  "four_responses": [
+    {
+      "round": 1,
+      "tool": "search_project_context",
+      "query": "work-status"
+    },
+    {
+      "round": 2,
+      "tool": "search_project_context",
+      "query": "current timeline overlay and approved immutable motion sources",
+      "condition": "status tool succeeded and returned current-project-current-conversation work status"
+    },
+    {
+      "round": 3,
+      "tool": "propose_timeline_changes",
+      "condition": "actual fresh lookup proves saved timeline3, clip0 overlay source and recorded immutable motion2, and existing last caption",
+      "operations": [
+        "set_motion_overlay",
+        "set_captions"
+      ]
+    },
+    {
+      "round": 4,
+      "public_answer": "explicit synthetic prefix; only report actual new draft saved when actual tool receipt applied_draft/agent-draft/version4/output_approvedfalse; otherwise state failure"
+    }
+  ],
+  "changes": {
+    "overlay": "source motion2, clip0; x+240/y+120 logicalpx (reverse sign only at boundary); start0.25 unless already0.25 then0.5; end=min(start+2, clip duration, source duration+start)",
+    "captions": "preserve every cue time and prior cues; only replace last cue text with 음악의 여운을 이어서",
+    "human_choices": "FullAccess mode and each of4 exact transmission manifests must be approved through actual UI; no tool/DB mutation substitutes for UI edit success",
+    "after_edit": "new unapproved actor-agent-draft timeline4; UI saved preview, separate final output approval, production local render/download/reopen remain root tasks"
+  },
+  "evidence": {
+    "privacy": "no credential values, raw request bodies or caption/source text logged; safe request IDs, names, field lists, source/version/offset metadata and hashes only",
+    "files": [
+      "start.json",
+      "data-before.json",
+      "source-current.json",
+      "fixture-budget.json",
+      "ui-actions.jsonl",
+      "ui-observed-state.jsonl",
+      "synthetic-wire.jsonl",
+      "fixture-decisions.jsonl",
+      "data-after.json",
+      "stop.json"
+    ],
+    "transcript_distinction": "Tool arguments constructed deterministically from actual tool receipts. Not real Claude reasoning, visual understanding or model-quality validation."
+  },
+  "probe": {
+    "status": "PASS on entirely new temporary fixture data; not a UI recording",
+    "HTTP_and_wire": "4message+4count actual localhost deliveries; 4 explicit programmatic transmission consent actions; 2 separate lookup results then typed edit and conditional reply",
+    "workflow": "timeline3 remains unchanged before edit; timeline4 unapproved agent-draft; render denied before human final approval; actual render/download/SHA/decode/reopen PASS",
+    "preservation": {
+      "original_timeline_versions_preserved": true,
+      "original_shots_and_motion_sources_preserved": true,
+      "original_audio_versions_preserved": true,
+      "final_timeline_head": 4
+    },
+    "actual_external_attempts": [],
+    "product_source_changes_during_probe": [],
+    "summary": "own-temp-probe.json",
+    "run_receipts": "own-temp-run-evidence/",
+    "output": "own-temp-probe-output.mp4",
+    "output_sha256": "f90f6f0712f179679b1901b8e0df63bb7057f82252aa243b0328d20706b69092",
+    "command": "python3 .omo/evidence/first-demo-20261028/synthetic-chat-ui/probe_own_temporary_case.py",
+    "log": "own-temp-probe-final.log",
+    "attempt1": "probe client queried before child startup; connection refused; corrected probe readiness wait only. Main data never accessed.",
+    "attempt2": "PASS before extra expected-workspace/source guard, final probe PASS after guards"
+  },
+  "limits": [
+    "One designated logical request per fixture server; do not claim generic AI understanding or real model success",
+    "No actual main-case UI execution has occurred in this child; root invocation/recording still pending",
+    "Real token fit/count/model/account/price/billing are unverified; usage100/100 and estimates synthetic",
+    "No AI video model or external editing app used; source2 authoring already existing, fixture only adjusts placement and existing caption",
+    "If a guard fails, stop and inspect; no automatic retry, privilege/approval bypass or data rewriting"
+  ],
+  "harness_sha256": "042ea2619b685d5d4041b384cb68d2c7b744ea84007a622a1d0fba9a34630d29",
+  "probe_sha256": "ef1074d6511757bfdecb270200861ca3d04b0dc56272063ee7585ed920e2c4b0"
+}

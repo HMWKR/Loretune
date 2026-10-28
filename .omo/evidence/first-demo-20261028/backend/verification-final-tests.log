@@ -1,0 +1,202 @@
+test_actual_http_preview_transparency_timing_positions_render_and_reopen (tests.test_motion_overlay.MotionOverlayTest.test_actual_http_preview_transparency_timing_positions_render_and_reopen) ... 127.0.0.1 - - [28/Oct/2026 09:27:34] "GET /api/timeline-frame?song=song&timeline_revision=1&clip_index=0&frame=14 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:27:36] "GET /api/timeline-frame?song=song&timeline_revision=1&clip_index=0&frame=24 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:27:39] "GET /api/timeline-frame?song=song&timeline_revision=1&clip_index=0&frame=51 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:27:41] "GET /api/timeline-frame?song=song&timeline_revision=1&clip_index=0&frame=24 HTTP/1.1" 409 -
+ok
+test_actual_video_overlay_position_and_clip_clock (tests.test_motion_overlay.MotionOverlayTest.test_actual_video_overlay_position_and_clip_clock) ... ok
+test_editing_placement_requires_fresh_approval_and_preserves_old_snapshot (tests.test_motion_overlay.MotionOverlayTest.test_editing_placement_requires_fresh_approval_and_preserves_old_snapshot) ... ok
+test_font_change_rejected_at_approval_and_render_resolution (tests.test_motion_overlay.MotionOverlayTest.test_font_change_rejected_at_approval_and_render_resolution) ... ok
+test_immutable_source_survives_new_head_context_and_conversation (tests.test_motion_overlay.MotionOverlayTest.test_immutable_source_survives_new_head_context_and_conversation) ... ok
+test_invalid_source_time_offsets_and_untrusted_fields_roll_back (tests.test_motion_overlay.MotionOverlayTest.test_invalid_source_time_offsets_and_untrusted_fields_roll_back) ... ok
+test_null_normalizes_to_absence_without_changing_legacy_clip (tests.test_motion_overlay.MotionOverlayTest.test_null_normalizes_to_absence_without_changing_legacy_clip) ... ok
+test_original_duration_and_approval_hash_are_enforced (tests.test_motion_overlay.MotionOverlayTest.test_original_duration_and_approval_hash_are_enforced) ... ok
+test_preview_busy_stale_bad_frame_and_blocked_rights_do_not_create_jobs (tests.test_motion_overlay.MotionOverlayTest.test_preview_busy_stale_bad_frame_and_blocked_rights_do_not_create_jobs) ... ok
+test_snapshot_sidecar_rejects_missing_or_different_composition (tests.test_motion_overlay.MotionOverlayTest.test_snapshot_sidecar_rejects_missing_or_different_composition) ... ok
+test_asset_stop_propagates_to_queue_and_reuse (tests.test_editing.EditingTest.test_asset_stop_propagates_to_queue_and_reuse) ... ok
+test_audio_captions_and_actual_render (tests.test_editing.EditingTest.test_audio_captions_and_actual_render) ... ok
+test_bad_captions_and_trim (tests.test_editing.EditingTest.test_bad_captions_and_trim) ... ok
+test_cancel_queued_and_recover_running (tests.test_editing.EditingTest.test_cancel_queued_and_recover_running) ... ok
+test_caption_rejects_characters_that_cannot_be_exported (tests.test_editing.EditingTest.test_caption_rejects_characters_that_cannot_be_exported) ... ok
+test_changed_asset_fails_job (tests.test_editing.EditingTest.test_changed_asset_fails_job) ... ok
+test_comments_block_approval (tests.test_editing.EditingTest.test_comments_block_approval) ... ok
+test_frozen_job_survives_new_edit (tests.test_editing.EditingTest.test_frozen_job_survives_new_edit) ... ok
+test_generation_preparation_requires_approved_frame_and_never_dispatches (tests.test_editing.EditingTest.test_generation_preparation_requires_approved_frame_and_never_dispatches) ... ok
+test_generation_runtime_fake_end_to_end_and_live_gate (tests.test_editing.EditingTest.test_generation_runtime_fake_end_to_end_and_live_gate) ... ok
+test_invalid_media_and_rights (tests.test_editing.EditingTest.test_invalid_media_and_rights) ... ok
+test_music_32_to_47_second_offset (tests.test_editing.EditingTest.test_music_32_to_47_second_offset) ... ok
+test_music_range_and_audio_version_remain_a_pair (tests.test_editing.EditingTest.test_music_range_and_audio_version_remain_a_pair) ... ok
+test_preflight_readiness_and_short_audio_warning (tests.test_editing.EditingTest.test_preflight_readiness_and_short_audio_warning) ... ok
+test_reference_api_validates_rights_and_preserves_output_inputs (tests.test_editing.EditingTest.test_reference_api_validates_rights_and_preserves_output_inputs) ... ok
+test_render_estimate_stale_expiry_and_duplicate_confirmation (tests.test_editing.EditingTest.test_render_estimate_stale_expiry_and_duplicate_confirmation) ... ok
+test_reuse_does_not_copy_review_or_mutate_source (tests.test_editing.EditingTest.test_reuse_does_not_copy_review_or_mutate_source) ... ok
+test_running_cancel_keeps_completed_parts (tests.test_editing.EditingTest.test_running_cancel_keeps_completed_parts) ... ok
+test_stale_selected_take_cannot_final_render (tests.test_editing.EditingTest.test_stale_selected_take_cannot_final_render) ... ok
+test_supported_output_profiles_are_measured (tests.test_editing.EditingTest.test_supported_output_profiles_are_measured) ... ok
+test_take_review_is_separate_and_revoke_blocks_export (tests.test_editing.EditingTest.test_take_review_is_separate_and_revoke_blocks_export) ... ok
+test_unconfirmed_audio_rights_block_approval (tests.test_editing.EditingTest.test_unconfirmed_audio_rights_block_approval) ... ok
+test_versions_restore_and_approval_invalidation (tests.test_editing.EditingTest.test_versions_restore_and_approval_invalidation) ... ok
+test_current_selection_is_compared_without_rebinding_saved_timeline (tests.test_editing.MusicRangePreflightTest.test_current_selection_is_compared_without_rebinding_saved_timeline) ... ok
+test_no_selection_missing_head_and_different_audio_do_not_warn (tests.test_editing.MusicRangePreflightTest.test_no_selection_missing_head_and_different_audio_do_not_warn) ... ok
+test_one_millisecond_difference_is_disclosed (tests.test_editing.MusicRangePreflightTest.test_one_millisecond_difference_is_disclosed) ... ok
+test_same_range_and_fractional_arithmetic_do_not_warn (tests.test_editing.MusicRangePreflightTest.test_same_range_and_fractional_arithmetic_do_not_warn) ... ok
+test_short_long_and_shifted_output_describe_both_ranges_without_blocking (tests.test_editing.MusicRangePreflightTest.test_short_long_and_shifted_output_describe_both_ranges_without_blocking) ... ok
+test_source_tail_warning_and_existing_errors_are_preserved (tests.test_editing.MusicRangePreflightTest.test_source_tail_warning_and_existing_errors_are_preserved) ... ok
+test_cancel_during_frames_and_publication_rollback (tests.test_motion.MotionTest.test_cancel_during_frames_and_publication_rollback) ... ok
+test_font_bounds_preview_and_context_change_fail_closed (tests.test_motion.MotionTest.test_font_bounds_preview_and_context_change_fail_closed) ... ok
+test_frame_clock_easing_interval_and_delayed_only_circle (tests.test_motion.MotionTest.test_frame_clock_easing_interval_and_delayed_only_circle) ... ok
+test_human_versions_hold_reject_stale_foreign_restore_and_original_preserved (tests.test_motion.MotionTest.test_human_versions_hold_reject_stale_foreign_restore_and_original_preserved) ... ok
+test_new_motion_head_during_fake_render_publishes_only_frozen_unselected_candidate (tests.test_motion.MotionTest.test_new_motion_head_during_fake_render_publishes_only_frozen_unselected_candidate) ... ok
+test_ontology_change_during_fake_render_rejects_candidate_without_losing_existing_take (tests.test_motion.MotionTest.test_ontology_change_during_fake_render_rejects_candidate_without_losing_existing_take) ... ok
+test_real_coretext_preview_export_candidate_and_reopen (tests.test_motion.MotionTest.test_real_coretext_preview_export_candidate_and_reopen) ... ok
+test_render_grant_cancel_reuse_and_font_change (tests.test_motion.MotionTest.test_render_grant_cancel_reuse_and_font_change) ... ok
+test_restart_reuses_interrupted_job_and_running_motion_serializes_workers (tests.test_motion.MotionTest.test_restart_reuses_interrupted_job_and_running_motion_serializes_workers) ... ok
+test_schema_bounds_and_no_code_or_paths (tests.test_motion.MotionTest.test_schema_bounds_and_no_code_or_paths) ... ok
+test_three_protocols_propose_idempotently_without_apply (tests.test_motion.MotionTest.test_three_protocols_propose_idempotently_without_apply) ... ok
+test_actual_output_files_and_legacy_recovery (tests.test_export_sidecar_integrity.ExportSidecarIntegrityTest.test_actual_output_files_and_legacy_recovery) ... 127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:08] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.vtt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 206 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/ffffffffffffffffffffffffffffffff.mp4 HTTP/1.1" 404 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/ffffffffffffffffffffffffffffffff.srt HTTP/1.1" 404 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/ffffffffffffffffffffffffffffffff.json HTTP/1.1" 404 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.vtt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.vtt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/83bdff925cfb41ed8daa37d8d4bc9231.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.mp4 HTTP/1.1" 403 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.srt HTTP/1.1" 403 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.json HTTP/1.1" 403 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/b00ae98d35ff4c04af8436eafd5571c0.vtt HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:09] "GET /exports/83bdff925cfb41ed8daa37d8d4bc9231.json HTTP/1.1" 403 -
+ok
+test_verified_restore_chain_and_legacy_with_tamper_boundaries (tests.test_backup_sidecar_restore.BackupSidecarRestoreTest.test_verified_restore_chain_and_legacy_with_tamper_boundaries) ... 127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /exports/50e3184111434d0287329432c4cd7d7d.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /exports/50e3184111434d0287329432c4cd7d7d.srt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /exports/50e3184111434d0287329432c4cd7d7d.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /exports/50e3184111434d0287329432c4cd7d7d.srt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:10] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "GET /exports/50e3184111434d0287329432c4cd7d7d.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "GET /exports/50e3184111434d0287329432c4cd7d7d.srt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 403 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:11] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:12] "GET /exports/50e3184111434d0287329432c4cd7d7d.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:12] "GET /exports/50e3184111434d0287329432c4cd7d7d.srt HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:12] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:12] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:12] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:12] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:13] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:13] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:28:13] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:13] "GET /exports/50e3184111434d0287329432c4cd7d7d.json HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 09:28:13] "GET /exports/50e3184111434d0287329432c4cd7d7d.srt HTTP/1.1" 200 -
+ok
+
+----------------------------------------------------------------------
+Ran 52 tests in 44.006s
+
+OK

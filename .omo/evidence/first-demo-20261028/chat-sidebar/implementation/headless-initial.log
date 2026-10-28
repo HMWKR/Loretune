@@ -1,0 +1,40 @@
+CREATE_HIT {
+  box: {
+    x: 1517,
+    y: 491.0625,
+    width: 106.015625,
+    height: 40,
+    top: 491.0625,
+    right: 1623.015625,
+    bottom: 531.0625,
+    left: 1517
+  },
+  hit: '<button type="submit">새 대화 만들기</button>',
+  check: true,
+  invalid: []
+}
+FAILURE_STATE {
+  dialogs: [],
+  busy: false,
+  dirty: false,
+  pending: false,
+  switching: 0,
+  notice: '저장했습니다.',
+  conversation: {
+    id: 'a949fec2685d50caaa9494070e56911f',
+    title: '기존 대화',
+    revision: 0,
+    chat_selection: null,
+    model_revision: 0,
+    shared_version: '7c3baed33a2ee024fadc08d05b766d3fa9221032922481e780e2e7bff74a9d14'
+  },
+  createDisabled: false,
+  title: '독립 초안'
+}
+TimeoutError: Waiting failed: 30000ms exceeded
+    at new WaitTask (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/common/WaitTask.js:46:34)
+    at IsolatedWorld.waitForFunction (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/api/Realm.js:49:26)
+    at CdpFrame.waitForFunction (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/api/Frame.js:585:43)
+    at CdpFrame.<anonymous> (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/util/decorators.js:101:27)
+    at CdpPage.waitForFunction (file:///opt/homebrew/lib/node_modules/puppeteer-core/lib/puppeteer/api/Page.js:1542:37)
+    at main (/Users/leesungmin/Desktop/Loretune/tests/chat_sidebar.cjs:39:595)

@@ -1,0 +1,259 @@
+{
+  "status": "implementation and assigned local verification complete; driver acceptance pending",
+  "changed_files": [
+    "app.py",
+    "tests/test_worker_scheduling.py"
+  ],
+  "checks": [
+    {
+      "criterion": "A blocked while B dispatches/completes and local render finishes",
+      "scenario": "test_held_conversation_does_not_block_other_dispatch_or_actual_render",
+      "binary_observable": "before-release: event false, turns running/completed both submitted, job completed; ffprobe duration3.0 asserted",
+      "invocation": "python3 .omo/evidence/conversation-workflow-20261028/worker-scheduling/verify.py",
+      "artifact": "verification.json + verification.log + test_held_conversation_does_not_block_other_dispatch_or_actual_render/before-release.json + runtime-state.json + artifacts.json"
+    },
+    {
+      "criterion": "Bounded two general slots, queued cancellation never dispatched",
+      "scenario": "test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches",
+      "binary_observable": "before-release: running/running/cancelled, submitted true/true/false; 2 completions only; cancelled reservation",
+      "invocation": "python3 .omo/evidence/conversation-workflow-20261028/worker-scheduling/verify.py",
+      "artifact": "verification.json + verification.log + test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches/before-release.json + runtime-state.json + artifacts.json"
+    },
+    {
+      "criterion": "Shared reservation concurrency cap remains authoritative",
+      "scenario": "test_global_reservation_cap_still_rejects_another_conversation",
+      "binary_observable": "cap1: first held running; second HTTP400, exactly1 turn/reservation",
+      "invocation": "python3 .omo/evidence/conversation-workflow-20261028/worker-scheduling/verify.py",
+      "artifact": "verification.json + verification.log + test_global_reservation_cap_still_rejects_another_conversation/before-release.json + runtime-state.json + artifacts.json"
+    },
+    {
+      "criterion": "fixed max5 and configured-off max2, stop event honored",
+      "scenario": "test_fixed_domains_and_preset_stop_never_process",
+      "binary_observable": "5 distinct threads with both runtimes,2 without; presetstop no processorscalled and all joined",
+      "invocation": "python3 .omo/evidence/conversation-workflow-20261028/worker-scheduling/verify.py",
+      "artifact": "verification.json + verification.log"
+    },
+    {
+      "criterion": "sanitized queue errors and independent progress/recovery",
+      "scenario": "test_failed_queue_recovers_without_private_error_or_stalling_others",
+      "binary_observable": "generation progresses, render retries successfully; error includes OSError but no private details",
+      "invocation": "python3 .omo/evidence/conversation-workflow-20261028/worker-scheduling/verify.py",
+      "artifact": "verification.json + verification.log"
+    },
+    {
+      "criterion": "Existing worker_cycle API, persistence, actual render and HTTP compatibility",
+      "scenario": "tests.test_app",
+      "binary_observable": "8 tests passed",
+      "invocation": "python3 .omo/evidence/conversation-workflow-20261028/worker-scheduling/verify.py",
+      "artifact": "verification.json + verification.log"
+    }
+  ],
+  "pre_release_observations": {
+    "test_global_reservation_cap_still_rejects_another_conversation": {
+      "held": true,
+      "turn_statuses": [
+        "running"
+      ],
+      "submitted": [
+        true
+      ],
+      "job_statuses": []
+    },
+    "test_held_conversation_does_not_block_other_dispatch_or_actual_render": {
+      "held": true,
+      "turn_statuses": [
+        "running",
+        "completed"
+      ],
+      "submitted": [
+        true,
+        true
+      ],
+      "job_statuses": [
+        "completed"
+      ]
+    },
+    "test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches": {
+      "held": true,
+      "turn_statuses": [
+        "running",
+        "running",
+        "cancelled"
+      ],
+      "submitted": [
+        true,
+        true,
+        false
+      ],
+      "job_statuses": []
+    }
+  },
+  "verification": {
+    "invocation": "python3 .omo/evidence/conversation-workflow-20261028/worker-scheduling/verify.py",
+    "result": "PASS",
+    "tests_run": 13,
+    "skipped": 0,
+    "cases": [
+      {
+        "scenario": "tests.test_worker_scheduling.WorkerConversationTest.test_global_reservation_cap_still_rejects_another_conversation",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_worker_scheduling.WorkerConversationTest.test_held_conversation_does_not_block_other_dispatch_or_actual_render",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_worker_scheduling.WorkerConversationTest.test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_worker_scheduling.WorkerSchedulingTest.test_failed_queue_recovers_without_private_error_or_stalling_others",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_worker_scheduling.WorkerSchedulingTest.test_fixed_domains_and_preset_stop_never_process",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_app.HttpTest.test_http_validation_and_local_boundary",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_app.HttpTest.test_registered_manifest_http_preserves_content_and_rights",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_app.PersistenceTest.test_concurrent_writers",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_app.PersistenceTest.test_invalid_rolls_back",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_app.PersistenceTest.test_real_render_and_immutable_takes",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_app.PersistenceTest.test_restart_duplicate_and_conflict",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_app.WorkerCycleTest.test_failed_chat_does_not_stop_other_queues_or_log_private_error",
+        "result": "PASS"
+      },
+      {
+        "scenario": "tests.test_app.WorkerCycleTest.test_failed_render_still_processes_generation_and_chat",
+        "result": "PASS"
+      }
+    ],
+    "source_sha256": {
+      "app.py": "3e09e2ef7824f0c2bee47ea0166c04ca4f4789b7b64fdcc4a599e3beb46b109a",
+      "tests/test_worker_scheduling.py": "ed9281073f16c47221d389ba0bb2adadd9d43574a6742719f0db71dcc244d3c5"
+    },
+    "scope": "Local HTTP, SQLite, production scheduler and FFmpeg; synthetic provider response only, no real Claude calls."
+  },
+  "limitations": [
+    "No actual Claude/provider/billing calls; provider fixtures only.",
+    "Root owns browser workflow validation and complete project regression.",
+    "Stop signals next-cycle shutdown, not force-kill of in-flight work.",
+    "Two general worker slots per startup; extra turns remain queued, subject to existing shared budget cap."
+  ],
+  "evidence_manifest": [
+    {
+      "path": "app-before.py",
+      "bytes": 115605,
+      "sha256": "6aa01005559181d1f755c3837279111e0cebac2f56a41870073b1a78192df6aa"
+    },
+    {
+      "path": "app.diff",
+      "bytes": 3813,
+      "sha256": "24d9a05ca807b78f1a20c498a265437586eb8d40ba8895dcd24b88227ad48e1d"
+    },
+    {
+      "path": "diagnosis.json",
+      "bytes": 2321,
+      "sha256": "54bc25c04c9092743f3f3e83eeacfedd80cdf9565563cf9bd3e374a210df0ad7"
+    },
+    {
+      "path": "focused-tests.log",
+      "bytes": 9762,
+      "sha256": "f6f6edd09fbec91ac0a1af6dffc4df10300c2796c94adf1b3b615fc40c3d838d"
+    },
+    {
+      "path": "initial-tests.log",
+      "bytes": 69049,
+      "sha256": "c186c8b3081c0c5773612df898b2ea54b1fb5f6b88c5faac05e953aa4349adf0"
+    },
+    {
+      "path": "test_global_reservation_cap_still_rejects_another_conversation/artifacts.json",
+      "bytes": 213,
+      "sha256": "cb491b2a538a9778b23cefc67483a969d0ee9a4ea5eb2cef645b739e97493125"
+    },
+    {
+      "path": "test_global_reservation_cap_still_rejects_another_conversation/before-release.json",
+      "bytes": 1446,
+      "sha256": "999c28893a72567310b2ae0377f1cb277a1753361d4f94c1df8a7b55776b60b7"
+    },
+    {
+      "path": "test_global_reservation_cap_still_rejects_another_conversation/runtime-state.json",
+      "bytes": 3758,
+      "sha256": "c4b7f4e71e7105450bb34b73a4b838344169a5bb07a16a78b181cce1edef2bd8"
+    },
+    {
+      "path": "test_held_conversation_does_not_block_other_dispatch_or_actual_render/artifacts.json",
+      "bytes": 519,
+      "sha256": "4e33175324cbaf8d93248efcab60f1519e045cc0ac0a77febdabbea41c04793a"
+    },
+    {
+      "path": "test_held_conversation_does_not_block_other_dispatch_or_actual_render/before-release.json",
+      "bytes": 12414,
+      "sha256": "989bd8aa955988d75d25b3000a8d8e5e70e4c6cced9abe5a61c602a592576637"
+    },
+    {
+      "path": "test_held_conversation_does_not_block_other_dispatch_or_actual_render/cb367231465a4a50a61f22cc342ff42a.mp4",
+      "bytes": 7877,
+      "sha256": "9220c7b3e941dfd509900cf6198ee9473657cd5cc2c95f64eb4528a7d98fc64b"
+    },
+    {
+      "path": "test_held_conversation_does_not_block_other_dispatch_or_actual_render/eaffdda520eb404bb2024cd94ff195dd.mp4",
+      "bytes": 7877,
+      "sha256": "9220c7b3e941dfd509900cf6198ee9473657cd5cc2c95f64eb4528a7d98fc64b"
+    },
+    {
+      "path": "test_held_conversation_does_not_block_other_dispatch_or_actual_render/runtime-state.json",
+      "bytes": 13516,
+      "sha256": "338fcc302180790f4f344ec3e35d25c1a7d9c8411ce2eae32602cb2dcd202b91"
+    },
+    {
+      "path": "test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches/artifacts.json",
+      "bytes": 213,
+      "sha256": "cb491b2a538a9778b23cefc67483a969d0ee9a4ea5eb2cef645b739e97493125"
+    },
+    {
+      "path": "test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches/before-release.json",
+      "bytes": 3802,
+      "sha256": "2b882d03a190acdddf7697fed5168e9bbeb80034616667e3b1079123e5326083"
+    },
+    {
+      "path": "test_two_slots_keep_third_queued_and_cancelled_work_never_dispatches/runtime-state.json",
+      "bytes": 8939,
+      "sha256": "4cfb390c889d691a58127b72db55bcbf20c964504ee5a2f56703dc4e67395e3a"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 2402,
+      "sha256": "e61a53d42416b16fe1e8b0eced1fd8f36eca82a80197136dcaf9e948bd8d1f44"
+    },
+    {
+      "path": "verification.log",
+      "bytes": 12602,
+      "sha256": "e5a0a6d06fb57ab0d7d7ab7c6ddb824847e8b4249f26ff9e126ad658a45817d0"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 4163,
+      "sha256": "4f8d1fa58a8e880e912dae10ff8f95d6e995fbf502af651a0cd0533dc9a5e7f3"
+    }
+  ]
+}

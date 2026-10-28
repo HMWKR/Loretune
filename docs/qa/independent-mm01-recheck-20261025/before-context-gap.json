@@ -1,0 +1,183 @@
+{
+  "render_context": {
+    "required_timeline_version": 1,
+    "required_grant_id": "faa32bb4ca7b40eb99d6deae6f9c498f",
+    "grant_present": false,
+    "timeline_state_present": false,
+    "model_visible": {
+      "handoff": {
+        "context": {
+          "value": {
+            "model_settings": {
+              "revision": 1,
+              "selections": {
+                "chat": "anthropic-haiku-5-5",
+                "image": null,
+                "video": null
+              },
+              "history": [
+                {
+                  "revision": 1,
+                  "actor": "local-owner",
+                  "changed": {
+                    "chat": "anthropic-haiku-5-5"
+                  },
+                  "at": 1792942358.2529962
+                }
+              ]
+            },
+            "context": {
+              "music": null,
+              "snapshot": [],
+              "ontology": null
+            },
+            "approved_shots": [
+              {
+                "id": "a",
+                "selected": 1,
+                "revision": 3
+              },
+              {
+                "id": "b",
+                "selected": 1,
+                "revision": 3
+              }
+            ]
+          },
+          "sha256": "b61a9cd4b8ac40aa1b46b960e361f2f02d457a8a54099b0f351a197e1720aa4b"
+        },
+        "messages": [],
+        "jobs": [],
+        "instructions": "서버 상태만 작업 결과로 설명하세요. 미수집 결과를 완료로 설명하지 마세요.",
+        "embedding_policy": "unchanged"
+      },
+      "lookup": {
+        "status": "succeeded",
+        "context": {
+          "music": null,
+          "snapshot": [],
+          "ontology": null
+        },
+        "search_mode": "scoped-snapshot",
+        "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님",
+        "sources": [
+          {
+            "id": "turn:de2cc7b5117848cab145e7806964e776",
+            "text": "Render the current approved timeline."
+          }
+        ]
+      }
+    },
+    "without_hidden_grant_result": {
+      "status": "blocked",
+      "code": "VALIDATION_OR_HUMAN_APPROVAL_REQUIRED",
+      "retryable": false
+    }
+  },
+  "media_context": {
+    "action_present": false,
+    "grant_present": false,
+    "plan_present": false,
+    "shot_name_present": false,
+    "approved_shots": [
+      {
+        "id": "480fef61258c41639bab948d26452541",
+        "selected": null,
+        "revision": 0
+      }
+    ],
+    "actual_shot_names": [
+      "장면 1"
+    ],
+    "model_visible": {
+      "handoff": {
+        "context": {
+          "value": {
+            "model_settings": {
+              "revision": 2,
+              "selections": {
+                "chat": "anthropic-haiku-5-5",
+                "image": "fal-flux-schnell",
+                "video": null
+              },
+              "history": [
+                {
+                  "revision": 1,
+                  "actor": "local-owner",
+                  "changed": {
+                    "image": "fal-flux-schnell"
+                  },
+                  "at": 1792942358.4192781
+                },
+                {
+                  "revision": 2,
+                  "actor": "local-owner",
+                  "changed": {
+                    "chat": "anthropic-haiku-5-5"
+                  },
+                  "at": 1792942358.427814
+                }
+              ]
+            },
+            "context": {
+              "music": {
+                "id": 1,
+                "audio": 1,
+                "start": 0,
+                "end": 5,
+                "sections": [],
+                "source": "user",
+                "engine": null,
+                "created": 1792942358.412641
+              },
+              "snapshot": [],
+              "ontology": null
+            },
+            "approved_shots": [
+              {
+                "id": "480fef61258c41639bab948d26452541",
+                "selected": null,
+                "revision": 0
+              }
+            ]
+          },
+          "sha256": "10cbb6b39aee1a7edfa14c9572e2cd1adca7b726a20d4773e8e7afd77eaf2647"
+        },
+        "messages": [],
+        "jobs": [],
+        "instructions": "서버 상태만 작업 결과로 설명하세요. 미수집 결과를 완료로 설명하지 마세요.",
+        "embedding_policy": "unchanged"
+      },
+      "lookup": {
+        "status": "succeeded",
+        "context": {
+          "music": {
+            "id": 1,
+            "audio": 1,
+            "start": 0,
+            "end": 5,
+            "sections": [],
+            "source": "user",
+            "engine": null,
+            "created": 1792942358.412641
+          },
+          "snapshot": [],
+          "ontology": null
+        },
+        "search_mode": "scoped-snapshot",
+        "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님",
+        "sources": [
+          {
+            "id": "turn:4a9558eccc6c4c5fab3f75f360e4d980",
+            "text": "Generate the already approved image action."
+          }
+        ]
+      }
+    },
+    "using_only_visible_shot_id": {
+      "status": "invalid_arguments",
+      "code": "INVALID_MEDIA_INPUT",
+      "retryable": true
+    }
+  }
+}

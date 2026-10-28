@@ -1,0 +1,213 @@
+{
+  "task_id": "music-input-context-20261028",
+  "attempt": 1,
+  "agent": "/root/scene_request_recovery",
+  "state": "REPORTED",
+  "driver_acceptance": "pending-independent-review",
+  "source_writes": "DONE",
+  "write_set": [
+    "production_context.py",
+    "chat_general.py",
+    "tests/test_music_input_context.py"
+  ],
+  "source_sha256": {
+    "production_context.py": "e88abbf9f75ed5555a0ee45b413c77a2a036a6341466a80f8b1da147a14bd70b",
+    "chat_general.py": "0f89da32361e842ccffa0dd2f3a796e4e6e9b0afd91e60b608670139b594690b",
+    "tests/test_music_input_context.py": "65314ce538369e41a9b9a0d40372498b129222b382a833c6dc0cb56a53c2910c"
+  },
+  "scope": "Add sanitized read-only music source facts to execution_targets, and bind trusted music lookup results to optional general-chat continuation freshness only.",
+  "methodology": {
+    "sources": [
+      ".omo/evidence/music-first-next-gap-20261028.json",
+      "installed karpathy-guidelines SKILL.md + CODEX-RUNTIME.md",
+      "installed feature-verification SKILL.md + CODEX-RUNTIME.md + live-feature-verify.md + uncompromising-rigor.md",
+      "existing Store/HTTP/controller, execution_context and typed tool receipt contracts"
+    ],
+    "applied": [
+      "surgical additive whitelist projection",
+      "separate selected source / saved timeline source / explicitly user-confirmed range",
+      "exact manifest body and persisted trusted tool receipt provenance",
+      "state transition testing through isolated real HTTP",
+      "separate fixture execution from actual provider and production acceptance"
+    ],
+    "skills_read": [
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-andrej-karpathy-skills/1.2.1/skills/karpathy-guidelines/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/skills/feature-verification/SKILL.md"
+    ],
+    "skill_commands_executed": [],
+    "manual_application": "Read and applied the installed instructions; no fictional skill CLI command was invoked."
+  },
+  "alternatives": [
+    {
+      "direction": "Force music range confirmation before a model can inspect uploaded audio",
+      "selected": false,
+      "reason": "Blocks the music-first initial task and conflates read-only measured facts with human decisions."
+    },
+    {
+      "direction": "Expose narrow read-only facts immediately; retain independent human range/render approval",
+      "selected": true,
+      "reason": "Uses the existing model tool and upload inspection; does not create approval, copy files, or impose a photo/3D stage."
+    }
+  ],
+  "continuation_alternatives": [
+    {
+      "direction": "Bind music for every preview globally",
+      "selected": false,
+      "reason": "The initial prompt-only body has no music facts and can correctly query the latest upload. Global invalidation would unnecessarily block this valid path."
+    },
+    {
+      "direction": "Optional manifest-bound marker for actual trusted music tool results only",
+      "selected": true,
+      "reason": "Compares the original persisted receipt and exact disclosed result with current facts at approval and before sending. No user text/JSON scanning."
+    }
+  ],
+  "changes": [
+    {
+      "id": "MF-CONTEXT-01",
+      "path": "production_context.py:74",
+      "result": "execution_targets.music_input contains current-project-shared scope, selected_source, timeline_source, range and requires_revalidation. Sources whitelist audio_version/duration_seconds/metadata_status/rights_status/blocked; raw metadata/path/bytes/filename/rights prose are excluded. Missing/invalid duration is unavailable; finite values are bounded to the exact JSON integer range. Range remains tied to its own explicit source=user/audio version, with selected/timeline match flags."
+    },
+    {
+      "id": "MF-CONTEXT-02",
+      "path": "chat_general.py:191,213,321,403,495,649",
+      "result": "A server-created music_context marker identifies persisted run/call, exact history location/tool_use_id and digest. New trusted lookups supersede the marker; other tools carry it forward. Approval and _current compare receipt projection, disclosed projection and current projection. Stale followup is blocked with a requery/new-consent message, without editing the approved body or adding an automatic retry."
+    }
+  ],
+  "response_contract": {
+    "execution_targets.music_input": {
+      "scope": "current-project-shared",
+      "selected_source": "null or {audio_version,duration_seconds,metadata_status,rights_status,blocked}",
+      "timeline_source": "null or same whitelist; can refer to a different saved source",
+      "range": "{status:unconfirmed|invalid_record}, or {status:confirmed,music_version,audio_version,start_seconds,end_seconds,source:user,matches_selected_source,matches_timeline_source}",
+      "requires_revalidation": true
+    },
+    "optional_preview.music_context": [
+      "run_id",
+      "call_id",
+      "message_index",
+      "tool_use_id",
+      "sha256"
+    ],
+    "latest_authority_rule": "Only the most recent successful server search_project_context receipt designated by this preview marker is authoritative. Historical messages are not scanned for JSON. A newer trusted lookup replaces the marker; other tools retain it. An obsolete followup must be rejected and queried again in a fresh prompt-only turn for new exact-manifest consent."
+  },
+  "verification": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_music_input_context"
+      ],
+      "log": ".omo/evidence/music-input-context-20261028/final-13.log",
+      "sha256": "837e3b5c6a5bb5b4885704d5f6a03a1d8045ebece399aaa66c9e7f9fb91e38cc",
+      "tests_run": 13,
+      "result": "PASS",
+      "skipped": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_chat_general_http",
+        "tests.test_general_chat_motion",
+        "tests.test_execution_context",
+        "tests.test_local_creation_tools",
+        "tests.test_chat_protocols"
+      ],
+      "log": ".omo/evidence/music-input-context-20261028/related-final.log",
+      "sha256": "4ded608180e422307a5001f4a4df80f098bfb1d685287a63357da603840d3870",
+      "tests_run": 73,
+      "result": "PASS",
+      "skipped": 0
+    }
+  ],
+  "total_narrow_and_related": 86,
+  "direct_http_receipts": [
+    {
+      "path": ".omo/evidence/music-input-context-20261028/http-responses.json",
+      "sha256": "bfe7155b180546f5e6be7b8816638ec1789361dd04a6a7c5526e72d20e7eaed1",
+      "detail": "18 safe read-tool/handoff result captures from the initial seven projection contracts."
+    },
+    {
+      "path": ".omo/evidence/music-input-context-20261028/audio-change-manifest-observation.json",
+      "sha256": "aa1c36d5ed1a6468f4320762c5b54756ceb98b0b24160a02a44fd67edef28a53",
+      "detail": "Before the freshness fix: first prompt-only lookup correctly used source2; stale followup source2 was sent while current source was3, with exact approved body preserved."
+    },
+    {
+      "path": ".omo/evidence/music-input-context-20261028/stale-requery-http.json",
+      "sha256": "48ed94f71672ee8ccb3cd6f6eed9ce1d34b1c7a5908f3e87124d1ccb0b193b7b",
+      "detail": "After the fix: decision statuses 200,400,200(reject),200,200. Stale followup adds no reservation or message. Explicit new lookup and consent send source3 in the exact approved body. Three fixture messages total, external provider calls0."
+    }
+  ],
+  "boundary_coverage": [
+    "no audio",
+    "upload only before music_head",
+    "confirmed user range",
+    "audio replacement while saved timeline still refers to old version",
+    "optional picture present",
+    "invalid/NaN/Inf/bool/string/dict duration and extra-field whitelisting",
+    "rights status and blocked flag",
+    "same-project shared audio across conversations",
+    "no cross-project music disclosure",
+    "general fixture tool-result continuation and distinct approval",
+    "valid first prompt-only lookup after source change",
+    "stale followup blocked before approval reservation",
+    "shared audio changed after approval blocked before count/message",
+    "audio changed during count blocked before message",
+    "range confirmation invalidates stale followup",
+    "foreign-project audio does not invalidate current music",
+    "user-forged JSON does not create provenance marker",
+    "marker exposed by API and included in manifest hash",
+    "other tools carry marker; newest trusted lookup supersedes prior marker in multi-tool history"
+  ],
+  "preserved_failures": [
+    {
+      "log": "before-test.log",
+      "detail": "Expected baseline KeyError: music_input absent before implementation."
+    },
+    {
+      "log": "narrow-tests.log",
+      "detail": "Initial reproduction of raw DB duration corruption breaking preflight and incorrect first-preview-stale expectation; both findings retained."
+    },
+    {
+      "log": "freshness-tests.log",
+      "detail": "Test tried to read reservation from a deliberately sanitized public turn. Corrected test to query isolated private Store receipt."
+    },
+    {
+      "log": "freshness-final.log",
+      "detail": "Test expected reservation state released; actual unchanged ledger release contract stores cancelled and appends released event. Corrected assertion to the actual contract."
+    }
+  ],
+  "limits": [
+    {
+      "id": "MF-LIMIT-01",
+      "state": "not-fixed-outside-scope",
+      "detail": "Raw DB-corrupted selected timeline audio metadata.duration=None/string/dict can fail GET /api/state in editing.preflight:147 before the new projection runs. This was not produced by normal inspected audio upload. No editing.py/fallback expansion was authorized. Projection safety is verified through actual HTTP with the corrupt selected source isolated from the saved timeline audio."
+    },
+    {
+      "id": "MF-LIMIT-02",
+      "state": "unverified-external",
+      "detail": "Actual general Claude remains disabled. These are isolated HTTP and contract-fake provider receipts, not actual model quality, real billing, end-user production acceptance, or a complete audio-to-MP4 workflow retest."
+    },
+    {
+      "id": "MF-LIMIT-03",
+      "state": "intentional-scope",
+      "detail": "Stored duration is labeled recorded, not freshly rehashed/reprobed at lookup. Execution retains existing rights/hash/approval revalidation. No new authorization, music analysis, range approval, credentials, provider execution, or source-media transfer is introduced."
+    }
+  ],
+  "operational_boundaries": {
+    "external_provider_calls": 0,
+    "credential_or_env_read": false,
+    "user_data_modified": false,
+    "parent_server_51815_touched": false,
+    "browser_used": false,
+    "md_registry_modified": false,
+    "full_suite_run": false,
+    "actual_live_guard_changed": false,
+    "paid_cost_policy_changed": false
+  },
+  "handoff": "Source writes DONE. Parent should compare the source SHA values and perform independent acceptance. No further source changes will be made unless root requests them."
+}

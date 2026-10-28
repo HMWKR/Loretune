@@ -1,0 +1,18 @@
+{
+  "connection": {
+    "available": true,
+    "mode": "anthropic-live",
+    "external_transmission": true,
+    "account_verified": false,
+    "billing_verified": false,
+    "reason": "서버 연결 설정됨 · 계정 접근·청구 미검증 · 각 회차의 전송 범위와 비용 상한을 확인하세요."
+  },
+  "visibleCapability": "현재 일반 대화 연결이 없습니다. 요청 초안을 보관할 수 있으며, 실제 Claude 전송은 사용할 수 없습니다.",
+  "generalPanel": "<details id=\"generalChatPanel\" class=\"general-chat\" open=\"\"><summary>일반 대화 전송 검토 · 시험</summary><p id=\"generalChatCapability\" role=\"status\">현재 일반 대화 연결이 없습니다. 요청 초안을 보관할 수 있으며, 실제 Claude 전송은 사용할 수 없습니다.</p><p>입력 준비는 전송하지 않습니다. 각 요청과 도구 결과의 전달은 따로 확인합니다. 실제 Claude 연결과 영상 생성은 지원하지 않습니다.</p>\n <form id=\"generalChatForm\"><label for=\"generalChatPrompt\">요청 초안</label><textarea id=\"generalChatPrompt\" rows=\"4\" maxlength=\"2000\" required=\"\" placeholder=\"음원에 맞는 장면을 제안해 주세요\"></textarea>\n <div class=\"general-chat-limits\"><label for=\"generalChatMaximum\">한 회차 비용 상한 (USD)</label><input id=\"generalChatMaximum\" type=\"number\" min=\"0.000001\" max=\"0.1\" step=\"0.000001\" value=\"0.01\" required=\"\"><label id=\"generalChatTotalLabel\" for=\"generalChatTotal\" hidden=\"\">전체 대화 비용 상한 (USD)</label><input id=\"generalChatTotal\" type=\"number\" min=\"0.000001\" max=\"0.4\" step=\"0.000001\" value=\"0.04\" hidden=\"\"></div>\n <button id=\"generalChatPrepare\" type=\"submit\" disabled=\"\">전송 내용 준비 · 전송 없음</button></form><p id=\"generalChatStatus\" role=\"status\" aria-live=\"polite\"></p><div id=\"generalChatReviews\" aria-label=\"전송 내용 검토\"></div><div id=\"generalChatTurns\" aria-label=\"대화 결과\"></div><button type=\"button\" id=\"generalChatRefresh\">저장된 대화 상태 다시 확인</button></details>",
+  "stats": {
+    "provider_network": "synthetic stdlib socket only",
+    "actual_provider_calls": 0,
+    "key_reads": 0,
+    "requests": []
+  }
+}

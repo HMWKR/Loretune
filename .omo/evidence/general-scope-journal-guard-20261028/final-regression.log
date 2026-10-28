@@ -1,0 +1,359 @@
+test_budget_counts_only_its_uncertain_reservations (tests.test_ledger.LedgerTest.test_budget_counts_only_its_uncertain_reservations) ... ok
+test_concurrent_reservations_never_exceed_limit (tests.test_ledger.LedgerTest.test_concurrent_reservations_never_exceed_limit) ... ok
+test_invalid_expiry_cannot_reserve (tests.test_ledger.LedgerTest.test_invalid_expiry_cannot_reserve) ... ok
+test_overrun_is_visible_and_stops_new_reservations (tests.test_ledger.LedgerTest.test_overrun_is_visible_and_stops_new_reservations) ... ok
+test_release_late_settlement_and_budget_lock (tests.test_ledger.LedgerTest.test_release_late_settlement_and_budget_lock) ... ok
+test_uncertain_settlement_refund_and_idempotency (tests.test_ledger.LedgerTest.test_uncertain_settlement_refund_and_idempotency) ... ok
+test_chat_reservation_blocks_generation_admission (tests.test_budget_crossflow.CrossFlowBudgetTest.test_chat_reservation_blocks_generation_admission) ... 127.0.0.1 - - [28/Oct/2026 01:51:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:19] "POST /api/action HTTP/1.1" 200 -
+ok
+test_competing_admissions_have_only_one_winner (tests.test_budget_crossflow.CrossFlowBudgetTest.test_competing_admissions_have_only_one_winner) ... 127.0.0.1 - - [28/Oct/2026 01:51:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:20] "POST /api/action HTTP/1.1" 400 -
+ok
+test_generation_reservation_blocks_chat_approval (tests.test_budget_crossflow.CrossFlowBudgetTest.test_generation_reservation_blocks_chat_approval) ... 127.0.0.1 - - [28/Oct/2026 01:51:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:21] "POST /api/action HTTP/1.1" 400 -
+ok
+test_unknown_generation_blocks_queued_chat_and_no_retry_after_restart (tests.test_budget_crossflow.CrossFlowBudgetTest.test_unknown_generation_blocks_queued_chat_and_no_retry_after_restart) ... 127.0.0.1 - - [28/Oct/2026 01:51:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:22] "POST /api/action HTTP/1.1" 200 -
+ok
+test_already_sent_job_is_not_cancelled_by_later_unknown (tests.test_budget_dispatch_guard.BudgetDispatchGuardTest.test_already_sent_job_is_not_cancelled_by_later_unknown) ... 127.0.0.1 - - [28/Oct/2026 01:51:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:23] "POST /api/action HTTP/1.1" 200 -
+ok
+test_chat_unknown_blocks_reserved_and_new_generation_until_reconciled (tests.test_budget_dispatch_guard.BudgetDispatchGuardTest.test_chat_unknown_blocks_reserved_and_new_generation_until_reconciled) ... 127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:24] "GET /api/state HTTP/1.1" 200 -
+ok
+test_existing_claim_remains_unknown_instead_of_unsubmitted_on_budget_block (tests.test_budget_dispatch_guard.BudgetDispatchGuardTest.test_existing_claim_remains_unknown_instead_of_unsubmitted_on_budget_block) ... 127.0.0.1 - - [28/Oct/2026 01:51:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:25] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:25] "POST /api/action HTTP/1.1" 200 -
+ok
+test_known_overrun_blocks_queued_chat_before_count_and_new_approval (tests.test_budget_dispatch_guard.BudgetDispatchGuardTest.test_known_overrun_blocks_queued_chat_before_count_and_new_approval) ... 127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:26] "POST /api/action HTTP/1.1" 400 -
+ok
+test_known_overrun_blocks_queued_generation_without_rewriting_cost (tests.test_budget_dispatch_guard.BudgetDispatchGuardTest.test_known_overrun_blocks_queued_generation_without_rewriting_cost) ... 127.0.0.1 - - [28/Oct/2026 01:51:27] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:27] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:27] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:27] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:27] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:27] "POST /api/action HTTP/1.1" 200 -
+ok
+test_low_level_claim_is_guarded_by_default_and_other_budget_is_independent (tests.test_budget_dispatch_guard.BudgetDispatchGuardTest.test_low_level_claim_is_guarded_by_default_and_other_budget_is_independent) ... 127.0.0.1 - - [28/Oct/2026 01:51:28] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:28] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:28] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:28] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:28] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:28] "POST /api/action HTTP/1.1" 200 -
+ok
+test_cancel_after_count_transmission_blocks_message (tests.test_chat_live_contract.LiveContractHTTPTest.test_cancel_after_count_transmission_blocks_message) ... 127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:29] "GET /api/state HTTP/1.1" 200 -
+ok
+test_cancel_after_message_preserves_observed_estimate_and_blocks_tools (tests.test_chat_live_contract.LiveContractHTTPTest.test_cancel_after_message_preserves_observed_estimate_and_blocks_tools) ... 127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:30] "GET /api/state HTTP/1.1" 200 -
+ok
+test_config_change_invalidates_approved_preview (tests.test_chat_live_contract.LiveContractHTTPTest.test_config_change_invalidates_approved_preview) ... 127.0.0.1 - - [28/Oct/2026 01:51:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:31] "POST /api/action HTTP/1.1" 400 -
+ok
+test_exact_approved_bytes_and_estimate_is_not_confirmed (tests.test_chat_live_contract.LiveContractHTTPTest.test_exact_approved_bytes_and_estimate_is_not_confirmed) ... 127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:32] "GET /api/state HTTP/1.1" 200 -
+ok
+test_loopback_endpoint_is_part_of_manifest (tests.test_chat_live_contract.LiveContractHTTPTest.test_loopback_endpoint_is_part_of_manifest) ... 127.0.0.1 - - [28/Oct/2026 01:51:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:33] "POST /api/action HTTP/1.1" 400 -
+ok
+test_real_configuration_fails_closed_without_reading_credentials_or_sending (tests.test_chat_live_contract.LiveContractHTTPTest.test_real_configuration_fails_closed_without_reading_credentials_or_sending) ... 127.0.0.1 - - [28/Oct/2026 01:51:34] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:34] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:34] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:34] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:34] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:34] "POST /api/action HTTP/1.1" 200 -
+ok
+test_rejection_stale_and_competing_approval_do_not_send (tests.test_chat_live_contract.LiveContractHTTPTest.test_rejection_stale_and_competing_approval_do_not_send) ... 127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:35] "POST /api/action HTTP/1.1" 409 -
+ok
+test_restart_does_not_repeat_interrupted_approved_round (tests.test_chat_live_contract.LiveContractHTTPTest.test_restart_does_not_repeat_interrupted_approved_round) ... 127.0.0.1 - - [28/Oct/2026 01:51:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:36] "POST /api/action HTTP/1.1" 200 -
+ok
+test_test_mode_cannot_use_real_transport_or_real_key (tests.test_chat_live_contract.LiveContractHTTPTest.test_test_mode_cannot_use_real_transport_or_real_key) ... 127.0.0.1 - - [28/Oct/2026 01:51:37] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:37] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:37] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:37] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:37] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:37] "POST /api/action HTTP/1.1" 200 -
+ok
+test_tool_result_requires_separate_exact_consent (tests.test_chat_live_contract.LiveContractHTTPTest.test_tool_result_requires_separate_exact_consent) ... 127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:38] "GET /api/state HTTP/1.1" 200 -
+ok
+test_transport_loss_keeps_reservation_and_does_not_repeat (tests.test_chat_live_contract.LiveContractHTTPTest.test_transport_loss_keeps_reservation_and_does_not_repeat) ... 127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:39] "GET /api/state HTTP/1.1" 200 -
+ok
+test_turn_total_cap_stops_followup (tests.test_chat_live_contract.LiveContractHTTPTest.test_turn_total_cap_stops_followup) ... 127.0.0.1 - - [28/Oct/2026 01:51:40] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:40] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:40] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:40] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:40] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:40] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:40] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:41] "GET /api/state HTTP/1.1" 200 -
+ok
+test_uncertain_budget_blocks_new_approval_and_already_queued_transmission (tests.test_chat_live_contract.LiveContractHTTPTest.test_uncertain_budget_blocks_new_approval_and_already_queued_transmission) ... 127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:42] "POST /api/action HTTP/1.1" 200 -
+ok
+test_persistent_ledger_failure_records_unknown_and_preserves_reservation (tests.test_chat_general_http.GeneralChatHTTPTest.test_persistent_ledger_failure_records_unknown_and_preserves_reservation) ... 127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+ok
+test_unpriced_observation_survives_persistent_journal_failure_and_restart (tests.test_chat_general_http.GeneralChatHTTPTest.test_unpriced_observation_survives_persistent_journal_failure_and_restart) ... 127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 01:51:43] "GET /api/state HTTP/1.1" 200 -
+ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 24.912s
+
+OK

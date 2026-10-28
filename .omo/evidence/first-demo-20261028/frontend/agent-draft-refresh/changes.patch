@@ -1,0 +1,55 @@
+--- before/index.html
++++ after/index.html
+@@ -877,7 +877,14 @@
+  try{
+   const r=await fetch(typeof scopedStateUrl==='function'?scopedStateUrl(name):'/api/state'),fresh=await r.json();
+   if(epoch!==stateReadEpoch||sequence<appliedPollSequence||busy||dirty||song()!==name||shotName!==shot||fresh.workspace_id!==state.workspace_id||fresh.revision<state.revision)return;
+-  appliedPollSequence=sequence;const p=state.projects[name],next=fresh.projects[name];
++  const p=state.projects[name],next=fresh.projects[name];
++  if(p&&next&&(p.active_conversation?.id??null)!==(next.active_conversation?.id??null))return;
++  appliedPollSequence=sequence;
++  // A server-created edit is authoritative only while this tab has no local draft changes.
++  const nextHead=next?.timeline_head??null;
++  if(p&&next&&((p.timeline_head??null)!==nextHead||(draft?.id??null)!==nextHead)){
++   state=fresh;draft=null;draw();drawJobs();updateRecovery();return;
++  }
+   const chatChanged=p&&next&&(JSON.stringify(p.chat_turns)!==JSON.stringify(next.chat_turns)||JSON.stringify(p.chat_connection)!==JSON.stringify(next.chat_connection)||JSON.stringify(p.chat_receipts)!==JSON.stringify(next.chat_receipts)||JSON.stringify(p.model_settings)!==JSON.stringify(next.model_settings)||JSON.stringify(p.active_conversation)!==JSON.stringify(next.active_conversation)||JSON.stringify(state.model_catalog)!==JSON.stringify(fresh.model_catalog));
+   const generalChatChanged=p&&next&&(JSON.stringify(p.general_chat_previews)!==JSON.stringify(next.general_chat_previews)||JSON.stringify(p.general_chat_turns)!==JSON.stringify(next.general_chat_turns)||JSON.stringify(p.general_chat_connection)!==JSON.stringify(next.general_chat_connection)||JSON.stringify(p.production_runs)!==JSON.stringify(next.production_runs));
+   const mediaChanged=p&&next&&(JSON.stringify(p.media_actions)!==JSON.stringify(next.media_actions)||JSON.stringify(p.media_connections)!==JSON.stringify(next.media_connections));
+--- before/tests/frontend_async_regressions.cjs
++++ after/tests/frontend_async_regressions.cjs
+@@ -10,9 +10,12 @@
+ const results=[];
+ async function test(name,run){try{await run();results.push({name,status:'PASS'})}catch(e){results.push({name,status:'FAIL',error:e.stack});}}
+ function pollFixture(){
+- const waits=[],draws=[];let poll,name='A';const c={state:state(1),stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'s1',draft:null,busy:false,dirty:false,song:()=>name,setInterval:fn=>poll=fn,fetch:()=>{const d=defer();waits.push(d);return d.promise},drawModelChat:()=>draws.push(c.state.revision),drawCreationProposals(){},drawGuided(){},drawJobs(){},drawGeneration(){},drawMediaCreator(){},drawImageConnection(){},refresh:async()=>{throw Error('unexpected refresh')}};
++ const waits=[],draws=[],fullDraws=[],recovery=[];let poll,name='A';const c={state:state(1),stateReadEpoch:0,pollSequence:0,appliedPollSequence:0,pollReadsInFlight:0,shotName:'s1',draft:null,busy:false,dirty:false,window:{},song:()=>name,setInterval:fn=>poll=fn,fetch:()=>{const d=defer();waits.push(d);return d.promise},draw(){fullDraws.push({revision:c.state.revision,draftBefore:c.draft});c.stateReadEpoch++;c.draft=JSON.parse(JSON.stringify(c.state.projects[name].timeline_versions?.find(t=>t.id===c.state.projects[name].timeline_head)||{}));},updateRecovery:()=>recovery.push(true),drawModelChat:()=>draws.push(c.state.revision),drawCreationProposals(){},drawGuided(){},drawJobs(){},drawGeneration(){},drawMediaCreator(){},drawImageConnection(){},refresh:async()=>{throw Error('unexpected refresh')}};
+  vm.createContext(c);vm.runInContext(slice('setInterval(async()=>{','},1500);')+'},1500);',c);
+- return{c,waits,draws,poll:()=>poll(),switch:n=>{name=n;c.stateReadEpoch++}};
++ return{c,waits,draws,fullDraws,recovery,poll:()=>poll(),switch:n=>{name=n;c.stateReadEpoch++}};
++}
++function timelineState(revision,head,conversation='c'){
++ const x=state(revision);x.projects.A.active_conversation={id:conversation};x.projects.A.timeline_head=head;x.projects.A.timeline_versions=[{id:3,clips:[{shot:'s1',motion_overlay:{offset_x:0,offset_y:0}}],subtitles:[{text:'old'}],approval:{actor:'local-owner'}},{id:4,clips:[{shot:'s1',motion_overlay:{offset_x:240,offset_y:120}}],subtitles:[{text:'new'}]}];return x;
+ }
+ function requestFixture(){
+  const nodes=new Map(),memory=new Map(),calls=[];let serial=0;
+@@ -29,6 +32,19 @@
+  await test('FQ01 project ABA and refresh/mutation generations',async()=>{for(const mode of ['ABA','refresh','mutation']){const f=pollFixture(),a=f.poll();if(mode==='ABA'){f.switch('B');f.switch('A')}else{f.c.stateReadEpoch++;if(mode==='refresh')f.c.state=state(4)}f.waits[0].resolve(response(state(2)));await a;assert.equal(f.c.state.revision,mode==='refresh'?4:1)}});
+  await test('FQ01 old revision and workspace rejected',async()=>{for(const x of [state(0),{...state(3),workspace_id:'other'}]){const f=pollFixture(),a=f.poll();f.waits[0].resolve(response(x));await a;assert.equal(f.c.state.revision,1)}});
+  await test('FQ01 equal revision legitimate job/chat/media updates',async()=>{const f=pollFixture(),x=state(1);x.projects.A.chat_turns=['new'];x.projects.A.media_actions=[{id:'a',state:'running'}];x.jobs=[{id:'j',status:'running'}];x.generation_jobs=[{id:'g',revision:2}];const a=f.poll();f.waits[0].resolve(response(x));await a;assert.equal(f.c.state.jobs[0].status,'running');assert.equal(f.c.state.generation_jobs[0].revision,2);assert.equal(f.c.state.projects.A.media_actions[0].state,'running')});
++ await test('new authoritative agent draft head rebases a clean UI draft without another GET',async()=>{
++  const f=pollFixture();f.c.state=timelineState(3,3);f.c.draft=f.c.state.projects.A.timeline_versions[0];const x=timelineState(4,4);x.projects.A.general_chat_turns=[{status:'awaiting_continuation_approval'}];const a=f.poll();f.waits[0].resolve(response(x));await a;assert.equal(f.c.state.projects.A.timeline_head,4);assert.equal(f.c.draft.id,4);assert.equal(f.c.draft.approval,undefined);assert.equal(f.c.draft.clips[0].motion_overlay.offset_x,240);assert.equal(f.c.draft.subtitles[0].text,'new');assert.equal(f.fullDraws.length,1);assert.equal(f.fullDraws[0].draftBefore,null);assert.equal(f.recovery.length,1);assert.equal(f.waits.length,1);
++ });
++ await test('clean draft mismatch repairs once but same-head run updates retain object identity',async()=>{
++  const f=pollFixture();f.c.state=timelineState(4,4);f.c.draft=f.c.state.projects.A.timeline_versions[0];let a=f.poll();f.waits[0].resolve(response(timelineState(4,4)));await a;assert.equal(f.c.draft.id,4);const retained=f.c.draft,x=timelineState(4,4);x.projects.A.general_chat_turns=[{status:'running'}];a=f.poll();f.waits[1].resolve(response(x));await a;assert.equal(f.c.draft,retained);assert.equal(f.fullDraws.length,1);
++  const n=pollFixture();n.c.draft={clips:[],sentinel:'fresh unsaved timeline'};const unchanged=n.c.draft;a=n.poll();n.waits[0].resolve(response(state(2)));await a;assert.equal(n.c.draft,unchanged);assert.equal(n.fullDraws.length,0);
++ });
++ await test('authoritative head never overrides apply-time dirty/busy or wrong scope/revision',async()=>{
++  for(const kind of ['dirty','busy','projectABA','conversation','workspace','revision']){const f=pollFixture();f.c.state=timelineState(3,3);f.c.draft=f.c.state.projects.A.timeline_versions[0];const retained=f.c.draft,x=timelineState(4,4),a=f.poll();if(kind==='dirty'||kind==='busy')f.c[kind]=true;if(kind==='projectABA'){f.switch('B');f.switch('A')}if(kind==='conversation')x.projects.A.active_conversation.id='other';if(kind==='workspace')x.workspace_id='other';if(kind==='revision')x.revision=2;f.waits[0].resolve(response(x));await a;assert.equal(f.c.draft,retained,kind);assert.equal(f.c.state.projects.A.timeline_head,3,kind);assert.equal(f.fullDraws.length,0,kind);}
++ });
++ await test('head refresh does not clear or confirm an outcome-unknown request and reapplies its lock',async()=>{
++  const f=pollFixture();f.c.state=timelineState(3,3);f.c.draft=f.c.state.projects.A.timeline_versions[0];const nodes=new Map();f.c.$=selector=>{if(!nodes.has(selector))nodes.set(selector,{hidden:false,disabled:false,textContent:''});return nodes.get(selector)};f.c.document={querySelector:f.c.$};let removals=0,locked=false;f.c.sessionStorage={getItem:()=> 'unknown-request',removeItem:()=>{removals++}};f.c.pendingRequest={request_id:'unknown-request'};f.c.activeMutationRequestId=null;f.c.updateTimelineControls=value=>locked=value;vm.runInContext(line('function pendingId(')+'\n'+line('function mutationRequestActive(')+'\n'+line('function updateRecovery('),f.c);const a=f.poll();f.waits[0].resolve(response(timelineState(4,4)));await a;assert.equal(f.c.draft.id,4);assert.equal(f.c.pendingId(),'unknown-request');assert.equal(f.c.pendingRequest.request_id,'unknown-request');assert.equal(f.c.pendingId.settled,undefined);assert.equal(removals,0);assert.equal(locked,true);assert.equal(f.c.$('#recovery').hidden,false);
++ });
+  await test('Motion publication refreshes Take/state revision, running progress does not',async()=>{for(const status of ['running','completed']){const f=pollFixture(),x=state(2);x.projects.A.chat_turns=[1];x.jobs=[{id:'m',kind:'local-motion',status}];let refreshed=0;f.c.refresh=async name=>{assert.equal(name,'A');refreshed++;f.c.state=x};const a=f.poll();f.waits[0].resolve(response(x));await a;assert.equal(refreshed,status==='completed'?1:0);if(status==='completed')assert.equal(f.c.state.revision,2)}});
+  await test('FQ01 refresh older completion cannot replace current state',async()=>{const f=pollFixture();vm.runInContext(line('async function refresh('),f.c);const a=f.c.refresh();f.c.stateReadEpoch++;f.c.state=state(3);f.waits[0].resolve(response(state(2)));assert.equal(await a,false);assert.equal(f.c.state.revision,3)});
+  await test('FQ01 refresh cannot erase a new timeline draft',async()=>{const f=pollFixture();vm.runInContext(line('async function refresh('),f.c);const a=f.c.refresh();f.c.draft={clips:[{shot:'A'}]};f.c.dirty=true;f.waits[0].resolve(response(state(2)));assert.equal(await a,false);assert.equal(f.c.dirty,true);assert.equal(f.c.draft.clips[0].shot,'A')});

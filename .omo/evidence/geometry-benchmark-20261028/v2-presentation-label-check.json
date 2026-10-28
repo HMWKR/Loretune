@@ -1,0 +1,65 @@
+{
+  "images": {
+    "cube": {
+      "path": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/geometry-benchmark-20261028/v2-calibration/cube/comparison.png",
+      "sha256": "9023ba9e94ff17a4328fefe7e1f7247459e284e01936879135c38e9687abb213",
+      "mode": "RGB",
+      "size": [
+        1160,
+        1220
+      ],
+      "left_label_strip_white_pixels": 192312,
+      "left_label_strip_total_pixels": 195200,
+      "row_header_white_pixels": [
+        19126,
+        19126,
+        19126,
+        19126,
+        19126
+      ],
+      "row_header_total_pixels_each": 20000,
+      "body_label_strip_sha256": "4195339728758b96a1c88ece49149774aa32507f9df3105320a2e71b4f166ce0"
+    },
+    "chair": {
+      "path": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/geometry-benchmark-20261028/v2-calibration/chair/comparison.png",
+      "sha256": "844902c307b91eaba90f03f708960e51380200d8c4616cb02cfb6f0d8fa75fd2",
+      "mode": "RGB",
+      "size": [
+        1160,
+        1220
+      ],
+      "left_label_strip_white_pixels": 192323,
+      "left_label_strip_total_pixels": 195200,
+      "row_header_white_pixels": [
+        19126,
+        19126,
+        19126,
+        19126,
+        19126
+      ],
+      "row_header_total_pixels_each": 20000,
+      "body_label_strip_sha256": "4195339728758b96a1c88ece49149774aa32507f9df3105320a2e71b4f166ce0"
+    }
+  },
+  "body_row_label_strip_pixel_equal": true,
+  "each_view_header_pixel_equal": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "at": "2026-10-28T05:34:18.322073+00:00",
+  "issue": "Chair comparison row/view labels appeared obscured in one combined image observation",
+  "status": "NOT_REPRODUCED_IN_ACTUAL_PNG_OR_SINGLE_IMAGE_VIEW",
+  "direct_visual_review": "functions tools.view_image chair/comparison.png original detail shown alone; all five row labels and five repeated view-label headers were visible",
+  "drawing_order": {
+    "source": "v2-calibration/benchmark.py:contact_sheet",
+    "canvas_mode": "RGB white background",
+    "row_labels": "Drawn at x5 in a160px left strip; split at22characters",
+    "view_labels": "Drawn at y=row_start+5 in20px header strip",
+    "tiles": "Pasted only at x160+column*200, y=row_start+20, size200x200; never overlap label strips"
+  },
+  "interpretation": "Actual files have identical row-label strip pixels and view-header pixels across cube/chair. A display-path issue is plausible but not established; no source PNG obstruction was found.",
+  "action": "No derived presentation image created because no artifact defect was reproduced. Frozen PNGs and manifests preserved."
+}

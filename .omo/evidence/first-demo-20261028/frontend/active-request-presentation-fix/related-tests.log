@@ -1,0 +1,20 @@
+draft confirmation, saved edit, output snapshot, clip min/max: passed
+timeline locking and limits after unlock: passed
+caption draft status and cancel availability: passed
+....127.0.0.1 - - [28/Oct/2026 10:18:59] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "GET /api/requests/b6c783ad-83ff-428e-a567-87c5fe81f6ea HTTP/1.1" 404 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "GET /api/requests/b6c783ad-83ff-428e-a567-87c5fe81f6ea HTTP/1.1" 404 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "POST /api/action HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "GET /api/requests/5d1ac755-381b-4443-8668-b21c45ffc821 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 10:18:59] "GET /api/state HTTP/1.1" 200 -
+........
+----------------------------------------------------------------------
+Ran 12 tests in 3.664s
+
+OK

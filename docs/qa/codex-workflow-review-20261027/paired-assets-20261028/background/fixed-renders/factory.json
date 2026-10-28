@@ -1,0 +1,42 @@
+{
+  "blender": "5.2.2 LTS",
+  "use_nodes": true,
+  "color": [
+    0.05087608844041824,
+    0.05087608844041824,
+    0.05087608844041824
+  ],
+  "view_transform": "AgX",
+  "look": "None",
+  "exposure": 0.0,
+  "gamma": 1.0,
+  "nodes": [
+    {
+      "name": "World Output",
+      "type": "ShaderNodeOutputWorld",
+      "inputs": {}
+    },
+    {
+      "name": "Background",
+      "type": "ShaderNodeBackground",
+      "inputs": {
+        "Color": [
+          0.05087608844041824,
+          0.05087608844041824,
+          0.05087608844041824,
+          1.0
+        ],
+        "Strength": 1.0,
+        "Weight": 0.0
+      }
+    }
+  ],
+  "links": [
+    [
+      "Background",
+      "Background",
+      "World Output",
+      "Surface"
+    ]
+  ]
+}

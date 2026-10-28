@@ -1,0 +1,11 @@
+import fs from 'node:fs/promises';const D='/Users/leesungmin/Desktop/Loretune/docs/qa/design-benchmark-20261025/creator-pass';const t=await taskSpace(14),p=t.page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
+const verified=await p.evaluate(async()=>{const html=await (await fetch('/')).text(),hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(html)))].map(x=>x.toString(16).padStart(2,'0')).join('');return{time:new Date().toISOString(),served_sha256:hash}});
+await p.evaluate(html=>document.querySelector('iframe').srcdoc=html,await fs.readFile(D+'/baseline-index.html','utf8'));
+await p.waitForFunction(()=>[...document.querySelector('iframe').contentDocument.querySelectorAll('#songs option')].some(o=>o.value==='디자인 다중장면 QA 20261025 1330'),undefined,{timeout:10000});
+await p.selectOption('#songs',{label:'디자인 다중장면 QA 20261025 1330'});await p.click('button[data-step="3"]');
+await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+const baseline=await p.evaluate(()=>{const w=document.querySelector('iframe').contentWindow,d=w.document;const box=s=>{const r=d.querySelector(s).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};return{width:w.innerWidth,preview:box('#preview'),timeline:box('#ltTimelineDock'),review:box('.lt-take-review'),main:box('main'),header:box('.lt-status-line')}});
+await fs.writeFile(D+'/baseline-geometry-desktop.json',JSON.stringify({provenance:'Original frozen baseline HTML rendered in same QA iframe at same viewport and selected scene; no source mutation.',...baseline},null,2));
+await fs.writeFile(D+'/runtime-final-verification.json',JSON.stringify(verified,null,2));console.log({baseline,verified});
+await t.finish({keep:[]});

@@ -1,0 +1,947 @@
+{
+  "version": "1.0",
+  "technical_decisions": [
+    {
+      "id": "TCH-001",
+      "columns": [
+        "Next.js/TypeScript 웹, FastAPI/Python API, 독립 Python 워커",
+        "제작 UI와 오래 걸리는 처리를 분리",
+        "의존성 버전 잠금·보안 업데이트 책임 지정"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-002",
+      "columns": [
+        "PostgreSQL 원장 + 명시적 관계 + pgvector",
+        "승인·비용·버전을 한 트랜잭션 경계에 유지",
+        "테넌트·IP 권한·복합 FK 시험"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-003",
+      "columns": [
+        "모듈형 단일 API, 작업별 워커 풀",
+        "초기 운영 복잡도 제한",
+        "모듈별 소유권·계약·마이그레이션 분리"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-004",
+      "columns": [
+        "PostgreSQL job/outbox/lease 큐",
+        "요청 수락·비용 예약·작업 발행의 원자성",
+        "프로세스 종료·중복 전달 복구 시험"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-005",
+      "columns": [
+        "비공개 S3 호환 저장소 + FFmpeg/ffprobe",
+        "원본 보존·프록시·결정적 합성",
+        "코덱·음원·색·비율 검증"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-006",
+      "columns": [
+        "사실·자산·선호·피드백의 분리",
+        "출력물이 자동으로 공식 설정이 되는 오류 방지",
+        "승인 종류 간 권한 분리 시험"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-007",
+      "columns": [
+        "불변 스냅샷과 입력 계보",
+        "과거 재현·영향 장면만 수정",
+        "수정 후 과거 원본 해시 불변"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-008",
+      "columns": [
+        "권한·시점·분기 필터 후 검색",
+        "타 IP·초안·폐기 설정의 유출 방지",
+        "RAG 교차 테넌트 누출 0건"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-009",
+      "columns": [
+        "공급자 어댑터와 버전별 능력 등록부",
+        "생성 모델 교체·지원 불가 기능 통제",
+        "문서 확인과 실측 시험 모두 기록"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-010",
+      "columns": [
+        "비용 예약·정산 원장",
+        "재시도·병렬 호출의 예산 초과 방지",
+        "동시 요청·미확인 과금 대사 시험"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-011",
+      "columns": [
+        "생성·공식설정·배포 승인 분리",
+        "사용자의 의도를 정확히 반영",
+        "잘못된 자동 승격 0건"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-012",
+      "columns": [
+        "프로젝트·샷 변경의 낙관적 잠금",
+        "편집 충돌·오래된 결과 덮어쓰기 방지",
+        "버전 충돌 시 409/412와 비교 UI"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-013",
+      "columns": [
+        "입력 격리·URL 통제·삭제 전파",
+        "미디어 수집과 장기 기억의 위험 통제",
+        "업로드·SSRF·삭제 복원 시험"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-014",
+      "columns": [
+        "실제 생성량·채택량·수정 시간을 계측",
+        "‘몇 번이면 되는가’를 데이터로 판단",
+        "분모·중단·재시도 로그 누락 없음"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCH-015",
+      "columns": [
+        "내보내기와 이동 가능한 데이터 계약",
+        "고객 IP와 제작 자산의 이식성",
+        "JSON/원본/타임라인 묶음 복원 검증"
+      ],
+      "status": "specified_not_run"
+    }
+  ],
+  "nonfunctional_requirements": [
+    {
+      "id": "NFR-001",
+      "columns": [
+        "제어 API 가용성 월 99.5%",
+        "5xx/timeout 포함한 유효 요청; 계획 중단도 별도 공개",
+        "측정 30일·에러 버짓 운영"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-002",
+      "columns": [
+        "일반 조회 p95 700ms 이하",
+        "서버 수신~응답; 큰 미디어 제외",
+        "기준 부하 30분·cold/warm 별도"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-003",
+      "columns": [
+        "생성 요청 수락 p95 1.5초 이하",
+        "검증·예약·job commit; 생성 완료 제외",
+        "동시 예산 요청 포함"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-004",
+      "columns": [
+        "프로젝트 검색 p95 2초 이하",
+        "권한 필터·검색·출처 조합",
+        "recall@20 및 접근 누출 함께 보고"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-005",
+      "columns": [
+        "서버 저장 후 자동저장 확인 p95 2초 이하",
+        "변경→ack; 오프라인은 별도",
+        "강제 새로고침·충돌 복구"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-006",
+      "columns": [
+        "DB RPO 15분·RTO 4시간 이내",
+        "실제 복구된 마지막 commit·서비스 복원",
+        "분기별 격리 복구 훈련"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-007",
+      "columns": [
+        "잘못된 테넌트/권한 자료 노출 0건",
+        "교차 경로 공격 시험 전 사례",
+        "미해결 1건이면 출시 차단"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-008",
+      "columns": [
+        "내부 중복 예약·정산 0건",
+        "같은 event key 동시 요청 시험",
+        "DB 고유키와 원장 대사"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-009",
+      "columns": [
+        "삭제 후 새 접근 차단 1분 이내",
+        "API·검색·URL 발급·캐시",
+        "기존 발급 URL 정책 포함"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-010",
+      "columns": [
+        "온라인 삭제 전파 24시간 이내",
+        "대상 저장소별 상태; 외부 예외 공개",
+        "미완료 알림·재처리"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-011",
+      "columns": [
+        "키보드 핵심 플로우 수행 가능",
+        "생성·검토·오류·비용 승인",
+        "접근성 수동·자동 점검"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-012",
+      "columns": [
+        "3분 출력의 누적 A/V drift 1프레임 이하",
+        "원본 기준 시작·중간·끝 비교",
+        "여러 FPS·VFR 입력 시험"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-013",
+      "columns": [
+        "원본·선택 테이크·프로젝트 이력 복원",
+        "hash/manifest/FK/파일 존재 확인",
+        "샘플 복원 실패 0건"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-014",
+      "columns": [
+        "지표별 원가 대사 차이 설명 가능",
+        "공급자 청구 vs attempt 원장",
+        "미확인·환불·지연 별도 계정"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "NFR-015",
+      "columns": [
+        "model version 변경 회귀 관리",
+        "고정 IP 평가셋 및 분리된 테스트셋",
+        "임계 품질 하락 시 이전 모델 유지"
+      ],
+      "status": "specified_not_run"
+    }
+  ],
+  "technical_scenarios": [
+    {
+      "id": "TCT-01",
+      "columns": [
+        "A tenant 토큰으로 B IP/파일/검색/캐시 접근",
+        "존재 정보·콘텐츠 노출 없음",
+        "TCH-008, NFR-007"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-02",
+      "columns": [
+        "같은 tenant의 다른 IP Reviewer 접근",
+        "허용 프로젝트 프록시·댓글만 가능",
+        "TCH-008, TCH-013"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-03",
+      "columns": [
+        "얼굴 승인 테이크를 선택",
+        "영상 선택만 변경; 공식설정 불변",
+        "TCH-006, TCH-011"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-04",
+      "columns": [
+        "가사의 ‘죽었다’를 실존자 사실로 추출",
+        "후보 검토 표시; 자동 정사 승인 없음",
+        "TCH-006"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-05",
+      "columns": [
+        "새 활동기 머리색 승인 후 과거 MV 열기",
+        "과거 snapshot·파일 해시 동일",
+        "TCH-007"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-06",
+      "columns": [
+        "분기마다 상충된 관계를 검색",
+        "선택 분기에 맞는 사실만 전달",
+        "TCH-008"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-07",
+      "columns": [
+        "같은 단일값·시간 범위의 충돌 사실 승인",
+        "충돌 해결 전 생성 차단",
+        "TCH-006"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-08",
+      "columns": [
+        "한 번 거절한 컷에서 취향 학습",
+        "제한 범위 후보만 생성; 전체 IP 규칙 자동 수정 없음",
+        "TCH-011"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-09",
+      "columns": [
+        "같은 Idempotency-Key 100개 동시 제출",
+        "job·예약 1개; 같은 응답",
+        "TCH-010, NFR-008"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-10",
+      "columns": [
+        "같은 키로 다른 body 제출",
+        "409; 추가 예약·호출 없음",
+        "TCH-010"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-11",
+      "columns": [
+        "잔액이 한 건뿐일 때 두 생성 동시 제출",
+        "한 건만 예약 성공",
+        "TCH-010"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-12",
+      "columns": [
+        "공급자는 수락했으나 응답이 유실",
+        "submission_unknown; 새 POST 없음",
+        "TCH-004, TCH-010"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-13",
+      "columns": [
+        "공급자 접수 직후 워커 종료",
+        "lease 복구 후 기존 task 조회",
+        "TCH-004"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-14",
+      "columns": [
+        "completed 후 running webhook 도착",
+        "완료 상태 유지; 원장 중복 없음",
+        "TCH-004, NFR-008"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-15",
+      "columns": [
+        "같은 webhook을 반복·서명 위조",
+        "중복 1회 처리; 위조 거절",
+        "TCH-013"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-16",
+      "columns": [
+        "취소와 완료가 동시에 도착",
+        "결과·상태·실비 일관; 무료 취소로 오표시하지 않음",
+        "TCH-010"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-17",
+      "columns": [
+        "견적 후 모델 가격 변경",
+        "새 가격 승인 전 호출 차단",
+        "TCH-009, TCH-010"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-18",
+      "columns": [
+        "참조 수·영상 길이가 모델 한도 초과",
+        "422; 조용한 잘라내기 없음",
+        "TCH-009"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-19",
+      "columns": [
+        "모델의 상업 사용·보관 조건 unknown",
+        "해당 기업 자산 외부 전송 차단",
+        "TCH-009, TCH-013"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-20",
+      "columns": [
+        "특정 의상 버전을 수정",
+        "의존 샷만 후보; 기존 테이크 보존",
+        "TCH-007"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-21",
+      "columns": [
+        "부분 재생성 도중 다른 편집자가 타임라인 변경",
+        "412 또는 새 branch; 기존 편집 보존",
+        "TCH-012"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-22",
+      "columns": [
+        "원본 음원 유지한 채 영상 스타일 변경",
+        "음원 asset hash와 샘플 배치 동일",
+        "TCH-005"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-23",
+      "columns": [
+        "VFR·29.97·세로 입력 혼합 렌더",
+        "길이·프레임·가사·A/V drift 목표 충족",
+        "NFR-012"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-24",
+      "columns": [
+        "악성 PDF·확장자 위장·압축 폭탄 업로드",
+        "검역 거절; 워커 권한 확장 없음",
+        "TCH-013"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-25",
+      "columns": [
+        "URL redirect가 metadata/private 주소로 이동",
+        "네트워크 접근 차단",
+        "TCH-013"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-26",
+      "columns": [
+        "문서 안 프롬프트가 다른 IP 자산 요구",
+        "도구/권한 경계 유지",
+        "TCH-008, TCH-013"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-27",
+      "columns": [
+        "자료 삭제 후 검색·서명 URL 발급·재생성",
+        "새 접근 차단; 파생물 처리 추적",
+        "NFR-009, NFR-010"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-28",
+      "columns": [
+        "삭제 이전 백업을 복구",
+        "tombstone 재적용 후 서비스 개방",
+        "NFR-006, NFR-013"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-29",
+      "columns": [
+        "선택 공급자 장애·대체 공급자 권리 조건 불충족",
+        "자동 전환하지 않고 중단",
+        "TCH-009"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-30",
+      "columns": [
+        "완성 프로젝트 이동용 export→새 공간 import",
+        "허용 자산·타임라인·출처 일관; 새 권한 적용",
+        "TCH-015"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-31",
+      "columns": [
+        "생성 완료지만 비용 pending",
+        "결과 상태와 원가 확인 중을 별도 표시",
+        "TCH-010, NFR-014"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-32",
+      "columns": [
+        "사용자 권한 철회 후 오래된 SSE 연결",
+        "새 이벤트 중단·재인증·캐시 무효화",
+        "TCH-008, TCH-013"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-33",
+      "columns": [
+        "기간 말 구독 해지를 두 번 요청",
+        "해지 의도 1개; 확정 종료일까지 권한 유지; 콘텐츠 삭제 없음",
+        "FR-079, TCH-010"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-34",
+      "columns": [
+        "해지 후 과거 주기의 paid·failed 사건이 역순·중복 도착",
+        "과거 원장만 대사; 현재 구독 임의 재활성화·중복 과금 없음",
+        "FR-084, NFR-008"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-35",
+      "columns": [
+        "새 주기로 재구독 중 과거 결제 성공 도착",
+        "새 동의·주기·검증 결제만 권한 활성화; 철회한 IP grant 유지",
+        "FR-079/084, TCH-008/010"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "TCT-36",
+      "columns": [
+        "G1 최소 이동용 묶음 내보내기",
+        "승인 결과·허용 원본·JSON·출처 존재와 해시 일치; 권리 제외 항목 설명",
+        "TCH-015, NFR-013"
+      ],
+      "status": "specified_not_run"
+    }
+  ],
+  "ux_scenarios": [
+    {
+      "id": "UXT-001",
+      "columns": [
+        "Producer가 자료 업로드 후 공식승인 시도",
+        "제안은 가능, IP 승인권·명시 위임 없으면 승인 거절",
+        "과제 응답·후보상태·API권한"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-002",
+      "columns": [
+        "잘못 추출된 사실 기각",
+        "다음 콘티 확정제약에서 제외",
+        "claim·manifest"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-003",
+      "columns": [
+        "가사에 죽음/배신 은유",
+        "현실정보/공식사건 자동저장 없음",
+        "분류·승인 로그"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-004",
+      "columns": [
+        "이번 후렴만 밝게 설정",
+        "다음 곡 기본스타일 불변",
+        "scope·다음 manifest"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-005",
+      "columns": [
+        "머리색 잠금·카메라만 수정",
+        "제약 유지·검증, 다른 테이크 보존",
+        "diff·영상평가"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-006",
+      "columns": [
+        "두 멤버 한 숏 생성",
+        "외형교환·멤버혼합을 별도 실패",
+        "multi-cast 판정"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-007",
+      "columns": [
+        "기준이미지 권리철회",
+        "새생성/공유 차단·영향 숏 표시",
+        "API·영향목록"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-008",
+      "columns": [
+        "견적 후 모델/해상도 변경",
+        "재견적·재확인",
+        "quote hash"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-009",
+      "columns": [
+        "생성 연타·새로고침",
+        "요청·비용예약 각각 한 번",
+        "멱등성·원장"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-010",
+      "columns": [
+        "공급자 timeout·접수불명",
+        "조회·지원, 자동 유료중복 없음",
+        "unknown·호출 수"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-011",
+      "columns": [
+        "완료와 취소 동시 발생",
+        "실제 결과·비용 상태 일치",
+        "event·settlement"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-012",
+      "columns": [
+        "10숏 중 3개 실패",
+        "성공7개 유지, 실패만 복구",
+        "take IDs"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-013",
+      "columns": [
+        "한 숏 재생성",
+        "나머지 ID/해시 동일",
+        "manifest 비교"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-014",
+      "columns": [
+        "v2 검토 중 v3 생성",
+        "v2승인을 v3에 적용 안 함",
+        "target hash"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-015",
+      "columns": [
+        "오프라인 댓글 작성",
+        "임시저장, 복구후 중복 없음",
+        "comment ID"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-016",
+      "columns": [
+        "외주가 다른 프로젝트 URL 접근",
+        "내용·썸네일·집계 반환 없음",
+        "API응답"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-017",
+      "columns": [
+        "청구담당 내용 접근·Producer IP승인·만료위임 시도",
+        "각 역할의 독립권한과 위임 범위·기간 검사",
+        "capability·grant·감사기록"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-018",
+      "columns": [
+        "열린 링크 권한철회",
+        "새미리보기·다운로드·댓글 차단",
+        "서버권한"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-019",
+      "columns": [
+        "공유 뒤 편집본 변경",
+        "공유package 버전 고정",
+        "share manifest"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-020",
+      "columns": [
+        "모바일 Reviewer 메뉴 탐색",
+        "유료생성 경로·권한 없음",
+        "네트워크 검사"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-021",
+      "columns": [
+        "키보드·200%확대·스크린리더",
+        "핵심 정보·결정 접근 가능",
+        "수동검사"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-022",
+      "columns": [
+        "retry·피드백회차 혼합",
+        "각 단위를 따로 집계",
+        "이벤트 쿼리"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-023",
+      "columns": [
+        "새 곡 결과 블라인드 비교",
+        "적합도와 과도한 반복 동시 평가",
+        "평가자 점수"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-024",
+      "columns": [
+        "3작품에 동일 교정항목 삽입",
+        "적용률·반복 설명을 실측",
+        "manifest·횟수"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-025",
+      "columns": [
+        "2기 관계변화 승인",
+        "1기 납품·기준 유지",
+        "time/branch"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-026",
+      "columns": [
+        "승인누락·권리만료 상태 export",
+        "blocker 설명·출력 차단",
+        "export gate"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-027",
+      "columns": [
+        "자료삭제·보존기간 만료",
+        "내용삭제와 최소감사기록 정책 일치",
+        "삭제로그"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-028",
+      "columns": [
+        "Support 접근 TTL 만료",
+        "내용 접근 차단·감사 유지",
+        "grant 로그"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-029",
+      "columns": [
+        "자료에 ‘다른 IP 공개’ 지시 삽입",
+        "자료를 권한/시스템명령으로 실행 안 함",
+        "악성시험자료"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-030",
+      "columns": [
+        "필터·선택 후 뒤로가기",
+        "IP·버전·선택 문맥 복구",
+        "URL/상태"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-031",
+      "columns": [
+        "색구별 어려운 환경",
+        "텍스트·아이콘으로 상태 판단",
+        "접근성 과제"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-032",
+      "columns": [
+        "장애 후 대체모델 제안",
+        "비용·참조능력 차이 표시·재승인",
+        "견적·동의"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-033",
+      "columns": [
+        "여러 IP에 템플릿 배치·일부실패",
+        "참조·원장 격리, 성공분 유지, 배치 상한 집행",
+        "batch/child manifest·원장"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-034",
+      "columns": [
+        "API키 회수·위조/중복 웹훅",
+        "새 접근 거절·중복 실행 없음·비밀 미노출",
+        "key·delivery·감사로그"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-035",
+      "columns": [
+        "SSO 장애·기업 사용자 비활성화",
+        "임의 우회 없음·새 접근 차단·조직 혼합 없음",
+        "auth mapping·정책버전"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-036",
+      "columns": [
+        "중단/대행 포함 코호트·모델 교체",
+        "분모 유지·지원수준 분리·하위군 퇴행 표시",
+        "집계/평가 버전"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-037",
+      "columns": [
+        "학습 중지·자료 삭제·복원",
+        "새 사용 차단·파생/색인/캐시 전파·복원 재삭제",
+        "목적설정·삭제 증거"
+      ],
+      "status": "specified_not_run"
+    },
+    {
+      "id": "UXT-038",
+      "columns": [
+        "미지원 효과 포함 편집 교환·반환",
+        "손실 명시·새 버전·계보 유지·재승인",
+        "exchange manifest"
+      ],
+      "status": "specified_not_run"
+    }
+  ]
+}

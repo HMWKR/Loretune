@@ -1,0 +1,154 @@
+{
+  "turn": {
+    "id": "0c4f66a2842e48fc9d82a7eaee620ac5",
+    "binding": {
+      "workspace": "9bc9f9c7-cda0-4680-9890-0f77837b0b73",
+      "project": "d5a95c52-7ef8-5932-b697-77363f1c492a",
+      "conversation": "542912eeba7458c09aaff91fd9e97bb2",
+      "selection": "anthropic-haiku-5-5",
+      "model": "claude-haiku-5-5",
+      "model_revision": 0,
+      "context": "c21146561a9a4fd1eab09908ce5236ad3ad7d69b290875851334df8e3a2bd30f",
+      "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "price_revision": "haiku-5-5-20261027-tiered",
+      "transport": {
+        "mode": "anthropic-live",
+        "connection_id": "synthetic-account-declaration",
+        "connection_revision": 1,
+        "destination": "https://api.anthropic.com",
+        "activation_sha256": "ac8cbcc5f20e2a7502151aa4dec621f2829d332899254b807cbf2d969a891728"
+      }
+    },
+    "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+    "name": "A",
+    "run": "06962ecc267d492f8ec75b5bc1e99696",
+    "prompt": "현재 음원으로 내부 편집을 도와줘",
+    "status": "outcome_unknown",
+    "mode": "anthropic-live",
+    "model": "claude-haiku-5-5",
+    "round": 0,
+    "preview_id": "cdfc91a863a34c7bbdc2fb43ccbf37e3",
+    "answer": null,
+    "error": "요청을 중단했습니다. 기존 결과와 비용 상태를 확인하세요. 자동 재시도하지 않습니다.",
+    "usage": {
+      "input_tokens": 100,
+      "output_tokens": 100
+    },
+    "usage_cost_usd": "0",
+    "billing_confirmed": false,
+    "steps": [
+      {
+        "round": 0,
+        "message_sha256": "4ed18477377b94fee747320330aa4088e6a39436912e29f4377951dbd8fa8a24",
+        "pricing_status": "insufficient_billing_evidence",
+        "request_id": "req_synthetic_2"
+      }
+    ],
+    "total_maximum_micro": 10000,
+    "estimated_used_micro": 0,
+    "reservation": "ffb27fe5-edf3-4628-9919-5cf5b7dc42b1",
+    "count_status": "response_received",
+    "submitted": true,
+    "observed_usage": {
+      "input_tokens": {
+        "status": "valid",
+        "value": "100"
+      },
+      "output_tokens": {
+        "status": "valid",
+        "value": "100"
+      },
+      "cache_creation_input_tokens": {
+        "status": "absent"
+      },
+      "cache_read_input_tokens": {
+        "status": "absent"
+      },
+      "service_tier": {
+        "status": "absent"
+      }
+    },
+    "pricing_status": "insufficient_billing_evidence",
+    "provider_response_observed": true
+  },
+  "reservation": [
+    "uncertain",
+    null
+  ],
+  "attempts": [
+    [
+      "chat-count",
+      "observed"
+    ],
+    [
+      "chat-message",
+      "observed"
+    ]
+  ],
+  "budget": [
+    {
+      "id": "93f168cc-1194-43b3-ae01-b80f15f82cb6",
+      "revision": 1,
+      "state": "active",
+      "data": {
+        "scope": "project:d5a95c52-7ef8-5932-b697-77363f1c492a",
+        "limit": {
+          "amount": "1",
+          "currency": "USD"
+        },
+        "reserved": {
+          "amount": "0.002458",
+          "currency": "USD"
+        },
+        "netConfirmed": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "netEstimated": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "available": {
+          "amount": "0.997542",
+          "currency": "USD"
+        },
+        "overrun": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "maxConcurrentJobs": 4,
+        "allowAutomaticRetries": false,
+        "activeReservations": 1,
+        "uncertainReservations": 1,
+        "costScope": "provider-only; local compute unmetered"
+      }
+    }
+  ],
+  "during_cancel": {
+    "status": "cancel_requested",
+    "reservation": [
+      "reserved",
+      null
+    ]
+  },
+  "ledger_events": [
+    [
+      "budget_changed",
+      1000000,
+      "금액 설정은 실제 지출 또는 외부 전송 승인이 아님"
+    ],
+    [
+      "reserved",
+      2458,
+      "요청액 예약; 실제 차감 아님"
+    ],
+    [
+      "uncertain",
+      2458,
+      "접수/과금 미확정: 예약 유지, 재발행 금지"
+    ]
+  ],
+  "synthetic_socket_requests": 2,
+  "actual_provider_calls": 0,
+  "elapsed_seconds": null
+}

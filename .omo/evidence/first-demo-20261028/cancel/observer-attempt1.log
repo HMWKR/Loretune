@@ -1,0 +1,30 @@
+test_received_priced_cancel_preserves_cost_and_allows_next_request (tests.test_general_chat_cancel_received.GeneralChatCancelReceivedTest.test_received_priced_cancel_preserves_cost_and_allows_next_request) ... 127.0.0.1 - - [28/Oct/2026 09:26:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "PATCH /v1/workspaces/a6edfaca-d5e1-445a-973d-69e3f248eede/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 09:26:24] "GET /api/state HTTP/1.1" 200 -
+ERROR
+
+======================================================================
+ERROR: test_received_priced_cancel_preserves_cost_and_allows_next_request (tests.test_general_chat_cancel_received.GeneralChatCancelReceivedTest.test_received_priced_cancel_preserves_cost_and_allows_next_request)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_cancel_received.py", line 95, in test_received_priced_cancel_preserves_cost_and_allows_next_request
+    result = self.record('received-priced-cancel', elapsed)
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_cancel_received.py", line 72, in record
+    events = c.execute('SELECT kind,body FROM ledger_events ORDER BY rowid').fetchall()
+             ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: body
+
+----------------------------------------------------------------------
+Ran 1 test in 0.589s
+
+FAILED (errors=1)

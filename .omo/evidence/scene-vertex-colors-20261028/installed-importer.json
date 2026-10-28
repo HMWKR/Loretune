@@ -1,0 +1,30 @@
+{
+  "path": "/private/tmp/loretune-blender-x64.jEi6qO/unpacked/blender-5.2.2-linux-x64/5.2/scripts/addons_core/io_scene_gltf2/blender/imp/mesh.py",
+  "sha256": "522a7d1e0156c96bc86e82774ccb201003e732627dbbac025c03c3c775faf756",
+  "color_lines": [
+    "",
+    "    for col_i in range(num_cols):",
+    "        name = 'Color' if col_i == 0 else 'Color.%03d' % col_i",
+    "        layer = mesh.color_attributes.new(name, 'BYTE_COLOR', vc_domains[col_i])",
+    "",
+    "        layer.data.foreach_set('color', squish(loop_cols[col_i], np.float32))",
+    "",
+    "    # Make sure the first Vertex Color Attribute is the rendered one",
+    "    if num_cols > 0:",
+    "        mesh.color_attributes.render_color_index = 0"
+  ],
+  "validation_lines": [
+    "    set_poly_smoothing(gltf, pymesh, mesh, vert_normals, loop_vidxs)",
+    "    has_loose_edges = len(edge_vidxs) != 0  # need to calc_loose_edges for them to show up",
+    "    # Make sure edges are calculated (new for Blender 5.1+)",
+    "    mesh.update(calc_edges=True, calc_edges_loose=has_loose_edges)",
+    "    mesh.validate()",
+    "",
+    "    if has_normals:",
+    "        mesh.normals_split_custom_set_from_vertices(vert_normals)",
+    ""
+  ],
+  "primary_standard": "https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes",
+  "spec_observed_commit": "8e798b02d254cea97659a333cfcb20875b62bdd4",
+  "scope": "COLOR_0 linear RGB/RGBA; glTF conformance subset only"
+}

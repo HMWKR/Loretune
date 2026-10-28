@@ -1,0 +1,52 @@
+{
+  "task": "document_preservation_live",
+  "state": "REPORTED",
+  "recorded_at": "2026-10-27T21:50:31.962782+00:00",
+  "owner": "/root/document_preservation_live",
+  "objective": "Verify current document preservation and registration gaps without changing existing files",
+  "write_set": [
+    ".omo/evidence/document-preservation-live-20261028/**"
+  ],
+  "methodology_sources": [
+    ".omo/evidence/document-preservation-final-20261028/audit.py",
+    ".document-gate.json",
+    "docs/qa/DOCUMENT-INVENTORY-20261027.md",
+    "docs/qa/codex-workflow-review-20261027/workflow-simplification-20261028/document-before-final.json",
+    "/Users/leesungmin/.agents/skills/document-completion-gate/SKILL.md"
+  ],
+  "applied_methodology": "Separate T0 path/SHA12, immutable SHA256, registered snapshot SHA256, ordered before-text reconstruction, local link existence, and generated context payload integrity",
+  "verification_standard": "Direct current bytes and paths; preserve unresolved T0 and preT0 limitations; report gate exit1 without changing governance",
+  "non_goals": [
+    "Product/UI behavior tests",
+    "Registration, promotion, context generation",
+    "Private files, secrets, external backup or Trash access",
+    "Restoration or deletion",
+    "Whole platform acceptance"
+  ],
+  "model": "gpt-6-astra",
+  "reasoning": "high fixed-role configuration, not provider telemetry",
+  "capability": {
+    "exec_command": "read calls succeeded",
+    "python3": "/opt/homebrew/bin/python3",
+    "document_gate_skill": "read; checker invoked twice; final exit1 blocked",
+    "lifecycle_status": {
+      "command": "omo-agent-toolkit ulw-loop status --json",
+      "exit": 127,
+      "error": "bun runtime missing; node fallback CLI missing",
+      "currentAttemptDir": "not observable",
+      "installation_or_retry": false
+    }
+  },
+  "auditor_reuse": {
+    "path": ".omo/evidence/document-preservation-final-20261028/audit.py",
+    "sha256": "b125bc82c1f62224c056b6aa4af2d11bb693dcd486828c12c8cad0ee2e35de2b",
+    "changes": [
+      "New evidence output directory via __file__",
+      "S819 document-before-final.json input",
+      "S819 registration-plan.json input",
+      "New schema label"
+    ]
+  },
+  "driver_acceptance": "pending",
+  "report": "report.json"
+}

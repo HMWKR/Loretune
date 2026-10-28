@@ -1,0 +1,124 @@
+{
+  "at": "2026-10-26T04:52:30.953Z",
+  "environment": {
+    "node": "v26.11.1",
+    "browser": null,
+    "viewport": null,
+    "zoom": null,
+    "network": "VM only"
+  },
+  "results": [
+    {
+      "id": "ASY01",
+      "status": "FAIL",
+      "observed": {
+        "afterNewer": 3,
+        "afterLateOlder": 2,
+        "drawRevisions": [
+          3,
+          2
+        ],
+        "source": "index.html:564"
+      },
+      "error": "late older poll regressed state.revision\n\n2 !== 3\n",
+      "stack": [
+        "AssertionError [ERR_ASSERTION]: late older poll regressed state.revision",
+        "",
+        "2 !== 3",
+        "",
+        "    at /Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/before/original-replay.cjs:88:155",
+        "    at async test (/Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/before/original-replay.cjs:26:110)"
+      ]
+    },
+    {
+      "id": "ASY02",
+      "status": "FAIL",
+      "observed": {
+        "expectedRevision": 3,
+        "actualRevision": 2,
+        "busy": true,
+        "dirty": true,
+        "drawRevisions": [
+          2
+        ],
+        "source": "index.html:564"
+      },
+      "error": "poll that started idle overwrote current state while busy\n\n2 !== 3\n",
+      "stack": [
+        "AssertionError [ERR_ASSERTION]: poll that started idle overwrote current state while busy",
+        "",
+        "2 !== 3",
+        "",
+        "    at /Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/before/original-replay.cjs:93:10",
+        "    at async test (/Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/before/original-replay.cjs:26:110)"
+      ]
+    },
+    {
+      "id": "MED02",
+      "status": "FAIL",
+      "observed": {
+        "details": [
+          {
+            "name": "current play rejection",
+            "label": "영상 재생이 차단됐습니다.",
+            "button": "편집 재생",
+            "frames": 0
+          },
+          {
+            "name": "waiting stalls clock and resumes",
+            "time": 1,
+            "frames": 0
+          },
+          {
+            "name": "ended delta 0",
+            "duration": 3,
+            "time": 2.95,
+            "button": "일시 정지",
+            "frames": 1,
+            "canonicalUnchanged": true
+          },
+          {
+            "name": "ended delta 0.025",
+            "duration": 2.975,
+            "time": 2.9250000000000003,
+            "button": "일시 정지",
+            "frames": 1,
+            "canonicalUnchanged": true
+          }
+        ]
+      },
+      "error": "terminal ended media leaves playing UI/RAF active",
+      "stack": [
+        "AssertionError [ERR_ASSERTION]: terminal ended media leaves playing UI/RAF active",
+        "    at /Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/before/original-replay.cjs:117:85",
+        "    at async test (/Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/before/original-replay.cjs:26:110)",
+        "    at async /Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/before/original-replay.cjs:103:2"
+      ]
+    },
+    {
+      "id": "STO02",
+      "status": "FAIL",
+      "observed": {
+        "startup": {
+          "name": "SecurityError",
+          "message": "synthetic storage denied"
+        },
+        "submit": {
+          "name": "SecurityError",
+          "message": "synthetic storage denied"
+        },
+        "requests": 0,
+        "source": "index.html:264,284,310"
+      },
+      "error": "startup recovery visibility throws when storage access denied\n+ actual - expected\n\n+ {\n+   message: 'synthetic storage denied',\n+   name: 'SecurityError'\n+ }\n- 'graceful'\n",
+      "stack": [
+        "AssertionError [ERR_ASSERTION]: startup recovery visibility throws when storage access denied",
+        "+ actual - expected",
+        "",
+        "+ {",
+        "+   message: 'synthetic storage denied',",
+        "+   name: 'SecurityError'"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+--- before/app.py
++++ app.py
+@@ -190,11 +190,21 @@
+             row=c.execute('SELECT body FROM jobs WHERE id=?',(identifier,)).fetchone()
+             if not row:raise KeyError(identifier)
+             job=json.loads(row[0])
++            if job.get('kind')=='local-motion':raise ValueError('모션 후보의 자막은 최종 타임라인에서 편집하세요.')
+             if job['status']!='completed' or not job['snapshot']['timeline'].get('approval'):raise ValueError('완료된 승인 출력의 자막만 미리볼 수 있습니다.')
+             self.check_rights(c,self.snapshot_hashes(job['snapshot']))
+             output=self.root/'exports'/(identifier+'.mp4')
+             if not output.is_file() or hashlib.sha256(output.read_bytes()).hexdigest()!=job.get('sha256'):raise ValueError('출력 파일 검증이 필요합니다.')
+             return webvtt(job['snapshot']['subtitles'])
++
++    def motion_preview(self,name,identifier,frame):
++        import motion_renderer
++        p=self.state()['projects'][name]
++        item=next((x for x in p.get('motion_proposals',[]) if x['id']==identifier),None)
++        if not item or p.get('archived'):raise ValueError('현재 작품의 저장된 모션 변경안이 필요합니다.')
++        with tempfile.TemporaryDirectory(dir=self.root,prefix='motion-preview-') as directory:
++            output=Path(directory)/'frame.png';motion_renderer.frame(item['scene'],frame,output,self.root)
++            return output.read_bytes()
+ 
+     def operations(self):
+         """Actual local job outcomes; HTTP success is not render success."""
+@@ -432,6 +442,24 @@
+             elif a == 'review_timeline_proposal':
+                 import local_creation_tools
+                 result['timeline_proposal']=local_creation_tools.review_timeline(self,c,s,text(d['song']),d)
++            elif a in {'motion_propose','motion_review','motion_render','motion_restore'}:
++                import motion_scene
++                name=text(d['song']);p=s.projects[name]
++                if a=='motion_review':result['motion']=motion_scene.review(self,p,d)
++                elif a=='motion_render':
++                    motion_scene.exact(d,['song','shot_id','motion_revision','grant_id'])
++                    result['motion']=motion_scene.request_render(self,c,p,name,{k:v for k,v in d.items() if k!='song'})
++                else:
++                    if a=='motion_restore':
++                        motion_scene.exact(d,['song','shot_id','base_motion_revision','version'])
++                        if type(d['version']) is not int or d['version']<1:raise ValueError('복원할 모션 버전 번호를 확인하세요.')
++                        shot=__import__('production_context').shot_key(p,d['shot_id'])
++                        version=next((v for v in p['shots'][shot].get('motion_versions',[]) if v['id']==d['version']),None)
++                        if not version:raise ValueError('복원할 모션 버전이 없습니다.')
++                        args=dict(shot_id=d['shot_id'],base_motion_revision=d['base_motion_revision'],scene=deepcopy(version['scene']))
++                    else:
++                        motion_scene.exact(d,['song','shot_id','base_motion_revision','scene']);args={k:v for k,v in d.items() if k!='song'}
++                    result['motion']=motion_scene.propose(p,args,dict(actor='local-owner',mode='human-edit',restored_from=d.get('version')))
+             elif a == 'chat_turn':
+                 if self.chat_runtime is None:raise ValueError('채팅 실행 연결이 없습니다. 외부 전송하지 않았습니다.')
+                 name=text(d['song']);result['chat_turn']=self.chat_runtime.prepare(c,s.projects[name],name,d)
+@@ -656,6 +684,7 @@
+             row=c.execute('SELECT body FROM jobs WHERE id=?',(text(d['job']),)).fetchone()
+             if not row:raise ValueError('작업이 없습니다.')
+             job=json.loads(row[0])
++            if job.get('kind')=='local-motion':raise ValueError('모션 후보는 Take에서 사용권·내용 검토 후 타임라인 출력으로 진행하세요.')
+             if s.projects[job['song']].get('archived'):raise ValueError('보관 해제 후 납품 검토하세요.')
+             if job['status']!='completed':raise ValueError('완료된 렌더만 납품 검토할 수 있습니다.')
+             self.check_rights(c,self.snapshot_hashes(job['snapshot']))
+@@ -829,7 +858,9 @@
+     def process_next(self):
+         with self.connect() as c:
+             c.execute('BEGIN IMMEDIATE')
+-            job=next((json.loads(r[0]) for r in c.execute('SELECT body FROM jobs') if json.loads(r[0])['status']=='queued'),None)
++            jobs=[json.loads(r[0]) for r in c.execute('SELECT body FROM jobs')]
++            motion_busy=any(j.get('kind')=='local-motion' and j['status']=='running' for j in jobs)
++            job=next((j for j in jobs if j['status']=='queued' and not (motion_busy and j.get('kind')=='local-motion')),None)
+             if not job:return False
+             job.update(status='running',started=time.time())
+             job['revision']=job.get('revision',1)+1
+@@ -841,6 +872,9 @@
+                 c.execute('BEGIN IMMEDIATE');latest=json.loads(c.execute('SELECT body FROM jobs WHERE id=?',(job['id'],)).fetchone()[0]);latest.update(values)
+                 latest['revision']=latest.get('revision',1)+1
+                 c.execute('UPDATE jobs SET body=? WHERE id=?',(json.dumps(latest),job['id']))
++        if job.get('kind')=='local-motion':
++            __import__('motion_renderer').process(self,job,read,update)
++            return True
+         out=self.root/'exports'/(job['id']+'.mp4')
+         parts=self.root/'exports'/('parts-'+job['id'])
+         parts.mkdir(exist_ok=True)
+@@ -911,10 +945,18 @@
+                 return self.send(status,payload)
+             if permissions is not None:return self.send(403,{'error':'제한된 API principal은 legacy 작업실 경로를 사용할 수 없습니다.'})
+             if self.path == '/': return self.send(200, (ROOT/'index.html').read_bytes(), 'text/html; charset=utf-8')
+-            if self.path in {'/studio.css', '/studio-media.js'}:
++            if self.path in {'/studio.css', '/studio-media.js', '/motion-studio.js'}:
+                 kind = 'text/css; charset=utf-8' if self.path.endswith('.css') else 'text/javascript; charset=utf-8'
+                 return self.send(200, (ROOT/self.path[1:]).read_bytes(), kind)
+             if self.path == '/api/state': return self.send(200, dict(store.state(), token=token))
++            if self.path.startswith('/api/motion-frame?'):
++                from urllib.parse import parse_qs,urlsplit
++                try:
++                    query=parse_qs(urlsplit(self.path).query,strict_parsing=True)
++                    if set(query)!={'song','proposal','frame'} or any(len(v)!=1 for v in query.values()):raise ValueError('모션 프레임 요청 형식')
++                    value=store.motion_preview(query['song'][0],query['proposal'][0],int(query['frame'][0]))
++                except (ValueError,KeyError,OSError,subprocess.SubprocessError) as exc:return self.send(400,{'error':str(exc)})
++                return self.send(200,value,'image/png')
+             if self.path == '/api/model-catalog': return self.send(200, model_selection.catalog())
+             if self.path == '/api/operations': return self.send(200, store.operations())
+             if self.path.startswith('/api/requests/'):

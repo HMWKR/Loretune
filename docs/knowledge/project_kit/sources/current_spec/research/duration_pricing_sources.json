@@ -1,0 +1,926 @@
+{
+  "schema_version": "2.0",
+  "title": "길이·제작 범위·수정 조건이 연결된 공개 견적 근거",
+  "research_date": "2026-10-23",
+  "method": "한국·일본 판매자 공식 상품과 제작사 공식 페이지를 검색 후 원문으로 재확인. 검색 요약과 본문 충돌 시 본문 채택 또는 비교 제외.",
+  "scope": "자료 확인과 비교용 정규화만. 구매·연락·결제·샘플 품질 시험·우리 원가 계산 없음.",
+  "facts_vs_claims": "가격·범위는 조회 당시 판매자 공개 제안이다. 실제 체결가·시장평균·품질등가·수행 실적의 독립 검증이 아니다.",
+  "publisher_date_policy": "published_or_updated_at=null은 실제 게시·수정일 미표시. 조회일을 게시일로 대체하지 않는다.",
+  "normalization_rules": [
+    "exact/approximate/up_to/range/input_duration을 구분한다.",
+    "3분보다 긴 패키지를3분 전용 요금 또는 초당 비례가로 환산하지 않는다.",
+    "시작가·세금·구매자 수수료·옵션을 분리한다. 환율 변환은 수행하지 않았다.",
+    "원본 음악과 새 일러스트 제작 제외가 모두 확인된 항목만 해당 제외 조건의 비교 후보로 둔다. 그래도 스타일·연출·수정 범위의 등가는 별도 확인한다.",
+    "무료 수정은 공급자별 공정·범위·확정안 변경 조건을 유지한다. 생성 테이크 수와 동일 단위로 비교하지 않는다.",
+    "저가 편집 대안을 포함한다. 비싼 사례만 골라 우리 절감률을 만드는 분석을 금지한다.",
+    "수정·세금·길이의 모순은 해소하지 않고 명시한다. 현재 거래 가능성은 미실증이다."
+  ],
+  "counts": {
+    "pricing_source_count": 11,
+    "strict_explicit_output_duration_sources": 9,
+    "policy_source_count": 4,
+    "excluded_or_conditional_candidates": 5
+  },
+  "sources": [
+    {
+      "id": "DP-01",
+      "supplier": "Ai’m Fine / 낭만주의화가",
+      "country": "KR",
+      "channel": "크몽 판매자 공식 상품",
+      "url": "https://kmong.com/gig/755276",
+      "web_refs": [
+        "turn121view0",
+        "turn126view1",
+        "turn126view2"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인; 주문·연락·결제 미실시",
+      "comparison_type": "사람이 기획·생성·편집하는 AI MV/비주얼라이저 제작 대행",
+      "offers": [
+        {
+          "offer_id": "DP-01-30",
+          "duration": {
+            "kind": "exact",
+            "seconds": 30,
+            "label": "30초"
+          },
+          "price": {
+            "amount": 229000,
+            "currency": "KRW",
+            "kind": "표시 패키지 가격",
+            "tax": "상품가 VAT 포함 여부 미명시",
+            "buyer_fee": "별도 4.5%, 수수료에는 VAT 포함"
+          },
+          "revision_count": 2,
+          "lead_days": 8,
+          "scope": "6~8장면, 콘셉트·편집·BGM"
+        },
+        {
+          "offer_id": "DP-01-60",
+          "duration": {
+            "kind": "exact",
+            "seconds": 60,
+            "label": "60초"
+          },
+          "price": {
+            "amount": 449000,
+            "currency": "KRW",
+            "kind": "표시 패키지 가격",
+            "tax": "상품가 VAT 포함 여부 미명시",
+            "buyer_fee": "별도 4.5%, 수수료에는 VAT 포함"
+          },
+          "revision_count": 2,
+          "lead_days": 14,
+          "scope": "12~16장면, 스토리·연출·후반"
+        }
+      ],
+      "inputs": "고객 음원·로고·이미지의 사용권 확인, 분위기 참고자료.",
+      "included": "1080p MP4 1편, 가로/세로 중 한 비율, 장면 생성·편집·사운드 싱크.",
+      "excluded_or_extra": "나레이션 별도; 새 콘셉트·스토리 재구성·장면 대폭추가·길이 증가·수정 초과는 추가 작업, 금액 미명시.",
+      "revision_definition": "기존 기획 내 자막·색감·일부 장면 교체. 요청을 한 번에 정리.",
+      "cancellation": "페이지 공통 규정: 착수 전 가능; 착수 후 미착수 분리 범위만 가능, 불가분 작업은 불가; 구매확정 후 협의.",
+      "material_scope": {
+        "original_music": "고객 음원 사용 언급; 신규 작곡 제외를 명시적으로 확정하지 않음",
+        "new_illustration": "AI 장면 생성 포함",
+        "both_original_song_and_illustration_excluded_confirmed": false
+      },
+      "caveat": "FAQ의 STARTER/STANDARD 명칭이 실제 STANDARD/DELUXE 표와 불일치. 가격·회차는 패키지표 기준. 동일 인물의 완전 재현은 보장하지 않음.",
+      "brief_quote": "30초 · 6~8장면",
+      "evidence_location": "가격 정보 L72~144; 기본 제공 L56~65; 수정 L211~213; 수수료 L290~294"
+    },
+    {
+      "id": "DP-02",
+      "supplier": "ユズカワ＠映像とイラスト",
+      "country": "JP",
+      "channel": "Coconala 판매자 공식 상품",
+      "url": "https://coconala.com/services/3735397",
+      "web_refs": [
+        "turn129view0",
+        "turn121view2"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인",
+      "comparison_type": "제공 일러스트 기반 비AI MV 편집·연출",
+      "offers": [
+        {
+          "offer_id": "DP-02-30",
+          "duration": {
+            "kind": "approximate",
+            "seconds": 30,
+            "label": "약30초"
+          },
+          "price": {
+            "amount": 25000,
+            "currency": "JPY",
+            "kind": "시작가",
+            "tax": "상품 본문 세금 구분 미명시",
+            "buyer_fee": "Coconala 5.5% 별도; DP-P02 참조"
+          },
+          "revision_count": "공정별2회",
+          "lead": "1주~; 일러스트 추가 시2주~",
+          "scope": "쇼트 MV"
+        },
+        {
+          "offer_id": "DP-02-180",
+          "duration": {
+            "kind": "approximate",
+            "seconds": 180,
+            "label": "약3분"
+          },
+          "price": {
+            "amount": 60000,
+            "currency": "JPY",
+            "kind": "시작가",
+            "tax": "상품 본문 세금 구분 미명시",
+            "buyer_fee": "Coconala 5.5% 별도"
+          },
+          "revision_count": "공정별2회",
+          "lead": "2주~; 일러스트 추가 시3주~",
+          "scope": "단순 컷 구성·카메라"
+        },
+        {
+          "offer_id": "DP-02-180P",
+          "duration": {
+            "kind": "approximate",
+            "seconds": 180,
+            "label": "약3분"
+          },
+          "price": {
+            "amount": 100000,
+            "currency": "JPY",
+            "kind": "시작가",
+            "tax": "상품 본문 세금 구분 미명시",
+            "buyer_fee": "Coconala 5.5% 별도"
+          },
+          "revision_count": "공정별2회",
+          "lead": "3~4주~",
+          "scope": "복잡한 디자인·애니메이션·카메라"
+        }
+      ],
+      "inputs": "음원 WAV/MP3, 가사·크레딧 TXT, 제공 이미지(긴 변4000px 권장), 참고자료.",
+      "included": "MV·타이틀 로고·썸네일, MP4.",
+      "excluded_or_extra": "일러스트·분리 PSD 별도. 특급+50%, 프로젝트 외 재사용·근본적 구성 변경 추가. 저작권·AEP 양도 없음.",
+      "revision_definition": "상단 총6회 표기와 별도로 본문은 각 제작 공정2회. 전체 리메이크6회로 해석하지 않음.",
+      "cancellation": "판매자 취소 요율 미명시; Coconala 공통 절차 DP-P03.",
+      "material_scope": {
+        "original_music": "고객 제공 필수",
+        "new_illustration": "기본 MV 요금에서 제외·옵션",
+        "both_original_song_and_illustration_excluded_confirmed": true
+      },
+      "caveat": "AI 소재·음원 및 AI 출력을 쓰는 활동계정/프로젝트의 의뢰도 거절. AI 플랫폼 협력업체로 가정 불가. 검색 캐시의20,000/50,000/80,000엔은 현재 원문과 달라 제외.",
+      "brief_quote": "ショート動画プラン¥25,000〜",
+      "evidence_location": "서비스 본문 L192; 제출자료·추가비 L194"
+    },
+    {
+      "id": "DP-03",
+      "supplier": "ろろ＠Live2D",
+      "country": "JP",
+      "channel": "Coconala 판매자 공식 상품",
+      "url": "https://coconala.com/services/3009672",
+      "web_refs": [
+        "turn126view4",
+        "turn129view1"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인",
+      "comparison_type": "저가 가사·효과 편집; 원본 그림 기반 쇼트",
+      "offers": [
+        {
+          "offer_id": "DP-03-60",
+          "duration": {
+            "kind": "range",
+            "min_seconds": 60,
+            "max_seconds": 70,
+            "label": "1분~1분10초"
+          },
+          "price": {
+            "amount": 3000,
+            "currency": "JPY",
+            "kind": "표시 기본가",
+            "tax": "상품가 세금 구분 미명시",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": 2,
+          "lead": "협의",
+          "scope": "문자·효과·무료 소재 삽입"
+        },
+        {
+          "offer_id": "DP-03-short",
+          "duration": {
+            "kind": "range",
+            "min_seconds": 30,
+            "max_seconds": 59,
+            "label": "30~59초"
+          },
+          "price": {
+            "amount": 2000,
+            "currency": "JPY",
+            "kind": "편당; 최소2편",
+            "minimum_order_units": 2,
+            "tax": "상품가 세금 구분 미명시",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": 2,
+          "lead": "협의",
+          "scope": "쇼트 영상"
+        }
+      ],
+      "inputs": "제공 소재·일러스트의 사용허가 확인. 음원 신규 제작 범위는 명시하지 않음.",
+      "included": "MP4, 자막·효과·무료素材.",
+      "excluded_or_extra": "1분 추가3,000엔, 30초 추가1,500엔, 썸네일1,000엔. Live2D는 분리 그림 필수·추가 견적.",
+      "revision_definition": "상단 무료수정2회; 수정 범위·초과 단가 미명시.",
+      "cancellation": "판매자 별도 취소 요율 미명시; DP-P03.",
+      "material_scope": {
+        "original_music": "미명시",
+        "new_illustration": "고객 제공 소재 기준이나 신규 그림의 명시적 제외 확정 불가",
+        "both_original_song_and_illustration_excluded_confirmed": false
+      },
+      "caveat": "2,000엔은 1편 단독 주문가가 아님. 60~70초 구간을 임의로60초 정액이나180초 비례가로 바꾸지 않음.",
+      "brief_quote": "30～59秒までの動画",
+      "evidence_location": "서비스 L99; 옵션 L104~116; 기본가 L118; 무료수정 L69~72"
+    },
+    {
+      "id": "DP-04",
+      "supplier": "Designer B",
+      "country": "JP",
+      "channel": "Coconala 판매자 공식 상품",
+      "url": "https://coconala.com/services/4234424",
+      "web_refs": [
+        "turn132view0",
+        "turn140view0",
+        "turn136view5"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인; 수정 조건 내부 불일치",
+      "comparison_type": "리릭·타이포그래피 MV",
+      "offers": [
+        {
+          "offer_id": "DP-04-basic",
+          "duration": {
+            "kind": "up_to",
+            "max_seconds": 90,
+            "label": "원코러스·90초 이내"
+          },
+          "price": {
+            "amount": 10000,
+            "currency": "JPY",
+            "kind": "시작가",
+            "tax": "세별 명시",
+            "buyer_fee": "소비세 적용 후5.5% 별도"
+          },
+          "revision_count": "3회 표기이나3회째부터 추가 문구 충돌",
+          "lead": "20일 예정",
+          "scope": "기본 문자·배경·효과"
+        },
+        {
+          "offer_id": "DP-04-standard",
+          "duration": {
+            "kind": "up_to",
+            "max_seconds": 90,
+            "label": "90초 이내"
+          },
+          "price": {
+            "amount": 20000,
+            "currency": "JPY",
+            "kind": "시작가",
+            "tax": "표시 기본 서비스가 세별; 개별 견적 확인",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": "동일 조건 충돌",
+          "lead": "협의",
+          "scope": "음악에 맞춘 문자 모션·전환"
+        },
+        {
+          "offer_id": "DP-04-custom",
+          "duration": {
+            "kind": "up_to",
+            "max_seconds": 90,
+            "label": "90초 이내"
+          },
+          "price": {
+            "amount": 30000,
+            "currency": "JPY",
+            "kind": "시작가",
+            "tax": "표시 기본 서비스가 세별; 개별 견적 확인",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": "동일 조건 충돌",
+          "lead": "협의",
+          "scope": "세계관 구성·강한 문자 연출"
+        }
+      ],
+      "inputs": "사용허가가 있는 음원·이미지·그림, 가사, 참고영상, 용도·납기.",
+      "included": "MP4/MOV, 선택 플랜의 가사·배경 연출.",
+      "excluded_or_extra": "그림 제작 별도 협의; 90초마다 기본료와 같은 추가요금. 썸네일2,000엔·홍보쇼트3,000엔·로고5,000엔. 상업 이용 별도 협의.",
+      "revision_definition": "무료3회와3회째부터 유료 가능이 공존. ‘확정 무료3회’라고 인용 금지.",
+      "cancellation": "판매자 취소 요율 미명시; DP-P03.",
+      "material_scope": {
+        "original_music": "고객 사용허가 음원 제공",
+        "new_illustration": "별도 견적",
+        "both_original_song_and_illustration_excluded_confirmed": true
+      },
+      "caveat": "90초 이내 패키지는90초 전용이 아님. 원문4분 Standard60,000엔 예시는90초 구간 과금이며 초당 선형 요금이 아님.",
+      "brief_quote": "ワンコーラス／90秒以内",
+      "evidence_location": "본문 L118; 수정 충돌 L121; 세별 L144~150"
+    },
+    {
+      "id": "DP-05",
+      "supplier": "Illust_Fukami",
+      "country": "JP",
+      "channel": "제작자 직접 공식 사이트",
+      "url": "https://illust-fukami.com/contact/guideline-for-remuneration/",
+      "web_refs": [
+        "turn121view5",
+        "turn122view2"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 요금표 확인; 시험적 접수 상품",
+      "comparison_type": "새 일러스트1장+영상 일괄",
+      "offers": [
+        {
+          "offer_id": "DP-05-180",
+          "duration": {
+            "kind": "approximate",
+            "seconds": 180,
+            "label": "약3분 기준"
+          },
+          "price": {
+            "amount": 70000,
+            "currency": "JPY",
+            "kind": "예산 기준 시작가",
+            "tax": "미명시",
+            "buyer_fee": "직거래 수수료 미명시"
+          },
+          "revision_count": "협의",
+          "lead": "45~60일",
+          "scope": "그림1점과 해당 영상 제작"
+        }
+      ],
+      "inputs": "콘셉트·구도·참고자료 필요; 음원 납품 형식은 해당 상품에 미명시.",
+      "included": "일러스트1점·영상, 1920×1080(+1.2배) 기준. 독점 이용허락·상업 이용 가능을 권장계약으로 안내.",
+      "excluded_or_extra": "레이어 분리·수정 협의. 세부 내용·시기에 따라 견적 변동.",
+      "revision_definition": "횟수 미확정. 무료2회 등으로 보충 금지.",
+      "cancellation": "공개 요율 없음.",
+      "material_scope": {
+        "original_music": "포함 미명시",
+        "new_illustration": "1점 포함",
+        "both_original_song_and_illustration_excluded_confirmed": false
+      },
+      "caveat": "그림 별도인 편집 상품과 직접 가격비교 불가. ‘시험적’ 상품이며 확정 발주가가 아님.",
+      "brief_quote": "1枚絵1点と、その動画制作",
+      "evidence_location": "‘試験的’ 표 L88~104"
+    },
+    {
+      "id": "DP-06",
+      "supplier": "すけざね (y_sukezane)",
+      "country": "JP",
+      "channel": "Lancers 판매자 공식 상품",
+      "url": "https://www.lancers.jp/menu/detail/1234186",
+      "web_refs": [
+        "turn142view0"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인",
+      "comparison_type": "VTuber·노래 커버용 제공 자산 기반2D 애니메이션",
+      "offers": [
+        {
+          "offer_id": "DP-06-30",
+          "duration": {
+            "kind": "approximate",
+            "seconds": 30,
+            "label": "약30초"
+          },
+          "price": {
+            "amount": 60000,
+            "currency": "JPY",
+            "kind": "표시 패키지",
+            "tax": "상품 본문 세금 구분 미명시",
+            "buyer_fee": "세금 포함 계약금에5.5%; DP-P04"
+          },
+          "revision_count": 2,
+          "lead_days": 30,
+          "scope": "일러스트·사진 기반2D"
+        },
+        {
+          "offer_id": "DP-06-90",
+          "duration": {
+            "kind": "approximate",
+            "seconds": 90,
+            "label": "약90초"
+          },
+          "price": {
+            "amount": 110000,
+            "currency": "JPY",
+            "kind": "표시 패키지",
+            "tax": "미명시",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": 3,
+          "lead_days": 60,
+          "scope": "일러스트·사진 기반2D"
+        },
+        {
+          "offer_id": "DP-06-240",
+          "duration": {
+            "kind": "approximate",
+            "seconds": 240,
+            "label": "약240초"
+          },
+          "price": {
+            "amount": 220000,
+            "currency": "JPY",
+            "kind": "표시 패키지",
+            "tax": "미명시",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": 5,
+          "lead_days": 90,
+          "scope": "일러스트·사진 기반2D"
+        }
+      ],
+      "inputs": "그림·노래 원본·콘티 초안·참고영상 필수. 음악은 원칙적으로 그대로 사용.",
+      "included": "After Effects 중심2D 영상, 콘티 정리.",
+      "excluded_or_extra": "간이3D30,000엔, 머리·옷 흔들림30,000엔; 통화 협의3,000/5,000엔. 확정안을 되돌리는 변경은 회차 안이어도 비용 가능.",
+      "revision_definition": "검수 및 이후 수정기간은 표시 납기에서 제외. 범위 고정 이후 변경은 추가 시간·비용.",
+      "cancellation": "판매자별 공개 취소 요율 미확인.",
+      "material_scope": {
+        "original_music": "고객 제공",
+        "new_illustration": "고객 제공",
+        "both_original_song_and_illustration_excluded_confirmed": true
+      },
+      "caveat": "프리미엄240초를180초로 비례 환산하지 않음. 3D 생성과 원화 제작은 기본료와 분리.",
+      "brief_quote": "長さ90秒程度",
+      "evidence_location": "입력 L45~56; 요금 L96~124; 옵션 L157~170; 변경 L277~298"
+    },
+    {
+      "id": "DP-07",
+      "supplier": "Tomi Creation",
+      "country": "JP",
+      "channel": "제작사 직접 공식 사이트",
+      "url": "https://tomicreation.com/music-video/",
+      "web_refs": [
+        "turn129view3",
+        "turn132view3"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인",
+      "comparison_type": "AI 이미지·편집 기반 제작 대행",
+      "offers": [
+        {
+          "offer_id": "DP-07-A",
+          "duration": {
+            "kind": "up_to",
+            "max_seconds": 240,
+            "label": "풀코러스4분 이내"
+          },
+          "price": {
+            "amount": 30000,
+            "currency": "JPY",
+            "kind": "참고 시작가",
+            "tax": "세포함 명시",
+            "buyer_fee": "별도 플랫폼 수수료 미명시"
+          },
+          "revision_count": 3,
+          "lead": "표준10~15일; 약5~30일 범위",
+          "scope": "고객 구성안·AI이미지·슬라이드 중심"
+        },
+        {
+          "offer_id": "DP-07-B",
+          "duration": {
+            "kind": "up_to",
+            "max_seconds": 240,
+            "label": "풀코러스4분 이내"
+          },
+          "price": {
+            "amount": 50000,
+            "currency": "JPY",
+            "kind": "참고 시작가",
+            "tax": "세포함 명시",
+            "buyer_fee": "미명시"
+          },
+          "revision_count": 3,
+          "lead": "표준10~15일",
+          "scope": "가사·곡 분석, 구성·스토리·편집"
+        }
+      ],
+      "inputs": "곡·가사·희망사항; A는 고객 구성안 제공.",
+      "included": "플랜별 제작·편집, MP4; 화면비 협의.",
+      "excluded_or_extra": "재생성 수정2,000엔~/회, 4분 초과10,000엔/분, 모델10,000엔/점, 립싱크3,000엔/섹션.",
+      "revision_definition": "무료3회는 색감·컷 순서 등 새 생성이 없는 변경만. 새 장면·구성 변경은 추가.",
+      "cancellation": "공개 요율 미명시.",
+      "material_scope": {
+        "original_music": "곡 제공 전제; 별도 BGM 제작 옵션 있음",
+        "new_illustration": "AI 이미지 생성 포함",
+        "both_original_song_and_illustration_excluded_confirmed": false
+      },
+      "caveat": "3분 요청도4분 이내 구간에 해당하는 예시일 뿐3분 전용정액 아님. 인물·손·립싱크 완전 재현을 보장하지 않음.",
+      "brief_quote": "フルコーラス・4分まで",
+      "evidence_location": "요금 L294~356; 추가비 L363~408; 한계 L428~451"
+    },
+    {
+      "id": "DP-08",
+      "supplier": "Art Edit",
+      "country": "JP",
+      "channel": "제작사 직접 공식 사이트",
+      "url": "https://artedit-j.com/vertical_video/",
+      "web_refs": [
+        "turn132view2",
+        "turn136view2",
+        "turn136view6"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인",
+      "comparison_type": "인접 유형: 고객素材·구성 기반 세로영상 편집; 촬영 별도",
+      "offers": [
+        {
+          "offer_id": "DP-08-30",
+          "duration": {
+            "kind": "up_to",
+            "max_seconds": 30,
+            "label": "편집30초까지"
+          },
+          "price": {
+            "amount": 40000,
+            "currency": "JPY",
+            "kind": "시작가",
+            "tax": "세별 명시",
+            "buyer_fee": "미명시"
+          },
+          "revision_count": null,
+          "lead": "편집5~10영업일 단계",
+          "scope": "고객素材·구성, BGM"
+        },
+        {
+          "offer_id": "DP-08-60",
+          "duration": {
+            "kind": "up_to",
+            "max_seconds": 60,
+            "label": "편집1분까지"
+          },
+          "price": {
+            "amount": 60000,
+            "currency": "JPY",
+            "kind": "시작가",
+            "tax": "세별 명시",
+            "buyer_fee": "미명시"
+          },
+          "revision_count": null,
+          "lead": "동일",
+          "scope": "세로9:16 MP4"
+        }
+      ],
+      "inputs": "기본 편집은 고객이 소재·구성 제공.",
+      "included": "자막·BGM 선택·SE·편집.",
+      "excluded_or_extra": "반일 촬영35,000엔~/종일50,000엔~; 장소 실비·출연자 별도. 나레이션3,000엔~, 특별 애니메이션10,000엔~.",
+      "revision_definition": "초안 확인·수정 단계는 있으나 무료 횟수·범위 미명시.",
+      "cancellation": "공개 요율 미명시.",
+      "material_scope": {
+        "original_music": "BGM 선택 포함; 원곡 제작 제외 명시 없음",
+        "new_illustration": "기본은 소재 제공; 특별 애니메이션 유료",
+        "both_original_song_and_illustration_excluded_confirmed": false
+      },
+      "caveat": "리릭/세로영상 페이지의 일반 편집표. 새 서사MV·캐릭터 생성 견적과 등가로 취급 불가.",
+      "brief_quote": "素材・構成はお客様ご用意",
+      "evidence_location": "요금 L73~100; 프로세스 L151~193"
+    },
+    {
+      "id": "DP-09",
+      "supplier": "gabixong",
+      "country": "KR",
+      "channel": "크몽 판매자 공식 상품",
+      "url": "https://kmong.com/gig/316546",
+      "web_refs": [
+        "turn121view1",
+        "turn122view1",
+        "turn122view4"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인; 세금계산서 표시 충돌",
+      "comparison_type": "인접 유형: 촬영·편집 제작, 상위 패키지에서MV",
+      "offers": [
+        {
+          "offer_id": "DP-09-60",
+          "duration": {
+            "kind": "exact",
+            "seconds": 60,
+            "label": "60초"
+          },
+          "price": {
+            "amount": 500000,
+            "currency": "KRW",
+            "kind": "표시 패키지",
+            "tax": "상품가 VAT 미명시",
+            "buyer_fee": "4.5% 별도, 수수료 VAT 포함"
+          },
+          "revision_count": 1,
+          "lead_days": 7,
+          "scope": "촬영120분·기본편집; 기획 제외"
+        },
+        {
+          "offer_id": "DP-09-180",
+          "duration": {
+            "kind": "exact",
+            "seconds": 180,
+            "label": "180초"
+          },
+          "price": {
+            "amount": 1600000,
+            "currency": "KRW",
+            "kind": "표시 패키지",
+            "tax": "미명시",
+            "buyer_fee": "4.5% 별도"
+          },
+          "revision_count": 2,
+          "lead_days": 15,
+          "scope": "촬영180분·기획/연출 패션·브랜드필름"
+        },
+        {
+          "offer_id": "DP-09-300",
+          "duration": {
+            "kind": "exact",
+            "seconds": 300,
+            "label": "300초"
+          },
+          "price": {
+            "amount": 2500000,
+            "currency": "KRW",
+            "kind": "표시 패키지",
+            "tax": "미명시",
+            "buyer_fee": "4.5% 별도"
+          },
+          "revision_count": 3,
+          "lead_days": 20,
+          "scope": "촬영300분·전문장비MV/광고"
+        }
+      ],
+      "inputs": "참고영상·기획 내용·납기 전달. 출연·장소·의상 담당 범위 미명시.",
+      "included": "패키지별 촬영·편집, BGM.",
+      "excluded_or_extra": "60초 기획 제외; 추가 장비·장소·출연·수정 초과 금액 미명시.",
+      "revision_definition": "편집 시작 후1차 컨펌에서 요청; 회차는1/2/3.",
+      "cancellation": "DP-01과 같은 페이지 공통 취소 규정.",
+      "material_scope": {
+        "original_music": "BGM 포함·신규 원곡 범위 미명시",
+        "new_illustration": "해당 없음; 촬영 포함",
+        "both_original_song_and_illustration_excluded_confirmed": false
+      },
+      "caveat": "180초 상품의 구체 설명은 패션·브랜드필름. ‘3분MV160만원’으로 재명명 금지. 세금계산서 가능/불가 문구가 페이지 안에서 충돌.",
+      "brief_quote": "기본 촬영 및 편집",
+      "evidence_location": "가격 L137~208; 수정·취소 L243~248; 수수료·표시충돌 L330~334"
+    },
+    {
+      "id": "DP-10",
+      "supplier": "さとう⌇MV制作",
+      "country": "JP",
+      "channel": "Coconala 판매자 공식 상품",
+      "url": "https://coconala.com/services/2857389",
+      "web_refs": [
+        "turn147view0",
+        "turn146view1"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 요금표 확인; 접수 일정 연도·현재 가용성 미확정",
+      "comparison_type": "저가 제공 그림 기반 가사MV",
+      "offers": [
+        {
+          "offer_id": "DP-10-A",
+          "duration": {
+            "kind": "threshold_based_not_explicit_max",
+            "threshold_seconds": 300,
+            "label": "5분 이상은1분당 추가요금; 기본 구간 상한은 옵션으로 추론",
+            "three_minute_use": "3분 요청의 기본구간 적용 후보.3분 전용정액 아님; 개별 견적 확인 필요"
+          },
+          "price": {
+            "amount": 8000,
+            "currency": "JPY",
+            "kind": "A플랜 표시가",
+            "tax": "세별 명시",
+            "buyer_fee": "소비세 적용 후5.5% 별도"
+          },
+          "revision_count": "무제한 표기",
+          "lead": "협의; 접수 일정 확인 필요",
+          "scope": "정지 그림·간단 효과·가사"
+        },
+        {
+          "offer_id": "DP-10-B",
+          "duration": {
+            "kind": "same_threshold_rule",
+            "threshold_seconds": 300,
+            "label": "동일 길이 추가요금 규칙"
+          },
+          "price": {
+            "amount": 25000,
+            "currency": "JPY",
+            "kind": "표시가",
+            "tax": "기본서비스세별; 견적 확인",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": "무제한 표기",
+          "lead": "협의",
+          "scope": "간단 카메라·텍스트애니"
+        },
+        {
+          "offer_id": "DP-10-C",
+          "duration": {
+            "kind": "same_threshold_rule",
+            "threshold_seconds": 300,
+            "label": "동일 길이 추가요금 규칙"
+          },
+          "price": {
+            "amount": 35000,
+            "currency": "JPY",
+            "kind": "표시가",
+            "tax": "기본서비스세별; 견적 확인",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": "무제한 표기",
+          "lead": "협의",
+          "scope": "더 많은 모션·화면 디자인"
+        }
+      ],
+      "inputs": "고객 음원WAV/MP3, 그림PNG/PSD, 가사·크레딧TXT 필수; 파츠분리는 고객측.",
+      "included": "선택 플랜 MV, MP4. 원코러스 방향확인→초안→수정→납품.",
+      "excluded_or_extra": "5분 이상1분 추가5,000엔, 가창자1명 추가3,000엔, 썸네일2,000엔, 비공개10,000엔. AI음원·그림 거절.",
+      "revision_definition": "초안 수정 횟수 무제한. 새 자료·대규모 재기획까지 무료라고 확장 해석하지 않음.",
+      "cancellation": "견적 후3일 무응답 시 취소 판단 가능. 계약 취소 요율은 미명시; DP-P03.",
+      "material_scope": {
+        "original_music": "고객 제공 필수",
+        "new_illustration": "고객 제공 필수; 파츠분리도 제외",
+        "both_original_song_and_illustration_excluded_confirmed": true
+      },
+      "caveat": "저가 대안으로 반드시 포함하되 길이 구간은 추론임을 표시. 본문1~2월 접수 안내는 연도 없어 현재 즉시 가능으로 주장 금지.",
+      "brief_quote": "+楽曲1分追加（5分以上〜）",
+      "evidence_location": "요금·흐름 L214; 소재·제약 L216; 길이추가 L235~237; 세별 L255"
+    },
+    {
+      "id": "DP-11",
+      "supplier": "オーリーコンサルティング",
+      "country": "JP",
+      "channel": "Coconala 판매자 공식 상품",
+      "url": "https://coconala.com/services/3101170",
+      "web_refs": [
+        "turn145view1"
+      ],
+      "published_or_updated_at": null,
+      "checked_at": "2026-10-23",
+      "availability": "공개 본문 확인; 납기 설명 불일치",
+      "comparison_type": "저가 MV 편집; 입력자료 길이 기준",
+      "offers": [
+        {
+          "offer_id": "DP-11-input300",
+          "duration": {
+            "kind": "input_duration_up_to",
+            "max_seconds": 300,
+            "label": "편집 전 입력 영상5분 이내; 완성 출력길이 아님"
+          },
+          "price": {
+            "amount": 7000,
+            "currency": "JPY",
+            "kind": "표시 기본가",
+            "tax": "세금 구분 미명시",
+            "buyer_fee": "5.5% 별도"
+          },
+          "revision_count": 2,
+          "lead": "본문5일~1개월; 별도안내5~7일로 불일치",
+          "scope": "컷·제한적 자막·효과·이미지·BGM/SE"
+        }
+      ],
+      "inputs": "음원·일러스트 고객 제공. 참고영상·원본영상 전달.",
+      "included": "MP4, 컷편집, 요점3할 이내 자막, 무료BGM/SE.",
+      "excluded_or_extra": "5분 초과1분당1,000엔; 썸네일1,000엔, 그림4,000엔,3회째 수정1,000엔, 대규모 수정3,000엔.",
+      "revision_definition": "초안 뒤 무료2회. 핵심素材 변경 등 큰 수정 별도.",
+      "cancellation": "판매자 본문은 발주 후 취소 불가라고 명시. 플랫폼 DP-P03와 실제 약정 확인 필요.",
+      "material_scope": {
+        "original_music": "고객 제공 필수",
+        "new_illustration": "고객 제공; 별도 유료 옵션",
+        "both_original_song_and_illustration_excluded_confirmed": true
+      },
+      "caveat": "7,000엔짜리3분 완성MV로 전환 표기 금지. 저가 편집 대안 존재를 보여주는 보조사례.",
+      "brief_quote": "カット前の動画の長さが5分以内",
+      "evidence_location": "서비스 L103~107; 옵션 L110~132"
+    }
+  ],
+  "supporting_policies": [
+    {
+      "id": "DP-P01",
+      "title": "Coconala 서비스 가격과 소비세",
+      "url": "https://help.coconala.com/hc/ja/articles/29004583450777",
+      "web_refs": [
+        "turn140view2"
+      ],
+      "checked_at": "2026-10-23",
+      "summary": "판매자 등록 상태에 따라 상품가 과세가 다름. 과세 사업자는 세별 표시 후 외세 추가. 수수료5.5%는 수수료 자체의 소비세 포함."
+    },
+    {
+      "id": "DP-P02",
+      "title": "Coconala 구매자 수수료",
+      "url": "https://help.coconala.com/hc/ja/articles/900005462403",
+      "web_refs": [
+        "turn144view1"
+      ],
+      "checked_at": "2026-10-23",
+      "effective_date": "2021-04-12",
+      "summary": "결제별5.5%. 과세상품은 소비세 포함 금액이 계산 기준. 옵션별 반올림 때문에 합산 방식에 따라1엔 차이 가능.",
+      "illustrative_arithmetic": {
+        "amount_ex_tax": 10000,
+        "consumption_tax": 1000,
+        "buyer_fee": 605,
+        "total": 11605,
+        "currency": "JPY",
+        "scope": "옵션 없는 과세상품의 공식 계산 구조; 실제 개별 견적을 대체하지 않음"
+      }
+    },
+    {
+      "id": "DP-P03",
+      "title": "Coconala 구매자 취소",
+      "url": "https://help.coconala.com/hc/ja/articles/218118488",
+      "web_refs": [
+        "turn144view0"
+      ],
+      "checked_at": "2026-10-23",
+      "summary": "일반적으로 쌍방 합의 후 판매자가 취소 요청. 종료된 거래방은 취소 불가. 무응답 등의 예외는 별도 조건. 마음에 들지 않으면 자동 환불되는 상품으로 해석 금지."
+    },
+    {
+      "id": "DP-P04",
+      "title": "Lancers 구매자 수수료",
+      "url": "https://www.lancers.jp/faq/A1034/936",
+      "web_refs": [
+        "turn145view2"
+      ],
+      "checked_at": "2026-10-23",
+      "summary": "구매자는 세금 포함 계약금액의5.5%를 별도 부담. 패키지 포함 모든 방식 적용. 상품 화면의 세금 표시를 임의로 보완하지 않음."
+    }
+  ],
+  "excluded_candidates": [
+    {
+      "id": "DP-X01",
+      "url": "https://kmong.com/gig/726176",
+      "web_refs": [
+        "turn136view4"
+      ],
+      "reason": "가격표30/60/90초와FAQ최대60초가 충돌. 90초190,000원을 확정 비교로 사용하지 않음. 기본상품수정0회와 일반설명1회도 상충.",
+      "status": "headline_excluded_due_to_internal_conflict"
+    },
+    {
+      "id": "DP-X02",
+      "url": "https://skima.jp/item/detail?item_id=321431",
+      "web_refs": [
+        "turn121view3",
+        "turn126view3"
+      ],
+      "reason": "검색 발견 후 원문503오류 반복. 검색 캐시만으로 가격표 작성하지 않음.",
+      "status": "unavailable"
+    },
+    {
+      "id": "DP-X03",
+      "url": "https://skima.jp/item/detail?item_id=246535",
+      "web_refs": [
+        "turn121view4",
+        "turn129view2"
+      ],
+      "reason": "초기 공개내용 후 재조회503. 검색 요약과 현재 제목·범위도 달라 핵심 비교 제외.",
+      "status": "unstable_access"
+    },
+    {
+      "id": "DP-X04",
+      "url": "https://lit.link/itomovie",
+      "web_refs": [
+        "turn126view6"
+      ],
+      "reason": "원문403. 검색에 나온8,000엔을 검증 가격으로 사용하지 않음.",
+      "status": "unavailable"
+    },
+    {
+      "id": "DP-X05",
+      "url": "https://minglestudio.co.kr/services",
+      "web_refs": [],
+      "reason": "v1의200~400만원은 이번 작업에서 길이가 연결되지 않았으므로30/60/180초 가격으로 재사용하지 않음.",
+      "status": "duration_not_established"
+    }
+  ],
+  "ppt_primary_candidates": [
+    "DP-03",
+    "DP-10",
+    "DP-01",
+    "DP-02",
+    "DP-06",
+    "DP-05"
+  ],
+  "ppt_secondary_candidates": [
+    "DP-04",
+    "DP-07",
+    "DP-08",
+    "DP-09",
+    "DP-11"
+  ],
+  "root_followup": "최종 인용자는 각 URL을 직접 열어 핵심 가격·범위·조건을 확인하고 웹 인용을 붙일 것."
+}

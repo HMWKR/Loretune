@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-28T05:00:56.951759+00:00",
+  "status": "evidence frozen; public screenshot pairing verified; raw geometry and end-to-end model execution unverified",
+  "scope": {
+    "owned_directory": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/continuation-native-benchmark-20261028/public-triposg",
+    "intent": "Bounded public TripoSG input/rawshape/painted-output provenance check, supplementary 3D research for a music-video platform.",
+    "methodology_sources": [
+      "sources.json#khronos",
+      "sources.json#upstream",
+      "sources.json#community",
+      "sources.json#official_space"
+    ],
+    "applied_methodology": "Pin revision and LFS hashes; inspect actual PNG bytes and images; distinguish shared screenshot subject from proven same indexed geometry; separate static source evidence and publisher claims from measured execution.",
+    "non_goals": [
+      "No browser or product UI interaction",
+      "No product, MD, registry or registration proposal mutation",
+      "No weights, dependencies, inference, credentials or real provider calls",
+      "No commercial Tripo cloud parity claim",
+      "No product ingest or republication of unresolved sample media"
+    ]
+  },
+  "public_file_availability": {
+    "revision": "a3ea6898e829c30fccec4f86ea8846de723cb982",
+    "all_sibling_count": 40,
+    "sample_png_count": 7,
+    "raw_3d_paths_at_revision": [],
+    "observed": "The pinned public model repository exposes seven sample PNGs and model/configuration/workflow files. No GLB, glTF, OBJ, PLY, STL, FBX, USD, USDZ or BLEND path is in its complete API sibling list.",
+    "limit": "This is limited to this public repository/revision, not proof that no author-owned raw artifact exists elsewhere.",
+    "evidence": [
+      "metadata/hf-redistributor-model.json",
+      "metadata/hf-samples-tree.json"
+    ]
+  },
+  "pairing": {
+    "published_chain": {
+      "input": "samples/src-robot.png",
+      "rawshape_screenshot": "samples/mesh-robot.png",
+      "painted_screenshot": "samples/mesh-robot-textured.png",
+      "turntable": "samples/turntable-robot.png",
+      "common_source": "Same pinned modelcard links these PNGs; source input is author-generated imagery, not verified as a real photograph."
+    },
+    "observed": {
+      "sample_download_count": 4,
+      "sample_download_total_bytes": 1992752,
+      "all_sample_sha256_equal_lfs_oid": true,
+      "actual_local_images_viewed_with": "functions tools.view_image, original detail, all four files",
+      "same_subject_visual_correspondence": "All three main images depict a rounded retro robot with a chest rectangle/circle panel, hook hands and boots. Clay and painted PNGs share a three-quarter view and similar framing/crop.",
+      "color_change": "Clay PNG has uniformly gray surfaces. Painted PNG has dark material/paint variation, black eye recesses and joint/chest details. It is visibly darker than the silver input; no measured relighting equivalence.",
+      "shape_limits": "Large head/body/limb/chest forms correspond visually. Input small triangular nose and tiny fasteners/surface detail are not faithfully evidenced by the clay render. Top of head and one boot are cropped in the two 512px sample renders.",
+      "turntable": "Published four-panel raster shows front/right/back/left labels and a closed-looking smooth back. A raster cannot establish watertightness or topology."
+    },
+    "author_claims": {
+      "same_mesh": "The card describes the painted example as the same robot/mesh after a paint stage.",
+      "input_to_shape": "Robot shape 15.2 MB GLB, seed 42; initial row says 30 seconds.",
+      "rawshape_stage": "Later same card calls robot img2mesh 15.2 MB, 845k faces, 18 seconds.",
+      "painted_stage": "27.6 MB with baked base-color texture and approximately 24 additional minutes; author attributes most delay to a Python UV hole-filling loop.",
+      "raw_render": "Author describes Blender Workbench clay renders of raw GLB with no cleanup/retopology/texturing.",
+      "hardware": "Publisher states RTX 5090; not our hardware benchmark."
+    },
+    "inferences": [
+      {
+        "claim": "A staged shape-then-paint workflow can explain why appearance changes while major silhouette appears similar.",
+        "confidence": "moderate",
+        "limit": "The redistributor does not publish the raw pair or a logged execution receipt; its exact paint model/versions and parameters are not established by these screenshots."
+      },
+      {
+        "claim": "This is a useful qualitative example of appearance improvement, not a controlled shape-quality or production latency benchmark.",
+        "confidence": "high",
+        "limit": "Different resolution, camera, lighting, crop and material conditions prevent a scored before/after comparison to the input or a different platform."
+      }
+    ],
+    "unverified": [
+      "Actual raw GLB bytes, face count, sizes, watertightness and editable original scene",
+      "Same vertex/index geometry before and after paint",
+      "Exact input-byte hash received by both stages",
+      "Seeds, stage logs, run identifiers, hardware load, timing and measured cost",
+      "UV/texture map contents, material model and renderer settings",
+      "End-to-end generation reproducibility and commercial Tripo cloud parity"
+    ],
+    "same_geometry_verification": {
+      "status": "not possible from published files at this revision",
+      "raw_glb_downloaded": false,
+      "painted_glb_downloaded": false,
+      "geometry_hash_computed": false,
+      "reason": "Only PNG evidence is public. PNG SHA equality checks publication integrity, not mesh identity.",
+      "required_next_evidence": "Obtain rights-cleared input plus raw and painted GLB with run receipt; decode POSITION and triangle-index accessors, compare canonical geometry and transforms, and explicitly account for UV-driven vertex duplication/reindexing. Separately inspect UV/material/texture data. File-level GLB hashes alone are not geometry hashes."
+    },
+    "latency_status": {
+      "measured_by_us": false,
+      "conflict": "Robot raw shape appears as both 30s and 18s in the same pinned card.",
+      "decision": "Retain both as conflicting author claims. Do not choose one as validated latency or use 24min as a platform SLA."
+    }
+  },
+  "official_source_check": {
+    "mode": "static source inspection only",
+    "source": "sources/official-space-app.py.txt",
+    "revision": "a43a8dcc0ebaf7b06100eb35d4ec7f8c7120e81f",
+    "observed": "Official demo constructs a TripoSG triangle mesh, can simplify it, exports GLB, then exposes a separate Apply Texture action. run_texture receives image, mesh_path and seed; MV-Adapter multi-view output and TexturePipeline are used for UV unwrapping/base texture synthesis.",
+    "evidence_line_ranges": [
+      [
+        133,
+        159
+      ],
+      [
+        290,
+        304
+      ],
+      [
+        355,
+        377
+      ],
+      [
+        460,
+        463
+      ]
+    ],
+    "limits": [
+      "Source was downloaded as text and not executed.",
+      "Official demo source does not prove the community publisher used the identical paint implementation.",
+      "Official open model/demo does not establish architecture, quality, pricing or model identity of current commercial Tripo service."
+    ]
+  },
+  "platform_relevance": {
+    "recommended_interpretation": "Optional 3D asset enrichment can keep shape, paint, native scene placement/light/camera and final video render as distinct internal jobs with visible task outcomes; no photo or 3D requirement should be added to music-first creation.",
+    "usable_now": "Provenance schema and staged quality/evidence criteria only.",
+    "not_adopted": [
+      "No external asset ingested",
+      "No dependency installed",
+      "No architecture or UI feature changed"
+    ],
+    "next_needed": "Rights-cleared matched GLB pair and actual internal import/edit/render round trip would be needed before accepting geometry preservation or a native 3D pipeline benchmark."
+  },
+  "license_result": "See licenses.json: official software MIT is observed; dependencies and sample media have separate/unresolved terms. Community bundle must not be promoted to unrestricted MIT product ingestion.",
+  "bound_receipt": {
+    "per_file_max_bytes": 50000000,
+    "total_sample_max_bytes": 100000000,
+    "largest_sample_bytes": 822599,
+    "actual_sample_total_bytes": 1992752,
+    "model_weights_downloaded": false,
+    "automatic_installation": false,
+    "external_source_code_executed": false,
+    "model_inference_performed": false,
+    "actual_provider_calls": false,
+    "credentials_accessed": false
+  },
+  "completion_basis": "Completed the bounded public-file/provenance and visual review. No raw geometry or live model test is claimed complete. Follow-up requirements are explicit rather than silently removed."
+}

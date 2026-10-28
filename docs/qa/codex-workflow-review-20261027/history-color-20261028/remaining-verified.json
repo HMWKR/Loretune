@@ -1,0 +1,45 @@
+{
+  "schema": "verified-next-work/1",
+  "checked_at": "2026-10-27T18:22:18.076674+00:00",
+  "scope": "Current general conversation and native music workflow; not all original07 or all UI acceptance",
+  "items": [
+    {
+      "id": "GC-HISTORY-01",
+      "priority": "high",
+      "status": "implemented; actual local HTTP/UI and independent review verified, full regression running",
+      "evidence": "general-chat/backend/REPORT.json"
+    },
+    {
+      "id": "NATIVE-COLOR-01",
+      "priority": "medium",
+      "status": "implemented; real PNG and actual HTTP output/recovery verified; independent review/full regression pending",
+      "evidence": "music-workflow/SUMMARY.json"
+    },
+    {
+      "id": "GC-MODEL-02",
+      "priority": "medium",
+      "status": "pending implementation",
+      "observation": "Global general connection capability ignores selected GPT/Grok/no-model, prepare enabled while backend rejects selection",
+      "next_action": "Project/conversation-scoped capability and actionable unavailable-model reason; preserve selection, no silent substitution",
+      "source_paths": [
+        "app.py",
+        "chat_general.py",
+        "general-chat-ui.js"
+      ]
+    },
+    {
+      "id": "GC-SCHEDULE-03",
+      "priority": "medium",
+      "status": "pending implementation",
+      "observation": "General running/queued/continuation statuses reject model change while UI promises next-response reservation; completion path does not apply existing scheduled-selection helper",
+      "next_action": "Integrate general lifecycle with existing scheduling contract and actual normal/unknown/cancel/continuation tests; keep current request model/consent immutable",
+      "source_paths": [
+        "chat_sessions.py",
+        "chat_general.py",
+        "index.html"
+      ]
+    }
+  ],
+  "actual_claude_test": "Specific $1 total/$0.10round/synthetic-input-only approval asked and pending. No credentials/provider access until explicit response.",
+  "registration": "24 links+2 classifications+6 current-context refresh remain approval-required; no changes."
+}

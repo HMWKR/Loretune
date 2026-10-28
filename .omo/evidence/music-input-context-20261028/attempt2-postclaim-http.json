@@ -1,0 +1,73 @@
+{
+  "task_id": "music-input-context-20261028",
+  "attempt": 2,
+  "transport": "actual isolated platform HTTP with in-memory contract-fake provider",
+  "observations": [
+    {
+      "test": "test_postclaim_audio_change_and_timeout_hold_unknown_current_attempt_without_tools",
+      "postclaim_timeout": true,
+      "mode": "contract-fake",
+      "fixture_message_count": 1,
+      "complete_received_exact_approved_body": true,
+      "approved_message_sha256": "b801eb95f406fcd8d9425d5954cfe3b51b2a9b5a74c2d3936ce35b4943aa7033",
+      "approved_manifest_sha256": "b2cd4598cd72d76a6c9ea19ccd65d680c988cd586d560e3d9e65320e5bafd6f8",
+      "current_audio_version": 2,
+      "disclosed_audio_version": 1,
+      "reservation": {
+        "id": "53e0a98e-6dd7-42cc-8e8e-150344b19c77",
+        "state": "uncertain",
+        "actual_micro": null,
+        "held_amount_micro": 2458
+      },
+      "current_message_attempt": {
+        "id": "bbbfb5b517d3d31117257bc866085605a21bf112702f420df2fbe4ecf385bd3f",
+        "state": "unknown",
+        "operation": "chat-message",
+        "job": "984607b6c7a54568ba2962303f4367b6",
+        "reservation": "53e0a98e-6dd7-42cc-8e8e-150344b19c77",
+        "request_hash": "b801eb95f406fcd8d9425d5954cfe3b51b2a9b5a74c2d3936ce35b4943aa7033",
+        "binding_hash": "b2cd4598cd72d76a6c9ea19ccd65d680c988cd586d560e3d9e65320e5bafd6f8"
+      },
+      "tool_call_count": 1,
+      "plans": [],
+      "jobs": [],
+      "turn_status": "outcome_unknown",
+      "billing_confirmed": false,
+      "external_provider_calls": 0
+    },
+    {
+      "test": "test_postclaim_audio_change_keeps_exact_body_blocks_tool_and_settles_observed_usage",
+      "postclaim_timeout": false,
+      "mode": "contract-fake",
+      "fixture_message_count": 2,
+      "complete_received_exact_approved_body": true,
+      "approved_message_sha256": "b801eb95f406fcd8d9425d5954cfe3b51b2a9b5a74c2d3936ce35b4943aa7033",
+      "approved_manifest_sha256": "776d01329e70aeb1a3b8b34c52568b7f9e2c81dc12674957b51c802cdfc89d8e",
+      "current_audio_version": 2,
+      "disclosed_audio_version": 1,
+      "reservation": {
+        "id": "284a100d-bf68-4bb0-a2c9-2aca6bdaa23f",
+        "state": "settled",
+        "actual_micro": 60,
+        "held_amount_micro": 2458
+      },
+      "current_message_attempt": {
+        "id": "3af230fad50c7da95a781862ec4b60d56017f702b21a438d6add1c4ac7203c10",
+        "state": "observed",
+        "operation": "chat-message",
+        "job": "952f31e4f90e46daa9751590a3c71194",
+        "reservation": "284a100d-bf68-4bb0-a2c9-2aca6bdaa23f",
+        "request_hash": "b801eb95f406fcd8d9425d5954cfe3b51b2a9b5a74c2d3936ce35b4943aa7033",
+        "binding_hash": "776d01329e70aeb1a3b8b34c52568b7f9e2c81dc12674957b51c802cdfc89d8e"
+      },
+      "tool_call_count": 1,
+      "plans": [],
+      "jobs": [],
+      "turn_status": "outcome_unknown",
+      "billing_confirmed": false,
+      "external_provider_calls": 0
+    }
+  ],
+  "external_provider_calls": 0,
+  "product_behavior_ast_equal_to_attempt1": true
+}

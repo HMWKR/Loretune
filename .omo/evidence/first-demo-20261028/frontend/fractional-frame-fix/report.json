@@ -1,0 +1,22 @@
+{
+  "status": "REPORTED; root actualUI boundary acceptance pending",
+  "problem": "UI floor omitted valid final/cumulative frames",
+  "reproduction_red": "red.json",
+  "root_cause": "clip-local floor rather than cumulative nearest-internal/ceil-final",
+  "change": "Integer-millisecond cumulative frame counts match normalized saved timeline policy; integer3s bound unchanged",
+  "source_sha256": {
+    "index.html": "9779fa9f53924eeb4b59d20f9a56298c67fb3c84f8ea1f101ef96a08c2cde24a",
+    "tests/timeline_motion_overlay.cjs": "4441d0130fb0cc6dfb25439ae5b4c63806cebb26c50537419427cc936cf4c401",
+    "tests/test_timeline_motion_overlay_ui.py": "5ff23e229e1854ab17f5f21d88b7eae3f404c827686d194bbaef1e90ae5e4bec"
+  },
+  "verification": "green-final.json",
+  "coverage": [
+    ".130s clip permits frame3 at .125s without changing final caption cue",
+    "[.130,.200,.130] bounds follow actual3/5/4 frames",
+    "Whole3s still72frames max71/24",
+    "13 duration-list fixtures compare UI actual helper directly with editing.frame_timing"
+  ],
+  "prior_harness_failure": "green.json: Python interpreted embedded JS newline escape; corrected raw string, all assertions retained",
+  "actual_browser_run": false,
+  "additional_product_or_style_changes": false
+}

@@ -1,0 +1,264 @@
+{
+  "schema": "loretune-worker-result/1",
+  "status": "REPORTED_PENDING_DRIVER_ACCEPTANCE",
+  "at": "2026-10-28T06:14:57.164618+00:00",
+  "issue_id": "AGENT-TOOLS-02-REVIEW-DISCOVERY",
+  "completed_scope": "Exact contextual chat result to existing image preparation review card, no next feature",
+  "owned_product_files": [
+    "chat_general.py",
+    "general-chat-ui.js",
+    "chat-sidebar.js"
+  ],
+  "new_tests": [
+    "tests/test_general_chat_review_navigation.py",
+    "tests/general_chat_review_navigation.cjs"
+  ],
+  "source_final": "source-final.json",
+  "methodology_sources": [
+    "NN/g Recognition rather than recall https://www.nngroup.com/articles/recognition-and-recall/",
+    "WAI APG tabs https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+    "Installed Karpathy Guidelines",
+    "Installed feature-verification/runtime/live-feature-verify/uncompromising-rigor/UI craft",
+    "Hallmark2.0.0 scoped app audit; Impeccable incumbent Operate/refinement directives; current Refero design policy permits existing references for small established patterns"
+  ],
+  "applied_methodology": [
+    "Task-flow link to visible saved result",
+    "Explicit navigation, preserve user control/draft and critical approvals",
+    "One existing DOM/card and real tabs/focus lifecycle",
+    "Actual UI/HTTP/state with stale/foreign/missing/modal/keyboard cases"
+  ],
+  "non_goals_limits": [
+    "No actual Claude/image/video/provider calls or key access",
+    "No new generation/approval/deletion/permission actions",
+    "No user server8765/review57888/Ego userSpace use",
+    "No registry/policy/generated-context changes",
+    "No whole-product completion claim"
+  ],
+  "implementation": [
+    "public_turn exposes existing server-owned turn.run as nullable run_id only; no persistence/authority change",
+    "Button uses exact current conversation, unique scoped run, proposed prepare_image_action result, unique scoped image action and existing shot; click revalidates. No prompt/answer/steps parsing or last-run fallback",
+    "Explicit scene-named button inside its originating turn; existing theme/control/type reused, all attrs/text escaped",
+    "Wait native modal close handlers; scope/sequence revalidation; stage3; existing shot button only if needed; existing mobile/settings pane; open ancestor details before visibility/focus on exact existing card",
+    "Cross-shot timeline dirty guard; same-DOM chat and scoped local drafts remain. No save/generation/approval action from navigation"
+  ],
+  "verification": [
+    {
+      "kind": "focused HTTP/SQLite/API/VM",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_general_chat_review_navigation -q",
+      "result": "6 tests / 4.572s / OK",
+      "evidence": "api-navigation-tests.log"
+    },
+    {
+      "kind": "related existing actual UI/modal/work status/control/history regression",
+      "command": "python3 -m unittest tests.test_work_status_ui tests.test_chat_sidebar_ui tests.test_general_chat_ui_controls tests.test_general_chat_history_ui -q",
+      "environment": "env whitelist + owned loopback-only OS sandbox; LORETUNE_WORK_STATUS_EVIDENCE points to this worker folder",
+      "result": "6 tests / 10.112s / OK",
+      "evidence": "related-ui-tests.log"
+    },
+    {
+      "kind": "source syntax",
+      "result": "Python AST + node --check of both changed frontend sources passed before UI; final same product hashes"
+    },
+    {
+      "kind": "VM boundary",
+      "result": "Normal exact association plus legacy/missing/foreign/duplicate/stale removed destination/late modal callback/new navigation/scope-switch/dirty guard and text escaping pass",
+      "evidence": "vm-after-details-fix.log"
+    },
+    {
+      "kind": "read-only projection",
+      "result": "Actual repeated GET leaves stored turn/actions/runs/manifests unchanged; absent legacy run stays null; public copy modification cannot mutate stored row",
+      "evidence": "api-navigation-tests.log"
+    },
+    {
+      "kind": "actual browser",
+      "result": "PASS Chrome149, same-shot Enter; two collapsed details; different-shot Space; motion and 3D native-close/card-focus/reopen preserves unsaved input; chat draft same DOM; reload restores same saved action and draft; rejected card opens",
+      "evidence": "attempt-2026-10-28T06-10-33-333Z/actual-ui-result.json"
+    },
+    {
+      "kind": "view-only persistence and requests",
+      "result": "Successful whole attempt POST0; pre/post-navigation SQLite all table fingerprints equal; no page errors/request failures/external requests",
+      "evidence": [
+        "attempt-2026-10-28T06-10-33-333Z/navigation-database-before.json",
+        "attempt-2026-10-28T06-10-33-333Z/navigation-database-after.json"
+      ]
+    },
+    {
+      "kind": "actual held/rejected state",
+      "result": "Second attempt explicitly held then rejected same saved action; both navigable; only those two explicit decision POSTs, no media execution",
+      "evidence": "attempt-2026-10-28T06-09-37-698Z/navigation-observations.json"
+    },
+    {
+      "kind": "responsive and focus",
+      "result": "1920/1280/375 exact card visible/focused and body width does not overflow; screenshots use same data/theme",
+      "evidence": "attempt-2026-10-28T06-10-33-333Z/actual-ui-result.json"
+    },
+    {
+      "kind": "200 percent condition",
+      "result": "640 CSS width at scale2 on 1280 viewport preserves reflow/card visibility/focus; native Chrome menu zoom not tested",
+      "evidence": "attempt-2026-10-28T06-10-33-333Z/review-card-200-percent.png"
+    },
+    {
+      "kind": "recording",
+      "result": "Actual continuous screen JPEG clock capture, no editing/speedup/omission; 9.273s raw / 9.291667s MP4 within one24fps frame; full ffmpeg decode0; native video normal1x ended true",
+      "evidence": [
+        "review-navigation-demo.mp4",
+        "attempt-2026-10-28T06-10-33-333Z/encoding-review-navigation-demo/encode-receipt.json",
+        "recording-playback-receipt.json"
+      ]
+    }
+  ],
+  "recording": {
+    "file": "review-navigation-demo.mp4",
+    "sha256": "beae71ddbcac9566d57e4439e238913ec0969c1e921f0238db7ccce868f7fba5",
+    "screen_capture_elapsed_seconds": 9.273,
+    "mp4_duration_seconds": 9.291667,
+    "edited": false,
+    "sped_up": false,
+    "omitted_intervals": [],
+    "silent": true,
+    "start_condition": "Same previously saved synthetic preparation + completed chat, reused unchanged; starts with rejected card after prior explicit decisions",
+    "timecodes": [
+      {
+        "label": "시작 조건: 자체 5초 무음 음원, 사진 없음, 두 장면, 실제 Claude·이미지 생성 없음",
+        "elapsed_seconds": 0,
+        "post_count": 0
+      },
+      {
+        "label": "재시도: 앞선 시도에서 저장한 합성 제작안과 완료 대화를 재사용",
+        "elapsed_seconds": 0.701,
+        "post_count": 0
+      },
+      {
+        "label": "제작안 저장 완료: 대화 결과의 명시적 장면 1 제작안 검토 버튼",
+        "elapsed_seconds": 0.79,
+        "post_count": 0
+      },
+      {
+        "label": "같은 장면의 정확한 기존 제작안 카드로 이동·포커스",
+        "elapsed_seconds": 1.584,
+        "post_count": 0
+      },
+      {
+        "label": "접어 둔 제작 도구·장면 제작에서 같은 장면 검토 재진입",
+        "elapsed_seconds": 2.339,
+        "post_count": 0
+      },
+      {
+        "label": "현재 장면 2에서 장면 1 제작안 검토 · Space",
+        "elapsed_seconds": 3.67,
+        "post_count": 0
+      },
+      {
+        "label": "모션 문구 미저장 초안에서 대화 검토 버튼 이동",
+        "elapsed_seconds": 5.051,
+        "post_count": 0
+      },
+      {
+        "label": "모션 재열기: 미저장 초안 보존",
+        "elapsed_seconds": 5.71,
+        "post_count": 0
+      },
+      {
+        "label": "3D 카메라 미저장 초안에서 대화 검토 버튼 이동",
+        "elapsed_seconds": 6.341,
+        "post_count": 0
+      },
+      {
+        "label": "3D 재열기: 미저장 초안 보존",
+        "elapsed_seconds": 6.993,
+        "post_count": 0
+      },
+      {
+        "label": "검토 이동만으로 승인·생성·예약·저장 API 호출 0",
+        "elapsed_seconds": 7.753,
+        "post_count": 0
+      },
+      {
+        "label": "거절한 저장 카드도 정확하게 열림 · 대화 초안·기존 결과 보존",
+        "elapsed_seconds": 8.394,
+        "post_count": 0
+      }
+    ],
+    "content_review": {
+      "method": "Direct inspection of actual captured JPEG frames and 1920/375 PNGs; actual native video played to ended",
+      "frames": [
+        "frame-00013.jpg",
+        "frame-00027.jpg",
+        "frame-00030.jpg",
+        "frame-00043.jpg"
+      ],
+      "observations": [
+        "Turn has scene-named review button without internal ID",
+        "Original exact review card focus visible",
+        "Motion draft text retained in reopened modal",
+        "375px card fits viewport; visible focus outline"
+      ]
+    },
+    "prior_attempts_preserved": true
+  },
+  "provider_safety": {
+    "actual_claude_calls": 0,
+    "actual_media_calls": 0,
+    "actual_billing_verified": false,
+    "synthetic_chat_count_messages": 3,
+    "provider_submissions": [],
+    "final_counts": {
+      "production_actions": 1,
+      "execution_grants": 0,
+      "generation_jobs": 0,
+      "provider_action_jobs": 0
+    },
+    "media_reservations": 0,
+    "note": "One preparation record is expected synthetic persisted state; no execution grant/job/media reservation. Chat approvals and explicit hold/reject are separately traced fixture/UI actions."
+  },
+  "failure_and_fix": [
+    {
+      "kind": "product edge",
+      "cause": "Visibility check before expanding closed details prevented same-shot card navigation",
+      "evidence_before": "vm-before-details-fix.log",
+      "fix": "Open details via existing helper then check visibility/focus",
+      "after": [
+        "vm-after-details-fix.log",
+        "attempt-2026-10-28T06-10-33-333Z/actual-ui-result.json"
+      ]
+    },
+    {
+      "kind": "observer attempt1",
+      "cause": "3D launcher was attempted while settings pane hidden after returning to chat",
+      "fix": "Use existing settings tab before launcher; no product change",
+      "evidence": "actual-ui-attempt-1.log",
+      "raw_capture_preserved": true
+    },
+    {
+      "kind": "observer attempt2",
+      "cause": "After full document reload, an old window-only DOM identity variable no longer exists",
+      "fix": "Capture new-document original DOM identity before verifying later within-document navigation; no product change",
+      "evidence": "actual-ui-attempt-2.log",
+      "raw_capture_preserved": true,
+      "recording_limit": "Failure handler rewrote recording end after later responsive/reload step; second raw recording timing is not used as completed final demo"
+    }
+  ],
+  "remaining_limits": [
+    "No actual Claude/video/image model or real charge verification; synthetic model responses/price are clearly labeled",
+    "Native Chrome menu200% zoom not tested; equivalent reflow condition only",
+    "New navigation foreign/legacy/missing/duplicate/late cases are API/VM evidence, not all separately induced in real UI",
+    "First baseline screenshot is current implementation before activation of new CTA, not a claimed pre-change rendered snapshot",
+    "Final9.27s demo begins from existing rejected preparation; input/three synthetic approvals/hold are retained in prior failed-attempt raw captures and HTTP/state logs, not spliced into final demo",
+    "Full925 baseline is prior product state, not rerun on this feature; no whole-platform completion or release-readiness claim",
+    "Hallmark/Impeccable detector execution and documents/registration/context approvals are root-owned and not claimed by worker"
+  ],
+  "cleanup": {
+    "own_fixture_port": 59978,
+    "port_closed": true,
+    "fixture_exit_code": 0,
+    "owned_chrome_processes_remaining": [],
+    "browser_close_receipts": [
+      ".omo/evidence/chat-review-navigation-20261028/worker/attempt-2026-10-28T06-10-33-333Z/browser-stop.json",
+      ".omo/evidence/chat-review-navigation-20261028/worker/attempt-2026-10-28T06-09-37-698Z/browser-stop.json",
+      ".omo/evidence/chat-review-navigation-20261028/worker/attempt-2026-10-28T06-08-40-328Z/browser-stop.json"
+    ],
+    "worker_threads_still_alive": [],
+    "user_8765_review_57888_ego_space4_accessed": false
+  },
+  "after_stop": "No further product changes/new feature started. Driver owns acceptance and user-requested pause/document handoff."
+}

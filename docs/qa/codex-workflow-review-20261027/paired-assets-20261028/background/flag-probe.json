@@ -1,0 +1,48 @@
+{
+  "command": [
+    "docker",
+    "--host",
+    "unix:///Users/leesungmin/.docker/run/docker.sock",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--platform=linux/amd64",
+    "--network=none",
+    "--read-only",
+    "--user=65534:65534",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--pids-limit=64",
+    "--memory=1536m",
+    "--cpus=1",
+    "--tmpfs",
+    "/tmp:rw,noexec,nosuid,size=64m,mode=1777",
+    "--mount",
+    "type=bind,src=/private/tmp/loretune-blender-x64.jEi6qO/unpacked/blender-5.2.2-linux-x64,dst=/opt/blender,readonly",
+    "--mount",
+    "type=bind,src=/Users/leesungmin/Desktop/Loretune/.omo/evidence/paired-assets-platform-20261028/background,dst=/input,readonly",
+    "--entrypoint",
+    "/opt/blender/blender",
+    "sha256:3d80954520e9890c49c488e3b739fc3aec09d1a87b91fcbdffd3fe481cb8ca51",
+    "--background",
+    "--factory-startup",
+    "--disable-autoexec",
+    "--threads",
+    "1",
+    "--python-exit-code",
+    "3",
+    "--python",
+    "/input/flag-probe.py"
+  ],
+  "result": {
+    "before": true,
+    "after_setting_false": true,
+    "background_node": [
+      0.05087608844041824,
+      0.05087608844041824,
+      0.05087608844041824,
+      1.0
+    ],
+    "blender": "5.2.2 LTS"
+  }
+}

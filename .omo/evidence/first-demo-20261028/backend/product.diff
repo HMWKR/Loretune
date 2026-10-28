@@ -1,0 +1,342 @@
+--- before/editing.py
++++ after/editing.py
+@@ -61,6 +61,53 @@
+     offset=music['start'] if music and (p['audio_selected'] is None or music['audio']==p['audio_selected']) else p['audio_offset'] if not music else 0
+     return dict(id=0,clips=[dict(shot=n,take=s['selected'],duration=s.get('planned_duration',3),trim=0) for n,s in p['shots'].items()],audio=p['audio_selected'],audio_offset=offset,subtitles=deepcopy(p['subtitles']),profile=p['profile'])
+ 
++def motion_overlay(value, duration):
++    """One immutable motion source, positioned on a clip's local clock."""
++    keys={'shot','motion_revision','start','end','offset_x','offset_y'}
++    if not isinstance(value,dict) or set(value)!=keys:raise ValueError('겹칠 모션의 원본·버전·표시 시간·위치를 확인하세요.')
++    if not isinstance(value['shot'],str) or not value['shot'] or type(value['motion_revision']) is not int or value['motion_revision']<1:raise ValueError('승인된 모션 원본 버전을 선택하세요.')
++    start,end=seconds(value['start']),seconds(value['end'])
++    if not start<end<=duration:raise ValueError('모션 표시 시간은 컷 길이 안에서 시작보다 끝이 뒤여야 합니다.')
++    for field,bound in [('offset_x',1920),('offset_y',1080)]:
++        v=value[field]
++        if type(v) not in (int,float) or not math.isfinite(v) or not -bound<=v<=bound:raise ValueError('모션 이동은 가로 ±1920, 세로 ±1080 안의 유한 숫자여야 합니다.')
++    return dict(value,start=start,end=end,offset_x=round(value['offset_x'],3),offset_y=round(value['offset_y'],3))
++
++def approved_motion(version, *, runtime=False):
++    import guided,motion_scene
++    if not isinstance(version,dict):raise ValueError('승인된 모션 원본 버전이 없습니다.')
++    scene=motion_scene.validate(version.get('scene'))
++    approval=version.get('approval',{})
++    if not isinstance(approval,dict):raise ValueError('모션 원본의 저장된 승인을 확인하세요.')
++    if (type(version.get('id')) is not int or version['id']<1 or
++        approval.get('actor')!='local-owner' or approval.get('scope')!='local-motion-candidate' or
++        not isinstance(approval.get('id'),str) or not approval['id'] or
++        guided.fingerprint(scene)!=version.get('scene_hash') or approval.get('scene_hash')!=version.get('scene_hash')):
++        raise ValueError('모션 원본의 저장된 승인과 내용을 다시 확인하세요.')
++    if runtime:
++        from motion_renderer import font_manifest
++        if font_manifest()!=version.get('font'):raise ValueError('모션 폰트·렌더러가 변경됐습니다. 원본을 새 버전으로 검토하세요.')
++    return deepcopy(version)
++
++def resolve_motion_overlay(p, value, duration, *, runtime=False):
++    value=motion_overlay(value,duration)
++    shot=p['shots'].get(value['shot'])
++    versions=[v for v in shot.get('motion_versions',[]) if v.get('id')==value['motion_revision']] if shot else []
++    if len(versions)!=1:raise ValueError('현재 작품의 승인된 모션 원본 버전을 선택하세요.')
++    version=approved_motion(versions[0],runtime=runtime)
++    if value['end']-value['start']>version['scene']['frame_count']/24+0.000001:raise ValueError('모션 표시 길이는 원본 모션 길이를 넘을 수 없습니다.')
++    # Reuse the chosen approved composition, not its original execution grant.
++    # A later head/music/conversation does not rewrite this immutable source;
++    # the composition receives a separate final timeline approval.
++    return dict(value,motion=version)
++
++def validate_motion_overlay_snapshot(value, duration, *, runtime=False):
++    if not isinstance(value,dict) or set(value)!={'shot','motion_revision','start','end','offset_x','offset_y','motion'}:raise ValueError('겹칠 모션의 고정 입력이 불완전합니다.')
++    placement=motion_overlay({k:v for k,v in value.items() if k!='motion'},duration)
++    version=approved_motion(value['motion'],runtime=runtime)
++    if version['id']!=placement['motion_revision'] or placement['end']-placement['start']>version['scene']['frame_count']/24+0.000001:raise ValueError('고정 모션 버전 또는 표시 길이가 다릅니다.')
++    return dict(placement,motion=version)
++
+ def validate(p, timeline):
+     clips=timeline['clips']
+     if not isinstance(clips,list) or not 1<=len(clips)<=30:raise ValueError('타임라인은 1~30개의 컷이어야 합니다.')
+@@ -74,6 +121,10 @@
+         media_duration=take.get('metadata',{}).get('duration',0)
+         if media_duration and trim>=media_duration:raise ValueError('시작 위치가 영상 길이를 벗어납니다.')
+         clip.update(duration=duration,trim=trim);total+=duration
++        if clip.get('motion_overlay') is None:clip.pop('motion_overlay',None)
++        else:
++            resolved=resolve_motion_overlay(p,clip['motion_overlay'],duration)
++            clip['motion_overlay']={k:v for k,v in resolved.items() if k!='motion'}
+     if total>600:raise ValueError('전체 길이는 최대 600초입니다.')
+     if timeline['profile'] not in PROFILES:raise ValueError('지원하지 않는 출력 규격입니다.')
+     seconds(timeline['audio_offset'])
+@@ -164,7 +215,10 @@
+     """Resolve an immutable EDL; repeated shot occurrences are kept separately."""
+     timeline=validate(p,deepcopy(timeline));result=deepcopy(p);result['shots']={}
+     for i,clip in enumerate(timeline['clips']):
+-        shot=deepcopy(p['shots'][clip['shot']]);shot.update(selected=clip['take'],duration=clip['duration'],trim=clip['trim']);result['shots'][str(i)]=shot
++        shot=deepcopy(p['shots'][clip['shot']]);shot.update(selected=clip['take'],duration=clip['duration'],trim=clip['trim'])
++        shot.pop('motion_overlay',None)
++        if clip.get('motion_overlay'):shot['motion_overlay']=resolve_motion_overlay(p,clip['motion_overlay'],clip['duration'],runtime=True)
++        result['shots'][str(i)]=shot
+     result['audio']=next((deepcopy(a) for a in p['audio_versions'] if a['id']==timeline['audio']),None)
+     result['frame_timing']=frame_timing(c['duration'] for c in timeline['clips'])
+     result.update(audio_offset=timeline['audio_offset'],subtitles=deepcopy(timeline['subtitles']),profile=timeline['profile'],timeline=deepcopy(timeline))
+--- before/renderer.py
++++ after/renderer.py
+@@ -5,7 +5,8 @@
+ import tempfile
+ import time
+ import json
+-from editing import PROFILES, caption_text, frame_timing
++import math
++from editing import PROFILES, caption_text, frame_timing, validate_motion_overlay_snapshot
+ from caption_preview import webvtt
+ 
+ class Cancelled(Exception): pass
+@@ -52,12 +53,12 @@
+     return dict(duration=duration,width=width,height=height,frame_rate=video['r_frame_rate'],
+                 audio_sample_rate=audio.get('sample_rate') if audio else None,frame_timing=timing,streams=types,verified_at=time.time())
+ 
+-def run(args,cancelled):
++def run(args,cancelled,*,timeout=180):
+     with tempfile.TemporaryFile() as errors:
+         p=subprocess.Popen(args,stdout=subprocess.DEVNULL,stderr=errors)
+         start=time.monotonic()
+         while p.poll() is None:
+-            if cancelled() or time.monotonic()-start>180:
++            if cancelled() or time.monotonic()-start>timeout:
+                 p.terminate()
+                 try:p.wait(timeout=3)
+                 except subprocess.TimeoutExpired:p.kill();p.wait()
+@@ -65,6 +66,50 @@
+                 raise ValueError('렌더 제한 시간 초과. 더 짧은 구간 또는 낮은 해상도를 사용하세요.')
+             time.sleep(.05)
+         if p.returncode:raise ValueError('미디어 디코딩 또는 인코딩 실패. 파일 형식과 시작 위치를 확인하세요.')
++
++def clip_command(shot,width,height,frames,duration,exe,work,overlay_parts,cancelled,*,preview_frame=None):
++    """Shared clip compositor for the saved-timeline preview and final output."""
++    take=next(t for t in shot['takes'] if t['id']==shot['selected']);asset=Path(take['asset'])
++    args=[exe,'-nostdin','-y','-v','error','-protocol_whitelist','file,pipe']
++    if asset.suffix.lower() in {'.jpg','.jpeg','.png'}:args+=['-loop','1']
++    else:args+=['-ss',str(shot.get('trim',0))]
++    args+=['-i',str(asset)]
++    base=f'scale={width}:{height}:force_original_aspect_ratio=decrease,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2,setsar=1,tpad=stop_mode=clone:stop_duration={duration}'
++    overlay=shot.get('motion_overlay')
++    if overlay:
++        from motion_renderer import overlay_frames
++        overlay=validate_motion_overlay_snapshot(overlay,shot['duration'],runtime=True)
++        count=min(overlay['motion']['scene']['frame_count'],math.ceil((overlay['end']-overlay['start'])*24))
++        overlay_frames(overlay['motion']['scene'],overlay_parts,work,count,cancelled)
++        args+=['-framerate','24','-protocol_whitelist','file,pipe','-i',str(overlay_parts/'frame-%03d.png')]
++        scale=min(width/1920,height/1080)
++        composite=(f'[0:v]{base},setpts=PTS-STARTPTS,fps=24[base];'
++                   f'[1:v]format=rgba,scale={width}:{height}:force_original_aspect_ratio=decrease,'
++                   f'pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color=black@0,'
++                   f'settb=AVTB,setpts=PTS-STARTPTS+{overlay["start"]}/TB[foreground];'
++                   f'[base][foreground]overlay=x={overlay["offset_x"]*scale}:y={overlay["offset_y"]*scale}:'
++                   f'eof_action=pass:repeatlast=0:enable=\'gte(t,{overlay["start"]})*lt(t,{overlay["end"]})\','
++                   'format=yuv420p')
++        if preview_frame is not None:composite+=f",select='eq(n,{preview_frame})'"
++        args+=['-filter_complex',composite+'[composite]','-map','[composite]']
++    else:
++        if preview_frame is not None:base+=f",setpts=PTS-STARTPTS,fps=24,select='eq(n,{preview_frame})'"
++        args+=['-vf',base]
++    return args
++
++def preview(project,clip_index,frame,destination,root):
++    shots=list(project['shots'].values());timing=frame_timing(s['duration'] for s in shots)
++    if type(clip_index) is not int or not 0<=clip_index<len(shots):raise ValueError('저장된 편집의 컷을 선택하세요.')
++    if type(frame) is not int or not 0<=frame<timing['clips'][clip_index]['frames']:raise ValueError('컷 안의 미리보기 프레임을 선택하세요.')
++    exe=shutil.which('ffmpeg')
++    if not exe:raise ValueError('미리보기에 FFmpeg가 필요합니다.')
++    width,height=PROFILES[project['profile']]
++    with tempfile.TemporaryDirectory(dir=root,prefix='timeline-frame-') as folder:
++        work=Path(folder)
++        args=clip_command(shots[clip_index],width,height,timing['clips'][clip_index]['frames'],
++                          timing['clips'][clip_index]['frames']/24,exe,work,work/'overlay',lambda:False,preview_frame=frame)
++        run(args+['-frames:v','1','-an','-fps_mode','passthrough','-c:v','png',str(destination)],lambda:False,timeout=30)
++    if not Path(destination).is_file() or not 0<Path(destination).stat().st_size<=16*1024*1024:raise ValueError('미리보기 출력 크기 한도 초과')
+ 
+ def render(project,output,progress=lambda n:None,cancelled=lambda:False,parts_dir=None):
+     exe=shutil.which('ffmpeg')
+@@ -79,11 +124,10 @@
+             if cancelled():raise Cancelled('사용자가 취소했습니다.')
+             take=next(t for t in shot['takes'] if t['id']==shot['selected']);asset=Path(take['asset']);part=work/f'{i}.mp4'
+             frames=timing['clips'][i]['frames'];duration=frames/24;trim=shot.get('trim',0)
+-            args=[exe,'-nostdin','-y','-v','error','-protocol_whitelist','file,pipe']
+-            if asset.suffix.lower() in {'.jpg','.jpeg','.png'}:args+=['-loop','1']
+-            else:args+=['-ss',str(trim)]
+-            args+=['-i',str(asset),'-frames:v',str(frames),'-an','-vf',f'scale={width}:{height}:force_original_aspect_ratio=decrease,pad={width}:{height}:(ow-iw)/2:(oh-ih)/2,setsar=1,tpad=stop_mode=clone:stop_duration={duration}','-r','24','-c:v','libx264','-preset','fast','-pix_fmt','yuv420p',str(part)]
+-            run(args,cancelled);parts.append(part);progress(round((i+1)/len(project['shots'])*80))
++            with tempfile.TemporaryDirectory(dir=work,prefix='clip-overlay-') as temporary:
++                args=clip_command(shot,width,height,frames,duration,exe,work,Path(temporary)/'frames',cancelled)
++                run(args+['-frames:v',str(frames),'-an','-r','24','-c:v','libx264','-preset','fast','-pix_fmt','yuv420p',str(part)],cancelled)
++            parts.append(part);progress(round((i+1)/len(project['shots'])*80))
+         listing=Path(folder)/'list.txt';listing.write_text('\n'.join("file '"+str(p)+"'" for p in parts))
+         args=[exe,'-nostdin','-y','-v','error','-f','concat','-safe','0','-protocol_whitelist','file,pipe','-i',str(listing)]
+         audio=project.get('audio');lines=project.get('subtitles',[]);index=1
+--- before/motion_renderer.py
++++ after/motion_renderer.py
+@@ -25,15 +25,30 @@
+  staging.replace(binary);record.write_text(json.dumps(dict(sha256=hashlib.sha256(binary.read_bytes()).hexdigest())))
+  return binary
+ 
+-def frame(scene,index,destination,root,*,validate_only=False):
++def frame(scene,index,destination,root,*,validate_only=False,transparent=False,_binary=None):
+  payload=motion_scene.frame_state(scene,index,all_layers=validate_only)
+  raw=json.dumps(payload,ensure_ascii=False,allow_nan=False).encode()
+  if len(raw)>100000:raise ValueError('frame data too large')
+- result=subprocess.run([str(helper(root)),'validate' if validate_only else 'png',str(destination)],input=raw,capture_output=True,timeout=10)
++ mode='validate' if validate_only else 'png-transparent' if transparent else 'png'
++ result=subprocess.run([str(_binary or helper(root)),mode,str(destination)],input=raw,capture_output=True,timeout=10)
+  if result.returncode:raise ValueError('한글 glyph·텍스트 상자·모션 프레임을 확인하세요. 자동 폰트 대체 없음')
+  return json.loads(result.stdout)
+ 
+ def validate_text(scene,root):return frame(scene,0,'unused',root,validate_only=True)
++
++def overlay_frames(scene,parts,root,count,cancelled):
++ motion_scene.validate(scene);validate_text(scene,root)
++ if type(count) is not int or not 1<=count<=scene['frame_count']:raise ValueError('모션 합성 프레임 범위를 확인하세요.')
++ # Verify/compile once for this bounded sequence, not once per frame. The
++ # selected binary and source scene stay fixed for the whole composition.
++ binary=helper(root);manifest=font_manifest()
++ parts.mkdir(parents=True,exist_ok=False);size=0;deadline=time.monotonic()+60
++ for index in range(count):
++  if cancelled():raise Cancelled('모션 겹치기를 취소했습니다.')
++  if time.monotonic()>deadline:raise ValueError('모션 겹치기 프레임 시간 한도 초과')
++  png=parts/f'frame-{index:03d}.png';frame(scene,index,png,root,transparent=True,_binary=binary);size+=png.stat().st_size
++  if size>128*1024*1024:raise ValueError('모션 겹치기 임시 크기 한도 초과')
++ if font_manifest()!=manifest:raise ValueError('모션 겹치기 중 폰트·렌더러가 변경됐습니다.')
+ 
+ def render(scene,destination,root,progress,cancelled,parts):
+  motion_scene.validate(scene);validate_text(scene,root);deadline=time.monotonic()+180;size=0
+--- before/native/motion_frame_renderer.swift
++++ after/native/motion_frame_renderer.swift
+@@ -11,14 +11,18 @@
+     return CGColor(colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!, components: [Double((hex >> 16) & 255)/255, Double((hex >> 8) & 255)/255, Double(hex & 255)/255, alpha])!
+ }
+ func run() throws {
+-    guard CommandLine.arguments.count == 3, ["validate", "png"].contains(CommandLine.arguments[1]) else { throw RenderError.invalid }
++    guard CommandLine.arguments.count == 3, ["validate", "png", "png-transparent"].contains(CommandLine.arguments[1]) else { throw RenderError.invalid }
+     let raw = FileHandle.standardInput.readData(ofLength: 100001)
+     guard raw.count <= 100000, let obj = try JSONSerialization.jsonObject(with: raw) as? [String:Any],
+           (obj["width"] as? Int) == 1920, (obj["height"] as? Int) == 1080,
+           let background = obj["background"] as? String, let layers = obj["layers"] as? [[String:Any]], layers.count <= 8 else { throw RenderError.invalid }
+     let ctx = CGContext(data:nil,width:1920,height:1080,bitsPerComponent:8,bytesPerRow:1920*4,
+         space:CGColorSpace(name:CGColorSpace.sRGB)!,bitmapInfo:CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)!
+-    ctx.setFillColor(try color(background));ctx.fill(CGRect(x:0,y:0,width:1920,height:1080))
++    if CommandLine.arguments[1] != "png-transparent" {
++        ctx.setFillColor(try color(background));ctx.fill(CGRect(x:0,y:0,width:1920,height:1080))
++    } else {
++        ctx.clear(CGRect(x:0,y:0,width:1920,height:1080))
++    }
+     let fontURL = URL(fileURLWithPath:"/System/Library/Fonts/AppleSDGothicNeo.ttc")
+     guard let descriptors = CTFontManagerCreateFontDescriptorsFromURL(fontURL as CFURL) as? [CTFontDescriptor],
+           let desc = descriptors.first(where:{(CTFontDescriptorCopyAttribute($0,kCTFontStyleNameAttribute) as? String) == "Regular"}) else { throw RenderError.invalid }
+@@ -54,7 +58,7 @@
+         else {throw RenderError.invalid}
+         ctx.restoreGState()
+     }
+-    if CommandLine.arguments[1] == "png" {
++    if CommandLine.arguments[1] != "validate" {
+         guard let image=ctx.makeImage(),let dest=CGImageDestinationCreateWithURL(URL(fileURLWithPath:CommandLine.arguments[2]) as CFURL,UTType.png.identifier as CFString,1,nil) else {throw RenderError.invalid}
+         CGImageDestinationAddImage(dest,image,nil);guard CGImageDestinationFinalize(dest) else {throw RenderError.invalid}
+     }
+--- before/app.py
++++ after/app.py
+@@ -12,7 +12,7 @@
+ import tempfile
+ import uuid
+ import time
+-from threading import Event, Thread
++from threading import Event, Thread, Lock
+ from copy import deepcopy
+ from editing import defaults, current, save_timeline, render_project, probe, seconds, srt, preflight, selection_mismatches
+ from renderer import render, Cancelled, verify_output
+@@ -52,11 +52,14 @@
+ def render_record(job):
+     """Build the sidecar record from the frozen render input and result."""
+     snapshot=job['snapshot']
+-    return dict(job=job['id'],song=job['song'],timeline=snapshot['timeline'],sha256=job['sha256'],audio=snapshot.get('audio'),cost=job['cost'],verified=job['verified'],
++    record=dict(job=job['id'],song=job['song'],timeline=snapshot['timeline'],sha256=job['sha256'],audio=snapshot.get('audio'),cost=job['cost'],verified=job['verified'],
+         settings=snapshot.get('snapshot',[]),
+         semantic_contexts=[deepcopy(sh.get('semantic_context')) for sh in snapshot['shots'].values()],
+         selected_takes=[deepcopy(next(t for t in sh['takes'] if t['id']==sh['selected'])) for sh in snapshot['shots'].values()],
+         reference_versions=[deepcopy(sh.get('reference_versions',[])) for sh in snapshot['shots'].values()])
++    overlays=[dict(clip_index=i,**deepcopy(sh['motion_overlay'])) for i,sh in enumerate(snapshot['shots'].values()) if sh.get('motion_overlay')]
++    if overlays:record['motion_overlays']=overlays
++    return record
+ 
+ def expected_sidecar(job, suffix, asset_root=None):
+     """Reconstruct sidecars without trusting or registering the disk file."""
+@@ -102,6 +105,12 @@
+         matches=[take for take in takes if take['id']==selected]
+         if len(matches)!=1:raise ValueError('invalid selected take')
+         hashes.append(digest(matches[0]['sha256']))
++        overlay=shot.get('motion_overlay')
++        if overlay:
++            from editing import validate_motion_overlay_snapshot
++            frozen=validate_motion_overlay_snapshot(overlay,clip['duration'])
++            if {k:v for k,v in frozen.items() if k!='motion'}!=clip.get('motion_overlay'):raise ValueError('invalid motion overlay snapshot')
++        elif clip.get('motion_overlay'):raise ValueError('missing motion overlay snapshot')
+     audio=snapshot['audio'];audio_id=timeline['audio']
+     if audio_id is None:
+         if audio is not None:raise ValueError('invalid audio snapshot')
+@@ -227,6 +236,7 @@
+ class Store:
+     def __init__(self, root):
+         self.root = Path(root).resolve()
++        self.timeline_preview_lock=Lock()
+         self.root.mkdir(parents=True, exist_ok=True)
+         for folder in ['assets', 'exports']: (self.root/folder).mkdir(exist_ok=True)
+         self.db = self.root/'studio.sqlite3'
+@@ -405,6 +415,36 @@
+         with tempfile.TemporaryDirectory(dir=self.root,prefix='motion-preview-') as directory:
+             output=Path(directory)/'frame.png';motion_renderer.frame(item['scene'],frame,output,self.root)
+             return output.read_bytes()
++
++    def timeline_preview(self,name,revision,clip_index,frame,conversation=None):
++        """Saved composition only; no approval, job, reservation or provider call."""
++        if not self.timeline_preview_lock.acquire(blocking=False):raise Conflict('다른 편집 미리보기를 준비 중입니다. 완료 후 다시 확인하세요.')
++        try:
++            def project():
++                with self.connect() as c:saved=json.loads(c.execute('SELECT body FROM state WHERE id=1').fetchone()[0])
++                scoped=chat_sessions.scoped(saved['projects'][name],conversation)
++                chat_sessions.check_takes(scoped,current(scoped))
++                return scoped
++            p=project();timeline=current(p)
++            if p.get('archived') or type(revision) is not int or revision<1:raise ValueError('현재 작품의 저장된 편집이 필요합니다.')
++            if timeline['id']!=revision:raise Conflict('저장된 편집 버전이 바뀌었습니다. 최신 편집을 확인하세요.')
++            snapshot=render_project(p,timeline)
++            def signature(value):
++                return guided.fingerprint(dict(timeline=value['timeline'],audio=value.get('audio'),
++                    clips=[dict(take=next(t for t in shot['takes'] if t['id']==shot['selected']),
++                                motion_overlay=shot.get('motion_overlay')) for shot in value['shots'].values()]))
++            with self.connect() as c:self.check_rights(c,self.snapshot_hashes(snapshot))
++            with tempfile.TemporaryDirectory(dir=self.root,prefix='timeline-preview-') as folder:
++                output=Path(folder)/'frame.png'
++                __import__('renderer').preview(snapshot,clip_index,frame,output,self.root)
++                value=output.read_bytes()
++            latest=project()
++            if current(latest)['id']!=revision or latest.get('archived'):raise Conflict('미리보기 중 편집 버전이 바뀌었습니다. 다시 확인하세요.')
++            # Revalidate source bytes/approval and rights after local rendering.
++            if signature(render_project(latest,current(latest)))!=signature(snapshot):raise Conflict('미리보기 중 원본 구성이 바뀌었습니다. 다시 확인하세요.')
++            with self.connect() as c:self.check_rights(c,self.snapshot_hashes(snapshot))
++            return value
++        finally:self.timeline_preview_lock.release()
+ 
+     def operations(self):
+         """Actual local job outcomes; HTTP success is not render success."""
+@@ -1311,6 +1351,16 @@
+                     value=store.motion_preview(query['song'][0],query['proposal'][0],int(query['frame'][0]),query.get('conversation',[None])[0])
+                 except (ValueError,KeyError,OSError,subprocess.SubprocessError) as exc:return self.send(400,{'error':str(exc)})
+                 return self.send(200,value,'image/png')
++            if self.path.startswith('/api/timeline-frame?'):
++                from urllib.parse import parse_qs,urlsplit
++                try:
++                    query=parse_qs(urlsplit(self.path).query,strict_parsing=True)
++                    expected={'song','timeline_revision','clip_index','frame'}
++                    if set(query) not in (expected,expected|{'conversation'}) or any(len(v)!=1 for v in query.values()):raise ValueError('편집 프레임 요청 형식')
++                    value=store.timeline_preview(query['song'][0],int(query['timeline_revision'][0]),int(query['clip_index'][0]),int(query['frame'][0]),query.get('conversation',[None])[0])
++                except Conflict as exc:return self.send(409,{'error':str(exc)})
++                except (ValueError,KeyError,OSError,subprocess.SubprocessError) as exc:return self.send(400,{'error':str(exc)})
++                return self.send(200,value,'image/png')
+             if self.path == '/api/model-catalog': return self.send(200, model_selection.catalog())
+             if self.path == '/api/operations': return self.send(200, store.operations())
+             if self.path.startswith('/api/requests/'):

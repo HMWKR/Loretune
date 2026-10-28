@@ -1,0 +1,13 @@
+======================================================================
+FAIL: test_legacy_runtime_default_scope_excludes_media_generation (tests.test_general_chat_tool_invariants.StaticToolScopeTest.test_legacy_runtime_default_scope_excludes_media_generation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-leesungmin-Desktop-Loretune/1ebfb89f-9e94-4156-8aea-2393f299eb3e/scratchpad/tb-wave1/tests/test_general_chat_tool_invariants.py", line 43, in test_legacy_runtime_default_scope_excludes_media_generation
+    self.assertNotIn('request_media_generation', value['tools'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'request_media_generation' unexpectedly found in ['search_project_context', 'get_model_capabilities', 'propose_media_plan', 'estimate_media_plan', 'prepare_image_action', 'prepare_video_action', 'request_media_generation', 'get_generation_job', 'propose_timeline_edit', 'propose_timeline_changes', 'propose_motion_scene', 'request_motion_render', 'request_render', 'propose_memory_update']
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+FAILED (failures=1)

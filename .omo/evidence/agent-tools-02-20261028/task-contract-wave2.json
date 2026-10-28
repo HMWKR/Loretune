@@ -1,0 +1,101 @@
+{
+ "schema": "loretune-agent-execution-plan/1",
+ "at": "2026-10-28T09:22:18.969466+00:00",
+ "issue_id": "AGENT-TOOLS-02-wave2",
+ "written": "BEFORE spawn (S-GOV)",
+ "lead": "main session; acceptance_owner=lead after critic verdict + codex read-only gate (main direct) + full regression",
+ "model_reasoning": "workers inherit session model (claude-opus-5-5) and session effort; not overridden; actual per-agent reasoning not independently observed",
+ "orchestration_substitute": "harness-orchestration:orchestrate is not installed in this Claude runtime; substitute = native Workflow + rules/agent-teams-boundaries.md pipeline (plan→plan review→execute→1st review→synthesis→final verify→approval)",
+ "methodology_sources": [
+  "METHODOLOGY-FIT-MATRIX-ko.md rows: Human–AI role separation (proposal vs server fact vs human approval), risk-based progressive disclosure (cost/rights/model/approval at decision point; internals in details), state transition & failure/recovery, existing design system Operate (token reuse, no new HEX)",
+  "WCAG 2.2 AA (2.5.7, 2.5.3, 2.5.8, 1.4.3/1.4.11, 3.3.1, 4.1.2)",
+  "Impeccable craft-floor/audit/critique (installed skill)",
+  "Hallmark Floor (installed skill, static only)",
+  "Karpathy guidelines",
+  "codex review-1.md High items"
+ ],
+ "tasks": [
+  {
+   "id": "A2a-media-d15",
+   "deps": [
+    "W1b accepted"
+   ],
+   "write_set": [
+    "chat_general.py",
+    "agent_preferences.py",
+    "app.py",
+    "fal_dispatch.py",
+    "fal_models.py",
+    "model_selection.py",
+    "media_creator.py",
+    "production_tools.py",
+    "chat_protocols.py",
+    "chat_runtime.py",
+    "chat_models.py",
+    "production_context.py",
+    "tests/* (new or intentionally changed with reason)"
+   ],
+   "objective": "S4 prepare_video_action; S15 D15 proposal + model_reason + actor + provenance(engine,chat_model,permission_mode,effort,run,call); D19 fal public unit price catalog (source URL, fetched_at, revision, label documented-estimate); D20 MAX_INPUT 16384 + reservation impact; D21 chat model price/reason/effort/permission in settings; S9 get_agent_settings",
+   "authorized_probes": [
+    "WebFetch/WebSearch of fal.ai public model/pricing pages only (free reading)"
+   ],
+   "forbidden": [
+    "paid/provider calls",
+    "count_tokens",
+    "8765/57888",
+    "browsers",
+    "deleting files"
+   ],
+   "stop_condition": "targeted + related tests pass, result.md with D15 surface matrix, token bytes before/after"
+  },
+  {
+   "id": "A2b-3d-pref-guards",
+   "deps": [
+    "A2a"
+   ],
+   "write_set": "same as A2a plus scene_project.py, local_creation_tools.py, scene_spec.py",
+   "objective": "S7b propose_scene_3d wiring with server rechecks; S10 propose_preference_rule (candidate only); request_render/request_motion_render grant_id prechecks → structured results; tool×permission matrix tests; agent cannot change settings invariant"
+  },
+  {
+   "id": "E1-design",
+   "deps": [
+    "W1b accepted",
+    "before-capture done"
+   ],
+   "write_set": [
+    "index.html",
+    "studio.css",
+    "chat-sidebar.js",
+    "general-chat-ui.js",
+    "studio-media.js",
+    "scene-studio.js",
+    "motion-studio.js",
+    "UI tests"
+   ],
+   "objective": "fix all confirmed design findings assigned to E1 in PLAN §8-5 (user: all except rejected)",
+   "gates": [
+    "impeccable detect index.html (file mode)",
+    "hallmark sloplint static vs before",
+    "no new HEX / reuse tokens"
+   ]
+  },
+  {
+   "id": "B2-cards",
+   "deps": [
+    "A2b",
+    "E1"
+   ],
+   "write_set": [
+    "index.html (media/3D/motion card markup)",
+    "general-chat-ui.js",
+    "chat-sidebar.js",
+    "studio.css",
+    "scene-studio.js",
+    "motion-studio.js",
+    "UI tests"
+   ],
+   "objective": "S5 video card navigation, S8 3D/motion card navigation, S16 D15 surface display, design #41 #44 #45 #46 #49, toolLabels for new tools"
+  }
+ ],
+ "verification_standard": "each track: critic (agentType critic) adversarial verify; then main: codex read-only, full regression via run_regression.py (skip 0), aside after-capture same conditions as before-capture, live feature verify via aside repl with synthetic model adapter (synthetic ≠ real model)"
+}

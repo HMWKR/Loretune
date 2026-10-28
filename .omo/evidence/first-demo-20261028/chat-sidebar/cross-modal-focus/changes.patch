@@ -1,0 +1,43 @@
+--- before/chat-sidebar.js
++++ after/chat-sidebar.js
+@@ -107,8 +107,12 @@
+   };
+   if (activeDialog && activeDialog === desiredDialog) { focusWorkTarget(target()); return; }
+   const scope = conversationDraftKey('agent-work-status');
+-  for (const dialog of [...dialogStack].reverse()) dialog.close();
+-  queueMicrotask(() => {
++  const closing = [...dialogStack].reverse().filter(dialog => dialog.open);
++  const closed = closing.map(dialog => new Promise(resolve => dialog.addEventListener('close', resolve, { once: true })));
++  for (const dialog of closing) dialog.close();
++  // Existing modal close handlers persist drafts and return focus to launchers.
++  // Complete that lifecycle before giving the requested work card focus.
++  Promise.all(closed).then(() => {
+    syncDialogs(); if (scope !== conversationDraftKey('agent-work-status')) return;
+    setStep(key === 'output' ? 4 : 3);
+    // Let the original stage/mobile controllers settle before selecting review.
+--- before/tests/work_status.cjs
++++ after/tests/work_status.cjs
+@@ -22,11 +22,22 @@
+    await page.$eval('#agentWorkStatus details',e=>e.open=true);await page.focus('[data-agent-work="'+key+'"]');await page.keyboard.press('Enter');await page.waitForFunction(target=>document.activeElement.id===target,{},target);assert.equal(await page.$eval('#'+target,e=>!!e.getClientRects().length),true,'keyboard work link must expose its existing real card container');
+    if(dialog){assert.equal(await page.$eval('#'+dialog,e=>e.open),true);await page.evaluate(id=>document.getElementById(id).close(),dialog);await page.waitForFunction(()=>!document.getElementById('agentChatPane').closest('dialog'));}
+   }
++  // Navigate out of a genuinely dirty modal while its same-DOM AI dock is open.
++  await page.evaluate(()=>{window.crossModalFocusEvents=[];document.addEventListener('focusin',e=>crossModalFocusEvents.push({event:'focusin',id:e.target.id,at:performance.now()}));for(const id of ['motionDialog','sceneStudioDialog'])document.getElementById(id).addEventListener('close',()=>crossModalFocusEvents.push({event:'close',dialog:id,id:document.activeElement.id,at:performance.now()}));});
++  for(const [key,id,selector,value] of [['motion','motionDialog','[data-motion-field="text"]','닫기 이후에도 보존할 모션 초안'],['scene','sceneStudioDialog','[data-scene-path="camera.lens_mm"]','73']]){
++   if(await page.$eval('#agentChatTab',e=>e.getAttribute('aria-selected'))!=='true')await page.click('#agentToggle');await page.$eval('#agentWorkStatus details',e=>e.open=true);await page.focus('[data-agent-work="'+key+'"]');await page.keyboard.press('Enter');await page.waitForSelector('#'+id+'[open]');
++   if(key==='motion')await page.click('#motionStart');await page.$eval(selector,(e,value)=>{e.closest('details')&&(e.closest('details').open=true);e.value=value;e.dispatchEvent(new Event('input',{bubbles:true}));},value);
++   await page.click('#'+id+' .agent-dialog-launcher');await page.waitForFunction(()=>!!document.getElementById('generalChatPrompt').getClientRects().length);await page.$eval('#agentWorkStatus details',e=>e.open=true);if(evidence)await page.screenshot({path:path.join(evidence,'dirty-'+key+'-before-navigation.png')});
++   await page.focus('[data-agent-work="provider"]');await page.keyboard.press('Enter');await page.waitForFunction(id=>!document.getElementById(id).open,{},id);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(resolve,50)))));
++   const observation=await page.evaluate(()=>({focused:document.activeElement.id,events:crossModalFocusEvents,dialogs:[...document.querySelectorAll('dialog[open]')].map(x=>x.id)}));if(evidence){fs.writeFileSync(path.join(evidence,'cross-'+key+'-focus.json'),JSON.stringify(observation,null,2)+'\n');await page.screenshot({path:path.join(evidence,'dirty-'+key+'-after-navigation.png')});}
++   assert.equal(observation.focused,'generationPreparations',key+' close handler must not steal the destination card focus');
++   await page.click('#agentToggle');await page.$eval('#agentWorkStatus details',e=>e.open=true);await page.focus('[data-agent-work="'+key+'"]');await page.keyboard.press('Enter');await page.waitForSelector('#'+id+'[open]');const restored=await page.$eval(selector,e=>e.value);assert.equal(restored,value,'unsaved '+key+' input must survive navigation and reopen');if(evidence)fs.writeFileSync(path.join(evidence,'cross-'+key+'-draft.json'),JSON.stringify({expected:value,restored,preserved:true,postActions:actions},null,2)+'\n');await page.evaluate(id=>document.getElementById(id).close(),id);await page.waitForFunction(()=>!document.getElementById('agentChatPane').closest('dialog'));
++  }
+   await page.click('#agentToggle');const defaultConversation=await page.$eval('#conversationSelect',e=>e.value);const other=await page.$$eval('#conversationSelect option',(options,id)=>options.find(x=>x.value!==id).value,defaultConversation);await page.select('#conversationSelect',other);await page.waitForFunction(id=>project()?.active_conversation?.id===id&&!conversationSwitching,{},other);await page.waitForFunction(()=>document.querySelectorAll('[data-agent-work]').length===1);assert.match(await text(),/실패 1건/);assert.doesNotMatch(await text(),/모션|3D|AI 미디어/);
+   await page.select('#songs','Status B');await page.waitForFunction(()=>song()==='Status B'&&!!project()?.active_conversation);await page.waitForFunction(()=>document.querySelectorAll('[data-agent-work]').length===1);assert.match(await text(),/실패 1건/);assert.doesNotMatch(await text(),/모션|3D|AI 미디어/);
+   await page.setViewport({width:375,height:900});await page.waitForFunction(()=>document.querySelector('.agent-resizer').hidden&&document.querySelector('.agent-work').hidden);await page.$eval('#agentWorkStatus details',e=>e.open=true);await page.focus('[data-agent-work="output"]');await page.keyboard.press('Enter');await page.waitForFunction(()=>document.activeElement.id==='jobs'&&!document.getElementById('agentSettingsPane').hidden);assert.equal(await page.$eval('#jobs',e=>!!e.getClientRects().length),true);if(evidence)await page.screenshot({path:path.join(evidence,'mobile-output-375.png')});
+   assert.deepEqual(errors,[]);assert.deepEqual(actions,[],'work status and keyboard navigation must never create a job or invoke a model');
+-  const result={result:'passed',kind:'actual isolated HTTP public projection with persisted synthetic job-state fixtures; no rendering or provider invocation',checks:['active/failed/result state distinction','existing public conversation/project/selected-shot boundary','provider dedup','unknown state handling','real card navigation by keyboard','auto refresh from existing public-state polling','no IDs/paths in default work summary'],actions,errors};if(evidence)fs.writeFileSync(path.join(evidence,'browser-result.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
++  const result={result:'passed',kind:'actual isolated HTTP public projection with persisted synthetic job-state fixtures; no rendering or provider invocation',checks:['active/failed/result state distinction','existing public conversation/project/selected-shot boundary','provider dedup','unknown state handling','real card navigation by keyboard','dirty motion/3D cross-modal navigation waits for close handlers','unsaved modal drafts survive reopen without automatic save','auto refresh from existing public-state polling','no IDs/paths in default work summary'],actions,errors};if(evidence)fs.writeFileSync(path.join(evidence,'browser-result.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
+  }catch(error){if(page){console.error(await page.$eval('#agentWorkStatus',e=>e.textContent));if(evidence)await page.screenshot({path:path.join(evidence,'failure.png')});}throw error}finally{await browser.close()}
+ }
+ if(process.argv[2])browserTest(process.argv[2],process.argv[3],process.argv[4]).catch(error=>{console.error(error);process.exitCode=1});

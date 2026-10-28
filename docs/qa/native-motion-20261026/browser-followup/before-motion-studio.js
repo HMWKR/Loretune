@@ -1,0 +1,49 @@
+/* Saved local motion proposals: same server approval and jobs, no generated code. */
+(() => {
+ const button=document.createElement('button');button.type='button';button.id='motionButton';button.textContent='모션 구성·검토';button.setAttribute('aria-haspopup','dialog');
+ (document.getElementById('productionTools')||document.querySelector('.inspector')).append(button);
+ const dialog=document.createElement('dialog');dialog.id='motionDialog';dialog.setAttribute('aria-labelledby','motionTitle');dialog.style.width='min(900px,95vw)';
+ dialog.innerHTML='<div class="row"><h2 id="motionTitle">모션 구성·검토</h2><button type="button" id="motionClose">닫기</button></div><p>로컬 Mac 렌더 · 미디어 API 호출 없음. 모션 후보 생성 승인과 Take·최종 출력 승인은 별개입니다.</p><p id="motionContext"></p><p id="motionStatus" role="status" aria-live="polite"></p><label>저장된 변경안<select id="motionProposal"></select></label><div id="motionDetails"></div><label>레이어<select id="motionLayer"></select></label><div id="motionFields"></div><div class="toolbar"><button type="button" id="motionSave">수정안을 새로 저장</button><button type="button" id="motionCancel">초안 취소</button></div><div class="toolbar"><button type="button" id="motionApprove">구성 승인·새 버전 저장</button><button type="button" id="motionHold">보류</button><button type="button" id="motionReject">거절</button></div><label>저장 변경안의 프레임<input id="motionFrame" type="range" min="0" max="95" value="0"></label><button type="button" id="motionPreview">이 프레임 보기</button><img id="motionImage" alt="저장된 모션 구성 프레임" hidden style="width:100%;height:auto;max-height:360px;object-fit:contain"><div class="toolbar"><button type="button" id="motionRender">승인한 버전의 후보 렌더</button><select id="motionVersions" aria-label="복원할 모션 버전"></select><button type="button" id="motionRestore">이 버전을 변경안으로 복원</button></div><div id="motionJobs"></div>';
+ document.body.append(dialog);
+ const el=id=>document.getElementById(id),drafts=new Map();let scope='',editing=null,source=null,version=0,dirty=false,layerIndex=0,previewGeneration=0;
+ const key=()=>JSON.stringify([song(),shotName]);
+ const status=text=>el('motionStatus').textContent=text;
+ function persist(){if(scope&&editing)drafts.set(scope,{editing:structuredClone(editing),source,version,dirty,layerIndex})}
+ function current(){return (project()?.motion_proposals||[]).find(x=>x.id===source)}
+ function controls(){const x=current(),s=project()?.shots[shotName],same=scope===key(),valid=same&&x&&['proposed','held'].includes(x.status)&&x.base_revision===(s?.motion_head||0)&&!dirty;
+  for(const id of ['motionApprove','motionHold','motionReject'])el(id).disabled=busy||!valid;
+  el('motionSave').disabled=busy||!same||!dirty;el('motionCancel').disabled=busy||!dirty;el('motionPreview').disabled=!same||!x||dirty;el('motionRender').disabled=busy||!s?.motion_head||dirty;el('motionRestore').disabled=busy||!s?.motion_head||dirty;
+ }
+ function fields(){
+  const layer=editing?.layers[layerIndex];el('motionLayer').innerHTML=(editing?.layers||[]).map((x,i)=>`<option value="${i}">${esc(x.kind==='text'?x.text:'도형 '+(i+1))}</option>`).join('');el('motionLayer').value=String(layerIndex);
+  if(!layer){el('motionFields').replaceChildren();return}
+  const input=(field,label,value,type='number')=>`<label>${label}<input data-motion-field="${field}" type="${type}" value="${esc(value)}" ${type==='number'?'step="any"':''}></label>`;
+  el('motionFields').innerHTML=`<div class="row">${layer.kind==='text'?input('text','문구',layer.text,'text'):''}${input('in_frame','표시 시작 프레임',layer.in_frame)}${input('out_frame','표시 끝 프레임 (제외)',layer.out_frame)}${input('color','색상 HEX',layer.color,'text')}</div><p>24fps · 위치는 좌상단 기준. 프레임 사이 위치와 불투명도를 보간합니다.</p>${layer.keyframes.map((k,i)=>`<fieldset data-motion-key="${i}"><legend>움직임 지점 ${i+1}</legend><div class="row">${['frame','x','y','opacity'].map(f=>`<label>${({frame:'프레임',x:'가로 위치',y:'세로 위치',opacity:'불투명도'})[f]}<input data-motion-property="${f}" type="number" step="any" value="${k[f]}"></label>`).join('')}</div></fieldset>`).join('')}`;
+ }
+ function refresh(){
+  button.disabled=!project()?.shots[shotName];if(!dialog.open)return;
+  const previousScope=scope,previousSource=source,next=key();if(scope!==next){previewGeneration++;el('motionImage').hidden=true;persist();scope=next;const old=drafts.get(scope);editing=old?.editing||null;source=old?.source||null;version=old?.version||0;dirty=!!old?.dirty;layerIndex=old?.layerIndex||0;}
+  const p=project(),s=p?.shots[shotName],items=(p?.motion_proposals||[]).filter(x=>x.shot===shotName);if(!source||!items.some(x=>x.id===source)){const x=items.at(-1);source=x?.id||null;editing=x?structuredClone(x.scene):null;dirty=false;layerIndex=0;}
+  el('motionContext').textContent=(shotName||'장면 없음')+' · 승인 모션 '+(s?.motion_head||0)+'버전';
+  el('motionProposal').innerHTML=items.map((x,i)=>`<option value="${esc(x.id)}">변경안 ${i+1} · ${({proposed:'검토 전',held:'보류',rejected:'거절',applied:'적용됨'})[x.status]}</option>`).join('');el('motionProposal').value=source||'';
+  const x=current();el('motionDetails').textContent=x?`${x.scene.frame_count/24}초 · ${x.scene.layers.length}개 레이어 · ${x.source?.mode==='contract-fake'?'모의 모델 제안':x.source?.mode==='human-edit'?'직접 수정안':'모델 제안'} · ${dirty?'미저장 수정 있음':'저장된 변경안'}`:'모델 상담에서 이 장면의 모션 구성을 요청하세요. 텍스트·사각형·원만 지원합니다.';
+  el('motionFrame').max=String((editing?.frame_count||96)-1);el('motionVersions').innerHTML=(s?.motion_versions||[]).map(v=>`<option value="${v.id}">모션 ${v.id}버전</option>`).join('');
+  const jobsMarkup=(state.jobs||[]).filter(j=>j.kind==='local-motion'&&j.song===song()&&j.shot===shotName).map(j=>`<article class="guided-card"><b>모션 후보 · ${esc(statuses[j.status]||j.status)}</b><p>${j.status==='completed'?`Take ${j.take} 준비됨 · 선택·사용권·내용 검토는 Take에서 진행하세요.`:'이 요청의 결과를 기다립니다. 화면 닫기는 작업 취소가 아닙니다.'}</p>${j.error?`<p class="error">${esc(j.error)}</p>`:''}${j.download?`<video controls preload="metadata" src="${esc(j.download)}" style="width:100%;max-height:280px"></video>`:''}${['queued','running'].includes(j.status)?`<button data-motion-cancel="${esc(j.id)}">모션 렌더 취소</button>`:''}</article>`).join('');
+  if(el('motionJobs').dataset.rendered!==jobsMarkup){el('motionJobs').innerHTML=jobsMarkup;el('motionJobs').dataset.rendered=jobsMarkup;}
+  if(previousScope!==scope||previousSource!==source||!el('motionFields').children.length)fields();controls();persist();
+ }
+ button.onclick=()=>{dialog.showModal();refresh()};el('motionClose').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{persist();button.focus()});
+ el('motionProposal').onchange=e=>{if(dirty){e.target.value=source;return status('현재 수정안을 저장하거나 초안을 취소한 뒤 변경하세요.')};source=e.target.value;editing=structuredClone(current().scene);layerIndex=0;version++;el('motionImage').hidden=true;fields();refresh()};
+ el('motionLayer').onchange=e=>{layerIndex=Number(e.target.value);fields();persist()};
+ el('motionFields').oninput=e=>{if(!editing)return;const input=e.target,layer=editing.layers[layerIndex],keyIndex=input.closest('[data-motion-key]')?.dataset.motionKey;if(input.dataset.motionField)layer[input.dataset.motionField]=input.type==='number'?Number(input.value):input.value;else if(keyIndex!==undefined&&input.dataset.motionProperty)layer.keyframes[Number(keyIndex)][input.dataset.motionProperty]=Number(input.value);else return;dirty=true;version++;persist();controls();status('수정 내용을 아직 저장하지 않았습니다.');};
+ el('motionCancel').onclick=()=>{editing=current()?structuredClone(current().scene):null;dirty=false;version++;status('저장된 변경안으로 돌아왔습니다.');fields();refresh()};
+ el('motionSave').onclick=async()=>{const savedScope=scope,savedVersion=version,scene=structuredClone(editing),p=project(),s=p.shots[shotName];if(savedScope!==key())return;const ok=await act('motion_propose',{song:song(),shot_id:s.stable_id||shotName,base_motion_revision:s.motion_head||0,scene});if(ok&&scope===savedScope&&version===savedVersion){source=project().motion_proposals.at(-1).id;dirty=false;status('새 변경안을 저장했습니다. 승인 전입니다.');refresh()}};
+ for(const [id,decision] of [['motionApprove','approved'],['motionHold','held'],['motionReject','rejected']])el(id).onclick=async()=>{if(dirty||scope!==key())return;const ctx=scope;await act('motion_review',{song:song(),proposal_id:source,decision});if(ctx===scope)refresh()};
+ el('motionPreview').onclick=()=>{if(dirty||scope!==key()||!source)return;const generation=++previewGeneration,ctx=scope,proposal=source,inputVersion=version,img=el('motionImage'),pending=new Image();img.hidden=true;
+  const valid=()=>generation===previewGeneration&&scope===ctx&&scope===key()&&source===proposal&&version===inputVersion&&!dirty;
+  pending.onload=()=>{if(!valid())return;img.src=pending.src;img.hidden=false;status('저장된 변경안의 프레임입니다. 영상 출력은 별도입니다.')};pending.onerror=()=>{if(valid())status('프레임을 표시하지 못했습니다. 저장된 구성과 한글·텍스트 상자 크기를 확인하세요.')};pending.src='/api/motion-frame?'+new URLSearchParams({song:song(),proposal:source,frame:el('motionFrame').value});};
+ el('motionRender').onclick=async()=>{if(dirty||scope!==key())return;const s=project().shots[shotName],v=s.motion_versions.find(x=>x.id===s.motion_head);await act('motion_render',{song:song(),shot_id:s.stable_id||shotName,motion_revision:v.id,grant_id:v.approval.id});refresh()};
+ el('motionRestore').onclick=async()=>{if(dirty||scope!==key())return;const ctx=scope,inputVersion=version,s=project().shots[shotName];if(await act('motion_restore',{song:song(),shot_id:s.stable_id||shotName,base_motion_revision:s.motion_head,version:Number(el('motionVersions').value)})){if(scope!==ctx||version!==inputVersion)return;source=project().motion_proposals.at(-1).id;editing=structuredClone(current().scene);status('이전 구성을 새 변경안으로 복원했습니다. 새 승인이 필요합니다.');fields();refresh()}};
+ el('motionJobs').onclick=async e=>{const b=e.target.closest('[data-motion-cancel]');if(b){await act('cancel_job',{job:b.dataset.motionCancel});refresh()}};
+ window.AethonMotion={refresh};refresh();
+})();

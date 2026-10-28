@@ -1,0 +1,293 @@
+{
+ "task": "A1-server-read-tools",
+ "measured": "offline; json.dumps(ensure_ascii=False) UTF-8 bytes, same serializer as anthropic_ontology.encode_body; no count_tokens or network call",
+ "script": "measure_token_budget.py (run with before/ copied to a temp sys.path dir, then with the project root)",
+ "fixture": {
+  "provider": "anthropic",
+  "selection": "anthropic-haiku-5-5",
+  "effort": "low",
+  "history": "single user prompt \"음원에 맞는 장면을 제안해 줘\" (tests/test_chat_general_http.py preview fixture), no prior history snapshot, no music context"
+ },
+ "max_input_tokens": 4096,
+ "system_prompt_bytes": 6390,
+ "modes": {
+  "review": {
+   "before": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "prepare_image_action",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "tools": {
+     "bytes": 9965,
+     "tokens_at_4_bytes": 2491,
+     "tokens_at_3_2_bytes": 3114,
+     "tokens_at_empirical_1_97_bytes": 5058,
+     "within_cap_at_4": true,
+     "within_cap_at_3_2": true,
+     "within_cap_empirical": false
+    },
+    "message_body": {
+     "bytes": 16617,
+     "tokens_at_4_bytes": 4154,
+     "tokens_at_3_2_bytes": 5193,
+     "tokens_at_empirical_1_97_bytes": 8435,
+     "within_cap_at_4": false,
+     "within_cap_at_3_2": false,
+     "within_cap_empirical": false
+    },
+    "count_body_bytes": 16597,
+    "description_bytes": 377
+   },
+   "after": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "estimate_media_plan",
+     "prepare_image_action",
+     "get_generation_job",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "tools": {
+     "bytes": 10880,
+     "tokens_at_4_bytes": 2720,
+     "tokens_at_3_2_bytes": 3400,
+     "tokens_at_empirical_1_97_bytes": 5523,
+     "within_cap_at_4": true,
+     "within_cap_at_3_2": true,
+     "within_cap_empirical": false
+    },
+    "message_body": {
+     "bytes": 17532,
+     "tokens_at_4_bytes": 4383,
+     "tokens_at_3_2_bytes": 5479,
+     "tokens_at_empirical_1_97_bytes": 8899,
+     "within_cap_at_4": false,
+     "within_cap_at_3_2": false,
+     "within_cap_empirical": false
+    },
+    "count_body_bytes": 17512,
+    "description_bytes": 881
+   },
+   "delta_tools_bytes": 915,
+   "delta_message_body_bytes": 915,
+   "added_tools": {
+    "estimate_media_plan": 333,
+    "get_generation_job": 289
+   },
+   "per_tool_delta_existing": {
+    "search_project_context": 53,
+    "get_model_capabilities": 28,
+    "propose_media_plan": 37,
+    "prepare_image_action": 46,
+    "propose_timeline_changes": 70,
+    "propose_motion_scene": 10,
+    "request_motion_render": 17,
+    "request_render": 28
+   }
+  },
+  "full_access": {
+   "before": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "prepare_image_action",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "tools": {
+     "bytes": 9965,
+     "tokens_at_4_bytes": 2491,
+     "tokens_at_3_2_bytes": 3114,
+     "tokens_at_empirical_1_97_bytes": 5058,
+     "within_cap_at_4": true,
+     "within_cap_at_3_2": true,
+     "within_cap_empirical": false
+    },
+    "message_body": {
+     "bytes": 16617,
+     "tokens_at_4_bytes": 4154,
+     "tokens_at_3_2_bytes": 5193,
+     "tokens_at_empirical_1_97_bytes": 8435,
+     "within_cap_at_4": false,
+     "within_cap_at_3_2": false,
+     "within_cap_empirical": false
+    },
+    "count_body_bytes": 16597,
+    "description_bytes": 377
+   },
+   "after": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "estimate_media_plan",
+     "prepare_image_action",
+     "get_generation_job",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "tools": {
+     "bytes": 10880,
+     "tokens_at_4_bytes": 2720,
+     "tokens_at_3_2_bytes": 3400,
+     "tokens_at_empirical_1_97_bytes": 5523,
+     "within_cap_at_4": true,
+     "within_cap_at_3_2": true,
+     "within_cap_empirical": false
+    },
+    "message_body": {
+     "bytes": 17532,
+     "tokens_at_4_bytes": 4383,
+     "tokens_at_3_2_bytes": 5479,
+     "tokens_at_empirical_1_97_bytes": 8899,
+     "within_cap_at_4": false,
+     "within_cap_at_3_2": false,
+     "within_cap_empirical": false
+    },
+    "count_body_bytes": 17512,
+    "description_bytes": 881
+   },
+   "delta_tools_bytes": 915,
+   "delta_message_body_bytes": 915,
+   "added_tools": {
+    "estimate_media_plan": 333,
+    "get_generation_job": 289
+   },
+   "per_tool_delta_existing": {
+    "search_project_context": 53,
+    "get_model_capabilities": 28,
+    "propose_media_plan": 37,
+    "prepare_image_action": 46,
+    "propose_timeline_changes": 70,
+    "propose_motion_scene": 10,
+    "request_motion_render": 17,
+    "request_render": 28
+   }
+  },
+  "read_only": {
+   "before": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities"
+    ],
+    "tools": {
+     "bytes": 508,
+     "tokens_at_4_bytes": 127,
+     "tokens_at_3_2_bytes": 159,
+     "tokens_at_empirical_1_97_bytes": 258,
+     "within_cap_at_4": true,
+     "within_cap_at_3_2": true,
+     "within_cap_empirical": true
+    },
+    "message_body": {
+     "bytes": 7160,
+     "tokens_at_4_bytes": 1790,
+     "tokens_at_3_2_bytes": 2238,
+     "tokens_at_empirical_1_97_bytes": 3635,
+     "within_cap_at_4": true,
+     "within_cap_at_3_2": true,
+     "within_cap_empirical": true
+    },
+    "count_body_bytes": 7140,
+    "description_bytes": 98
+   },
+   "after": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "estimate_media_plan",
+     "get_generation_job"
+    ],
+    "tools": {
+     "bytes": 1215,
+     "tokens_at_4_bytes": 304,
+     "tokens_at_3_2_bytes": 380,
+     "tokens_at_empirical_1_97_bytes": 617,
+     "within_cap_at_4": true,
+     "within_cap_at_3_2": true,
+     "within_cap_empirical": true
+    },
+    "message_body": {
+     "bytes": 7867,
+     "tokens_at_4_bytes": 1967,
+     "tokens_at_3_2_bytes": 2458,
+     "tokens_at_empirical_1_97_bytes": 3993,
+     "within_cap_at_4": true,
+     "within_cap_at_3_2": true,
+     "within_cap_empirical": true
+    },
+    "count_body_bytes": 7847,
+    "description_bytes": 394
+   },
+   "delta_tools_bytes": 707,
+   "delta_message_body_bytes": 707,
+   "added_tools": {
+    "estimate_media_plan": 333,
+    "get_generation_job": 289
+   },
+   "per_tool_delta_existing": {
+    "search_project_context": 53,
+    "get_model_capabilities": 28
+   }
+  }
+ },
+ "continuation_after": {
+  "get_generation_job": {
+   "tool_result_bytes": 663,
+   "message_body_bytes": 18540,
+   "message_body": {
+    "bytes": 18540,
+    "tokens_at_4_bytes": 4635,
+    "tokens_at_3_2_bytes": 5794,
+    "tokens_at_empirical_1_97_bytes": 9411,
+    "within_cap_at_4": false,
+    "within_cap_at_3_2": false,
+    "within_cap_empirical": false
+   }
+  },
+  "estimate_media_plan": {
+   "tool_result_bytes": 858,
+   "message_body_bytes": 18771,
+   "message_body": {
+    "bytes": 18771,
+    "tokens_at_4_bytes": 4693,
+    "tokens_at_3_2_bytes": 5866,
+    "tokens_at_empirical_1_97_bytes": 9528,
+    "within_cap_at_4": false,
+    "within_cap_at_3_2": false,
+    "within_cap_empirical": false
+   }
+  }
+ },
+ "calibration": {
+  "note": "Real counted input tokens vs public_request bytes for 5 earlier live legacy-chat requests (docs/qa/claude-chat-ui-live-20261025/live-evidence.json + request-*.json): 957/1943, 1886/4349, 2515/5821, 899/1768, 2352/5071 => 1.97-2.31 bytes per token. Korean-heavy JSON tokenizes far denser than bytes/3.2 or bytes/4.",
+  "bytes_per_token_observed": [
+   2.03,
+   2.31,
+   2.31,
+   1.97,
+   2.16
+  ]
+ },
+ "verdict": {
+  "requested_bounds": "By bytes/4 and bytes/3.2, the review/full_access first-round body is above 4096 both BEFORE (16617 B ~ 4154-5193 tok) and AFTER (17532 B ~ 4383-5479 tok); read_only stays well under (7867 B ~ 1967-2458 tok).",
+  "empirical": "With the observed 1.97-2.31 B/tok, review/full_access is ~7200-8900 tok before and after; read_only ~3400-4000 tok after (tight).",
+  "this_change": "+915 B tools in review/full_access (+2 tools; descriptions replaced), +707 B in read_only. Most of the review body is the existing schemas (propose_timeline_changes, propose_motion_scene) and the system prompt, not this change.",
+  "risk": "Pre-existing: a real count_tokens on the review-mode general-chat body would likely exceed MAX_INPUT=4096 and end the turn blocked/limit before any message. Needs a real count (user-approved, paid/external) or exposure split by mode/query (PLAN §7). Not changed here."
+ }
+}

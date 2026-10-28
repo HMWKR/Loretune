@@ -1,0 +1,28 @@
+{
+  "media_lookup_only": {
+    "stable_shot_preparation": "proposed",
+    "approved_action": "accepted",
+    "external_calls": 0
+  },
+  "foreign_action": {
+    "status": "invalid_arguments",
+    "code": "INVALID_ACTION_REFERENCE",
+    "retryable": true
+  },
+  "revoke_after_lookup": "submission_blocked; zero transport calls",
+  "foreign_render": {
+    "status": "blocked",
+    "code": "STALE_VERSION",
+    "retryable": false
+  },
+  "render_lookup_only": {
+    "status": "pass",
+    "same_job_after_switch": true,
+    "args_from": "search_project_context.execution_targets.timeline"
+  },
+  "stale_timeline": {
+    "status": "blocked",
+    "code": "STALE_VERSION",
+    "retryable": false
+  }
+}

@@ -1,0 +1,38 @@
+--- before/index.html
++++ index.html
+@@ -42,7 +42,7 @@
+ <script>
+ const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let stateReadEpoch=0,pollSequence=0,appliedPollSequence=0,pollReadsInFlight=0;let state,shotName='',draft=null,busy=false,dirty=false;
+ const song=()=>$('#songs').value,project=()=>state?.projects[song()],asset=a=>'/assets/'+a.asset.split('/').pop(),image=a=>/\.(png|jpe?g)$/i.test(a.asset);
+-function audioWave(a){const w=a.metadata.waveform;if(w?.status!=='measured')return '<small>파형 미분석 · 원본 재생과 숫자 입력을 사용하세요.</small>';const points=w.peaks.map((v,i)=>`${i*400/Math.max(1,w.peaks.length-1)},${40-v*38}`).join(' ');return `<svg viewBox="0 0 400 44" role="img" aria-label="음원 첫 ${w.duration}초의 실제 진폭 파형" style="width:100%;height:60px;background:#101010"><polyline points="${points}" fill="none" stroke="#ddd" stroke-width="2"/></svg><small>앞 ${w.duration.toFixed(1)}초 음량${w.quiet?' · 무음 또는 작은 음량':''}</small><details><summary>음량 분석 정보</summary><p>원본 PCM 진폭을 측정했습니다. 비트·BPM 분석은 아닙니다.</p></details><small></small>`}
++function audioWave(a){const w=a.metadata.waveform;if(w?.status!=='measured')return '<small>파형 미분석 · 원본 재생과 숫자 입력을 사용하세요.</small>';const points=w.peaks.map((v,i)=>`${i*400/Math.max(1,w.peaks.length-1)},${40-v*38}`).join(' ');return `<svg viewBox="0 0 400 44" role="img" aria-label="음원 첫 ${w.duration}초의 실제 진폭 파형" style="width:100%;height:60px;background:var(--ui-canvas)"><polyline points="${points}" fill="none" stroke="var(--ui-waveform-stroke)" stroke-width="2"/></svg><small>앞 ${w.duration.toFixed(1)}초 음량${w.quiet?' · 무음 또는 작은 음량':''}</small><details><summary>음량 분석 정보</summary><p>원본 PCM 진폭을 측정했습니다. 비트·BPM 분석은 아닙니다.</p></details><small></small>`}
+ function message(t,error=false,inline=false){
+  const presentation=error?creatorError(t):{message:t,detail:''};
+  for(const node of [$('#notice'),document.querySelector('dialog[open] .dialog-status')].filter(Boolean)){
+--- before/studio.css
++++ studio.css
+@@ -27,6 +27,7 @@
+   --ui-warning:#E6C58B;
+   --ui-primary:var(--ui-strong);
+   --ui-on-primary:var(--ui-canvas);
++  --ui-waveform-stroke:#DDDDDD;
+   --ui-space-1:.25rem;
+   --ui-space-2:.5rem;
+   --ui-space-3:.75rem;
+@@ -54,6 +55,7 @@
+   --ui-motion:120ms;
+   --ui-ease:cubic-bezier(.2,0,0,1);
+   --ui-font:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
++  --ui-font-timecode:ui-monospace,monospace;
+   --ui-shadow:#0006;
+   --ui-shadow-notice:#0008;
+   --ui-backdrop:#000b;
+@@ -294,7 +296,7 @@
+ .lt-ui :where(.lt-status[data-state="failed"],.lt-inline-error) { color:var(--ui-error); }
+ .lt-ui .lt-status[data-state="approved"] { border-color:var(--ui-strong); font-weight:var(--ui-weight-heading); }
+ .lt-ui .lt-entity { display:inline-flex; flex-wrap:wrap; gap:var(--ui-space-1); padding:var(--ui-space-1) var(--ui-space-2); border:1px solid var(--ui-line); border-radius:var(--ui-radius-clip); font-size:var(--ui-meta); }
+-.lt-ui .lt-timecode { font-family:ui-monospace,monospace; font-variant-numeric:tabular-nums; }
++.lt-ui .lt-timecode { font-family:var(--ui-font-timecode); font-variant-numeric:tabular-nums; }
+ .lt-ui .lt-model-name { overflow-wrap:anywhere; }
+ .lt-ui .lt-empty { padding:var(--ui-space-6); text-align:center; color:var(--ui-muted); }
+ @media(min-width:1100px) {

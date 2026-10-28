@@ -1,0 +1,86 @@
+test_http_validation_and_local_boundary (test_app.HttpTest.test_http_validation_and_local_boundary) ... 127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /api/operations HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /exports/record.json HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /api/requests/http-1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /api/requests/unknown HTTP/1.1" 404 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "POST /api/action HTTP/1.1" 409 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "POST /api/action HTTP/1.1" 403 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /../.env HTTP/1.1" 404 -
+ok
+test_local_vtt_mime_and_incomplete_unknown_host_denials (test_caption_image_recovery.CaptionHTTPTest.test_local_vtt_mime_and_incomplete_unknown_host_denials) ... 127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /exports/383c42f947134fffbbc568eb6768a916.vtt HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /exports/383c42f947134fffbbc568eb6768a916.vtt HTTP/1.1" 403 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /exports/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.vtt HTTP/1.1" 404 -
+127.0.0.1 - - [26/Oct/2026 13:58:33] "GET /exports/383c42f947134fffbbc568eb6768a916.vtt HTTP/1.1" 409 -
+ok
+test_restricted_principal_cannot_read_legacy_captions (test_caption_image_recovery.CaptionHTTPTest.test_restricted_principal_cannot_read_legacy_captions) ... 127.0.0.1 - - [26/Oct/2026 13:58:34] "GET /exports/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.vtt HTTP/1.1" 403 -
+ok
+test_budget_patch_schema_etag_and_stale_write (test_contracts.ContractTest.test_budget_patch_schema_etag_and_stale_write) ... 127.0.0.1 - - [26/Oct/2026 13:58:34] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:34] "PATCH /v1/workspaces/e3258857-1cac-4331-a34f-b219705c02a5/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:34] "PATCH /v1/workspaces/e3258857-1cac-4331-a34f-b219705c02a5/billing/budgets HTTP/1.1" 412 -
+127.0.0.1 - - [26/Oct/2026 13:58:34] "PATCH /v1/workspaces/e3258857-1cac-4331-a34f-b219705c02a5/billing/budgets HTTP/1.1" 400 -
+127.0.0.1 - - [26/Oct/2026 13:58:34] "PATCH /v1/workspaces/e3258857-1cac-4331-a34f-b219705c02a5/billing/budgets HTTP/1.1" 422 -
+127.0.0.1 - - [26/Oct/2026 13:58:34] "GET /v1/workspaces/e3258857-1cac-4331-a34f-b219705c02a5/billing/ledger HTTP/1.1" 200 -
+ok
+test_cancel_job_is_durable_idempotent_and_has_real_status_links (test_contracts.ContractTest.test_cancel_job_is_durable_idempotent_and_has_real_status_links) ... 127.0.0.1 - - [26/Oct/2026 13:58:35] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:35] "POST /v1/workspaces/22fe21ee-4084-45d1-94e8-c424e087f53f/jobs/ab0190fc-d85a-4776-9f8e-bbecacd9b727/cancel HTTP/1.1" 202 -
+127.0.0.1 - - [26/Oct/2026 13:58:35] "POST /v1/workspaces/22fe21ee-4084-45d1-94e8-c424e087f53f/jobs/ab0190fc-d85a-4776-9f8e-bbecacd9b727/cancel HTTP/1.1" 202 -
+127.0.0.1 - - [26/Oct/2026 13:58:35] "POST /v1/workspaces/22fe21ee-4084-45d1-94e8-c424e087f53f/jobs/ab0190fc-d85a-4776-9f8e-bbecacd9b727/cancel HTTP/1.1" 409 -
+127.0.0.1 - - [26/Oct/2026 13:58:35] "GET /v1/workspaces/22fe21ee-4084-45d1-94e8-c424e087f53f/jobs/ab0190fc-d85a-4776-9f8e-bbecacd9b727 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:35] "GET /v1/workspaces/22fe21ee-4084-45d1-94e8-c424e087f53f/jobs/ab0190fc-d85a-4776-9f8e-bbecacd9b727/events HTTP/1.1" 200 -
+ok
+test_job_contract_auth_foreign_workspace_and_state_revision (test_contracts.ContractTest.test_job_contract_auth_foreign_workspace_and_state_revision) ... 127.0.0.1 - - [26/Oct/2026 13:58:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:36] "GET /v1/workspaces/15bdfaa3-e3b5-43b6-ad61-981d5ad06384/jobs/dd82b33e-a5e2-43cd-a84d-c8c21bf507cb HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:36] "GET /v1/workspaces/15bdfaa3-e3b5-43b6-ad61-981d5ad06384/jobs/dd82b33e-a5e2-43cd-a84d-c8c21bf507cb HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:36] "GET /v1/workspaces/15bdfaa3-e3b5-43b6-ad61-981d5ad06384/jobs/dd82b33e-a5e2-43cd-a84d-c8c21bf507cb HTTP/1.1" 401 -
+127.0.0.1 - - [26/Oct/2026 13:58:36] "GET /v1/workspaces/5a45b02f-6ea9-4468-a3e7-c34ea8522abc/jobs/dd82b33e-a5e2-43cd-a84d-c8c21bf507cb HTTP/1.1" 404 -
+127.0.0.1 - - [26/Oct/2026 13:58:36] "GET /v1/workspaces/15bdfaa3-e3b5-43b6-ad61-981d5ad06384/jobs/invalid HTTP/1.1" 400 -
+ok
+test_scoped_principal_cannot_bypass_write_grant_via_legacy (test_contracts.ContractTest.test_scoped_principal_cannot_bypass_write_grant_via_legacy) ... 127.0.0.1 - - [26/Oct/2026 13:58:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:36] "PATCH /v1/workspaces/dc18a172-e354-4ee4-875a-e4028b4a6310/billing/budgets HTTP/1.1" 403 -
+127.0.0.1 - - [26/Oct/2026 13:58:36] "GET /api/state HTTP/1.1" 403 -
+127.0.0.1 - - [26/Oct/2026 13:58:36] "GET / HTTP/1.1" 403 -
+ok
+test_versions_pagination_exact_resource_envelope (test_contracts.ContractTest.test_versions_pagination_exact_resource_envelope) ... 127.0.0.1 - - [26/Oct/2026 13:58:37] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:37] "GET /v1/workspaces/960d864c-84b3-409c-8486-571b8170ae09/projects/c7414178-e71e-591f-8496-51660c2d19ac/versions?limit=1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:37] "GET /v1/workspaces/960d864c-84b3-409c-8486-571b8170ae09/projects/c7414178-e71e-591f-8496-51660c2d19ac/versions?limit=1&cursor=1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:37] "GET /v1/workspaces/960d864c-84b3-409c-8486-571b8170ae09/projects/c7414178-e71e-591f-8496-51660c2d19ac/versions?limit=0 HTTP/1.1" 400 -
+127.0.0.1 - - [26/Oct/2026 13:58:37] "GET /v1/workspaces/960d864c-84b3-409c-8486-571b8170ae09/projects/c7414178-e71e-591f-8496-51660c2d19ac/versions?limit=201 HTTP/1.1" 400 -
+127.0.0.1 - - [26/Oct/2026 13:58:37] "GET /v1/workspaces/960d864c-84b3-409c-8486-571b8170ae09/projects/c7414178-e71e-591f-8496-51660c2d19ac/versions?cursor=999 HTTP/1.1" 400 -
+127.0.0.1 - - [26/Oct/2026 13:58:37] "GET /v1/workspaces/960d864c-84b3-409c-8486-571b8170ae09/projects/c7414178-e71e-591f-8496-51660c2d19ac/versions?limit=1&limit=2 HTTP/1.1" 400 -
+ok
+test_real_http_range_body_and_rights_before_partial_response (test_media_http_range.MediaRangeTest.test_real_http_range_body_and_rights_before_partial_response) ... 127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp4 HTTP/1.1" 206 -
+127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp4 HTTP/1.1" 206 -
+127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp4 HTTP/1.1" 416 -
+127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.mp4 HTTP/1.1" 403 -
+127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /studio.css HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /studio-media.js HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:38] "GET /../studio-media.js HTTP/1.1" 404 -
+ok
+test_atomic_publish_failure_cleans_staging (test_production_boundary.ProductionBoundaryTest.test_atomic_publish_failure_cleans_staging) ... ok
+test_concurrent_result_claim_downloads_once_and_restart_does_not_reissue (test_production_boundary.ProductionBoundaryTest.test_concurrent_result_claim_downloads_once_and_restart_does_not_reissue) ... ok
+test_db_rollback_never_marks_imported_and_same_request_recovers (test_production_boundary.ProductionBoundaryTest.test_db_rollback_never_marks_imported_and_same_request_recovers) ... ok
+test_disallowed_origins_never_open_socket (test_production_boundary.ProductionBoundaryTest.test_disallowed_origins_never_open_socket) ... ok
+test_http_401_refreshes_once_but_never_403 (test_production_boundary.ProductionBoundaryTest.test_http_401_refreshes_once_but_never_403) ... ok
+test_http_faults_never_retry_permission_or_transient_automatically (test_production_boundary.ProductionBoundaryTest.test_http_faults_never_retry_permission_or_transient_automatically) ... ok
+test_http_success_credentials_separated (test_production_boundary.ProductionBoundaryTest.test_http_success_credentials_separated) ... ok
+test_http_truncated_or_wrong_type_rejected (test_production_boundary.ProductionBoundaryTest.test_http_truncated_or_wrong_type_rejected) ... ok
+test_repeated401_and_timeout_are_bounded (test_production_boundary.ProductionBoundaryTest.test_repeated401_and_timeout_are_bounded) ... ok
+test_wrong_duration_is_not_published (test_production_boundary.ProductionBoundaryTest.test_wrong_duration_is_not_published) ... ok
+test_http_stale_ontology_is_conflict_and_request_retry_is_idempotent (test_project_ontology.ProjectOntologyTest.test_http_stale_ontology_is_conflict_and_request_retry_is_idempotent) ... 127.0.0.1 - - [26/Oct/2026 13:58:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [26/Oct/2026 13:58:43] "POST /api/action HTTP/1.1" 409 -
+ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 10.985s
+
+OK
+{"pid": 88395, "tests_requested": 20, "tests_run": 20, "successful": true, "failures": 0, "errors": 0, "seconds": 10.993674993515015, "listeners": [{"host": "127.0.0.1", "port": 58188, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58205, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58214, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58218, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58232, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58242, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58253, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58255, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58266, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58277, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58290, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58297, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58301, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58306, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58309, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58319, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58338, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58342, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58349, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58363, "closed_by_test": true}, {"host": "127.0.0.1", "port": 58367, "closed_by_test": true}], "all_listener_sockets_closed": true, "loopback_connections": 88, "external_connections": 0, "synthetic_credentials_only": true}

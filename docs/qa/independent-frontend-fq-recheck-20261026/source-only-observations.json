@@ -1,0 +1,31 @@
+{
+  "status": "SOURCE REVIEW ONLY",
+  "browserVerified": false,
+  "entries": [
+    {
+      "file": "index.html",
+      "line": 96,
+      "source": "const takeReviewStore=createTakeReviewStore({getItem:k=>sessionStorage.getItem(k),setItem:(k,v)=>sessionStorage.setItem(k,v),removeItem:k=>sessionStorage.removeItem(k)});"
+    },
+    {
+      "file": "index.html",
+      "line": 103,
+      "source": "function revealTakeFocus(strip,button){const bounds=strip.getBoundingClientRect(),target=button.getBoundingClientRect(),left=bounds.left+strip.clientLeft+4,right=bounds.left+strip.clientLeft+strip.clientWidth-4;if(target.right>right)strip.scrollLeft+=target.right-right;else if(target.left<left)strip.scrollLeft-=left-target.left;}"
+    },
+    {
+      "file": "index.html",
+      "line": 321,
+      "source": "$('#project').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);if(await act('project',{ip:f.get('ip'),name:f.get('name'),era:f.get('era'),story:Number(f.get('story')),source_song:f.get('source_song'),inherit_revisions:f.getAll('inherit').map(Number),inherit_reason:f.get('inherit_reason'),clone_structure:f.get('clone_structure')==='on'},f.get('name')))$('#projectDialog').close()};$('#shot').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);shotName=f.get('shot');await act('shot',{song:song(),shot:shotName,description:f.get('description')})};$('#upload').onsubmit=e=>{e.preventDefault();if(project()?.shots[shotName])upload(e.target,'take');else message('샷을 먼저 추가하세요.',true)};$('#audioUpload').onsubmit=e=>{e.preventDefault();upload(e.target,'audio')};$('#shotlist').onclick=e=>{const b=e.target.closest('[data-shot]');if(b){shotName=b.dataset.shot;draw()}};$('#takes').addEventListener('focusin',e=>{const button=e.target.closest('button[data-take]');if(button)revealTakeFocus($('#takes'),button)});$('#takes').onclick=e=>{const b=e.target.closest('[data-take]');if(b)act('select',{song:song(),shot:shotName,take:Number(b.dataset.take),shot_revision:project().shots[shotName].revision})};$('#songs').onchange=()=>{if(dirty&&!confirm('저장하지 않은 편집을 버리고 작품을 전환할까요?')){$('#songs').value=decodeURIComponent(location.hash.slice(1));return}draft=null;dirty=false;draw();drawJobs()};$('#sync').onclick=()=>{if(!project())return;draft=fresh(project());dirty=true;drawTimeline()};"
+    },
+    {
+      "file": "studio.css",
+      "line": 366,
+      "source": ".lt-ui #takes { flex:1; min-width:0; padding:4px; }"
+    },
+    {
+      "file": "studio.css",
+      "line": 565,
+      "source": ".lt-ui .lt-scene-copy>b { overflow-wrap:anywhere; font-weight:var(--ui-weight-heading); font-size:var(--ui-item); line-height:1.5; }"
+    }
+  ]
+}

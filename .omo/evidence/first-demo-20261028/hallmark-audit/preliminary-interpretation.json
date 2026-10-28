@@ -1,0 +1,15 @@
+{
+  "tool": "Hallmark 2.0.0 sloplint actual run",
+  "exit_code": 1,
+  "render": "not run: no puppeteer-core; actual Ego browser used separately",
+  "floor_findings_count": 11,
+  "scope": "Current whole index.html/studio.css static scan, mostly incumbent code; not a production readiness verdict",
+  "triage_pending": true,
+  "known_scope_examples": {
+    "76": "new preview img is hidden until actual successful PNG exists; verify live empty/error states before treating missing initial src as broken media",
+    "39a": "selector :not(:disabled) may be false positive; actual computed disabled states must be inspected",
+    "20": "Hallmark stamp is tool bookkeeping, not a user task failure",
+    "7a": "preserve confirmed neutral brand unless actual contrast fails"
+  },
+  "no_scores_or_pass_claim": true
+}

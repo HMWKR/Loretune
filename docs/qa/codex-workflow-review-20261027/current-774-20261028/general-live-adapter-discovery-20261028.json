@@ -1,0 +1,239 @@
+{
+  "task_id": "general-live-adapter-discovery-20261028",
+  "attempt": 1,
+  "state": "REPORTED",
+  "mode": "read-only-discovery-and-execution-plan",
+  "agent": "/root/scene_request_recovery",
+  "source_sha256": {
+    "docs/qa/REMAINING-WORK.md": "d1aa3809584db245d33e909e991c868a28b2adacce6a2b1be350f35e6bdf0d7a",
+    "chat_general.py": "cd7dfe1e2ba0f9b78adb03a665aff7f00fad6645640828a3e7f67d008a2ecbd0",
+    "chat_runtime.py": "e1d8b7e0b694fe91a420333925ffe44972de063359bddaf0470e908eb2e01ec1",
+    "anthropic_ontology.py": "2f97cd79e6c9b15a6f8d49814647791fd5a13ae0faef36aca788ff1b86e6802f",
+    "app.py": "5d84c6dd501d8b1d303ac41e7e24feaf28983923429b9f97658225a43ef74410",
+    "chat_models.py": "f4675c16693776d19bcaab72e2486485ab5754bf8f6f382365f0f2baa3d81419",
+    "ledger.py": "7dbf37ece277217f15bbf8c7fea95cf8e8afea08b96a1d2d077fab5904971893",
+    "fal_dispatch.py": "cc64fd514cebdf1bb7e2bb9c32fa78fae9c8de2d51b567814c4ddffbb1462f6b",
+    "provider_billing.py": "ee81a40b37756e2e92077b818e1bfe871f7a92a1f5c62353baa2b7ad9dc72c68",
+    "contracts.py": "04b9681555881403e31ab3dd32d00b154e360090dd4946c19c2a9ea22228e86e",
+    "tests/test_chat_live_contract.py": "977c669b5a271cbdc633d44152434b8b4f046d8c5e8c6cf1ba88f54132c9c769",
+    "tests/test_anthropic_transport.py": "b9aba8976092098bc41671b366732b1b5fbb5fecb37e5ea8044ce07afcb4021d",
+    "tests/test_budget_crossflow.py": "692db585cc54a4fa733a75eaaa8b461446d9bca969345a837f1bc5bebe45dc8d",
+    "tests/test_budget_dispatch_guard.py": "9f91de7507a7c79f45b845e1e8dad263009d63709f48d1be17bed511e006afa0",
+    ".omo/evidence/anthropic-general-live-contract-20261028.json": "c2a08201f6773fe235b0417ed765bb83d630d48d85d86d76b8c4583a6ef583dc"
+  },
+  "goal": "음원 우선 사용자가 선택한 Claude로 플랫폼 문맥 조회→내부 편집 제안→사람 승인→로컬 렌더→결과 확인을 수행할 수 있도록, 실제 전송은 하지 않고 승인되면 실행 가능한 production adapter 내부 계약의 다음 최소 수직 슬라이스를 결정한다.",
+  "methodology": {
+    "sources": [
+      "Current REMAINING-WORK latest MF-CONTEXT section",
+      "Existing bounded Anthropic adapter and exact-manifest/ledger/ownership contracts",
+      "Current official research receipt .omo/evidence/anthropic-general-live-contract-20261028.json",
+      "Previously read installed Karpathy guidelines surgical reuse principles"
+    ],
+    "applied": "entrypoint→configuration→preview→approval→atomic current-reservation claim→count/message→usage→tool/result continuation tracing; ports/adapters reuse; distinguish implemented guards, unexercised production branches, actual account verification and observed billing.",
+    "limits": "Source/official-research receipt read only. No provider/model GET or POST, credentials/env, browser, HTTP server or test suite was run in this task."
+  },
+  "correction_to_initial_direction": {
+    "initial": "configure-disabled loader/factory only",
+    "rejected_as_final_slice": true,
+    "reason": "It would improve configuration but leave the main workflow permanently unavailable. The selected plan instead makes the existing production branch conditionally executable under an explicit default-off server contract, while preserving all per-round consent and cost guards. Actual activation/test is separate from implementing that internal contract."
+  },
+  "current_trace": [
+    {
+      "step": "CLI entry",
+      "path": "app.py:1411-1428",
+      "observation": "Only --port/--data/--scene-config are accepted. server is called without general_chat_live or a credential supplier. The standard launch therefore cannot configure general Claude."
+    },
+    {
+      "step": "server boundary",
+      "path": "app.py:1190-1218",
+      "observation": "general_chat_fixture/live are mutually exclusive; live must be exact LiveTransport. Every non-test live transport is unconditionally rejected before Store creation. Existing legacy chat_configuration is a different synthetic-approved runtime, not an ordinary-general-chat connection."
+    },
+    {
+      "step": "runtime boundary",
+      "path": "chat_general.py:474-487",
+      "observation": "Runtime accepts exact FixtureTransport or LiveTransport and unconditionally rejects non-test LiveTransport. Capability is a server configuration declaration, not account access evidence."
+    },
+    {
+      "step": "transport boundary",
+      "path": "chat_general.py:91-139",
+      "observation": "LiveTransport requires exact enabled AnthropicChatAdapter, bounded production count/messages classes with _opener=None, or an explicit synthetic-key-only same-port loopback pair. count and complete both unconditionally reject non-test delivery. These count/message methods are one transport defence layer; together with Runtime and server there are three layers, four rejecting sites."
+    },
+    {
+      "step": "preview and consent",
+      "path": "chat_general.py:321-362,389-435",
+      "observation": "Trusted transport mode/connection revision, workspace/project/conversation, selected model and price revision are bound. Exact count/message bodies, pure bounded serialization hashes, destination/endpoints, expiry, tool scope, per-round maximum and total conversation maximum enter the manifest. Each tool_result continuation requires a fresh manifest and human rights-confirmed decision."
+    },
+    {
+      "step": "claim and dispatch",
+      "path": "chat_general.py:517-542;ledger.py:112-140",
+      "observation": "At admission and immediately before count/message, common exposure guards run. _current and current-reservation message attempt claim are in one BEGIN IMMEDIATE transaction; commit is submission-intent linearization. Post-claim edits do not rewrite approved bytes; later stale checks forbid tool effects."
+    },
+    {
+      "step": "secret boundary",
+      "path": "chat_runtime.py:79-121",
+      "observation": "AnthropicChatAdapter defaults disabled, and construction does not acquire a secret or open a connection. Only _call invokes the injected supplier for Anthropic_KEY and builds ephemeral headers. No module auto-reads environment variables. Count and complete each acquire a key lazily. Full request preflight/encoders must remain before credential acquisition in the general pipeline."
+    },
+    {
+      "step": "bounded provider IO",
+      "path": "anthropic_ontology.py:156-257",
+      "observation": "Exact https://api.anthropic.com/v1/messages and /count_tokens, exact JSON/API-version/header contract, no proxies or redirects, one POST with no retry, max64KiB requests, max100000 response bytes, time/read deadline, origin/MIME/encoding/content-length checks, sanitized ProposalError. Error bodies are never read and exception strings/secrets are not persisted."
+    },
+    {
+      "step": "usage and tools",
+      "path": "chat_general.py:543-660;chat_models.py:97-173",
+      "observation": "Observable response/usage is journaled before later authorization rejection. Actual non-test mode requires matching response model and richer explicit standard/zero-cache billing dimensions. Unsupported/absent/null/nonzero/unknown dimensions remain unpriced and tools do not run. Live-style valid usage is estimate, not billing-confirmed charge. Fixture mode settle behavior is not production billing."
+    },
+    {
+      "step": "cancel/restart/unknown",
+      "path": "chat_general.py:438-470,664-688;ledger.py:140-151",
+      "observation": "Queued cancellation releases unsubmitted hold; in-flight cancellation blocks tools but preserves observed usage; interrupted/unknown attempts stay fenced and uncertain without automatic retry. Attempt identity includes current reservation/job/operation; turn.submitted can persist across rounds and is insufficient alone."
+    }
+  ],
+  "budget_guard_status": {
+    "unconditional_guard_message_is_not_an_accurate_missing_implementation_inventory": true,
+    "already_implemented": [
+      {
+        "path": "ledger.py:112-140",
+        "fact": "Atomic existing-transaction claim verifies workspace/scope reservation-to-job binding, request/manifest hashes and existing claim fencing. It invokes require_bounded_exposure by default."
+      },
+      {
+        "path": "ledger.py:211-225,259-281",
+        "fact": "Shared budget admission checks ceiling, held/spent, uncertain costs, current revision, expiry and concurrency. Unknown exposure blocks new reservation/claim; settled/estimated amounts consume budget conservatively."
+      },
+      {
+        "path": "chat_general.py:382-386,428-432,517-536",
+        "fact": "Live-style general chat invokes exposure guards at approval and count/message claims. New fake paths do not replace this production contract."
+      },
+      {
+        "path": "chat_general.py:151-153;fal_dispatch.py:102;app.py:845",
+        "fact": "The unreachable actual general mode uses project:<project_id>, matching actual fal/start_generation project budget scope statically."
+      }
+    ],
+    "existing_tests_read_not_run": [
+      "tests/test_chat_live_contract.py:test_uncertain_budget_blocks_new_approval_and_already_queued_transmission",
+      "tests/test_budget_crossflow.py:competing admissions and reservation/unknown cross-flow tests",
+      "tests/test_budget_dispatch_guard.py:test_chat_unknown_blocks_reserved_and_new_generation_until_reconciled",
+      "tests/test_budget_dispatch_guard.py:test_low_level_claim_is_guarded_by_default_and_other_budget_is_independent",
+      "tests/test_budget_dispatch_guard.py:test_existing_claim_remains_unknown_instead_of_unsubmitted_on_budget_block"
+    ],
+    "integration_gap": "Current crossflow tests deliberately inject a shared rehearsal-live scope into a direct generation queue. They are evidence of common-ledger contracts, not actual production-mode HTTP chat+media routing. The production mode is blocked before these existing guards can execute through normal launch.",
+    "actual_reconciliation_gap": {
+      "path": "provider_billing.py:34-76;contracts.py late-observation reviews;chat_general.py:600",
+      "fact": "provider_billing.reconcile only looks up generation_jobs. General chat records valid usage as estimated and billing_confirmed remains false. Late-observation review records review state, not settlement. There is no completed general-chat request-bound trusted cost-reconciliation workflow exposed by this source. A generic internal ledger.settle exists; that alone does not prove receipt attribution or an operator recovery workflow.",
+      "consequence": "Do not rewrite the common ledger or claim it is absent. Also do not claim live cost/unknown recovery is fully complete. Initial clean-budget execution can be prepared safely; unattributable unknown costs must remain held until trustworthy reconciliation evidence exists."
+    }
+  },
+  "alternatives": [
+    {
+      "id": "A",
+      "name": "Existing bounded adapter plus explicit default-off trusted activation configuration",
+      "selected": true,
+      "benefit": "Reuses exact bytes, strict tools, current approval and ledger protocol; makes the real production mode executable when explicit server configuration and every round authorization are valid.",
+      "cost": "Add one narrow configuration/factory and startup connection path; replace unconditional production guards with validated configuration predicates, not simple test_only deletion; exercise production branches offline.",
+      "risk": "Account access and actual response billing shapes remain unknown until separately approved live testing. Configuration identity is an administrative declaration, not proof of the account."
+    },
+    {
+      "id": "B",
+      "name": "New transport abstraction/SDK and separate general-chat sending runtime",
+      "selected": false,
+      "benefit": "Could offer generic provider ports, but the current adapter already supplies the required first-party bounded IO.",
+      "cost_risk": "Would duplicate header/endpoint, byte encoding, secret/error handling, attempt fencing and cancellation paths; new behavior would need broad retesting without closing the actual configuration and billing-evidence gaps.",
+      "reason_rejected": "No missing transport capability was found that justifies a new SDK, retry framework or parallel execution engine."
+    }
+  ],
+  "selected_execution_plan": {
+    "next_vertical_slice": "Explicitly configured production-mode Claude → exact approved manifest → existing common budget/attempt claim → pinned existing adapter → validated response/tool continuation; all newly reachable production branches verified offline before any real account test.",
+    "proposed_write_set": [
+      "general_chat_config.py (new, typed bounded trusted startup contract + lazy existing-adapter factory)",
+      "app.py (CLI/server construction and mutually exclusive configuration injection)",
+      "chat_general.py (three-layer validated activation predicates/binding; preserve ledger/manifest/usage state machine)",
+      "tests/test_general_chat_activation.py (new, production-mode controller/adapter boundary contracts)",
+      "tests/test_chat_live_contract.py (retain unconfigured real mode failure; narrow additions only if existing fixtures are reused)"
+    ],
+    "configuration_contract": [
+      "Default disabled when the explicit startup argument/configuration is absent; constructing/validating configuration reads no credential and opens no network.",
+      "Trusted CLI/server-supplied configuration only: explicit enabled boolean, stable connection_id/revision, workspace target, pinned supported selection/price revision, permitted input/tool/cost policy and credential supplier/reference. No browser/model-supplied endpoint, headers, transport class, test_only override or secret value.",
+      "Validate bounded schema/types, duplicate/unknown keys, safe config provenance and target scope; public capabilities expose configuration/verification state without credential paths, key material or account claims.",
+      "enabled=true is an administrator opt-in for a valid configuration, not money/input consent. Every actual count/message still requires the exact manifest decision, rights confirmation, fresh model/price/connection binding, budget reservation and atomic claim.",
+      "Do not promote static catalog integration_unverified or global live_execution into successful account verification merely because construction succeeds. Runtime availability/external_transmission describe configured capability; actual account access remains explicitly unverified."
+    ],
+    "three_guard_replacements": [
+      {
+        "layer": "app.server",
+        "condition": "Accept actual general runtime only from validated explicit startup configuration/factory matching target workspace and pinned model/price policy; reject mixed fixture/direct-live/config inputs and retain default disconnected mode. Configuration errors occur before credential lookup and external IO."
+      },
+      {
+        "layer": "Runtime",
+        "condition": "Allow a non-test transport only if its trusted validated activation contract is present and current; retain exact class validation, current connection binding and all existing preview/decision/ledger gates. Arbitrary unconfigured LiveTransport remains rejected."
+      },
+      {
+        "layer": "LiveTransport.count/complete",
+        "condition": "Require the same valid active contract and exact production bounded transports, no custom opener/endpoint, before delegating to the lazy adapter. UI/model routes reach this only through Runtime after existing per-operation atomic claims; this is not a public transport-execution API. Missing/disabled/stale configuration fails before secret acquisition."
+      }
+    ],
+    "implementation_order": [
+      "First pin the narrow configuration/capability contract and inactive behavior; preserve the existing unconfigured-real-mode refusal test.",
+      "Wire the existing adapter/factory into CLI/server without automatic execution. Make the three actual-mode guards conditional on the same trusted contract and bind its revision/hash to each exact preview. No fixture may silently become live.",
+      "Exercise the actual production mode through isolated platform HTTP and existing bounded transports with the socket/opener seam replaced only inside tests. _opener must remain None in the production configuration. No real key or endpoint request is made. This is an offline production-branch test, not real-provider evidence.",
+      "Verify real production budget scope through the actual controller paths, including competition/unknown/overrun and the media route where practical; reuse existing fixture adapters, do not force the rehearsal scope to stand in for production integration.",
+      "Connect search_project_context/MF-CONTEXT marker, typed local edit proposal, independent human review/approval, local renderer and receipt retrieval using controlled provider responses. Exact tool_result continuation consent remains mandatory. Reuse existing local workflow fixtures rather than rewriting editing/rendering.",
+      "Separate observed supported usage estimates, unsupported/unpriced usage and no-response uncertainty; inspect each current reservation/message attempt. Record the remaining trusted general-chat reconciliation path before live acceptance. Do not assign unknown billing dimensions to zero just to make the workflow pass."
+    ],
+    "acceptance_criteria": [
+      "Default launch and disabled/invalid configuration acquire no secret and send nothing. Explicit validated enabled configuration can construct and run the actual production branch, without weakening per-round approval or opening it during this task.",
+      "Unconfigured direct non-test transport, fixture/live mixing, wrong workspace/model/price/connection revision, custom opener/URL and user-supplied activation fields fail closed.",
+      "Platform HTTP preview with actual mode uses project:<pid>, public actual destination and exact count/message byte hashes. No key access, reservation or send occurs merely by viewing the preview. Approval acquires exactly one reservation; count/message each have one fenced claim.",
+      "The first bounded count and message POSTs use exactly the approved bytes in an isolated test seam. A supported rich standard usage response with exact model executes only allowed client tools; the following result is sent only after fresh exact-manifest consent.",
+      "Missing/unknown/null/nonzero billing dimensions or model mismatch preserve observations and holds and do not execute tool effects. No skipped pricing checks, fallback model or retry. Counts are not invoices.",
+      "Production-mode chat and actual media controller paths account against the same project budget; competing admission, pre-claim uncertainty/overrun, post-claim edit, cancellation, restart, current-attempt unknown and other-project independence follow existing contracts.",
+      "An isolated controlled model response can read music facts and propose a local edit, then human approval and existing local renderer produce/inspect the result. Record fixture vs renderer vs future actual model evidence separately."
+    ],
+    "billing_recovery_followup_with_exact_boundary": {
+      "missing": "A general-chat request-bound trusted reconciliation input/service, not another ledger algorithm.",
+      "proposed_scope_if_root_includes_it_before_live_acceptance": [
+        "chat_general.py or a narrow chat_billing.py server-only helper",
+        "existing billing.manage contracts/operator path and focused tests only when an admissible receipt format/source is defined"
+      ],
+      "must_bind": [
+        "workspace/project/conversation",
+        "connection revision/billing identity declaration",
+        "exact current reservation + chat-message attempt + request/manifest hash",
+        "validated provider request ID when available",
+        "model + price revision",
+        "evidence source/class/digest and exactly attributable monetary/billable dimensions"
+      ],
+      "rules": [
+        "Fixture evidence cannot settle live reservations. A model cannot provide or approve billing evidence. Late-review acknowledgement alone cannot release money.",
+        "An aggregate account bill cannot be assigned to one request without attributable evidence. Do not invent an Anthropic per-request billing endpoint or treat a supplied number as authenticated provider data.",
+        "Unknown/absent dimensions cannot be inferred as zero. Valid explicit usage remains an estimate unless a separate trusted cost record supports settlement; invoice confirmation remains distinct.",
+        "Reconciliation must be idempotent/conflict-audited and must not replay tools, requeue a request or silently issue another paid call. If attributable evidence is unavailable, preserve the hold and report the operational limit."
+      ],
+      "priority": "This must be resolved or explicitly kept as a live-acceptance dependency. It does not justify leaving all clean-budget production execution unconditionally unreachable; it also must not be claimed completed by enabling configuration."
+    }
+  },
+  "pricing_research_reuse": {
+    "source": ".omo/evidence/anthropic-general-live-contract-20261028.json",
+    "facts": "Root research confirms the configured Haiku5.5 ID, first-party endpoints and current standard text rates against official sources; these were not independently re-browsed in this task.",
+    "policy": "No rates, usage field inference or cost bounds changed. Current strict missing-field behavior remains unpriced; actual account response shapes and entitlement require separately authorized receipts."
+  },
+  "external_account_test_needs": [
+    "Explicit authorization for a bounded actual account test and selected workspace/project/conversation; no prior local fixture result grants this.",
+    "Credential supplier location/identity and access authority, confirmed account/region/model capability, without exposing the secret in API/UI/logs.",
+    "Exact approved synthetic or user-authorized prompt/tool-result data scope. Raw audio/photo/media files are outside this text-tool contract unless separately requested and consented.",
+    "A user-approved project budget, per-round and total maximum, maximum calls/rounds, price/version policy, time window and stop conditions.",
+    "Actual request IDs, response model/usage shapes, supported/unsupported billing evidence and cost reconciliation source; authenticate only under that scope.",
+    "Separate user workflow and actual MP4 output review, and keep AI-video-model tests deferred until production workflow acceptance as previously requested."
+  ],
+  "execution_record": {
+    "product_source_modified": false,
+    "md_registry_modified": false,
+    "tests_run": false,
+    "browser_used": false,
+    "server_started_or_changed": false,
+    "credentials_or_env_read": false,
+    "external_requests": 0,
+    "only_written_artifact": ".omo/evidence/general-live-adapter-discovery-20261028.json",
+    "historical_stage_tests_rerun": false
+  },
+  "handoff": "Concrete plan only; no implementation or activation was performed. Root should decide the next bounded write set and any real-account authorization separately. Stop after this evidence."
+}

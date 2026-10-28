@@ -1,0 +1,11 @@
+const fs=await import('node:fs/promises'),root='/Users/leesungmin/Desktop/Loretune/docs/qa/proposal-draft-fix-20261026/served-baseline';
+const task=await taskSpace(37),p=task.page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await p.click('#compareButton',{label:'두 Take 비교 기준선'});
+await p.waitForFunction(()=>{const d=document.querySelector('#compareDialog');return d?.open&&[...d.querySelectorAll('video')].every(v=>v.readyState>=2)},undefined,{timeout:10000});
+await p.evaluate(()=>{document.querySelectorAll('#compareDialog video').forEach(v=>{v.pause();v.currentTime=1})});
+await p.waitForFunction(()=>[...document.querySelectorAll('#compareDialog video')].every(v=>!v.seeking),undefined,{timeout:5000});
+const metrics=await p.evaluate(()=>{const r=e=>{const x=e.getBoundingClientRect();return{x:x.x,y:x.y,width:x.width,height:x.height}};return{time:new Date().toISOString(),viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,dialog:r(document.querySelector('#compareDialog')),left:document.querySelector('#compareLeft').value,right:document.querySelector('#compareRight').value,videos:[...document.querySelectorAll('#compareDialog video')].map(v=>({box:r(v),intrinsic:[v.videoWidth,v.videoHeight],time:v.currentTime,paused:v.paused,fit:getComputedStyle(v).objectFit})),selectedTake:project().shots[shotName].selected,errors:window.__baseline.errors}});
+if(metrics.viewport.join()!=='1920,1080')throw Error('VIEWPORT_MISMATCH');
+await p.screenshot({path:root+'/comparison-1920.png'});await fs.writeFile(root+'/comparison-1920.json',JSON.stringify(metrics,null,2));
+console.log(metrics);console.log(await p.snapshot());

@@ -1,0 +1,182 @@
+[
+  {
+    "case": "1920 keyboard opens disclosure fully visible",
+    "pass": true,
+    "data": {
+      "open": true,
+      "description": "시간축·트림·한국어 검토용 합성 미디어. 외부 AI 생성 아님.",
+      "v": {
+        "height": 44,
+        "width": 1376,
+        "visibleHeight": 44,
+        "visibleWidth": 1376,
+        "focus": true,
+        "focusVisible": true,
+        "text": "장면 설명",
+        "outline": "rgb(228, 221, 190) dashed 2px"
+      },
+      "document": [
+        1920,
+        1080
+      ]
+    }
+  },
+  {
+    "case": "1920 keyboard closes disclosure fully visible",
+    "pass": true,
+    "data": {
+      "open": false,
+      "v": {
+        "height": 44,
+        "width": 55.1171875,
+        "visibleHeight": 44,
+        "visibleWidth": 55.1171875,
+        "focus": true,
+        "focusVisible": true,
+        "text": "장면 설명",
+        "outline": "rgb(228, 221, 190) dashed 2px"
+      }
+    }
+  },
+  {
+    "case": "1920 Tab leaves summary",
+    "pass": true,
+    "data": {
+      "tag": "SELECT",
+      "id": "previewMode"
+    }
+  },
+  {
+    "case": "1920 precision save focus visible",
+    "pass": true,
+    "data": {
+      "height": 40,
+      "width": 442,
+      "visibleHeight": 40,
+      "visibleWidth": 442,
+      "focus": true,
+      "focusVisible": true,
+      "text": "편집 저장",
+      "disabled": false,
+      "outline": "rgb(228, 221, 190) dashed 2px"
+    }
+  },
+  {
+    "case": "1280 keyboard opens disclosure fully visible",
+    "pass": true,
+    "data": {
+      "open": true,
+      "description": "시간축·트림·한국어 검토용 합성 미디어. 외부 AI 생성 아님.",
+      "v": {
+        "height": 44,
+        "width": 736,
+        "visibleHeight": 44,
+        "visibleWidth": 736,
+        "focus": true,
+        "focusVisible": true,
+        "text": "장면 설명",
+        "outline": "rgb(228, 221, 190) dashed 2px"
+      },
+      "document": [
+        1280,
+        900
+      ]
+    }
+  },
+  {
+    "case": "1280 keyboard closes disclosure fully visible",
+    "pass": true,
+    "data": {
+      "open": false,
+      "v": {
+        "height": 44,
+        "width": 55.1171875,
+        "visibleHeight": 44,
+        "visibleWidth": 55.1171875,
+        "focus": true,
+        "focusVisible": true,
+        "text": "장면 설명",
+        "outline": "rgb(228, 221, 190) dashed 2px"
+      }
+    }
+  },
+  {
+    "case": "1280 Tab leaves summary",
+    "pass": true,
+    "data": {
+      "tag": "SELECT",
+      "id": "previewMode"
+    }
+  },
+  {
+    "case": "1280 precision save focus visible",
+    "pass": true,
+    "data": {
+      "height": 40,
+      "width": 228.6640625,
+      "visibleHeight": 40,
+      "visibleWidth": 228.6640625,
+      "focus": true,
+      "focusVisible": true,
+      "text": "편집 저장",
+      "disabled": false,
+      "outline": "rgb(228, 221, 190) dashed 2px"
+    }
+  },
+  {
+    "case": "dirty edit survives disclosure open and close",
+    "pass": true,
+    "data": {
+      "dirty": true,
+      "duration": 1.1,
+      "selected": 1,
+      "unchanged": true
+    }
+  },
+  {
+    "case": "controlled 422 preserves draft through disclosure",
+    "pass": true,
+    "data": {
+      "dirty": true,
+      "duration": 1.1,
+      "pending": false,
+      "request": [
+        {
+          "action": "timeline",
+          "method": "POST"
+        }
+      ],
+      "notice": "작업을 완료하지 못했습니다. 입력과 작업 상태를 확인하세요. 자세한 원인은 오류 상세에서 볼 수 있습니다.",
+      "unchanged": true,
+      "document": [
+        1920,
+        1080
+      ]
+    }
+  },
+  {
+    "case": "dirty cancel focus fully visible",
+    "pass": true,
+    "data": {
+      "height": 40,
+      "width": 329.5,
+      "visibleHeight": 40,
+      "visibleWidth": 329.5,
+      "focus": true,
+      "focusVisible": true,
+      "text": "편집 초안 취소",
+      "disabled": false,
+      "outline": "rgb(228, 221, 190) dashed 2px"
+    }
+  },
+  {
+    "case": "cancel restores approved local state without writes",
+    "pass": true,
+    "data": {
+      "dirty": false,
+      "duration": 1,
+      "unchanged": true,
+      "pending": false
+    }
+  }
+]

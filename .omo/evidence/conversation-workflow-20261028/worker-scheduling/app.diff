@@ -1,0 +1,93 @@
+--- .omo/evidence/conversation-workflow-20261028/worker-scheduling/app-before.py	2026-10-28 07:29:30
++++ app.py	2026-10-28 07:30:26
+@@ -12,7 +12,7 @@
+ import tempfile
+ import uuid
+ import time
+-from threading import Thread
++from threading import Event, Thread
+ from copy import deepcopy
+ from editing import defaults, current, save_timeline, render_project, probe, seconds, srt, preflight, selection_mismatches
+ from renderer import render, Cancelled, verify_output
+@@ -141,23 +141,56 @@
+         hashes.add(sha)
+     return hashes
+ 
+-def worker_cycle(store):
+-    """Keep one failed queue from stopping the other local queues."""
+-    worked = failed = False
++WORKER_IDLE_SECONDS = .3
++
++def _worker_processors(store):
+     processors = [('render', store.process_next), ('generation', store.process_generation)]
+     if store.chat_runtime is not None:
+         processors.append(('chat', store.chat_runtime.process_next))
+     if getattr(store,'general_chat_runtime',None) is not None:
+         processors.append(('general-chat', store.general_chat_runtime.process_next))
++    return processors
++
++def _worker_process(name, process):
++    try:
++        return bool(process()), False
++    except Exception as exc:
++        # Provider exceptions may contain prompts or credentials; record only the type.
++        logging.getLogger(__name__).error('Worker %s failed (%s)', name, type(exc).__name__)
++        return False, True
++
++def worker_cycle(store):
++    """Keep one failed queue from stopping the other local queues."""
++    worked = failed = False
++    processors = _worker_processors(store)
+     for name, process in processors:
+-        try:
+-            worked = bool(process()) or worked
+-        except Exception as exc:
+-            # Provider exceptions may contain prompts or credentials; record only the type.
+-            logging.getLogger(__name__).error('Worker %s failed (%s)', name, type(exc).__name__)
+-            failed = True
++        did_work, did_fail = _worker_process(name, process)
++        worked = did_work or worked
++        failed = did_fail or failed
+     return worked, failed
+ 
++def start_workers(store, stop_event=None):
++    """Start bounded queue workers after configuring the store's runtimes.
++
++    Stopping prevents subsequent cycles; active renders/requests finish under
++    their existing timeout and cancellation rules. Callers may join the threads.
++    """
++    stop = stop_event if stop_event is not None else Event()
++    def run(name, process):
++        while not stop.is_set():
++            worked, failed = _worker_process(name, process)
++            if failed or not worked:
++                stop.wait(WORKER_IDLE_SECONDS)
++    threads = []
++    for name, process in _worker_processors(store):
++        # A slow conversation must not consume rendering or generation capacity.
++        for slot in range(2 if name == 'general-chat' else 1):
++            thread = Thread(target=run, args=(name, process),
++                            name=f'loretune-worker-{name}-{slot+1}', daemon=True)
++            threads.append(thread)
++            thread.start()
++    return stop, tuple(threads)
++
+ def media_byte_range(value, size):
+     """Single byte range for local media seeking (RFC 9110 §14).
+ 
+@@ -1451,9 +1484,9 @@
+     except general_chat_config.GeneralChatConfigError:
+         parser.exit(2, general_chat_config.ERROR+'\n')
+     print(f'Aethon: http://127.0.0.1:{app.server_port}', flush=True)
+-    def worker():
+-        while True:
+-            worked, failed = worker_cycle(app.store)
+-            if failed or not worked:time.sleep(.3)
+-    Thread(target=worker,daemon=True).start()
+-    app.serve_forever()
++    stop, workers = start_workers(app.store)
++    try:
++        app.serve_forever()
++    finally:
++        stop.set()
++        app.server_close()

@@ -1,0 +1,11 @@
+--- before/app.py
++++ app.py
+@@ -1012,7 +1012,7 @@
+     parser.add_argument('--data', type=Path, default=ROOT/'data')
+     args = parser.parse_args()
+     app = server(args.data, args.port)
+-    print(f'Loretune: http://127.0.0.1:{app.server_port}', flush=True)
++    print(f'Aethon: http://127.0.0.1:{app.server_port}', flush=True)
+     def worker():
+         while True:
+             if not app.store.process_next() and not app.store.process_generation() and not (app.store.chat_runtime and app.store.chat_runtime.process_next()):time.sleep(.3)

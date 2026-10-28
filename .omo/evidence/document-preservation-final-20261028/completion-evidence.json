@@ -1,0 +1,41 @@
+{
+  "schema": "document-preservation-final-completion-evidence/1",
+  "recorded_at": "2026-10-27T20:36:55.527197+00:00",
+  "task": "document-preservation-final-20261028",
+  "task_scope_completed": "Current recorded path/hash and recent semantic preservation review",
+  "whole_platform_complete": false,
+  "goal_status_change_performed": false,
+  "mechanical_audit": {
+    "path": ".omo/evidence/document-preservation-final-20261028/audit.json",
+    "sha256": "21e13ebea6fe8cd08dacac5cd6489132925b3adb9be2680e00d87e9285c37756"
+  },
+  "independent_review": {
+    "path": ".omo/evidence/document-preservation-final-20261028/independent-review-acceptance.json",
+    "sha256": "2c6f6f598aa21a122b85c92b0291956f19f55ca9b34f9d03ef12e997dae67fb7"
+  },
+  "gate": {
+    "exit_code": 1,
+    "status": "blocked",
+    "evidence_sha256": "b437ab1675981747391eb3d3a9cb48f8b25ece2014dae8513a24df2ebbf03371",
+    "findings": {
+      "REGISTERED_SOURCE_OUTDATED": 26,
+      "UNCLASSIFIED_DOCUMENT": 3
+    },
+    "warning_count": 52
+  },
+  "pending_approval": {
+    "proposal": "docs/qa/codex-workflow-review-20261027/paired-assets-20261028/registration-plan.json",
+    "snapshot_links": 26,
+    "classifications": 3,
+    "current_contexts": 6,
+    "status": "Existing concrete approval request remains pending; no duplicate authorization inferred from hooks or silence",
+    "executed": false
+  },
+  "known_unresolved": [
+    "docs/qa/tail-quota-fixes-20261025/media/store-tail-preserved-manifest.json T0 bytes unrecovered",
+    "docs/qa/tail-quota-fixes-20261025/store-media-after.json T0 bytes unrecovered",
+    "Unknown preT0 history cannot be proven without Git/original copies"
+  ],
+  "changed_product_or_source_documents": [],
+  "fablize_narrow_verification": "Ran current path/SHA/read-only document gate audit (audit command exit0; document gate exit1 blocked), before/current exact ordered-byte reconstruction, and independent20-document SHA/semantic acceptance. No product source changed; product behavior tests do not apply to this audit. No historical/provider/product validation was replayed."
+}

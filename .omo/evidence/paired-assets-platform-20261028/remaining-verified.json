@@ -1,0 +1,51 @@
+{
+  "verified_at": "2026-10-27T20:01:09.053480+00:00",
+  "whole_platform_complete": false,
+  "items": [
+    {
+      "id": "BENCH-COLOR-04",
+      "state": "needs isolation",
+      "evidence": "ui/edited-chair.png",
+      "observation": "Upright generated chair remains paler/rougher than source; source prediction/baked illumination/COLOR_0 color-space assumption/native PBR lighting not causally separated.",
+      "next": "Check pinned TripoSR/Trimesh export color encoding and controlled native materials; do not alter arbitrary imported colors or claim model failure solely from relit render."
+    },
+    {
+      "id": "BENCH-PREP-05",
+      "state": "failed experiment preserved",
+      "evidence": "../triposr-preprocess-controlled-20261028/report.json",
+      "observation": "Exact58 mask incomplete, opaque bbox remains wholeimage,129841verts259260faces177components; raw output rejected.",
+      "next": "Use a validated foreground mask/preprocessor with explicit conditions before next model comparison; never silently decimate for acceptance."
+    },
+    {
+      "id": "UX-IMPORT-06",
+      "state": "observed recovery-copy gap",
+      "evidence": "ui/over-limit-input.json",
+      "observation": "Valid-sized5.2MB GLB over geometry limit receives generic unsupported/damaged error; complexity and useful recovery action not explained.",
+      "next": "Narrow diagnosis/clarify copy without exposing raw validator internals or lowering safety bounds."
+    },
+    {
+      "id": "UX-NOTICE-07",
+      "state": "observed; usability effect hypothesis",
+      "evidence": "ui/playback-1920.png",
+      "observation": "Expanded submission notice remains after completed output and occupies prominent work-area height; reload clears notice.",
+      "next": "Investigate success notice lifecycle; keep actionable errors/cost/rights/approvals visible, compact routine completed status."
+    },
+    {
+      "id": "AI-3D-ADAPTER",
+      "state": "not implemented",
+      "observation": "This is isolated public-model experiment followed by GLB upload; no site generation operation or3Dchattool integration is proved.",
+      "next": "Prioritize with core music workflows; implement only under typed scoped input/source/approval/limits contract."
+    },
+    {
+      "id": "BENCH-COMMERCIAL-PARITY",
+      "state": "unproven",
+      "observation": "Commercial before/after public images use different inputs/render/material/edit conditions; no same-input downloadable commercial mesh.",
+      "next": "Obtain authorized same-condition reference artifacts; paid/account actions remain separately scoped."
+    },
+    {
+      "id": "PLATFORM-REMAINING",
+      "state": "incomplete",
+      "observation": "Actual selected-model tool editing/account/billing, original acceptance, full design/a11y/user/operations remain in canonical backlog."
+    }
+  ]
+}

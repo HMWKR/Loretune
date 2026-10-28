@@ -1,0 +1,10 @@
+import fs from 'node:fs/promises';
+const D='/Users/leesungmin/Desktop/Loretune/docs/qa/design-benchmark-20261025/production-finish',p=(await taskSpace(18)).page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
+await p.selectOption('#songs','디자인 다중장면 QA 20261025 1330');await p.click('button[data-step="3"]');
+await p.evaluate(async()=>{const w=document.querySelector('iframe').contentWindow,v=w.document.querySelector('#preview video');if(v){v.muted=true;await v.play();}});
+await p.waitForFunction(()=>document.querySelector('iframe').contentDocument.querySelector('#preview video')?.currentTime>.1,undefined,{timeout:5000});
+await p.evaluate(()=>document.querySelector('iframe').contentDocument.querySelector('#preview video').pause());
+await p.screenshot({path:D+'/candidate-desktop-1280.png'});
+console.log(await p.snapshot());
+console.log(await p.evaluate(()=>{const w=document.querySelector('iframe').contentWindow;return {errors:w.__errors,writes:w.__writes,width:w.innerWidth,tools:!!w.document.querySelector('#productionTools')}}));

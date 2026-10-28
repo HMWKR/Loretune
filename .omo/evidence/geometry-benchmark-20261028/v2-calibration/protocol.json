@@ -1,0 +1,172 @@
+{
+  "schema": "loretune-rms-calibrated-geometry-benchmark/2",
+  "frozen_at": "2026-10-28T05:24:24.075306+00:00",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "source_files": {
+    "cube_scene": {
+      "path": ".omo/evidence/paired-3d-benchmark-inputs-20261028/case-1-cube.scene.json",
+      "bytes": 1110,
+      "sha256": "77f26a49a61be512c460cca06a320cce7ba0eba0189cec7ee96c315d9fe44ad8"
+    },
+    "chair_scene": {
+      "path": ".omo/evidence/paired-3d-benchmark-inputs-20261028/case-2-chair.scene.json",
+      "bytes": 2785,
+      "sha256": "ab0dcb4a2bf36377fafc11855a6395853e32e9becb17a2be206ae50d2fe886e5"
+    },
+    "cube_input": {
+      "path": ".omo/evidence/paired-3d-benchmark-inputs-20261028/case-1-cube.png",
+      "bytes": 229613,
+      "sha256": "472c4e8e77d713e5bf8f8f46fc50f99ec468b8c775803e06050be433bd9b9033"
+    },
+    "chair_input": {
+      "path": ".omo/evidence/paired-3d-benchmark-inputs-20261028/case-2-chair.png",
+      "bytes": 233742,
+      "sha256": "e673407b9000388e4bb4e9cc382f1a91043468665c2170d996bdd21ad526835e"
+    },
+    "cube_raw": {
+      "path": ".omo/evidence/triposr-cpu-artifact-20261028/cube-resolution256-original.glb",
+      "bytes": 1848244,
+      "sha256": "307b92e8cb61be726d6de12d9059dc54254be956d13bae3f66700b60dccd1cfe"
+    },
+    "chair_raw": {
+      "path": ".omo/evidence/triposr-cpu-artifact-20261028/chair-attempt-1/chair-resolution256-original.glb",
+      "bytes": 1686596,
+      "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3"
+    }
+  },
+  "methodology_sources": [
+    "https://openaccess.thecvf.com/content_cvpr_2017/html/Fan_A_Point_Set_CVPR_2017_paper.html",
+    "https://trimesh.org/trimesh.sample.html",
+    "https://trimesh.org/trimesh.registration.html",
+    "TripoSR@107cefdc244c39106fa830359024f6a2f1c78871:tsr/system.py extract_mesh and tsr/utils.py get_spherical_cameras/to_gradio_3d_orientation",
+    "Exact source SceneSpec and scene_renderer.py primitive size2/scale semantics"
+  ],
+  "current_runtime": {
+    "python": "existing isolated TripoSR Python3.11 venv",
+    "numpy": "1.26.4",
+    "trimesh": "4.0.5",
+    "scipy": "1.17.1",
+    "Pillow": "10.1.0",
+    "rtree": false,
+    "matplotlib": false,
+    "new_dependencies": false
+  },
+  "groundtruth": "Exact union boundary of axis-aligned boxes; split at every box min/max coordinate, occupied cell midpoint classification, only occupied-to-empty neighbor faces. Shared and internal primitive faces excluded. This is a reference for these primitive scenes, not a generic boolean or reconstruction product feature.",
+  "coordinate_evidence": {
+    "raw": "wrapper extract_mesh→mesh.export, no to_gradio_3d_orientation; GLB node transforms absent/identity",
+    "upstream": "get_spherical_cameras describes x back/y right/z up",
+    "unknown": "Input-camera-to-learned-canonical-pose calibration was not stored; no original input pose recovery claim."
+  },
+  "normalization": {
+    "rule": "Exact triangle-area-weighted surface centroid mu and RMS radius r; normalize x to (x-mu)/r once before rigid ICP.",
+    "moments": "Triangle E[x]=(v0+v1+v2)/3; E[||x||^2]=(sum_i ||vi||^2 + sum_i<j vi dot vj)/6. Aggregate by triangle area. r=sqrt(E[||x||^2]-||mu||^2).",
+    "limits": [
+      "Translation/rotation/positive uniform-scale invariance is algebraic and tested on corresponding points before reconstruction evaluation.",
+      "Reference and prediction each get their own surface moments; physical output scale not evaluated.",
+      "No nonuniform scale/reflection/nonrigid/decimation/mesh repair.",
+      "RMS1 squared length units differ from v1 maxside1; raw numeric change is not a before/after reconstruction-quality improvement."
+    ]
+  },
+  "conditions": [
+    "A_normalized_raw_basis",
+    "B_groundtruth_assisted_registration"
+  ],
+  "registration": {
+    "fit_samples_per_shape": 4096,
+    "groundtruth_seed": 11,
+    "prediction_seed": 12,
+    "initial_rotations": "24 signed permutation 3x3 matrices with determinant+1; permutations lexicographic, signs lexicographic (-1,+1). No data-driven extra starts.",
+    "icp": {
+      "max_iterations": 40,
+      "threshold": 1e-07,
+      "scale": false,
+      "reflection": false,
+      "translation": true
+    },
+    "selection": "Minimum bidirectional mean-squared nearest sampled-point distance on fit samples; ties by candidate index. Save all candidate transforms and scores.",
+    "global_transform": "One resulting proper rigid transform after fixed uniform normalization, reused in every view and holdout evaluation. No per-view correction.",
+    "limit": "Best of24 local ICP starts with access to full reference shape is an optimistic diagnostic, not proven global optimum, not learned pose recovery or production inference."
+  },
+  "evaluation": {
+    "samples_per_shape": 20000,
+    "groundtruth_seed": 101,
+    "prediction_seed": 102,
+    "definition": "CD_mean_sq = mean min squared Euclidean distance(P→G) + mean min squared Euclidean distance(G→P); per-direction mean distance/RMS/p95 also reported.",
+    "units": "Reference RMS-surface-radius normalized length; squared metrics squared RMS1 units. Distinct from v1 maximum-AABB-side1 units.",
+    "limits": [
+      "Mean-normalized metric differs from original CVPR2017 sum definition.",
+      "Finite sampled-point distance is not exact point-to-surface distance; independent-seed same-reference floor is reported.",
+      "Single input hidden geometry is ambiguous; these two synthetic shapes do not represent a real-user quality distribution."
+    ]
+  },
+  "views": {
+    "width": 512,
+    "height": 512,
+    "supersample": 2,
+    "binary_threshold": 0.5,
+    "lens_mm": 65,
+    "sensor_width_mm": 36,
+    "camera_target": "Original SceneSpec camera target; exact source camera plus front -Y, right +X, rear +Y, left -X at original horizontal radius/elevation/distance. All shapes/conditions use identical reference cameras.",
+    "renderer": "Pillow opaque projected triangle union silhouette, no per-face backface culling, no shading/material/texture/depth quality claim. All vertices must be in front of near plane; framing/clipping diagnostics preserved.",
+    "metric": "Intersection over union of binary silhouette pixel masks; no acceptance threshold or user preference claim."
+  },
+  "controls": [
+    "Duplicate coincident unit cubes union:area6 volume1; overlapping unit cubes shifted0.5X:area8 volume1.5; exact vertices/occupancy/bounds recorded.",
+    "Same pointcloud distance exactly0; same silhouette IoU1.",
+    "Independent surface samples of same reference report nonzero finite-sampling floor.",
+    "Known proper rigid+uniform scale transform through the same AABB normalization and registration reports remaining errors rather than assuming invariance.",
+    "Synthetic chair with backrest removed in unchanged reference frame is a negative diagnostic, not AI output.",
+    "v2 analytic surface-moment normalization and known-shape ICP holdout gate are checked before raw reconstruction metrics."
+  ],
+  "safety": {
+    "write_set": [
+      ".omo/evidence/geometry-benchmark-20261028/v2-calibration/"
+    ],
+    "os_network": "sandbox-exec deny network*",
+    "environment": "Explicit whitelist; no credentials/.env; bytecode disabled; numerical threads capped2",
+    "model_inference": 0,
+    "real_provider_calls": 0,
+    "product_docs_registry_changes": 0
+  },
+  "scope_limits": [
+    "No raw commercial Tripo result for the same input, so commercial/open parity remains unproven.",
+    "No new model inference or repeat of prior platform import/render or S819 color checks.",
+    "Software silhouette diagnostics are not a platform UI/render/end-to-end or performance acceptance.",
+    "No unseen-view fidelity conclusion from input-only correspondence."
+  ],
+  "v1_predecessor": {
+    "protocol_sha256": "2f6e738650f57d28a0da02e8ad2d47fd3063b5a904095186bb2913b861d36f78",
+    "report_sha256": "801c60007a14e632991bf334af5f6dd9a684cc3fa6388606faad4a1b2c2db442",
+    "manifest_sha256": "e722f35c073a8a827ed7d85cae8a5e1b9422b4de7fc280ba719d141db41def36",
+    "preserved_unchanged": true,
+    "reason": "Known-same-shape residual in maxside-AABB normalization confounded pure reconstruction interpretation."
+  },
+  "calibration_gate": {
+    "order": "Exact moments/union controls, then known transformed cube and chair with rigid ICP/holdout; only if BOTH pass may evaluate raw reconstructed meshes.",
+    "known_transform": {
+      "angle_degrees": 37,
+      "axis": [
+        1,
+        2,
+        3
+      ],
+      "positive_uniform_scale": 1.7,
+      "translation": [
+        0.3,
+        -0.4,
+        0.2
+      ]
+    },
+    "analytic_tolerance": 1e-09,
+    "tests": [
+      "mu(Tmesh)=sRmu+t",
+      "r(Tmesh)=s*r",
+      "Known inverse rotation of corresponding normalized vertices matches original normalized vertices",
+      "Unit cube surface variance5/12 and overlap box variance55/96",
+      "Same pointcloud CD0, same mask IoU1; missing-backrest negative separate from AI outputs"
+    ],
+    "ICP_holdout_threshold": "CD_mean_sq <= 1.5 * independent-seed-reference-floor + 1e-5",
+    "threshold_interpretation": "Predeclared synthetic same-shape calibration gate only; never a real-user product-quality acceptance threshold.",
+    "on_failure": "Save calibration failure and stop before raw shape quality comparison; never adjust this criterion after observing a result."
+  }
+}

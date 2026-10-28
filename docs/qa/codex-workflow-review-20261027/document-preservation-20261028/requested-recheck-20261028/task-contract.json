@@ -1,0 +1,45 @@
+{
+  "schema": "driver-worker-contract/1",
+  "task_id": "document-preservation-request-20261028",
+  "recorded_at": "2026-10-28T00:05:54.879835+00:00",
+  "objective": "최신 사용자 요청: 보존해야 할 문서 삭제·내용 손실을 전체 기록과 재대조",
+  "state": "ACCEPTED for preservation review; governance and historical-byte exceptions remain",
+  "Methodology sources": [
+    ".document-gate.json",
+    "docs/qa/DOCUMENT-INVENTORY-20261027.md",
+    ".omo/evidence/document-preservation-live-20261028/post-mr1/report.json",
+    "docs/qa/codex-workflow-review-20261027/music-recovery-20261028/document-before.json",
+    "/Users/leesungmin/.agents/skills/document-completion-gate/SKILL.md"
+  ],
+  "Applied methodology": "T0 경로·해시, 불변 전문 SHA256, 최신 before 본문 순서 보존, 등록 사본·생성문맥 대조와 독립 반례 검토",
+  "Non-goals/limits": [
+    "제품 코드·기존 MD·역사 증거 수정 없음",
+    "삭제·복원·등록·승격·생성문맥 갱신 없음",
+    "Git 없음; T0 이전 미기록 삭제는 증명 불가",
+    "비밀·data·외부 백업 접근 없음"
+  ],
+  "Verification standard": "누락과 내용변경·등록지연을 구분; 전체 대조 결과와 미확인 예외를 경로·해시로 기록",
+  "driver": {
+    "Model": "session inherited",
+    "Reasoning": "session inherited",
+    "Scope": "기계적 전체 파일·SHA·gate 검사",
+    "Write set": [
+      ".omo/evidence/document-preservation-request-20261028/**",
+      "docs/qa/codex-workflow-review-20261027/document-preservation-20261028/requested-recheck-20261028/**"
+    ]
+  },
+  "reviewer": {
+    "Role": "independent preservation reviewer",
+    "Model": "session inherited",
+    "Reasoning": "session inherited",
+    "Scope": "최신 본문 손실·T0 예외와 사용자 요구 문서 보존 독립 검토",
+    "Write set": [],
+    "Dependency": "기계 검사와 독립; 결론은 root 수락 후 기록",
+    "Agent": "/root/preservation_independent_recheck"
+  },
+  "verification_results": {
+    "audit.py": 0,
+    "verify.py": 0,
+    "document_gate": 1
+  }
+}

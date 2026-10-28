@@ -1,0 +1,117 @@
+{
+  "task_id": "general-activation-independent-20261028",
+  "attempt": 1,
+  "status": "REPORTED; root acceptance pending",
+  "reviewer": {
+    "agent": "/root/general_activation_review",
+    "agent_type": "ce-reviewer",
+    "model_reasoning": "Inherited session configuration; no override requested",
+    "read_only": "Product source was read only. One explicitly allowed JSON report and an isolated temporary HTTP/fake-provider fixture were used. OS sandbox enforcement was not independently audited."
+  },
+  "verdict": "No independently confirmed high or medium defect within the frozen, single-server activation and per-project budget boundary. This is a limited code/evidence review, not actual Claude, account identity, invoice, complete UI, or production-readiness acceptance.",
+  "method": {
+    "sources": [
+      "general_chat_config.py strict configuration and lazy credential factory",
+      "chat_general.py actual transport, manifest binding, submission, pricing and failure paths",
+      "app.py server and CLI configuration entrypoints",
+      "ledger.py attempt fencing and common budget exposure guard",
+      ".omo/evidence/general-live-activation-20261028/SOURCE-BEFORE.json",
+      ".omo/evidence/anthropic-general-live-contract-20261028.json",
+      ".omo/evidence/general-live-shared-budget-readiness-20261028.json",
+      ".omo/evidence/general-scope-journal-guard-20261028/report.json",
+      ".omo/evidence/general-scope-journal-guard-20261028/attempt2-report.json"
+    ],
+    "applied": "Before/current diff, configuration/browser/provider trust-boundary tracing, exact consent and attempt/reservation state transitions, CE Poisoning/Distraction/Confusion/Clash checks, and one independent synthetic HTTP failure probe.",
+    "skills_read": [
+      "harness-core:feature-verification SKILL.md and CODEX-RUNTIME.md",
+      "harness-core rules/live-feature-verify.md and rules/uncompromising-rigor.md",
+      "harness-orchestration:orchestrate SKILL.md",
+      "harness-andrej-karpathy-skills:karpathy-guidelines SKILL.md and CODEX-RUNTIME.md",
+      "/Users/leesungmin/.codex/agents/ce-reviewer.toml"
+    ],
+    "limits": "No source edits, full-suite duplication, browser, real provider, credentials, environment-variable access, user data, registry changes or deployment. Evidence supplied by other workers is identified separately from the independently executed probe."
+  },
+  "frozen_source_sha256": {
+    "app.py": "a32b301cb489378d9e890414fa36ce17875c053af255216ee814898de0c0cab5",
+    "chat_general.py": "99a8eaa7c3cd1787a89ca3369d3f43bfa5c864240d46413c03fdda8171ddaaf0",
+    "general_chat_config.py": "5a82649be4b6827f85061ab5aef56b957b5ac942c9448e6786b5d313f8d30562",
+    "ledger.py": "7b7b334da273fac0dc34f1a2c151e2aeb2692370e76e6c807ef37689e3909ff7"
+  },
+  "test_source_sha256_at_review": "600db0522d0cfd35bb01fa858a80fa99b93ffbb25349a20dd0513fdbf18c21f9",
+  "unchanged_provider_contract_sources": {
+    "basis": "Compared with the earlier primary-source contract research receipt",
+    "chat_models.py": "f4675c16693776d19bcaab72e2486485ab5754bf8f6f382365f0f2baa3d81419",
+    "chat_runtime.py": "e1d8b7e0b694fe91a420333925ffe44972de063359bddaf0470e908eb2e01ec1",
+    "anthropic_ontology.py": "2f97cd79e6c9b15a6f8d49814647791fd5a13ae0faef36aca788ff1b86e6802f"
+  },
+  "findings": [],
+  "observations": [
+    {
+      "id": "GA-CFG-01",
+      "kind": "code and supplied tests inspected",
+      "source": "general_chat_config.py:25-124; app.py:1191-1211",
+      "observation": "No config or enabled=false produces no actual transport. The closed schema rejects extra/duplicate fields and inline credentials or endpoints; workspace UUID, connection identity/revision and model/price revision are pinned. Config loading and construction do not call the credential supplier. The CLI supplies the existing bounded adapter, rather than a permanently disabled placeholder.",
+      "limit": "The workspace identity check occurs after Store construction, before explicit recover/worker setup and before credential/network access; this review does not claim that a wrong workspace creates zero filesystem changes."
+    },
+    {
+      "id": "GA-PORT-01",
+      "kind": "code and supplied tests inspected",
+      "source": "chat_general.py:100-157",
+      "observation": "The actual path validates exact adapter and transport classes, fixed endpoints, absent custom opener, immutable configuration and pinned supplier/transport identities. Config digest participates in the existing transport/manifest binding. Fixture and loopback transport contracts remain separate."
+    },
+    {
+      "id": "GA-SCOPE-01",
+      "kind": "code and supplied tests inspected",
+      "source": "app.py:1191-1208; ledger.py:211-235",
+      "observation": "One server cannot activate actual general chat together with legacy chat_configuration and its separate journal. The common SQL budget guard now also recognizes a reserved hold linked to an outcome_unknown general turn with update_failed journal state. Ordinary reserved work, other budgets and missing general-chat tables retain their prior behavior.",
+      "limit": "This is a per-server startup restriction and per-project SQL budget boundary. It does not prove a provider-account-wide ceiling or coordinate unrelated admin-launched processes."
+    },
+    {
+      "id": "GA-STATE-01",
+      "kind": "code, supplied tests and independent probe",
+      "source": "chat_general.py:690-722; ledger.py:140-145; chat_runtime.py:96-114",
+      "observation": "not_sent requires the exact actual LiveTransport/AnthropicChatAdapter and the closed pre-delegate credentials failure category. Ledger finalization requires the original owner, a transaction and sending state. Existing observed/unknown terminal attempts cannot be relabeled. Reservation release is a separate authorized runtime operation. Provider transport/HTTP errors continue to retain uncertainty; prior observed round usage is not erased."
+    },
+    {
+      "id": "GA-TRUTH-01",
+      "kind": "code and supplied receipts inspected",
+      "source": "chat_general.py:502-510; tests/test_general_chat_activation.py",
+      "observation": "Capability distinguishes configured actual execution mode from verified account/billing facts: account_verified=false and billing_verified=false. The 22 activation tests use a synthetic stdlib opener even when mode is anthropic-live. Neither those mode fields nor live_model_called in such a fixture prove a real provider invocation."
+    }
+  ],
+  "ce_assessment": {
+    "Poisoning": "Browser JSON has no activation route; it cannot inject a key, provider URL or server Configuration. A serialized provider response does not create a Python credentials exception. The new configuration does not turn supplied prose into execution approval. Live adversarial-model behavior was not tested.",
+    "Distraction": "The change reuses existing bounded adapters, manifests and ledger functions. No additional SDK, general orchestration framework, RAG system or media-generation scope was introduced.",
+    "Confusion": "Configured, count/message attempted, observed usage estimate, reconciled invoice and actual-model verification are kept distinct. Test sockets remain synthetic evidence; the existing stricter billing-dimension policy was not changed into missing-equals-zero.",
+    "Clash": "Default-off startup and existing fixture/loopback modes are retained. Actual general and separate legacy journals cannot be enabled together in one server. Current documentation still needs the driver's explicit new-stage update rather than interpreting the code change as overall production acceptance."
+  },
+  "verification": {
+    "independently_executed": [
+      {
+        "name": "Remote HTTP401 remains unknown, not known-not-sent",
+        "method": "Reused GeneralChatActivationHTTPTest helpers in one temporary platform HTTP server. The production bounded transport's stdlib opener was synthetic; it raised an HTTPError(401) at the message request after a successful synthetic count. No actual provider or environment key was used.",
+        "command_shape": "PYTHONDONTWRITEBYTECODE=1 python3 -B, isolated inline probe importing tests.test_general_chat_activation",
+        "exit_code": 0,
+        "observed": {
+          "local_approval_http_status": 200,
+          "turn_status": "outcome_unknown",
+          "reservation": ["uncertain", null],
+          "attempts": [["chat-count", "observed"], ["chat-message", "unknown"]],
+          "fake_transport_requests": 2,
+          "message_not_sent_recorded": false,
+          "real_provider_calls": 0
+        },
+        "cleanup": "Temporary HTTP server, thread, stdlib patch and TemporaryDirectory were cleaned through the existing test cleanup handlers. No live parent process handle was reused."
+      }
+    ],
+    "inspected_worker_evidence_not_rerun": [
+      {"path": "narrow-final-22.log", "result": "22 tests / 10.722 seconds / OK"},
+      {"path": "../general-scope-journal-guard-20261028/attempt2-final.log", "result": "33 tests / 8.964 seconds / OK"}
+    ]
+  },
+  "handoff_notes": [
+    "Use the physical uppercase SOURCE-BEFORE.json filename in portable links; the macOS filesystem also accepts the lowercase spelling used in the task prompt.",
+    "The actual external account, authentication, response billing dimensions and request-level invoice reconciliation remain unverified. General-chat billing reconciliation is still a separate operational requirement, not something this code review declares complete.",
+    "The driver still owns independent whole-regression integration, actual browser workflow, final documentation and approval for any real paid call. This reviewer did not grant activation, registration, deployment or payment authority."
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "status": "DIAGNOSED",
+  "actual_store_shapes": {
+    "before": {
+      "revision": 3,
+      "head_key_present": true,
+      "timeline_head": null,
+      "timeline_versions": [],
+      "active_conversation": null
+    },
+    "grok": {
+      "revision": 4,
+      "head_key_present": true,
+      "timeline_head": null,
+      "timeline_versions": [],
+      "active_conversation": null
+    },
+    "cleared": {
+      "revision": 5,
+      "head_key_present": true,
+      "timeline_head": null,
+      "timeline_versions": [],
+      "active_conversation": null
+    }
+  },
+  "product_global": {
+    "line": 43,
+    "declaration": "let state,shotName='',draft=null,busy=false,dirty=false;"
+  },
+  "fresh_function": "function fresh(p){const music=(p.music_versions||[]).find(v=>v.id===p.music_head);return {clips:Object.entries(p.shots).map(([shot,s])=>({shot,take:s.selected,duration:s.planned_duration||3,trim:0})),audio:p.audio_selected,audio_offset:music?(p.audio_selected==null||music.audio===p.audio_selected?music.start:0):(p.audio_offset||0),profile:p.profile||'landscape',subtitles:[]}}",
+  "fresh_contract": {
+    "id_present": false,
+    "head": null,
+    "draft_normalized_head": null,
+    "matches": true,
+    "clip_count": 1
+  },
+  "memory_controls": [
+    {
+      "label": "before_vm_missing_binding",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "{\n  \"failure\": \"Expected values to be strictly equal:\\n+ actual - expected\\n\\n+ '기획 모델: GPT 6 Luna · 작품 기본값 · 다음 요청 기준'\\n- '기획 모델: Grok 4.7 · 작품 기본값 · 다음 요청 기준'\\n           ^\\n\",\n  \"pollErrors\": [\n    {\n      \"name\": \"ReferenceError\",\n      \"message\": \"draft is not defined\"\n    }\n  ]\n}\n",
+      "repository_source_written": false
+    },
+    {
+      "label": "memory_only_add_draft_null",
+      "exit_code": 0,
+      "stdout": "{\n  \"results\": [\n    {\n      \"name\": \"no-motion model-only grok\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"no-motion model-only cleared\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"catalog-only human name refresh at same revision\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"reverse response cannot restore old selection\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"guard old-revision\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"guard other-workspace\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"guard other-project\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"guard other-shot\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"guard epoch\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"guard dirty\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"guard busy\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"dirty guard releases to later fresh poll\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"name\": \"terminal run-only update advances request revision without replacing a new prompt\",\n      \"status\": \"PASS\"\n    }\n  ],\n  \"count\": 13,\n  \"network\": \"fake fetch only\"\n}\n",
+      "stderr": "",
+      "repository_source_written": false
+    }
+  ],
+  "interpretation": "VM omitted product-global draft binding. Optional chaining does not suppress ReferenceError for undeclared identifier; poll catch absorbs it before chatChanged. Model-only actual Store states retain null head. A test-only declaration restores runtime parity; existing expected strings and assertions remain unchanged.",
+  "not_performed": [
+    "real provider/model invocation",
+    "new browser test",
+    "production source edit"
+  ]
+}

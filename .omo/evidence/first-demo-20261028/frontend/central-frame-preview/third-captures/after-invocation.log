@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(await page.$eval('#preview video',e=>Math.abs(e.currentTime-.75)<.1))
+
+    at run (/Users/leesungmin/Desktop/Loretune/tests/central_frame_preview.cjs:16:550) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

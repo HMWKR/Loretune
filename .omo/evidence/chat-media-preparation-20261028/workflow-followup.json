@@ -1,0 +1,44 @@
+{
+  "at": "2026-10-28T05:28:15.003380+00:00",
+  "id": "AGENT-TOOLS-02-REVIEW-DISCOVERY",
+  "status": "OBSERVED_FOLLOWUP_NOT_IMPLEMENTED",
+  "observation": "Prepared image action is visible in existing Work settings pane. Initial observer omitted tab selection and saw zero-size hidden card; same DB continuation selecting the public tab produced visible cards and working hold/reject. This is not itself a product failure or a user-study finding.",
+  "evidence": [
+    "worker/actual-ui-failure.json",
+    "worker/responsive-card-observations.json",
+    "worker/actual-ui-result.json",
+    "worker/visible-card-1920.png",
+    "worker/visible-card-375.png"
+  ],
+  "task": "After chat prepares an image action, reach the saved approval card while keeping conversation draft/context and frozen approvals.",
+  "hypothesis": "A contextual review action near the completed tool result may make the next step easier to find; actual user effect unmeasured.",
+  "methods": [
+    {
+      "source": "https://www.nngroup.com/articles/recognition-and-recall/",
+      "principle": "Provide a visible contextual cue rather than require the user to remember where the saved item is."
+    },
+    {
+      "source": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+      "principle": "Reuse the real tab/tabpanel semantics and keyboard/focus lifecycle; do not merely reveal a hidden DOM node."
+    }
+  ],
+  "alternatives": [
+    {
+      "direction": "Automatically switch from chat to Work settings after tool completion",
+      "benefit": "Shows the prepared item immediately",
+      "risk": "May interrupt current consent/draft/focus and hide conversation before user chooses to review."
+    },
+    {
+      "direction": "Explicit contextual review action that selects the existing pane and focuses the existing scoped card",
+      "benefit": "Visible next step with user-controlled navigation and no duplicated state",
+      "risk": "Needs guards for stale project/conversation/action and modal lifecycle."
+    }
+  ],
+  "preferred_next_experiment": "Explicit contextual action; compare actual navigation and draft/focus preservation at1920/1280/375 with same fixture. No acceptance or provider execution is automated.",
+  "non_goals": [
+    "No important decision/cost/rights/transfer approval removed",
+    "No new duplicate inspector/card or arbitrary auto-navigation",
+    "No implementation during frozen current regression"
+  ],
+  "dependency": "Current925-source regression finishes and source freeze accepted; next scoped design/implementation plan precedes edits"
+}

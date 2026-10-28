@@ -1,0 +1,92 @@
+--- before/chat-sidebar.js
++++ chat-sidebar.js
+@@ -47,6 +47,7 @@
+  const dialogHosts = new Map(), dialogStack = [];
+  let preferenceScope = '', preferenceChoices = '';
+  let workStatusSignature = '';
++ let navigationSequence = 0;
+  function workGroups(snapshot, p, name, shot) {
+   if (!p) return [];
+   const cid = p.active_conversation?.id;
+@@ -92,10 +93,12 @@
+  function focusWorkTarget(target) {
+   if (!target) return;
+   for (let parent = target.parentElement; parent; parent = parent.parentElement) if (parent.tagName === 'DETAILS') parent.open = true;
++  if (!target.getClientRects().length) return;
+   target.tabIndex = -1; target.focus({ preventScroll: true }); target.scrollIntoView({ block: 'center' });
+  }
+  function viewWork(key) {
+   if (!workGroups(state, project(), song(), shotName).some(group => group.key === key)) return;
++  const sequence = ++navigationSequence;
+   const desiredDialog = key === 'motion' ? q('#motionDialog') : key === 'scene' ? q('#sceneStudioDialog') : null;
+   const target = () => {
+    if (key === 'output') return q('#jobs');
+@@ -113,16 +116,43 @@
+   // Existing modal close handlers persist drafts and return focus to launchers.
+   // Complete that lifecycle before giving the requested work card focus.
+   Promise.all(closed).then(() => {
+-   syncDialogs(); if (scope !== conversationDraftKey('agent-work-status')) return;
++   syncDialogs(); if (sequence !== navigationSequence || scope !== conversationDraftKey('agent-work-status')) return;
+    setStep(key === 'output' ? 4 : 3);
+    // Let the original stage/mobile controllers settle before selecting review.
+    queueMicrotask(() => {
+-    if (scope !== conversationDraftKey('agent-work-status')) return;
++    if (sequence !== navigationSequence || scope !== conversationDraftKey('agent-work-status')) return;
+     choose('settings');
+     if (desiredDialog) { const launcher = key === 'motion' ? q('#motionButton') : q('#sceneStudioButton'); if (!launcher || launcher.disabled) return; launcher.click(); syncDialogs(); }
+     focusWorkTarget(target());
+    });
+   });
++ }
++ async function reviewMediaAction(id, scope, stillCurrent) {
++  const sequence = ++navigationSequence;
++  const current = () => {
++   if (sequence !== navigationSequence || scope !== conversationDraftKey('general-chat') || typeof stillCurrent !== 'function' || !stillCurrent()) return null;
++   const p = project(), actions = (p?.media_actions || []).filter(action => action.id === id);
++   return actions.length === 1 && actions[0].role === 'image' && p.shots?.[actions[0].shot] ? actions[0] : null;
++  };
++  let action = current(); if (!action || (dirty && action.shot !== shotName)) return false;
++  const closing = [...dialogStack].reverse().filter(dialog => dialog.open);
++  const closed = closing.map(dialog => new Promise(resolve => dialog.addEventListener('close', resolve, { once: true })));
++  for (const dialog of closing) dialog.close();
++  await Promise.all(closed); syncDialogs();
++  action = current(); if (!action || activeDialog || (dirty && action.shot !== shotName)) return false;
++  setStep(3); await Promise.resolve();
++  action = current(); if (!action || activeDialog || (dirty && action.shot !== shotName)) return false;
++  if (action.shot !== shotName) {
++   const buttons = [...document.querySelectorAll('#shotlist [data-shot]')].filter(button => button.dataset.shot === action.shot);
++   if (buttons.length !== 1 || buttons[0].disabled) return false;
++   buttons[0].click();
++  }
++  await Promise.resolve();
++  action = current(); if (!action || action.shot !== shotName || activeDialog) return false;
++  const cards = [...document.querySelectorAll('[data-action-card]')].filter(card => card.dataset.actionCard === id);
++  if (cards.length !== 1) return false;
++  choose('settings'); focusWorkTarget(cards[0]);
++  return !!cards[0].getClientRects().length && document.activeElement === cards[0];
+  }
+  workRows.addEventListener('click', event => { const button = event.target.closest('[data-agent-work]'); if (button) viewWork(button.dataset.agentWork); });
+  const modeNames = { read_only: '읽기 전용', review: '검토 후 편집', full_access: 'FullAccess' };
+@@ -191,11 +221,13 @@
+   refresh();
+  }
+  function choose(name, focus = false) {
++  navigationSequence++;
+   selected = name; opened = true;
+   if (narrow.matches) { if (name === 'settings') q('[data-panel="review"]')?.click(); else mobilePreview(); }
+   apply(); if (focus) (name === 'chat' ? chatTab : settingsTab).focus();
+  }
+  function closeAgent() {
++  navigationSequence++;
+   if (activeDialog) { const host = dialogHosts.get(activeDialog); host.open = false; host.dock.hidden = true; host.launcher.setAttribute('aria-expanded', 'false'); activeDialog.classList.remove('agent-dialog-open'); handle.hidden = true; host.launcher.focus(); return; }
+   opened = false; mobilePreview(); apply(); toggle.focus();
+  }
+@@ -258,7 +290,7 @@
+  const stageObserver = new MutationObserver(() => { if (narrow.matches && selected === 'settings') { selected = 'chat'; opened = false; } apply(); });
+  stageObserver.observe(document.body, { attributes: true, attributeFilter: ['data-step', 'data-guided'] });
+  addEventListener('resize', () => width(preferredWidth)); narrow.addEventListener('change', () => { mobilePreview(); width(preferredWidth); apply(); });
+- window.LoretuneAgentSidebar = { refresh, open: () => { if (activeDialog) { dialogHosts.get(activeDialog).open = true; portal(activeDialog); } else choose('chat'); }, close: closeAgent };
++ window.LoretuneAgentSidebar = { refresh, open: () => { if (activeDialog) { dialogHosts.get(activeDialog).open = true; portal(activeDialog); } else choose('chat'); }, close: closeAgent, reviewMediaAction };
+  window.LoretuneGeneralChat.mount({ container: generalHost, onClose: closeAgent });
+  width(preferredWidth); syncDialogs(); apply();
+  // Reuse the application's scoped public-state polling. This is presentation

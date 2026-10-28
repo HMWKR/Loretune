@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-28T05:27:31.651244+00:00",
+  "method": "Direct functions tools.view_image original detail; both actual v2 comparison PNGs viewed",
+  "viewed_files": [
+    "cube/comparison.png",
+    "chair/comparison.png"
+  ],
+  "original_inputs": "Same source PNGs directly viewed in v1 visual review; original bytes/hash unchanged",
+  "observations": [
+    {
+      "case": "cube",
+      "fact": "Raw-basis orientation differs. Under the one GT-assisted transform, the five fixed silhouettes largely overlap the source cube. Narrow edge residuals, rounded corners and slight contour undulation remain.",
+      "limit": "A conditional registered silhouette is not appearance/material quality, exact geometry, automatic pose recovery or a commercial comparison."
+    },
+    {
+      "case": "chair",
+      "fact": "A single registered transform brings seat/backrest/leg arrangement into correspondence across all five views. Blue/orange residual bands remain at legs, seat and backrest boundaries; corners and lower leg ends are smoother/less rectangular than source boxes.",
+      "limit": "The source is a simple self-authored six-box chair. This is not a real-user mesh distribution, editable semantic part reconstruction or hidden-view realism acceptance."
+    }
+  ],
+  "not_reviewed": [
+    "Normals/depth/material/texture/lighting/photorealism",
+    "New product UI/render or performance",
+    "Matching commercial Tripo raw shape",
+    "Actual user judgment"
+  ]
+}

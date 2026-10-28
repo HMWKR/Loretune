@@ -1,0 +1,452 @@
+{
+ "requirements": {
+  "gaps": [
+   {
+    "item": "D15 변경이 계획서 머리말에 반영되지 않아 서로 모순된다. 머리말은 여전히 '거절로 진행'이라고 적혀 있다",
+    "source": "PLAN-ko.md:4(머리말: 'D15 … 이의 없으면 거절로 진행, 기존 이미지 준비 경로에도 같은 규칙 적용') ↔ PLAN-ko.md:148(사용자 변경: 거절하지 않고 제안으로 허용) / 사용자 지시 #6·#7",
+    "why": "같은 문서에 상반된 규칙이 두 개 있다(Confusion 실패 모드). wave-2 워커(S4·이미지 경로)가 머리말을 보고 거절을 구현할 수 있다. 머리말 문구 그대로 '이미지 경로에도 같은 규칙'을 적용하면, 지금 허용되는 explicit 모델 준비(`model_selection.py:47-52`에서 explicit이 우선)까지 거절로 바뀐다",
+    "action": "PLAN-ko.md:4를 D15 변경 내용으로 정정하고 변경 시각과 사용자 인용을 남긴다. §4 S4(:97)의 '처리(D15)'도 '제안 허용 + 표시 필드 목록'으로 구체화한다",
+    "severity": "High"
+   },
+   {
+    "item": "D15(제안 허용 + 모든 권한 레벨에서 단가·근거 표시)를 구현할 작업 단위가 계획에 없다. §6 결정표에만 있고 §4 트랙·S번호·담당 워커가 없다",
+    "source": "사용자 지시 #7 / PLAN-ko.md:148,150 / task-contract.json의 A1 objective 'S1/A-pre/S2/S3/D1/D2/D11/D14', B1 'I1-I6 + toolLabels'(D15 없음)",
+    "why": "표시할 필드가 지금 코드에 없다. `fal_dispatch.py:71` prepare 결과는 model·estimate·price_kind만, `fal_dispatch.py:81` 견적 항목은 model·money·price_kind·expired(bool)만, `media_creator.py:68`·`fal_dispatch.py:159` 카드 투영은 estimate·estimate_kind·estimate_expired만, `index.html:797-805` 카드는 모델 ID 원문과 총액만 보여 준다. model_reason·프로젝트 선택과 다른지·단가·가격 출처·가격 개정·만료 시각·대화 모델·permission·effort는 어디에도 없다. 담당이 없으면 '모든 표면'은 미구현으로 끝난다",
+    "action": "트랙 A에 S15(서버)를 신설한다. ① production_tools.py:15-16 스키마에 `model_reason:str`(길이 상한, 0 허용 키 반영)과 manifest 해시 변경 고지 ② action 본문에 actor(human|agent)·source{run,call,chat_model,permission(effective_mode),effort}·project_selection·differs_from_project 저장 ③ 두 투영과 estimate 항목, prepare 결과, get_generation_job에 필드 추가. 트랙 B에 S16(카드·대화 표시)을 신설한다. 두 단위 모두 테스트·실화면 합격 기준을 명시한다",
+    "severity": "High"
+   },
+   {
+    "item": "'단가(초당·장당)'를 가져올 데이터 원천이 없고, D4(fixture quote·실제 가격 원천은 후속)와 충돌한다",
+    "source": "사용자 지시 #7('단가의 비용 … 권한이 어느 레벨에 있던 나오게끔') / PLAN-ko.md:137(D4) ↔ :148(D15) / fal_models.py:51-56(quote는 money 총액·kind·source·price_revision·expires만, 단가 필드 없음) / model_selection.py CATALOG(가격 없음)",
+    "why": "지금은 단가를 보여 줄 수 없다. 총액÷길이로 유도하면 fixture 값이 '단가'로 표시되어 사용자가 실제 가격으로 오인한다. 실제 단가를 넣으려면 공식 fal 가격 조사(공개 문서 열람, 유료 아님)와 개정 기록이 필요한데, 계획은 이를 '후속'으로 미뤄 두었다",
+    "action": "결정 D19를 추가해 사용자에게 묻는다. (a) 공식 fal 모델 페이지의 가격을 source·조회 시각·revision과 함께 카탈로그에 기록해 단가를 표시하거나, (b) quote 총액에서 유도한 단가를 '시험 견적에서 계산한 값 · 실제 가격 아님'으로 표시. fixture/documented-estimate 구분 라벨은 필수로 한다",
+    "severity": "High"
+   },
+   {
+    "item": "read_only 모드에서는 단가·근거를 보여 줄 표면이 계획에 없다",
+    "source": "사용자 지시 #7('권한이 어느 레벨에 있던') / PLAN-ko.md:148(read_only=준비 불가) / production_tools.py:83-84(get_model_capabilities는 가격이 없는 카탈로그 반환) / agent_preferences.py:14 READ_TOOLS",
+    "why": "read_only에서는 prepare가 막히고 모델이 부를 수 있는 도구는 get_model_capabilities·estimate_media_plan뿐이다. capabilities에 가격이 없으니 모델은 근거 있는 모델 제안도 단가 설명도 할 수 없다. 'D15 표시는 카드·결과'라는 문장만으로는 read_only 사용자에게 아무것도 나오지 않는다",
+    "action": "get_model_capabilities 결과에 모델별 단가·가격 종류·출처·revision을 포함한다(D19 원천 사용). read_only에서 '모델 제안'은 텍스트 제안 + capabilities 근거로 제한한다는 규칙과 그 테스트를 추가한다",
+    "severity": "High"
+   },
+   {
+    "item": "계획이 말하는 '기존 source{run,call,model,mode}'의 mode는 permission이 아니라 엔진이다. 그리고 미디어 제작안(action)에는 source가 아예 없다",
+    "source": "PLAN-ko.md:48(원칙 3),:150(기존 source에 effort만 추가) / production_tools.py:94(`source=dict(mode=run['engine'],…)`, propose_media_plan에만 존재) / 사용자 지시 #8(권한=permission mode)",
+    "why": "effort만 더하면 permission mode가 기록되지 않는다. 사용자가 명시한 '권한'(#8)이 출처에서 빠지고, 영상·이미지 제작안 카드에는 출처 자체가 없다",
+    "action": "provenance 스키마를 {engine, chat_model, permission_mode(effective_mode at call), effort, run, call}로 고친다. 원칙 3과 :150 문구를 정정하고, propose_media_plan·prepare_*·S7b·S10 결과 모두에 적용한다",
+    "severity": "High"
+   },
+   {
+    "item": "provenance의 permission·effort 값을 어디서 가져오는지 정해지지 않았고, AGENT-REASON-04(실제 요청 본문 일치)와의 대조 테스트도 없다",
+    "source": "REMAINING-WORK.md:54(AGENT-REASON-04: 실제 요청 본문 일치·실행 중 변경/재열기) / WORKFLOW-EXECUTION-GUIDE-ko.md:90 / chat_general.py:210-215,537(turn binding의 agent_settings 고정), agent_preferences.py:61-66(effective_mode=min(saved,ceiling,current)), chat_models.py:83,85(본문 effort)",
+    "why": "현재 설정을 기록하면 요청 중 변경(축소 즉시 반영, 확장은 다음 turn)과 어긋난 값이 카드에 남는다. 그러면 '이 제안이 어떤 effort·권한으로 만들어졌는지'가 거짓이 될 수 있다",
+    "action": "기록값을 turn binding의 agent_settings.effort와 call 시점 effective_mode로 고정한다. 테스트를 추가한다. ① 기록 effort == message_body의 output_config.effort/reasoning.effort ② 요청 중 권한 축소 후 기록 mode ③ 재열기 후 동일 값",
+    "severity": "Medium"
+   },
+   {
+    "item": "'모든 표면'의 목록이 정의되지 않았다. 작업 상태·재열기·대화 turn·이어쓰기 승인 화면이 빠져 있다",
+    "source": "LENS A 지시(chat tool result·media action card·estimate result·work status·reopen) / production_context.py:134-160(work_status item에 모델·비용 필드 없음) / general-chat-ui.js toolLabels(대화 turn에는 라벨만, 결과·금액 미표시) / general-chat-ui.js:54(도구 결과 전달 전 확인 화면)",
+    "why": "PLAN :148은 '카드·결과'만 말한다. 사용자는 대화 turn에서 금액을 볼 수 없고, 작업 상태 패널에서도 모델·단가가 없다. 재열기 때 예전 제작안(필드 없음)이 어떻게 보일지도 미정이다",
+    "action": "D15 표면 매트릭스를 계획에 넣는다. 행은 prepare 결과(모델 입력), 견적 결과, get_generation_job, 작업 상태 패널, 미디어 카드, 대화 turn 요약, 이어쓰기 승인 화면, 재열기이고 열은 표시 필드다. 각 칸에 '표시/의도적 미표시+이유'를 적는다. 필드가 없는 예전 action은 '출처 기록 없음(변경 전 준비)'로 대체 표시하는 테스트를 추가한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "A1이 이미 끝낸 S3 견적 결과에 D15 필드가 없어, 재작업이나 후속 단위가 필요하다",
+    "source": "tasks/A1-server-read-tools/result.md(S3: label만 추가) / fal_dispatch.py:81 / PLAN-ko.md:148",
+    "why": "A1 결과를 그대로 수락하면 견적 표면은 D15를 충족하지 못한 채 '완료'로 남는다. A1은 제외된 보류·거절 건수 필드도 미결로 남겼다",
+    "action": "A1 수락 조건에 'D15 필드는 S15에서 추가'를 명시한다. 또는 S3b(견적 항목에 단가·출처·revision·만료 시각·reason·provenance·제외 건수 추가)를 등재한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "model_reason은 모델이 쓰는 자유 텍스트인데 처리 규칙이 없다",
+    "source": "PLAN-ko.md:148('대화 모델이 제출한 model_reason') / production_tools.py:15-16(스키마)",
+    "why": "모델의 주장을 검증된 사실처럼 보이게 하면 사용자가 오도된다. 길이 제한이 없으면 토큰 상한을 넘을 수 있고 화면 주입 위험도 있다",
+    "action": "길이 상한(예: 300자), esc 출력, 카드 문구 '모델이 제시한 이유(검증 안 됨)'를 정한다. 빈 값·초과 값은 거절하는 테스트를 추가한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "사람이 준비했는지 대화 모델이 준비했는지 구분할 근거가 저장되지 않는다",
+    "source": "PLAN-ko.md:148('사람이 준비한 경우 프로젝트에서 사용자가 선택한 모델') / app.py:743(사람 경로도 `d.get('model')` explicit 전달 가능) / fal_dispatch.py:55(selection_origin만 저장)",
+    "why": "origin='explicit'은 사람과 모델 둘 다에서 나올 수 있다. 그래서 '사용자가 선택한 모델' 문구를 정확히 붙일 수 없다",
+    "action": "action options에 actor('local-owner'|'agent')를 기록한다. 카드 문구는 actor×origin 조합으로 정하고 테스트한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "제안된 다른 모델을 승인한 뒤 프로젝트 기본 선택을 바꾸면 기존 제작안이 무효화되는데, 계획에 처리가 없다",
+    "source": "fal_dispatch.py:55(context_hash=media_snapshot, 선택값 포함), model_selection.py:63-70, fal_dispatch.py:92(승인 시 '장면·계획·모델이 변경되었습니다')",
+    "why": "사용자가 제안을 받아들여 프로젝트 모델을 그쪽으로 맞추면 방금 준비한 제작안이 stale이 된다. '제안' UX가 스스로 깨진다",
+    "action": "'제안 모델 승인 ≠ 프로젝트 선택 변경'을 명시하고 카드 안내 문구로 표시한다. 선택을 변경하면 재준비가 필요하다는 테스트를 추가한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "입력 4096토큰 상한을 이미 넘는다는 실측이 나왔는데 결정 항목이 없다",
+    "source": "tasks/A1-server-read-tools/token-budget.json·result.md(review·full_access 첫 회차 약 7200~8900 tok 추정) / C1 result.md:93(PROPOSAL_SCHEMA compact 4979B) / chat_general.py:28,647(count>MAX_INPUT 거절) / PLAN-ko.md:160",
+    "why": "합성 테스트는 통과해도 실제 경로에서는 review 모드의 모든 turn이 count 단계에서 거절될 수 있다. S4·S7b·S9·S10과 D15 필드가 더해지면 더 커진다. §7은 '여유가 없으면 결정 항목으로'라고 했지만 D 항목이 만들어지지 않았다",
+    "action": "D20을 신설해 사용자에게 보고한다(#4 이유·근거 포함). 선택지는 모드·질의별 도구 노출 분리, 스키마 축약, 상한 변경(실측 count 승인 필요)이다. S7b·D15 결과 크기를 슬라이스 합격 조건에 넣는다",
+    "severity": "High"
+   },
+   {
+    "item": "D1(예전 대화 경로 축소)이 사용자 승인('권장대로')과 다르게 실행되지 않았는데, 사용자에게 다시 보고하는 단계가 없다",
+    "source": "사용자 지시 #6 / PLAN-ko.md:135(D1 권장: 예전 경로도 좁힘) / A1 result.md '결정 필요(D1)'",
+    "why": "승인된 결정과 실제 결과가 다르다. 워커가 근거(test_fal_multimodel·test_execution_context 계약)를 냈지만 사용자 결정이 필요한 사항이다. 보고하지 않으면 임의 변경이 된다",
+    "action": "D1을 재결정 항목으로 올린다. A1의 근거 3개와 바뀌게 될 계약 테스트 2개를 이유·근거와 함께 사용자에게 제시한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "디자인 개선이 리뷰 이동 UI(I1~I5)에만 한정되어 있다. design-audit 결과를 처리할 작업 단위가 없다",
+    "source": "사용자 지시 #3(/impeccable·/hallmark 병렬), #10('디자인 개선이나 이런것들은?') / PLAN-ko.md:106(기존 FAIL은 기준선 보존만) / design-audit/ 실행 중(산출 처리 계획 없음) / REMAINING-WORK.md:13(항목 7)",
+    "why": "사용자는 디자인 개선을 따로 물었다. 하지만 계획에는 기존 Hallmark 18 FAIL/73 REFLEX/16 WARN(sloplint-before.json)을 고칠 트랙이 없다. 감사 결과가 나와도 반영되거나 사용자에게 제안되는 경로가 없다",
+    "action": "트랙 E(디자인)를 추가한다. 감사 결과 → critic 반박 → 수정 후보를 이유·근거와 함께 사용자에게 제안(#4) → 승인 범위만 수정(파일 소유는 B와 조정)한다. 범위 밖이면 그 이유를 §5에 명시한다",
+    "severity": "High"
+   },
+   {
+    "item": "계획 자체의 디자인 게이트(/impeccable critique→audit→polish)가 B1에서 실행되지 않았다",
+    "source": "PLAN-ko.md:106 / B1 result.md('craft-floor.md와 Hallmark Floor를 읽음'뿐) / skill-use.json(impeccable command_run: 'not by lead yet')",
+    "why": "스킬을 읽은 것과 명령을 실행한 것은 다르다(WORKFLOW-EXECUTION-GUIDE-ko.md:16). 지금 상태로 B1을 수락하면 게이트를 통과하지 않은 UI가 완료 처리된다",
+    "action": "B1 수락 전에 impeccable critique/audit/polish를 실제로 실행해 결과 파일을 남긴다. 또는 수락 보류를 명시한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "Hallmark sloplint가 JS를 검사하지 않는데(files:2), 기준선 수치도 서로 맞지 않는다",
+    "source": "B1 result.md('files: 2 … JS 2개는 검사하지 않음') / PLAN-ko.md:106(FAIL15/WARN1) ↔ design-gate/sloplint-before.json(18 FAIL/73 REFLEX/16 WARN) / skill-use.json",
+    "why": "general-chat-ui.js·chat-sidebar.js의 문구·라벨 변경이 정적 검사 밖에 있다. 계획서와 실측 기준선이 달라 전후 비교의 분모가 흔들린다",
+    "action": "기준선을 두 가지 측정(HTTP 렌더 15/1, 정적 18/73/16)으로 분리해 기록한다. JS 문구는 수동 Floor 점검표 결과를 증거로 남긴다",
+    "severity": "Low"
+   },
+   {
+    "item": "B1이 Hallmark Floor 10 위반 가능성이 있는 '·' 라벨을 남겼다. 아직 없는 도구 4개의 라벨도 미리 추가했다",
+    "source": "B1 result.md '가정·추측'(toolLabels의 '·' 유지, main 판단 요청) / general-chat-ui.js toolLabels(get_agent_settings·propose_preference_rule·propose_scene_3d·prepare_video_action) / Karpathy §2",
+    "why": "충돌 판단이 미결이다. 도구 이름(propose_scene_3d 등)이 S7b·S9·S10에서 확정되지 않았는데 UI에 먼저 들어간 것은 투기적 코드다",
+    "action": "lead가 '·' 규칙을 결정하고 기록한다. 미확정 도구 라벨은 해당 S 단위의 합격 조건(이름 일치 테스트)에 연결하거나, 확정 전까지 제거를 요청한다",
+    "severity": "Low"
+   },
+   {
+    "item": "인계 '다음 순서' 1·2번(문서 등록 검토안 승인, 녹화 사용자 검토)을 실제로 사용자에게 제시하는 단계가 없다",
+    "source": "사용자 지시 #1 / session-handoff.md:45 / REMAINING-WORK.md:7-8 / next-work-plan.json priority 1·2 / PLAN-ko.md:134(D0 '병행')",
+    "why": "'병행'으로 결정했지만 실제 행동(최신 해시를 다시 확인한 검토안 제시, 녹화 목록 제시)이 어느 단계에도 없다. 그래서 병행이 아니라 방치가 된다",
+    "action": "S-REV 단계를 추가한다. registration-review-current.json의 해시를 다시 확인하고(이번에 새로 생긴 docs/design/FRAME-OBSERVATION-DESIGN-ko.md·PLAN 반영) 검토 패키지를 갱신해 제시하되 실행은 하지 않는다. 기존 녹화 3개와 이동 녹화를 사용자 검토 목록으로 제시한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "UI 변경(I1~I5) 뒤 기존 review-navigation 녹화가 현재 빌드를 반영하지 못하는데, 재녹화나 라벨 처리가 없다",
+    "source": "session-handoff.md:23(review-navigation-demo.mp4) / PLAN-ko.md:33(I7 재캡처는 375 PNG 위주) / B1 source.diff(버튼 이름·포커스 변경)",
+    "why": "사용자 검토용 녹화가 바뀐 버튼 이름·도착 표시와 다르다. I7이 지적한 과장 문구('연속 녹화' 약 5fps)도 남는다",
+    "action": "S14에 현재 빌드 재녹화(측정 fps 공개)를 넣거나, 기존 녹화에 '변경 전 빌드' 라벨을 붙인다는 결정을 추가한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "인계 5번(품질 벤치마크)·6번(전체 디자인·접근성·성능·운영)이 계획 범위표에서 누락됐다. '전체적으로 전부 다'를 어떻게 해석했는지도 기록되지 않았다",
+    "source": "사용자 지시 #6('전체적으로 전부 다 진행') / session-handoff.md:49-50 / REMAINING-WORK.md:12-13 / next-work-plan.json priority 6·7 / PLAN-ko.md:126(§5에는 3·4번 성격만 열거)",
+    "why": "'전부 다'는 계획 항목 전체로도, 인계 항목 전체로도 읽힌다. 5·6번이 포함인지 제외인지 문서에 없으면, 사용자가 진행 중이라고 오인하거나 누락을 묻게 된다(#11·#12의 우려 그대로)",
+    "action": "§5에 인계 1~6과 REMAINING-WORK 1~7 각각을 포함/제외로 표시하고 이유를 적는다. 해석을 1줄 가정으로 명시하고 사용자에게 보고한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "§3 '자산 추천'(이번 빌드: 내부 자산 텍스트 추천)과 §5 '추천 자산 도구 미충족'이 모순된다. §3 항목에는 S번호도 없다",
+    "source": "PLAN-ko.md:79 ↔ :126 / REMAINING-WORK.md:52(AGENT-TOOLS-02 추천 자산)",
+    "why": "구현 여부가 문서마다 다르고 담당 단위가 없다. 그래서 AGENT-TOOLS-02 충족 여부 보고가 틀어진다",
+    "action": "내부 자산 텍스트 추천을 S번호와 소유 트랙을 붙여 포함하거나, §3을 '범위 밖'으로 정정한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "새 도구마다 권한 모드 매트릭스와 권한 축소 테스트가 정의되지 않았다",
+    "source": "REMAINING-WORK.md:55(AGENT-PERM-05 도구별 서버 검사), :59(권한 축소 즉시 새 쓰기 차단·확장 다음 turn·재시작) / PLAN-ko.md:95-98,108-111",
+    "why": "S2·S3만 read_only 허용이 시험됐다. S4(read_only 불가), S9, S10, S7b(propose_scene_3d)의 모드별 허용/거절, 요청 중 권한 축소, 재시작 후 유지가 계획 합격 조건에 없다",
+    "action": "공통 합격 조건에 '도구 × {read_only, review, full_access} × {정상, 요청 중 축소, 재시작}' 표와 서버 테스트를 추가한다. full_access에서 S7b·S10·prepare가 자동 적용되지 않는 것도 단언한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "에이전트가 permission·effort·채팅 모델 설정을 바꾸지 못한다는 불변식 테스트가 없다",
+    "source": "사용자 지시 #7·#8(사용자가 고른 설정) / PLAN-ko.md:55(원칙 10),:126,:150 / S1 범위(PLAN-ko.md:91)",
+    "why": "현재 그런 도구는 없지만, S9·S10 추가 후에도 agent_settings가 도구 경로로 바뀌지 않는다는 것을 고정하는 테스트가 없다",
+    "action": "S1에 단언을 추가한다. 모든 도구 실행 전후에 project의 agent_settings·model_settings가 불변이어야 한다",
+    "severity": "Low"
+   },
+   {
+    "item": "채팅 모델 자체의 단가(입력·출력 토큰당)와 effort가 비용에 미치는 영향이 어떤 권한 레벨에서도 보이지 않는다",
+    "source": "사용자 지시 #7('단가의 비용 … 왜 이모델들을') / chat_models.py:8-10(input_rate·output_rate·price_revision·source 보유) / chat-sidebar.js:177-181(설정 요약은 mode·effort만, 가격 없음)",
+    "why": "'이 모델들'에는 대화 모델도 포함될 수 있다[추정]. 가격 데이터는 서버에 있는데 화면에는 나오지 않는다",
+    "action": "범위 결정을 1줄로 적는다(포함 시 에이전트 설정 요약에 토큰 단가·가격 출처·revision 표시, 선택 이유='사용자 선택'). 제외한다면 그 이유를 보고한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "작업 중 새로 발견된 개선점을 사용자에게 이유·근거와 함께 보고하는 고리가 없다",
+    "source": "사용자 지시 #4 / A1(4096 초과, 견적 제외 건수, 어댑터 없음 처리), B1(턴 간 동일 버튼 이름, index.html:1022 포커스 튐, '·' 충돌), C1(HTTP 종단 테스트 없음), D1(Haiku 이미지 입력 [미확인])의 result.md",
+    "why": "워커 결과에 새 개선점이 8건 이상 있다. 그런데 계획에는 §1(착수 전 32건)만 있고 실행 중 발견을 정리해 보고하는 단계가 없다",
+    "action": "wave마다 'requests_for_other_tracks·남은 빈칸'을 개선 후보 표(문제·이유·근거 file:line·권장)로 묶어 사용자에게 보고하는 단계를 추가한다. index.html:1022 포커스 문제는 담당 트랙을 지정한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "프로젝트 방식 준수 결함이 task-contract.json에만 있고 계획에는 반영되지 않았다",
+    "source": "사용자 지시 #11 / task-contract.json known_gaps_self_audit(사후 계약, METHODOLOGY-FIT-MATRIX 미독, harness-orchestration 미설치, codex 계획 검수 미실행, UI 편집 전 화면 캡처 없음) / WORKFLOW-EXECUTION-GUIDE-ko.md:31,42-53 / rules/agent-teams-boundaries.md 2단계",
+    "why": "계획서의 실행 순서(:120-121)와 S14(:118)에 이 보완 행동이 없다. 그래서 다음 wave에서도 같은 결함이 되풀이된다. codex 검수가 S14에만 있어 계획 단계 교차 검수가 빠진다",
+    "action": "§4에 S-GOV를 추가한다. ① lead가 METHODOLOGY-FIT-MATRIX-ko.md를 읽고 적용 표를 만든다 ② wave-2 위임 계약을 spawn 전에 작성한다(방법론 출처·모델/추론·중단 조건·수락자 포함) ③ codex read-only 계획 검수를 main이 직접 수행한다 ④ before/ 스냅샷을 전용 포트에서 띄워 전후 캡처를 만든다 ⑤ harness-orchestration 부재 시 대체 절차를 명시한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "3D 제안(S7)의 제안·미리보기·적용·출력 단계별 증거 기준이 없다",
+    "source": "REMAINING-WORK.md:52(AGENT-TOOLS-02: 제안/미리보기/적용/출력을 각각 검증) / PLAN-ko.md:110 / C1 result.md:119(HTTP 종단 테스트 미추가)",
+    "why": "스키마 검증과 단위 테스트만으로는 사용자 흐름이 완료됐다고 할 수 없다. C1도 HTTP 종단 경로를 시험하지 않았다",
+    "action": "S7b 합격 조건에 HTTP 종단(general_chat_preview→도구→저장), Scene Studio 미리보기, 사람 승인 적용, 재열기 증거를 추가한다",
+    "severity": "Medium"
+   },
+   {
+    "item": "작업 종료 시 현행 문서(REPORT·REMAINING-WORK 표·인계)를 갱신하는 단계가 없다",
+    "source": "WORKFLOW-EXECUTION-GUIDE-ko.md:82-84,88 / session-handoff.md:52 / PLAN-ko.md:118(S14에는 문서 checker 기록만), :153(D17은 I7 문구 정정만)",
+    "why": "AGENT-TOOLS-02·REASON-04·PERM-05 행의 상태와 D15 결과, 새 결정이 문서 입구에 반영되지 않으면 다음 담당자가 낡은 상태를 기준으로 삼는다",
+    "action": "S14에 추가한다. REPORT-ko.md 현재 입구 갱신(이전 내용은 보존), REMAINING-WORK 상단·관련 행 갱신, session-handoff.md 갱신(덮어쓰기 전 사본 보존). 등록·승격은 하지 않는다",
+    "severity": "Medium"
+   }
+  ],
+  "covered": [
+   "지시 #1 인계 3번(AGENT-TOOLS-02 공백 연결): PLAN-ko.md §3·§4(S2~S13)",
+   "지시 #2 계획 검토 후 진행: PLAN-ko.md:3-4 승인 인용",
+   "지시 #3 Karpathy·병렬 실행: PLAN-ko.md:17, task-contract.json(워커 4개 + 디자인 감사 병렬). 단 impeccable 실제 실행은 위 공백 참조",
+   "지시 #4 착수 전 개선점과 이유·근거 제시: PLAN-ko.md §1 I1~I8(파일:줄 근거), §1-b 기각 6건",
+   "지시 #5 패턴 추상화·일반화: PLAN-ko.md §2 원칙 10개, 가져오지 않는 패턴, 도구 접점 체크리스트",
+   "지시 #8 용어 확정(permission/effort): PLAN-ko.md:150",
+   "인계 3·4번(실제 Claude·AI 영상·청구)과 next-work 4·5: §5 범위 밖, 가정 A1(:14)",
+   "request_media_generation 대화 미노출·계정/파일 삭제 금지 불변식: A1 tests/test_general_chat_tool_invariants.py(9개)",
+   "S2 작업 조회(grant_id 제외·로컬 렌더/3D 포함·read_only 허용): A1 result.md·test_general_chat_job_query.py",
+   "S3 견적(보류·거절 제외, owns 필터, '청구 아님' 라벨): A1 result.md·test_general_chat_estimate.py. D15 필드는 미포함",
+   "A-pre 사전 가드 이전(사람 HTTP 가드 유지): A1 result.md 사람 경로 불변 테스트",
+   "I1~I6 UI 개선과 변이 테스트 8건: B1 result.md",
+   "S6 scene-status·S7a 스키마: C1 result.md",
+   "S13 프레임 관찰 설계 문서: D1 result.md, docs/design/FRAME-OBSERVATION-DESIGN-ko.md",
+   "S0 기준선 회귀 931개·skip 0: regression-s0/receipt.json",
+   "8765·57888·Ego Space 미접촉, 외부·유료 호출 0: PLAN-ko.md:15, task-contract.json non_goals",
+   "문서 checker 시작 기록: doc-gate-start.txt, 종료는 S14(PLAN-ko.md:118)",
+   "AGENT-REASON-04 기존 구현(모델별 EFFORTS·미지원 거절·turn 고정): agent_preferences.py:18-39, chat_models.py:79, chat-sidebar.js:168-182. D15 provenance와의 연동은 위 공백 참조",
+   "codex read-only 최종 교차 검증: PLAN-ko.md:118(S14, main 직접)"
+  ]
+ },
+ "process": {
+  "gaps": [
+   {
+    "item": "PLAN 머리말(4행)이 여전히 'D15 → 거절로 진행, 이미지 경로에도 같은 규칙'이라고 적혀 있어, 사용자가 바꾼 D15 행(148행: 거절 대신 제안 허용)과 정면으로 충돌함",
+    "source": "사용자 지시 #6·#7 / PLAN-ko.md:4 대 PLAN-ko.md:148",
+    "why": "Wave-2 워커가 PLAN을 읽으면 서로 반대되는 두 지시를 받는다(CE Confusion). S4 브리프가 머리말을 인용하면 사용자가 거부한 '거절' 동작이 구현된다",
+    "action": "PLAN 4행을 D15 변경본(제안 허용, permission 모드별 허용 여부, 단가·이유는 권한과 무관하게 항상 표시)으로 고친다. Wave-2 브리프에는 요약이 아니라 148행 원문을 넣는다",
+    "severity": "serious"
+   },
+   {
+    "item": "D15 변경을 실제로 구현할 작업이 배정되지 않음: model_reason 스키마 필드, 카드·결과의 단가(초당/장당)·가격 종류·출처·개정·만료, 프로젝트 선택과 다른지 표시, 사람이 준비한 경우의 이유 문구, 이미지 준비 경로 동일 적용, 모드별 테스트",
+    "source": "사용자 지시 #7 / PLAN-ko.md:148 / task-contract.json:29(A1 objective에 S4·D15 없음) / .fablize/goals.json G003",
+    "why": "사용자가 직접 요구한 '왜 이 모델인지·단가가 권한 레벨과 무관하게 보이게'에 대응하는 담당자·쓰기 범위·합격 기준이 없다. 현재 코드(fal_dispatch.py:45 model_selection.resolve(explicit=…), selection_origin 저장)는 명시 모델을 받기만 할 뿐 이유를 받지 않는다. 닫힌 스키마(production_tools.py:15-16)에 필드를 추가하면 manifest·test_chat_protocols·토큰 크기가 함께 바뀐다",
+    "action": "Wave-2 계약에 S4-D15를 독립 항목으로 넣는다. 쓰기 범위는 production_tools TOOLS, chat_protocols, fal_dispatch(이미지·영상 모두), index.html mediaActionMarkup(트랙 B), 신규 테스트. 합격 기준은 read_only·review·full_access × 사람 준비·대화 준비 매트릭스에서 단가·출처·만료·이유·불일치 표시가 모두 보이는 것. 토큰 증가분도 측정한다",
+    "severity": "serious"
+   },
+   {
+    "item": "effort(추론 강도)를 출처에 추가하는 작업(PLAN:150)의 구현 담당과 검증 기준이 없음. 표시값=서버 실효값=전송 본문=요청 중 변경=재열기 일치 검증도 계획에 없음",
+    "source": "사용자 지시 #7·#8 / PLAN-ko.md:150 / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:90",
+    "why": "guide:90이 permission·추론 강도는 '표시 옵션·서버 실효값·전송 본문·요청 중 변경·재열기의 일치'를 확인하라고 요구한다. effort가 run에서 어디에 저장되는지도 [미확인]이다",
+    "action": "source{run,call,model,mode,effort} 저장 지점과 화면 표시 지점을 Wave-2 계약에 명시한다. permission 3종 × effort 값으로 저장·재열기·전송 본문 일치 테스트를 추가한다",
+    "severity": "serious"
+   },
+   {
+    "item": "토큰 상한 초과 발견을 사용자 결정 항목으로 올리지 않음: A1 측정상 review/full_access 일반 대화 첫 회차가 변경 전부터 MAX_INPUT=4096을 넘을 가능성이 높음(실측 비율로 약 7200~8900 tok). chat_general.py:647이 이를 '입력 토큰 한도'로 거절함",
+    "source": "PLAN-ko.md:160(§7 '여유 없으면 모드·질의별 노출 분리를 결정 항목으로') / tasks/A1-server-read-tools/result.md:82-84 / chat_general.py:28,647 / 사용자 지시 #4",
+    "why": "§7의 발동 조건이 실제로 충족됐다. Wave-2에서 prepare_video_action, propose_scene_3d(스키마 4979B), get_agent_settings, propose_preference_rule, model_reason이 더해지면 실제 Claude 경로가 더 확실히 막힌다. fixture 테스트는 이 문제를 잡지 못한다",
+    "action": "새 결정 D19(모드·질의별 도구 노출 분리 / 스키마 축약 2362B 대안 / 상한 조정 / 실제 count_tokens 측정 승인)를 이유·근거(token-budget.json)와 함께 사용자에게 제시하고, 답을 받은 뒤 Wave-2를 시작한다",
+    "severity": "serious"
+   },
+   {
+    "item": "D1('예전 대화 경로도 좁힘', 사용자가 권장대로 승인)을 A1이 근거를 들어 보류했으나, 사용자에게 다시 묻는 단계가 계획에 없음",
+    "source": "사용자 지시 #2·#4·#6 / PLAN-ko.md:135 / tasks/A1-server-read-tools/result.md '결정 필요 (D1)'(test_fal_multimodel·test_execution_context 계약, 07 Spec:245)",
+    "why": "승인된 권장값이 기존 계약과 충돌한다는 새 근거가 나왔다. 조용히 미이행하는 것도 조용히 강행하는 것도 '임의 결정 금지'에 어긋난다",
+    "action": "PLAN §6에 D1 재질의(근거 3건, 좁히면 깨지는 테스트 2개)를 추가하고 사용자 답을 기록한다. 그 전까지는 현재 노출을 고정한 불변 테스트를 유지한다",
+    "severity": "serious"
+   },
+   {
+    "item": "작업 중 새로 드러난 개선·충돌 사항을 이유·근거와 함께 사용자에게 보고하는 절차가 없음(B1의 '·' 대 Hallmark Floor 10, index.html:1022 모바일 포커스 튐, I1이 같은 턴 안에서만 고쳐진 점, A1의 어댑터 비활성 시 합계·제외 건수 미표시, D1 문서의 이미지 4장 상한 불가)",
+    "source": "사용자 지시 #4 / tasks/B1-chat-ui/result.md(가정·requests_for_other_tracks) / tasks/A1-server-read-tools/result.md(안 한 일) / tasks/D1-frame-observation-design/result.md(기각 가설)",
+    "why": "사용자는 '작업을 진행하며' 개선점을 이유·근거와 함께 말해 달라고 했다. 지금은 워커 result.md에만 묻혀 있다. 특히 I1은 High 등급인데 다른 턴 사이의 같은 버튼 이름이 남아 있고, rigor §2상 사용자 선언 없이는 강등할 수 없다",
+    "action": "웨이브마다 '사용자 보고 큐'(항목·이유·근거 파일:줄·권장·필요한 결정)를 만들어 main이 사용자에게 제시한다. I1 잔여분은 High 미해결로 등재한다",
+    "severity": "serious"
+   },
+   {
+    "item": "디자인 개선(사용자 질문 #10)이 PLAN에 없음: goals.json G004에만 있고, design-audit 결과를 결함으로 확정→사용자 검토→수정→같은 조건 전후 비교로 이어 가는 작업 단위·소유자·합격 기준이 PLAN §4에 없음",
+    "source": "사용자 지시 #3·#10 / .fablize/goals.json G004 / PLAN-ko.md:106(디자인 게이트는 I1~I5 범위뿐)",
+    "why": "PLAN이 승인·실행의 정본인데 디자인 개선은 거기에 없다. 사용자가 '디자인 개선은?'이라고 물은 공백이 문서상으로는 아직 그대로다",
+    "action": "PLAN에 트랙 E(디자인)를 추가한다. 입력은 design-audit 확정 결함, 소유 파일은 studio.css/index.html(트랙 B와 순서 조정), 절차는 사용자 검토 게이트 → impeccable critique/audit/polish → hallmark → 전후 캡처, 합격 기준은 확정 결함별 전후 PNG로 둔다",
+    "severity": "serious"
+   },
+   {
+    "item": "같은 조건 전후 캡처의 '전' 상태가 없음. UI 편집 전에 캡처하지 않았고, before/ 사본을 전용 포트에서 띄워 캡처하는 일에 담당·절차가 없음",
+    "source": "~/.claude/rules/ui-ux-craft.md:31-33 / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:61 / task-contract.json:101",
+    "why": "전후를 나란히 비교해 사용자에게 보여 주는 것은 규범상 필수다. 지금은 self-audit 메모에만 있고 실행 단위가 아니다. before/(240파일)를 그대로 띄울 수 있는지도 [미확인]이다",
+    "action": "S14 전에 '전' 캡처 단계를 둔다. 이전 작업의 serve_fixture.py와 network-loopback-only.sb를 재사용해 before/ 루트를 전용 포트·임시 데이터로 띄우고, run-qa.sh before를 실행한다. 이후 같은 fixture·폭·상태로 after를 찍는다",
+    "severity": "serious"
+   },
+   {
+    "item": "실화면 검증 폭이 프로젝트 기준과 맞지 않음: 계획은 375·1280 × 다크·라이트인데, 프로젝트 기준은 1920×1080 주, 1280×900 보조이고 앱은 다크 전용(studio.css:4 color-scheme:dark, prefers-color-scheme 0건)",
+    "source": "PLAN-ko.md:106 / METHODOLOGY-FIT-MATRIX-ko.md:176 / session-handoff.md:22(이전 작업은 1920/1280/375 실측) / ui-ux-craft.md:27",
+    "why": "주 해상도 1920을 빼면 이전 수락 증거와 비교할 수 없다. 라이트 모드는 존재하지 않으므로 run-qa.sh의 rc=3 '테마 강제 지점 0'을 실패나 통과로 오판할 수 있다",
+    "action": "검증 폭을 1920×1080·1280×900·375로, 테마를 다크 단일로 고친다. 1920은 Aside 창 크기 제약 때문에 iframe+clip 방식이 되므로 실제 가능 여부를 먼저 카나리 1회로 확인한다",
+    "severity": "serious"
+   },
+   {
+    "item": "Aside로 새 증거를 수집할 때 브라우저 Space 소유가 정의되지 않음(사용자 제어 Ego Space 보호)",
+    "source": "session-handoff.md:16 / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:38 / chat-review-navigation driver-acceptance.json cleanup.user_8765_review_57888_ego_space4_accessed / PLAN D12",
+    "why": "Aside는 사용자 실제 세션을 쓰므로 openTab이 사용자 Space에 탭을 열 수 있다. 이전 작업은 소유 Chrome으로 격리해 'Ego Space 미접근'을 증거로 남겼다",
+    "action": "S14 계약에 Aside 탭·Space 소유 규칙(전용 탭, Ego Space 미사용 확인, 종료 시 소유 탭만 닫기)과 접근 0 영수증 필드를 추가한다. aside-browser 스킬 로드 → aside guide/guide repl을 skill-use.json에 기록한다",
+    "severity": "serious"
+   },
+   {
+    "item": "새 대화 도구의 실화면 종단 검증(UI→합성 모델 tool_use→서버→저장→카드→재열기)을 실제 Claude 없이 어떻게 구동할지 정하지 않음",
+    "source": "session-handoff.md:60 / live-feature-verify.md(검증 3계층) / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:59-60",
+    "why": "S14의 '실화면 UI→API→저장→재열기'는 모델 응답 없이는 새 도구를 부를 수 없다. 이전 작업의 합성 대화 fixture 재사용 여부·범위가 비어 있다. C1도 HTTP 경유 scene-status 종단 테스트를 하지 않았다",
+    "action": "S14에 합성 모델 adapter·fixture 재사용, 도구별 정상/실패/경계 케이스 표(get_generation_job·estimate·prepare_video·scene-status·propose_scene_3d·설정 읽기), 합성≠실모델 표기를 명시한다",
+    "severity": "serious"
+   },
+   {
+    "item": "마무리 문서 갱신 범위가 불완전: REPORT-ko.md(현행 입구), README, session-handoff.md, REMAINING-WORK(허용 도구 8개 서술 등), METHODOLOGY-FIT-MATRIX 추가 절, 다음 작업 계획 json 갱신이 PLAN에 없음. goals G005의 '인계·잔여'만 있음",
+    "source": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md:5,83,84 / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:99 / session-handoff.md:5-7 / docs/qa/REMAINING-WORK.md:17(허용 도구 8개)",
+    "why": "guide는 '구현·검증·문서 갱신을 마친 뒤 인계', '기존 보고서의 현재 입구 갱신'을 요구한다. 이것이 빠지면 다음 담당자가 오래된 현황(도구 8개, 이동 미구현)을 정본으로 읽는다(Poisoning)",
+    "action": "S15(문서)를 추가한다. 대상은 REPORT-ko.md 현행 절, README 입구 링크, REMAINING-WORK 현행 잔여, session-handoff.md 전면 갱신(이전 전문은 버전으로 보존), METHODOLOGY-FIT-MATRIX 날짜 절, next-work-plan.json이다. 본문 수정과 등록·분류는 분리한다",
+    "severity": "serious"
+   },
+   {
+    "item": "I7(증거 과장 정정) 담당이 없음. 또 정정 대상에서 session-handoff.md:23 '무배속'과 이전 driver-acceptance.json의 sped_up:false가 빠짐",
+    "source": "PLAN-ko.md:33(I7), PLAN-ko.md:114(트랙 D) / task-contract.json(I7 워커 없음) / session-handoff.md:23 / tasks/B1-chat-ui/result.md(I7 미처리 요청) / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:68",
+    "why": "약 5fps 캡처를 24fps로 복제한 것을 '무배속 연속 녹화'로 인계하면 이후 판단이 오염된다. 이전 수락 파일은 덮어쓰지 말고 정정 기록으로 연결해야 한다",
+    "action": "I7 담당 워커(또는 main)를 지정한다. 정정 기록 파일(원 주장·실측값·근거)을 새로 만들고, handoff·REMAINING-WORK 본문에서 링크한다. test_general_chat_review_navigation.py:37-41의 실패할 수 없는 단언 교체도 포함한다",
+    "severity": "serious"
+   },
+   {
+    "item": "METHODOLOGY-FIT-MATRIX를 lead가 읽지 않았고, 이번 작업의 방법론 적용(Human–AI 역할 분리, 위험 기반 점진 공개, 상태 전이, forced-colors·reflow 실검증)이 계획·계약에 연결되지 않음",
+    "source": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md:31 / task-contract.json:104 / METHODOLOGY-FIT-MATRIX-ko.md:25-27,133,138",
+    "why": "D15(AI가 제안한 모델 ≠ 프로젝트 선택 ≠ 사람 승인)는 바로 Human–AI 역할 분리 문제다. B1이 forced-colors 규칙을 추가했지만 matrix:133은 '코드 존재만으로 통과 아님'이라고 한다",
+    "action": "matrix를 읽고 PLAN에 '방법론 적용' 절을 둔다(행별 적용 결정·검증 방법·한계). S14에 forced-colors 에뮬레이션 또는 '미검증' 표기와 reflow 조건을 추가한다",
+    "severity": "serious"
+   },
+   {
+    "item": "conductor-verify 2단계(계획 검수)와 4단계(산출물별 1차 codex 검수)가 실행되지 않았고 일정에도 없음. codex 증거 파일 0건",
+    "source": "~/.claude/rules/agent-teams-boundaries.md 표준 파이프라인 2·4·6 / PLAN-ko.md:121 / task-contract.json:102 / grep 결과(evidence 디렉토리에 codex 산출물 없음)",
+    "why": "계획 단계 codex 검수는 'run now'로 자인한 공백인데 아직 실행 증거가 없다. Wave-2(D15·D19 등 설계 변경)는 계획 검수 없이 들어가게 된다",
+    "action": "Wave-1 수락 전에 main이 직접 codex(sandbox:read-only)로 PLAN(D15 변경본)과 Wave-1 diff를 검수하고, 결과를 evidence/codex-plan-review·codex-wave1에 원문 보존한다",
+    "severity": "serious"
+   },
+   {
+    "item": "Wave-1 결과에 대한 critic 반박과 lead 수락 기록(driver-acceptance 형식)이 없음. 계약 상태가 아직 RUNNING인데 result.md는 이미 존재함(REPORTED)",
+    "source": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md:53,64 / task-contract.json:28-91 / .omo/evidence/chat-review-navigation-20261028/driver-acceptance.json(이전 관례) / PLAN-ko.md:121",
+    "why": "'Worker 보고 ≠ Lead 수락'이 원칙이다. 이전 작업은 driver-acceptance.json(소스 해시·검사·독립 검토·정리)으로 수락했다. stop_condition에 critic이 들어간 것은 A1뿐이다",
+    "action": "트랙별 critic 반박 → lead 수락 파일(tasks/<id>/acceptance.json: 소스 해시, 재실행한 명령, critic 판정, 미해결)을 두고 상태를 REPORTED→ACCEPTED로 갱신한다",
+    "severity": "serious"
+   },
+   {
+    "item": "Impeccable 기계 검출(impeccable detect index.html)과 critique/audit/polish가 실행되지 않음. Hallmark sloplint는 files:2로 JS 2개를 검사하지 않음. skill-use.json에 스킬 경로·버전·해시가 없음",
+    "source": "사용자 지시 #3 / ~/.claude/rules/ui-ux-craft.md '기계 검출 게이트' / skill-use.json:21-25 / tasks/B1-chat-ui/result.md(files:2) / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:16 / 이전 skill-use.json(경로·sha256 관례)",
+    "why": "사용자가 명시한 /impeccable 사용이 '읽음' 수준에 머물러 있다. JS의 버튼 문구는 어떤 기계 게이트도 거치지 않았다",
+    "action": "UI 단위마다 impeccable detect(HTML 파일, URL 모드 금지)·critique·audit 결과 파일을 둔다. JS 문구는 수동 Floor 점검을 기록한다. skill-use.json에 설치 경로·버전·sha256과 read/run/result/works 구분을 채운다",
+    "severity": "serious"
+   },
+   {
+    "item": "§3 표와 §5가 자산 추천에서 모순됨: §3은 '이번 빌드: 내부 자산 텍스트 추천만', §5는 '추천 자산 도구는 이번에도 미충족'이며 S 번호·담당이 없음",
+    "source": "PLAN-ko.md:79 대 PLAN-ko.md:126 / 사용자 지시 #6('전부 다')",
+    "why": "'전부 다 진행'에 해당하는지 판정할 수 없다. 완료 보고 때 누락 또는 과장 위험이 있다",
+    "action": "내부 자산 추천을 S 번호로 넣을지 범위 밖으로 뺄지 하나로 확정하고 §3·§5·goals를 일치시킨다",
+    "severity": "minor"
+   },
+   {
+    "item": "S11(음원 측정값)이 트랙 C·순서 줄(PLAN:111,120)에 남아 있지만, D9 권장 '보류'가 승인됐고 goals G003에도 없음",
+    "source": "PLAN-ko.md:111,120 대 PLAN-ko.md:142 / .fablize/goals.json G003",
+    "why": "Wave-2 브리프가 순서 줄을 따르면 승인되지 않은 외부 전송 관련 작업이 시작될 수 있다",
+    "action": "S11을 §4 순서에서 빼고 '보류(D9), S13 설계 문서 §8에 연결'로 표기한다",
+    "severity": "minor"
+   },
+   {
+    "item": "위임 계약 최소 필드가 빠짐: 작업별 Agent/Role/configured Model·Reasoning, 작업별 methodology·applied methodology, input source version, shared resources, dependency, decision rights, 필요한 도구·허용된 probe, 실행 핸들(workflow run id)",
+    "source": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md:42-51,63 / task-contract.json:24-92",
+    "why": "Wave-1은 사후 기록이라고 자인했다. Wave-2를 같은 형식으로 띄우면 같은 공백이 반복된다",
+    "action": "Wave-2 계약을 스폰 전에 최소 필드 전부로 작성하고, Wave-1에도 실행 핸들·모델 상속 사실을 보완 기록한다(소급 표기 없이)",
+    "severity": "minor"
+   },
+   {
+    "item": "harness-orchestration:orchestrate 미설치에 대한 대체 경로 선언이 없음",
+    "source": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md:53 / task-contract.json:103",
+    "why": "guide는 '실제 도구 계약은 설치된 orchestrate를 따른다'고 한다. 미설치만 기록하고 무엇으로 대체했는지(네이티브 Workflow + conductor-verify 구조)는 없다",
+    "action": "task-contract에 대체 근거(규범 rules/agent-teams-boundaries.md, conductor-verify.js)와 그에 따른 한계를 1줄로 기록한다",
+    "severity": "minor"
+   },
+   {
+    "item": "최종 소스 동결과 현행 해시 manifest(source-final.json 관례), cleanup 영수증, 등록 검토안 해시 갱신(신규 docs/design/FRAME-OBSERVATION-DESIGN-ko.md 등)이 S14에 명시되지 않음",
+    "source": "session-handoff.md:24,41 / .omo/evidence/chat-review-navigation-20261028/{current-source-freeze.json, worker/source-final.json, document-update/registration-review-current.json} / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:62,81",
+    "why": "전체 회귀 결과를 어떤 소스 해시에 묶었는지 없으면 '이후 변경에 소급'이 생긴다. 새 문서는 문서 게이트에 미등록 차이로 잡힌다",
+    "action": "S14 산출물 목록을 고정한다: source-final.json(신규 테스트·문서 포함), driver-acceptance.json, cleanup.json, gate-finish, registration-review-current 갱신안(제안만, 실행 안 함)",
+    "severity": "minor"
+   },
+   {
+    "item": "verification-templates/verify-lock으로 DoD를 고정하지 않았고, TaskCreate 투두 추적 여부는 [미확인]",
+    "source": "~/.claude/rules/agent-teams-boundaries.md 파이프라인 1단계 / ~/.claude/CLAUDE.md 착수 계약 '투두 추적' / ~/.claude/verification-templates/feature-impl.md 존재 확인",
+    "why": "규범상 DoD는 템플릿에서 골라 고정해야 하고 main이 자유롭게 써서는 안 된다. PLAN의 합격 기준은 main이 직접 작성했다",
+    "action": "feature-impl·review-qa 템플릿으로 S14 DoD를 고정(verify-lock)하고, goals G002~G005와 정렬된 TaskCreate 목록을 확인·보완한다",
+    "severity": "minor"
+   },
+   {
+    "item": "Hallmark 기준선 수치가 서로 다름: PLAN은 'FAIL15/WARN1 보존'인데 현재 정적 sloplint 기준선은 18 FAIL/73 REFLEX/16 WARN",
+    "source": "PLAN-ko.md:106 / design-gate/sloplint-before.json / skill-use.json:19",
+    "why": "분모가 다른 두 수치(HTTP raw 대 정적)를 섞으면 '새 발견 0' 판정의 기준이 흔들린다",
+    "action": "PLAN에 두 기준선을 출처·모드별로 따로 적고, 비교는 같은 모드(정적·같은 파일 목록)끼리만 한다",
+    "severity": "minor"
+   },
+   {
+    "item": "D1 문서의 file:line 인용 64개를 수정 후 다시 전수 대조하지 않았고, 다른 트랙 편집으로 줄 번호가 밀림",
+    "source": "tasks/D1-frame-observation-design/result.md(안 한 일) / PLAN-ko.md:164",
+    "why": "설계 문서가 근거로 쓰는 줄 번호가 현재 소스와 어긋난다. 이전 작업에서도 줄 번호 오차가 발견된 적이 있다",
+    "action": "소스 동결 후 64개 인용을 동결본 기준으로 재대조(스크립트 재실행)하고, 문서 머리말에 기준 해시를 적는다",
+    "severity": "minor"
+   },
+   {
+    "item": "사용자 지시 #11(지시대로 했는지, 프로젝트 방식대로 했는지)에 대한 항목별 준수 대조표가 없음",
+    "source": "사용자 지시 #11·#12 / docs/WORKFLOW-EXECUTION-GUIDE-ko.md:82('전수 확인하지 않은 범위를 누락 없음이라고 쓰지 않는다')",
+    "why": "사용자는 준수 여부를 직접 물었다. self-audit는 task-contract의 known_gaps 4줄뿐이라 지시 12개 각각에 대한 근거 연결이 없다",
+    "action": "지시 #1~#12 × (반영 위치, 증거 파일, 미충족·대기)를 담은 준수표를 evidence에 두고 사용자 보고와 최종 정직 보고에 사용한다",
+    "severity": "minor"
+   },
+   {
+    "item": "녹화 증거 정책이 정해지지 않음: 이번 기능(영상·3D 카드 이동 등)의 시연 녹화를 할지, Aside로 녹화할 수 있는지(Aside는 스크린샷만 지원)",
+    "source": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md:93 / session-handoff.md:23(이전 작업 녹화 관례) / 사용자 지시 #1(녹화 검토 언급)",
+    "why": "이전 작업은 녹화를 수락 증거로 썼다. 이번에 하지 않는다면 이유를 밝히지 않는 한 비대칭 누락이 된다",
+    "action": "S14에 '녹화 없음(스크린샷+snapshot diff로 대체, 사유)' 또는 '녹화 수단과 1배속·무편집 공개'를 결정 항목으로 넣는다",
+    "severity": "minor"
+   },
+   {
+    "item": "대화 모델 자체(일반 대화 추론 모델)의 선택 이유·단가 표시가 D15 범위에 들어가는지 정해지지 않음",
+    "source": "사용자 지시 #7('왜 이 모델들을 하였는지… 권한이 어느 레벨에 있던') / PLAN-ko.md:49(원칙 4: 대화 추론 비용 사전 예약), chat_general.py:437",
+    "why": "'이 모델들'이 미디어 모델만 뜻하는지, 대화 모델(예: haiku-5-5)과 effort까지 포함하는지 해석이 갈린다. 해석을 조용히 고르면 안 된다",
+    "action": "D15에 대화 모델의 단가·최악 예약액·선택 이유 표시 포함 여부를 [가정] 1줄로 명시하거나 사용자에게 1문으로 확인한다",
+    "severity": "minor"
+   },
+   {
+    "item": "PLAN 표 형식 손상: D15 행과 D16 행 사이의 인용문(150-151행)이 표를 끊어 D16~D18이 표 밖으로 렌더됨",
+    "source": "PLAN-ko.md:148-154",
+    "why": "사용자 검토용 문서에서 결정 항목 일부가 표로 보이지 않는다",
+    "action": "용어 확정·사용자 인용 블록을 표 아래로 옮긴다",
+    "severity": "minor"
+   }
+  ],
+  "covered": [
+   "계획 수립 후 사용자 승인을 받고 실행: PLAN-ko.md:3-4(승인 인용) — 지시 #2·#6",
+   "Karpathy 원칙 적용: PLAN-ko.md:17, skill-use.json:6-9, 워커 result.md의 재현→수정→통과 — 지시 #3",
+   "병렬 트랙과 파일 소유 분리: PLAN-ko.md:87-116, task-contract.json write_set — 지시 #3",
+   "현재 작업 개선점 32건을 이유·근거(파일:줄)와 함께 제시, 기각 6건 사유 포함: PLAN-ko.md:21-37 — 지시 #4(계획 시점분)",
+   "외부·자사 패턴 추상화 → 원칙 10개, 가져오지 않는 패턴, 도구 접점 체크리스트: PLAN-ko.md:41-61 — 지시 #5",
+   "D15 사용자 변경과 permission·effort 용어 확정을 결정표에 반영: PLAN-ko.md:148-151, goals.json G003 — 지시 #7·#8(구현 배정은 위 공백 참조)",
+   "Git이 없으므로 편집 전 사본과 해시 보존: before/ + before-inventory.json(PLAN:5, A3)",
+   "S0 기준선 전체 회귀: regression-s0/receipt.json(931개, skip 0, 경고 0, 소스·보호 증거 불변, 잔존 프로세스 0)",
+   "문서 게이트 시작을 읽기 전용으로 기록: doc-gate-start.txt. 종료 기록은 S14에 계획(PLAN:118)",
+   "외부·유료 호출 0, 8765·57888·Ego Space 미조작 가정: PLAN:14-15, task-contract non_goals",
+   "범위 밖 항목 명시: PLAN §5:126",
+   "fablize goals 생성·체크포인트: .fablize/goals.json G001~G005, ledger.jsonl",
+   "상태 수명주기와 사후 계약 사실을 정직하게 기록: task-contract.json:7-8, known_gaps_self_audit:100-105",
+   "S14에 codex read-only main 직접 교차검증과 정직 보고를 계획: PLAN:118",
+   "I6 누락 기존 테스트 4개 재실행과 변이 테스트 8건: tasks/B1-chat-ui/result.md(tests-focused.log, mutation)",
+   "request_media_generation 대화 미노출을 불변 테스트로 고정: tests/test_general_chat_tool_invariants.py(A1 result)",
+   "토큰 예산 오프라인 측정: tasks/A1-server-read-tools/token-budget.json(결과의 후속 결정은 위 공백 참조)",
+   "skill-use.json이 읽음·실행·결과를 구분: skill-use.json:3",
+   "Puppeteer 대 Aside 결정(D12)과 기존 tests/ 회귀 유지: PLAN:145",
+   "문서 본문 정정과 등록·분류를 분리: PLAN D17:153, D10:143"
+  ]
+ }
+}

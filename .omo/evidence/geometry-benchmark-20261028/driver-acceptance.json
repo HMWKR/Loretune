@@ -1,0 +1,40 @@
+{
+  "at": "2026-10-28T05:34:48.809679+00:00",
+  "status": "ACCEPTED_CONDITIONAL_CALIBRATED_GEOMETRY_DIAGNOSTIC",
+  "integrity_checks": [
+    {
+      "folder": "geometry-benchmark-20261028",
+      "entries_matched": 67,
+      "mismatches": []
+    },
+    {
+      "folder": "geometry-benchmark-20261028/v2-calibration",
+      "entries_matched": 69,
+      "mismatches": []
+    }
+  ],
+  "root_viewed": [
+    "v2-calibration/cube/comparison.png",
+    "v2-calibration/chair/comparison.png"
+  ],
+  "root_observed": "Same global GT-assisted alignment largely matches all5 silhouettes; small edge/corner/leg-end differences remain. Raw normalized basis retains orientation differences.",
+  "independent_review": {
+    "agent": "/root/media_preparation_review",
+    "direct_recalculation": "Read-only existing-venv OSnetworkdeny: NPZ CD two conditions;24fit scores/proper rotations;20IoU;independent3point triangle integration;69manifest;v1/original preservation",
+    "result": "No High/Medium issue; Low v1 AABB inherited phrase corrected by separate errata; frozen protocol unchanged"
+  },
+  "errata": {
+    "path": ".omo/evidence/geometry-benchmark-20261028/v2-calibration-errata.json",
+    "sha256": "1068e2fee7d425c752935936585584fbbe534364e3a83fcfd7d9965d170a89ab"
+  },
+  "v1_claim": "Detected measurement confound; preserved, not pure AI quality score",
+  "v2_scope": "Two owned primitive inputs, no new inference, RMS1 surface moment normalization, calibration before raw evaluation, disjoint fit/eval seeds, GT-assisted rigid fit reused allviews",
+  "not_proven": [
+    "Commercial/open parity",
+    "Model improvement (v1/v2 units differ)",
+    "Production input pose recovery",
+    "Material/animation/real-user or platform release readiness"
+  ],
+  "model_inference_calls": 0,
+  "product_changes": 0
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "actual-artifact-visual-review/1",
+  "checked_at": "2026-10-27T19:33:05.982486+00:00",
+  "artifacts": [
+    {
+      "path": ".omo/evidence/paired-3d-benchmark-inputs-20261028/case-1-cube.png",
+      "sha256": "472c4e8e77d713e5bf8f8f46fc50f99ec468b8c775803e06050be433bd9b9033",
+      "manually_opened": true
+    },
+    {
+      "path": ".omo/evidence/scene-vertex-colors-20261028/native/0-revision-1.png",
+      "sha256": "fc759fc9f45a518726282dbc83cd76ea77565ff9abe55438c3b719e5526beca2",
+      "manually_opened": true
+    },
+    {
+      "path": ".omo/evidence/scene-vertex-colors-20261028/native/0-revision-2.png",
+      "sha256": "79c95aab1c241523b173c64928978a153d3bb1d5b851b45ac481425b4710bc5d",
+      "manually_opened": true
+    },
+    {
+      "path": ".omo/evidence/paired-3d-benchmark-inputs-20261028/case-2-chair.png",
+      "sha256": "e673407b9000388e4bb4e9cc382f1a91043468665c2170d996bdd21ad526835e",
+      "manually_opened": true
+    },
+    {
+      "path": ".omo/evidence/scene-vertex-colors-20261028/native/1-revision-1.png",
+      "sha256": "b9f28102cc1da69711b1e7e47983bb1ec440d9ed0f913fdb51350dd0d227a432",
+      "manually_opened": true
+    },
+    {
+      "path": ".omo/evidence/scene-vertex-colors-20261028/native/1-revision-2.png",
+      "sha256": "911f195abf28c80a7e9e6a4e7466507a4347b24ac5a59d452e50c3cb8303221e",
+      "manually_opened": true
+    }
+  ],
+  "observations": [
+    {
+      "id": "BENCH-VIS-01",
+      "observation": "192square imported cube and chair occupy a small central region compared with512square inputs. Camera/framing differ; not a quality-parity comparison.",
+      "next_action": "Actual UI adjust camera/object transforms and inspect larger480x270 output, disclosing framing change"
+    },
+    {
+      "id": "BENCH-VIS-02",
+      "observation": "Chair legs point upward/away in both imported default views; matching default glTF transform does not prove intended upright model orientation.",
+      "hypothesis": "Source model coordinate/export convention vs native imported axes; not yet isolated",
+      "next_action": "Explicit user-editable rotation/camera settings; record actual before/after without modifying GLB"
+    },
+    {
+      "id": "BENCH-VIS-03",
+      "observation": "Rendered cube and chair look substantially paler than respective blue/brown source PNGs.",
+      "hypothesis": "Source model color prediction + renderer/world/light/color management, not apportioned by six images",
+      "next_action": "Preserve raw colors; diagnose actual renderer background and compare proper same-condition outputs before quality judgment"
+    },
+    {
+      "id": "SCENE-BG-01",
+      "observation": "Source inputSceneSpec white background nevertheless producedgray corner; diagnosed by actual native three-color equality",
+      "evidence": "background/REPORT.json"
+    }
+  ],
+  "not_claimed": [
+    "Commercial Tripo parity",
+    "Watertight or manufacturing-ready mesh",
+    "Better asset quality from camera-only edits",
+    "Actual user study",
+    "Material editing or animation"
+  ],
+  "original_inputs_replaced": false
+}

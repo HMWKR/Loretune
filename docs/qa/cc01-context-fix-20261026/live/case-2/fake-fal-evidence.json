@@ -1,0 +1,107 @@
+{
+  "action": {
+    "id": "0baa7457afdd4e4ba38973fdbcb2b19c",
+    "plan_id": "307cf693f5404d738c96af9f68ab812a",
+    "plan_revision": 1,
+    "context_hash": "64c815049c4e204c5a489ecacf303a9c20f85d1504e4f4b7ad9ccdfdad6ba05b",
+    "context_kind": "media-v1",
+    "role": "video",
+    "release_id": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "inputs": {
+      "prompt": "Nari, wearing a teal coat, stands at the copper observatory in a watercolor style. The camera performs a slow clockwise orbit around Nari at a gentle, steady pace, keeping Nari as the central subject throughout. Soft watercolor textures, muted copper and teal tones, consistent painted look across the frame. No text, no lettering, no titles or captions anywhere in the frame. Preserve the original audio. Do not add a fast spin or abrupt camera movement. Age is not specified; do not add age-related details.",
+      "asset_refs": [
+        {
+          "shot": "장면 1",
+          "take": 1,
+          "sha256": "0cad8551df08c141115a95b4a85897f5f4bec312eb782dea9c3e9ba58026a8f2",
+          "role": "start_frame"
+        }
+      ]
+    },
+    "options": {
+      "shot": "장면 1",
+      "shot_revision": 3,
+      "generation": {
+        "duration": 5,
+        "generate_audio": false
+      },
+      "quote": {
+        "provider": "fal.ai",
+        "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+        "money": {
+          "amount": "0.01",
+          "currency": "USD"
+        },
+        "input_sha256": "a6639acd384da8425138f380825d86c33fd6e73cacd452f4cf6da369bfb5cbea",
+        "kind": "fixture",
+        "price_revision": "synthetic-only",
+        "source": "https://fal.ai/models/fal-ai/kling-video/v2.5-turbo/pro/image-to-video/api",
+        "expires": 1793029539.9843001
+      },
+      "output_policy": {
+        "expiration_duration_seconds": 3600,
+        "initial_acl": {
+          "default": "forbid",
+          "rules": []
+        }
+      },
+      "selection_origin": "explicit"
+    },
+    "dependencies": [],
+    "mode": "provider",
+    "connection_id": "fal-model-queue-v1",
+    "hash": "2e9430f214bf3f73bce5fba59748a5f2878fc1b7b06e614925482eaa812a7250"
+  },
+  "preapproval": {
+    "status": "invalid_arguments",
+    "code": "INVALID_ACTION_REFERENCE",
+    "retryable": true
+  },
+  "receipt": {
+    "status": "accepted",
+    "job_id": "5716661f-5b80-460b-91d7-53bbff76e44b",
+    "state": "prepared",
+    "mode": "contract-fake",
+    "failure_code": null,
+    "action_id": "0baa7457afdd4e4ba38973fdbcb2b19c",
+    "plan_id": "307cf693f5404d738c96af9f68ab812a",
+    "plan_revision": 1,
+    "release_id": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "grant_id": "220db88652994474875f3399238464bb",
+    "external_calls": 0,
+    "provider_completed": false,
+    "result": null,
+    "result_approved": false,
+    "cost": {
+      "reservation_state": "reserved",
+      "estimate": {
+        "amount": "0.01",
+        "currency": "USD"
+      },
+      "actual": null,
+      "billing_confirmed": false,
+      "evidence": null
+    }
+  },
+  "duplicate_job": "5716661f-5b80-460b-91d7-53bbff76e44b",
+  "payload": {
+    "prompt": "Nari, wearing a teal coat, stands at the copper observatory in a watercolor style. The camera performs a slow clockwise orbit around Nari at a gentle, steady pace, keeping Nari as the central subject throughout. Soft watercolor textures, muted copper and teal tones, consistent painted look across the frame. No text, no lettering, no titles or captions anywhere in the frame. Preserve the original audio. Do not add a fast spin or abrupt camera movement. Age is not specified; do not add age-related details.",
+    "duration": "5",
+    "enable_safety_checker": true,
+    "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKklEQVR4nGOQc+uhKWIYtWDUglELRi0YtWDUglELRi0YtWDUglELhooFAKkVwC7U5YGHAAAAAElFTkSuQmCC"
+  },
+  "payload_hash": "a6639acd384da8425138f380825d86c33fd6e73cacd452f4cf6da369bfb5cbea",
+  "fake_transport": {
+    "method": "POST",
+    "url": "https://queue.fal.run/fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+    "body": {
+      "prompt": "Nari, wearing a teal coat, stands at the copper observatory in a watercolor style. The camera performs a slow clockwise orbit around Nari at a gentle, steady pace, keeping Nari as the central subject throughout. Soft watercolor textures, muted copper and teal tones, consistent painted look across the frame. No text, no lettering, no titles or captions anywhere in the frame. Preserve the original audio. Do not add a fast spin or abrupt camera movement. Age is not specified; do not add age-related details.",
+      "duration": "5",
+      "enable_safety_checker": true,
+      "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAKklEQVR4nGOQc+uhKWIYtWDUglELRi0YtWDUglELRi0YtWDUglELhooFAKkVwC7U5YGHAAAAAElFTkSuQmCC"
+    },
+    "mode": "contract-fake",
+    "network_sent": false
+  },
+  "real_fal_calls": 0
+}

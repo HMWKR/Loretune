@@ -1,0 +1,483 @@
+{
+ "task": "A1-server-read-tools-r2 (defect 4: description trim)",
+ "method": "offline; measure_token_budget.py (this folder; same as A1 script except the estimate continuation fixture now has the r2 result shape). json.dumps(ensure_ascii=False) UTF-8 bytes. NO token count was performed; every *_estimate is bytes divided by a ratio, not a measured token count.",
+ "versions": {
+  "wave0": ".omo/evidence/agent-tools-02-20261028/before/ (before wave 1)",
+  "wave1": "tasks/A1-server-read-tools-r2/before-r2/ (wave 1 result, before this rework)",
+  "r2": "project root after this rework"
+ },
+ "fixture": "anthropic-haiku-5-5, effort low, single user prompt, no history/music context",
+ "max_input_tokens": 4096,
+ "modes": {
+  "review": {
+   "wave0": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "prepare_image_action",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "description_bytes": 377,
+    "tools": {
+     "bytes": 9965,
+     "ratio_estimate_bytes_div_4": 2491,
+     "ratio_estimate_bytes_div_3_2": 3114,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      4314,
+      5058
+     ]
+    },
+    "message_body": {
+     "bytes": 16617,
+     "ratio_estimate_bytes_div_4": 4154,
+     "ratio_estimate_bytes_div_3_2": 5193,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7194,
+      8435
+     ]
+    }
+   },
+   "wave1": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "estimate_media_plan",
+     "prepare_image_action",
+     "get_generation_job",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "description_bytes": 881,
+    "tools": {
+     "bytes": 10880,
+     "ratio_estimate_bytes_div_4": 2720,
+     "ratio_estimate_bytes_div_3_2": 3400,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      4710,
+      5523
+     ]
+    },
+    "message_body": {
+     "bytes": 17532,
+     "ratio_estimate_bytes_div_4": 4383,
+     "ratio_estimate_bytes_div_3_2": 5479,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7590,
+      8899
+     ]
+    }
+   },
+   "r2": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "estimate_media_plan",
+     "prepare_image_action",
+     "get_generation_job",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "description_bytes": 498,
+    "tools": {
+     "bytes": 10497,
+     "ratio_estimate_bytes_div_4": 2624,
+     "ratio_estimate_bytes_div_3_2": 3280,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      4544,
+      5328
+     ]
+    },
+    "message_body": {
+     "bytes": 17149,
+     "ratio_estimate_bytes_div_4": 4287,
+     "ratio_estimate_bytes_div_3_2": 5359,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7424,
+      8705
+     ]
+    }
+   },
+   "delta_bytes": {
+    "description_wave1_to_r2": -383,
+    "tools_wave1_to_r2": -383,
+    "tools_wave0_to_r2": 532,
+    "body_wave0_to_r2": 532
+   },
+   "per_tool_bytes": {
+    "wave0": {
+     "search_project_context": 253,
+     "get_model_capabilities": 251,
+     "propose_media_plan": 407,
+     "prepare_image_action": 430,
+     "propose_timeline_changes": 5251,
+     "propose_motion_scene": 2695,
+     "request_motion_render": 358,
+     "request_render": 304
+    },
+    "wave1": {
+     "search_project_context": 306,
+     "get_model_capabilities": 279,
+     "propose_media_plan": 444,
+     "estimate_media_plan": 333,
+     "prepare_image_action": 476,
+     "get_generation_job": 289,
+     "propose_timeline_changes": 5321,
+     "propose_motion_scene": 2705,
+     "request_motion_render": 375,
+     "request_render": 332
+    },
+    "r2": {
+     "search_project_context": 256,
+     "get_model_capabilities": 233,
+     "propose_media_plan": 400,
+     "estimate_media_plan": 273,
+     "prepare_image_action": 431,
+     "get_generation_job": 240,
+     "propose_timeline_changes": 5259,
+     "propose_motion_scene": 2688,
+     "request_motion_render": 370,
+     "request_render": 327
+    }
+   }
+  },
+  "full_access": {
+   "wave0": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "prepare_image_action",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "description_bytes": 377,
+    "tools": {
+     "bytes": 9965,
+     "ratio_estimate_bytes_div_4": 2491,
+     "ratio_estimate_bytes_div_3_2": 3114,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      4314,
+      5058
+     ]
+    },
+    "message_body": {
+     "bytes": 16617,
+     "ratio_estimate_bytes_div_4": 4154,
+     "ratio_estimate_bytes_div_3_2": 5193,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7194,
+      8435
+     ]
+    }
+   },
+   "wave1": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "estimate_media_plan",
+     "prepare_image_action",
+     "get_generation_job",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "description_bytes": 881,
+    "tools": {
+     "bytes": 10880,
+     "ratio_estimate_bytes_div_4": 2720,
+     "ratio_estimate_bytes_div_3_2": 3400,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      4710,
+      5523
+     ]
+    },
+    "message_body": {
+     "bytes": 17532,
+     "ratio_estimate_bytes_div_4": 4383,
+     "ratio_estimate_bytes_div_3_2": 5479,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7590,
+      8899
+     ]
+    }
+   },
+   "r2": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "propose_media_plan",
+     "estimate_media_plan",
+     "prepare_image_action",
+     "get_generation_job",
+     "propose_timeline_changes",
+     "propose_motion_scene",
+     "request_motion_render",
+     "request_render"
+    ],
+    "description_bytes": 498,
+    "tools": {
+     "bytes": 10497,
+     "ratio_estimate_bytes_div_4": 2624,
+     "ratio_estimate_bytes_div_3_2": 3280,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      4544,
+      5328
+     ]
+    },
+    "message_body": {
+     "bytes": 17149,
+     "ratio_estimate_bytes_div_4": 4287,
+     "ratio_estimate_bytes_div_3_2": 5359,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7424,
+      8705
+     ]
+    }
+   },
+   "delta_bytes": {
+    "description_wave1_to_r2": -383,
+    "tools_wave1_to_r2": -383,
+    "tools_wave0_to_r2": 532,
+    "body_wave0_to_r2": 532
+   },
+   "per_tool_bytes": {
+    "wave0": {
+     "search_project_context": 253,
+     "get_model_capabilities": 251,
+     "propose_media_plan": 407,
+     "prepare_image_action": 430,
+     "propose_timeline_changes": 5251,
+     "propose_motion_scene": 2695,
+     "request_motion_render": 358,
+     "request_render": 304
+    },
+    "wave1": {
+     "search_project_context": 306,
+     "get_model_capabilities": 279,
+     "propose_media_plan": 444,
+     "estimate_media_plan": 333,
+     "prepare_image_action": 476,
+     "get_generation_job": 289,
+     "propose_timeline_changes": 5321,
+     "propose_motion_scene": 2705,
+     "request_motion_render": 375,
+     "request_render": 332
+    },
+    "r2": {
+     "search_project_context": 256,
+     "get_model_capabilities": 233,
+     "propose_media_plan": 400,
+     "estimate_media_plan": 273,
+     "prepare_image_action": 431,
+     "get_generation_job": 240,
+     "propose_timeline_changes": 5259,
+     "propose_motion_scene": 2688,
+     "request_motion_render": 370,
+     "request_render": 327
+    }
+   }
+  },
+  "read_only": {
+   "wave0": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities"
+    ],
+    "description_bytes": 98,
+    "tools": {
+     "bytes": 508,
+     "ratio_estimate_bytes_div_4": 127,
+     "ratio_estimate_bytes_div_3_2": 159,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      220,
+      258
+     ]
+    },
+    "message_body": {
+     "bytes": 7160,
+     "ratio_estimate_bytes_div_4": 1790,
+     "ratio_estimate_bytes_div_3_2": 2238,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      3100,
+      3635
+     ]
+    }
+   },
+   "wave1": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "estimate_media_plan",
+     "get_generation_job"
+    ],
+    "description_bytes": 394,
+    "tools": {
+     "bytes": 1215,
+     "ratio_estimate_bytes_div_4": 304,
+     "ratio_estimate_bytes_div_3_2": 380,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      526,
+      617
+     ]
+    },
+    "message_body": {
+     "bytes": 7867,
+     "ratio_estimate_bytes_div_4": 1967,
+     "ratio_estimate_bytes_div_3_2": 2458,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      3406,
+      3993
+     ]
+    }
+   },
+   "r2": {
+    "tool_names": [
+     "search_project_context",
+     "get_model_capabilities",
+     "estimate_media_plan",
+     "get_generation_job"
+    ],
+    "description_bytes": 189,
+    "tools": {
+     "bytes": 1010,
+     "ratio_estimate_bytes_div_4": 252,
+     "ratio_estimate_bytes_div_3_2": 316,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      437,
+      513
+     ]
+    },
+    "message_body": {
+     "bytes": 7662,
+     "ratio_estimate_bytes_div_4": 1916,
+     "ratio_estimate_bytes_div_3_2": 2394,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      3317,
+      3889
+     ]
+    }
+   },
+   "delta_bytes": {
+    "description_wave1_to_r2": -205,
+    "tools_wave1_to_r2": -205,
+    "tools_wave0_to_r2": 502,
+    "body_wave0_to_r2": 502
+   },
+   "per_tool_bytes": {
+    "wave0": {
+     "search_project_context": 253,
+     "get_model_capabilities": 251
+    },
+    "wave1": {
+     "search_project_context": 306,
+     "get_model_capabilities": 279,
+     "estimate_media_plan": 333,
+     "get_generation_job": 289
+    },
+    "r2": {
+     "search_project_context": 256,
+     "get_model_capabilities": 233,
+     "estimate_media_plan": 273,
+     "get_generation_job": 240
+    }
+   }
+  }
+ },
+ "continuation": {
+  "get_generation_job": {
+   "wave0": {
+    "tool_result_bytes": 663,
+    "message_body": {
+     "bytes": 17625,
+     "ratio_estimate_bytes_div_4": 4406,
+     "ratio_estimate_bytes_div_3_2": 5508,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7630,
+      8947
+     ]
+    }
+   },
+   "wave1": {
+    "tool_result_bytes": 663,
+    "message_body": {
+     "bytes": 18540,
+     "ratio_estimate_bytes_div_4": 4635,
+     "ratio_estimate_bytes_div_3_2": 5794,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      8026,
+      9411
+     ]
+    }
+   },
+   "r2": {
+    "tool_result_bytes": 663,
+    "message_body": {
+     "bytes": 18157,
+     "ratio_estimate_bytes_div_4": 4539,
+     "ratio_estimate_bytes_div_3_2": 5674,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7860,
+      9217
+     ]
+    }
+   }
+  },
+  "estimate_media_plan": {
+   "wave0": {
+    "tool_result_bytes": 1016,
+    "message_body": {
+     "bytes": 18032,
+     "ratio_estimate_bytes_div_4": 4508,
+     "ratio_estimate_bytes_div_3_2": 5635,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      7806,
+      9153
+     ]
+    }
+   },
+   "wave1": {
+    "tool_result_bytes": 1016,
+    "message_body": {
+     "bytes": 18947,
+     "ratio_estimate_bytes_div_4": 4737,
+     "ratio_estimate_bytes_div_3_2": 5921,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      8202,
+      9618
+     ]
+    }
+   },
+   "r2": {
+    "tool_result_bytes": 1016,
+    "message_body": {
+     "bytes": 18564,
+     "ratio_estimate_bytes_div_4": 4641,
+     "ratio_estimate_bytes_div_3_2": 5801,
+     "ratio_estimate_at_observed_1_97_to_2_31_B_per_tok": [
+      8036,
+      9423
+     ]
+    }
+   }
+  }
+ },
+ "continuation_note": "Same r2-shaped result fixture across versions, so the difference is only tool definitions. The r2 estimate result itself is 1016 B vs 858 B for the wave-1 shape (+158 B: per-item excluded + excluded counts + new label).",
+ "verdict": {
+  "trim": "Descriptions in review/full_access: 881 B (wave1) -> 498 B (r2), wave0 placeholder text was 377 B. read_only: 394 -> 189 B (wave0 98 B).",
+  "cap": "By bytes/4 and bytes/3.2 the review/full_access first-round body exceeds 4096 at wave0 (16617 B), wave1 (17532 B) and r2 (17149 B). The cap overrun pre-dates wave 1; r2 adds +532 B over wave0 (2 added tools), down from +915 B. read_only r2 7662 B is under 4096 at /4 and /3.2; at the earlier observed 1.97-2.31 B/tok ratio (estimate, legacy requests) it is about 3317-3889. These are ratio estimates, not counts; the actual count needs a paid count_tokens call (user approval, D20)."
+ }
+}

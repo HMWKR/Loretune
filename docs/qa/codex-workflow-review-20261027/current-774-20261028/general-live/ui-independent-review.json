@@ -1,0 +1,199 @@
+{
+  "task_id": "general-activation-ui-review-20261028",
+  "attempt": 1,
+  "status": "REPORTED",
+  "reviewer": "/root/general_activation_review",
+  "role": "ce-reviewer",
+  "scope": "Independent read-only review of actual-mode capability presentation, explicit consent and cost caps, general-chat placement, truth labels, escaping, and terminal-run polling convergence. Source edits and full-suite execution were excluded.",
+  "verdict": "No independently confirmed high or medium finding in the reviewed frozen source. Two preliminary concerns were withdrawn after checking current syntax and the real producer state transition.",
+  "authority": {
+    "source": "Latest parent task contract, current frozen source, and direct execution evidence. Artifact filenames do not establish recency or authority.",
+    "document_registration": "No authority to register, promote, or regenerate document context.",
+    "read_only": "Source read-only is the task instruction; no claim that an operating-system sandbox enforced it.",
+    "parent_review": "Parent acceptance is separate from this REPORTED artifact."
+  },
+  "methodology": {
+    "sources_read": [
+      "/Users/leesungmin/.codex/agents/ce-reviewer.toml",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/skills/feature-verification/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/CODEX-RUNTIME.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-orchestration/0.1.0/skills/orchestrate/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-andrej-karpathy-skills/1.2.1/skills/karpathy-guidelines/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/rules/ui-ux-craft.md"
+    ],
+    "applied": [
+      "Trace trusted capability fields through UI admission and explicit exact-manifest consent into authoritative server state.",
+      "Compare frozen before/current source and distinguish executed isolated probes, reviewed worker logs, and static screenshots.",
+      "Check state convergence against reachable producer transitions rather than assuming arbitrary partial VM states are reachable.",
+      "Apply CE Poisoning, Distraction, Confusion, and Clash checks to status wording and evidence provenance.",
+      "Use surgical review without unrelated changes or repeated full-suite execution."
+    ],
+    "non_goals": [
+      "Real provider, paid API, credentials, environment keys, account verification, and invoices.",
+      "Parent browser/server access, production activation, deployment, or source modification.",
+      "Universal accessibility, mobile, performance, or actual-user usability acceptance."
+    ]
+  },
+  "frozen_source_sha256": {
+    "index.html": "c2927feb664dc2c2184ba94177e942d39f2bf48394bb858ab206ddce2a2431f7",
+    "general-chat-ui.js": "acefdd549f747dcd3c6f8ba71d2d33e6dc0c4d2a58a173e2171740203dfb8cf7",
+    "tests/general_chat_controls.cjs": "e9e91b09a7ce3ef172bd828834abbdf23f16668c83466fa106ea283746510ca4",
+    "tests/chat_model_polling.cjs": "aae8b129f3eeff80197a12363c1433da2bd6488412ba40f083a2c5570efefa23",
+    "tests/test_chat_model_polling.py": "dac62e94af1d4c90354f23078fc09cf2c062c3d67451c14a1b5e2f3baf705718"
+  },
+  "hash_drift": false,
+  "source_review": [
+    {
+      "id": "UI-CAPABILITY",
+      "observation": "The allowed predicate admits anthropic-live only with available=true and external_transmission=true, and contract-fake/contract-live-test only with external_transmission=false. The provider badge applies the same mode/flag pairing.",
+      "consequence": "A configured actual branch is represented without treating malformed actual/fixture flag combinations as enabled. Configured is not represented as verified account, successful invocation, or confirmed invoice."
+    },
+    {
+      "id": "UI-CONSENT-CAPS",
+      "observation": "Bounded loopback and actual modes require both per-round and total cost caps. Submission validates positive six-decimal micro amounts and total>=round, and sends total_maximum_micro. A rights checkbox and exact manifest remain required before approval; no automatic approval or retry was introduced.",
+      "consequence": "The UI no longer omits the total budget required by the server contract."
+    },
+    {
+      "id": "UI-PLACEMENT-DRAFT",
+      "observation": "The admitted actual panel is placed before the manual guided brief and legacy panel is hidden. Default non-actual placement keeps the legacy panel available. Layout movement is guarded by changed live status. Stable workspace/project/conversation draft keys preserve a newly typed prompt across revision-only refreshes.",
+      "consequence": "The model workflow is reachable first without forcing revision-only polling to reset a new prompt."
+    },
+    {
+      "id": "UI-COST-TRUTH",
+      "observation": "An absent or unpriced cost is displayed as unconfirmed usage amount. A priced amount or proven message_status=not_sent may display a known zero. Billing confirmation is presented separately.",
+      "consequence": "Placeholder zero is not displayed as confirmed free usage; a known pre-message block can truthfully show zero while retaining prior round usage and unconfirmed billing."
+    },
+    {
+      "id": "UI-ESCAPING",
+      "observation": "Dynamic model, destination, prompt, answer, errors, payload JSON, IDs, and tool labels used in innerHTML flow through esc; capability and status text use textContent. Generic innerHTML hook matches are insufficient to establish an XSS path.",
+      "consequence": "No concrete unescaped dynamic-text path was found in the reviewed changes. This is a bounded source review, not a comprehensive penetration test."
+    },
+    {
+      "id": "UI-POLL-CONVERGENCE",
+      "observation": "generalChatChanged now compares production_runs, so a terminal run-only transition adopts the fresh revision and refreshes general chat. Existing epoch/sequence, busy/dirty, workspace/project/shot, older-revision, and in-flight guards remain. The same-scope general refresh retains new prompt text.",
+      "consequence": "The observed terminal-run-only stale revision has an implemented convergence path without a global draw reset. Real plan producers also update active_conversation, so chatChanged redraws proposal cards."
+    }
+  ],
+  "evidence_reviewed_not_executed_by_reviewer": {
+    "before": [
+      "UI-SOURCE-BEFORE.json",
+      "ui-before.json",
+      "ui-stale-after-completion.json"
+    ],
+    "after": [
+      "ui-completed.json",
+      "ui-not-sent.json",
+      "ui-recovered.json",
+      "ui-source-final.json"
+    ],
+    "current_passing_logs": [
+      {
+        "path": "ui-controls-after-price.log",
+        "reported_result": "28 general chat button states and unknown/zero cost distinction passed"
+      },
+      {
+        "path": "ui-poll-after-correction.log",
+        "reported_result": "2 tests in 0.173s; OK; polling scenarios are supplied by the Node test."
+      }
+    ],
+    "preserved_historical_failures": [
+      "ui-intermediate-test-count.json",
+      "ui-poll-final.log"
+    ],
+    "static_images_manually_viewed": [
+      {
+        "path": "ui-completed-1920.png",
+        "observation": "Static 1920px image shows explicit synthetic-answer text, no real Claude call claim, usage-based amount and separate unconfirmed billing, followed by the manual brief."
+      },
+      {
+        "path": "ui-not-sent-1920.png",
+        "observation": "Static 1920px image distinguishes previous synthetic completion from pre-message blocking, shows recovery wording, and shows known $0 with billing still unconfirmed."
+      }
+    ],
+    "limits": "These screenshots were viewed locally; the reviewer did not operate the parent browser or independently reproduce its browser interactions. Different states are not a controlled visual before/after comparison."
+  },
+  "independently_executed": [
+    {
+      "id": "UI-SYNTAX-CURRENT",
+      "method": "Parse tests/test_chat_model_polling.py with ast.parse and verify its SHA256 against the frozen contract.",
+      "result": "PASS",
+      "network": false
+    },
+    {
+      "id": "UI-PLAN-PRODUCER-REACHABILITY",
+      "method": "Use existing GeneralChatActivationHTTPTest isolated TempStore/server and synthetic stdlib transport helper. Approve and process a first search_project_context tool request, approve the follow-up preview, capture before state, process propose_media_plan through the actual production runner and Store mutation, and capture after state. No direct plan insertion or bypass of tool admission guards.",
+      "synthetic_replies": [
+        {"tool": "search_project_context", "input": {"query": "현재 작품"}},
+        {"tool": "propose_media_plan", "input": {"goal": "독립 합성 계획", "scenes": "푸른 도형 한 장면", "style": "중성", "constraints": "음원 우선", "kind": "visualizer"}}
+      ],
+      "result": {
+        "beforeRevision": 6,
+        "afterRevision": 7,
+        "beforePlanCount": 0,
+        "afterPlanCount": 1,
+        "chatChangedFields": {
+          "chat_turns": false,
+          "chat_connection": false,
+          "chat_receipts": false,
+          "model_settings": false,
+          "active_conversation": true,
+          "model_catalog": false
+        },
+        "chatChanged": true,
+        "generalChanged": true,
+        "beforeConversationRevision": 5,
+        "afterConversationRevision": 6,
+        "conversation_id_unchanged": true,
+        "lastCall": "propose_media_plan",
+        "lastCallStatus": "proposed",
+        "fakeTransportRequests": 4,
+        "realProviderCalls": 0
+      },
+      "cleanup": "case.doCleanups() in finally; isolated server, temporary store, and transport patch cleaned up.",
+      "conclusion": "The reachable producer transition makes chatChanged=true and therefore triggers existing proposal-card redraws. The initial partial-state VM counterexample does not establish a user-visible defect."
+    },
+    {
+      "id": "UI-HASH-FINAL",
+      "method": "Recompute SHA256 of all five assigned UI files and compare ui-source-final.json current passing/historical log classification.",
+      "result": "All five files match the frozen contract; no source drift."
+    }
+  ],
+  "preliminary_concerns_and_corrections": [
+    {
+      "id": "WITHDRAWN-UI-PYTHON-INDENT",
+      "initial_claim": "The polling test might currently contain the indentation failure shown in ui-poll-final.log.",
+      "correction": "Current exact-hash Python parses successfully. ui-poll-final.log is a preserved intermediate failure; ui-poll-after-correction.log is the current passing result. The filename final was not reliable provenance.",
+      "status": "WITHDRAWN; not a current source defect",
+      "parent_notified": true
+    },
+    {
+      "id": "WITHDRAWN-UI-PROPOSAL-REDRAW",
+      "initial_claim": "A manually fabricated VM poll state with new guided_plans and general fields but unchanged active_conversation produced one general refresh and zero plan redraws; initially proposed as a medium concern.",
+      "initial_vm_result": {"stateRevision": 2, "planCount": 1, "generalRefreshes": 1, "planRedraws": 0, "editRedraws": 0},
+      "correction": "That fabricated partial state omitted the actual producer's active_conversation revision bump. The independently executed reachable propose_media_plan transition sets chatChanged=true. Existing chatChanged code redraws proposals. No confirmed medium user-facing defect follows from the VM result.",
+      "status": "WITHDRAWN after actual producer countercheck; source modification and full-suite interruption unnecessary",
+      "parent_notified": true
+    }
+  ],
+  "confirmed_findings": [],
+  "ce_review": {
+    "Poisoning": "Provider/answer/error text is treated as escaped data in reviewed UI sinks. Synthetic evidence is explicitly separate from actual Claude evidence.",
+    "Distraction": "Changes remain within capability admission, consent/cost truth, and polling convergence; no unrelated redesign or source changes by reviewer.",
+    "Confusion": "Configured, count observed, message sent/not_sent/unknown, usage estimate, and invoice confirmation are not merged. Historical failed logs are not current failures.",
+    "Clash": "Current source and reachable producer state overrule filename assumptions and an incomplete VM state. Earlier claims are retained with explicit corrections."
+  },
+  "unverified_and_limits": [
+    "Real Claude provider output, typography creation, edits, render/export quality, account authorization, and invoice behavior remain unverified by this review.",
+    "Only the supported Claude actual branch was reviewed; other catalog models cannot be inferred fully working.",
+    "Provider requests in the isolated probe used synthetic stdlib transport; real external network/provider calls were zero.",
+    "No mobile, zoom, keyboard/focus live interaction, contrast measurement, reduced-motion, performance benchmark, or real-user test was executed by this reviewer.",
+    "The reachable probe covered propose_media_plan. It does not independently execute every timeline-edit proposal, renderer, or product workflow.",
+    "No full-suite rerun was performed; the parent assigned that verification to a separate worker.",
+    "This bounded result is not platform-wide production acceptance."
+  ],
+  "writes": [".omo/evidence/general-live-activation-20261028/ui-independent-review.json"],
+  "source_modified": false,
+  "browser_used": false,
+  "document_registered_or_promoted": false,
+  "memory_files_used": false
+}

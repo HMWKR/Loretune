@@ -1,0 +1,83 @@
+[
+  {
+    "path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/TripoSR/tsr/utils.py",
+    "sha256": "fb32bfdcfd6a5298b5412a812be833af710849f38a3acc36f86765ac2c963718",
+    "excerpts": [
+      {
+        "first_line": 60,
+        "last_line": 92,
+        "text": "60:         raise NotImplementedError\n61: \n62: \n63: class ImagePreprocessor:\n64:     def convert_and_resize(\n65:         self,\n66:         image: Union[PIL.Image.Image, np.ndarray, torch.Tensor],\n67:         size: int,\n68:     ):\n69:         if isinstance(image, PIL.Image.Image):\n70:             image = torch.from_numpy(np.array(image).astype(np.float32) / 255.0)\n71:         elif isinstance(image, np.ndarray):\n72:             if image.dtype == np.uint8:\n73:                 image = torch.from_numpy(image.astype(np.float32) / 255.0)\n74:             else:\n75:                 image = torch.from_numpy(image)\n76:         elif isinstance(image, torch.Tensor):\n77:             pass\n78: \n79:         batched = image.ndim == 4\n80: \n81:         if not batched:\n82:             image = image[None, ...]\n83:         image = F.interpolate(\n84:             image.permute(0, 3, 1, 2),\n85:             (size, size),\n86:             mode=\"bilinear\",\n87:             align_corners=False,\n88:             antialias=True,\n89:         ).permute(0, 2, 3, 1)\n90:         if not batched:\n91:             image = image[0]\n92:         return image"
+      },
+      {
+        "first_line": 240,
+        "last_line": 265,
+        "text": "240:         return lambda x: x\n241:     elif name == \"exp\":\n242:         return lambda x: torch.exp(x)\n243:     elif name == \"sigmoid\":\n244:         return lambda x: torch.sigmoid(x)\n245:     elif name == \"tanh\":\n246:         return lambda x: torch.tanh(x)\n247:     elif name == \"softplus\":\n248:         return lambda x: F.softplus(x)\n249:     else:\n250:         try:\n251:             return getattr(F, name)\n252:         except AttributeError:\n253:             raise ValueError(f\"Unknown activation function: {name}\")\n254: \n255: \n256: def get_ray_directions(\n257:     H: int,\n258:     W: int,\n259:     focal: Union[float, Tuple[float, float]],\n260:     principal: Optional[Tuple[float, float]] = None,\n261:     use_pixel_centers: bool = True,\n262:     normalize: bool = True,\n263: ) -> torch.FloatTensor:\n264:     \"\"\"\n265:     Get ray directions for all pixels in camera coordinate."
+      }
+    ]
+  },
+  {
+    "path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/TripoSR/tsr/models/tokenizers/image.py",
+    "sha256": "8137148648b90996747d9a9c94828a2213d3c76ce1c579ce957e7fa97ba8a0b1",
+    "excerpts": [
+      {
+        "first_line": 18,
+        "last_line": 62,
+        "text": "18:     cfg: Config\n19: \n20:     def configure(self) -> None:\n21:         self.model: ViTModel = ViTModel(\n22:             ViTModel.config_class.from_pretrained(\n23:                 self.cfg.pretrained_model_name_or_path, local_files_only=True\n24:             )\n25:         )\n26: \n27:         if self.cfg.enable_gradient_checkpointing:\n28:             self.model.encoder.gradient_checkpointing = True\n29: \n30:         self.register_buffer(\n31:             \"image_mean\",\n32:             torch.as_tensor([0.485, 0.456, 0.406]).reshape(1, 1, 3, 1, 1),\n33:             persistent=False,\n34:         )\n35:         self.register_buffer(\n36:             \"image_std\",\n37:             torch.as_tensor([0.229, 0.224, 0.225]).reshape(1, 1, 3, 1, 1),\n38:             persistent=False,\n39:         )\n40: \n41:     def forward(self, images: torch.FloatTensor, **kwargs) -> torch.FloatTensor:\n42:         packed = False\n43:         if images.ndim == 4:\n44:             packed = True\n45:             images = images.unsqueeze(1)\n46: \n47:         batch_size, n_input_views = images.shape[:2]\n48:         images = (images - self.image_mean) / self.image_std\n49:         out = self.model(\n50:             rearrange(images, \"B N C H W -> (B N) C H W\"), interpolate_pos_encoding=True\n51:         )\n52:         local_features, global_features = out.last_hidden_state, out.pooler_output\n53:         local_features = local_features.permute(0, 2, 1)\n54:         local_features = rearrange(\n55:             local_features, \"(B N) Ct Nt -> B N Ct Nt\", B=batch_size\n56:         )\n57:         if packed:\n58:             local_features = local_features.squeeze(1)\n59: \n60:         return local_features\n61: \n62:     def detokenize(self, *args, **kwargs):"
+      }
+    ]
+  },
+  {
+    "path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/TripoSR/tsr/models/nerf_renderer.py",
+    "sha256": "afe8c12c964078b2c6bb3922d2e30969aa59f7edbacb8cb73d2c3df839dc785f",
+    "excerpts": [
+      {
+        "first_line": 15,
+        "last_line": 30,
+        "text": "15: \n16: \n17: class TriplaneNeRFRenderer(BaseModule):\n18:     @dataclass\n19:     class Config(BaseModule.Config):\n20:         radius: float\n21: \n22:         feature_reduction: str = \"concat\"\n23:         density_activation: str = \"trunc_exp\"\n24:         density_bias: float = -1.0\n25:         color_activation: str = \"sigmoid\"\n26:         num_samples_per_ray: int = 128\n27:         randomized: bool = False\n28: \n29:     cfg: Config\n30: "
+      },
+      {
+        "first_line": 74,
+        "last_line": 91,
+        "text": "74:             net_out: Dict[str, torch.Tensor] = decoder(out)\n75:             return net_out\n76: \n77:         if self.chunk_size > 0:\n78:             net_out = chunk_batch(_query_chunk, self.chunk_size, positions)\n79:         else:\n80:             net_out = _query_chunk(positions)\n81: \n82:         net_out[\"density_act\"] = get_activation(self.cfg.density_activation)(\n83:             net_out[\"density\"] + self.cfg.density_bias\n84:         )\n85:         net_out[\"color\"] = get_activation(self.cfg.color_activation)(\n86:             net_out[\"features\"]\n87:         )\n88: \n89:         net_out = {k: v.view(*input_shape, -1) for k, v in net_out.items()}\n90: \n91:         return net_out"
+      },
+      {
+        "first_line": 130,
+        "last_line": 149,
+        "text": "130:         )  # (N_rays, N_samples)\n131:         accum_prod = torch.cat(\n132:             [\n133:                 torch.ones_like(alpha[:, :1]),\n134:                 torch.cumprod(1 - alpha[:, :-1] + eps, dim=-1),\n135:             ],\n136:             dim=-1,\n137:         )\n138:         weights = alpha * accum_prod  # (N_rays, N_samples)\n139:         comp_rgb_ = (weights[..., None] * mlp_out[\"color\"]).sum(dim=-2)  # (N_rays, 3)\n140:         opacity_ = weights.sum(dim=-1)  # (N_rays)\n141: \n142:         comp_rgb = torch.zeros(\n143:             n_rays, 3, dtype=comp_rgb_.dtype, device=comp_rgb_.device\n144:         )\n145:         opacity = torch.zeros(n_rays, dtype=opacity_.dtype, device=opacity_.device)\n146:         comp_rgb[rays_valid] = comp_rgb_\n147:         opacity[rays_valid] = opacity_\n148: \n149:         comp_rgb += 1 - opacity[..., None]"
+      }
+    ]
+  },
+  {
+    "path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/TripoSR/tsr/system.py",
+    "sha256": "a82d7cc65b2d7867c322fe3e54cfa92ed23fc5d2706189f00a86395b8dbe5957",
+    "excerpts": [
+      {
+        "first_line": 178,
+        "last_line": 205,
+        "text": "178:                     scale_tensor(\n179:                         self.isosurface_helper.grid_vertices.to(scene_codes.device),\n180:                         self.isosurface_helper.points_range,\n181:                         (-self.renderer.cfg.radius, self.renderer.cfg.radius),\n182:                     ),\n183:                     scene_code,\n184:                 )[\"density_act\"]\n185:             v_pos, t_pos_idx = self.isosurface_helper(-(density - threshold))\n186:             v_pos = scale_tensor(\n187:                 v_pos,\n188:                 self.isosurface_helper.points_range,\n189:                 (-self.renderer.cfg.radius, self.renderer.cfg.radius),\n190:             )\n191:             color = None\n192:             if has_vertex_color:\n193:                 with torch.no_grad():\n194:                     color = self.renderer.query_triplane(\n195:                         self.decoder,\n196:                         v_pos,\n197:                         scene_code,\n198:                     )[\"color\"]\n199:             mesh = trimesh.Trimesh(\n200:                 vertices=v_pos.cpu().numpy(),\n201:                 faces=t_pos_idx.cpu().numpy(),\n202:                 vertex_colors=color.cpu().numpy() if has_vertex_color else None,\n203:             )\n204:             meshes.append(mesh)\n205:         return meshes"
+      }
+    ]
+  },
+  {
+    "path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/venv/lib/python3.11/site-packages/trimesh/visual/color.py",
+    "sha256": "77be615ad02a11cb1ea84e47e4e25447e0189980dea3b55966315173740de6f4",
+    "excerpts": [
+      {
+        "first_line": 558,
+        "last_line": 620,
+        "text": "558: def to_rgba(colors, dtype=np.uint8):\n559:     \"\"\"\n560:     Convert a single or multiple RGB colors to RGBA colors.\n561: \n562:     Parameters\n563:     ----------\n564:     colors : (n, 3) or (n, 4) array\n565:       RGB or RGBA colors\n566: \n567:     Returns\n568:     ----------\n569:     colors : (n, 4) list of RGBA colors\n570:              (4,)  single RGBA color\n571:     \"\"\"\n572:     if colors is None:\n573:         return DEFAULT_COLOR\n574: \n575:     # colors as numpy array\n576:     colors = np.asanyarray(colors)\n577: \n578:     # integer value for opaque alpha given our datatype\n579:     opaque = np.iinfo(dtype).max\n580: \n581:     if colors.dtype.kind == \"f\":\n582:         # replace any `nan` or `inf` values with zero\n583:         colors[~np.isfinite(colors)] = 0.0\n584: \n585:     if colors.dtype.kind == \"f\" and colors.max() < (1.0 + 1e-8):\n586:         colors = (colors * opaque).round().astype(dtype)\n587:     elif colors.max() <= opaque:\n588:         colors = colors.astype(dtype)\n589:     else:\n590:         raise ValueError(\"colors non-convertible!\")\n591: \n592:     if util.is_shape(colors, (-1, 3)):\n593:         # add an opaque alpha for RGB colors\n594:         colors = np.column_stack((colors, opaque * np.ones(len(colors)))).astype(dtype)\n595:     elif util.is_shape(colors, (3,)):\n596:         # if passed a single RGB color add an alpha\n597:         colors = np.append(colors, opaque).astype(dtype)\n598: \n599:     if not (util.is_shape(colors, (4,)) or util.is_shape(colors, (-1, 4))):\n600:         raise ValueError(\"Colors not of appropriate shape!\")\n601: \n602:     return colors\n603: \n604: \n605: def to_float(colors):\n606:     \"\"\"\n607:     Convert integer colors to 0.0 - 1.0 floating point colors\n608: \n609:     Parameters\n610:     -------------\n611:     colors : (n, d) int\n612:       Integer colors\n613: \n614:     Returns\n615:     -------------\n616:     as_float : (n, d) float\n617:       Float colors 0.0 - 1.0\n618:     \"\"\"\n619: \n620:     # colors as numpy array"
+      }
+    ]
+  },
+  {
+    "path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/venv/lib/python3.11/site-packages/trimesh/exchange/gltf.py",
+    "sha256": "bfc1619a143ac59c76494f1f6331ff1067440a17d7989a6acb2f4073b3d8bf69",
+    "excerpts": [
+      {
+        "first_line": 833,
+        "last_line": 880,
+        "text": "833:         if isinstance(extensions, dict):\n834:             current[\"extensions\"] = extensions\n835: \n836:         if mesh.units not in [None, \"m\", \"meters\", \"meter\"]:\n837:             current[\"extras\"][\"units\"] = str(mesh.units)\n838:     except BaseException:\n839:         log.debug(\"metadata not serializable, dropping!\", exc_info=True)\n840: \n841:     # check to see if we have vertex or face colors\n842:     # or if a TextureVisual has colors included as an attribute\n843:     if mesh.visual.kind in [\"vertex\", \"face\"]:\n844:         vertex_colors = mesh.visual.vertex_colors\n845:     elif (\n846:         hasattr(mesh.visual, \"vertex_attributes\")\n847:         and \"color\" in mesh.visual.vertex_attributes\n848:     ):\n849:         vertex_colors = mesh.visual.vertex_attributes[\"color\"]\n850:     else:\n851:         vertex_colors = None\n852: \n853:     if vertex_colors is not None:\n854:         # convert color data to bytes and append\n855:         acc_color = _data_append(\n856:             acc=tree[\"accessors\"],\n857:             buff=buffer_items,\n858:             blob={\n859:                 \"componentType\": 5121,\n860:                 \"normalized\": True,\n861:                 \"type\": \"VEC4\",\n862:                 \"byteOffset\": 0,\n863:             },\n864:             data=vertex_colors.astype(uint8),\n865:         )\n866: \n867:         # add the reference for vertex color\n868:         current[\"primitives\"][0][\"attributes\"][\"COLOR_0\"] = acc_color\n869: \n870:     if hasattr(mesh.visual, \"material\"):\n871:         # append the material and then set from returned index\n872:         current_material = _append_material(\n873:             mat=mesh.visual.material,\n874:             tree=tree,\n875:             buffer_items=buffer_items,\n876:             mat_hashes=mat_hashes,\n877:             extension_webp=extension_webp,\n878:         )\n879: \n880:         # if mesh has UV coordinates defined export them"
+      }
+    ]
+  }
+]

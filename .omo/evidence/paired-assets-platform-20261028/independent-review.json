@@ -1,0 +1,116 @@
+{
+  "task_id": "paired-assets-platform-20261028",
+  "attempt": 1,
+  "status": "REPORTED",
+  "reviewer": "/root/general_activation_review",
+  "configured_role": "ce-reviewer",
+  "configured_model": "inherited session",
+  "configured_reasoning": "inherited session",
+  "read_only_limit": "제품 읽기 전용은 작업 계약이다. 별도 OS sandbox가 강제됐다고 주장하지 않는다.",
+  "write_set": [".omo/evidence/paired-assets-platform-20261028/independent-review.json"],
+  "verdict": "증거 보존성 medium VC-EVIDENCE-01을 발견했고 root가 최소 수정했다. 수정 소스를 독립 대조했으며 최종 runner 실행 검증은 부모 소유로 남긴다. 검토한 v2 baseline의 닫힌 입력 프로파일·참조·권리·승인 경로에서는 추가 확정 high/medium 제품 결함을 발견하지 못했다. 검토 말미 시작된 별도 SCENE-BG-01 변경에는 이 판정을 적용하지 않는다.",
+  "methodology": {
+    "sources": [
+      ".omo/evidence/paired-assets-platform-20261028/task-contract.json",
+      ".omo/evidence/scene-vertex-colors-20261028/scene_assets.py.before 및 현재 scene_assets.py 전문",
+      ".omo/evidence/scene-vertex-colors-20261028/implementation.diff",
+      "scene_spec.py / scene_project.py / scene-studio.js / scene_renderer.py의 자산 admission 경계",
+      "tests/test_scene_vertex_colors.py / tests/test_scene_vertex_colors_native.py",
+      ".omo/evidence/scene-vertex-colors-20261028/installed-importer.json 및 기록된 실제 pinned importer 파일",
+      "https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes",
+      "설치된 harness-core:feature-verification 및 기존 orchestrate 계약"
+    ],
+    "applied": "closed-profile 형식·숫자·자원·외부 참조 검증 → 저장 profile/원본 SHA/대화 소속/권리 확인 → 승인·renderer 직전 재검사 → 보존된 native 증거와 실제 커버리지 한계 대조",
+    "official_spec_observation": "공식 glTF 2.0 mesh 표는 VEC3/VEC4 COLOR 속성의 float 또는 normalized unsigned byte/short 표현과 base-color 선형 승산 의미를 설명한다. 현재 제품은 여기에 COLOR_0만·불투명 alpha·정적 삼각형·자원 한도 등 더 좁은 조건을 적용한다. 전체 glTF 적합성이나 모든 유효 GLB 지원을 선언하지 않는다.",
+    "official_spec_provenance": {"version": "2.0.1", "observed_commit": "8e798b02d254cea97659a333cfcb20875b62bdd4", "access": "공식 HTML open은 성공했다. find 요청들은 timeout이었고 공식 페이지 검색 결과에서 해당 mesh 표/선형 의미를 확인했다. 이 오류를 검사 통과로 표현하지 않는다."},
+    "non_goals": ["제품·테스트·문서·registry·정책 수정", "모델/키/.env 접근", "새 전체 회귀", "새 native 렌더/Blender 재실행", "상용 Tripo 동등성", "애니메이션·리깅·재질 편집 확대", "전체 음악영상 플랫폼 수용"]
+  },
+  "source_freeze_initial": {
+    "scene_assets.py": "9e35727099e06730ea92d1a15de80ca65fa9ea85eaa4eb547a669dc4a12f4068",
+    "scene_spec.py": "29f3956be9b5fa17d70c614128821c1c801d4a6643a80ce43487892b9fa36c65",
+    "scene_project.py": "2b7d1a3c30dbe5453dcbad983528fae96d6b61179ccc871bdc9c52190adf52e4",
+    "scene-studio.js": "51fdd58f3d7391d26af84c358dcaaa2f8c454aff1a370180c9b9643f7a6524a5",
+    "tests/test_scene_vertex_colors.py": "3b1caf1c63f6ac55ec36265da9cb69905857b30e9a3f90011773207b69678707",
+    "tests/test_scene_vertex_colors_native.py": "254bfe9c67af13544a926d23d43aa6941c43c623a1fd21ef5a9dee01fa7f1edb"
+  },
+  "reviewed_baseline_after_preservation_fix": {
+    "scene_assets.py": "9e35727099e06730ea92d1a15de80ca65fa9ea85eaa4eb547a669dc4a12f4068",
+    "scene_spec.py": "29f3956be9b5fa17d70c614128821c1c801d4a6643a80ce43487892b9fa36c65",
+    "scene_project.py": "2b7d1a3c30dbe5453dcbad983528fae96d6b61179ccc871bdc9c52190adf52e4",
+    "scene-studio.js": "51fdd58f3d7391d26af84c358dcaaa2f8c454aff1a370180c9b9643f7a6524a5",
+    "tests/test_scene_vertex_colors.py": "3b1caf1c63f6ac55ec36265da9cb69905857b30e9a3f90011773207b69678707",
+    "tests/test_scene_vertex_colors_native.py": "925749b9c682eba7599f22aa63210d51a481fbea788b438cd2f0d90a6173d612"
+  },
+  "source_change_during_review": {"owner": "root", "file": "tests/test_scene_vertex_colors_native.py", "reason": "VC-EVIDENCE-01 최소 수정", "preserved_before": ".omo/evidence/paired-assets-platform-20261028/before-native-test-preservation.py", "preserved_before_matches_initial_sha": true, "other_five_files_unchanged": true, "reviewer_source_edits": false},
+  "later_background_change": {
+    "notice": "root가 별도 SCENE-BG-01 구현 worker의 scene_renderer.py/scene_project.py/scene-studio.js 변경 시작을 알렸다. source_change_during_review의 other_five_files_unchanged는 그보다 앞선 보존성 수정 대조 시점의 관측이다.",
+    "observed_at": "2026-10-27T19:36:38.829674+00:00",
+    "current_hashes_at_observation": {
+      "scene_assets.py": "9e35727099e06730ea92d1a15de80ca65fa9ea85eaa4eb547a669dc4a12f4068",
+      "scene_spec.py": "29f3956be9b5fa17d70c614128821c1c801d4a6643a80ce43487892b9fa36c65",
+      "scene_project.py": "215d970a3c82cd69b915544e7146f99fbbb0e5710422aa6ffa218ef38f62a10e",
+      "scene-studio.js": "cc547cf73af55551e358ebd80d27f8552869bd9753d365af9d8f06795e8600fe",
+      "tests/test_scene_vertex_colors.py": "3b1caf1c63f6ac55ec36265da9cb69905857b30e9a3f90011773207b69678707",
+      "tests/test_scene_vertex_colors_native.py": "925749b9c682eba7599f22aa63210d51a481fbea788b438cd2f0d90a6173d612"
+    },
+    "comparison": "scene_project.py와 scene-studio.js의 최신 hash는 검토한 v2 baseline과 달랐다. 최종 일치 assertion의 실패는 이 알려진 버전 차이이며 v2 결함이나 새 BG 변경의 실패로 해석하지 않는다.",
+    "scope": "BG 작업 소스는 이번에 재검토하지 않았다. 최종 freeze 뒤 별도 증분 검토와 관련 실행 증거가 필요하다. 현재 플랫폼 전체나 BG 변경본의 합격을 선언하지 않는다."
+  },
+  "confirmed_findings": [
+    {
+      "id": "VC-EVIDENCE-01",
+      "severity": "medium",
+      "confidence": "high",
+      "location": "tests/test_scene_vertex_colors_native.py의 초기 evidence 기본 경로와 고정 파일명 write_bytes/write_text",
+      "observation": "초기 코드는 SCENE_VERTEX_EVIDENCE가 없을 때 기존 .omo/evidence/scene-vertex-colors-20261028/native를 사용했다. READY인 이후 단독/전체 검사에서 고정된 네 PNG와 receipt.json을 다시 쓸 수 있다. 명시 경로도 기존 내용 유무를 검사하지 않았다.",
+      "reproduction_condition": "필요한 pinned 환경과 실제 local artifact가 존재하여 READY=true이고 SCENE_VERTEX_EVIDENCE를 생략하거나 이미 사용한 경로를 지정한 채 native test를 다시 실행한다. source상 mkdir(exist_ok=True) 뒤 write_bytes/write_text가 기존 관측을 덮어쓴다. 역사 증거를 실제로 덮는 재현은 수행하지 않았다.",
+      "impact": "이전 native 실행의 관측·실패 경계와 현재 실행을 구별할 증거가 변경되거나 일부 실행 결과로 교체될 수 있다. 이번 regression 계약의 새 소유 경로 지정은 해당 실행의 완화책이다.",
+      "minimal_fix_file": "tests/test_scene_vertex_colors_native.py",
+      "root_action": "최초 전문과 finding JSON을 보존한 뒤 기본 출력 경로를 이미 소유한 TemporaryDirectory 하위로 옮기고 명시 출력도 empty 조건을 assert하도록 수정했다.",
+      "independent_correction_check": "before/current diff에서 출력 위치·empty guard만 변경되고 기능·권리·stale approval·PNG SHA assertion은 유지됨을 확인했다. non-empty 경로는 서버/렌더 시작 전에 거절한다.",
+      "status": "SOURCE_CORRECTED_REVIEWED; 최종 runner의 실행 검증은 부모 소유이며 이 검토에서 재실행하지 않음"
+    }
+  ],
+  "additional_unresolved_high_medium_product_findings": [],
+  "source_review": [
+    {"id": "CLOSED-COLOR-PROFILE", "observation": "기존 PROFILE 문자열은 v1로 유지되고 COLOR_0가 있으면 별도의 color-v2 metadata를 반환한다. COLOR_0는 POSITION과 동일 count, vertex buffer 정렬/stride, VEC3/VEC4, float 또는 normalized uint8/16, 유한 범위·불투명 alpha를 요구한다. sparse/URI/extensions·예상 밖 extras는 거절한다. mesh extras는 정확한 processed=true marker만 허용하고 color 없는 v1에는 이 marker도 허용하지 않는다."},
+    {"id": "V1-COMPATIBILITY", "observation": "이전 v1 입력은 원래 프로파일/metadata/원본 SHA를 유지한다. scene_spec은 v1과 v2만 허용하며 저장 profile을 재해석하지 않는다. UI도 두 정확한 문자열만 수용한다. 기존 row metadata에는 원 profile이 저장돼 있고 public/resolve 경로가 이를 사용한다."},
+    {"id": "REF-RIGHTS-BYTES", "observation": "resolve_assets는 project/conversation/id 조회, ref SHA와 저장 SHA, 허용 profile 및 저장 profile 일치, 권리 근거/철회 검사, O_NOFOLLOW·정규 파일·크기·원본 hash와 재검증 metadata 일치를 요구한다. renderer도 원본 복사 직전 raw SHA/profile을 다시 검사한다. 클라이언트 경로나 URI를 자산 참조로 받지 않는다."},
+    {"id": "APPROVAL-STATE", "observation": "변경은 기존 승인·장면 revision·candidate publication 구조를 우회하지 않는다. 신규 non-native HTTP 검사는 혼합 v1/v2 state 표시와 profile 위조의 400 거절을 실제 서버 경로로 확인한다. 보존 native 증거는 새 revision 뒤 옛 grant 거절, 원본 바이트 유지와 source 권리 철회 후 두 PNG download 403을 기록한다."}
+  ],
+  "independent_execution": [
+    {"command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p test_scene_vertex_colors.py -v", "result": "5 tests / 0.622s / OK", "coverage": "6개 color format 표현·원본 SHA, 비정상 형식/숫자/alpha/metadata, v1 exact metadata·extras 거절, SceneSpec profile 위조, 실제 격리 HTTP의 혼합 profile 및 위조 ref 거절", "limit": "HTTP fixture는 합성 renderer configuration을 사용하며 이 실행에서 native Blender 렌더는 하지 않았다."},
+    {"method": "보존 before validator를 별도 runpy namespace로 읽어 동일 자체 fixture를 현재 validator와 비교", "result": "v1 metadata 전체 일치; profile gltf2-static-pbr-v1 유지"},
+    {"method": "보존된 actual-cube.glb / actual-chair.glb 원본 전체 SHA를 확인하고 현재 validator로 metadata를 직접 산출", "result": [{"source": "cube", "sha256": "307b92e8cb61be726d6de12d9059dc54254be956d13bae3f66700b60dccd1cfe", "bytes": 1848244, "profile": "gltf2-static-pbr-color-v2", "vertices": 46223, "raw_triangles": 92304, "old_validator_rejected": true}, {"source": "chair", "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3", "bytes": 1686596, "profile": "gltf2-static-pbr-color-v2", "vertices": 42186, "raw_triangles": 84216, "old_validator_rejected": true}], "limit": "로컬 생성물이 존재함과 현재 admission을 확인한 것이며 새 모델 추론이나 품질 동등성 실험이 아니다."},
+    {"method": "설치된 실제 importer 파일 hash 및 source 경로 확인", "result": "SHA256 522a7d1e0156c96bc86e82774ccb201003e732627dbbac025c03c3c775faf756 일치. mesh.py 459행 BYTE_COLOR 생성과 655행 mesh.validate 확인", "limit": "현재 source 읽기이며 importer/native 재실행이 아니다."},
+    {"method": "기존 native 네 PNG와 receipt.json을 evidence-manifest 전체 SHA256과 대조", "result": "5개 모두 일치. 검토 중 기존 관측을 새 실행으로 덮어쓰지 않았다."}
+  ],
+  "accepted_importer_variations": {
+    "byte_color_quantization": "설치 importer는 BYTE_COLOR로 저장한다. 따라서 float/16-bit source가 그대로 정밀도를 유지한다고 주장하지 않는다.",
+    "worker_observed_linear_color_error": {"cube_max": 0.0041069299566979245, "cube_mean": 0.0011510034620750345, "chair_max": 0.0036620046578201837, "chair_mean": 0.0009170066497503902},
+    "degenerate_faces": "cube 원본의 반복 인덱스 퇴화 삼각형 4개가 importer mesh.validate에서 제거돼 92304→92300으로 기록됐다. chair는 84216을 유지한다. 비퇴화 geometry exact라는 제한된 probe 결과와 전체 geometry 무손실은 다르다.",
+    "classification": "합의된 제한·관측으로 보존한다. 결함을 숨기거나 geometry/색 완전 무손실로 바꾸지 않는다.",
+    "evidence": [".omo/evidence/scene-vertex-colors-20261028/color-probe.json", ".omo/evidence/scene-vertex-colors-20261028/source-topology.json", ".omo/evidence/scene-vertex-colors-20261028/installed-importer.json"],
+    "reviewer_limit": "정밀 오차와 native nondegenerate geometry 비교 수치는 worker 저장 probe 결과이며 이번 검토에서 native로 재측정하지 않았다."
+  },
+  "worker_evidence_read_not_rerun": [
+    {"path": ".omo/evidence/scene-vertex-colors-20261028/final-unit.log", "result": "5 tests / 0.630s / OK"},
+    {"path": ".omo/evidence/scene-vertex-colors-20261028/native-related.log", "result": "64 tests / 160.237s / OK", "limits": "보존성 수정 전 실행이다. 관련·native 커버리지이며 이번 최신 native test 수정 실행이나 새 전체 suite 결과로 소급하지 않는다. 예상 stale 요청의 HTTP409를 전체 실패로 오독하지 않는다."},
+    {"path": ".omo/evidence/scene-vertex-colors-20261028/native/receipt.json", "result": "두 실제 local model artifact, 각 revision1/2 completed PNG·권리 철회403·원본 불변·옛 승인 거절 기록", "limits": "작업자가 실행한 native/API 증거를 읽고 hashes를 검증했다. 직접 브라우저·전체 음악영상 여정 실행은 부모 소유다."},
+    {"path": ".omo/evidence/scene-vertex-colors-20261028/native-attempt-1-diagnosis.json", "result": "네 번째 job의 시험 quota 부족은 source 바이트 포함 reservation 때문이었다. 시험 소유 quota만 8*RESERVATION_BYTES로 조정했고 제품 quota/권한을 약화하지 않았음을 구분한다."}
+  ],
+  "limits": [
+    "이 검토에서 native render·모델 inference·전체 suite·브라우저·오디오/영상 실사용 시험은 실행하지 않았다.",
+    "최초 6-source freeze 중 root가 native test 한 개를 보존성 수정했다. 나머지 다섯 파일은 동일하며 최신 native test 실행의 최종 수락은 부모 runner 결과와 연결해야 한다.",
+    "그 후 별도 SCENE-BG-01 구현으로 scene_project.py/scene-studio.js가 변경됐다. 앞선 동일성 문장은 보존성 수정 대조 시점에 한정하며 현재 플랫폼 전체의 source 일치 주장이 아니다.",
+    "glTF 전체 구현이나 모든 생성 메시·색/재질·광원 품질을 보장하지 않는다. 허용 입력이 항상 resource deadline 안에 렌더된다는 보장도 아니다.",
+    "신뢰된 관리자에 의한 DB/원본/기록 동시 위조나 pinned importer 이외 환경은 이번 검증 범위가 아니다.",
+    "기존 SceneSpec/승인/원본 byte 보존과 실제 실무 품질·상용 Tripo 동등성은 별도다. 3D는 음악영상 플랫폼의 선택 기능이라는 범위를 유지한다.",
+    "REPORTED는 부모의 독립 수락과 실행 중 전체 검사 완료를 대신하지 않는다."
+  ],
+  "reviewer_source_tests_docs_registry_modified": false,
+  "reviewer_native_or_full_suite_run": false,
+  "browser_used": false,
+  "real_provider_calls": 0,
+  "memory_files_used": false
+}

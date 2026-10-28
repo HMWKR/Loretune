@@ -1,0 +1,794 @@
+{
+  "schema": "native-music-workflow-benchmark/1",
+  "task_id": "music-native-workflow-benchmark-20261028",
+  "attempt": 2,
+  "status": "RUNNING",
+  "actual_provider_calls": 0,
+  "prior_attempt": "../attempt1-report.json",
+  "private_data_access": false,
+  "credential_access": false,
+  "methodology": "Deterministic real HTTP actions, paired native outputs and artifact provenance",
+  "scope": "30-second self-authored audio, 12 approved shot IDs; partial original07 dataset only. Two native motion source clips reused through supported API. Optional image is a self-authored test pattern, not an artist photo or AI quality benchmark.",
+  "source_before": {
+    "app.py": "a32b301cb489378d9e890414fa36ce17875c053af255216ee814898de0c0cab5",
+    "editing.py": "3e7b20c364a7a558da15da9d0979a46853eaa101216a40fd665ab73faa9af3c8",
+    "renderer.py": "2032babcdac01337e77e5fce9bef38c232e1c364daa465bed7fba26639708525",
+    "motion_scene.py": "aec910b146d0e04d53c2e5560d312adf16c5985875c66afbb937928acc8529a3",
+    "motion_renderer.py": "a83ccb5064d512d9350b37fb3842e2b8349fb1cf826d51c79fdb2c91c4f384e0",
+    "backup.py": "8d6c35fa5a0e39235a461f0f3fab622fbdd1d03c25cb76a811703624a0d790f6",
+    "loretune.py": "b59f5404537235e0c5dd00e9bbffd17aec834a22805a6288267c0964da5fc0d9",
+    "tests/test_motion.py": "7c6c7bcfda83b8d55d357f6d2b1a8e4024fdad692d3a2a4671f66a72d796ad38"
+  },
+  "requests": [
+    {
+      "action": "declare_take_rights",
+      "request_id": "c7229f993182484d87572141adaf9592",
+      "body_sha256": "0d4d7a5dea4de15f0e7b806e2825d2b8f1ad69e11506da745d6b041492561abf",
+      "status": 200,
+      "elapsed_seconds": 0.001479,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "2a8a182b02a84bf594a1c145cc7569ed",
+      "body_sha256": "d6d8bcedd328e5ce21194de7ccf40566ce77504bf0e3cdeda85a423a86837eca",
+      "status": 200,
+      "elapsed_seconds": 0.001369,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "9ddb424e60d6432a8c296f90a16f3c8e",
+      "body_sha256": "4a7b6c5e46e8738b8c29a94ed6d7936948a82eb0c00df8513156275ae6e83ca0",
+      "status": 200,
+      "elapsed_seconds": 0.001305,
+      "error": null
+    },
+    {
+      "action": "motion_propose",
+      "request_id": "074baeecb24f46fca84878ad56b19c85",
+      "body_sha256": "df099ac18e96cfc2b53a9851aded57628664a557d544a2bcc4d3983d5a1fe02c",
+      "status": 200,
+      "elapsed_seconds": 0.001648,
+      "error": null
+    },
+    {
+      "action": "motion_review",
+      "request_id": "091a89deb0a444f3b63c9a092d63e2fa",
+      "body_sha256": "36ad208973deda814e972688354e95eb406d4b0f5bdd39903cac4436967846a2",
+      "status": 200,
+      "elapsed_seconds": 0.079575,
+      "error": null
+    },
+    {
+      "action": "motion_render",
+      "request_id": "fc2bc28599bf4f4a92d2acb6b606a594",
+      "body_sha256": "d3781800786d0116ccaf5ce8d58eb7acfb3f59f3bdd1dccec59eecb05c034379",
+      "status": 200,
+      "elapsed_seconds": 0.027781,
+      "error": null
+    },
+    {
+      "action": "declare_take_rights",
+      "request_id": "019d5d918e4e4588bc09bce754fd32bd",
+      "body_sha256": "91e1754bab772e709b23a0b3473129b11d2cfe3ac1c8385a0a8e6d544d39d5da",
+      "status": 200,
+      "elapsed_seconds": 0.001827,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "cf092c156e2b455fbee741599131da46",
+      "body_sha256": "f818ac19e2ef81b00d3dbb2fc8ca862e751cb69002f85a7e23672c57ded20406",
+      "status": 200,
+      "elapsed_seconds": 0.001523,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "d3574ad910a144a18343c8b26109808e",
+      "body_sha256": "32e2a2dab2368a1d02b6d8ab8824c18c27c0f835d647a88a70cde3ffa9548d61",
+      "status": 200,
+      "elapsed_seconds": 0.001482,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "a534d0d588dd46c887ea45cf83e59485",
+      "body_sha256": "7955748fdd75723b49813e78e65367f53113214ecc337cafdac7f2ac241bc943",
+      "status": 200,
+      "elapsed_seconds": 0.001991,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "2f2e067725914c908f69c98af8d76a68",
+      "body_sha256": "a3b7e1448662206147cc8b9b969235ffbe749ed032eb7c73f22af49faf4f987a",
+      "status": 200,
+      "elapsed_seconds": 0.001479,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "e3ae70966a8f472aa7277938fb49c05e",
+      "body_sha256": "db88928b50e1ce0db34fc4b6fa6ccef41151533081f28103281a80888a2430e2",
+      "status": 200,
+      "elapsed_seconds": 0.001489,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "076f7434cbef41248c363a12794554cf",
+      "body_sha256": "46d30b8a9fe38e4067b8abc5c943ccc8ebb505cfe5243de59d101e3b9516c0df",
+      "status": 200,
+      "elapsed_seconds": 0.001648,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "5b265bf81e0647abbf11f1dc56be71f8",
+      "body_sha256": "28e55de556f22e5d6b534e295795218b831040c1125b3752f0c9367bd77570d2",
+      "status": 200,
+      "elapsed_seconds": 0.001497,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "3398509724d745aab70409bde62f1ba1",
+      "body_sha256": "bb70680ad145bbee00152a603ce7003d3f47144c3b55b4146b89ff8b731acd6f",
+      "status": 200,
+      "elapsed_seconds": 0.001521,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "aec2e695d8ac4179a4111a74870c67e0",
+      "body_sha256": "e17abbd750bffda320fc95d169f3c36b271a485a46d02b8d1dd844e17f659172",
+      "status": 200,
+      "elapsed_seconds": 0.001652,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "2fd74b65dfae462989a47e6462d5bcfd",
+      "body_sha256": "b031eefa3a29c11d6117f858e0f1336b30e9ed125c8de1ba84bc0cd802e23252",
+      "status": 200,
+      "elapsed_seconds": 0.001879,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "cafc7a6239ff4bc68c7c7ac8e8246f65",
+      "body_sha256": "336f47bc83b5b944c27762e29e3a9479d05cbc251525b0ed6e535502e52519c9",
+      "status": 200,
+      "elapsed_seconds": 0.001541,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "64acd6421c714d428e8ca74c7843afc8",
+      "body_sha256": "359ac06fafcb5c5cf6ffad7c715e266fde9ecb0f4a5185a85f9876992cfcf845",
+      "status": 200,
+      "elapsed_seconds": 0.001708,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "8359311d48ab4d4191b4e64772a48b61",
+      "body_sha256": "3dc0ac236c78f6751bbccdf97fe452391c7ebd4cb2c98d7aade6bb4c07e17b48",
+      "status": 200,
+      "elapsed_seconds": 0.001565,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "d83b4ff3679443f7ac1a255d1444e8c3",
+      "body_sha256": "b171610152fbfcbf1022a1157b8ef80436bfce6bc01458091b8068de871a8b35",
+      "status": 200,
+      "elapsed_seconds": 0.002368,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "b1d4a73091604785b6eb8d7ea011ae13",
+      "body_sha256": "fd0e84000c56f46cf6e339bd80e952d2e8b2cf60aa461c1a7765fd8a7422cd0c",
+      "status": 200,
+      "elapsed_seconds": 0.002002,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "50ad38b45ad24e81ad1c5c7120bdc06d",
+      "body_sha256": "fef1cf64b609ed8a826ba0dfc58c0779c6c5ee685bc2dcf7390f3bee50039963",
+      "status": 200,
+      "elapsed_seconds": 0.001776,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "4a920e8b3d3b49f09400cb1d74ff5744",
+      "body_sha256": "fd7ba98a87aecea12b2e8a147ad0a65a6a484b37951f80639af972ed348eb090",
+      "status": 200,
+      "elapsed_seconds": 0.00172,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "322c1f9d72e24925a99ff019e5e86d96",
+      "body_sha256": "949d5d42d7e6cf2aa54fd0e988d1382cb1dfa6cd4c6f68e2ef9863f9bc159d57",
+      "status": 200,
+      "elapsed_seconds": 0.001712,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "e47088114f864e2996d1c7ff0f608904",
+      "body_sha256": "5d0bfac57a36bc7814277b9069925e67019c01db93d5c15e2ce19d646af851b1",
+      "status": 200,
+      "elapsed_seconds": 0.001594,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "8f4283dc01964cb6ba74a1eff3cc7c1c",
+      "body_sha256": "56098e1428fc186a21d2ea2f8099d4354f193ac06def2cf60e4809a47e3f8205",
+      "status": 200,
+      "elapsed_seconds": 0.00153,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "7f9b7c30ff5a40d4abd3e9a914a43a80",
+      "body_sha256": "b5c3faa611a0cf03ea80a4fc08bbe1ca96ade57a44d2012d3c510203549756d1",
+      "status": 200,
+      "elapsed_seconds": 0.001727,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "a4a6c52957394865a63d2beeb46af525",
+      "body_sha256": "726f28e71b6e69a1889b2dfbf56e9e83b2e4c728cfa73b370ea71e50f9d13b2d",
+      "status": 200,
+      "elapsed_seconds": 0.001572,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "266e76bf510f4d848adadf504006c625",
+      "body_sha256": "2d62b670ffc7f2565e3ef6aefc9e33073ec3123fe15ff38f387b11aeb743dd12",
+      "status": 200,
+      "elapsed_seconds": 0.001536,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "c45cc81675c84071a43da05a1dd35703",
+      "body_sha256": "d34e3dde6b893b13a421cc8d240c2d39dfe1879cbcedaa8d008ce70f6eff44fe",
+      "status": 200,
+      "elapsed_seconds": 0.001718,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "79175937013043e0a5786fec8cc26bff",
+      "body_sha256": "dab093ecbaa9d2ce0902be8b6dc33b86fa62f5b496190efc56e09c8f59496792",
+      "status": 200,
+      "elapsed_seconds": 0.001583,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "dc73e8dc691c487db75ee2d485b1bb2b",
+      "body_sha256": "d5641132fb131b155c1e48ff11c285ded19feec15157f9b9e522a918069f0009",
+      "status": 200,
+      "elapsed_seconds": 0.001517,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "bd76b22f9e20483ba44ebb561f225e50",
+      "body_sha256": "a5564cb886226911eaafd6d9b97be5764c1186de3a8fcc843808134ca8cf7d54",
+      "status": 200,
+      "elapsed_seconds": 0.001722,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "073b359d6b1c43c0a1ad982414291a8c",
+      "body_sha256": "5c56a5079ee2516b02df65f58366852227b6231b9bfb7ce9cb347c311c11c32e",
+      "status": 200,
+      "elapsed_seconds": 0.001639,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "d4aabe68f03f4ea9bad5fd8021c6a93c",
+      "body_sha256": "4737390ab2a40a22d9baaafeb1199bf76fb30fa1caf552c83945eaa39721789e",
+      "status": 200,
+      "elapsed_seconds": 0.001578,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "2a89243c3fcf457e9a79dc5856f03b05",
+      "body_sha256": "b5a18fded4a2d5e1d9303cebf0582fa09fa891483c2b53f4136f40ce10e7851b",
+      "status": 200,
+      "elapsed_seconds": 0.001801,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "289eca4d3a064b2b934e7a4ab2f76f40",
+      "body_sha256": "f677f2cef1712a329a323679fdc2d62117b8d8b8b4fc1de94574e5630659c05b",
+      "status": 200,
+      "elapsed_seconds": 0.001843,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "b2b30b21fddf49b099238eab91bca35d",
+      "body_sha256": "8e077ad25cfa8cf5d98cb5a718e23a410192ecde0d3633bd44bcce87b2371021",
+      "status": 200,
+      "elapsed_seconds": 0.001632,
+      "error": null
+    },
+    {
+      "action": "timeline",
+      "request_id": "c8692a64e571447390a5237c6a5098a2",
+      "body_sha256": "1fd0dc961b0f1dc75bded3713f67d38532614516ef0a2bbf911569d7a0d1fafd",
+      "status": 200,
+      "elapsed_seconds": 0.00185,
+      "error": null
+    },
+    {
+      "action": "approve_timeline",
+      "request_id": "c9eba2e2bb8f475283a54cd2e6c8036a",
+      "body_sha256": "8f58a7040181e517c3cdbeb060312e9f125d2c8ca6badd8fe907ea1f6871f803",
+      "status": 200,
+      "elapsed_seconds": 0.004296,
+      "error": null
+    },
+    {
+      "action": "render_job",
+      "request_id": "327e93306d6e438ea28333d1ded1709d",
+      "body_sha256": "21aebc73148ec5d12db8907cf220a9be5f9a6eb6f7dea178dbfdd2aea81d82f9",
+      "status": 200,
+      "elapsed_seconds": 0.004658,
+      "error": null
+    }
+  ],
+  "checks": [
+    {
+      "name": "resume exact prior synthetic workspace",
+      "passed": true,
+      "details": {
+        "prior_attempt": 1,
+        "owned_root": "/tmp/loretune-native-music-benchmark-yl8hnchu"
+      }
+    },
+    {
+      "name": "prior audio and12 shots preserved",
+      "passed": true,
+      "details": {
+        "shots": 12,
+        "audio_sha256": "33549324278f7b62419a30464a67443d819b23a7c58c0d4e4e6056e516fab2f2"
+      }
+    },
+    {
+      "name": "reuse observed completed native job without replay",
+      "passed": true,
+      "details": {
+        "job": "9b97b4a842c84b7eaf20bd947d12230d",
+        "status": "completed"
+      }
+    },
+    {
+      "name": "job completed d6bf4673f4334104b22a4bc15090e8fd",
+      "passed": true,
+      "details": {
+        "id": "d6bf4673f4334104b22a4bc15090e8fd",
+        "kind": "local-motion",
+        "status": "completed",
+        "elapsed_seconds": 8.232964,
+        "error": null,
+        "verified": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 24,
+          "frames": 72,
+          "duration": 3.0,
+          "kind": "local-motion-candidate",
+          "final_output_approved": false
+        }
+      }
+    },
+    {
+      "name": "job completed 8dd6d3f50b0e4307a4d345df8750cbdf",
+      "passed": true,
+      "details": {
+        "id": "8dd6d3f50b0e4307a4d345df8750cbdf",
+        "kind": "final-render",
+        "status": "completed",
+        "elapsed_seconds": 4.146727,
+        "error": null,
+        "verified": {
+          "duration": 30.0,
+          "width": 1920,
+          "height": 1080,
+          "frame_rate": "24/1",
+          "audio_sample_rate": "48000",
+          "frame_timing": {
+            "fps": 24,
+            "policy": "nearest-internal-ceil-final",
+            "requested_duration": 30.0,
+            "duration": 30.0,
+            "clips": [
+              {
+                "start_frame": 0,
+                "end_frame": 60,
+                "frames": 60,
+                "start": 0.0,
+                "end": 2.5
+              },
+              {
+                "start_frame": 60,
+                "end_frame": 120,
+                "frames": 60,
+                "start": 2.5,
+                "end": 5.0
+              },
+              {
+                "start_frame": 120,
+                "end_frame": 180,
+                "frames": 60,
+                "start": 5.0,
+                "end": 7.5
+              },
+              {
+                "start_frame": 180,
+                "end_frame": 240,
+                "frames": 60,
+                "start": 7.5,
+                "end": 10.0
+              },
+              {
+                "start_frame": 240,
+                "end_frame": 300,
+                "frames": 60,
+                "start": 10.0,
+                "end": 12.5
+              },
+              {
+                "start_frame": 300,
+                "end_frame": 360,
+                "frames": 60,
+                "start": 12.5,
+                "end": 15.0
+              },
+              {
+                "start_frame": 360,
+                "end_frame": 420,
+                "frames": 60,
+                "start": 15.0,
+                "end": 17.5
+              },
+              {
+                "start_frame": 420,
+                "end_frame": 480,
+                "frames": 60,
+                "start": 17.5,
+                "end": 20.0
+              },
+              {
+                "start_frame": 480,
+                "end_frame": 540,
+                "frames": 60,
+                "start": 20.0,
+                "end": 22.5
+              },
+              {
+                "start_frame": 540,
+                "end_frame": 600,
+                "frames": 60,
+                "start": 22.5,
+                "end": 25.0
+              },
+              {
+                "start_frame": 600,
+                "end_frame": 660,
+                "frames": 60,
+                "start": 25.0,
+                "end": 27.5
+              },
+              {
+                "start_frame": 660,
+                "end_frame": 720,
+                "frames": 60,
+                "start": 27.5,
+                "end": 30.0
+              }
+            ]
+          },
+          "streams": [
+            "video",
+            "audio",
+            "subtitle"
+          ],
+          "verified_at": 1793124495.661706
+        }
+      }
+    },
+    {
+      "name": "before.mp4 download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 489982
+      }
+    },
+    {
+      "name": "before MP4 hash",
+      "passed": true,
+      "details": {
+        "file": "before.mp4",
+        "sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f",
+        "bytes": 489982,
+        "integrity": null
+      }
+    },
+    {
+      "name": "before.srt download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 120
+      }
+    },
+    {
+      "name": "before.json download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 20124
+      }
+    },
+    {
+      "name": "before 30s1080p24",
+      "passed": true,
+      "details": {
+        "width": 1920,
+        "height": 1080,
+        "rate": "24/1",
+        "duration": "30.000000"
+      }
+    },
+    {
+      "name": "before actual audio",
+      "passed": true,
+      "details": {
+        "samples": 1440000,
+        "frequency_hz": 439.9642857142857,
+        "rms": 5653.165247182997
+      }
+    },
+    {
+      "name": "before12 ordered native cuts",
+      "passed": false,
+      "details": [
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ]
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "d6bf4673f4334104b22a4bc15090e8fd",
+      "kind": "local-motion",
+      "status": "completed",
+      "elapsed_seconds": 8.232964,
+      "error": null,
+      "verified": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 24,
+        "frames": 72,
+        "duration": 3.0,
+        "kind": "local-motion-candidate",
+        "final_output_approved": false
+      }
+    },
+    {
+      "id": "8dd6d3f50b0e4307a4d345df8750cbdf",
+      "kind": "final-render",
+      "status": "completed",
+      "elapsed_seconds": 4.146727,
+      "error": null,
+      "verified": {
+        "duration": 30.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "24/1",
+        "audio_sample_rate": "48000",
+        "frame_timing": {
+          "fps": 24,
+          "policy": "nearest-internal-ceil-final",
+          "requested_duration": 30.0,
+          "duration": 30.0,
+          "clips": [
+            {
+              "start_frame": 0,
+              "end_frame": 60,
+              "frames": 60,
+              "start": 0.0,
+              "end": 2.5
+            },
+            {
+              "start_frame": 60,
+              "end_frame": 120,
+              "frames": 60,
+              "start": 2.5,
+              "end": 5.0
+            },
+            {
+              "start_frame": 120,
+              "end_frame": 180,
+              "frames": 60,
+              "start": 5.0,
+              "end": 7.5
+            },
+            {
+              "start_frame": 180,
+              "end_frame": 240,
+              "frames": 60,
+              "start": 7.5,
+              "end": 10.0
+            },
+            {
+              "start_frame": 240,
+              "end_frame": 300,
+              "frames": 60,
+              "start": 10.0,
+              "end": 12.5
+            },
+            {
+              "start_frame": 300,
+              "end_frame": 360,
+              "frames": 60,
+              "start": 12.5,
+              "end": 15.0
+            },
+            {
+              "start_frame": 360,
+              "end_frame": 420,
+              "frames": 60,
+              "start": 15.0,
+              "end": 17.5
+            },
+            {
+              "start_frame": 420,
+              "end_frame": 480,
+              "frames": 60,
+              "start": 17.5,
+              "end": 20.0
+            },
+            {
+              "start_frame": 480,
+              "end_frame": 540,
+              "frames": 60,
+              "start": 20.0,
+              "end": 22.5
+            },
+            {
+              "start_frame": 540,
+              "end_frame": 600,
+              "frames": 60,
+              "start": 22.5,
+              "end": 25.0
+            },
+            {
+              "start_frame": 600,
+              "end_frame": 660,
+              "frames": 60,
+              "start": 25.0,
+              "end": 27.5
+            },
+            {
+              "start_frame": 660,
+              "end_frame": 720,
+              "frames": 60,
+              "start": 27.5,
+              "end": 30.0
+            }
+          ]
+        },
+        "streams": [
+          "video",
+          "audio",
+          "subtitle"
+        ],
+        "verified_at": 1793124495.661706
+      }
+    }
+  ],
+  "owned_temporary_root": "/tmp/loretune-native-music-benchmark-yl8hnchu",
+  "started_at_unix": 1793124482.368093,
+  "url": "http://127.0.0.1:62820",
+  "before": {
+    ".mp4": {
+      "file": "before.mp4",
+      "sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f",
+      "bytes": 489982,
+      "integrity": null
+    },
+    ".srt": {
+      "file": "before.srt",
+      "sha256": "2ec958e0d4faa068b703deb14bfd0c223bc2ce708dab2a880a5b479e78fa9ee2",
+      "bytes": 120,
+      "integrity": null
+    },
+    ".json": {
+      "file": "before.json",
+      "sha256": "b6d81ac1bc7550310f81317fc370db8b5ce6f0f6d70d516153f647ee5d047db9",
+      "bytes": 20124,
+      "integrity": null
+    }
+  }
+}

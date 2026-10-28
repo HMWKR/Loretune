@@ -1,0 +1,349 @@
+[
+  {
+    "case": "clear-then-different",
+    "status": "pass",
+    "submitted": {
+      "action": "comment",
+      "data": {
+        "song": "A",
+        "at": 1.25,
+        "text": "original submitted"
+      },
+      "revision": 1,
+      "request_id": "synthetic-1"
+    },
+    "expected": {
+      "at": "2.5",
+      "text": "new rewritten draft"
+    },
+    "field": {
+      "at": "2.5",
+      "text": "new rewritten draft"
+    },
+    "draftA": {
+      "at": "2.5",
+      "text": "new rewritten draft"
+    },
+    "draftB": null,
+    "pending": null
+  },
+  {
+    "case": "clear-then-same",
+    "status": "pass",
+    "submitted": {
+      "action": "comment",
+      "data": {
+        "song": "A",
+        "at": 1.25,
+        "text": "original submitted"
+      },
+      "revision": 1,
+      "request_id": "synthetic-1"
+    },
+    "expected": {
+      "at": "1.25",
+      "text": "original submitted"
+    },
+    "field": {
+      "at": "1.25",
+      "text": "original submitted"
+    },
+    "draftA": {
+      "at": "1.25",
+      "text": "original submitted"
+    },
+    "draftB": null,
+    "pending": null
+  },
+  {
+    "case": "clear-only",
+    "status": "pass",
+    "submitted": {
+      "action": "comment",
+      "data": {
+        "song": "A",
+        "at": 1.25,
+        "text": "original submitted"
+      },
+      "revision": 1,
+      "request_id": "synthetic-1"
+    },
+    "expected": {
+      "at": "0",
+      "text": ""
+    },
+    "field": {
+      "at": "0",
+      "text": ""
+    },
+    "draftA": {
+      "at": "0",
+      "text": ""
+    },
+    "draftB": null,
+    "pending": null
+  },
+  {
+    "case": "project-switch-preserves-existing-B-draft",
+    "status": "pass",
+    "expected": {
+      "at": "8",
+      "text": "B existing unsent"
+    },
+    "field": {
+      "at": "8",
+      "text": "B existing unsent"
+    },
+    "draftA": null,
+    "draftB": {
+      "at": "8",
+      "text": "B existing unsent"
+    },
+    "pending": null
+  },
+  {
+    "case": "project-switch-preserves-new-B-draft",
+    "status": "pass",
+    "expected": {
+      "at": "2",
+      "text": "B new unsent"
+    },
+    "field": {
+      "at": "2",
+      "text": "B new unsent"
+    },
+    "draftA": null,
+    "draftB": {
+      "at": "2",
+      "text": "B new unsent"
+    },
+    "pending": null
+  },
+  {
+    "case": "project-return-preserves-new-A-and-B",
+    "status": "pass",
+    "expected": {
+      "at": "3",
+      "text": "A returned new unsent"
+    },
+    "field": {
+      "at": "3",
+      "text": "A returned new unsent"
+    },
+    "draftA": {
+      "at": "3",
+      "text": "A returned new unsent"
+    },
+    "draftB": {
+      "at": "2",
+      "text": "B other unsent"
+    },
+    "pending": null
+  },
+  {
+    "case": "project-return-clears-only-unchanged-submitted-A",
+    "status": "pass",
+    "field": {
+      "at": "0",
+      "text": ""
+    },
+    "draftA": null,
+    "draftB": {
+      "at": "2",
+      "text": "B other unsent"
+    },
+    "pending": null
+  },
+  {
+    "case": "shot-switch-preserves-new-draft",
+    "status": "pass",
+    "expected": {
+      "at": "3",
+      "text": "new shot-context draft"
+    },
+    "field": {
+      "at": "3",
+      "text": "new shot-context draft"
+    },
+    "draftA": {
+      "at": "3",
+      "text": "new shot-context draft"
+    },
+    "draftB": null,
+    "pending": null
+  },
+  {
+    "case": "shot-switch-does-not-reset-different-context-form",
+    "status": "pass",
+    "expected": {
+      "at": "1.25",
+      "text": "original submitted"
+    },
+    "field": {
+      "at": "1.25",
+      "text": "original submitted"
+    },
+    "draftA": null,
+    "draftB": null,
+    "pending": null,
+    "note": "No new edit: old submitted storage may be cleared; form reset must be scoped."
+  },
+  {
+    "case": "shot-return-identical-value-is-still-new-edit",
+    "status": "pass",
+    "expected": {
+      "at": "1.25",
+      "text": "original submitted"
+    },
+    "field": {
+      "at": "1.25",
+      "text": "original submitted"
+    },
+    "draftA": {
+      "at": "1.25",
+      "text": "original submitted"
+    },
+    "draftB": null,
+    "pending": null
+  },
+  {
+    "case": "server-rejection-preserves-new-draft",
+    "status": "pass",
+    "expected": {
+      "at": "7",
+      "text": "new draft survives server-rejection"
+    },
+    "field": {
+      "at": "7",
+      "text": "new draft survives server-rejection"
+    },
+    "draftA": {
+      "at": "7",
+      "text": "new draft survives server-rejection"
+    },
+    "draftB": null,
+    "pending": null
+  },
+  {
+    "case": "lost-response-preserves-new-draft",
+    "status": "pass",
+    "expected": {
+      "at": "7",
+      "text": "new draft survives lost-response"
+    },
+    "field": {
+      "at": "7",
+      "text": "new draft survives lost-response"
+    },
+    "draftA": {
+      "at": "7",
+      "text": "new draft survives lost-response"
+    },
+    "draftB": null,
+    "pending": "synthetic-1"
+  },
+  {
+    "case": "refresh-failure-preserves-new-draft",
+    "status": "pass",
+    "expected": {
+      "at": "7",
+      "text": "new draft survives refresh-failure"
+    },
+    "field": {
+      "at": "7",
+      "text": "new draft survives refresh-failure"
+    },
+    "draftA": {
+      "at": "7",
+      "text": "new draft survives refresh-failure"
+    },
+    "draftB": null,
+    "pending": null
+  },
+  {
+    "case": "workspace-switch-preserves-new-draft",
+    "status": "pass",
+    "expected": {
+      "at": "5",
+      "text": "other workspace unsent"
+    },
+    "field": {
+      "at": "5",
+      "text": "other workspace unsent"
+    },
+    "otherWorkspaceDraft": {
+      "at": "5",
+      "text": "other workspace unsent"
+    }
+  },
+  {
+    "case": "repeated-saves-and-duplicate-click-preserve-newer-drafts",
+    "status": "pass",
+    "duplicateHeld": true,
+    "firstKept": true,
+    "secondKept": true,
+    "requests": [
+      {
+        "action": "comment",
+        "data": {
+          "song": "A",
+          "at": 1.25,
+          "text": "original submitted"
+        },
+        "revision": 1,
+        "request_id": "synthetic-1"
+      },
+      {
+        "action": "comment",
+        "data": {
+          "song": "A",
+          "at": 2,
+          "text": "second draft"
+        },
+        "revision": 1,
+        "request_id": "synthetic-2"
+      },
+      {
+        "action": "comment",
+        "data": {
+          "song": "A",
+          "at": 3,
+          "text": "third draft"
+        },
+        "revision": 1,
+        "request_id": "synthetic-3"
+      }
+    ],
+    "field": {
+      "at": "0",
+      "text": ""
+    },
+    "draftA": null,
+    "draftB": null,
+    "pending": null
+  },
+  {
+    "case": "failed-save-then-success-preserves-later-edit",
+    "status": "pass",
+    "retried": {
+      "action": "comment",
+      "data": {
+        "song": "A",
+        "at": 2,
+        "text": "retry draft"
+      },
+      "revision": 1,
+      "request_id": "synthetic-2"
+    },
+    "field": {
+      "at": "3",
+      "text": "after retry unsent"
+    },
+    "draftA": {
+      "at": "3",
+      "text": "after retry unsent"
+    },
+    "draftB": null,
+    "pending": null
+  }
+]

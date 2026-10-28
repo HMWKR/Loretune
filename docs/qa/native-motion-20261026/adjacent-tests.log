@@ -1,0 +1,78 @@
+test_duplicate_tool_call_does_not_duplicate_proposal (test_local_creation_tools.LocalToolsTest.test_duplicate_tool_call_does_not_duplicate_proposal) ... ok
+test_fake_chat_runtime_roundtrip_uses_tools_not_prose_execution (test_local_creation_tools.LocalToolsTest.test_fake_chat_runtime_roundtrip_uses_tools_not_prose_execution) ... ok
+test_memory_duplicate_identity_preservation_and_foreign_render_job_isolation (test_local_creation_tools.LocalToolsTest.test_memory_duplicate_identity_preservation_and_foreign_render_job_isolation) ... ok
+test_memory_exact_provenance_human_application_and_global_canon_unchanged (test_local_creation_tools.LocalToolsTest.test_memory_exact_provenance_human_application_and_global_canon_unchanged) ... ok
+test_memory_missing_source_stale_version_foreign_identity_and_actor_injection_blocked (test_local_creation_tools.LocalToolsTest.test_memory_missing_source_stale_version_foreign_identity_and_actor_injection_blocked) ... ok
+test_render_approval_stale_revoked_rights_and_cancellation_keep_existing_jobs (test_local_creation_tools.LocalToolsTest.test_render_approval_stale_revoked_rights_and_cancellation_keep_existing_jobs) ... ok
+test_render_real_audio_caption_output_receipt_reuse_and_final_approval_separate (test_local_creation_tools.LocalToolsTest.test_render_real_audio_caption_output_receipt_reuse_and_final_approval_separate) ... ok
+test_render_snapshot_preserves_approved_audio_captions_while_editor_advances (test_local_creation_tools.LocalToolsTest.test_render_snapshot_preserves_approved_audio_captions_while_editor_advances) ... ok
+test_render_transaction_rolls_back_estimate_when_existing_service_rejects (test_local_creation_tools.LocalToolsTest.test_render_transaction_rolls_back_estimate_when_existing_service_rejects) ... ok
+test_stale_edit_and_foreign_proposal_rejected_without_mutation (test_local_creation_tools.LocalToolsTest.test_stale_edit_and_foreign_proposal_rejected_without_mutation) ... ok
+test_three_protocols_propose_without_applying_and_human_apply_preserves_other_inputs (test_local_creation_tools.LocalToolsTest.test_three_protocols_propose_without_applying_and_human_apply_preserves_other_inputs) ... ok
+test_count_over_limit_keeps_history_and_never_calls_messages (test_chat_request_history.RequestHistoryTest.test_count_over_limit_keeps_history_and_never_calls_messages) ... ok
+test_failed_cancelled_and_unreviewed_answers_never_become_canonical (test_chat_request_history.RequestHistoryTest.test_failed_cancelled_and_unreviewed_answers_never_become_canonical) ... ok
+test_handoff_is_frozen_when_persisted_history_changes (test_chat_request_history.RequestHistoryTest.test_handoff_is_frozen_when_persisted_history_changes) ... ok
+test_original_nine_turn_counterexample_and_store_resume (test_chat_request_history.RequestHistoryTest.test_original_nine_turn_counterexample_and_store_resume) ... ok
+test_project_isolation_and_explicit_order_after_record_update (test_chat_request_history.RequestHistoryTest.test_project_isolation_and_explicit_order_after_record_update) ... ok
+test_quoted_conditional_corrected_and_retracted_requests_are_evidence_not_canon (test_chat_request_history.RequestHistoryTest.test_quoted_conditional_corrected_and_retracted_requests_are_evidence_not_canon) ... ok
+test_same_project_independent_session_still_not_advertised (test_chat_request_history.RequestHistoryTest.test_same_project_independent_session_still_not_advertised) ... ok
+test_count_network_failure_is_not_messages_submission_and_does_not_retry (test_chat_preflight.ChatPreflightTest.test_count_network_failure_is_not_messages_submission_and_does_not_retry) ... ok
+test_exact_messages_limit_sends_exact_validated_payload (test_chat_preflight.ChatPreflightTest.test_exact_messages_limit_sends_exact_validated_payload) ... FAIL
+test_later_round_local_rejection_preserves_completed_usage_and_tool_result (test_chat_preflight.ChatPreflightTest.test_later_round_local_rejection_preserves_completed_usage_and_tool_result) ... ok
+test_messages_network_failure_keeps_unknown_reservation_and_duplicate_guard (test_chat_preflight.ChatPreflightTest.test_messages_network_failure_keeps_unknown_reservation_and_duplicate_guard) ... ok
+test_one_byte_above_messages_limit_never_count_or_messages (test_chat_preflight.ChatPreflightTest.test_one_byte_above_messages_limit_never_count_or_messages) ... FAIL
+test_original_count_fits_messages_does_not_releases_without_transmission (test_chat_preflight.ChatPreflightTest.test_original_count_fits_messages_does_not_releases_without_transmission) ... FAIL
+test_preflight_releases_only_this_reservation (test_chat_preflight.ChatPreflightTest.test_preflight_releases_only_this_reservation) ... FAIL
+
+======================================================================
+FAIL: test_exact_messages_limit_sends_exact_validated_payload (test_chat_preflight.ChatPreflightTest.test_exact_messages_limit_sends_exact_validated_payload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 96, in test_exact_messages_limit_sends_exact_validated_payload
+    self.setup_adapter(); _, body = self.boundary_turn(65516)
+                                    ~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 74, in boundary_turn
+    self.assertTrue(1 <= padding <= 2000, padding)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : -3119
+
+======================================================================
+FAIL: test_one_byte_above_messages_limit_never_count_or_messages (test_chat_preflight.ChatPreflightTest.test_one_byte_above_messages_limit_never_count_or_messages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 106, in test_one_byte_above_messages_limit_never_count_or_messages
+    self.setup_adapter(); self.boundary_turn(65517); self.runtime.process_next()
+                          ~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 74, in boundary_turn
+    self.assertTrue(1 <= padding <= 2000, padding)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : -3118
+
+======================================================================
+FAIL: test_original_count_fits_messages_does_not_releases_without_transmission (test_chat_preflight.ChatPreflightTest.test_original_count_fits_messages_does_not_releases_without_transmission)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 85, in test_original_count_fits_messages_does_not_releases_without_transmission
+    self.setup_adapter(); identifier, body = self.boundary_turn()
+                                             ~~~~~~~~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 74, in boundary_turn
+    self.assertTrue(1 <= padding <= 2000, padding)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : -3107
+
+======================================================================
+FAIL: test_preflight_releases_only_this_reservation (test_chat_preflight.ChatPreflightTest.test_preflight_releases_only_this_reservation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 137, in test_preflight_releases_only_this_reservation
+    self.boundary_turn(); self.runtime.process_next()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 74, in boundary_turn
+    self.assertTrue(1 <= padding <= 2000, padding)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : -3107
+
+----------------------------------------------------------------------
+Ran 25 tests in 4.500s
+
+FAILED (failures=4)

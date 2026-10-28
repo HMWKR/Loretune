@@ -1,0 +1,258 @@
+[
+  {
+    "role": "dialog",
+    "name": "제작 모델 기본값",
+    "properties": [
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "modal",
+        "value": {
+          "type": "boolean",
+          "value": true
+        }
+      }
+    ]
+  },
+  {
+    "role": "button",
+    "name": "닫기",
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "focused",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      }
+    ]
+  },
+  {
+    "role": "button",
+    "name": "모델 선택 저장",
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      }
+    ]
+  },
+  {
+    "role": "combobox",
+    "name": "채팅·기획 모델",
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "hasPopup",
+        "value": {
+          "type": "token",
+          "value": "menu"
+        }
+      },
+      {
+        "name": "expanded",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      },
+      {
+        "name": "describedby",
+        "value": {
+          "type": "idrefList",
+          "value": "model-chat-selected model-chat-reason",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 5303,
+              "idref": "model-chat-selected"
+            },
+            {
+              "backendDOMNodeId": 5304,
+              "idref": "model-chat-reason"
+            }
+          ]
+        }
+      },
+      {
+        "name": "labelledby",
+        "value": {
+          "type": "nodeList",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 5283,
+              "text": "채팅·기획 모델"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "role": "combobox",
+    "name": "이미지 모델",
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "hasPopup",
+        "value": {
+          "type": "token",
+          "value": "menu"
+        }
+      },
+      {
+        "name": "expanded",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      },
+      {
+        "name": "describedby",
+        "value": {
+          "type": "idrefList",
+          "value": "model-image-selected model-image-reason",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 5323,
+              "idref": "model-image-selected"
+            },
+            {
+              "backendDOMNodeId": 5324,
+              "idref": "model-image-reason"
+            }
+          ]
+        }
+      },
+      {
+        "name": "labelledby",
+        "value": {
+          "type": "nodeList",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 5306,
+              "text": "이미지 모델"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "role": "combobox",
+    "name": "영상 모델",
+    "properties": [
+      {
+        "name": "invalid",
+        "value": {
+          "type": "token",
+          "value": "false"
+        }
+      },
+      {
+        "name": "focusable",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": true
+        }
+      },
+      {
+        "name": "hasPopup",
+        "value": {
+          "type": "token",
+          "value": "menu"
+        }
+      },
+      {
+        "name": "expanded",
+        "value": {
+          "type": "booleanOrUndefined",
+          "value": false
+        }
+      },
+      {
+        "name": "describedby",
+        "value": {
+          "type": "idrefList",
+          "value": "model-video-selected model-video-reason",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 5343,
+              "idref": "model-video-selected"
+            },
+            {
+              "backendDOMNodeId": 5344,
+              "idref": "model-video-reason"
+            }
+          ]
+        }
+      },
+      {
+        "name": "labelledby",
+        "value": {
+          "type": "nodeList",
+          "relatedNodes": [
+            {
+              "backendDOMNodeId": 5326,
+              "text": "영상 모델"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

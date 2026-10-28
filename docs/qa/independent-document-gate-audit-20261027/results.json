@@ -1,0 +1,85 @@
+{
+  "source_sha256": "1123d8b91bf255c272c2763f8d4e6464cea42dea9f0af814df563c25e9a28479",
+  "source_unchanged": true,
+  "python": "3.15.0 (main, Oct  9 2026, 11:16:41) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "baseline_exit": 0,
+  "results": [
+    {
+      "id": "DG01a",
+      "expected": "nonzero/review-required until classification resolved",
+      "observed": {
+        "exit": 0,
+        "status": "pass",
+        "findings": [],
+        "warnings": []
+      },
+      "pass": false
+    },
+    {
+      "id": "DG01b",
+      "expected": "nonzero/review-required while document classification is unresolved",
+      "observed": {
+        "exit": 0,
+        "status": "pass"
+      },
+      "pass": false
+    },
+    {
+      "id": "DG02",
+      "expected": "reject nonregular file promptly with bounded incomplete result",
+      "observed": {
+        "timeout_seconds": 1.5,
+        "elapsed_seconds": 1.5055265839910135,
+        "isolated_child_killed_and_waited": true,
+        "native_hook_executed": false
+      },
+      "pass": false
+    },
+    {
+      "id": "DG03",
+      "expected": "structured incomplete JSON, no traceback",
+      "observed": {
+        "exit": 1,
+        "stdout": "",
+        "stderr_tail": [
+          "                                     ^^^^^",
+          "AttributeError: 'NoneType' object has no attribute 'get'"
+        ]
+      },
+      "pass": false
+    },
+    {
+      "id": "C01",
+      "expected": "one continuation then warning",
+      "observed": {
+        "first": {
+          "decision": "block",
+          "reason": "Document gate: blocked. Run the read-only checker, report gaps and request any required registration approval. Do not auto-register or promote documents."
+        },
+        "second": {
+          "systemMessage": "Document gate: blocked. Run the read-only checker, report gaps and request any required registration approval. Do not auto-register or promote documents. Continued once already; report incomplete status honestly."
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "C02",
+      "expected": "not-configured=2; no policy creation",
+      "observed": {
+        "exit": 2,
+        "status": "not-configured",
+        "files": []
+      },
+      "pass": true
+    },
+    {
+      "id": "C03",
+      "expected": "unknown command policy rejected",
+      "observed": {
+        "blocked": true
+      },
+      "pass": true
+    }
+  ],
+  "scope": "isolated local fixtures only; no actual hooks, providers, shared registry or product data"
+}

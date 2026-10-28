@@ -1,0 +1,24 @@
+{
+ "task": "B1-chat-ui",
+ "attempt": 2,
+ "at": "2026-10-28T09:23:55.885107+00:00",
+ "state": "ACCEPTED",
+ "acceptance_owner": "lead (main)",
+ "critic_pass": true,
+ "critic_tests_rerun": "I re-ran all of these from /Users/leesungmin/Desktop/Loretune with PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/opt/python@3.15/bin/python3.15 -B:\n- The 5 focused modules (tests.test_general_chat_review_navigation, test_general_model_schedule_ui, test_agent_work_status_context, test_chat_general_http, test_general_chat_media_preparation): Ran 68 tests, OK, rc=0.\n- The 12 browserless modules that read index.html (budget_summary_ui … take_rights_ui): Ran 49 tests, OK.\n- Node VM tests general_chat_review_navigation, general_chat_controls, general_chat_history_ui and general_model_schedule_ui: all rc=0.\n- frontend_async_regressions.cjs: rc=0.\n- chat_model_polling.cjs run standalone gives rc=1 with a JSON.parse error on missing argv input. It is meant to be driven by its Python wrapper, so this is not a regression.\n\nI ran 12 independent mutations on scratch copies in /private/tmp/claude-501/-Users-leesungmin-Desktop-Loretune/1ebfb89f-9e94-4156-8aea-2393f299eb3e/scratchpad/critic-b1r2/. All 12 were caught (rc=1): restore-always, restore-always-after-status, listener-true, listener-false, listener-truthy, no-flag, no-finally, describedby-first-turn, prompt-id-removed, optional-chain, css-color, label-dot-removed.\n\nI also re-ran Hallmark sloplint into scratch. The result is identical to the baseline: 0 new findings, 0 gone.\n\nNot run: the headless-Chrome tests, because launching a browser is not allowed.",
+ "write_set_violations": [],
+ "carried_minor_issues": [
+  "[minor] I1 still fails for two turns whose prompts are identical, e.g. the same short retry such as '다시'. Both buttons then have the same name and the same description, so screen-reader users still cannot tell the turns apart. result.md does not list this edge case; it only mentions the 2000-char length concern.",
+  "[minor] aria-describedby does not change the accessible name. Voice-control users (who say 'click target 제작안 검토') still get two identical targets across turns. The original r1 finding listed voice control explicitly as a harm. The test openly asserts that the names repeat ('per-turn names may repeat across turns').",
+  "[minor] Real-browser verification is still missing. Nobody has observed the 375px focus order (whether the preview tab is skipped), the arrival outline visibility and clipping, or screen-reader output for describedby. The 8 headless-Chrome Python modules and work_status.cjs were also not re-run after the r2 changes, by me or by the worker. A static grep of those browser tests found no assertion on the changed selectors or attributes, so I estimate the regression risk as low, but this is [추정]."
+ ],
+ "source_sha256": {
+  "general-chat-ui.js": "b232afcfdc9ec1e66ab9168d0c77fa55219e591a9d2861ac377deb95086639d5",
+  "chat-sidebar.js": "35ca30b5c40100d874545ab62aa2ed8f0bc63426c68720c8b2fb486eb6dc6057",
+  "studio.css": "8c5d95814a87ed55695a68c0d2585764ec0ed99e5d6c57cfe6bbf114dcd5db5a",
+  "index.html": "e5186d8e4265a7cc60fef449ad7f653065e21380e4dd203ec073b9effe4ee8dd",
+  "tests/general_chat_review_navigation.cjs": "6e9f306f79a469a684c99f5b8d89c4e0c6c84adb72a8379d5065b0c6947f5e18",
+  "tests/test_general_chat_review_navigation.py": "3c21c65a542ad7e7e0f321b9e125730462753f4048a77dfe4f06b23020d7a79d"
+ },
+ "note": "Accepted for integration; carried issues are defects assigned to wave 2 (A2a/A2b/B2/S14) — not closed. Full regression pending (S14)."
+}

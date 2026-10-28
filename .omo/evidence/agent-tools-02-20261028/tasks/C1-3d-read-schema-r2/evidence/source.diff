@@ -1,0 +1,64 @@
+--- .omo/evidence/agent-tools-02-20261028/tasks/C1-3d-read-schema-r2/before-r2/production_context.py	2026-10-28 17:38:55
++++ production_context.py	2026-10-28 17:39:18
+@@ -212,13 +212,16 @@
+   limit_per_source=limit,sources=groups,collaboration=dict(available=False,reason='single-local-workspace; no authenticated team/presence data'),
+   note='Stored status during this lookup, not a grant, model vision, verified file contents or final-output approval. Output SHA/registration are recorded metadata only. Caller transaction provides a snapshot when active; otherwise sources are sequential observations. Requery for newer status; no automatic retry or cost change.')
+ 
++SCENE_STATUS_LIMIT=32
++
+ def scene_status(c,store,p,name,observed_revision):
+  # Current conversation only. Never loads trusted 3D configuration or runs a renderer.
+  import scene_project
++ scenes=scene_project.status(c,store,p,name,chat_sessions.current(p))
+  return dict(scope='current-project-current-conversation',observed_revision=observed_revision,
+-  scenes_3d=scene_project.status(c,store,p,name,chat_sessions.current(p)),
++  scenes_3d=scenes[-SCENE_STATUS_LIMIT:],scenes_3d_total=len(scenes),scenes_3d_truncated=len(scenes)>SCENE_STATUS_LIMIT,
+   connection=dict(available=scene_project.capability(store)['available'],external_transmission=False),
+-  note='Stored 3D scene heads and pending proposals, not an execution grant, render result or final-output approval. requires_review means the project context changed since that version or proposal was saved. Approval and rendering stay human actions in Scene Studio.')
++  note='Stored 3D scene heads and pending proposals, not an execution grant, render result or final-output approval. requires_review means the shot context or project ontology changed since that version or pending proposal was saved, so approval or rendering will be refused. Pending proposals are proposed/held ones based on the current head; stale_total counts older ones that can no longer be approved. head 0 means no approved version: its first draft is reviewed in Scene Studio and change proposals need base_revision equal to a head of 1 or more. Lists keep the latest '+str(SCENE_STATUS_LIMIT)+' scenes and 10 pending proposals per scene; *_total and *_truncated report omissions. Approval and rendering stay human actions in Scene Studio.')
+ 
+ def read(c,store,p,name,query=None):
+  w=store.workspace_id;pid=contracts.project_id(w,name);shots=[]
+--- .omo/evidence/agent-tools-02-20261028/tasks/C1-3d-read-schema-r2/before-r2/scene_project.py	2026-10-28 17:38:55
++++ scene_project.py	2026-10-28 17:39:05
+@@ -298,15 +298,24 @@
+ 
+ 
+ def status(c,store,p,name,conversation):
+-    """Model-facing summary of public(): no grant ids, asset references or scene bodies."""
++    """Model-facing summary of public(): no grant ids, asset references or scene bodies.
++
++    As in Scene Studio, only proposed/held proposals on the current head are pending;
++    older ones can no longer be approved and are only counted. Review and render also
++    reject an ontology revision change, so that drift requires review too."""
++    onto=ontology.snapshot(c,project_ontology.scope(store.workspace_id,contracts.project_id(store.workspace_id,name)))['revision']
+     values=[]
+     for record in public(c,store,p,name,conversation):
+         version=next((v for v in record['versions'] if v['id']==record['head']),None)
+-        pending=[x for x in record['proposals'] if x['status'] in {'proposed','held'}]
++        open_=[x for x in record['proposals'] if x['status'] in {'proposed','held'}]
++        pending=[x for x in open_ if x['base_revision']==record['head']]
++        stale=[version['requires_review'] or version['approval']['binding']['ontology_revision']!=onto] if version else []
++        stale+=[x['requires_review'] or x['ontology_revision']!=onto for x in pending]
+         values.append(dict(scene_id=record['id'],shot_id=record['shot_id'],head=record['head'],
+-            approval_status='none' if version is None else 'stale_context' if version['requires_review'] else 'recorded',
+-            requires_review=any(x['requires_review'] for x in ([version] if version else [])+pending),
+-            pending_proposals=[dict(proposal_id=x['id'],base_revision=x['base_revision'],status=x['status']) for x in pending][-10:]))
++            approval_status='none' if version is None else 'stale_context' if stale[0] else 'recorded',
++            requires_review=any(stale),
++            pending_proposals=[dict(proposal_id=x['id'],base_revision=x['base_revision'],status=x['status']) for x in pending][-10:],
++            pending_total=len(pending),pending_truncated=len(pending)>10,stale_total=len(open_)-len(pending)))
+     return values
+ 
+ 
+--- .omo/evidence/agent-tools-02-20261028/tasks/C1-3d-read-schema-r2/before-r2/scene_spec.py	2026-10-28 17:38:55
++++ scene_spec.py	2026-10-28 17:39:18
+@@ -192,7 +192,7 @@
+ # Tool argument shape for a change proposal to an existing, approved scene.
+ PROPOSAL_SCHEMA = dict(type='object', properties=dict(
+     shot_id=dict(type='string', minLength=1, maxLength=200),
+-    base_revision=dict(type='integer', minimum=1, maximum=2**31-1, description='Current approved scene head; 0 (no approved version) is rejected.'),
++    base_revision=dict(type='integer', minimum=1, maximum=2**31-1, description='Current approved scene head from search_project_context scene-status; a head of 0 has no approved version and takes no change proposals.'),
+     operations=dict(type='array', minItems=1, maxItems=16, items=dict(anyOf=[
+         dict(type='object', properties=dict(target=dict(type='string', enum=[kind]),
+              id=dict(type='string', enum=['camera']) if kind == 'camera' else dict(type='string', minLength=1, maxLength=32),

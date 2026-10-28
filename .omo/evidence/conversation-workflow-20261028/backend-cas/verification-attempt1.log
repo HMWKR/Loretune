@@ -1,0 +1,343 @@
+test_approval_rejects_changed_shared_context (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_approval_rejects_changed_shared_context) ... 127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "PATCH /v1/workspaces/f5778cf9-2012-4d67-98c5-e2567eed0bac/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state?song=A&conversation=8e3aea76e2194fc6843b4f4c912aa65a HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:16] "POST /api/action HTTP/1.1" 409 -
+ok
+test_approval_rejects_stale_conversation (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_approval_rejects_stale_conversation) ... 127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "PATCH /v1/workspaces/31d33e71-23b0-4c58-9309-13d3eb3668a6/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state?song=A&conversation=fa4b9ab6591d4f1596933d913239228e HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state?song=A&conversation=fa4b9ab6591d4f1596933d913239228e HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 409 -
+ok
+test_approval_tolerates_sibling_revision_and_replay_reserves_once (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_approval_tolerates_sibling_revision_and_replay_reserves_once) ... 127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "PATCH /v1/workspaces/6be55cb6-7ac7-4203-8a38-ec46a888f996/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state?song=A&conversation=ed19979f5dec421389c0e45669c3503f HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:17] "POST /api/action HTTP/1.1" 409 -
+ok
+test_cancel_rejects_changed_shared_context (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_cancel_rejects_changed_shared_context) ... 127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "PATCH /v1/workspaces/a8c7d319-1df7-4e1d-bce1-dfec7461c0d7/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state?song=A&conversation=28d146502dfe4a599a14121b69da4da7 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 409 -
+ok
+test_cancel_rejects_stale_conversation (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_cancel_rejects_stale_conversation) ... 127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "PATCH /v1/workspaces/abceaa80-b209-454b-b642-8bc8b0e397fe/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state?song=A&conversation=66aac17b429b410aae5298778b990ec5 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state?song=A&conversation=66aac17b429b410aae5298778b990ec5 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:18] "POST /api/action HTTP/1.1" 409 -
+ok
+test_changed_rights_registry_blocks_approval_after_sibling_drift (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_changed_rights_registry_blocks_approval_after_sibling_drift) ... 127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "PATCH /v1/workspaces/63020059-b272-43c4-8928-ac55401bf49f/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state?song=A&conversation=e1a90b3ceb5b42ca99a87729262fb0bf HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:19] "POST /api/action HTTP/1.1" 400 -
+ok
+test_invalid_manifest_rights_and_new_request_replay_stay_atomic (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_invalid_manifest_rights_and_new_request_replay_stay_atomic) ... 127.0.0.1 - - [28/Oct/2026 07:31:19] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "PATCH /v1/workspaces/d79197b9-866e-45f9-8a6c-0216a1213cf1/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state?song=A&conversation=4bee4da135c5404f95b5733148e8b3a7 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 400 -
+ok
+test_other_conversation_cannot_approve_or_reject_preview_or_cancel_turn (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_other_conversation_cannot_approve_or_reject_preview_or_cancel_turn) ... 127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "PATCH /v1/workspaces/f1f662e4-dfda-4fd3-86d6-aad472d8f88d/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state?song=A&conversation=5209c2f41d8b48ebbda6e2f633aa4d61 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 400 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:20] "POST /api/action HTTP/1.1" 400 -
+ok
+test_preview_rejects_changed_shared_context (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_preview_rejects_changed_shared_context) ... 127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "PATCH /v1/workspaces/87915f61-7985-49a8-b5bf-3cd12f71dac6/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 409 -
+ok
+test_preview_rejects_stale_conversation (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_preview_rejects_stale_conversation) ... 127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "PATCH /v1/workspaces/f489f9b6-f500-452c-8cf1-420d737ecfc0/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state?song=A&conversation=ad0907a9ef29489c8320e67d88eb240b HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:21] "POST /api/action HTTP/1.1" 409 -
+ok
+test_preview_tolerates_sibling_revision_and_stays_private (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_preview_tolerates_sibling_revision_and_stays_private) ... 127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "PATCH /v1/workspaces/ae7ef195-6b7b-4fa1-a4a2-c20a82a621b6/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+ok
+test_project_concurrency_cap_cannot_be_avoided_by_another_conversation (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_project_concurrency_cap_cannot_be_avoided_by_another_conversation) ... 127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "PATCH /v1/workspaces/d69c3034-c917-4766-9a05-944dffb03679/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "PATCH /v1/workspaces/d69c3034-c917-4766-9a05-944dffb03679/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:22] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state?song=A&conversation=e4953c584bcf4e899ec30f4c225911f7 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 400 -
+FAIL
+test_queued_cancel_tolerates_sibling_revision_and_releases_once (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_queued_cancel_tolerates_sibling_revision_and_releases_once) ... 127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "PATCH /v1/workspaces/fa0bb53a-fb25-4ffe-a3d8-a5e449b5b6d9/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state?song=A&conversation=6202dbd6a89b4590bc9950b8c6288c9e HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:23] "POST /api/action HTTP/1.1" 200 -
+ok
+test_running_cancel_after_sibling_drift_prevents_message_dispatch (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_running_cancel_after_sibling_drift_prevents_message_dispatch) ... 127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "PATCH /v1/workspaces/e1ca95ce-fff2-448b-b6ec-7f2a73cc6ff3/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state?song=A&conversation=ac2bd90b19824ddfbc37e3b7525f9a82 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+ok
+test_unknown_cancel_preserves_uncertain_reservation_and_never_retries (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_unknown_cancel_preserves_uncertain_reservation_and_never_retries) ... 127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "PATCH /v1/workspaces/409707a0-234b-4c13-91f8-56c773479495/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state?song=A&conversation=06acaa21e9bb4fa7ae92d31fd49d4bee HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:24] "POST /api/action HTTP/1.1" 400 -
+ok
+test_unscoped_request_still_requires_global_revision (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_unscoped_request_still_requires_global_revision) ... 127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "PATCH /v1/workspaces/64ca069d-c45d-4a9c-8134-cb2281e0629e/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 07:31:25] "POST /api/action HTTP/1.1" 409 -
+ok
+
+======================================================================
+FAIL: test_project_concurrency_cap_cannot_be_avoided_by_another_conversation (tests.test_general_chat_conversations.GeneralChatConversationsTest.test_project_concurrency_cap_cannot_be_avoided_by_another_conversation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_conversations.py", line 191, in test_project_concurrency_cap_cannot_be_avoided_by_another_conversation
+    self.assert_rejected_atomically(pending, 429)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_conversations.py", line 39, in assert_rejected_atomically
+    self.assertEqual(observed, status, result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 429 : {'error': '입력을 확인하세요: 동시 작업 한도입니다.'}
+
+----------------------------------------------------------------------
+Ran 16 tests in 9.492s
+
+FAILED (failures=1)

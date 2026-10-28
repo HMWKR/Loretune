@@ -1,0 +1,58 @@
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 401: 'Unauthorized'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 403: 'Forbidden'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 404: 'Not Found'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 410: 'Gone'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 429: 'Too Many Requests'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 500: 'Internal Server Error'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 503: 'Service Unavailable'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+======================================================================
+ERROR: test_http_401_refreshes_once_but_never_403 (tests.test_production_boundary.ProductionBoundaryTest.test_http_401_refreshes_once_but_never_403)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_production_boundary.py", line 53, in test_http_401_refreshes_once_but_never_403
+    self.assertEqual(self.get(),self.video);self.assertEqual(len(self.calls),4)
+                     ~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_production_boundary.py", line 40, in get
+    with patch('fal_provider.build_opener',return_value=self.route):return self.client.download('https://v3b.fal.media/files/b/test/result.mp4')
+                                                                           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/fal_provider.py", line 159, in download
+    except HTTPError as exc:raise ProviderError('provider_media_http_'+str(exc.code)) from None
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+fal_provider.ProviderError: provider_media_http_401
+
+======================================================================
+FAIL: test_concurrent_result_claim_downloads_once_and_restart_does_not_reissue (tests.test_production_boundary.ProductionBoundaryTest.test_concurrent_result_claim_downloads_once_and_restart_does_not_reissue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_production_boundary.py", line 75, in test_concurrent_result_claim_downloads_once_and_restart_does_not_reissue
+    self.assertEqual(len(calls),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_wrong_duration_is_not_published (tests.test_production_boundary.ProductionBoundaryTest.test_wrong_duration_is_not_published)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_production_boundary.py", line 84, in test_wrong_duration_is_not_published
+    self.assertEqual(list((Path(case.temp.name)/'assets').iterdir()),[])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [PosixPath('/var/folders/t7/p6pl4snd6pd3cm[104 chars]p4')] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+PosixPath('/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/tmpla851u54/assets/17b0b0b4cf87913f91dbf4a46852dd030930141c11ba667cecad605a34964df3.mp4')
+
+- [PosixPath('/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/tmpla851u54/assets/17b0b0b4cf87913f91dbf4a46852dd030930141c11ba667cecad605a34964df3.mp4')]
++ []
+
+----------------------------------------------------------------------
+Ran 7 tests in 3.635s
+
+FAILED (failures=2, errors=1)

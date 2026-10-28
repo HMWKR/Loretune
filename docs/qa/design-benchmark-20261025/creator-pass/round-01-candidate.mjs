@@ -1,0 +1,11 @@
+import fs from 'node:fs/promises';
+const t=await taskSpace(14),p=t.page('p1');
+const html=await fs.readFile('/Users/leesungmin/Desktop/Loretune/docs/qa/design-benchmark-20261025/creator-pass/candidate-index.html','utf8');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
+await p.evaluate(html=>{const f=document.createElement('iframe');f.id='creatorCandidate';f.style='position:fixed;inset:0;width:100%;height:100%;border:0;background:#111';document.body.replaceChildren(f);f.srcdoc=html;},html);
+await p.waitForFunction(()=>document.querySelector('iframe')?.contentDocument?.querySelector('#songs option[value="디자인 다중장면 QA 20261025 1330"]'),undefined,{timeout:15000});
+await p.selectOption('#songs','디자인 다중장면 QA 20261025 1330');
+await p.click('button[data-step="3"]');
+await p.evaluate(()=>{const w=document.querySelector('iframe').contentWindow;return new Promise(r=>w.requestAnimationFrame(()=>w.requestAnimationFrame(r)))});
+console.log(await p.snapshot());
+await p.screenshot({path:'/Users/leesungmin/Desktop/Loretune/docs/qa/design-benchmark-20261025/creator-pass/candidate-approved-1280.png'});

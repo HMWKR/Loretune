@@ -1,0 +1,91 @@
+{
+  "schema_version": "2.0",
+  "as_of": "2026-10-23",
+  "experiments": [
+    {
+      "id": "EXP-C01",
+      "title": "동일 범위 외주 견적 비교",
+      "status": "planned_not_run",
+      "requirement_ids": [
+        "BUS-004",
+        "BUS-006"
+      ],
+      "comparison": "60초·180초를 별도 브리프로 고정; 입력 자산·제작 유형·검토 범위·출력 규격·세금·수수료 기록",
+      "planned_sample": "최소 3개 유효 견적, 저가 대안 포함. 실제 발주·결제는 이번 작업에서 하지 않음.",
+      "decision_rule": "범위 불일치 가격은 병렬 사례로만 표기. 동등 품질·절감률 주장 금지."
+    },
+    {
+      "id": "EXP-C02",
+      "title": "원가와 승인 납품 수 계측",
+      "status": "planned_not_run",
+      "requirement_ids": [
+        "BUS-008",
+        "BUS-013"
+      ],
+      "comparison": "처음은 30~60초 모드별. 180초 지원은 별도 검증 후.",
+      "planned_sample": "탐색 표본 최소 8팀·24개 요청. 충분 통계 표본이라는 뜻은 아님.",
+      "decision_rule": "실패·중단·미대사·지원 노동을 포함. 미대사 코호트 확정 원가 발표 보류, 누락 범위 공개."
+    },
+    {
+      "id": "EXP-C03",
+      "title": "업무·결정·조작·검토의 분리 측정",
+      "status": "planned_not_run",
+      "requirement_ids": [
+        "BUS-005"
+      ],
+      "comparison": "현재 작업 / 기존 AI 도구 / 같은 모델·자료·예산의 기억 적용 조건, 대응 과제와 교차 순서",
+      "planned_sample": "기존 EXP-004/005 프로토콜과 연결; 팀별 3개 다른 요청",
+      "decision_rule": "12개 업무와 4개 결정 묶음의 숫자로 절감률 계산 금지. 활동 시간과 승인 품질을 함께 비교."
+    },
+    {
+      "id": "EXP-C04",
+      "title": "가격·빈도·반복 결제",
+      "status": "planned_not_run",
+      "requirement_ids": [
+        "BUS-010",
+        "BUS-015"
+      ],
+      "comparison": "월 구독·프로젝트 가격 가설, 실제 제작 기회·유료 재사용·휴면",
+      "planned_sample": "파일럿 후 최소 3개 청구 주기. 무료 대행·할인·지인 결제 분리.",
+      "decision_rule": "월4편 가정이 틀리면 편당 배부와 ICP·가격을 재설계. 미실행 수요를 매출예측으로 사용 금지."
+    }
+  ],
+  "logging_contract": {
+    "required_fields": [
+      "team_id",
+      "project_id",
+      "workflow_condition",
+      "mode",
+      "output_seconds",
+      "generated_accepted_seconds",
+      "provider_job_id",
+      "model_version",
+      "actual_billed_units",
+      "gross_charge",
+      "refund",
+      "charge_currency",
+      "fx_basis",
+      "output_acceptance",
+      "active_minutes_by_role",
+      "operator_support_minutes",
+      "quote_version",
+      "memory_snapshot",
+      "failure_or_abandon_reason"
+    ],
+    "units": [
+      "workflow_task",
+      "decision_group",
+      "decision_event",
+      "meaningful_ui_action",
+      "creative_candidate",
+      "review_round",
+      "provider_request",
+      "accepted_delivery"
+    ],
+    "denominators": "All assigned eligible requests including failures and abandonment; report eligibility exclusions and missingness separately.",
+    "cost_per_delivery": "total cost of every attempt in cohort / accepted delivered outputs; undefined if denominator is zero.",
+    "evidence_state": "planned_not_measured"
+  },
+  "platform_execution_status": "not_run",
+  "scope": "Additional comparison research protocol; does not replace MET-001..032 or EXP-001..016."
+}

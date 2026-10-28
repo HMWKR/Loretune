@@ -1,0 +1,29 @@
+{
+  "previous_functions_unchanged_except_read": true,
+  "new_functions": [
+    "work_status"
+  ],
+  "removed_functions": [],
+  "read_changes": [
+    "reserved work-status response",
+    "normal-query breadcrumb",
+    "parent-approved overlay approval description conditional on permission mode"
+  ],
+  "new_test_ids": [
+    "tests.test_agent_work_status_context.WorkStatusContextTest.test_normal_context_remains_available_and_discovers_reserved_query",
+    "tests.test_agent_work_status_context.WorkStatusContextTest.test_per_source_limit_and_insertion_order_are_explicit",
+    "tests.test_agent_work_status_context.WorkStatusContextTest.test_read_is_byte_preserving_and_reopen_keeps_records",
+    "tests.test_agent_work_status_context.WorkStatusContextTest.test_recorded_kinds_versions_modes_and_no_private_fields",
+    "tests.test_agent_work_status_context.WorkStatusContextTest.test_scope_before_projection_rejects_siblings_foreign_binding_and_owner_conflict",
+    "tests.test_agent_work_status_context.WorkStatusContextTest.test_unknown_or_invalid_metadata_is_not_completion_or_private_prose",
+    "tests.test_agent_work_status_context.WorkStatusHTTPTest.test_actual_http_selected_synthetic_query_progress_change_and_explicit_continuation",
+    "tests.test_agent_work_status_context.WorkStatusHTTPTest.test_actual_local_render_queue_worker_output_and_download_match_observation",
+    "tests.test_agent_work_status_context.WorkStatusHTTPTest.test_canonical_change_still_blocks_status_continuation"
+  ],
+  "unique_new_tests": 9,
+  "test_duplicates": [],
+  "source_freeze": {
+    "production_context.py": "cb85253d5a5cf194f1c1852603e32acec530a7b9a0884460a543386bb169460d",
+    "tests/test_agent_work_status_context.py": "4d8bcd11d5c3dc197d76edfe0b607b4727f38f9920097ea078323f0d96369c93"
+  }
+}

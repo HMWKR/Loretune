@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-10-28T05:00:56.951759+00:00",
+  "upstream_software": {
+    "observed": "MIT LICENSE from official pinned repository; retain copyright and permission notice when reusing covered software.",
+    "evidence": "sources/upstream-LICENSE.txt",
+    "scope_limit": "Does not by itself resolve every dependency, training/source image, or independently published sample asset."
+  },
+  "community_repository": {
+    "observed": "Modelcard metadata and provenance label upstream MIT; no dedicated LICENSE or sample-license file appears among 40 pinned sibling paths.",
+    "evidence": [
+      "sources/community-modelcard.txt",
+      "metadata/hf-redistributor-model.json"
+    ],
+    "unverified": "Explicit republication/product-ingestion permission for these particular sample images and generated GLB outputs."
+  },
+  "bundled_rmbg": {
+    "observed": "Official upstream NOTICE identifies RMBG under bria-rmbg-1.4. BRIA modelcard identifies non-commercial availability and a separate commercial agreement.",
+    "evidence": [
+      "sources/upstream-NOTICE.txt",
+      "sources/rmbg-modelcard.txt"
+    ],
+    "decision": "Do not classify the redistributed bundle or a commercial platform pipeline as wholly MIT on this evidence."
+  },
+  "other_dependencies": {
+    "observed": "NOTICE also identifies Diffusers Apache-2.0 and HunyuanDiT/FlashVDM community agreements.",
+    "evidence": "sources/upstream-NOTICE.txt",
+    "unverified": "Full dependency-by-dependency commercial, redistribution and generated-output terms; MV-Adapter and paint-stage dependencies not audited here."
+  },
+  "sample_media": {
+    "observed": "Publisher says source pictures were generated with Z-Image Turbo; no per-image license grant/provenance receipt was published in the inspected card.",
+    "evidence": "sources/community-modelcard.txt",
+    "status": "unresolved for product ingestion or redistribution",
+    "product_ingestion_performed": false,
+    "product_asset_copy_performed": false,
+    "evidence_only_download": true
+  },
+  "legal_assessment": "Source-based scope check, not a complete legal clearance or an assertion that downloading these public files grants product rights."
+}

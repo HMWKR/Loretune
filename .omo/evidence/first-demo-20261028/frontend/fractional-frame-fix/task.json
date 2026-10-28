@@ -1,0 +1,22 @@
+{
+  "requested_by": "root independent review",
+  "created_at": "2026-10-28T00:37:48.473228+00:00",
+  "problem": "floor(duration*24) clip-local preview bound omits final and cumulative rounded frames",
+  "reproduction": "single .130-second cut has backend4 frames, UI max2/24 blocked validframe3 at .125s",
+  "competing_hypotheses": [
+    "Backend frame endpoint rejects last frame",
+    "UI uses different local floor instead of cumulative server policy"
+  ],
+  "source_cause": "index.html updateTimelineFrameControls local floor count; backend uses editing.frame_timing cumulative ROUND_HALF_UP and final ROUND_CEILING",
+  "decision": "Use integer-millisecond cumulative boundaries consistent with server normalized duration, preserving old whole-second counts",
+  "write_set": [
+    "index.html",
+    "tests/timeline_motion_overlay.cjs",
+    "tests/test_timeline_motion_overlay_ui.py"
+  ],
+  "non_goals": [
+    "no restyle",
+    "no detector suppression",
+    "no backend/source approval changes"
+  ]
+}

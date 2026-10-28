@@ -1,0 +1,10 @@
+--- tests/timeline_ui_safety.cjs before
++++ tests/timeline_ui_safety.cjs current
+@@ -36,6 +36,7 @@
+ c.draft.clips.length=30;c.updateTimelineControls(false);assert.equal(root.inert,false);assert.equal(add.disabled,true);assert.equal(removeButton.disabled,false);
+ console.log('timeline locking and limits after unlock: passed');
+ c.draft=structuredClone(original);c.dirty=true;
++c.updateTimelineFrameControls=()=>{};
+ vm.runInContext(block('function updateTimelineStatus(', 'function drawTimeline('),c);
+ c.updateTimelineStatus();assert.equal(node('#cancelTimelineDraft').hidden,false);assert.match(node('#timelineStatus').textContent,/저장되지 않은 편집/);
+ c.draft.clips[1].take=null;c.updateTimelineStatus();assert.match(node('#timelineStatus').textContent,/모든 컷의 Take 선택 필요/);assert.equal(node('#saveTimeline').classList.contains('primary'),false);

@@ -1,0 +1,38 @@
+--- tests/test_chat_general_http.py before
++++ tests/test_chat_general_http.py after
+@@ -301,7 +301,16 @@
+             self.assertFalse(worker.is_alive())
+         project=self.state()['projects']['A']
+         self.assertFalse(project.get('guided_plans'))
+-        self.assertEqual(project['general_chat_turns'][-1]['status'],'outcome_unknown')
++        turn=project['general_chat_turns'][-1]
++        self.assertEqual(turn['status'],'cancelled')
++        self.assertEqual(turn['pricing_status'],'priced')
++        self.assertEqual(turn['usage'],{'input_tokens':100,'output_tokens':100})
++        self.assertIsNone(turn['answer']);self.assertFalse(turn['billing_confirmed'])
++        with self.http.store.connect() as c:
++            stored=chat_general.get_row(c,'general_chat_turns',identifier)
++            self.assertNotIn('pending_tool',stored)
++            self.assertEqual(c.execute('SELECT state,actual FROM reservations WHERE id=?',(stored['reservation'],)).fetchone(),('settled',60))
++            self.assertEqual(c.execute('SELECT operation,state FROM provider_attempts WHERE reservation=? ORDER BY operation',(stored['reservation'],)).fetchall(),[('chat-count','observed'),('chat-message','observed')])
+         self.assertFalse(self.http.store.general_chat_runtime.process_next())
+         self.assertEqual(len(self.http.store.general_chat_runtime.transport.messages),1)
+ 
+@@ -655,12 +664,16 @@
+             finally:resume.set();worker.join(10)
+             self.assertFalse(worker.is_alive())
+         p=state()['projects']['race'];turn=p['general_chat_turns'][-1]
+-        self.assertEqual(turn['status'],'outcome_unknown')
++        self.assertEqual(turn['status'],'cancelled' if change=='cancel' and not expected_reason else 'outcome_unknown')
+         self.assertEqual(turn['usage'],{'input_tokens':100,'output_tokens':100})
+         self.assertEqual(turn['steps'][-1]['request_id'],'req_fixture_123')
+         if expected_reason:self.assertEqual(turn['pricing_status'],expected_reason)
++        else:self.assertEqual(turn['pricing_status'],'priced')
+         self.assertFalse(p.get('guided_plans'))
+         with http.store.connect() as c:
+             self.assertEqual(c.execute('SELECT state,actual FROM reservations').fetchone(),('uncertain',None) if expected_reason else ('settled',60))
++            stored=chat_general.get_row(c,'general_chat_turns',identifier)
++            self.assertNotIn('pending_tool',stored)
++            self.assertEqual(c.execute('SELECT operation,state FROM provider_attempts WHERE reservation=? ORDER BY operation',(stored['reservation'],)).fetchall(),[('chat-count','observed'),('chat-message','observed')])
+         self.assertFalse(http.store.general_chat_runtime.process_next())
+         self.assertEqual(len(transport.messages),1)

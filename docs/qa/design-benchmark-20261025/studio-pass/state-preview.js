@@ -1,0 +1,105 @@
+/* Scoped review drafts. No provider calls; existing act() owns writes/recovery. */
+function createTakeReviewStore(storage) {
+ const cache=new Map(); let failed=false;
+ return {
+  get failed(){return failed},
+  get(key){
+   if(!key)return null;
+   if(cache.has(key))return cache.get(key);
+   let value=null;
+   try{const x=JSON.parse(storage.getItem(key)||'null');if(x&&typeof x.reason==='string'&&['','approved','rejected','changes_requested'].includes(x.decision)&&Number.isSafeInteger(x.revision))value=x}catch{failed=true}
+   cache.set(key,value);return value;
+  },
+  set(key,value){const next={decision:value.decision,reason:value.reason,revision:(this.get(key)?.revision||0)+1};cache.set(key,next);try{storage.setItem(key,JSON.stringify(next))}catch{failed=true}return next},
+  clear(key){cache.set(key,null);try{storage.removeItem(key)}catch{failed=true}},
+  clearRevision(key,revision){if(this.get(key)?.revision===revision)this.clear(key)}
+ };
+}
+function takeReviewKey(workspace,name,shot,take){return 'loretune-take-review-v1:'+JSON.stringify([workspace,name,shot,take])}
+function createTakeReviewController({store,context,inputs,save,render,notify}) {
+ const pending=new Set();
+ return {
+  pending,
+  capture(){const c=context();if(c)store.set(c.key,inputs());render()},
+  async submit(){
+   const c=context();if(!c)return notify('Take를 먼저 선택하세요.',true);
+   if(pending.has(c.key))return false;
+   const value=inputs();
+   if(!['approved','rejected','changes_requested'].includes(value.decision))return notify('이번에 기록할 검토 결정을 선택하세요.',true);
+   if(!value.reason.trim())return notify('검토 이유를 입력하세요.',true);
+   if(c.review?.decision===value.decision&&c.review?.reason===value.reason)return notify('이미 저장된 검토입니다. 변경할 내용이 있으면 먼저 수정하세요.');
+   const submitted=store.set(c.key,value);pending.add(c.key);render();
+   try{
+    const ok=await save('review_take',{song:c.song,shot:c.shot,take:c.take,decision:value.decision,reason:value.reason});
+    if(ok)store.clearRevision(c.key,submitted.revision);
+    return ok;
+   }finally{pending.delete(c.key);render()}
+  }
+ };
+}
+// DOM glue. IDs and backend payload/approval contracts remain unchanged.
+const takeReviewStore=createTakeReviewStore(sessionStorage);
+let takeReviewScope='';
+function studioReview(s,id){const review=[...(s?.reviews||[])].reverse().find(r=>r.take===id);const labels={approved:'Take 승인됨',rejected:'Take 거절',changes_requested:'Take 수정 요청'};return {review,decision:review?.decision||'pending',label:labels[review?.decision]||'Take 검토 대기'}}
+function currentTakeReview(){const p=project(),s=p?.shots[shotName],take=s?.selected;if(!take||!s.takes.some(t=>t.id===take))return null;return {key:takeReviewKey(state.workspace_id,song(),shotName,take),song:song(),shot:shotName,take,review:studioReview(s,take).review}}
+function studioBadge(s,id){const r=studioReview(s,id);return `<span class="lt-review-state" data-review="${esc(r.decision)}">${esc(r.label)}</span>`}
+function studioAdopted(p,name,id){const timeline=draft||(p.timeline_head?p.timeline_versions[p.timeline_head-1]:null);return !!timeline?.clips.some(c=>c.shot===name&&c.take===id)}
+function studioUseLabel(p,name,id){return studioAdopted(p,name,id)?(dirty?'미저장 편집에 사용':'편집에 사용'):''}
+function renderStudioShots(p){return Object.entries(p.shots).map(([name,s],i)=>{const t=s.takes.find(t=>t.id===s.selected);return `<button class="shot ${name===shotName?'active':''}" data-shot="${esc(name)}" aria-pressed="${name===shotName}">${t&&image(t)?`<img class="thumb" src="${asset(t)}" alt="">`:`<span class="thumb lt-media-kind">${t?'영상':'미연결'}</span>`}<span class="lt-scene-copy"><b>${String(i+1).padStart(2,'0')} ${esc(name)}</b><small>${s.takes.length}개 · ${t?'선택 Take '+t.id:'선택 없음'}</small>${t?studioBadge(s,t.id):'<small>미디어를 연결하세요</small>'}</span></button>`}).join('')}
+function renderStudioTakes(s){const p=project();return s?s.takes.map(t=>`<button data-take="${t.id}" class="${s.selected===t.id?'active':''}" aria-pressed="${s.selected===t.id}">${image(t)?`<img src="${asset(t)}" alt="">`:'<span class="lt-take-kind">영상</span>'}<span class="lt-take-copy"><b>Take ${t.id}</b><small>${s.selected===t.id?'현재 선택':'선택하기'}${studioAdopted(p,shotName,t.id)?' · '+studioUseLabel(p,shotName,t.id):''}</small>${studioBadge(s,t.id)}</span></button>`).join(''):''}
+function renderStudioTrack(p){return draft.clips.map(c=>`<span class="lt-track-clip" data-current="${c.shot===shotName&&c.take===p.shots[shotName]?.selected}" style="flex:${Math.max(c.duration,.125)}" title="${esc(c.shot)}"><b>${esc(c.shot)}</b><small>Take ${c.take??'미선택'} · ${c.duration}초${c.shot===shotName&&c.take===p.shots[shotName]?.selected?' · 미리보기 중':''}</small>${c.take?studioBadge(p.shots[c.shot],c.take):'<small>Take 선택 필요</small>'}</span>`).join('')}
+function ensureStudioReviewDOM(){
+ document.body.classList.add('lt-studio-states');
+ const reason=document.querySelector('#reason');
+ if(!document.querySelector('#takeReviewStatus')){const box=document.createElement('div');box.id='takeReviewStatus';reason.before(box)}
+ const decision=document.querySelector('#takeDecision');
+ if(!decision.querySelector('option[value=""]')){const option=document.createElement('option');option.value='';option.textContent='검토 결정 선택';decision.prepend(option)}
+ decision.setAttribute('aria-label','이번에 기록할 검토 결정');
+ if(!document.querySelector('label[for="takeDecision"]')){const label=document.createElement('label');label.htmlFor='takeDecision';label.textContent='이번에 기록할 검토 결정';decision.before(label)}
+ let input=document.querySelector('#reviewReason');if(input.tagName==='INPUT'){const area=document.createElement('textarea');area.id=input.id;area.value=input.value;area.rows=3;input.replaceWith(area);input=area}input.placeholder='이 Take의 검토 이유를 입력하세요';input.maxLength=2000;
+ input.setAttribute('aria-describedby','takeReviewDraftState');decision.setAttribute('aria-describedby','takeReviewDraftState');
+ if(!document.querySelector('#takeReviewDraftState')){const hint=document.createElement('p');hint.id='takeReviewDraftState';hint.setAttribute('role','status');const discard=document.createElement('button');discard.id='discardTakeReviewDraft';discard.type='button';discard.textContent='미저장 검토 초안 지우기';document.querySelector('#reviewTake').after(hint,discard);discard.onclick=()=>{const c=currentTakeReview();if(c){takeReviewStore.clear(c.key);takeReviewScope='';renderTakeReview()}}}
+}
+function renderTakeReview(){
+ if(!document.querySelector('#takeReviewStatus'))return;
+ const c=currentTakeReview(),local=c?takeReviewStore.get(c.key):null;
+ const reason=document.querySelector('#reviewReason'),decision=document.querySelector('#takeDecision'),button=document.querySelector('#reviewTake');
+ if(takeReviewScope!==(c?.key||'')||!local){const value=local||{decision:c?.review?.decision||'',reason:c?.review?.reason||''};reason.value=value.reason;decision.value=value.decision;takeReviewScope=c?.key||''}
+ const s=project()?.shots[shotName];
+ document.querySelector('#takeReviewStatus').innerHTML=c?`<b>Take ${c.take}</b>${studioBadge(s,c.take)}<small>${esc(studioUseLabel(project(),c.shot,c.take)||'편집에 미사용')} · 출력 승인과 별도</small>`:'<p>Take를 선택하면 검토할 수 있습니다.</p>';
+ const section=button.closest('section');if(section?.querySelector('h2'))section.querySelector('h2').textContent=c?`Take ${c.take} 검토`:'Take 검토';
+ const unchanged=c?.review?.decision===decision.value&&c?.review?.reason===reason.value;
+ button.textContent=c?`Take ${c.take} ${c.review?'검토 변경 기록':'검토 기록'}`:'Take 검토 기록';
+ button.disabled=!!busy||!c||!decision.value||!reason.value.trim()||unchanged||takeReviewController.pending.has(c?.key);
+ reason.disabled=decision.disabled=!c;
+ document.querySelector('#takeReviewDraftState').textContent=!c?'선택과 검토 승인은 별개입니다.':takeReviewStore.failed?'초안을 이 탭 메모리에만 보존 중입니다. 브라우저 저장소를 확인하세요.':local?'이 Take의 미저장 검토 초안 · 다른 Take와 분리해 보존됩니다.':c.review?'저장된 검토입니다. 변경할 결정이나 이유를 수정하세요.':'결정과 이유를 입력한 뒤 검토를 기록하세요.';
+ document.querySelector('#discardTakeReviewDraft').disabled=!local||takeReviewController.pending.has(c?.key);
+}
+const takeReviewController=createTakeReviewController({store:takeReviewStore,context:currentTakeReview,inputs:()=>({decision:document.querySelector('#takeDecision').value,reason:document.querySelector('#reviewReason').value}),save:(action,data)=>act(action,data),render:renderTakeReview,notify:(text,error)=>message(text,error)});
+function openStudioComparison(){
+ const sh=project()?.shots[shotName];
+ if(!sh?.takes.length)return message('비교할 Take가 없습니다. 기존 미디어를 먼저 연결하세요.',true);
+ if(sh.takes.length<2)return message('비교하려면 같은 장면에 Take가 2개 이상 필요합니다. 현재 Take는 그대로 유지됩니다.');
+ for(const side of ['Left','Right'])$('#compare'+side).innerHTML=sh.takes.map(t=>`<option value="${t.id}">Take ${t.id} · ${esc(studioReview(sh,t.id).label)}</option>`).join('');
+ $('#compareLeft').value=sh.selected||sh.takes[0].id;
+ $('#compareRight').value=sh.takes.filter(t=>String(t.id)!==$('#compareLeft').value).at(-1).id;
+ drawComparison();$('#compareDialog').showModal();
+}
+function installStudioNotice(notice,detail,summary){
+ const baseline='로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.';
+ let userOpen=false;
+ summary.addEventListener('click',()=>{userOpen=!detail.open});
+ const update=()=>{const value=notice.textContent.trim(),routine=!notice.classList.contains('error')&&[baseline,'저장했습니다.','저장 중…',''].includes(value);summary.textContent=routine?(value===baseline?'로컬 연결됨':value==='저장했습니다.'?'저장됨':value||'저장 상태'):'알림';detail.open=routine?userOpen:true;};
+ new MutationObserver(update).observe(notice,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']});update();
+}
+ensureStudioReviewDOM();
+document.querySelector('#reviewReason').addEventListener('input',()=>takeReviewController.capture());
+document.querySelector('#takeDecision').addEventListener('change',()=>takeReviewController.capture());
+
+function draw(){if($('#downloadPreview').dataset.project!==song())$('#downloadPreview').replaceChildren();restoreCommentDraft();drawModelChat();drawModelSettings();drawChat();drawReferences();const p=project();if(!p)return;if(!p.shots[shotName])shotName=Object.keys(p.shots)[0]||'';drawReferences();location.hash=encodeURIComponent(song());$('#archiveButton').textContent=p.archived?'보관됨 · 관리':'보관 관리';$('#shotCount').textContent=Object.keys(p.shots).length;$('#snapshot').innerHTML=p.snapshot.map(s=>`<p>${esc(s.text)}<br><small>${esc(s.era)} · v${s.revision}</small></p>`).join('')||'<small>해당 범위에 승인된 설정 없음</small>';const s=p.shots[shotName],t=s?.takes.find(t=>t.id===s.selected);$('#shotTitle').textContent=shotName||'첫 샷을 추가하세요';$('#description').textContent=s?.description||'';$('#selectedBadge').textContent=t?'선택 Take '+t.id:'선택된 take 없음';$('#preview').innerHTML=t?(image(t)?`<img src="${asset(t)}" alt="${esc(shotName)} 선택 take">`:`<video src="${asset(t)}" controls></video>`):'<p class="muted">기존 파일을 연결하고 take를 선택하세요.</p>';const review=t?[...(s.reviews||[])].reverse().find(r=>r.take===t.id):null;$('#reason').textContent=t?`${t.reason} · ${t.rights||'사용권 미확인'}`:'새 take를 연결하면 이전 결과를 덮어쓰지 않습니다.';$('#audioInfo').innerHTML=p.audio_versions.map(a=>`<p>v${a.id} ${esc(a.filename)}<br><small>${a.metadata.duration.toFixed(2)}초 · ${a.metadata.sample_rate}Hz</small>${audioWave(a)}<audio src="${asset(a)}" controls></audio></p>`).join('')||'<small>음원이 연결되지 않았습니다.</small>';$('#comments').innerHTML=p.comments.map(c=>`<p>${c.at}s · ${esc(c.text)}<br>${c.resolved?'<small>해결됨</small>':`<button data-resolve="${c.id}">해결 표시</button>`}</p>`).join('');if(!draft)draft=structuredClone(p.timeline_head?p.timeline_versions[p.timeline_head-1]:fresh(p));drawTimeline();drawLibrary()}
+function drawTimeline(){const p=project();if(!p)return;const check=p.preflight;$('#preflight').innerHTML=check?`<p><b>${check.ready?'저장 버전 출력 준비됨':'저장 버전 확인 필요'}</b> · ${check.duration}초 · 음원 ${check.audio_version?'v'+check.audio_version+' / '+check.audio_start+'–'+check.audio_end+'초':'없음'}</p>${[...check.errors,...check.warnings].map(x=>`<p>${esc(x)}</p>`).join('')}<small>${esc(check.note)}</small>`:'';$('#track').innerHTML=renderStudioTrack(p);$('#clips').innerHTML=draft.clips.map((c,i)=>`<div class="clip-row"><span>${i+1}</span><span>${esc(c.shot)}</span><select data-clip="${i}" data-field="take" aria-label="${esc(c.shot)} take"><option value="">선택</option>${p.shots[c.shot].takes.map(t=>`<option value="${t.id}" ${t.id===c.take?'selected':''}>Take ${t.id}</option>`).join('')}</select><input aria-label="${esc(c.shot)} 길이" data-clip="${i}" data-field="duration" type="number" min=".125" step=".001" value="${c.duration}"><input aria-label="${esc(c.shot)} 시작" data-clip="${i}" data-field="trim" type="number" min="0" step=".001" value="${c.trim}"><span><button data-move="${i}" data-dir="-1" aria-label="앞으로 이동">↑</button><button data-move="${i}" data-dir="1" aria-label="뒤로 이동">↓</button></span></div>`).join('');$('#audioVersion').innerHTML='<option value="">무음</option>'+p.audio_versions.map(a=>`<option value="${a.id}">v${a.id} ${esc(a.filename)}</option>`).join('');$('#audioVersion').value=draft.audio??'';$('#audioOffset').value=draft.audio_offset;$('#profile').value=draft.profile;$('#captions').innerHTML=draft.subtitles.map((l,i)=>`<div class="caption-row"><input aria-label="자막 시작" data-caption="${i}" data-field="start" type="number" min="0" step=".001" value="${l.start}"><input aria-label="자막 끝" data-caption="${i}" data-field="end" type="number" min="0" step=".001" value="${l.end}"><input aria-label="자막 내용" data-caption="${i}" data-field="text" value="${esc(l.text)}"><button data-remove="${i}" aria-label="자막 삭제">×</button></div>`).join('');$('#versions').innerHTML=p.timeline_versions.map(t=>`<option value="${t.id}">버전 ${t.id}${t.approval?' · 승인':''}</option>`).join('')||'<option>저장 버전 없음</option>';$('#versions').value=p.timeline_head;$('#timelineStatus').textContent=`${draft.clips.reduce((n,c)=>n+c.duration,0).toFixed(3)}초 · ${dirty?'저장되지 않은 편집':p.timeline_head?'저장 버전 '+p.timeline_head+(draft.approval?' · 출력 승인됨':' · 출력 승인 대기'):'첫 편집 저장 필요'}`;$('#shotlist').innerHTML=renderStudioShots(p);$('#takes').innerHTML=renderStudioTakes(p.shots[shotName]);renderTakeReview()}
+function drawComparison(){const sh=project()?.shots[shotName];for(const side of ['Left','Right']){const t=sh?.takes.find(t=>t.id===Number($('#compare'+side).value));const target=$('#compare'+side+'Preview');if(!t){target.textContent='Take 없음';continue}const review=[...(sh.reviews||[])].reverse().find(r=>r.take===t.id);target.innerHTML=`<p>Take ${t.id} · ${sh.selected===t.id?'현재 선택':'미선택'} · ${studioBadge(sh,t.id)}</p>${image(t)?`<img style="width:100%" src="${asset(t)}" alt="비교 Take ${t.id}">`:`<video style="width:100%" src="${asset(t)}" controls></video>`}<p>${esc(t.reason)}</p><small>${esc(t.sha256)}</small>`}}
+$('#reviewTake').onclick=()=>takeReviewController.submit();$('#compareButton').onclick=openStudioComparison;
+const oldNotice=document.querySelector('#notice'),newNotice=oldNotice.cloneNode(true);oldNotice.replaceWith(newNotice);installStudioNotice(newNotice,newNotice.parentElement,newNotice.parentElement.querySelector('summary'));
+document.querySelector('#compareButton').textContent='Take 나란히 비교';document.querySelector('#compareDialog h2').textContent='같은 장면의 Take 비교';document.querySelector('#compareLeft').parentElement.firstChild.textContent='왼쪽 Take';document.querySelector('#compareRight').parentElement.firstChild.textContent='오른쪽 Take';
+const reviewBox=document.querySelector('#takeReviewStatus'),reasonBox=document.querySelector('#reason');reasonBox.before(reviewBox);draw();

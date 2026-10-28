@@ -1,0 +1,796 @@
+{
+  "at": "2026-10-28T05:01:49.308591+00:00",
+  "scope": "Latest shared agent sidebar/recommendation/status/model reasoning/permission/deletion/document-update requests plus explicit first-demo user steps1–7; not all historical platform requirements.",
+  "defined_subrequirements": 81,
+  "present": 81,
+  "missing": [],
+  "requirements": [
+    {
+      "id": "UI01",
+      "requirement": "모든 제작 단계와 작업창의 공통 오른쪽 패널",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        37
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "UI02",
+      "requirement": "기본 열림",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        37
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "UI03",
+      "requirement": "상단 토글·닫기·재열기",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        37
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "UI04",
+      "requirement": "마우스·키보드 너비 조절 및 경계/좁은 화면",
+      "document": "docs/design/CURRENT-DESIGN-QA-PLAN.md",
+      "current_lines": [
+        9
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "UI05",
+      "requirement": "대화·모델·입력 동일 DOM, 초안·포커스·너비 유지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        37
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "UI06",
+      "requirement": "모션/3D 모달 접근·inert·복귀",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        37
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "AI01",
+      "requirement": "선택 모델이 현재 음원·장면·편집·결과 도구 지원",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        38
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "AI02",
+      "requirement": "추천 사진/자산·제안",
+      "document": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+      "current_lines": [
+        58
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "AI03",
+      "requirement": "영상의 내용 관찰과 metadata 조회 구분",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        38
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "AI04",
+      "requirement": "안전한 일반 설정 변경 실제 도구 연결",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        38
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "AI05",
+      "requirement": "플랫폼 작업 현황 진행/완료/실패",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        39
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "AI06",
+      "requirement": "미래 협업 작업자 현황은 실제 인증/참여/권한 데이터 기반",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        39
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "AI07",
+      "requirement": "3D는 선택, 기존 SceneSpec와 AI 도구 연결 구별",
+      "document": "docs/design/AI-MODELING-PLAN.md",
+      "current_lines": [
+        7
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "MODEL01",
+      "requirement": "모델별 실제 지원 추론 옵션만 표시",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        40
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "MODEL02",
+      "requirement": "추론 실효 설정·본문·실행 중 변경·재열기",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        40
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "MODEL03",
+      "requirement": "unsupported 거절·조용한 대체 금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        40
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "MODEL04",
+      "requirement": "모델 공식 옵션과 현재 transport 실행지원 구분",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        51
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM01",
+      "requirement": "permission/Full Access 권한은 서버에서 검사",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        41
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM02",
+      "requirement": "Full Access에서도 계정 삭제 항상 금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        41
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM03",
+      "requirement": "파일 등 다른 삭제는 대상·영향과 개별 명시 허용",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        41
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM04",
+      "requirement": "Full Access/무응답을 개별 삭제 허용으로 해석 금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        41
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM05",
+      "requirement": "옛 삭제허용의 다른 대상/버전/재시작 우회 차단",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        41
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM06",
+      "requirement": "Full Access는 비용·전송·권리·출력 승인 우회 아님",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        43
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM07",
+      "requirement": "AI의 자기 권한/비용/전송 범위 확장 차단",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        43
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO1A",
+      "requirement": "최신 요구·설계·계획·잔여·검증·코드 대조, 유효 조사 재사용",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        57
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO1B",
+      "requirement": "음원 중심·음원 단독·사진/3D 선택",
+      "document": "README.md",
+      "current_lines": [
+        5
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO1C",
+      "requirement": "과업/화면/API/모듈/상태/기대/방법결과/증거타임코드/상태 추적",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        61
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO1D",
+      "requirement": "요구 조용히 제외 금지·모호한 결정만 질문·독립작업 계속",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        57
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO1E",
+      "requirement": "최신 자료·원본·산출물 보존·등록승격문맥 승인범위",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        61
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2A",
+      "requirement": "실제 UI→API→검증→작업→저장→재조회→preview→편집출력다운로드",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        62
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2B",
+      "requirement": "선택 모델과 실제 실행 모델 일치",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        62
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2C",
+      "requirement": "현재 음원·장면·편집 버전·지원 도구 전달",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        62
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2D",
+      "requirement": "AI 설명·제안/preview/승인/적용/최종승인 구분",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        71
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2E",
+      "requirement": "승인 후 입력·원본·편집 버전 변경 stale 실행 차단",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        71
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2F",
+      "requirement": "대화별 이력·초안·모델 선택 격리",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        72
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2G",
+      "requirement": "공유자산/타임라인 충돌·공통 예산",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        72
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2H",
+      "requirement": "취소/timeout/재접속/재시작/unknown·상태전이/로그",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        73
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2I",
+      "requirement": "중복실행·비용 누락·확인없는 자동 재호출/무제한재시도 방지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        73
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2J",
+      "requirement": "저장 SHA/다운로드 바이트/실제 decode·재생/재열기 유지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        74
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2K",
+      "requirement": "진단ID 기본UI 숨김·증거 유지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        74
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO2L",
+      "requirement": "합성/로컬HTTP/실제렌더/실모델/관측사용량/실청구 구분",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        75
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3A",
+      "requirement": "빈 프로젝트에서 음악 단독·선택적 사진 실제UI",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        63
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3B",
+      "requirement": "독립 타이포/모션 생성·preview·지원속성 수정",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        63
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3C",
+      "requirement": "원본 저장·재생성 실제 결과 반영",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        63
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3D",
+      "requirement": "후보 비교·Take 선택·검토·필요 승인",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        63
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3E",
+      "requirement": "타임라인 순서·길이·음원 구간·자막",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        63
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3F",
+      "requirement": "기존 이미지/영상 위 타이포 합성·위치/시간 수정",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        63
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3G",
+      "requirement": "플랫폼 출력·재생·다운로드·재열기 이어쓰기",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        63
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3H",
+      "requirement": "편집가능 원본과 완성MP4·실제 drag/다중레이어 지원범위",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        77
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3I",
+      "requirement": "별도앱/수동스크립트로 누락 기능 대신 성공 보고 금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        77
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3J",
+      "requirement": "로컬서버라도 UI완주·플랫폼관리 내부렌더 허용",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        77
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO3K",
+      "requirement": "기존 음원·사진·후보·승인·출력 정상/오류/복구 보존",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        77
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO4A",
+      "requirement": "설치스킬 actual지원/읽기·명령·수동검토 구분",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        64
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO4B",
+      "requirement": "사용자결정 유지·진단숨김/비용권리오류복구 적시노출",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        64
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO4C",
+      "requirement": "중복입력/단계 병합·중요 결정 임의자동화 금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        64
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO4D",
+      "requirement": "preview·편집반영·로딩/실패/완료·키보드포커스",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        64
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO5A",
+      "requirement": "설치된녹화도구 실제플랫폼조작 녹화·녹화본재생/내용",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        65
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO5B",
+      "requirement": "녹화 시작입력·타이포전후·편집·승인출력·재생다운로드재열기·오류복구",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        65
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO5C",
+      "requirement": "연속정상흐름·편집배속생략/실패수동개입무음공개",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        65
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO5D",
+      "requirement": "녹화전 키·개인정보 노출 방지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        65
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO5E",
+      "requirement": "1차 녹화·타임코드·출력·추적결과·내부설계차이·미검증 전달",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        65
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO5F",
+      "requirement": "사용자 녹화검토+명시승인전 실제AI영상 금지/무응답승인금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        79
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO5G",
+      "requirement": "실제Claude 모델·자료·예산 별도확인,미호출합성표기",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        79
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO6A",
+      "requirement": "1차승인≠무제한비용·모델/자료/규격/길이/횟수/최대비용/보관/실패비용 구체승인",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        66
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO6B",
+      "requirement": "실제생성→수신저장preview→후보수정재생성→타이포음원자막→승인출력재생다운로드재열기",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        66
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO6C",
+      "requirement": "실패취소unknown 기존상태/비용 먼저조회 예산초과 재시도금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        73
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO7A",
+      "requirement": "실제AI요청~최종출력 2차 플랫폼녹화",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        67
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO7B",
+      "requirement": "완성뮤비·2차녹화·타임코드/편집·산출물연결·관측사용량·확정청구·잔여",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        67
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO7C",
+      "requirement": "내부기록과 일반UI분리·시연성공과출시준비분리",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        67
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO7D",
+      "requirement": "어떤요구/실제결과·잔여·종료근거 설명가능",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        79
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DOC01",
+      "requirement": "문서 병렬갱신·기존기록보존·미구현완료금지",
+      "document": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md",
+      "current_lines": [
+        78
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DOC02",
+      "requirement": "스킬명/도구실제사용·detector실행vs합격",
+      "document": "docs/design/CURRENT-DESIGN-QA-PLAN.md",
+      "current_lines": [
+        17
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM08",
+      "requirement": "3모드: read_only/review기본/full_access",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        45
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM09",
+      "requirement": "FullAccess 비삭제성timeline화이트리스트 새미승인버전auto-save,사람/출력승인위조금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        45
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM10",
+      "requirement": "remove/clear는 제안·개별사람승인",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        45
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM11",
+      "requirement": "사용자명시모드변경전review기본유지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        47
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "PERM12",
+      "requirement": "권한축소즉시새쓰기차단,확장새확인다음turn",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        47
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "MODEL05",
+      "requirement": "Haiku low/medium/high실행계획 vsadaptive xhigh/max 후속",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        47
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DEMO5H",
+      "requirement": "실제화면녹화를결과영상파일만/재현설명영상으로대체금지",
+      "document": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_lines": [
+        65
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DOC03",
+      "requirement": "canonical전체계획의최신범위·순서·종료증거연결",
+      "document": "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+      "current_lines": [
+        11
+      ],
+      "phrase_present": true
+    },
+    {
+      "id": "DOC04",
+      "requirement": "디자인진입점새chat/QA/plan연결과옛690/416역사구분",
+      "document": "docs/qa/design-system-redesign-20261026/INDEX.md",
+      "current_lines": [
+        7
+      ],
+      "phrase_present": true
+    }
+  ],
+  "current9files": [
+    {
+      "path": "README.md",
+      "current_sha256": "5fe03d144834f13d3dfcdb28c54e67a66def30ee5b762374e20b2fa31b67eba3",
+      "expected_sha256": "5fe03d144834f13d3dfcdb28c54e67a66def30ee5b762374e20b2fa31b67eba3",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+      "current_sha256": "a1c1b6c3d64e17f903cb98f4439595b0259bb0c9f9debd1c77bc3d2193372f41",
+      "expected_sha256": "a1c1b6c3d64e17f903cb98f4439595b0259bb0c9f9debd1c77bc3d2193372f41",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/REMAINING-WORK.md",
+      "current_sha256": "2eeb5610fc60b4bc41f255ebc944079d5cfae8b4e5632bb5b60c0d5f08c7f3f6",
+      "expected_sha256": "2eeb5610fc60b4bc41f255ebc944079d5cfae8b4e5632bb5b60c0d5f08c7f3f6",
+      "matches": true
+    },
+    {
+      "path": "docs/design/CHAT-SESSION-PLAN.md",
+      "current_sha256": "e062ae54bb75c66a6ddfbec1b3018169a66fee0e0bfc099d4e3f5928cd0ed3ac",
+      "expected_sha256": "e062ae54bb75c66a6ddfbec1b3018169a66fee0e0bfc099d4e3f5928cd0ed3ac",
+      "matches": true
+    },
+    {
+      "path": "docs/design/CURRENT-DESIGN-QA-PLAN.md",
+      "current_sha256": "e86b0d0ae620d767a0ff642be690d673825ec766ab2ccd8c7bf55871b18b498c",
+      "expected_sha256": "e86b0d0ae620d767a0ff642be690d673825ec766ab2ccd8c7bf55871b18b498c",
+      "matches": true
+    },
+    {
+      "path": "docs/WORKFLOW-EXECUTION-GUIDE-ko.md",
+      "current_sha256": "2388e8914b6a33f9da60cf445f5f149291d6437870508f286955a3743688794c",
+      "expected_sha256": "2388e8914b6a33f9da60cf445f5f149291d6437870508f286955a3743688794c",
+      "matches": true
+    },
+    {
+      "path": "docs/design/AI-MODELING-PLAN.md",
+      "current_sha256": "105905eaa902af5989a07b68b436879169f5dcf889e69f35aed2e88023a21bf2",
+      "expected_sha256": "105905eaa902af5989a07b68b436879169f5dcf889e69f35aed2e88023a21bf2",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+      "current_sha256": "2130e2303900c38252d9f28a70ef09a1e01d63778fd6a41e2cb4e02b9aa09c12",
+      "expected_sha256": "2130e2303900c38252d9f28a70ef09a1e01d63778fd6a41e2cb4e02b9aa09c12",
+      "matches": true
+    },
+    {
+      "path": "docs/qa/design-system-redesign-20261026/INDEX.md",
+      "current_sha256": "46c6bbae29030b634c54549d2f3de892e6a6352bcafec41871431ce5a3d508d8",
+      "expected_sha256": "46c6bbae29030b634c54549d2f3de892e6a6352bcafec41871431ce5a3d508d8",
+      "matches": true
+    }
+  ],
+  "proposal_source_hash_mismatches": [],
+  "claim_limit": "Exact-phrase preservation check; independent semantic review and product execution are separate"
+}

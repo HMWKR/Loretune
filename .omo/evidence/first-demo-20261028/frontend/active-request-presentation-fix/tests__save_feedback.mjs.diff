@@ -1,0 +1,11 @@
+--- tests/save_feedback.mjs before
++++ tests/save_feedback.mjs current
+@@ -3,7 +3,7 @@
+ const extract=(start,end)=>html.slice(html.indexOf(start),html.indexOf(end,html.indexOf(start)));
+ const nodes=new Map();const node=id=>{if(!nodes.has(id))nodes.set(id,{disabled:false,hidden:false,dataset:{},textContent:'검토 변경 저장',hasAttribute:()=>false,focus(){},setAttribute(){}});return nodes.get(id)};
+ let pending='r1',calls=[],refreshFail=false,cleared=[];
+-const context=vm.createContext({console,Map,Set,Error,encodeURIComponent,document:{querySelectorAll:()=>[],querySelector:s=>node(s),getElementById:()=>null},$:node,state:{token:'synthetic'},busy:false,pendingId:()=>pending,clearPending:()=>{pending=null},refresh:async()=>{if(refreshFail)throw Error('refresh')},message:()=>{},drawModelChat:()=>{},renderTakeReview:()=>{},updateRecovery:()=>{},productionReviewErrors:new Map(),takeReviewStore:{clearRevision:(key,rev)=>cleared.push([key,rev])},fetch:async()=>{throw Error('unconfigured')}});
++const context=vm.createContext({console,Map,Set,Error,encodeURIComponent,document:{querySelectorAll:()=>[],querySelector:s=>node(s),getElementById:()=>null},$:node,state:{token:'synthetic'},busy:false,activeMutationRequestId:null,pendingId:()=>pending,clearPending:()=>{pending=null},refresh:async()=>{if(refreshFail)throw Error('refresh')},message:()=>{},drawModelChat:()=>{},renderTakeReview:()=>{},updateRecovery:()=>{},productionReviewErrors:new Map(),takeReviewStore:{clearRevision:(key,rev)=>cleared.push([key,rev])},fetch:async()=>{throw Error('unconfigured')}});
+ vm.runInContext(extract('async function sendRequest(', 'async function act(')+extract('async function reconcilePendingRequest()',"$('#recoverRequest').onclick=")+extract('function reviewSaveFeedback(', 'function renderProductionReviewFeedback('),context);
+ async function attempt(response){pending='r1';let outcomes=[];context.fetch=async()=>{if(response instanceof Error)throw response;return response};const ok=await context.sendRequest({request_id:'r1',action:'review_take'},undefined,x=>outcomes.push(x));return {ok,outcomes}}
+ let x=await attempt({ok:false,status:400,json:async()=>({error:'invalid input'})});assert.equal(x.outcomes[0].status,'rejected');assert.equal(pending,null);

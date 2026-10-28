@@ -1,0 +1,62 @@
+{
+  "at": "2026-10-28T06:20:31.559734+00:00",
+  "status": "ACCEPTED_SCOPED_REVIEW_NAVIGATION",
+  "exit_proof": "Exact server turn/run/action relation, current source hashes, sixAPI/VM and sixexistingUI checks, actual three-width/native-modal/draft/focus cases, read-only SQL/POST evidence, decoded and played continuous screen recording; docs/handoff and stop boundary separately recorded",
+  "source_hashes": {
+    "chat_general.py": "b6f034e190935dd4aff9537bb2157da80d3256f1316fd5cc5820394cff2e1c37",
+    "general-chat-ui.js": "696ad6133990a55386e49da4d4d2b2a0319f31ea9c7c5be5bde7a3f59e580ead",
+    "chat-sidebar.js": "1709be3c9bee6b7f699757d43d2f49e5d5579058f62433981fde2b49646e4053",
+    "tests/test_general_chat_review_navigation.py": "caf90b6d72ef400c7bfc494b444f51ad09e6ea21bd7e969462eccebab505f2c6",
+    "tests/general_chat_review_navigation.cjs": "ebfe09a3bd07b69171e57e488dd3bce107d5446d68ddaec8661763f9108b2165"
+  },
+  "actual_ui": ".omo/evidence/chat-review-navigation-20261028/worker/attempt-2026-10-28T06-10-33-333Z/actual-ui-result.json",
+  "new_checks": {
+    "count": 6,
+    "seconds": 4.572,
+    "log": ".omo/evidence/chat-review-navigation-20261028/worker/api-navigation-tests.log"
+  },
+  "related_ui_checks": {
+    "count": 6,
+    "seconds": 10.112,
+    "log": ".omo/evidence/chat-review-navigation-20261028/worker/related-ui-tests.log"
+  },
+  "independent_review": {
+    "agent": "/root/read_agent_next_tool_gap",
+    "result": "Scoped acceptance; P2 folded-details failure reproduced/fixed, no additional confirmed defect. Read source/evidence/hash only."
+  },
+  "recording": {
+    "file": ".omo/evidence/chat-review-navigation-20261028/worker/review-navigation-demo.mp4",
+    "sha256": "beae71ddbcac9566d57e4439e238913ec0969c1e921f0238db7ccce868f7fba5",
+    "captured_seconds": 9.273,
+    "mp4_seconds": 9.291667,
+    "full_decode_exit": 0,
+    "native_playback_ended": true,
+    "edited": false,
+    "sped_up": false,
+    "audio": "silent actual UI capture"
+  },
+  "root_viewed": [
+    "worker/attempt-2026-10-28T06-10-33-333Z/review-button-1920.png",
+    "worker/attempt-2026-10-28T06-10-33-333Z/review-card-375.png"
+  ],
+  "read_only_evidence": "Independent reviewer directly compared all SQLite table hashes/counts before/after; UI report nav POST0; no model/media executions",
+  "cleanup": {
+    "own_fixture_port": 59978,
+    "port_closed": true,
+    "fixture_exit_code": 0,
+    "owned_chrome_processes_remaining": [],
+    "browser_close_receipts": [
+      ".omo/evidence/chat-review-navigation-20261028/worker/attempt-2026-10-28T06-10-33-333Z/browser-stop.json",
+      ".omo/evidence/chat-review-navigation-20261028/worker/attempt-2026-10-28T06-09-37-698Z/browser-stop.json",
+      ".omo/evidence/chat-review-navigation-20261028/worker/attempt-2026-10-28T06-08-40-328Z/browser-stop.json"
+    ],
+    "worker_threads_still_alive": [],
+    "user_8765_review_57888_ego_space4_accessed": false
+  },
+  "limits": [
+    "925full regression belongs to pre-navigation baseline, not rerun for these edits",
+    "200percent is halfCSSviewport/scale2 reflow, not native menu zoom",
+    "No actual Claude, media generation, billing, full a11y or production readiness claim"
+  ],
+  "after_current_task": "Stop implementation per latest user; full objective remains incomplete"
+}

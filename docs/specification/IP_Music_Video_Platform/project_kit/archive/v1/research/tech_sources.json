@@ -1,0 +1,188 @@
+{
+  "as_of": "2026-10-23",
+  "status": "research_for_design_not_product_validation",
+  "sources": [
+    {
+      "id": "S-T01",
+      "title": "PostgreSQL — Row Security Policies",
+      "url": "https://www.postgresql.org/docs/current/ddl-rowsecurity.html",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn106view0",
+      "supported_claims": [
+        "행 보안 정책은 행의 조회와 변경을 제한한다.",
+        "superuser와 BYPASSRLS 역할은 우회하며, 테이블 owner도 기본적으로 우회한다. FORCE ROW LEVEL SECURITY를 적용할 수 있다."
+      ],
+      "design_inference_and_limits": "본 스키마의 tenant RLS, runtime role 비소유자, 객체 권한 별도 검사의 근거. 플랫폼이 안전하게 구현되었다는 증거는 아니다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T02",
+      "title": "PostgreSQL — SELECT / SKIP LOCKED",
+      "url": "https://www.postgresql.org/docs/current/sql-select.html",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn107view0",
+      "supported_claims": [
+        "SKIP LOCKED는 잠긴 행을 건너뛴다.",
+        "일반적인 일관된 조회에는 부적절하지만 여러 소비자의 큐 형태 테이블에서 잠금 경합 회피에 사용할 수 있다."
+      ],
+      "design_inference_and_limits": "초기 PostgreSQL durable job/outbox 설계 선택의 근거. 외부 API 실행의 exactly-once나 자동 비용 멱등성을 제공한다는 뜻은 아니다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T03",
+      "title": "pgvector official repository",
+      "url": "https://github.com/pgvector/pgvector",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn107view1",
+      "supported_claims": [
+        "근사 인덱스의 필터는 인덱스 스캔 뒤 적용되어 필요한 결과 수가 부족할 수 있다.",
+        "iterative scan, partial indexing, partitioning 등 조정이 설명되어 있다.",
+        "다중 테넌트 근사 인덱스 공유가 recall과 속도에 영향을 줄 수 있음을 문서화한다."
+      ],
+      "design_inference_and_limits": "권한 필터를 포함한 정확 검색으로 시작하고 ANN 전환 시 recall·격리를 평가하도록 설계. 특정 성능 수치는 사용하지 않는다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T04",
+      "title": "FastAPI — Background Tasks",
+      "url": "https://fastapi.tiangolo.com/tutorial/background-tasks/",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn107view2",
+      "supported_claims": [
+        "응답 후 background task를 수행할 수 있다.",
+        "무거운 계산에는 별도 프로세스·서버에서 수행하는 더 큰 작업 도구가 유용할 수 있음을 설명한다."
+      ],
+      "design_inference_and_limits": "요청 프로세스와 긴 생성·렌더 작업을 분리하는 설계 근거. 선택한 PostgreSQL 큐의 내구성은 이 문서에서 보장하지 않는다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T05",
+      "title": "Amazon S3 — Event notification ordering and duplicates",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/notification-how-to-event-types-and-destinations.html",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn107view3",
+      "supported_claims": [
+        "S3 이벤트 알림은 적어도 한 번 전달하도록 설계된다.",
+        "발생 순서와 전달 순서가 같다고 보장하지 않으며 중복 알림이 가능하다."
+      ],
+      "design_inference_and_limits": "객체 알림의 inbox·중복 제거·역순 상태 방어에 반영. 영상 생성 공급자의 이벤트 계약은 별도로 확인해야 한다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T06",
+      "title": "Amazon S3 — Using presigned URLs",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn105view1",
+      "supported_claims": [
+        "서명 URL은 생성자의 권한으로 제한되며 URL 보유자가 사용할 수 있는 bearer token 성격이다.",
+        "자격 증명이 먼저 만료되거나 철회되면 지정한 URL 기간보다 짧아질 수 있다."
+      ],
+      "design_inference_and_limits": "짧은 URL 유효기간·로그 마스킹·민감 리뷰의 권한 확인 프록시는 제안 설계다. 5분은 AWS가 정한 필수값이 아니다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T07",
+      "title": "FFmpeg official repository — FAQ source",
+      "url": "https://github.com/FFmpeg/FFmpeg/blob/master/doc/faq.texi",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn117view0",
+      "supported_claims": [
+        "FFmpeg 공식 FAQ는 영상 결합에 concat filter 사용을 설명한다.",
+        "필터·미디어 변환 기능은 제작 파이프라인의 기반으로 사용할 수 있다."
+      ],
+      "design_inference_and_limits": "FFmpeg 기반 합성의 기술적 근거이며 A/V drift·인코딩 속도·우리 편집 UI 품질은 직접 시험이 필요하다. ffmpeg.org 직접 열기 시간초과로 공식 GitHub 문서도 확인했다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T08",
+      "title": "Runway — API Pricing & Costs",
+      "url": "https://docs.dev.runwayml.com/guides/pricing/",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn105view3",
+      "supported_claims": [
+        "확인일 기준 API 크레딧 단가는 1크레딧당 USD 0.01로 명시되어 있다.",
+        "예시 Gen-4 Turbo는 초당 5크레딧, Gen-4.5는 초당 12크레딧이다.",
+        "모델에 따라 출력뿐 아니라 입력·참조 미디어·최소 과금 등 단위가 다르다."
+      ],
+      "design_inference_and_limits": "가격 버전·최소 단위·입력 과금·실제 원가 대사가 필요한 근거. 소비자 웹 구독 단가로 환산하거나 모든 영상 모델에 같은 단가를 적용하지 않는다. 세금·환율·지원·저장 비용 별도.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T09",
+      "title": "OWASP — File Upload Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn117view2",
+      "supported_claims": [
+        "Content-Type은 위조 가능하므로 단독 신뢰할 수 없다.",
+        "필요한 확장자 허용, 파일 타입·시그니처 검사, 안전한 파일명·크기 제한·권한·격리 저장·악성 검사 등 다층 통제를 안내한다."
+      ],
+      "design_inference_and_limits": "제안된 검역 업로드 파이프라인의 근거. 허용 형식·정확한 크기 상한·검사 도구·복구 시간은 자체 정책으로 확정해야 한다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T10",
+      "title": "OWASP — Server Side Request Forgery Prevention",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn117view3",
+      "supported_claims": [
+        "서버가 외부 요청을 수행할 때 allowlist와 네트워크 수준 통제를 검토한다.",
+        "redirect로 검증을 우회하는 위험을 설명하며 자동 redirect 비활성화 등을 안내한다."
+      ],
+      "design_inference_and_limits": "기본 redirect 거부, 불가피한 허용 redirect의 매 단계 재검증, 제한 수집 워커·private 목적지 차단으로 구체화한 자체 설계. 임의 URL을 안전하다고 보장하지 않는다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T11",
+      "title": "PostgreSQL — Continuous Archiving and PITR",
+      "url": "https://www.postgresql.org/docs/current/continuous-archiving.html",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn116view3",
+      "supported_claims": [
+        "파일시스템 수준 base backup과 WAL 재생으로 시점 복구를 구성할 수 있다.",
+        "연속 WAL 보관과 복구 절차 검증이 필요하며 logical dump만으로 WAL 재생 기반 복구가 되는 것은 아니다."
+      ],
+      "design_inference_and_limits": "RPO 15분·RTO 4시간은 본 제품의 제안 목표이며 문서가 보장하는 수치가 아니다. 객체 저장소·키·삭제 tombstone 복구는 별도 시험 대상.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    },
+    {
+      "id": "S-T12",
+      "title": "OpenTelemetry — Signals",
+      "url": "https://opentelemetry.io/docs/concepts/signals/",
+      "checked_at": "2026-10-23",
+      "source_type": "primary_official_documentation",
+      "retrieval_ref": "turn117view4",
+      "supported_claims": [
+        "OpenTelemetry는 시스템 활동을 나타내는 신호를 수집·처리·내보내기 위한 체계를 설명한다.",
+        "traces, metrics, logs 등을 지원한다고 설명한다."
+      ],
+      "design_inference_and_limits": "요청부터 작업·공급자 시도·렌더·원가까지 추적하는 기반 선택의 근거. 채택률·기억 효과·수정 시간 지표는 제품에서 직접 정의하고 계측해야 한다.",
+      "verbatim_quote_words": 0,
+      "attribution_budget_words": 150
+    }
+  ]
+}

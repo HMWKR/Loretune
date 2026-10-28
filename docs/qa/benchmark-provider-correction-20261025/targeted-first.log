@@ -1,0 +1,45 @@
+test_new_competitor_action_blocked_but_old_data_preserved (tests.test_runway_image_pipeline.BenchmarkExclusionTest.test_new_competitor_action_blocked_but_old_data_preserved) ... ok
+test_retired_stub_fails_before_transport (tests.test_runway_image_pipeline.BenchmarkExclusionTest.test_retired_stub_fails_before_transport) ... ok
+test_runtime_has_no_competitor_import_or_endpoint (tests.test_runway_image_pipeline.BenchmarkExclusionTest.test_runtime_has_no_competitor_import_or_endpoint) ... ok
+test_runway_absent_from_catalog_and_resolver_rejects (tests.test_runway_image_pipeline.BenchmarkExclusionTest.test_runway_absent_from_catalog_and_resolver_rejects) ... ok
+test_cancel_before_submit_only_and_post_submit_never_deletes (tests.test_image_pipeline.ImagePipelineTest.test_cancel_before_submit_only_and_post_submit_never_deletes) ... ok
+test_chat_handoff_does_not_invalidate_media (tests.test_image_pipeline.ImagePipelineTest.test_chat_handoff_does_not_invalidate_media) ... ok
+test_concurrent_admit_and_worker_only_submit_once (tests.test_image_pipeline.ImagePipelineTest.test_concurrent_admit_and_worker_only_submit_once) ... ok
+test_generic_contract_registers_unapproved_take_and_same_action_receipt (tests.test_image_pipeline.ImagePipelineTest.test_generic_contract_registers_unapproved_take_and_same_action_receipt) ... ok
+test_image_denied_download_cannot_use_legacy_resume_endpoint (tests.test_image_pipeline.ImagePipelineTest.test_image_denied_download_cannot_use_legacy_resume_endpoint) ... ok
+test_provider_failure_and_cancelled_are_terminal_but_not_free (tests.test_image_pipeline.ImagePipelineTest.test_provider_failure_and_cancelled_are_terminal_but_not_free) ... ok
+test_result_registration_rollback_is_recoverable_same_request_no_auto_submit (tests.test_image_pipeline.ImagePipelineTest.test_result_registration_rollback_is_recoverable_same_request_no_auto_submit) ... ok
+test_revoked_rights_grant_and_changed_media_block_before_submit (tests.test_image_pipeline.ImagePipelineTest.test_revoked_rights_grant_and_changed_media_block_before_submit) ... ok
+test_role_scope_and_human_gate_not_model_flags (tests.test_image_pipeline.ImagePipelineTest.test_role_scope_and_human_gate_not_model_flags) ... ok
+test_unknown_submit_survives_restart_without_reissue (tests.test_image_pipeline.ImagePipelineTest.test_unknown_submit_survives_restart_without_reissue) ... ok
+test_wrong_dimensions_or_truncation_never_publish_asset (tests.test_image_pipeline.ImagePipelineTest.test_wrong_dimensions_or_truncation_never_publish_asset) ... ok
+test_local_vtt_mime_and_incomplete_unknown_host_denials (tests.test_caption_image_recovery.CaptionHTTPTest.test_local_vtt_mime_and_incomplete_unknown_host_denials) ... 127.0.0.1 - - [25/Oct/2026 23:02:45] "GET /exports/8c5a35bc594c42dda8b2d9a020ca0157.vtt HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 23:02:45] "GET /exports/8c5a35bc594c42dda8b2d9a020ca0157.vtt HTTP/1.1" 403 -
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 403: 'Forbidden'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+127.0.0.1 - - [25/Oct/2026 23:02:45] "GET /exports/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.vtt HTTP/1.1" 404 -
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 404: 'Not Found'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+127.0.0.1 - - [25/Oct/2026 23:02:45] "GET /exports/8c5a35bc594c42dda8b2d9a020ca0157.vtt HTTP/1.1" 409 -
+/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/tempfile.py:538: ResourceWarning: Implicitly cleaning up <HTTPError 409: 'Conflict'>
+  _warnings.warn(self.warn_message, ResourceWarning)
+ok
+test_restricted_principal_cannot_read_legacy_captions (tests.test_caption_image_recovery.CaptionHTTPTest.test_restricted_principal_cannot_read_legacy_captions) ... 127.0.0.1 - - [25/Oct/2026 23:02:45] "GET /exports/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.vtt HTTP/1.1" 403 -
+ok
+test_actual_render_caption_version_survives_edit_restart_and_rights_gate (tests.test_caption_image_recovery.CaptionPreviewTest.test_actual_render_caption_version_survives_edit_restart_and_rights_gate) ... ok
+test_missing_unapproved_incomplete_and_changed_media_rejected (tests.test_caption_image_recovery.CaptionPreviewTest.test_missing_unapproved_incomplete_and_changed_media_rejected) ... ok
+test_unicode_markup_blank_lines_and_export_rounding (tests.test_caption_image_recovery.CaptionPreviewTest.test_unicode_markup_blank_lines_and_export_rounding) ... ok
+test_actual_renderer_binds_approved_export_and_disables_unconfigured (tests.test_caption_image_recovery.CaptionRecoveryUITest.test_actual_renderer_binds_approved_export_and_disables_unconfigured) ... ok
+test_403_needs_new_matching_permission_evidence_and_one_use (tests.test_caption_image_recovery.ImageRecoveryTest.test_403_needs_new_matching_permission_evidence_and_one_use) ... ok
+test_existing_status_query_does_not_implicitly_collect_or_submit (tests.test_caption_image_recovery.ImageRecoveryTest.test_existing_status_query_does_not_implicitly_collect_or_submit) ... ok
+test_four_readiness_states_never_enable_fake_or_read_environment (tests.test_caption_image_recovery.ImageRecoveryTest.test_four_readiness_states_never_enable_fake_or_read_environment) ... ok
+test_gate_payload_scope_expiry_and_revocation_block_before_io (tests.test_caption_image_recovery.ImageRecoveryTest.test_gate_payload_scope_expiry_and_revocation_block_before_io) ... ok
+test_manual_collect_is_same_receipt_take_once_and_preserves_selection (tests.test_caption_image_recovery.ImageRecoveryTest.test_manual_collect_is_same_receipt_take_once_and_preserves_selection) ... ok
+test_pending_status_stops_after_one_read_and_keeps_unknown_cost (tests.test_caption_image_recovery.ImageRecoveryTest.test_pending_status_stops_after_one_read_and_keeps_unknown_cost) ... ok
+test_restart_running_recovery_never_reissues (tests.test_caption_image_recovery.ImageRecoveryTest.test_restart_running_recovery_never_reissues) ... ok
+test_unknown_receipt_and_cross_project_never_generate (tests.test_caption_image_recovery.ImageRecoveryTest.test_unknown_receipt_and_cross_project_never_generate) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 4.942s
+
+OK

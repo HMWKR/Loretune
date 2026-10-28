@@ -1,0 +1,21 @@
+{
+  "model": "claude-haiku-5-5",
+  "request_id": "req_011CgRNLnCFwLX17XpZdzpX8",
+  "input_sha256": "6bbacfa9875028c8c81a4eeb6ce6ce8aa63a8485884da1b98283dac5ea2db096",
+  "output_sha256": "57dc2246d7be741fee3d06a84da5f3395db66433cfa51a359cc298e24eda0184",
+  "input_tokens_counted": 2540,
+  "usage": {
+    "input_tokens": 2540,
+    "output_tokens": 1360
+  },
+  "usage_cost_usd": "0.000934",
+  "visible_response": [
+    {
+      "type": "text",
+      "text": "**1. 모션 버전1의 상태:** 구성으로 저장·적용된 상태입니다. `motion.revision`이 1이고, 같은 `motion_revision=1`과 `scene_hash`에 대한 로컬 모션 후보 승인(`approval_status=recorded`, grant `4f5e2a85…`)이 기록되어 있습니다. 다만 승인은 `local-motion-candidate` 범위에만 해당하며, `requires_revalidation=true`이므로 실행 시 서버가 다시 검사합니다.\n\n**2. 타임라인 채택과의 구분:** 타임라인은 아직 채택되지 않았습니다. `timeline.version=0`, 클립의 `take`가 `null`, `audio_version`이 `null`입니다. 따라서 모션 버전1이 저장·적용된 구성이라는 사실과 타임라인에 채택되었다는 사실은 별개입니다.\n\n**3. 새 변경안:** 제안 `fdbbacb7…`이 하나 있습니다. 기준 revision은 1이고 `status=proposed`, `applied=false`, `requires_human_review=true`입니다. 아직 적용되거나 승인되지 않았습니다.\n\n**4. 최종 납품 승인:** 없습니다. `plans`와 `actions`가 비어 있고, 실행 대상 action의 승인 핸들도 없습니다. 온톨로지도 `null`이며 `revision=0`이라 정본으로 적용되지 않았습니다.\n\n**5. Take 미채택·원음 미등록의 필수 여부:** 근거상 필수조건이 아닙니다. 로컬 모션 후보 렌더는 채택된 타임라인 Take나 프로젝트 오디오를 요구하지 않습니다. 현재 `take`는 `null`, `audio_version`도 `null`이지만 이는 이 후보 렌더의 차단 사유로 제시되지 않습니다.\n\n**6. 지금 실행 가능하다고 확정할 수 있는가:** 확정할 수 없습니다. 승인은 실행 시 서버가 권리, 입력, 맥락, 장면, 폰트 검사를 다시 수행해야 하며 `requires_revalidation=true`입니다. 또한 조회된 맥락의 `snapshot`과 `sources`가 비어 있고 온톨로지도 `null`이어서, 현재 맥락 일치 여부는 서버 재검증 결과 전까지 알 수 없습니다. 폰트 `system-ko-regular`의 사용 가능 여부도 이 응답만으로는 확인되지 않습니다."
+    }
+  ],
+  "answer": "**1. 모션 버전1의 상태:** 구성으로 저장·적용된 상태입니다. `motion.revision`이 1이고, 같은 `motion_revision=1`과 `scene_hash`에 대한 로컬 모션 후보 승인(`approval_status=recorded`, grant `4f5e2a85…`)이 기록되어 있습니다. 다만 승인은 `local-motion-candidate` 범위에만 해당하며, `requires_revalidation=true`이므로 실행 시 서버가 다시 검사합니다.\n\n**2. 타임라인 채택과의 구분:** 타임라인은 아직 채택되지 않았습니다. `timeline.version=0`, 클립의 `take`가 `null`, `audio_version`이 `null`입니다. 따라서 모션 버전1이 저장·적용된 구성이라는 사실과 타임라인에 채택되었다는 사실은 별개입니다.\n\n**3. 새 변경안:** 제안 `fdbbacb7…`이 하나 있습니다. 기준 revision은 1이고 `status=proposed`, `applied=false`, `requires_human_review=true`입니다. 아직 적용되거나 승인되지 않았습니다.\n\n**4. 최종 납품 승인:** 없습니다. `plans`와 `actions`가 비어 있고, 실행 대상 action의 승인 핸들도 없습니다. 온톨로지도 `null`이며 `revision=0`이라 정본으로 적용되지 않았습니다.\n\n**5. Take 미채택·원음 미등록의 필수 여부:** 근거상 필수조건이 아닙니다. 로컬 모션 후보 렌더는 채택된 타임라인 Take나 프로젝트 오디오를 요구하지 않습니다. 현재 `take`는 `null`, `audio_version`도 `null`이지만 이는 이 후보 렌더의 차단 사유로 제시되지 않습니다.\n\n**6. 지금 실행 가능하다고 확정할 수 있는가:** 확정할 수 없습니다. 승인은 실행 시 서버가 권리, 입력, 맥락, 장면, 폰트 검사를 다시 수행해야 하며 `requires_revalidation=true`입니다. 또한 조회된 맥락의 `snapshot`과 `sources`가 비어 있고 온톨로지도 `null`이어서, 현재 맥락 일치 여부는 서버 재검증 결과 전까지 알 수 없습니다. 폰트 `system-ko-regular`의 사용 가능 여부도 이 응답만으로는 확인되지 않습니다.",
+  "stop_reason": "end_turn",
+  "server_lookup_not_model_tool_roundtrip": true
+}

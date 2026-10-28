@@ -1,0 +1,711 @@
+{
+  "name": "디자인 다중장면 QA 20261025 1330",
+  "ip": "default",
+  "snapshot": [],
+  "shots": {
+    "01 도입 · 첫 빛": {
+      "description": "합성 검증용 도입 장면. 실제 AI 생성 영상이 아닌 로컬 단색 미디어로 선택과 승인을 구분합니다.",
+      "takes": [
+        {
+          "id": 1,
+          "asset": "/private/tmp/loretune-ms-qa-20261025/assets/ab85fdda6ee4b234ca0b8e6b56379af42b13bd487fe5bfbf36438b0ffd505b30.png",
+          "sha256": "ab85fdda6ee4b234ca0b8e6b56379af42b13bd487fe5bfbf36438b0ffd505b30",
+          "reason": "로컬 합성 이미지 후보 · AI 생성 아님",
+          "metadata": {
+            "duration": 0.0,
+            "codec": "png",
+            "width": 1920,
+            "height": 1080,
+            "sample_rate": null,
+            "channels": null
+          },
+          "rights": "기존 로컬 synthetic QA fixture 재사용",
+          "filename": "synthetic-collected.png",
+          "reference_version_at_upload": null
+        },
+        {
+          "id": 2,
+          "asset": "/private/tmp/loretune-ms-qa-20261025/assets/cab7433c888ad4579067e20906d6e6b4034b208cf503669408594e4f16fc4509.mp4",
+          "sha256": "cab7433c888ad4579067e20906d6e6b4034b208cf503669408594e4f16fc4509",
+          "reason": "로컬 합성 2초 영상 후보 · AI 생성 아님",
+          "metadata": {
+            "duration": 2.0,
+            "codec": "h264",
+            "width": 1920,
+            "height": 1080,
+            "sample_rate": null,
+            "channels": null
+          },
+          "rights": "기존 로컬 synthetic QA fixture 재사용",
+          "filename": "integrated-final.mp4",
+          "reference_version_at_upload": null
+        }
+      ],
+      "selected": 2,
+      "revision": 8,
+      "reviews": [
+        {
+          "take": 1,
+          "decision": "approved",
+          "reason": "합성 디자인 QA 상태 구분 검증 · 승인",
+          "actor": "local-owner",
+          "at": 1792935052.647315
+        },
+        {
+          "take": 2,
+          "decision": "approved",
+          "reason": "통합 QA: 선택과 승인 분리 및 자막 출력 검증을 위한 합성 Take 승인",
+          "actor": "local-owner",
+          "at": 1792938117.048418
+        }
+      ],
+      "semantic_impact": []
+    },
+    "02 전개 · 긴 한국어 설명을 읽는 장면": {
+      "description": "긴 한국어 설명과 여러 후보의 구분을 확인합니다. 승인된 Take와 현재 선택된 Take가 다를 수 있으며 타임라인 출력 선택은 별도로 확인해야 합니다.",
+      "takes": [
+        {
+          "id": 1,
+          "asset": "/private/tmp/loretune-ms-qa-20261025/assets/ab85fdda6ee4b234ca0b8e6b56379af42b13bd487fe5bfbf36438b0ffd505b30.png",
+          "sha256": "ab85fdda6ee4b234ca0b8e6b56379af42b13bd487fe5bfbf36438b0ffd505b30",
+          "reason": "로컬 합성 이미지 후보 · AI 생성 아님",
+          "metadata": {
+            "duration": 0.0,
+            "codec": "png",
+            "width": 1920,
+            "height": 1080,
+            "sample_rate": null,
+            "channels": null
+          },
+          "rights": "기존 로컬 synthetic QA fixture 재사용",
+          "filename": "synthetic-collected.png",
+          "reference_version_at_upload": null
+        },
+        {
+          "id": 2,
+          "asset": "/private/tmp/loretune-ms-qa-20261025/assets/cab7433c888ad4579067e20906d6e6b4034b208cf503669408594e4f16fc4509.mp4",
+          "sha256": "cab7433c888ad4579067e20906d6e6b4034b208cf503669408594e4f16fc4509",
+          "reason": "로컬 합성 2초 영상 후보 · AI 생성 아님",
+          "metadata": {
+            "duration": 2.0,
+            "codec": "h264",
+            "width": 1920,
+            "height": 1080,
+            "sample_rate": null,
+            "channels": null
+          },
+          "rights": "기존 로컬 synthetic QA fixture 재사용",
+          "filename": "integrated-final.mp4",
+          "reference_version_at_upload": null
+        }
+      ],
+      "selected": 2,
+      "revision": 4,
+      "reviews": [
+        {
+          "take": 2,
+          "decision": "approved",
+          "reason": "합성 디자인 QA 상태 구분 검증 · 승인",
+          "actor": "local-owner",
+          "at": 1792935082.0349069
+        }
+      ],
+      "semantic_impact": []
+    },
+    "03 마무리 · 다시 검토": {
+      "description": "거절된 후보와 미검토 후보가 함께 있는 합성 검증 장면입니다.",
+      "takes": [
+        {
+          "id": 1,
+          "asset": "/private/tmp/loretune-ms-qa-20261025/assets/ab85fdda6ee4b234ca0b8e6b56379af42b13bd487fe5bfbf36438b0ffd505b30.png",
+          "sha256": "ab85fdda6ee4b234ca0b8e6b56379af42b13bd487fe5bfbf36438b0ffd505b30",
+          "reason": "로컬 합성 이미지 후보 · AI 생성 아님",
+          "metadata": {
+            "duration": 0.0,
+            "codec": "png",
+            "width": 1920,
+            "height": 1080,
+            "sample_rate": null,
+            "channels": null
+          },
+          "rights": "기존 로컬 synthetic QA fixture 재사용",
+          "filename": "synthetic-collected.png",
+          "reference_version_at_upload": null
+        },
+        {
+          "id": 2,
+          "asset": "/private/tmp/loretune-ms-qa-20261025/assets/cab7433c888ad4579067e20906d6e6b4034b208cf503669408594e4f16fc4509.mp4",
+          "sha256": "cab7433c888ad4579067e20906d6e6b4034b208cf503669408594e4f16fc4509",
+          "reason": "로컬 합성 2초 영상 후보 · AI 생성 아님",
+          "metadata": {
+            "duration": 2.0,
+            "codec": "h264",
+            "width": 1920,
+            "height": 1080,
+            "sample_rate": null,
+            "channels": null
+          },
+          "rights": "기존 로컬 synthetic QA fixture 재사용",
+          "filename": "integrated-final.mp4",
+          "reference_version_at_upload": null
+        }
+      ],
+      "selected": 1,
+      "revision": 5,
+      "reviews": [
+        {
+          "take": 1,
+          "decision": "rejected",
+          "reason": "합성 디자인 QA 상태 구분 검증 · 거절",
+          "actor": "local-owner",
+          "at": 1792935085.093784
+        },
+        {
+          "take": 1,
+          "decision": "approved",
+          "reason": "통합 QA: 기존 거절 이력은 보존하고 합성 마지막 장면을 승인",
+          "actor": "local-owner",
+          "at": 1792938117.664823
+        }
+      ],
+      "semantic_impact": []
+    }
+  },
+  "revision": 19,
+  "profile": "landscape",
+  "audio_versions": [
+    {
+      "id": 1,
+      "asset": "/private/tmp/loretune-ms-qa-20261025/assets/5308de8dc93db08381cb3f257ddd17d5436a0c2025071d395b28dab4cba2d75a.wav",
+      "sha256": "5308de8dc93db08381cb3f257ddd17d5436a0c2025071d395b28dab4cba2d75a",
+      "filename": "qa-tone-4_5s.wav",
+      "metadata": {
+        "duration": 4.5,
+        "codec": "pcm_s16le",
+        "width": null,
+        "height": null,
+        "sample_rate": "48000",
+        "channels": 1,
+        "waveform": {
+          "status": "measured",
+          "source": "decoded-pcm-8khz-mono",
+          "duration": 4.5,
+          "peaks": [
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2441,
+            0.2437
+          ],
+          "rms": 0.17211,
+          "quiet": false,
+          "note": "최대 첫 600초의 간이 진폭 표시. 비트·BPM·구간 분석이 아닙니다."
+        }
+      },
+      "rights": "직접 합성한 440Hz 테스트 신호 · AI 음악 아님"
+    }
+  ],
+  "audio_selected": 1,
+  "audio_offset": 0,
+  "timeline_versions": [
+    {
+      "clips": [
+        {
+          "shot": "01 도입 · 첫 빛",
+          "take": 2,
+          "duration": 1,
+          "trim": 0
+        },
+        {
+          "shot": "02 전개 · 긴 한국어 설명을 읽는 장면",
+          "take": 2,
+          "duration": 1.5,
+          "trim": 0
+        },
+        {
+          "shot": "03 마무리 · 다시 검토",
+          "take": 1,
+          "duration": 2,
+          "trim": 0
+        }
+      ],
+      "audio": 1,
+      "audio_offset": 0,
+      "profile": "landscape",
+      "subtitles": [
+        {
+          "start": 0,
+          "end": 4.5,
+          "text": "합성 디자인 QA · 세 장면의 선택과 승인은 다릅니다."
+        }
+      ],
+      "id": 1
+    },
+    {
+      "clips": [
+        {
+          "shot": "01 도입 · 첫 빛",
+          "take": 2,
+          "duration": 1,
+          "trim": 0
+        },
+        {
+          "shot": "02 전개 · 긴 한국어 설명을 읽는 장면",
+          "take": 2,
+          "duration": 1.5,
+          "trim": 0
+        },
+        {
+          "shot": "03 마무리 · 다시 검토",
+          "take": 1,
+          "duration": 2,
+          "trim": 0
+        }
+      ],
+      "audio": 1,
+      "audio_offset": 0,
+      "profile": "landscape",
+      "subtitles": [
+        {
+          "start": 0,
+          "end": 4.5,
+          "text": "승인 자막 v2 · 세 장면과 한국어 자막·원곡 합성 검증"
+        }
+      ],
+      "id": 2,
+      "approval": {
+        "actor": "local-owner",
+        "at": 1792938130.190973,
+        "scope": "로컬 단일 사용자 승인; 조직 권한 검증 아님"
+      }
+    },
+    {
+      "clips": [
+        {
+          "shot": "01 도입 · 첫 빛",
+          "take": 2,
+          "duration": 1,
+          "trim": 0
+        },
+        {
+          "shot": "02 전개 · 긴 한국어 설명을 읽는 장면",
+          "take": 2,
+          "duration": 1.5,
+          "trim": 0
+        },
+        {
+          "shot": "03 마무리 · 다시 검토",
+          "take": 1,
+          "duration": 2,
+          "trim": 0
+        }
+      ],
+      "audio": 1,
+      "audio_offset": 0,
+      "profile": "landscape",
+      "subtitles": [
+        {
+          "start": 0,
+          "end": 4.5,
+          "text": "미승인 자막 v3 · 이전 출력에 섞이면 오류"
+        }
+      ],
+      "id": 3
+    }
+  ],
+  "timeline_head": 3,
+  "subtitles": [],
+  "comments": [],
+  "render_estimates": [
+    {
+      "id": "e83807736d064638ae661b5218c02035",
+      "created": 1792938130.474047,
+      "expires": 1792938430.474047,
+      "fingerprint": "2a2ddafe86334a79b58f581c9887448815a911c989edcd059589783f513f8430",
+      "timeline_version": 2,
+      "clips": 3,
+      "duration": 4.5,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "audio_version": 1,
+      "audio_start": 0,
+      "audio_end": 4.5,
+      "subtitles": 1,
+      "provider_calls": 0,
+      "provider_cost": 0,
+      "local_compute": null,
+      "scope": "로컬 FFmpeg 합성만; 외부 전송 없음. AI 생성 견적·예산 예약·청구가 아닙니다.",
+      "job": "7eda38fc84b14c94acc6da8f413031eb"
+    }
+  ],
+  "model_settings": {
+    "revision": 0,
+    "selections": {
+      "chat": null,
+      "image": null,
+      "video": null
+    },
+    "history": []
+  },
+  "rehearsal_jobs": [],
+  "ontology": {
+    "revision": 0,
+    "graph": {
+      "entities": [],
+      "relations": []
+    },
+    "digest": null
+  },
+  "ontology_proposals": [],
+  "lineage": {
+    "nodes": [
+      {
+        "id": "0ca1c671-5978-5fca-a414-5efa84b0e79f",
+        "type": "project",
+        "label": "디자인 다중장면 QA 20261025 1330",
+        "source": "local-project",
+        "version": null
+      },
+      {
+        "id": "5e3f0bf8-8754-54cc-8e40-f5c644ae1c52",
+        "type": "asset",
+        "label": "qa-tone-4_5s.wav",
+        "source": "imported",
+        "version": 1
+      },
+      {
+        "id": "080fe2a3-543f-53bd-be7d-d5e794ce1eae",
+        "type": "shot",
+        "label": "01 도입 · 첫 빛",
+        "source": "authored",
+        "version": 8
+      },
+      {
+        "id": "d529ec3c-c7bc-5b6c-bb97-37fdddaab980",
+        "type": "take",
+        "label": "T1",
+        "source": "imported",
+        "version": 1
+      },
+      {
+        "id": "443edfd7-2198-551f-924d-d34f6202bd7a",
+        "type": "asset",
+        "label": "synthetic-collected.png",
+        "source": "sha256:ab85fdda6ee4b234ca0b8e6b56379af42b13bd487fe5bfbf36438b0ffd505b30",
+        "version": null
+      },
+      {
+        "id": "cc503b34-66bf-5274-bc31-40b2f58860c2",
+        "type": "take",
+        "label": "T2",
+        "source": "imported",
+        "version": 2
+      },
+      {
+        "id": "59c0850a-2f46-522c-82b7-2d82ddcc7f20",
+        "type": "asset",
+        "label": "integrated-final.mp4",
+        "source": "sha256:cab7433c888ad4579067e20906d6e6b4034b208cf503669408594e4f16fc4509",
+        "version": null
+      },
+      {
+        "id": "a44ada70-e794-5169-ae29-569f370a4edc",
+        "type": "shot",
+        "label": "02 전개 · 긴 한국어 설명을 읽는 장면",
+        "source": "authored",
+        "version": 4
+      },
+      {
+        "id": "3643eeb7-0cf4-5e69-8dc3-5b79d2172e24",
+        "type": "take",
+        "label": "T1",
+        "source": "imported",
+        "version": 1
+      },
+      {
+        "id": "7153b263-d73f-586d-b27c-75ceba0f0d6d",
+        "type": "take",
+        "label": "T2",
+        "source": "imported",
+        "version": 2
+      },
+      {
+        "id": "cc274a11-9eb9-54fc-95e0-72eab8a9e719",
+        "type": "shot",
+        "label": "03 마무리 · 다시 검토",
+        "source": "authored",
+        "version": 5
+      },
+      {
+        "id": "0d4887b4-da75-5f33-9ddb-f719e2ef524e",
+        "type": "take",
+        "label": "T1",
+        "source": "imported",
+        "version": 1
+      },
+      {
+        "id": "0e1b3d33-5c8d-5d61-b679-19eca1306e50",
+        "type": "take",
+        "label": "T2",
+        "source": "imported",
+        "version": 2
+      }
+    ],
+    "edges": [
+      {
+        "source": "0ca1c671-5978-5fca-a414-5efa84b0e79f",
+        "target": "5e3f0bf8-8754-54cc-8e40-f5c644ae1c52",
+        "role": "audio_version"
+      },
+      {
+        "source": "0ca1c671-5978-5fca-a414-5efa84b0e79f",
+        "target": "080fe2a3-543f-53bd-be7d-d5e794ce1eae",
+        "role": "contains"
+      },
+      {
+        "source": "080fe2a3-543f-53bd-be7d-d5e794ce1eae",
+        "target": "d529ec3c-c7bc-5b6c-bb97-37fdddaab980",
+        "role": "has_take"
+      },
+      {
+        "source": "d529ec3c-c7bc-5b6c-bb97-37fdddaab980",
+        "target": "443edfd7-2198-551f-924d-d34f6202bd7a",
+        "role": "uses_asset"
+      },
+      {
+        "source": "080fe2a3-543f-53bd-be7d-d5e794ce1eae",
+        "target": "cc503b34-66bf-5274-bc31-40b2f58860c2",
+        "role": "has_take"
+      },
+      {
+        "source": "cc503b34-66bf-5274-bc31-40b2f58860c2",
+        "target": "59c0850a-2f46-522c-82b7-2d82ddcc7f20",
+        "role": "uses_asset"
+      },
+      {
+        "source": "080fe2a3-543f-53bd-be7d-d5e794ce1eae",
+        "target": "cc503b34-66bf-5274-bc31-40b2f58860c2",
+        "role": "selected"
+      },
+      {
+        "source": "0ca1c671-5978-5fca-a414-5efa84b0e79f",
+        "target": "a44ada70-e794-5169-ae29-569f370a4edc",
+        "role": "contains"
+      },
+      {
+        "source": "a44ada70-e794-5169-ae29-569f370a4edc",
+        "target": "3643eeb7-0cf4-5e69-8dc3-5b79d2172e24",
+        "role": "has_take"
+      },
+      {
+        "source": "3643eeb7-0cf4-5e69-8dc3-5b79d2172e24",
+        "target": "443edfd7-2198-551f-924d-d34f6202bd7a",
+        "role": "uses_asset"
+      },
+      {
+        "source": "a44ada70-e794-5169-ae29-569f370a4edc",
+        "target": "7153b263-d73f-586d-b27c-75ceba0f0d6d",
+        "role": "has_take"
+      },
+      {
+        "source": "7153b263-d73f-586d-b27c-75ceba0f0d6d",
+        "target": "59c0850a-2f46-522c-82b7-2d82ddcc7f20",
+        "role": "uses_asset"
+      },
+      {
+        "source": "a44ada70-e794-5169-ae29-569f370a4edc",
+        "target": "7153b263-d73f-586d-b27c-75ceba0f0d6d",
+        "role": "selected"
+      },
+      {
+        "source": "0ca1c671-5978-5fca-a414-5efa84b0e79f",
+        "target": "cc274a11-9eb9-54fc-95e0-72eab8a9e719",
+        "role": "contains"
+      },
+      {
+        "source": "cc274a11-9eb9-54fc-95e0-72eab8a9e719",
+        "target": "0d4887b4-da75-5f33-9ddb-f719e2ef524e",
+        "role": "has_take"
+      },
+      {
+        "source": "0d4887b4-da75-5f33-9ddb-f719e2ef524e",
+        "target": "443edfd7-2198-551f-924d-d34f6202bd7a",
+        "role": "uses_asset"
+      },
+      {
+        "source": "cc274a11-9eb9-54fc-95e0-72eab8a9e719",
+        "target": "0d4887b4-da75-5f33-9ddb-f719e2ef524e",
+        "role": "selected"
+      },
+      {
+        "source": "cc274a11-9eb9-54fc-95e0-72eab8a9e719",
+        "target": "0e1b3d33-5c8d-5d61-b679-19eca1306e50",
+        "role": "has_take"
+      },
+      {
+        "source": "0e1b3d33-5c8d-5d61-b679-19eca1306e50",
+        "target": "59c0850a-2f46-522c-82b7-2d82ddcc7f20",
+        "role": "uses_asset"
+      }
+    ],
+    "note": "실제 저장 객체의 읽기 전용 계보. 외부 작품 참고는 출처 좌표로 표시하며 현재 작품 개체로 자동 병합하지 않습니다."
+  },
+  "chat_turns": [],
+  "chat_connection": {
+    "available": false,
+    "mode": "disconnected",
+    "reason": "채팅 실행 연결 없음 · 로컬 계획은 계속 사용할 수 있습니다."
+  },
+  "image_connection": {
+    "state": "unconfigured",
+    "available": false,
+    "mode": "disconnected",
+    "model": null,
+    "reason": "이미지 연결이 설정되지 않았습니다. 모델 선택만으로 외부 실행되지 않습니다.",
+    "checks": {
+      "account": false,
+      "configuration": false,
+      "integration": false,
+      "approval": false
+    },
+    "policy": "이미지 공급자·보관·접근 계약 미선택. 기존 이미지를 업로드할 수 있습니다."
+  },
+  "preflight": {
+    "ready": false,
+    "errors": [
+      "저장한 타임라인 승인이 필요합니다."
+    ],
+    "warnings": [],
+    "duration": 4.5,
+    "audio_version": 1,
+    "audio_start": 0,
+    "audio_end": 4.5,
+    "profile": "landscape",
+    "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+  }
+}

@@ -1,0 +1,109 @@
+/* Candidate: append after workspace styles. No network assets or data writes. */
+.lt-craft {
+ --craft-canvas:#101010; --craft-panel:#1b1b1b; --craft-input:#141414;
+ --craft-line:#353535; --craft-control:#707070;
+ --craft-text:#f4f4f2; --craft-secondary:#c1c1be;
+ --craft-label:13px; --craft-body:14px; --craft-title:20px;
+ --craft-control-radius:8px; --craft-panel-radius:12px;
+ color:var(--craft-text); background:var(--craft-canvas);
+}
+.lt-craft .lt-studio-shell {background:#141414;}
+.lt-craft .lt-studio-shell>b {display:flex;align-items:center;gap:10px;font-weight:750;letter-spacing:-.7px;}
+.lt-craft :where(button,input,select,textarea) {border-radius:var(--craft-control-radius);font-size:var(--craft-body);line-height:1.45;}
+.lt-craft :where(input,select,textarea) {background:var(--craft-input);border-color:var(--craft-control);padding:10px 12px;}
+.lt-craft :where(button) {background:#252525;border-color:#555;color:var(--craft-text);font-weight:500;min-height:40px;}
+.lt-craft :where(button:hover:not(:disabled)) {background:#333;border-color:#999;}
+.lt-craft :where(button:active:not(:disabled)) {background:#3d3d3d;}
+.lt-craft :where(button:disabled,input:disabled,select:disabled) {opacity:1!important;background:#222!important;color:#858585!important;border-color:#444!important;cursor:not-allowed;}
+.lt-craft :where(button,input,select,textarea,summary,a):focus-visible {outline:2px solid #fafafa;outline-offset:3px;}
+.lt-craft .flow-nav button {font-size:13px;font-weight:600;}
+.lt-craft .lt-stage-short {display:none;}
+.lt-craft .flow-nav button[aria-current="step"] {background:#292929;color:#fff;border-color:#555;box-shadow:inset 0 -2px #eee;}
+.lt-craft #flowNext {background:transparent;border-color:#555;font-size:13px;}
+.lt-craft .lt-status-line {padding-block:2px;justify-content:space-between;align-items:center;}
+.lt-craft #flowHeading {font-size:13px;color:var(--craft-secondary);flex-shrink:1;}
+.lt-craft .lt-notice-detail {margin:0;max-width:65%;font-size:13px;}
+.lt-craft .lt-notice-detail>summary {min-height:28px;padding:4px 0;white-space:nowrap;font-size:12px;}
+.lt-craft .lt-notice-detail[open] {max-width:none;}
+.lt-craft #notice {font-size:13px;line-height:1.55;padding-bottom:6px;}
+.lt-craft .lt-shot-header>h1 {font-size:var(--craft-title);font-weight:650;letter-spacing:-.3px;line-height:1.4;}
+.lt-craft #description {font-size:13px;line-height:1.55;color:var(--craft-secondary);margin:6px 0 12px;}
+.lt-craft #selectedBadge {padding:4px 8px;background:#252525;border-color:#4c4c4c;border-radius:6px;font-size:12px;}
+.lt-craft #preview {border-radius:12px;border-color:#3a3a3a;}
+.lt-craft .shot-board>h2 {font-size:13px;letter-spacing:.02em;}
+.lt-craft .shot {padding:10px 8px;gap:10px;}
+.lt-craft .shot.active {background:#242424;border-color:#555;box-shadow:inset 2px 0 #eee;}
+.lt-craft .shot .thumb {border-radius:4px;width:48px;height:40px;}
+.lt-craft .shot small {display:inline-block;margin-top:3px;color:#bdbdbd;line-height:1.4;}
+.lt-craft #takes button {min-height:44px;padding:6px 10px;background:#1d1d1d;border-color:#555;}
+.lt-craft #takes button[aria-pressed="true"] {background:#303030;border-color:#c9c9c9;box-shadow:inset 0 -2px #eee;}
+.lt-craft #compareButton {min-height:40px;font-size:13px;}
+.lt-craft .timeline {background:#191919;border-color:#363636;padding:14px;border-radius:12px;}
+.lt-craft .lt-timeline-header h2 {font-size:14px;font-weight:650;}
+.lt-craft #track {height:36px;background:#0f0f0f;}
+.lt-craft #track span {background:#303030;border-color:#666;border-left:3px solid #aaa;padding-inline:8px;font-size:12px;}
+.lt-craft #timelineStatus {font-size:13px;color:var(--craft-secondary);margin:8px 0;}
+.lt-craft .lt-timeline-controls>summary {font-size:13px;min-height:36px;}
+.lt-craft main>.inspector {background:var(--craft-panel);border:1px solid var(--craft-line)!important;border-radius:12px;padding:16px!important;max-height:calc(100dvh - 180px);scrollbar-gutter:auto;}
+.lt-craft .inspector>section {padding-bottom:16px;border-bottom-color:#3b3b3b;}
+.lt-craft .inspector :where(h2,summary) {font-size:14px;font-weight:650;line-height:1.5;}
+.lt-craft .inspector :where(p,small) {font-size:13px;line-height:1.6;}
+.lt-craft .inspector label {font-size:13px;color:#d2d2d0;margin:12px 0 6px;}
+.lt-craft #reason {background:#242424;border-radius:8px;padding:10px 12px;color:#ddd;margin:12px 0;}
+.lt-craft #reviewTake {font-size:14px;min-height:42px;margin-top:2px;}
+.lt-craft #reviewTake:hover:not(:disabled) {background:#dededb;color:#101010;}
+.lt-craft .lt-inspector-detail {border-bottom-color:#3b3b3b;}
+.lt-craft .lt-take-review>.lt-inspector-detail {border-bottom:0;}
+.lt-craft .lt-inspector-detail>summary {padding-block:12px;}
+.lt-craft .lt-execution-detail>section>p {margin:0 0 12px;color:var(--craft-secondary);}
+.lt-craft #prepareSelectedAction {width:100%;font-size:13px;line-height:1.5;padding:10px 12px;}
+.lt-craft .lt-execution-card {margin:16px 0 0;padding:14px;background:#141414;border:1px solid #3f3f3f;border-radius:10px;}
+.lt-craft .lt-execution-card h2 {display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;margin:0 0 8px;}
+.lt-craft .lt-state-chip {font-size:12px;font-weight:500;line-height:1.5;border:1px solid #6b6b6b;background:#2a2a2a;border-radius:6px;padding:3px 7px;}
+.lt-craft .lt-execution-card[data-decision="blocked"] .lt-state-chip,
+.lt-craft .lt-execution-card[data-decision="rejected"] .lt-state-chip {color:var(--lt-danger);border-color:var(--lt-danger);}
+.lt-craft .lt-cost-facts {padding-block:10px;border-block:1px solid #343434;color:#d5d5d2;}
+.lt-craft .lt-provenance-detail {margin:8px 0;color:var(--craft-secondary);}
+.lt-craft .lt-provenance-detail>summary {font-size:12px;font-weight:500;min-height:36px;padding-block:8px;}
+.lt-craft .lt-provenance-detail p {overflow-wrap:anywhere;}
+.lt-craft .lt-execution-card>.toolbar {padding:8px 0 0;border:0;display:flex;gap:8px;flex-wrap:wrap;}
+.lt-craft .lt-execution-card>.toolbar:empty {display:none;}
+.lt-craft .lt-execution-card>.toolbar button {width:100%;font-size:13px;}
+.lt-craft .lt-execution-card>img {object-fit:contain;border-radius:6px;}
+.lt-craft .lt-execution-card [data-action="action_execute"],
+.lt-craft .lt-execution-card [data-action="action_decide"][data-decision="approved"] {background:var(--craft-text);color:#151515;}
+.lt-craft dialog {background:#1b1b1b;border-color:#606060;border-radius:16px;padding:24px;box-shadow:0 24px 80px #0009;overscroll-behavior:contain;}
+.lt-craft dialog h2 {font-size:20px;letter-spacing:-.3px;}
+.lt-craft dialog label {font-size:14px;}
+.lt-craft .lt-model-name {font-size:13px;color:#eee;}
+@media(max-width:900px) {
+ .lt-craft .lt-studio-shell {padding:6px 12px;gap:6px;}
+ .lt-craft .lt-studio-shell>b {gap:7px;font-size:17px;}
+ .lt-craft .lt-stage-bar {padding:2px 12px 4px;}
+ .lt-craft .flow-nav {padding-bottom:0;gap:2px;}
+ .lt-craft .flow-nav button {padding-inline:8px;}
+ .lt-craft #flowNext {margin-top:2px;min-height:44px;}
+ .lt-craft .lt-status-line {display:flex;gap:8px;padding:0 12px;}
+ .lt-craft #flowHeading {font-size:12px;line-height:1.5;}
+ .lt-craft .lt-notice-detail>summary {min-height:44px;display:list-item;padding-block:12px;}
+ .lt-craft .lt-status-line:has(.lt-notice-detail[open]) {display:block;}
+ .lt-craft .lt-notice-detail {max-width:none;flex-shrink:0;}
+ .lt-craft .lt-panel-nav:not([hidden]) {padding:2px 12px;gap:4px;}
+ .lt-craft .lt-panel-nav button {font-size:14px;min-height:44px;}
+ .lt-craft .lt-shot-header>h1 {font-size:18px;}
+ .lt-craft main>.inspector {padding:16px!important;max-height:none;}
+ .lt-craft :where(button,input,select,summary) {min-height:44px;}
+ .lt-craft #compareButton,.lt-craft #sync {min-height:44px;}
+ .lt-craft .lt-timeline-controls>summary {min-height:44px;}
+ .lt-craft #preview {height:auto;}
+ .lt-craft .lt-execution-card {padding:14px;}
+ .lt-craft .lt-provenance-detail>summary {min-height:44px;}
+}
+@media(prefers-reduced-motion:reduce) {.lt-craft *, .lt-craft *::before,.lt-craft *::after {animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+@media(max-width:359px) {
+ .lt-craft .flow-nav {width:100%;}
+ .lt-craft .flow-nav button {flex:1;min-width:0;padding-inline:4px;}
+ .lt-craft .lt-stage-full {display:none;}
+ .lt-craft .lt-stage-short {display:inline;}
+}
+@media(forced-colors:active) {.lt-craft :focus-visible {outline-color:Highlight;} .lt-craft .lt-state-chip {border-color:CanvasText;} }

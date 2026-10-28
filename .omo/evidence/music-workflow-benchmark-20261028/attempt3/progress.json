@@ -1,0 +1,796 @@
+{
+  "schema": "native-music-workflow-benchmark/1",
+  "task_id": "music-native-workflow-benchmark-20261028",
+  "attempt": 3,
+  "status": "RUNNING",
+  "actual_provider_calls": 0,
+  "prior_attempt": "../attempt2/REPORT.json",
+  "private_data_access": false,
+  "credential_access": false,
+  "methodology": "Deterministic real HTTP actions, paired native outputs and artifact provenance",
+  "scope": "30-second self-authored audio, 12 approved shot IDs; partial original07 dataset only. Two native motion source clips reused through supported API. Optional image is a self-authored test pattern, not an artist photo or AI quality benchmark.",
+  "source_before": {
+    "app.py": "a32b301cb489378d9e890414fa36ce17875c053af255216ee814898de0c0cab5",
+    "editing.py": "3e7b20c364a7a558da15da9d0979a46853eaa101216a40fd665ab73faa9af3c8",
+    "renderer.py": "2032babcdac01337e77e5fce9bef38c232e1c364daa465bed7fba26639708525",
+    "motion_scene.py": "aec910b146d0e04d53c2e5560d312adf16c5985875c66afbb937928acc8529a3",
+    "motion_renderer.py": "a83ccb5064d512d9350b37fb3842e2b8349fb1cf826d51c79fdb2c91c4f384e0",
+    "backup.py": "8d6c35fa5a0e39235a461f0f3fab622fbdd1d03c25cb76a811703624a0d790f6",
+    "loretune.py": "b59f5404537235e0c5dd00e9bbffd17aec834a22805a6288267c0964da5fc0d9",
+    "tests/test_motion.py": "7c6c7bcfda83b8d55d357f6d2b1a8e4024fdad692d3a2a4671f66a72d796ad38"
+  },
+  "requests": [
+    {
+      "action": "take",
+      "request_id": "cb73e9fa47df40b1bf1e287fdf334815",
+      "body_sha256": "6dce4b1793d0dd1a1a3f6ea0f532da8191f64cdf5c9ffdc54d16ef54a58ea482",
+      "status": 200,
+      "elapsed_seconds": 0.058349,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "cdaff7afb64241dda3fa84bc6799186b",
+      "body_sha256": "355cd4d009af0460cf0988600f955138ee7dc79eec70ff1d4dcd1efd2a795021",
+      "status": 200,
+      "elapsed_seconds": 0.001967,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "ad91cc7bbac34b9c853c64269641d7de",
+      "body_sha256": "741485cbbab3ced8e21dd2e3e8eaa7baf3c735363d795c6520cc4e817b442e52",
+      "status": 200,
+      "elapsed_seconds": 0.001993,
+      "error": null
+    },
+    {
+      "action": "render_job",
+      "request_id": "ebe2c5e98b7443b6a80b7bcd17967939",
+      "body_sha256": "945d35b30e159e9c1a43faa1bb4923e0964531a846da2f4b89420ac17c57aa0c",
+      "status": 400,
+      "elapsed_seconds": 0.00134,
+      "error": "입력을 확인하세요: 승인 후 현재 take 선택이 변경됐습니다. 편집을 다시 확인하고 승인하세요."
+    },
+    {
+      "action": "timeline",
+      "request_id": "bd0ff340c8224272ac3d7febde945b83",
+      "body_sha256": "afd65240c5df6f612408dca891edd74f3f3b60149a1edceed2dc57eddd36674a",
+      "status": 200,
+      "elapsed_seconds": 0.002013,
+      "error": null
+    },
+    {
+      "action": "render_job",
+      "request_id": "23cf5ae4dc32496dae66918e5beef29a",
+      "body_sha256": "c29e0e8dccd7bb587872360686eb01a8bb68ff6c7cb8ce94dcd0e3bdca38c282",
+      "status": 400,
+      "elapsed_seconds": 0.001326,
+      "error": "입력을 확인하세요: 저장한 타임라인을 승인한 후 출력하세요."
+    },
+    {
+      "action": "approve_timeline",
+      "request_id": "43821723f2c6404a8a8c01188405f004",
+      "body_sha256": "3c37ea65a60bd8e499c640d014dfaf3854f229f7359bfe9cdf565ec549839f8f",
+      "status": 200,
+      "elapsed_seconds": 0.004516,
+      "error": null
+    },
+    {
+      "action": "render_job",
+      "request_id": "b74d27cca5b4447dbaf176ca250b4a22",
+      "body_sha256": "c307a75f7b8ec0247518c1d0adf1d6598bfff42d7d76d9351b16ee0b44dad161",
+      "status": 200,
+      "elapsed_seconds": 0.004655,
+      "error": null
+    },
+    {
+      "action": "asset_rights",
+      "request_id": "41920e940639400ca33522c4d6c3ecb8",
+      "body_sha256": "14dfba5799fb51b5805bd08eeb49a014e921d3991f5ab4ae3e590bc7052a9079",
+      "status": 200,
+      "elapsed_seconds": 0.002903,
+      "error": null
+    },
+    {
+      "action": "render_job",
+      "request_id": "2c35ca0e06424159990d92585c89704a",
+      "body_sha256": "00b55bf8fe640234deb2153b6c8ffe6a75d33cb752d02703e243f1f500190225",
+      "status": 400,
+      "elapsed_seconds": 0.004069,
+      "error": "입력을 확인하세요: 사용 중지된 자산이 포함되어 있습니다. 사용권을 재검토하세요."
+    },
+    {
+      "action": "asset_rights",
+      "request_id": "e79778995aa64e82821ec00cc566589e",
+      "body_sha256": "c804a845354d5c87ed29af82b7f0ef79fa283b5b43393e4d571db32725271be2",
+      "status": 200,
+      "elapsed_seconds": 0.002003,
+      "error": null
+    },
+    {
+      "action": "delivery_review",
+      "request_id": "8be5c0d17e4f4cc9a32eb57aed9f8942",
+      "body_sha256": "4547580b18bec4b7f3c476f418946723440587731c618242f0fd88e861f1a085",
+      "status": 200,
+      "elapsed_seconds": 0.002824,
+      "error": null
+    }
+  ],
+  "checks": [
+    {
+      "name": "resume first completed30s output without replay",
+      "passed": true,
+      "details": {
+        "timeline_version": 1
+      }
+    },
+    {
+      "name": "existing first MP4 remains completed",
+      "passed": true,
+      "details": {
+        "job": "8dd6d3f50b0e4307a4d345df8750cbdf"
+      }
+    },
+    {
+      "name": "before.mp4 download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 489982
+      }
+    },
+    {
+      "name": "before MP4 hash",
+      "passed": true,
+      "details": {
+        "file": "before.mp4",
+        "sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f",
+        "bytes": 489982,
+        "integrity": null
+      }
+    },
+    {
+      "name": "before.srt download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 120
+      }
+    },
+    {
+      "name": "before.json download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 20124
+      }
+    },
+    {
+      "name": "first saved output unchanged from attempt2",
+      "passed": true,
+      "details": {
+        "file": "before.mp4",
+        "sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f",
+        "bytes": 489982,
+        "integrity": null
+      }
+    },
+    {
+      "name": "before 30s1080p24",
+      "passed": true,
+      "details": {
+        "width": 1920,
+        "height": 1080,
+        "rate": "24/1",
+        "duration": "30.000000"
+      }
+    },
+    {
+      "name": "before actual audio",
+      "passed": true,
+      "details": {
+        "samples": 1440000,
+        "frequency_hz": 439.9642857142857,
+        "rms": 5653.165247182997
+      }
+    },
+    {
+      "name": "before12 cut order matches actual native sources",
+      "passed": true,
+      "details": {
+        "output": [
+          [
+            33,
+            57,
+            92
+          ],
+          [
+            93,
+            55,
+            34
+          ],
+          [
+            33,
+            57,
+            92
+          ],
+          [
+            93,
+            55,
+            34
+          ],
+          [
+            33,
+            57,
+            92
+          ],
+          [
+            93,
+            55,
+            34
+          ],
+          [
+            33,
+            57,
+            92
+          ],
+          [
+            93,
+            55,
+            34
+          ],
+          [
+            33,
+            57,
+            92
+          ],
+          [
+            93,
+            55,
+            34
+          ],
+          [
+            33,
+            57,
+            92
+          ],
+          [
+            93,
+            55,
+            34
+          ]
+        ],
+        "native_source_colors": [
+          [
+            33,
+            57,
+            92
+          ],
+          [
+            93,
+            55,
+            34
+          ]
+        ]
+      }
+    },
+    {
+      "name": "selection change invalidates old output approval",
+      "passed": true,
+      "details": {
+        "error": "입력을 확인하세요: 승인 후 현재 take 선택이 변경됐습니다. 편집을 다시 확인하고 승인하세요."
+      }
+    },
+    {
+      "name": "job completed fb21e2dbd2cc4632be8906a3417afe1b",
+      "passed": true,
+      "details": {
+        "id": "fb21e2dbd2cc4632be8906a3417afe1b",
+        "kind": "final-render",
+        "status": "completed",
+        "elapsed_seconds": 3.93284,
+        "error": null,
+        "verified": {
+          "duration": 30.0,
+          "width": 1920,
+          "height": 1080,
+          "frame_rate": "24/1",
+          "audio_sample_rate": "48000",
+          "frame_timing": {
+            "fps": 24,
+            "policy": "nearest-internal-ceil-final",
+            "requested_duration": 30.0,
+            "duration": 30.0,
+            "clips": [
+              {
+                "start_frame": 0,
+                "end_frame": 60,
+                "frames": 60,
+                "start": 0.0,
+                "end": 2.5
+              },
+              {
+                "start_frame": 60,
+                "end_frame": 120,
+                "frames": 60,
+                "start": 2.5,
+                "end": 5.0
+              },
+              {
+                "start_frame": 120,
+                "end_frame": 180,
+                "frames": 60,
+                "start": 5.0,
+                "end": 7.5
+              },
+              {
+                "start_frame": 180,
+                "end_frame": 240,
+                "frames": 60,
+                "start": 7.5,
+                "end": 10.0
+              },
+              {
+                "start_frame": 240,
+                "end_frame": 300,
+                "frames": 60,
+                "start": 10.0,
+                "end": 12.5
+              },
+              {
+                "start_frame": 300,
+                "end_frame": 360,
+                "frames": 60,
+                "start": 12.5,
+                "end": 15.0
+              },
+              {
+                "start_frame": 360,
+                "end_frame": 420,
+                "frames": 60,
+                "start": 15.0,
+                "end": 17.5
+              },
+              {
+                "start_frame": 420,
+                "end_frame": 480,
+                "frames": 60,
+                "start": 17.5,
+                "end": 20.0
+              },
+              {
+                "start_frame": 480,
+                "end_frame": 540,
+                "frames": 60,
+                "start": 20.0,
+                "end": 22.5
+              },
+              {
+                "start_frame": 540,
+                "end_frame": 600,
+                "frames": 60,
+                "start": 22.5,
+                "end": 25.0
+              },
+              {
+                "start_frame": 600,
+                "end_frame": 660,
+                "frames": 60,
+                "start": 25.0,
+                "end": 27.5
+              },
+              {
+                "start_frame": 660,
+                "end_frame": 720,
+                "frames": 60,
+                "start": 27.5,
+                "end": 30.0
+              }
+            ]
+          },
+          "streams": [
+            "video",
+            "audio",
+            "subtitle"
+          ],
+          "verified_at": 1793124638.434637
+        }
+      }
+    },
+    {
+      "name": "after.mp4 download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 476809
+      }
+    },
+    {
+      "name": "after MP4 hash",
+      "passed": true,
+      "details": {
+        "file": "after.mp4",
+        "sha256": "89608c3ed0002dca753d1cc733f993110aaffc343ff492e771d05cb8048bef63",
+        "bytes": 476809,
+        "integrity": null
+      }
+    },
+    {
+      "name": "after.srt download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 131
+      }
+    },
+    {
+      "name": "after.json download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 20041
+      }
+    },
+    {
+      "name": "after 30s1080p24",
+      "passed": true,
+      "details": {
+        "width": 1920,
+        "height": 1080,
+        "rate": "24/1",
+        "duration": "30.000000"
+      }
+    },
+    {
+      "name": "after actual audio",
+      "passed": true,
+      "details": {
+        "samples": 1440000,
+        "frequency_hz": 439.9642857142857,
+        "rms": 5653.165247182997
+      }
+    },
+    {
+      "name": "after optional image and reverse order",
+      "passed": true,
+      "details": [
+        [
+          15,
+          192,
+          128
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ],
+        [
+          93,
+          55,
+          34
+        ],
+        [
+          33,
+          57,
+          92
+        ]
+      ]
+    },
+    {
+      "name": "after Korean embedded captions",
+      "passed": true,
+      "details": "1\n00:00:00,000 --> 00:00:02,000\n선택 이미지를 더한 새 편집\n\n2\n00:00:28,000 --> 00:00:30,000\n수정 후 마지막 자막\n\n"
+    },
+    {
+      "name": "music unchanged across edit",
+      "passed": true,
+      "details": {
+        "before_sha256": "aa3ed6d9eb964d3c99c809de6cfeb92d6d189bca19109a50dc3d69d2c854f8fc",
+        "after_sha256": "aa3ed6d9eb964d3c99c809de6cfeb92d6d189bca19109a50dc3d69d2c854f8fc"
+      }
+    },
+    {
+      "name": "original approved timeline immutable",
+      "passed": true,
+      "details": {
+        "original_id": 1,
+        "current_id": 2
+      }
+    },
+    {
+      "name": "input assets unchanged",
+      "passed": true,
+      "details": {
+        "original_assets": 3,
+        "current_assets": 4
+      }
+    },
+    {
+      "name": "revoked image blocks dependent MP4 download",
+      "passed": true,
+      "details": {
+        "status": 403
+      }
+    },
+    {
+      "name": "unrelated prior output remains downloadable",
+      "passed": true,
+      "details": {
+        "status": 200
+      }
+    },
+    {
+      "name": "rights recovery reuses exact saved output",
+      "passed": true,
+      "details": {
+        "status": 200
+      }
+    },
+    {
+      "name": "restored exact before.mp4",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f",
+        "integrity": null
+      }
+    },
+    {
+      "name": "restored exact before.srt",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "2ec958e0d4faa068b703deb14bfd0c223bc2ce708dab2a880a5b479e78fa9ee2",
+        "integrity": null
+      }
+    },
+    {
+      "name": "restored exact before.json",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "b6d81ac1bc7550310f81317fc370db8b5ce6f0f6d70d516153f647ee5d047db9",
+        "integrity": null
+      }
+    },
+    {
+      "name": "restored exact after.mp4",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "89608c3ed0002dca753d1cc733f993110aaffc343ff492e771d05cb8048bef63",
+        "integrity": null
+      }
+    },
+    {
+      "name": "restored exact after.srt",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "895ae445375d1217febe9f3c6f43d76d2fb9ca5df489ca57c6c0aca29153e3a8",
+        "integrity": null
+      }
+    },
+    {
+      "name": "restored exact after.json",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "63d215e8d96641a3bc5853c7494f2a2b7292f2331794b4183a15c06560fd6a77",
+        "integrity": null
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "id": "fb21e2dbd2cc4632be8906a3417afe1b",
+      "kind": "final-render",
+      "status": "completed",
+      "elapsed_seconds": 3.93284,
+      "error": null,
+      "verified": {
+        "duration": 30.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "24/1",
+        "audio_sample_rate": "48000",
+        "frame_timing": {
+          "fps": 24,
+          "policy": "nearest-internal-ceil-final",
+          "requested_duration": 30.0,
+          "duration": 30.0,
+          "clips": [
+            {
+              "start_frame": 0,
+              "end_frame": 60,
+              "frames": 60,
+              "start": 0.0,
+              "end": 2.5
+            },
+            {
+              "start_frame": 60,
+              "end_frame": 120,
+              "frames": 60,
+              "start": 2.5,
+              "end": 5.0
+            },
+            {
+              "start_frame": 120,
+              "end_frame": 180,
+              "frames": 60,
+              "start": 5.0,
+              "end": 7.5
+            },
+            {
+              "start_frame": 180,
+              "end_frame": 240,
+              "frames": 60,
+              "start": 7.5,
+              "end": 10.0
+            },
+            {
+              "start_frame": 240,
+              "end_frame": 300,
+              "frames": 60,
+              "start": 10.0,
+              "end": 12.5
+            },
+            {
+              "start_frame": 300,
+              "end_frame": 360,
+              "frames": 60,
+              "start": 12.5,
+              "end": 15.0
+            },
+            {
+              "start_frame": 360,
+              "end_frame": 420,
+              "frames": 60,
+              "start": 15.0,
+              "end": 17.5
+            },
+            {
+              "start_frame": 420,
+              "end_frame": 480,
+              "frames": 60,
+              "start": 17.5,
+              "end": 20.0
+            },
+            {
+              "start_frame": 480,
+              "end_frame": 540,
+              "frames": 60,
+              "start": 20.0,
+              "end": 22.5
+            },
+            {
+              "start_frame": 540,
+              "end_frame": 600,
+              "frames": 60,
+              "start": 22.5,
+              "end": 25.0
+            },
+            {
+              "start_frame": 600,
+              "end_frame": 660,
+              "frames": 60,
+              "start": 25.0,
+              "end": 27.5
+            },
+            {
+              "start_frame": 660,
+              "end_frame": 720,
+              "frames": 60,
+              "start": 27.5,
+              "end": 30.0
+            }
+          ]
+        },
+        "streams": [
+          "video",
+          "audio",
+          "subtitle"
+        ],
+        "verified_at": 1793124638.434637
+      }
+    }
+  ],
+  "owned_temporary_root": "/tmp/loretune-native-music-benchmark-yl8hnchu",
+  "started_at_unix": 1793124633.27414,
+  "known_product_finding": {
+    "id": "NATIVE-COLOR-01",
+    "status": "unresolved in historical candidate",
+    "evidence": "../color-probe/receipt.json",
+    "description": "Declared sRGB HEX differs from actual native candidate. Sequence tests below compare export to its actual candidate, not to the incorrect assumption of untransformed source pixels."
+  },
+  "url": "http://127.0.0.1:64246",
+  "before": {
+    ".mp4": {
+      "file": "before.mp4",
+      "sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f",
+      "bytes": 489982,
+      "integrity": null
+    },
+    ".srt": {
+      "file": "before.srt",
+      "sha256": "2ec958e0d4faa068b703deb14bfd0c223bc2ce708dab2a880a5b479e78fa9ee2",
+      "bytes": 120,
+      "integrity": null
+    },
+    ".json": {
+      "file": "before.json",
+      "sha256": "b6d81ac1bc7550310f81317fc370db8b5ce6f0f6d70d516153f647ee5d047db9",
+      "bytes": 20124,
+      "integrity": null
+    }
+  },
+  "after": {
+    ".mp4": {
+      "file": "after.mp4",
+      "sha256": "89608c3ed0002dca753d1cc733f993110aaffc343ff492e771d05cb8048bef63",
+      "bytes": 476809,
+      "integrity": null
+    },
+    ".srt": {
+      "file": "after.srt",
+      "sha256": "895ae445375d1217febe9f3c6f43d76d2fb9ca5df489ca57c6c0aca29153e3a8",
+      "bytes": 131,
+      "integrity": null
+    },
+    ".json": {
+      "file": "after.json",
+      "sha256": "63d215e8d96641a3bc5853c7494f2a2b7292f2331794b4183a15c06560fd6a77",
+      "bytes": 20041,
+      "integrity": null
+    }
+  },
+  "job_ids": {
+    "before": "8dd6d3f50b0e4307a4d345df8750cbdf",
+    "after": "fb21e2dbd2cc4632be8906a3417afe1b"
+  },
+  "backup": {
+    "files": 37,
+    "elapsed_seconds": 0.08182658301666379
+  }
+}

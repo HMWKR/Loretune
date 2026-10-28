@@ -1,0 +1,173 @@
+{
+  "scope": "AI 작업창 접근/설정/검토 UI; 플랫폼 전체 또는 실모델 완료 판정 아님",
+  "trace_ids": [
+    "AGENT-UI-01",
+    "TOOLS-02",
+    "STATUS-03",
+    "REASON-04",
+    "PERM-05"
+  ],
+  "implemented": [
+    "음악·기획·장면·출력 공통 단일 AI DOM과 전역 닫기/재열기",
+    "AI/작업설정 공유 우측 공간",
+    "native dialog 내부 동일 대화 DOM portal, 닫기/Escape 포커스복귀",
+    "포인터·키보드 separator와 경계/너비 저장",
+    "현재 작품·선택장면·저장 편집/미저장 입력의 기준 안내",
+    "capability 기반 대화×모델 권한/추론설정 및 기존 CAS action 저장",
+    "overlay 변경안 원본 버전·표시시간·위치 before/after와 누락 검토 차단"
+  ],
+  "preserved": [
+    "기존 대화·모델·전송/비용/권리 승인 handlers 및 draft keys",
+    "pending/journal/requestid/IDB/unknown 복구·중복방지 의미",
+    "기존 모바일 검토와 실제 player 노드 이동",
+    "원본·Take·승인본·문서·기존 QA 증거"
+  ],
+  "commands": [
+    {
+      "command": "PYTHONPATH=.:tests python3 -m unittest tests.test_chat_sidebar_ui tests.test_proposal_ui tests.test_general_chat_ui_controls tests.test_general_chat_history_ui tests.test_active_request_presentation tests.test_timeline_motion_overlay_ui tests.test_scene_ui tests.test_proposal_drafts tests.test_frontend_async tests.test_save_feedback -v",
+      "receipt": "narrow-tests-final-settled.log",
+      "result": "14 tests / 5.258s / OK"
+    },
+    {
+      "command": "node tests/chat_sidebar.cjs http://127.0.0.1:60957 <final-captures>",
+      "receipt": "headless-final.log",
+      "result": "local HTTP headless lifecycle passed; no external model invocation"
+    },
+    {
+      "command": "node --check on 3 external/test scripts + 7 extracted inline scripts",
+      "receipt": "syntax/result.json",
+      "result": "10 targets / exit0; test-only media-query settlement wait added afterward; parsed and executed by final 14-test browser run"
+    }
+  ],
+  "manual_render_review": {
+    "viewed": [
+      "initial-1920.png",
+      "project-dialog-1920.png",
+      "after-conversation-create-click.png",
+      "final-captures/workspace-1920.png",
+      "final-captures/motionDialog-1920.png",
+      "final-captures/workspace-320.png"
+    ],
+    "viewports_automated": [
+      1920,
+      1440,
+      1024,
+      900,
+      768,
+      375,
+      320
+    ],
+    "observations": [
+      "1920 기존 편집·우측 대화 공간과 단일 모달 분할 확인",
+      "320 한국어 줄바꿈·원래 작업으로 복귀 확인",
+      "미지원 연결은 실제 capability와 일치하는 안내; 성공으로 가장하지 않음"
+    ]
+  },
+  "retained_failed_receipts": [
+    {
+      "receipts": [
+        "narrow-tests-initial.log"
+      ],
+      "cause": "대화 fetch 완료 전 값 읽는 검사 대기 오류; active_conversation/conversationSwitching 완료 대기로 교정"
+    },
+    {
+      "receipts": [
+        "narrow-tests-third.log"
+      ],
+      "cause": "새 hook window VM 의존과 닫힌 dialog 스타일 노출; globalThis optional hook와 [open]/close lifecycle로 수정"
+    },
+    {
+      "receipts": [
+        "narrow-tests-fourth.log",
+        "narrow-tests-fifth.log",
+        "headless-initial.log"
+      ],
+      "cause": "닫힌 dialog 실제 렌더 결함 재현·보존; 새 [open] 회귀 통과"
+    },
+    {
+      "receipts": [
+        "narrow-tests-final.log"
+      ],
+      "cause": "잘못된 테스트 모듈명과 기존 test_scene_contract import 경로; 실제경로+PYTHONPATH로 재실행"
+    },
+    {
+      "receipts": [
+        "narrow-tests-final-corrected.log"
+      ],
+      "cause": "media query change 이벤트 전 상태를 읽은 새 테스트 대기; 실제 hidden 상태 전환 기다린 후 같은 assert 유지"
+    }
+  ],
+  "detector_triage": {
+    "new_command_run_by_worker": false,
+    "reused_receipts": "root Hallmark/Impeccable and frontend/detector-triage.json",
+    "missing_src": "기존 저장 프레임 PNG img의 hidden 기본상태. 새 source/loading/error/late guards 변경없음; 실제 캡처에서 broken image 노출 없음",
+    "eval_injection_notice": "tests/chat_sidebar.cjs Puppeteer evaluate/$eval은 작성한 상수 함수 및 로컬 테스트자료만 사용. 제품에 eval/new Function 또는 원격 스크립트 실행 추가 없음",
+    "not_claimed": "detector 0건 또는 전체 접근성 준수"
+  },
+  "methodology": {
+    "sources": [
+      "현행 토큰/REFERENCE-LOCK/CHAT-SESSION-PLAN",
+      "설치 Hallmark 및 Impeccable operate/craft-floor",
+      "Karpathy/feature-verification",
+      "https://www.w3.org/WAI/ARIA/apg/patterns/windowsplitter/",
+      "backend ai-tool-integration/ui-contract.json, agent-settings/implementation/ui-contract.json"
+    ],
+    "applied": [
+      "과업 중심 정보 묶기",
+      "점진적 공개",
+      "동일 DOM lifecycle와 원본 참조",
+      "실제 HTTP 저장·재조회 후 렌더 확인",
+      "focusable bounded separator"
+    ],
+    "limitations": [
+      "WAI splitter 패턴은 완전히 검토된 예제 기준이 아님",
+      "전문가/브라우저 검증이며 실제 사용자 연구 아님"
+    ]
+  },
+  "not_done_or_root_owned": [
+    "root Space91의 실제 음원→편집→출력 시연/녹화",
+    "실제 모델 전송·effort·청구 검증(승인 필요)",
+    "기존 take/player/timeline 전체 데이터 회귀와 플랫폼 출시준비 판정",
+    "통합 전체 suite 및 독립 reviewer acceptance",
+    "신규 UI에 대한 확대/스크린리더/대비 전체 접근성 검증"
+  ],
+  "external_calls": "로컬 HTTP만; AI 모델·외부 편집기·사용자 데이터 서버8765 사용 없음",
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 219983,
+      "sha256": "45e3f36436412e8db9c51959017cfc10b40bee20e1e8f1a06fdfbf8d2740b719",
+      "before_sha256": "9149b47f1574fee572cc7395b25e38d37b784d2cfd440d134bf80408cef32e64"
+    },
+    {
+      "path": "studio.css",
+      "bytes": 85313,
+      "sha256": "0b97be5e2c2aa66cd168f41ef393de13e09dc7781f10d4ce96d372d1d1e25038",
+      "before_sha256": "4f1ff06ed07745e4cbb2a1706541fca0f5e401678112610e7875216354f5435b"
+    },
+    {
+      "path": "general-chat-ui.js",
+      "bytes": 15557,
+      "sha256": "f92daed3368a99b12a71f40991964b59b5fc14aadcb892a3204dee4dbdbf65bc",
+      "before_sha256": "97fcf05ed3fcf7f355d5e0f21f07ca307de8191d7b2598b59ae995dfab25c854"
+    },
+    {
+      "path": "chat-sidebar.js",
+      "bytes": 19454,
+      "sha256": "6564d931bff34efd93b5aab8d7e263e2f8c87972121c6826df1093c066e36c5a",
+      "before_sha256": null
+    },
+    {
+      "path": "tests/chat_sidebar.cjs",
+      "bytes": 13472,
+      "sha256": "2b3fb2321d09b56481e96cc9f3a63b3c017d2fd4c65f85033936db218c0734ff",
+      "before_sha256": null
+    },
+    {
+      "path": "tests/test_chat_sidebar_ui.py",
+      "bytes": 3697,
+      "sha256": "92b73e3c3782fed6b68ac6db2012f5bed6d4cd00f65d6f449b37292fbf942581",
+      "before_sha256": null
+    }
+  ]
+}

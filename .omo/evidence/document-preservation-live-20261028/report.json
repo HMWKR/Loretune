@@ -1,0 +1,149 @@
+{
+  "schema": "document-preservation-live-report/1",
+  "recorded_at": "2026-10-27T21:54:03.434016+00:00",
+  "status": "REPORTED; driver acceptance pending",
+  "scope_complete": "Current path/hash preservation and recent before-text/local-link audit",
+  "whole_platform_complete": false,
+  "conclusion_ko": "기록된 범위에서 삭제된 문서를 발견하지 못했다. 불변 원문과 등록 사본은 해시가 일치하고 최신 9개 문서는 이전 본문을 보존한다. 과거 QA JSON 2개의 T0 바이트 및 preT0 이력은 여전히 미해결이며 문서 등록 게이트는 차단 상태다.",
+  "criteria": [
+    {
+      "scenario": "T0 inventory path and prefix digest recheck",
+      "invocation": "python3 .omo/evidence/document-preservation-live-20261028/audit.py",
+      "observable": {
+        "paths": 2156,
+        "missing": 0,
+        "same_sha12": 2138,
+        "changed": 18
+      },
+      "artifact": "audit.json",
+      "result": "No recorded path missing; known 18 changed entries preserved for explanation"
+    },
+    {
+      "scenario": "Immutable original and registered snapshot full SHA256",
+      "invocation": "python3 .omo/evidence/document-preservation-live-20261028/audit.py",
+      "observable": {
+        "classified": 611,
+        "classified_missing": 0,
+        "immutable": 544,
+        "original_subset": 53,
+        "immutable_mismatch": 0,
+        "registered": 285,
+        "registered_mismatch": 0,
+        "adoption_before": 13,
+        "imports": 4,
+        "all_adoption_and_import_match": true
+      },
+      "artifact": "audit.json",
+      "result": "MATCH"
+    },
+    {
+      "scenario": "S819 current before-text ordered reconstruction",
+      "invocation": "python3 .omo/evidence/document-preservation-live-20261028/audit.py",
+      "observable": {
+        "documents": 9,
+        "deleted_or_replaced_lines": 0,
+        "inserted_lines": 91,
+        "old_bytes_reconstructed_in_order": true
+      },
+      "artifact": "audit.json#/latest_text_diff",
+      "result": "PRESERVED"
+    },
+    {
+      "scenario": "User named 17 documents and standard local Markdown link targets",
+      "invocation": "python3 .omo/evidence/document-preservation-live-20261028/verify-supplement.py",
+      "observable": {
+        "requested_documents": 17,
+        "requested_missing": 0,
+        "local_link_occurrences": 5224,
+        "local_link_unique_destinations": 2307,
+        "local_links_missing": 0,
+        "skipped_links": 92,
+        "context_payloads": 58,
+        "context_payload_mismatches": 0,
+        "classification_proposal_matches": 3,
+        "frozen_files": 675,
+        "changed_during_audit": 0
+      },
+      "artifact": "supplement.json",
+      "result": "No missing requested document or parsed local-link destination; external/anchor-only links and unsupported syntax not verified"
+    },
+    {
+      "scenario": "Generated context payload SHA256 against all 58 receipts",
+      "invocation": "python3 .omo/evidence/document-preservation-live-20261028/verify-supplement.py",
+      "observable": {
+        "contexts": 58,
+        "payload_mismatch": 0,
+        "receipt_changes_since_prior": 0
+      },
+      "artifact": "supplement.json#/context_payloads",
+      "result": "PRESERVED; freshness is separate and 52 historical stale warnings remain"
+    },
+    {
+      "scenario": "Final read-only document completion checker after new independent report appeared",
+      "invocation": [
+        "python3",
+        "/Users/leesungmin/.agents/skills/document-completion-gate/check.py",
+        "--root",
+        "/Users/leesungmin/Desktop/Loretune"
+      ],
+      "observable": {
+        "exit_code": 1,
+        "status": "blocked",
+        "findings": {
+          "REGISTERED_SOURCE_OUTDATED": 26,
+          "UNCLASSIFIED_DOCUMENT": 4
+        },
+        "warnings": {
+          "CONTEXT_STALE": 52
+        },
+        "evidence_sha256": "d2b83714f9a31cbc543503caa5f96ebc604976932cdefb0be7f0d0a48061916f"
+      },
+      "artifact": "document-gate-final.json",
+      "result": "BLOCKED; no automatic registration/promotion/context updates"
+    },
+    {
+      "scenario": "Latest S819 registration proposal current hashes and destination absence",
+      "invocation": "Final direct Python SHA256 and exists checks recorded in proposal-final-check.json",
+      "observable": {
+        "proposal_sha256": "b439221f8b1f6812d28e200469d63eb2dd6837e0422a05d0997bb1803e71b3dc",
+        "unique_sources": 13,
+        "links_matching": 26,
+        "existing_destinations": 0,
+        "proposed_classifications_matching": 3,
+        "new_report_not_covered": 1
+      },
+      "artifact": "proposal-final-check.json",
+      "result": "Existing proposal current for its scope; fourth unclassified document needs separate disposition"
+    },
+    {
+      "scenario": "Same-named known historical QA JSON candidate search",
+      "invocation": "rg --files --hidden -g !docs/private/** -g !.git/** followed by SHA256 of exact basenames",
+      "observable": {
+        "same_named_candidates": 5,
+        "T0_sha12_matches": 0,
+        "restoration": false
+      },
+      "artifact": "known-historical-json-current.json",
+      "result": "T0 bytes not recovered in this bounded search"
+    }
+  ],
+  "changes": {
+    "existing_source_documents": [],
+    "existing_evidence": [],
+    "product_source": [],
+    "policy_or_registries_or_generated_context": [],
+    "owned_output_directory": ".omo/evidence/document-preservation-live-20261028",
+    "frozen_existing_paths": 675,
+    "changed_existing_paths": []
+  },
+  "known_limitations": [
+    "No Git repository. Unknown deletions before the T0 inventory cannot be disproved.",
+    "T0 inventory records 12-hex prefixes; this does not replace full historical byte copies.",
+    "Historical QA JSON docs/qa/tail-quota-fixes-20261025/media/store-tail-preserved-manifest.json and docs/qa/tail-quota-fixes-20261025/store-media-after.json remain different from T0.",
+    "This audit verifies exact retention of recent before text and immutable sources, not every possible semantic requirement across all historical revisions.",
+    "No external/private backup, Trash, credentials, provider call, product behavior test or real-user test was performed.",
+    "Local Markdown target checks do not verify external pages or heading anchors.",
+    "omo-agent-toolkit lifecycle status unavailable with exit127; no install or retry."
+  ],
+  "fablize_narrow_verification": "Actual read-only preservation auditor, link/context payload verifier and document gate ran. This agent made no product code changes; no product behavior completion is claimed."
+}

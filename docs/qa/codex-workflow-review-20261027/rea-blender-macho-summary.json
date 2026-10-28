@@ -1,0 +1,134 @@
+{
+  "evidence_id": "ev_5751844c021b9480f6a71bf5c540804a820b250f338aa7c77e7a9011d5e6401f",
+  "subject": {
+    "name": "Blender",
+    "digest": {
+      "sha256": "f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb"
+    },
+    "local_path": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "format": "mach-o",
+    "architecture": "arm64"
+  },
+  "provider": {
+    "id": "rea-analysis-view",
+    "name": "REA analysis view projection",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis-view",
+  "operation": "inspect_analysis_view",
+  "parameters": {
+    "parent_evidence_id": "ev_2b47aa66396d25247384f1abcafbc06b810ddbc6fc0ff51ec7f18bbbd346dde1",
+    "view": {
+      "kind": "summary"
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "kind": "summary",
+    "view": {
+      "kind": "summary"
+    },
+    "parent_evidence_id": "ev_2b47aa66396d25247384f1abcafbc06b810ddbc6fc0ff51ec7f18bbbd346dde1",
+    "parent_operation": "inspect_macho",
+    "parent_digest": "2b47aa66396d25247384f1abcafbc06b810ddbc6fc0ff51ec7f18bbbd346dde1",
+    "view_digest": "8e984ce1ee47163d694ba1dae09da9d4a4a415b5ecaa85a4a7a7813f48618b2e",
+    "artifact": {
+      "path": "/Applications/Blender.app/Contents/MacOS/Blender",
+      "sha256": "f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb"
+    },
+    "coverage": {
+      "status": "complete-within-view",
+      "examined": 135753,
+      "total": 135753,
+      "next_offset": null,
+      "exhausted": true
+    },
+    "limitations": [
+      "Imports and exports combine dyld_info and nm; stripped or toolchain-hidden symbols may be absent.",
+      "Merged nm/dyld_info results may be incomplete for stripped binaries.",
+      "dyld_info textual imports may omit chained or toolchain-unsupported metadata.",
+      "vtool output is retained as provenance but only otool build metadata is normalized."
+    ],
+    "unknowns": [
+      "Native tools did not report exhaustive imports, exports; page exhaustion does not establish absence of unreturned rows."
+    ],
+    "summary": {
+      "format": "mach-o",
+      "selected_architecture": {
+        "name": "arm64",
+        "container_file_offset": 0
+      },
+      "endian": "little",
+      "word_size": 64,
+      "file_type": "2",
+      "flags": [
+        "0x00a18085"
+      ],
+      "uuid": "43861983-96DE-3588-8491-260B05DCC486",
+      "collections": {
+        "entrypoints": {
+          "returned": 1,
+          "total": 1,
+          "exhaustive": true
+        },
+        "architectures": {
+          "returned": 1,
+          "total": 1,
+          "exhaustive": true
+        },
+        "build_metadata": {
+          "returned": 1,
+          "total": 1,
+          "exhaustive": true
+        },
+        "load_commands": {
+          "returned": 64,
+          "total": 64,
+          "exhaustive": true
+        },
+        "dependencies": {
+          "returned": 46,
+          "total": 46,
+          "exhaustive": true
+        },
+        "imports": {
+          "returned": 3051,
+          "total": null,
+          "exhaustive": false
+        },
+        "exports": {
+          "returned": 132583,
+          "total": null,
+          "exhaustive": false
+        },
+        "segments": {
+          "returned": 6,
+          "total": 6,
+          "exhaustive": true
+        }
+      },
+      "provenance_count": 7,
+      "limitation_count": 4
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Imports and exports combine dyld_info and nm; stripped or toolchain-hidden symbols may be absent.",
+    "Merged nm/dyld_info results may be incomplete for stripped binaries.",
+    "dyld_info textual imports may omit chained or toolchain-unsupported metadata.",
+    "vtool output is retained as provenance but only otool build metadata is normalized."
+  ],
+  "relationship_coverage": null,
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "/Applications/Blender.app/Contents/MacOS/Blender"
+    }
+  ],
+  "evidence_links": [
+    "ev_2b47aa66396d25247384f1abcafbc06b810ddbc6fc0ff51ec7f18bbbd346dde1"
+  ]
+}

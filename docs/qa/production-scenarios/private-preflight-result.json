@@ -1,0 +1,40 @@
+{
+  "started": 1792916689.9518971,
+  "model_calls": 0,
+  "maximum_files": 1,
+  "retention_seconds": 3600,
+  "acl": "private owner only",
+  "steps": [
+    {
+      "stage": "initiate",
+      "state": "received",
+      "http_status": 200,
+      "bytes": 236
+    },
+    {
+      "stage": "upload",
+      "state": "received",
+      "http_status": 200,
+      "bytes": 0
+    },
+    {
+      "stage": "token",
+      "state": "received",
+      "http_status": 200,
+      "bytes": 376
+    },
+    {
+      "stage": "authenticated_read",
+      "state": "received",
+      "http_status": 200,
+      "bytes": 4423
+    }
+  ],
+  "billing": "No inference requested; storage/read charge unconfirmed",
+  "status": "passed",
+  "input_bytes": 4423,
+  "input_sha256": "345156ca8dfe5abcfc54a9382820164fc42de77a32cf67ce9eb49e4dcdfcbcb1",
+  "sha256_matches": true,
+  "anonymous_access": "not tested; limited to one authenticated read",
+  "finished": 1792916692.9739919
+}

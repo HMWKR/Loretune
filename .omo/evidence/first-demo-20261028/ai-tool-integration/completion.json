@@ -1,0 +1,105 @@
+{
+  "schema": "ai-overlay-tool-integration/1",
+  "recorded_at": "2026-10-28T01:47:37.376320+00:00",
+  "status": "REPORTED; parent UI/integration acceptance pending",
+  "objective": "Close the verified AI context/typed edit contract gap for approved immutable motion overlays",
+  "changes": {
+    "production_tools": "Server-owned timeline_command_revision2 on new runs; scoped read query forwarded; reserved source pagination syntax validated",
+    "production_context": "Stored timeline overlay reference/placement exposed; immutable approved source metadata paged32 at a time; no full historical scenes/grants/repeated source names",
+    "local_creation_tools": "Typed set_motion_overlay/clear_motion_overlay; exact run+actual approved manifest command scope; server-computed overlay diff; rights/media/source/version revalidation on proposal and human apply",
+    "chat_models": "SYSTEM append only; AST proves model catalog/prices/transports/functions unchanged",
+    "new_tests": "tests/test_ai_motion_overlay.py:8 unique cases"
+  },
+  "source_freeze": {
+    "local_creation_tools.py": "f3968c1b1b4f357d6dba57351b5988388984536011847e0f23fffd656121e571",
+    "production_context.py": "c6f05454e9ea4c85651040fb44161f109488e4545bb88cded98264adfb71c671",
+    "production_tools.py": "63a0fd75ed28d78c8524acc3e0e38ec66906a870b923f64fd6c11aa83e2036df",
+    "chat_models.py": "86806f32ec1d6720db1c29620735da84191320e12cef0183d5b86a69e8fb0f0b",
+    "tests/test_ai_motion_overlay.py": "53affa625078c17243bf360dc982dc2e576df81beabad5f1535403316685a631"
+  },
+  "source_locations": {
+    "local_creation_tools.py": {
+      "timeline_diff": 100,
+      "overlay_scope": 152,
+      "overlay_source": 172,
+      "propose_timeline_commands": 178,
+      "review_timeline": 224
+    },
+    "production_context.py": {
+      "overlay_page_offset": 106,
+      "motion_overlay_sources": 112,
+      "read": 134
+    },
+    "production_tools.py": {
+      "begin": 26,
+      "validate": 33
+    },
+    "chat_models.py": {}
+  },
+  "contract": "ui-contract.json",
+  "verification": {
+    "new_focused": "8 tests/15.116s/OK",
+    "related_final": "55 tests/43.686s/OK; skip0 Warning0",
+    "related_command": "python3 -m unittest tests.test_ai_motion_overlay tests.test_local_creation_tools tests.test_chat_append_clips tests.test_chat_remove_clips tests.test_chat_protocols tests.test_general_chat_motion -v",
+    "actual_protocol": "verify_protocol.py exit0; protocol-verification.json",
+    "actual_HTTP_actions": 15,
+    "selected_model": "anthropic-haiku-5-5",
+    "synthetic_request_models": [
+      "claude-haiku-5-5",
+      "claude-haiku-5-5",
+      "claude-haiku-5-5",
+      "claude-haiku-5-5"
+    ],
+    "proposal": "actual synthetic tool result proposed; persisted timeline unchanged before review",
+    "human_apply": "new timeline3 unapproved for output; original versions and source preserved",
+    "actual_preview_and_output": {
+      "PNG": "ai-edited-preview.png",
+      "MP4": "ai-edited-output.mp4",
+      "sha256": "3cb42c5066b9b82bbef5b6c379090112368e0ccc97f3de9fc127ba31abd1813e",
+      "seconds": "3.000000",
+      "streams": [
+        "video",
+        "audio",
+        "subtitle"
+      ],
+      "full_decode": true,
+      "reopened_timeline": 3
+    },
+    "negative_cases": [
+      "missing/legacy/future/string/bool run marker",
+      "actual old approved manifest tool schema without new command despite current run marker",
+      "wrong-project source ID and invalid source/version/clip/offset/time",
+      "duplicate set/clear target and removed base clip",
+      "stale timeline before human review",
+      "rights revoked and original media bytes corrupted before review",
+      "malformed/negative/noninteger/over7digit pagination offset"
+    ],
+    "metadata_bound": {
+      "fixture": "1000 metadata records copied from own synthetic approved source; not1000 generated models",
+      "returned": 32,
+      "total_records": 1000,
+      "bytes": 9410,
+      "full_scene_or_grant_or_repeated_name_omitted": true,
+      "next_query": "motion-overlay-sources offset=32",
+      "real_provider_token_measurement": false,
+      "asserted_budget_bytes": 16384
+    },
+    "visual_review": "Actual ai-edited-preview.png opened; moved two-line Korean typography visible over the source test video with source alpha/background retained",
+    "scope_AST": "scope-and-collection.json"
+  },
+  "first_attempt_notes": [
+    "Initial50-test collection accidentally included42 imported fixture tests; module import changed to a module alias. Final new collection is8 unique IDs.",
+    "Initial negative reference expectation assumed structured tool200; actual earlier project-source guard correctly returns HTTP400. Final assertion requires rejection and accepts the correct guard boundary.",
+    "first-tests.log retained; no product assertions weakened or skipped."
+  ],
+  "evidence": "protocol-verification.json records exact request IDs, manifest hashes, tool results, diff, reviewed version and completed output snapshot. Wire bodies are14.7–16.2KB; real input token fit remains unverified.",
+  "limits": [
+    "Actual selected-model reasoning, vision, account access, input token count and billing remain unverified; all model responses are explicit fixtures.",
+    "No real provider/key/paid call; no browser Space91 operation, UI, document, registry or context regeneration change.",
+    "These tools provide the declared timeline/motion overlay contracts; do not infer3D mesh generation, arbitrary settings/job tools, drag editor, or every platform feature is model-accessible.",
+    "User-facing approval diff presentation and first-demo continuous UI recording belong to parent integration.",
+    "Overlay source remains bounded3–4seconds; one source per clip, source internal8layers maximum."
+  ],
+  "next_task_policy": "Parent requested source freeze before broader AI-sidepanel/permissions/preferences work; no additional product source edits after freeze.",
+  "whole_platform_complete": false
+}

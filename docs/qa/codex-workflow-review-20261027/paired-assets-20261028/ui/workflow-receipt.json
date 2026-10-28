@@ -1,0 +1,74 @@
+{
+  "schema": "actual-ui-workflow-receipt/1",
+  "checked_at": "2026-10-27T20:00:16.030444+00:00",
+  "space_id": 88,
+  "base_url": "http://127.0.0.1:53698",
+  "scope": "Owned music-first synthetic project plus actual public-model generated chair. Input audio/shot seeded by fixture; subsequent asset import, transform edit, scene approval/render, Take selection/rights/review, timeline/caption/approval, output confirmation/download/native playback/reopen were actual UI. Source rights revoke/recover used actual HTTP.",
+  "condition": {
+    "photo_input": false,
+    "self_authored_audio_seconds": 6,
+    "raw_model": "original chair TripoSR256",
+    "raw_sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3"
+  },
+  "ui_transform": {
+    "rotation_degrees": [
+      -90,
+      0,
+      0
+    ],
+    "scale": [
+      3,
+      3,
+      3
+    ],
+    "camera_position": [
+      4,
+      -6,
+      4
+    ]
+  },
+  "action_counts": {
+    "scene_asset_import": 3,
+    "scene_create": 1,
+    "scene_review": 2,
+    "scene_render": 2,
+    "scene_propose": 1,
+    "select": 1,
+    "declare_take_rights": 1,
+    "review_take": 1,
+    "timeline": 1,
+    "approve_timeline": 1,
+    "estimate_render": 1,
+    "render_job": 1,
+    "asset_rights": 2
+  },
+  "outputs": [
+    "default-chair.png",
+    "edited-chair.png",
+    "music-video.mp4",
+    "music-video.srt",
+    "music-video.json"
+  ],
+  "verified": [
+    "invalid GLB rejection retains input and rights",
+    "over-limit raw generated GLB rejected without lossy conversion or changing current asset",
+    "dirty scene cannot approve/render",
+    "explicit save/approval for both native renders",
+    "Take2 rights and review recorded",
+    "6second audio/caption video output and browser download",
+    "actual native play advances time and Korean cue is active",
+    "reopen selectedTake2/scene2/timeline1/exporthash and render_job_count1",
+    "source rights revoke returns403 for both PNG and finalMP4; restore returns exactsame bytes",
+    "Escape returns focus to sceneStudioButton",
+    "1920/1280/375 overflow0; actual video rendered at all3 widths",
+    "owned browser/fixture terminated"
+  ],
+  "limitations": [
+    "Local TripoSR inference ran in isolated experiment runtime then GLB was imported; no in-product TripoSR generation button/inference adapter implemented",
+    "480x270 still resized to1080p, not AI superresolution or animated3D",
+    "Different camera/framing than512input prevents commercial quality-parity claim",
+    "Formal design critique/full accessibility/user research/account auth/real Claude and AI-video provider are not accepted by this receipt"
+  ],
+  "cleanup": "cleanup-receipt.json",
+  "verification_attempt_errors_preserved": "verification-attempts.json"
+}

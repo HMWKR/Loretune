@@ -1,0 +1,114 @@
+[
+  {
+    "id": "UI-01",
+    "scenario": "음악 미확정 계획 저장",
+    "actual": "v1 저장 후 승인 disabled, 목표/장면 문구 보존",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-02",
+    "scenario": "0–2초 확정 후 새 계획",
+    "actual": "v2에 2초 표시; v1은 미확정 상태 보존",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-03",
+    "scenario": "계획 승인→샷",
+    "actual": "샷 1개 생성, 미선택/미승인 후보 없음",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-04",
+    "scenario": "사람의 모의 작업 승인",
+    "actual": "prepared 영수증이 자동 펼쳐짐; 공급자 $0/AI 아님/외부 전송 없음",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-05",
+    "scenario": "실행→후보→승인→선택",
+    "actual": "후보 Take1 생성, 검토와 선택 별도 완료",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-06",
+    "scenario": "새로고침 보존",
+    "actual": "Take·승인·영수증 펼침·검토 초안 보존",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-07",
+    "scenario": "미승인 타임라인 출력 시도",
+    "actual": "출력 차단; 오류 자동 펼침; 입력 보존",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-08",
+    "scenario": "타임라인/음원/자막 승인",
+    "actual": "v1/1컷/2초/1080p/음원v1/자막1줄/비용0 dialog",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-09",
+    "scenario": "로컬 출력→재개",
+    "actual": "completed/브라우저 readyState4/2초/1920x1080/납품 승인 새로고침 보존",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-10",
+    "scenario": "390px 검토·미리보기·키보드",
+    "actual": "ArrowLeft/Home 패널 선택; 문서 scrollWidth390",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-11",
+    "scenario": "320px 미리보기",
+    "actual": "문서 scrollWidth320, 패널/출력 표시 유지",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-12",
+    "scenario": "모델 설정 비활성 표시",
+    "actual": "gen4_image 통합 미검증/이미지 활성 없음; 옛 어댑터없음 문구 수정 후 재확인",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "UI-13",
+    "scenario": "설정 dialog Escape",
+    "actual": "닫힘, 포커스 모델 설정 버튼으로 반환",
+    "status": "pass",
+    "evidence_class": "browser"
+  },
+  {
+    "id": "MEDIA-01",
+    "scenario": "파일 내 음악/자막/길이",
+    "actual": "2초48프레임/48000Hz96000sample/끝음원 비무음/mov_text 한국어0–2초/SRT일치",
+    "status": "pass",
+    "evidence_class": "media-local"
+  },
+  {
+    "id": "MEDIA-02",
+    "scenario": "브라우저 자막 표시",
+    "actual": "textTracks0; 내장자막 UI 표시 미확인, 파일 추출 및 SRT만 검증",
+    "status": "limitation",
+    "evidence_class": "limitation"
+  },
+  {
+    "id": "A11Y-01",
+    "scenario": "실제200/400% browserzoom/스크린리더/키보드전체완주",
+    "actual": "이번 검증 미실행; 작은viewport로 대체하지 않음",
+    "status": "not_run",
+    "evidence_class": "limitation"
+  }
+]

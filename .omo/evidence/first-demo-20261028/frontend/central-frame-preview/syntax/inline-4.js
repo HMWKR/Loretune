@@ -1,0 +1,1 @@
+initializeCreatorUI();LoretuneMedia.setup({project,shot:()=>shotName,draft:()=>draft,context:()=>song()+':'+shotName,asset,image,allowed:t=>!state?.asset_rights?.[t.sha256]?.blocked,dirty:()=>dirty,redraw:draw,invalidateFrame:invalidateTimelineFrame});

@@ -1,0 +1,100 @@
+{
+  "status": "PROPOSAL_TESTED_DEPLOYMENT_BLOCKED",
+  "claude_version_observed": "2.1.312",
+  "proposal": ".omo/evidence/claude-document-gate-20261028/claude-settings.local.proposed.json",
+  "proposal_sha256": "73ed3f15e13de3e65f83ce27662949338d924a830695669c655ccfa69cebba4b",
+  "configured": false,
+  "native_dispatch_verified": false,
+  "model_called": false,
+  "scope": "Loretune project only; no global hook update",
+  "protected_inputs_unchanged": {
+    "/Users/leesungmin/.claude/settings.json": true,
+    "/Users/leesungmin/.claude/settings.local.json": true,
+    "/Users/leesungmin/.codex/hooks.json": true,
+    "/Users/leesungmin/.agents/skills/document-completion-gate/check.py": true,
+    "/Users/leesungmin/Desktop/Loretune/.document-gate.json": true
+  },
+  "project_settings_exist": false,
+  "direct_synthetic_stop_tests": [
+    {
+      "case": "blocked_first",
+      "input": {
+        "hook_event_name": "Stop",
+        "cwd": "/Users/leesungmin/Desktop/Loretune",
+        "stop_hook_active": false
+      },
+      "exit_code": 0,
+      "output": {
+        "decision": "block",
+        "reason": "Document gate: blocked. Run the read-only checker, report gaps and request any required registration approval. Do not auto-register or promote documents."
+      },
+      "stderr": "",
+      "assertion_passed": true
+    },
+    {
+      "case": "blocked_reentry",
+      "input": {
+        "hook_event_name": "Stop",
+        "cwd": "/Users/leesungmin/Desktop/Loretune",
+        "stop_hook_active": true
+      },
+      "exit_code": 0,
+      "output": {
+        "systemMessage": "Document gate: blocked. Run the read-only checker, report gaps and request any required registration approval. Do not auto-register or promote documents. Continued once already; report incomplete status honestly."
+      },
+      "stderr": "",
+      "assertion_passed": true
+    },
+    {
+      "case": "no_policy",
+      "input": {
+        "hook_event_name": "Stop",
+        "cwd": "/private/tmp",
+        "stop_hook_active": false
+      },
+      "exit_code": 0,
+      "output": {
+        "systemMessage": "Document gate: not-configured. No registry or project files were created."
+      },
+      "stderr": "",
+      "assertion_passed": true
+    },
+    {
+      "case": "invalid_event",
+      "input": {
+        "hook_event_name": "SessionEnd",
+        "cwd": "/Users/leesungmin/Desktop/Loretune"
+      },
+      "exit_code": 0,
+      "output": {
+        "systemMessage": "Document gate could not validate this project. Report the gate as incomplete; do not claim pass."
+      },
+      "stderr": "",
+      "assertion_passed": true
+    }
+  ],
+  "gate_after": {
+    "status": "blocked",
+    "exit_code": 1,
+    "findings": {
+      "REGISTERED_SOURCE_OUTDATED": 26,
+      "UNCLASSIFIED_DOCUMENT": 5
+    },
+    "warnings": {
+      "CONTEXT_STALE": 52
+    },
+    "excluded": [],
+    "verification_scope": "classification, membership, bytes and receipt freshness; not semantic truth, product ontology or implementation acceptance",
+    "evidence_sha256": "33dae2e8957925a9005e72d09535b4af124c9f7f28989a1e2d9a4844979865d8"
+  },
+  "tool_rejection": {
+    "tool": "apply_patch",
+    "target": "/Users/leesungmin/Desktop/Loretune/.claude/settings.local.json",
+    "reported_by": "actual PreToolUse result in driver session",
+    "message": "DENIED_PATH: Write target is a protected state, dependency or secret path",
+    "retry_or_bypass_attempted": false
+  },
+  "manual_next_step": "User may place the reviewed proposal at Loretune/.claude/settings.local.json (merge the Stop entry if a file has since appeared), then inspect /hooks in a trusted Claude Code session. Do not alter trust state programmatically. Actual native dispatch requires a later real Stop observation.",
+  "registry_or_context_changed": false,
+  "at": "2026-10-28T07:01:33.978410+00:00"
+}

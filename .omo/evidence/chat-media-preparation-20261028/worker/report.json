@@ -1,0 +1,104 @@
+{
+  "schema": "chat-image-preparation-worker-report/1",
+  "at": "2026-10-28T05:25:24.851811+00:00",
+  "state": "REPORTED_FROZEN; root acceptance pending",
+  "issue": "AGENT-TOOLS-02-MEDIA-PREP",
+  "outcome": "General chat can query existing model catalog and prepare an immutable image action; actual UI card/estimate/reopen/hold/reject verified with synthetic transport and price. No generation execution added.",
+  "decision": "Reuse existing dispatcher, action storage, validation and human card; no client/framework/approval duplication",
+  "changed_sources": {
+    "chat_general.py": "3206b252f6972357168dfbf716a7937a30ee6c421300ff6e2dae3c77896f81b4",
+    "general-chat-ui.js": "f0b65513c70e12e8897b2cbd89e6aad714c7603da2d9a472e53fb7adf9aaefaa",
+    "tests/test_general_chat_media_preparation.py": "6cfcbf6df859f9841c8fe93d17c1301ca0c96b1c8de4803364bf03b1b18af00a",
+    "tests/test_agent_preferences.py": "37bb17b51a725ae23e6dbe119120538df26742a71558674ff29f492d151774bb"
+  },
+  "source_changes": {
+    "chat_general.py": "Append get_model_capabilities and prepare_image_action to exact allowed tuple",
+    "general-chat-ui.js": "Two concrete tool labels, preparation explicitly execution-free",
+    "tests/test_general_chat_media_preparation.py": "Ten HTTP/SQLite cases, normal and security/failure boundaries",
+    "tests/test_agent_preferences.py": "Parent-approved three exact read-only manifest lists add get_model_capabilities; negative write/ceiling/frozen-body assertions unchanged"
+  },
+  "skills": {
+    "read": [
+      "Karpathy Guidelines and installed runtime",
+      "feature-verification and installed runtime/live-feature-verify/uncompromising-rigor/ui-ux-craft",
+      "browser-tooling-policy"
+    ],
+    "applied": [
+      "Minimal adapter reuse",
+      "Exact approval/schema/permission scope checks",
+      "Actual UI→HTTP→DB/state→same existing card→reload",
+      "Actual keyboard/responsive/error inspection"
+    ],
+    "not_claimed": "No Hallmark/Impeccable command or real Claude execution performed in this worker"
+  },
+  "tests": {
+    "focused-tests.log": "11/7.933s OK: nine initial new cases plus two existing frozen schema cases; before adding separate stale-plan case",
+    "stale-plan-test.log": "1/0.816s OK: changed audio range invalidates old applied-plan context; chat preview uses current context and current shot revision; action0",
+    "settings-and-ui-guards.log": "4/2.198s: three pass, one exact list expected failure retained",
+    "frozen-downgrade-followup.log": "Failed exact case rerun after parent-approved expectation update: 1/0.9s OK",
+    "unique_cases_with_latest_pass": 16,
+    "additional_actual_HTTP_replay": "replay-new-request-guard.json: same call/new request/current CAS rejected400 by frozen approval binding; immutable action stays1",
+    "syntax": "Python AST for product and new test; node --check general-chat-ui.js passed",
+    "whole_suite": "Not run by worker; root owns integrated current freeze regression"
+  },
+  "actual_ui": {
+    "receipt": "actual-ui-result.json",
+    "first_segment": "initial-manifest-labels.json + round-1/2/3.json and preserved failure receipt",
+    "continuation": "Same workspace/action, explicit public Work settings tab; no reset or duplicate image preparation",
+    "viewport_widths": [
+      1920,
+      1280,
+      375
+    ],
+    "direct_local_images_viewed": [
+      "visible-card-1920.png",
+      "visible-card-1280.png",
+      "visible-card-375.png"
+    ],
+    "visual_observations": "Existing card readable, Korean prompt/fixture cost/no-real-AI label and held/rejected controls visible; 375px crop is a scrolled card view, not whole mobile-product acceptance",
+    "keyboard": "Prompt Tab; Enter on focused Hold button",
+    "result": "PASS",
+    "page_errors": [],
+    "failed_requests": [],
+    "blocked_page_requests": []
+  },
+  "preserved_failures": {
+    "test-attempt-1.log": "Three errors from fixture quote hash using Unicode canonicalization unlike existing Contract; fixture fixed, product quote protocol unchanged",
+    "test-attempt-2.log": "One test searched escaped JSON text; replaced with exact actual result fields/ID, then focused tests pass",
+    "browser-attempt-1.log": "OS policy also denied local Unix socket; Chrome launch failed; same profile no live process verified, local Unix sockets allowed while nonloopback IP denial verified",
+    "browser-attempt-2.log": "Observer omitted Work settings tab: card rect0 and unclickable, hidden captures not accepted as visual proof; same DB continued after explicit public tab click",
+    "replay-probe.log": "HTTP guard already rejected replay400; probe incorrectly expected later pending-tool guard text; corrected to actual earlier frozen binding rejection and reran"
+  },
+  "security_pattern_review": {
+    "pattern": "eval_injection detector on browser automation",
+    "manual_review": "Puppeteer evaluate/$eval receive static function callbacks on first-party fixture DOM; no eval/new Function or untrusted executable source. Selector action ID from local server is checked as 32 lowercase hex in continuation. Browser reads/writes only isolated loopback server; no credentials supplied.",
+    "result": "No executable user/model string evaluated; product diff itself adds no eval or new network client"
+  },
+  "internal_evidence": "internal-path-verification.json",
+  "runtime_cleanup": {
+    "fixture_pid": 56664,
+    "session_exit": 0,
+    "owned_server_live": false,
+    "worker_threads_still_alive": [],
+    "browser_closed": "finally await browser.close; continuation exit0"
+  },
+  "boundaries": {
+    "actual_Claude_or_media_provider_calls": 0,
+    "media_submissions": 0,
+    "media_grants": 0,
+    "media_jobs": 0,
+    "media_reservations": 0,
+    "main_demo_57888_or_user_8765_accessed": false,
+    "user_Ego_space_accessed": false,
+    "docs_registry_context_changes": false,
+    "pending_proposal_sha256": "7faa55a1dade97a094431d000789fca0c912938ceb78813c05ae868f7e378d21"
+  },
+  "remaining": [
+    "Actual selected Claude semantics, 4096 token fit and real cost require separate approval/verification",
+    "Image preparation is distinct from image/video generation execution",
+    "General chat video/3D/general-settings/full external asset recommendation tools remain incomplete",
+    "Catalog query exposes metadata, not verified account, configured route or model execution",
+    "Current maintained docs need root-controlled latest eight-tool supplement after acceptance; pending proposal untouched",
+    "Product whole-platform, real collaborator presence and release acceptance not achieved"
+  ]
+}

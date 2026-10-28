@@ -1,0 +1,136 @@
+test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery) ... 
+  test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery) (count=300001) ... FAIL
+  test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery) (count=777780) ... FAIL
+  test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery) (count=1099511627776) ... FAIL
+test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) ... 
+  test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) (vertices=25001, triangles=1, duplicate_mesh=False) ... FAIL
+  test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) (vertices=25001, triangles=1, duplicate_mesh=True) ... FAIL
+  test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) (vertices=3, triangles=50001, duplicate_mesh=False) ... FAIL
+  test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) (vertices=3, triangles=50001, duplicate_mesh=True) ... FAIL
+test_scalar_budget_boundary_and_overflow_without_changing_limits (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_scalar_budget_boundary_and_overflow_without_changing_limits) ... FAIL
+test_supported_accessor_count_with_missing_bytes_still_reports_format_error (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_supported_accessor_count_with_missing_bytes_still_reports_format_error) ... ok
+
+======================================================================
+FAIL: test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery) (count=300001)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 28, in test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery
+    self.assert_rejected(pack_glb(document, binary), COMPLEXITY_ERROR)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 17, in assert_rejected
+    self.assertEqual(str(failure.exception), message)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '지원하지 않거나 손상된 GLB 모델입니다.' != 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+- 지원하지 않거나 손상된 GLB 모델입니다.
++ GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.
+
+
+======================================================================
+FAIL: test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery) (count=777780)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 28, in test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery
+    self.assert_rejected(pack_glb(document, binary), COMPLEXITY_ERROR)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 17, in assert_rejected
+    self.assertEqual(str(failure.exception), message)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '지원하지 않거나 손상된 GLB 모델입니다.' != 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+- 지원하지 않거나 손상된 GLB 모델입니다.
++ GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.
+
+
+======================================================================
+FAIL: test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery) (count=1099511627776)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 28, in test_malformed_counts_keep_format_error_and_positive_overflow_explains_recovery
+    self.assert_rejected(pack_glb(document, binary), COMPLEXITY_ERROR)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 17, in assert_rejected
+    self.assertEqual(str(failure.exception), message)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '지원하지 않거나 손상된 GLB 모델입니다.' != 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+- 지원하지 않거나 손상된 GLB 모델입니다.
++ GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.
+
+
+======================================================================
+FAIL: test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) (vertices=25001, triangles=1, duplicate_mesh=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 54, in test_mesh_and_instance_aggregate_limits_have_the_same_recovery
+    self.assert_rejected(pack_glb(document, binary), COMPLEXITY_ERROR)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 17, in assert_rejected
+    self.assertEqual(str(failure.exception), message)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'GLB 인스턴스 geometry가 지원 한도를 넘었습니다.' != 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+- GLB 인스턴스 geometry가 지원 한도를 넘었습니다.
++ GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.
+
+
+======================================================================
+FAIL: test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) (vertices=25001, triangles=1, duplicate_mesh=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 54, in test_mesh_and_instance_aggregate_limits_have_the_same_recovery
+    self.assert_rejected(pack_glb(document, binary), COMPLEXITY_ERROR)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 17, in assert_rejected
+    self.assertEqual(str(failure.exception), message)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'GLB geometry가 지원 한도를 넘었습니다.' != 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+- GLB geometry가 지원 한도를 넘었습니다.
++ GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.
+
+
+======================================================================
+FAIL: test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) (vertices=3, triangles=50001, duplicate_mesh=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 54, in test_mesh_and_instance_aggregate_limits_have_the_same_recovery
+    self.assert_rejected(pack_glb(document, binary), COMPLEXITY_ERROR)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 17, in assert_rejected
+    self.assertEqual(str(failure.exception), message)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'GLB 인스턴스 geometry가 지원 한도를 넘었습니다.' != 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+- GLB 인스턴스 geometry가 지원 한도를 넘었습니다.
++ GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.
+
+
+======================================================================
+FAIL: test_mesh_and_instance_aggregate_limits_have_the_same_recovery (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_mesh_and_instance_aggregate_limits_have_the_same_recovery) (vertices=3, triangles=50001, duplicate_mesh=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 54, in test_mesh_and_instance_aggregate_limits_have_the_same_recovery
+    self.assert_rejected(pack_glb(document, binary), COMPLEXITY_ERROR)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 17, in assert_rejected
+    self.assertEqual(str(failure.exception), message)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'GLB geometry가 지원 한도를 넘었습니다.' != 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+- GLB geometry가 지원 한도를 넘었습니다.
++ GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.
+
+
+======================================================================
+FAIL: test_scalar_budget_boundary_and_overflow_without_changing_limits (tests.test_scene_asset_diagnostics.SceneAssetDiagnosticsTest.test_scalar_budget_boundary_and_overflow_without_changing_limits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 43, in test_scalar_budget_boundary_and_overflow_without_changing_limits
+    self.assert_rejected(pack_glb(document, binary), COMPLEXITY_ERROR)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_scene_asset_diagnostics.py", line 17, in assert_rejected
+    self.assertEqual(str(failure.exception), message)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'GLB 데이터가 지원 geometry 한도를 넘었습니다.' != 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+- GLB 데이터가 지원 geometry 한도를 넘었습니다.
++ GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.402s
+
+FAILED (failures=8)

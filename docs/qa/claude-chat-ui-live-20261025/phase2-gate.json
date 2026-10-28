@@ -1,0 +1,31 @@
+{
+  "approval": {
+    "model": "claude-haiku-5-5",
+    "workspace_id": "097cb907-7222-46e1-b60d-2839b3a4e195",
+    "project_id": "f4b71377-707c-5f06-ba07-565d88024521",
+    "synthetic_only": true,
+    "expires": 1792933164.1497788,
+    "context_hash": "332571640123709ba34dd59aef5100e196d960c2c2764ae9eecad9d570ff9bf1",
+    "prompt_hashes": [
+      "f971df21feb5632b4fb96fcc8f572d9aef2b97c7d8a6b3d140bd2722d3a60817"
+    ],
+    "price_revision": "haiku-5-5-20261025",
+    "max_rounds": 4,
+    "max_input_tokens": 8192,
+    "max_output_tokens": 4096,
+    "turn_cap_micro": 12000,
+    "stage": {
+      "id": "claude-chat-ui-live-20261025",
+      "cap_micro": 100000
+    },
+    "max_turns": 2,
+    "one_per_prompt": true,
+    "tools": [
+      "search_project_context",
+      "get_generation_job"
+    ]
+  },
+  "prompt": "합성 Song A의 승인 온톨로지와 작업 e6b8a59e35634dfba9811b99763fc2ac를 각각 도구로 조회하세요. 실제 저장된 계획 595787d6ebc649448d47843c8dbb4a3f와 후보 Take를 확인해서 최종 상태를 한국어로 설명하세요. 기본 파란 코트와 곡 한정 빨간 코트가 유지됐는지 출처 ID로 설명하고 작업 ID·Take 번호·자산 SHA256을 정확히 인용하세요. 모의 단색 이미지 작업은 실제 AI 영상 생성이 아니며 외부 미디어 호출은 0회임을 명시하세요. 결과 승인은 작업 영수증 그대로 설명하고 새 계획이나 생성은 요청하지 마세요.",
+  "job": "e6b8a59e35634dfba9811b99763fc2ac",
+  "plan": "595787d6ebc649448d47843c8dbb4a3f"
+}

@@ -1,0 +1,13 @@
+control (no mutant): ran=1 failures=0 errors=0 -> PASS
+propose_timeline_changes -> model_settings: ran=1 failures=2 errors=0 -> KILLED; failing assertions: ["self.assertEqual(model_settings['selections'], {'chat':'anthropic-haiku-5-5', 'image':'fal-flux-schnell', 'video':'fal-kling-2-5-turbo'})", 'self.assertEqual(settings_state(self.store), before)']
+propose_timeline_changes -> agent_settings: ran=1 failures=2 errors=0 -> KILLED; failing assertions: ['self.assertEqual(settings_state(self.store), before)']
+propose_memory_update -> agent_settings: ran=1 failures=2 errors=0 -> KILLED; failing assertions: ['self.assertEqual(settings_state(self.store), before)']
+propose_memory_update -> model_settings: ran=1 failures=4 errors=0 -> KILLED; failing assertions: ["self.assertEqual((result['status'], result.get('code')), self.expected(mode, name), result)", "self.assertEqual(model_settings['selections'], {'chat':'anthropic-haiku-5-5', 'image':'fal-flux-schnell', 'video':'fal-kling-2-5-turbo'})", 'self.assertEqual(settings_state(self.store), before)']
+propose_motion_scene -> model_settings: ran=1 failures=1 errors=0 -> KILLED; failing assertions: ['self.assertEqual(status, 200, result)']
+request_render -> agent_settings: ran=1 failures=2 errors=0 -> KILLED; failing assertions: ['self.assertEqual(settings_state(self.store), before)']
+prepare_video_action -> model_settings: ran=1 failures=3 errors=0 -> KILLED; failing assertions: ["self.assertEqual((result['status'], result.get('code')), self.expected(mode, name), result)", "self.assertEqual(model_settings['selections'], {'chat':'anthropic-haiku-5-5', 'image':'fal-flux-schnell', 'video':'fal-kling-2-5-turbo'})", 'self.assertEqual(settings_state(self.store), before)']
+matrix control (no mutant): ran=1 failures=0 errors=0 -> PASS
+matrix: refused propose_scene_3d still saves: ran=1 failures=2 errors=0 -> KILLED; failing assertions: ['self.assertEqual(after, before)', 'self.assertEqual(len(outcomes), 14*3*3)']
+matrix: refused propose_preference_rule still saves: ran=1 failures=2 errors=0 -> KILLED; failing assertions: ['self.assertEqual(after, before)', 'self.assertEqual(len(outcomes), 14*3*3)']
+matrix: refused propose_timeline_changes still saves: ran=1 failures=6 errors=0 -> KILLED; failing assertions: ['self.assertEqual(after, before)', 'self.assertEqual(len(outcomes), 14*3*3)']
+old matrix observed(): refused propose_scene_3d still saves: ran=1 failures=0 errors=0 -> SURVIVED

@@ -1,0 +1,103 @@
+--- before/local_creation_tools.py
++++ local_creation_tools.py
+@@ -8,6 +8,36 @@
+ from loretune import Conflict
+ 
+ CHANGE_SCHEMA={'type':'array','minItems':1,'maxItems':30,'items':{'type':'object','properties':{'clip_index':{'type':'integer','minimum':0},'take':{'type':'integer','minimum':1},'trim':{'type':'number','minimum':0},'duration':{'type':'number','minimum':0.125}},'required':['clip_index','take','trim','duration'],'additionalProperties':False}}
++def _command_schema(properties):return dict(type='object',properties=properties,required=list(properties),additionalProperties=False)
++COMMAND_SCHEMA=dict(type='array',minItems=1,maxItems=30,items=dict(anyOf=[
++ _command_schema(dict(op=dict(type='string',enum=['reorder_clips']),order=dict(type='array',minItems=1,maxItems=30,items=dict(type='integer',minimum=0)))),
++ _command_schema(dict(op=dict(type='string',enum=['set_captions']),cues=dict(type='array',maxItems=100,items=_command_schema(dict(start=dict(type='number',minimum=0),end=dict(type='number',minimum=0),text=dict(type='string')))))),
++ _command_schema(dict(op=dict(type='string',enum=['set_audio_offset']),audio_version=dict(type='integer',minimum=1),source_offset_seconds=dict(type='number',minimum=0))),
++ _command_schema(dict(op=dict(type='string',enum=['set_clip']),**deepcopy(CHANGE_SCHEMA['items']['properties'])))
++]))
++
++def validate_commands(commands):
++ if not isinstance(commands,list) or not 1<=len(commands)<=30:raise ValueError('1–30 commands required')
++ seen=set()
++ for c in commands:
++  if not isinstance(c,dict):raise ValueError('typed command required')
++  op=c.get('op');fields={'reorder_clips':{'op','order'},'set_captions':{'op','cues'},'set_audio_offset':{'op','audio_version','source_offset_seconds'},'set_clip':{'op','clip_index','take','trim','duration'}}.get(op)
++  if fields is None or set(c)!=fields:raise ValueError('unknown edit command/fields')
++  key=(op,c.get('clip_index'))
++  if key in seen:raise ValueError('duplicate edit target')
++  seen.add(key)
++  if op=='set_clip':validate_changes([{k:v for k,v in c.items() if k!='op'}])
++  elif op=='reorder_clips':
++   if not isinstance(c['order'],list) or not 1<=len(c['order'])<=30 or any(type(i) is not int or i<0 for i in c['order']) or len(set(c['order']))!=len(c['order']):raise ValueError('explicit permutation required')
++  elif op=='set_audio_offset':
++   if type(c['audio_version']) is not int or c['audio_version']<1:raise ValueError('current audio version required')
++   editing.seconds(c['source_offset_seconds'])
++  else:
++   if not isinstance(c['cues'],list) or len(c['cues'])>100:raise ValueError('bounded explicit caption replacement required')
++   for cue in c['cues']:
++    if not isinstance(cue,dict) or set(cue)!={'start','end','text'}:raise ValueError('explicit caption fields required')
++    editing.seconds(cue['start']);editing.seconds(cue['end'])
++    if not isinstance(cue['text'],str) or not 1<=len(cue['text'])<=500:raise ValueError('caption text invalid')
+ 
+ def validate_changes(changes):
+  if not isinstance(changes,list) or not 1<=len(changes)<=30:raise ValueError('1–30 explicit clip changes required')
+@@ -29,10 +59,34 @@
+   if change['clip_index']>=len(candidate['clips']):raise ValueError('clip outside current timeline')
+   clip=candidate['clips'][change['clip_index']]
+   clip.update({k:change[k] for k in ('take','trim','duration')})
+- editing.validate(p,candidate)
++ return save_timeline_proposal(p,args,candidate,run,call,deepcopy(args['changes']))
++
++def save_timeline_proposal(p,args,candidate,run,call,changes,commands=None):
++ base=editing.current(p);editing.validate(p,candidate)
+  proposal=dict(id=uuid.uuid4().hex,status='proposed',description=args['description'],base_version=base['id'],base_context=edit_context(p),timeline=candidate,changes=deepcopy(args['changes']),source=dict(run=run['id'],call=call['id'],model=run.get('provider_model'),mode=run['engine']),created=time.time())
++ proposal['changes']=changes
++ if commands is not None:proposal['commands']=deepcopy(commands)
+  p.setdefault('timeline_edit_proposals',[]).append(proposal)
+- return dict(status='proposed',proposal_id=proposal['id'],base_version=base['id'],changes=deepcopy(args['changes']),audio_version=base['audio'],captions_preserved=True,applied=False,output_approved=False)
++ return dict(status='proposed',proposal_id=proposal['id'],base_version=base['id'],changes=deepcopy(changes),commands=deepcopy(commands),audio_version=candidate['audio'],audio_offset=candidate['audio_offset'],captions_preserved=candidate['subtitles']==base['subtitles'],applied=False,output_approved=False)
++
++def propose_timeline_commands(p,args,run,call):
++ validate_commands(args['commands']);base=editing.current(p)
++ if args['timeline_version']!=base['id']:raise Conflict('타임라인 버전이 변경됐습니다.')
++ candidate=deepcopy(base);candidate.pop('approval',None);order=None;changes=[]
++ for cmd in args['commands']:
++  if cmd['op']=='set_clip':
++   if cmd['clip_index']>=len(base['clips']):raise ValueError('clip outside current base timeline')
++   change={k:v for k,v in cmd.items() if k!='op'};changes.append(change)
++   candidate['clips'][cmd['clip_index']].update({k:cmd[k] for k in ['take','trim','duration']})
++  elif cmd['op']=='reorder_clips':
++   if sorted(cmd['order'])!=list(range(len(base['clips']))):raise ValueError('order must include every base clip occurrence once')
++   order=cmd['order']
++  elif cmd['op']=='set_audio_offset':
++   if cmd['audio_version']!=base['audio']:raise ValueError('cannot replace current source audio')
++   candidate['audio_offset']=cmd['source_offset_seconds']
++  else:candidate['subtitles']=deepcopy(cmd['cues'])
++ if order is not None:candidate['clips']=[candidate['clips'][i] for i in order]
++ return save_timeline_proposal(p,dict(args,changes=changes),candidate,run,call,changes,args['commands'])
+ 
+ def review_timeline(store,c,studio,name,data):
+  if set(data)!={'song','proposal_id','timeline_version','decision'}:raise ValueError('saved proposal and decision required')
+@@ -76,6 +130,7 @@
+  # Return a prior receipt even after cancellation/failure; no silent fresh render.
+  for row in c.execute('SELECT body FROM jobs'):
+   job=json.loads(row[0])
++  if job.get('kind')=='local-motion':continue
+   if job['song']==name and job['snapshot']['timeline'].get('approval',{}).get('id')==args['grant_id']:
+    return render_receipt(job,existing=True)
+  quote=store.edit(c,studio,'estimate_render',{'song':name})
+@@ -92,6 +147,9 @@
+  if tool=='execution_context':return __import__('production_context').read(c,store,p,name)
+  if tool=='sources':return [dict(id=k,text=v) for k,v in evidence_sources(c,p,run).items()]
+  if tool=='propose_timeline_edit':return propose_timeline(p,args,run,call)
++ if tool=='propose_timeline_changes':return propose_timeline_commands(p,args,run,call)
++ if tool=='propose_motion_scene':return __import__('motion_scene').propose(p,args,dict(run=run['id'],call=call['id'],model=run.get('provider_model'),mode=run['engine']))
++ if tool=='request_motion_render':return __import__('motion_scene').request_render(store,c,p,name,args)
+  if tool=='propose_memory_update':
+   result=propose_memory(c,store.workspace_id,contracts.project_id(store.workspace_id,name),p,args,run,call)
+   return dict(status='proposed',proposal_id=result['id'],base_revision=result['base_revision'],scope='current-project',applied=False,canonical_approved=False)
+@@ -100,7 +158,7 @@
+ 
+ 
+ def execute(store,c,studio,name,tool,args,run,call):
+- p=studio.projects[name];keys=('timeline_edit_proposals','render_estimates');before={k:deepcopy(p[k]) for k in keys if k in p}
++ p=studio.projects[name];keys=('timeline_edit_proposals','render_estimates','motion_proposals');before={k:deepcopy(p[k]) for k in keys if k in p}
+  c.execute('SAVEPOINT local_creation_tool')
+  try:result=_execute(store,c,studio,name,tool,args,run,call)
+  except Exception:

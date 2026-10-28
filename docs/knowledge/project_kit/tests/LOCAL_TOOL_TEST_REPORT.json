@@ -1,0 +1,50 @@
+{
+  "executed_at": "2026-10-23T13:09:47.114566+00:00",
+  "scope": "local documentation CLI and offline arithmetic only",
+  "tests_executed": 26,
+  "reports": [
+    {
+      "suite": "knowledge_cli",
+      "actual_tests": 16,
+      "passed": true,
+      "exit_code": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_kb.py",
+        "-v"
+      ],
+      "code_sha256": {
+        "kb.py": "841d7d361eff1af11c2116c5e0531399958e76a8dad97e56a3571ba1a03625e2",
+        "tests/test_kb.py": "fcf4c13fc570eb8da2cfd1fabf0fd4337312b4e4ed3ac1522dd6a04534a563e5"
+      }
+    },
+    {
+      "suite": "cost_calculator",
+      "actual_tests": 10,
+      "passed": true,
+      "exit_code": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_cost_model.py"
+      ],
+      "code_sha256": {
+        "cost_model.py": "9633d56ee39e79d8199ebd5898e28ac5ad66ddeba22875867815e87b9c8bf4e4",
+        "cost_model.json": "3d7e81cf59064d757640acf718e1268dceef56dbf147a34bfa087d7f5999ad13",
+        "test_cost_model.py": "e2ba995c07b71f87485b69ab0b9a341002eb4691242e61bdd4214eec06b85199"
+      }
+    }
+  ],
+  "platform_generation": "not_run",
+  "customer_research": "not_run",
+  "external_model_calls": 0,
+  "actual_ppt_created": false
+}

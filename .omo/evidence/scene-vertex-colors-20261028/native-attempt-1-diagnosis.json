@@ -1,0 +1,5 @@
+{
+  "failure": "fourth render rejected at admission",
+  "cause": "test quota reserved 4*18MiB, but each GLB render reserves 18MiB plus its original source byte length; successful jobs intentionally retain reservations",
+  "fix": "test-owned quota 8*RESERVATION_BYTES; no production quota or permission changes"
+}

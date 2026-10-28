@@ -1,0 +1,89 @@
+{
+  "scope": [
+    "GC-MODEL-02",
+    "GC-SCHEDULE-03"
+  ],
+  "status": "PASS: 12 actual loopback HTTP scenarios and 104 related tests; product source frozen",
+  "files": [
+    "app.py",
+    "chat_general.py",
+    "chat_sessions.py",
+    "production_tools.py",
+    "tests/test_general_model_schedule.py",
+    "tests/test_general_model_capability.py",
+    "tests/test_chat_general_http.py"
+  ],
+  "methods": [
+    "CS07/09/11/12/15 frozen same-conversation execution",
+    "Karpathy minimal change",
+    "feature-verification real loopback HTTP state transitions"
+  ],
+  "configured_model": "gpt-6-astra medium inherited worker configuration; independently observed model unavailable",
+  "checks": [
+    {
+      "invocation": "python3 .omo/evidence/general-model-schedule-20261028/backend/verify_http.py",
+      "observable": {
+        "tests": 12,
+        "passed": true,
+        "failures": 0,
+        "errors": 0,
+        "real_provider_calls": 0
+      },
+      "scenarios": [
+        "tests.test_general_model_capability.GeneralModelCapabilityHTTPTest.test_current_selection_scope_and_no_credential_acquisition",
+        "tests.test_general_model_capability.GeneralModelCapabilityHTTPTest.test_retired_and_disabled_catalog_models_fail_closed_without_key",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_before_message_failure_keeps_pending_until_explicit_choice",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_cancelled_pending_requires_explicit_reselection",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_nondefault_conversation_completion_changes_only_its_override",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_normal_selection_change_invalidates_unapproved_preview",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_pending_binding_mismatch_blocks_before_any_provider_request",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_rejected_continuation_retains_pending",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_running_reservation_keeps_current_request_and_applies_once",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_two_active_engines_reject_reservation_without_changing_selection",
+        "tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_unknown_restart_and_cancel_requested_preserve_reservation"
+      ],
+      "artifacts": [
+        "http-receipts.json",
+        "http-result.json",
+        "http-verification-final.log"
+      ]
+    },
+    {
+      "invocation": "python3 -m unittest tests.test_general_model_schedule tests.test_general_model_capability tests.test_chat_model_schedule tests.test_production_tools tests.test_chat_general_http tests.test_general_chat_activation tests.test_general_chat_history tests.test_general_scope_journal_guard -v",
+      "observable": {
+        "exit_code": 0,
+        "tests": 104,
+        "result": "OK"
+      },
+      "artifacts": [
+        "related-final-v2.log"
+      ]
+    }
+  ],
+  "additional_ownership_approval": [
+    "production_tools.py one execution revision comparison",
+    "tests/test_chat_general_http.py two obsolete always-reject scheduling tests"
+  ],
+  "test_contract_change": "Two preexisting tests updated from unconditional general scheduling rejection to explicit next-response reservation; shared project model change remains denied, stale etag remains denied; original previews/binding/model preserved and cancellation requires explicit reselection. Original source text/hash captured before edit.",
+  "source_freeze": "SOURCE-FREEZE.json",
+  "source_verification": "SOURCE-VERIFY.json",
+  "failures_retained": [
+    "red.log (initial fixture key/model errors)",
+    "red-confirmed.log (actual old unconditional rejection)",
+    "attempt1.log",
+    "debug1.log (production tool revision mismatch)",
+    "attempt2.log (incorrect test serialization expectation)",
+    "capability-legacy.log",
+    "related.log (100/102 with two obsolete expectations)",
+    "related-final.log (103/104; newly added test variable original collided with existing transport.complete alias; fixed original_preview, full 104 rerun passed)"
+  ],
+  "limits": [
+    "No actual provider/account/billing/network credentials used",
+    "No full platform completion claim",
+    "No browser or actual user test performed by backend worker",
+    "omo-agent-toolkit unavailable: missing bun and node fallback; assigned evidence directory used",
+    "Pending reservation with limit_reached is guarded by completed-only application but was not separately exercised as a new pending-limit HTTP scenario; existing activation round/budget limit regression included"
+  ],
+  "documents_modified": false
+}

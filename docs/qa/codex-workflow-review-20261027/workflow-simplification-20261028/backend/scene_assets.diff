@@ -1,0 +1,43 @@
+--- scene_assets.before.py
++++ scene_assets.py
+@@ -39,6 +39,7 @@
+ _COMPONENTS = {5121: ('B', 1), 5123: ('H', 2), 5125: ('I', 4), 5126: ('f', 4)}
+ _DIMENSIONS = {'SCALAR': 1, 'VEC2': 2, 'VEC3': 3, 'VEC4': 4}
+ _ERROR = '지원하지 않거나 손상된 GLB 모델입니다.'
++_COMPLEXITY_ERROR = 'GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.'
+ 
+ 
+ def _fail(reason=_ERROR):
+@@ -274,9 +275,12 @@
+         if 'normalized' in accessor and type(accessor['normalized']) is not bool:_fail()
+         if accessor.get('normalized',False) and component not in (5121,5123):_fail()
+         code,component_size=_COMPONENTS[component];dimension=_DIMENSIONS[kind]
+-        count=_integer(accessor['count'],1,MAX_TRIANGLES*3);offset=_integer(accessor.get('byteOffset',0))
++        count=accessor['count']
++        if type(count) is not int or count<1:_fail()
++        if count>MAX_TRIANGLES*3:_fail(_COMPLEXITY_ERROR)
++        offset=_integer(accessor.get('byteOffset',0))
+         total+=count*dimension
+-        if total>MAX_ACCESSOR_VALUES:_fail('GLB 데이터가 지원 geometry 한도를 넘었습니다.')
++        if total>MAX_ACCESSOR_VALUES:_fail(_COMPLEXITY_ERROR)
+         element=component_size*dimension;stride=view.get('byteStride',element)
+         absolute=view.get('byteOffset',0)+offset
+         if stride<element or offset%component_size or absolute%component_size or offset+(count-1)*stride+element>view['byteLength']:_fail()
+@@ -401,7 +405,7 @@
+                 if textured[material] and 'TEXCOORD_0' not in attributes:_fail()
+             mesh_triangles+=elements//3
+         vertices+=mesh_vertices;triangles+=mesh_triangles
+-        if vertices>MAX_VERTICES or triangles>MAX_TRIANGLES:_fail('GLB geometry가 지원 한도를 넘었습니다.')
++        if vertices>MAX_VERTICES or triangles>MAX_TRIANGLES:_fail(_COMPLEXITY_ERROR)
+         counts.append((mesh_vertices,mesh_triangles,bounds))
+     if used_materials!=set(range(len(textured))):_fail('사용되지 않는 재질이 있는 GLB는 현재 지원하지 않습니다.')
+     if not has_colors and any('extras' in mesh for mesh in meshes):_fail()
+@@ -460,7 +464,7 @@
+         node=nodes[index]
+         if 'mesh' in node:
+             v,t,bounds=mesh_counts[node['mesh']];vertices+=v;triangles+=t
+-            if vertices>MAX_VERTICES or triangles>MAX_TRIANGLES:_fail('GLB 인스턴스 geometry가 지원 한도를 넘었습니다.')
++            if vertices>MAX_VERTICES or triangles>MAX_TRIANGLES:_fail(_COMPLEXITY_ERROR)
+             for x in (bounds[0][0],bounds[1][0]):
+                 for y in (bounds[0][1],bounds[1][1]):
+                     for z in (bounds[0][2],bounds[1][2]):

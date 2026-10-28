@@ -1,0 +1,89 @@
+[
+  {
+    "path": "/private/tmp/loretune-blender-x64.jEi6qO/unpacked/blender-5.2.2-linux-x64/5.2/scripts/addons_core/io_scene_gltf2/blender/imp/material.py",
+    "sha256": "5f6d4349171a3e149882d0546c5865fbb20f76dade2e05aa54fa321238d013ca",
+    "excerpts": [
+      {
+        "first_line": 20,
+        "last_line": 38,
+        "text": "20:     def create(gltf, material_idx, vertex_color):\n21:         \"\"\"Material creation.\"\"\"\n22: \n23:         if material_idx is None:\n24:             # If no material is specified, we create a default one\n25:             mat = bpy.data.materials.new(name=\"DefaultMaterial\")\n26:             mat.node_tree.nodes.clear()\n27:             output_node = mat.node_tree.nodes.new(type='ShaderNodeOutputMaterial')\n28:             output_node.location = (0, 0)\n29:             shader_node = mat.node_tree.nodes.new(type='ShaderNodeBsdfPrincipled')\n30:             shader_node.location = (-200, 0)\n31:             mat.node_tree.links.new(shader_node.outputs[0], output_node.inputs[0])\n32:             if vertex_color:\n33:                 # Add vertex color node\n34:                 vertex_color_node = mat.node_tree.nodes.new(type='ShaderNodeVertexColor')\n35:                 vertex_color_node.location = (-400, 0)\n36:                 mat.node_tree.links.new(vertex_color_node.outputs[0], shader_node.inputs[0])\n37:             return mat.name\n38: "
+      }
+    ]
+  },
+  {
+    "path": "/private/tmp/loretune-blender-x64.jEi6qO/unpacked/blender-5.2.2-linux-x64/5.2/scripts/addons_core/io_scene_gltf2/blender/imp/mesh.py",
+    "sha256": "522a7d1e0156c96bc86e82774ccb201003e732627dbbac025c03c3c775faf756",
+    "excerpts": [
+      {
+        "first_line": 451,
+        "last_line": 467,
+        "text": "451:         if layer is None:\n452:             gltf.log.warning(\"WARNING: UV map is ignored because the maximum number of UV layers has been reached.\")\n453:             break\n454: \n455:         layer.uv.foreach_set('vector', squish(loop_uvs[uv_i], np.float32))\n456: \n457:     for col_i in range(num_cols):\n458:         name = 'Color' if col_i == 0 else 'Color.%03d' % col_i\n459:         layer = mesh.color_attributes.new(name, 'BYTE_COLOR', vc_domains[col_i])\n460: \n461:         layer.data.foreach_set('color', squish(loop_cols[col_i], np.float32))\n462: \n463:     # Make sure the first Vertex Color Attribute is the rendered one\n464:     if num_cols > 0:\n465:         mesh.color_attributes.render_color_index = 0\n466: \n467:     # Skinning"
+      },
+      {
+        "first_line": 550,
+        "last_line": 570,
+        "text": "550:                     # In case of variant, do not merge slots // or if user does not want to merge slots\n551:                     # So we are going to create a new slot\n552:                     mesh.materials.append(bpy.data.materials[material_name])\n553:                     material_index = len(mesh.materials) - 1\n554:             else:\n555:                 # Check if the primitive has a vertex color\n556:                 vertex_color = 'COLOR_0' if ('COLOR_0' in prim.attributes) else None\n557:                 if vertex_color is not None:\n558:                     if we_can_merge_slots is True and not has_variant:\n559:                         # Check if we already have a slot for default material + this vertec color\n560:                         if vertex_color in default_materials.keys():\n561:                             material_index = default_materials[vertex_color]\n562:                         else:\n563:                             # Create a new slot for default material + this vertec color\n564:                             name = BlenderMaterial.create(gltf, None, vertex_color)\n565:                             mesh.materials.append(bpy.data.materials[name])\n566:                             material_index = len(mesh.materials) - 1\n567:                             default_materials[vertex_color] = material_index\n568:                     else:\n569:                         # In case of variant, do not merge slots // or if user does not want to merge slots\n570:                         # So we are going to create a new slot if not exists already"
+      }
+    ]
+  },
+  {
+    "path": "/Users/leesungmin/Desktop/Loretune/scene_renderer.py",
+    "sha256": "0b8024fc1dc9dee5593fb1b48add32a8d6a1a5dc5510333ef912f7e50c612b57",
+    "excerpts": [
+      {
+        "first_line": 40,
+        "last_line": 78,
+        "text": "40: _SCRIPT = '''import bpy, json, math, time\n41: from mathutils import Vector\n42: scene_data = json.loads(SCENE_JSON)\n43: bpy.ops.object.select_all(action='SELECT')\n44: bpy.ops.object.delete(use_global=False)\n45: scene = bpy.context.scene\n46: scene.render.engine = 'CYCLES'\n47: scene.cycles.device = 'CPU'\n48: scene.cycles.samples = 4\n49: scene.cycles.seed = 0\n50: scene.render.resolution_x = scene_data['width']\n51: scene.render.resolution_y = scene_data['height']\n52: scene.render.resolution_percentage = 100\n53: scene.render.image_settings.file_format = 'PNG'\n54: scene.render.filepath = '/output/frame.png'\n55: scene.world.node_tree.nodes['Background'].inputs['Color'].default_value = (*scene_data['background'], 1)\n56: for data in scene_data['objects']:\n57:     if data['kind'] == 'cube':\n58:         bpy.ops.mesh.primitive_cube_add(size=2, location=data['position'])\n59:     elif data['kind'] == 'sphere':\n60:         bpy.ops.mesh.primitive_uv_sphere_add(segments=24, ring_count=12, location=data['position'])\n61:     elif data['kind'] == 'plane':\n62:         bpy.ops.mesh.primitive_plane_add(size=2, location=data['position'])\n63:     obj = bpy.context.object\n64:     obj.name = data['id']\n65:     obj.rotation_euler = [math.radians(v) for v in data['rotation_degrees']]\n66:     obj.scale = data['scale']\n67:     material = bpy.data.materials.new('material-' + data['id'])\n68:     material.use_nodes = True\n69:     material.node_tree.nodes.get('Principled BSDF').inputs['Base Color'].default_value = (*data['color'], 1)\n70:     obj.data.materials.append(material)\n71: for data in scene_data['lights']:\n72:     bpy.ops.object.light_add(type='AREA', location=data['position'])\n73:     light = bpy.context.object\n74:     light.name = data['id']\n75:     light.data.energy = data['energy_w']\n76:     light.data.size = data['size_m']\n77:     light.data.color = data['color']\n78:     light.rotation_euler = (Vector(data['target']) - light.location).to_track_quat('-Z', 'Y').to_euler()"
+      },
+      {
+        "first_line": 95,
+        "last_line": 112,
+        "text": "95: \n96: _MESH_IMPORT = '''    if data['kind'] == 'mesh':\n97:         with open('/input/assets.json', encoding='ascii') as metadata_file:\n98:             expected_images = json.load(metadata_file)[data['asset']['sha256']]['images']\n99:         for filename in expected_images:\n100:             image = bpy.data.images.load('/input/' + filename, check_existing=False)\n101:             try:\n102:                 check_embedded_image(image)\n103:             finally:\n104:                 bpy.data.images.remove(image)\n105:         before = set(bpy.data.objects)\n106:         bpy.ops.import_scene.gltf(filepath='/input/model-' + data['asset']['sha256'] + '.glb')\n107:         imported = set(bpy.data.objects) - before\n108:         if not imported or not any(o.type == 'MESH' for o in imported):\n109:             raise ValueError('Imported asset contains no mesh')\n110:         if any(o.type not in {'MESH', 'EMPTY'} for o in imported):\n111:             raise ValueError('Imported asset contains unsupported scene objects')\n112:         images = set()"
+      }
+    ]
+  },
+  {
+    "path": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/TripoSR/tsr/utils.py",
+    "sha256": "fb32bfdcfd6a5298b5412a812be833af710849f38a3acc36f86765ac2c963718",
+    "excerpts": [
+      {
+        "first_line": 250,
+        "last_line": 280,
+        "text": "250:         try:\n251:             return getattr(F, name)\n252:         except AttributeError:\n253:             raise ValueError(f\"Unknown activation function: {name}\")\n254: \n255: \n256: def get_ray_directions(\n257:     H: int,\n258:     W: int,\n259:     focal: Union[float, Tuple[float, float]],\n260:     principal: Optional[Tuple[float, float]] = None,\n261:     use_pixel_centers: bool = True,\n262:     normalize: bool = True,\n263: ) -> torch.FloatTensor:\n264:     \"\"\"\n265:     Get ray directions for all pixels in camera coordinate.\n266:     Reference: https://www.scratchapixel.com/lessons/3d-basic-rendering/\n267:                ray-tracing-generating-camera-rays/standard-coordinate-systems\n268: \n269:     Inputs:\n270:         H, W, focal, principal, use_pixel_centers: image height, width, focal length, principal point and whether use pixel centers\n271:     Outputs:\n272:         directions: (H, W, 3), the direction of the rays in camera coordinate\n273:     \"\"\"\n274:     pixel_center = 0.5 if use_pixel_centers else 0\n275: \n276:     if isinstance(focal, float):\n277:         fx, fy = focal, focal\n278:         cx, cy = W / 2, H / 2\n279:     else:\n280:         fx, fy = focal"
+      }
+    ]
+  },
+  {
+    "path": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/TripoSR/tsr/system.py",
+    "sha256": "a82d7cc65b2d7867c322fe3e54cfa92ed23fc5d2706189f00a86395b8dbe5957",
+    "excerpts": [
+      {
+        "first_line": 130,
+        "last_line": 148,
+        "text": "130:         width: int = 256,\n131:         return_type: str = \"pil\",\n132:     ):\n133:         rays_o, rays_d = get_spherical_cameras(\n134:             n_views, elevation_deg, camera_distance, fovy_deg, height, width\n135:         )\n136:         rays_o, rays_d = rays_o.to(scene_codes.device), rays_d.to(scene_codes.device)\n137: \n138:         def process_output(image: torch.FloatTensor):\n139:             if return_type == \"pt\":\n140:                 return image\n141:             elif return_type == \"np\":\n142:                 return image.detach().cpu().numpy()\n143:             elif return_type == \"pil\":\n144:                 return Image.fromarray(\n145:                     (image.detach().cpu().numpy() * 255.0).astype(np.uint8)\n146:                 )\n147:             else:\n148:                 raise NotImplementedError"
+      }
+    ]
+  },
+  {
+    "path": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/TripoSR/tsr/models/nerf_renderer.py",
+    "sha256": "afe8c12c964078b2c6bb3922d2e30969aa59f7edbacb8cb73d2c3df839dc785f",
+    "excerpts": [
+      {
+        "first_line": 125,
+        "last_line": 151,
+        "text": "125:         eps = 1e-10\n126:         # deltas = z_vals[:, 1:] - z_vals[:, :-1] # (N_rays, N_samples)\n127:         deltas = t_vals[1:] - t_vals[:-1]  # (N_rays, N_samples)\n128:         alpha = 1 - torch.exp(\n129:             -deltas * mlp_out[\"density_act\"][..., 0]\n130:         )  # (N_rays, N_samples)\n131:         accum_prod = torch.cat(\n132:             [\n133:                 torch.ones_like(alpha[:, :1]),\n134:                 torch.cumprod(1 - alpha[:, :-1] + eps, dim=-1),\n135:             ],\n136:             dim=-1,\n137:         )\n138:         weights = alpha * accum_prod  # (N_rays, N_samples)\n139:         comp_rgb_ = (weights[..., None] * mlp_out[\"color\"]).sum(dim=-2)  # (N_rays, 3)\n140:         opacity_ = weights.sum(dim=-1)  # (N_rays)\n141: \n142:         comp_rgb = torch.zeros(\n143:             n_rays, 3, dtype=comp_rgb_.dtype, device=comp_rgb_.device\n144:         )\n145:         opacity = torch.zeros(n_rays, dtype=opacity_.dtype, device=opacity_.device)\n146:         comp_rgb[rays_valid] = comp_rgb_\n147:         opacity[rays_valid] = opacity_\n148: \n149:         comp_rgb += 1 - opacity[..., None]\n150:         comp_rgb = comp_rgb.view(*rays_shape, 3)\n151: "
+      }
+    ]
+  },
+  {
+    "path": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/TripoSR/tsr/utils.py",
+    "sha256": "fb32bfdcfd6a5298b5412a812be833af710849f38a3acc36f86765ac2c963718",
+    "excerpts": [
+      {
+        "first_line": 235,
+        "last_line": 253,
+        "text": "235: def get_activation(name) -> Callable:\n236:     if name is None:\n237:         return lambda x: x\n238:     name = name.lower()\n239:     if name == \"none\":\n240:         return lambda x: x\n241:     elif name == \"exp\":\n242:         return lambda x: torch.exp(x)\n243:     elif name == \"sigmoid\":\n244:         return lambda x: torch.sigmoid(x)\n245:     elif name == \"tanh\":\n246:         return lambda x: torch.tanh(x)\n247:     elif name == \"softplus\":\n248:         return lambda x: F.softplus(x)\n249:     else:\n250:         try:\n251:             return getattr(F, name)\n252:         except AttributeError:\n253:             raise ValueError(f\"Unknown activation function: {name}\")"
+      }
+    ]
+  }
+]

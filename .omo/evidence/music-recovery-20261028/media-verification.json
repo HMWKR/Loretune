@@ -1,0 +1,55 @@
+{
+  "checks": {
+    "timeline": true,
+    "head": true,
+    "ready": true,
+    "warning_clear": true,
+    "shot_stored_content": true,
+    "audio": true,
+    "offset": true,
+    "single_export": true,
+    "reopened_bytes": true
+  },
+  "derived_context_change": [
+    {
+      "shot": "타이포 장면",
+      "field": "motion_grant_available",
+      "before": true,
+      "after": false,
+      "meaning": "Current context changed by explicit new music selection; future motion use requires current-context approval, existing Take/output unchanged"
+    }
+  ],
+  "output_sha256": "919136cd796418dfdcbc1cf682da0caf96914ae1a29743cf1446a459b7a5dfdd",
+  "output_bytes": 45481,
+  "duration_seconds": 3,
+  "video": "1920x1080 H26424fps72frames",
+  "audio_sample_rate": 48000,
+  "decoded_mono_samples": 144000,
+  "one_second_middle_pcm_positive_zero_crossings": 439,
+  "one_second_middle_rms": 0.1407457665004346,
+  "music_before": {
+    "version": 1,
+    "start": 3,
+    "end": 4
+  },
+  "music_after": {
+    "version": 3,
+    "start": 3,
+    "end": 6
+  },
+  "approved_timeline_audio_interval": [
+    3,
+    6
+  ],
+  "automatic_trim_or_timeline_reapproval": false,
+  "final_export_jobs": 1,
+  "provider_calls": 0,
+  "srt": "1\n00:00:00,000 --> 00:00:03,000\n음원만으로 시작한 영상\n\n",
+  "limitations": [
+    "Constant440Hz10second tone cannot by itself identify exact audible offset; separate worker controlled520Hz offset probe verifies offset3",
+    "mov_text/WebVTT captions are selectable; native two-line typography is in actual video pixels",
+    "Native button playback observed; no human listener or user study",
+    "Intermediate selection-aligned-state/confirmation files actually contain0–6 because observer filled only end on new-version form. Assertion correctly failed; corrected by explicitly filling3–6, saved v3; v2 retained.",
+    "Initial full shot equality assertion failed on computed motion_grant_available only; recorded difference and compared stored content separately, no guard changed."
+  ]
+}

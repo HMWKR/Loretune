@@ -1,0 +1,730 @@
+--- start/index.html
++++ index.html
+@@ -27,7 +27,7 @@
+ <label>제작 지시<textarea name="prompt" maxlength="1000" rows="3" required placeholder="장면의 구도와 움직임을 입력하세요"></textarea></label>
+ <label id="mediaRatioLabel">화면 비율<select name="ratio"><option>16:9</option><option>9:16</option><option>1:1</option></select></label>
+ <label id="mediaDurationLabel" hidden>영상 길이<select name="duration"><option value="5">5초</option><option value="10">10초</option></select></label>
+-<p id="mediaPreparationHint"></p><button id="prepareMedia" data-runtime-blocked disabled>입력·예상 비용 확인</button></form></details>
++<p id="mediaPreparationHint"></p><button id="prepareMedia" aria-describedby="mediaPreparationHint" data-runtime-blocked disabled>입력·예상 비용 확인</button></form></details>
+ <div id="mediaActionCards" role="group" aria-label="모델 제작 요청" aria-live="polite"></div></section><section><h2>이미지 연결·기존 결과 복구</h2><div id="imageConnection" role="status"></div><details id="imageRequirements"><summary>활성화에 필요한 조건</summary><p>사용할 모델의 연결 상태를 확인하세요. 실행 전에 입력·예상 비용·전송 범위를 검토하고 승인해야 합니다.</p><button id="showImageModels">모델 선택 확인</button></details><div id="imageRecoveryJobs"></div></section><section><h2>Kling 생성 준비</h2><p id="generationGateText">영상 생성은 현재 사용할 수 없습니다. 입력과 예상 비용 확인은 가능합니다.</p><label>움직임 지시<textarea id="generationPrompt" maxlength="1000" rows="3" placeholder="카메라가 천천히 다가가며 구름이 흐른다"></textarea></label><button id="prepareGeneration">10초 입력·견적 준비 (전송 없음)</button><div id="generationPreparations"></div></section><section><h2>샷 참고 · 첫 프레임</h2><p class="muted">선택한 이미지 take를 제작 참고로 지정합니다. 모델 생성은 미연결이며 참고 지정만으로 영상을 생성하거나 기존 take를 교체하지 않습니다.</p><label>참고 역할<select id="referenceRole"><option value="start_frame">실제 시작 프레임</option><option value="end_frame">끝 프레임</option><option value="character">캐릭터 정체성</option><option value="style">스타일 참고</option></select></label><label>지정·검토 이유<input id="referenceReason" maxlength="2000"></label><button id="assignReference">현재 선택 이미지를 참고로 지정</button><div id="referenceVersions"></div><label>참고 검토<select id="referenceDecision"><option value="">검토 결정 선택</option><option value="approved">승인</option><option value="changes_requested">수정 요청</option><option value="rejected">거절</option></select></label><button id="reviewReference">현재 참고 버전 검토 기록</button><p>참고 승인은 결과 take 승인과 별개입니다. 외부 전송 없음 · 실제 생성은 마지막 승인 게이트 이후에만 실행합니다.</p></section><section><h2>Take 인스펙터</h2><div class="row"><select id="takeDecision" aria-label="테이크 검토 상태"><option value="approved">승인</option><option value="changes_requested">수정 요청</option><option value="rejected">거절</option></select><button id="reviewTake">선택 take 검토 기록</button></div><label>검토 이유<textarea id="reviewReason" rows="3" maxlength="2000">검토 완료</textarea></label><p id="reason" class="muted">샷을 선택하면 수정 이유를 확인할 수 있습니다.</p><form id="upload"><label>새 take · 기존 이미지/영상<input name="asset" type="file" accept=".png,.jpg,.jpeg,.mp4,.mov,.webm" required></label><label>수정 이유<input name="reason" required></label><label>사용권 근거<input name="rights" required placeholder="직접 제작 / 사용 허가…"></label><button>원본을 보존하고 새 take 연결</button></form><small>최대 16MB. 기존 take와 승인된 타임라인은 유지됩니다.</small></section><section><h2>검토 의견</h2><form id="comment"><label>타임코드(초)<input name="at" type="number" min="0" step="0.001" value="0" required></label><label>수정 요청<input name="text" required></label><button>의견 추가</button></form><div id="comments"></div></section><section class="render-section"><h2>렌더 작업</h2><p><small>외부 생성비 0 · 로컬 연산 비용 미계측. 자막은 선택 가능한 MP4 텍스트 트랙과 SRT로 제공됩니다.</small></p><label>납품 검토 이유<input id="deliveryReason" maxlength="2000"></label><div id="jobs"></div><button id="manifest">제작 기록 내보내기</button></section></div></main>
+ <dialog id="ontologyDialog"><div class="row"><h2>인물·장소·스타일과 제작 계보</h2><button data-close>닫기</button></div><p>현재는 직접 입력·검토입니다. Anthropic 제안은 미연결이며 외부 전송하지 않습니다. 설정 승인으로 기존 영상이나 출력이 변경되지는 않습니다.</p><form id="ontologyForm"><input type="hidden" name="entity" value=""><p id="ontologyEditStatus">새 개체 제안</p><button type="button" id="ontologyNew">새 개체로 작성</button><label>역할<select name="kind"><option value="character">인물</option><option value="place">장소</option><option value="style">스타일</option></select></label><label>이름<input name="label" maxlength="200" required></label><label>설명<textarea name="description" maxlength="2000" required></textarea></label><label>출처 또는 직접 작성 근거<textarea name="evidence" maxlength="2000" required></textarea></label><button>검토 후보로 저장</button></form><div id="ontologyContent"></div><details><summary>설정·제작 연결 기록</summary><div id="lineageContent"></div></details></dialog><dialog id="projectDialog"><div class="row"><h2>새 작품 만들기</h2><button data-close>닫기</button></div><form id="project"><details><summary>이전 곡의 승인 설정을 선택 계승</summary><label>원본 작품<select name="source_song" id="inheritSource"><option value="">계승하지 않음</option></select></label><div id="inheritSettings"></div><label><input type="checkbox" name="clone_structure" style="width:auto">샷 이름·설명도 복사 (미디어·승인 제외)</label><label>계승 이유<input name="inherit_reason" maxlength="2000"></label><p>같은 IP의 정확한 설정 버전만 선택합니다. 음원·샷·take·승인은 새로 시작합니다.</p></details><label>세계관<select name="ip" class="ipSelect"></select></label><label>작품명<input name="name" required></label><label>시대 / 분기<input name="era" value="default" required></label><label>이야기 순서<input name="story" type="number" min="0" value="0" required></label><button class="primary">작품 만들기</button></form></dialog>
+ <dialog id="settingDialog"><div class="row"><h2>세계관 설정</h2><button data-close>닫기</button></div><p>새 승인 설정은 이후 작품에만 적용합니다. 현재는 단일 로컬 사용자 기준이며 조직 권한 기능이 아닙니다.</p><form id="setting"><label>세계관<select name="ip" class="ipSelect"></select></label><label>설정 내용<textarea name="text" required></textarea></label><label>시대 / 분기<input name="era" value="default" required></label><div class="row"><label>시작 순서<input name="valid_from" type="number" min="0" value="0" required></label><label>끝 순서 (선택)<input name="valid_to" type="number" min="0"></label></div><button class="primary">설정 승인·저장</button></form><details><summary>새 세계관 만들기</summary><p>이 로컬 작업실 안의 설정 분리입니다. 조직·계정별 접근 제어가 아닙니다.</p><form id="ipForm"><label>세계관 이름<input name="name" required></label><label>설명<input name="description" required></label><button>세계관 만들기</button></form></details><div id="canon"></div><details><summary>설정 후보 · 정정 제안</summary><p>로컬 검토입니다. 조직 승인 권한은 미지원입니다. 승인해도 기존 작품 스냅샷은 바꾸지 않습니다.</p><form id="candidateForm"><label>세계관<select name="ip" class="ipSelect"></select></label><label>새 설정<textarea name="text" maxlength="2000" required></textarea></label><label>시대 / 분기<input name="era" value="default" required></label><div class="row"><label>시작 순서<input name="valid_from" type="number" min="0" value="0" required></label><label>끝 순서 (공란=계속)<input name="valid_to" type="number" min="0"></label></div><label>정정할 버전 (신규는 공란)<input name="supersedes" type="number" min="1"></label><label>근거 / 출처<input name="evidence" required></label><label>제안 이유<input name="reason" required></label><button>검토 후보로 저장</button></form></details></dialog>
+@@ -158,7 +158,7 @@
+  summary.setAttribute('aria-live','polite');summary.setAttribute('aria-atomic','true');
+  let userOpen=false;
+  summary.addEventListener('click',()=>{userOpen=!detail.open});
+- const update=()=>{if(notice.dataset.inlineFeedback==='true'){summary.textContent=notice.textContent;detail.open=false;return}const value=notice.textContent.trim(),routine=!notice.classList.contains('error')&&Object.hasOwn(labels,value);summary.textContent=routine?labels[value]:'알림';detail.open=routine?userOpen:true;};
++ const update=()=>{if(notice.dataset.inlineFeedback==='true'){summary.textContent=notice.textContent;detail.open=false;return}const value=notice.textContent.trim(),routine=!notice.classList.contains('error')&&Object.hasOwn(labels,value);summary.textContent=routine?labels[value]:notice.classList.contains('error')?(value?'오류 · '+(value.length>40?value.slice(0,40)+'…':value):'오류'):'알림';detail.open=routine?userOpen:true;};
+  new MutationObserver(update).observe(notice,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','data-inline-feedback']});update();
+ }
+ ensureStudioReviewDOM();
+@@ -800,11 +800,36 @@
+  const j=x.job,labels={prepared:'실행 대기',submitting:'접수 확인 중',accepted:'접수됨',running:'생성 중',result_ready:'결과 수집 대기',downloading:'결과 검증·저장 중',imported:'새 Take 연결됨',import_blocked:'결과 연결 확인 필요',reconciliation_required:'접수 여부 확인 필요',submission_blocked:'전송 전 확인 필요',expired:'견적 만료 · 미전송',failed:'생성 실패',cancel_pending:'취소 요청 대기',cancel_sent:'취소 확인 중',cancelled:'전송 전 취소',cancelled_result:'취소 후 결과 도착',image_recovery_pending:'기존 결과 확인 대기',image_recovery_running:'기존 결과 확인 중'};
+  const decision={approved:'승인됨',held:'보류됨',rejected:'거절됨',required:'검토 필요'},test=x.mode==='contract-fake',c=x.candidate,r=j?.recovery||{};
+  const button=(decision,label)=>`<button data-media-decision="${decision}" data-action="${esc(x.id)}">${label}</button>`;
+- return `<article class="guided-card media-action-card" data-action-card="${esc(x.id)}" aria-labelledby="mediaActionTitle-${esc(x.id)}"><h3 id="mediaActionTitle-${esc(x.id)}">${esc(x.shot)} · ${x.role==='image'?'이미지':'영상'}</h3><p><b>${esc(j?(j.failure_code==='budget_exposure_changed'?'미확정 비용 또는 예산 초과 · 전송 전 차단':labels[j.state]||'상태 확인 필요'):(decision[x.approval]||'검토 필요'))}</b>${test?' <span class="creator-test-badge">모의 전송 · 실제 AI 호출 없음</span>':''}</p><p>${esc(x.model)}</p><p>${esc(x.prompt)}</p><p>${x.estimate_expired&&!j?'견적 만료 · 재확인 필요':test?'시험 견적 · 실제 청구 아님':'예상 비용'} ${esc(x.estimate?.amount)} ${esc(x.estimate?.currency)}${x.options?.duration?' · '+x.options.duration+'초 · 무음':''}</p><details><summary>전송·출력 조건</summary><p>표시된 지시와 ${x.role==='video'?'승인된 시작 프레임':'선택한 이미지 설정'}만 전송합니다.</p><p>${esc(x.output_policy)}</p></details>
+- ${j?`<p>${j.failure_code==='budget_exposure_changed'?'비용을 확인한 뒤 새 작업을 준비하세요. 자동으로 다시 요청하지 않습니다.':j.state==='imported'?'파일 검증과 Take 연결 완료 · 선택·검토 승인은 별도입니다.':esc(r.reason||'기존 승인 Take는 보존됩니다.')}</p><p><small>비용 ${test?'모의 원장 · 실제 청구 없음':j.cost?.billing_confirmed?'확인된 사용 기록':'확인 중 · 추정과 실청구 별도'}</small></p>${j.stale_input?'<p>작업 중 장면이 바뀌었습니다. 새 결과를 직접 비교해 주세요.</p>':''}${j.can_cancel?`<button data-media-cancel="${esc(j.id)}">취소 요청</button>`:''}${r.can_status?`<button data-media-recover="status" data-job="${esc(j.id)}">기존 요청 확인</button>`:''}${r.can_collect?`<button data-media-recover="collect" data-job="${esc(j.id)}">기존 결과 연결</button>`:''}`:`<p>${esc(x.reason)}</p><div class="row">${x.can_approve?button('approved','이 조건 승인'):''}${x.can_execute?button('execute',test?'승인한 모의 작업 실행':'승인한 작업 실행'):''}${x.can_decide?button('held','보류')+button('rejected','거절'):''}</div><button data-media-edit="${esc(x.id)}">입력 수정·새 작업 준비</button>`}
++ // Cost, model and reason stay at the decision point (D15, #41, #46); sources and provenance go into the one disclosure.
++ const f=mediaFacts(x),cost=[x.estimate_expired&&!j?'견적 만료 · 재확인 필요':'','견적 총액 '+f.total+' · '+f.totalKind,'단가 '+f.unit,x.options?.duration?x.options.duration+'초 · 무음':'','만료 시각 '+f.expires,j?(test?'모의 원장 · 실제 청구 없음':j.cost?.billing_confirmed?'확인된 사용 기록':'실청구 확인 중 · 추정과 다를 수 있음'):''].filter(Boolean).join(' · ');
++ return `<article class="guided-card media-action-card" data-action-card="${esc(x.id)}" aria-labelledby="mediaActionTitle-${esc(x.id)}"><h3 id="mediaActionTitle-${esc(x.id)}">${esc(x.shot)} · ${x.role==='image'?'이미지':'영상'}</h3><p><b>${esc(j?(j.failure_code==='budget_exposure_changed'?'미확정 비용 또는 예산 초과 · 전송 전 차단':labels[j.state]||'상태 확인 필요'):(decision[x.approval]||'검토 필요'))}</b>${test?' <span class="creator-test-badge">모의 전송 · 실제 AI 호출 없음</span>':''}</p><p class="lt-cost-facts">${esc(cost)}</p>${f.check?`<p>${esc(f.check)}</p>`:''}<p>모델 ${esc(f.model)}${f.differs?' · '+esc(f.differs):''}</p><p>${esc(f.reason)}</p><p>${esc(x.prompt)}</p><details class="lt-provenance-detail"><summary>가격·출처·전송 조건</summary>${mediaFactsDetail(f)}<p>표시된 지시와 ${x.role==='video'?'승인된 시작 프레임':'선택한 이미지 설정'}만 전송합니다.</p><p>${esc(x.output_policy)}</p></details>
++ ${j?`<p>${j.failure_code==='budget_exposure_changed'?'비용을 확인한 뒤 새 작업을 준비하세요. 자동으로 다시 요청하지 않습니다.':j.state==='imported'?'파일 검증과 Take 연결 완료 · 선택·검토 승인은 별도입니다.':esc(r.reason||'기존 승인 Take는 보존됩니다.')}</p>${j.stale_input?'<p>작업 중 장면이 바뀌었습니다. 새 결과를 직접 비교해 주세요.</p>':''}${j.can_cancel?`<button data-media-cancel="${esc(j.id)}">취소 요청</button>`:''}${r.can_status?`<button data-media-recover="status" data-job="${esc(j.id)}">기존 요청 확인</button>`:''}${r.can_collect?`<button data-media-recover="collect" data-job="${esc(j.id)}">기존 결과 연결</button>`:''}`:`<p>${esc(x.reason)}</p><div class="toolbar media-action-decisions">${x.can_approve?button('approved','이 조건 승인 · '+esc(f.total)):''}${x.can_execute?button('execute',(test?'승인한 모의 작업 실행':'승인한 작업 실행')+' · '+esc(f.total)):''}${x.can_decide?button('held','보류')+button('rejected','거절'):''}</div><button class="media-action-edit" data-media-edit="${esc(x.id)}">입력 수정·새 작업 준비</button>`}
+  ${c?`<p>Take ${c.take} · ${c.selected?'현재 선택':'아직 선택하지 않음'} · ${c.review==='approved'?'검토 승인됨':'검토 필요'}</p><button data-media-take="${esc(x.id)}">${c.selected?'선택한 Take 검토로 이동':'새 Take 선택·검토'}</button>${!c.rights_known?`<form data-media-rights="${esc(x.id)}"><label>이 결과의 사용권 근거<input name="evidence" maxlength="2000" required value="${esc(mediaRightsDrafts.get(mediaDraftKey(x.id))||'')}" placeholder="사용 허가·직접 제작 등 확인한 근거"></label><button>사용권 기록</button></form>`:''}`:''}
+  ${creatorDiagnostic('작업 상세',{action:x.id,job:x.job_id,state:j?.state,failure:j?.failure_code,options:x.options})}</article>`;
+ }
++// D15/#41: one money format and one fact set for every surface that shows a saved fal action
++// (model card, chat turn summary, work status). Values come from the server projection only.
++function usd(amount){let s=typeof amount==='number'?amount.toFixed(6):String(amount??'');if(s.startsWith('.'))s='0'+s;if(!/^\d+(\.\d+)?$/.test(s))return '금액 확인 필요';return '$'+(s.includes('.')?s.replace(/0+$/,'').replace(/\.$/,''):s)}
++const agentModeNames={read_only:'읽기 전용',review:'검토 후 편집',full_access:'전체 편집'},agentEffortNames={none:'없음',minimal:'최소',low:'낮음',medium:'보통',high:'높음',xhigh:'매우 높음',max:'최대'};
++function mediaFacts(x){
++ const price=x.price||{},unit=price.unit_price,origin=x.provenance||{},recorded=x.record==='recorded';
++ const kinds={fixture:'시험 견적 · 실제 청구 아님','documented-estimate':'문서 기준 추정'},units={second:'초',megapixel:'MP'};
++ return {model:x.model||'모델 확인 필요',
++  differs:!recorded?'':x.differs_from_project?'프로젝트 선택과 다름'+(x.project_selection?' (프로젝트: '+x.project_selection+')':''):'프로젝트 선택과 같음',
++  total:x.estimate?.amount!=null?usd(x.estimate.amount):'견적 없음',
++  totalKind:kinds[x.mode==='contract-fake'?'fixture':x.estimate_kind]||'견적 종류 확인 필요',
++  unit:unit?usd(unit.amount)+'/'+(units[unit.unit]||unit.unit)+' · '+(kinds[unit.kind]||'단가 종류 확인 필요'):'단가 기록 없음',
++  unitSource:unit?.source||'',unitRevision:unit?.revision||'',unitFetched:unit?.fetched_at||'',quoteSource:x.price_source||'',quoteRevision:x.price_revision||'',
++  expires:typeof x.quote_expires==='number'?new Date(x.quote_expires*1000).toLocaleString('ko-KR'):'확인 필요',
++  check:price.mismatch||price.reason||'',formula:price.formula||'',
++  reason:!recorded?'출처 기록 없음(변경 전 준비)':x.actor==='agent'?(x.model_reason_label||'모델이 제시한 이유(검증 안 됨)')+': '+(x.model_reason||''):x.model_reason_label||'프로젝트에서 사용자가 선택한 모델',
++  provenance:!recorded?'':x.actor==='agent'?'대화 모델 '+(origin.chat_model||'확인 필요')+' · 권한 '+(agentModeNames[origin.permission_mode]||origin.permission_mode||'확인 필요')+' · 추론 강도 '+(agentEffortNames[origin.effort]||origin.effort||'확인 필요'):'사람이 직접 준비 · 대화 출처 없음'};
++}
++function mediaFactsLine(x){const f=mediaFacts(x);return '모델 '+f.model+(f.differs?' · '+f.differs:'')+' · 견적 '+f.total+' ('+f.totalKind+') · '+f.reason}
++function mediaFactsDetail(f){
++ const link=url=>/^https:\/\//.test(url)?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(url)}</a>`:esc(url||'기록 없음');
++ return `<p>단가 출처 ${link(f.unitSource)}${f.unitRevision?' · 개정 '+esc(f.unitRevision):''}${f.unitFetched?' · 조회 '+esc(f.unitFetched):''}</p><p>견적 출처 ${link(f.quoteSource)}${f.quoteRevision?' · 개정 '+esc(f.quoteRevision):''} · 만료 ${esc(f.expires)}</p>${f.formula?`<p>계산 ${esc(f.formula)}</p>`:''}${f.provenance?`<p>제안 출처 · ${esc(f.provenance)}</p>`:''}`;
++}
+ function drawMediaCreator(){
+  const p=project();if(!p||!$('#mediaConnections'))return;
+  $('#mediaConnections').innerHTML=productionOverviewMarkup(p,shotName);
+--- start/general-chat-ui.js
++++ general-chat-ui.js
+@@ -8,7 +8,7 @@
+  document.getElementById('modelChatPanel').after(panel);
+  const el=id=>document.getElementById(id);let scope='',inFlight=false,renderedReviews='',renderedTurns='';
+  const key=()=>conversationDraftKey('general-chat');
+- const money=n=>'$'+(Number(n)/1000000).toFixed(6);
++ const money=n=>usd(Number(n)/1000000);
+  const micro=value=>{if(!/^(?:\d+)(?:\.\d{1,6})?$/.test(value))return null;const [a,b='']=value.split('.');const n=Number(a)*1000000+Number((b+'000000').slice(0,6));return Number.isSafeInteger(n)?n:null};
+  const allowed=cap=>cap?.available===true&&((cap.external_transmission===false&&['contract-fake','contract-live-test'].includes(cap.mode))||(cap.external_transmission===true&&cap.mode==='anthropic-live'));
+  const configured=cap=>(cap?.configured===true||cap?.available===true)&&((cap.external_transmission===false&&['contract-fake','contract-live-test'].includes(cap.mode))||(cap.external_transmission===true&&cap.mode==='anthropic-live'));
+@@ -21,28 +21,41 @@
+  function layout(live){const legacy=el('modelChatPanel');if(sidebarHost){if(panel.parentElement!==sidebarHost)sidebarHost.append(panel);panel.dataset.liveLayout=String(live);panel.dataset.sidebarHosted='true';panel.open=true;legacy.hidden=live;return}if(panel.dataset.liveLayout===String(live))return;panel.dataset.liveLayout=String(live);if(live){el('guidedBrief').before(panel);legacy.hidden=true;panel.open=true}else{legacy.after(panel);legacy.hidden=false}}
+  const toolLabels={propose_media_plan:'장면 계획 제안',search_project_context:'프로젝트 내용 검색',propose_timeline_changes:'편집 변경 제안',request_render:'출력 요청',propose_motion_scene:'모션 구성 제안',request_motion_render:'승인된 모션 후보 렌더',get_model_capabilities:'모델 기능 목록 조회',prepare_image_action:'이미지 제작안 준비 · 실행 없음',get_generation_job:'생성 작업 상태 조회 · 승인 아님',estimate_media_plan:'준비된 제작안 견적 합계 · 청구 아님',prepare_video_action:'영상 제작안 준비 · 실행 없음',get_agent_settings:'에이전트 설정 조회',propose_preference_rule:'선호 규칙 후보 제안 · 승인 전',propose_scene_3d:'3D 장면 변경 제안 · 승인 전'};
+  const states={queued:'대기 중',running:'처리 중',cancel_requested:'취소 요청 중',cancelled:'취소됨',completed:'답변 확인',awaiting_continuation_approval:'추가 전달 승인 대기',continuation_rejected:'추가 전달 거절됨',outcome_unknown:'결과 미확정 · 자동 재호출 없음',blocked_before_message:'전달 전 차단',response_validation_failed:'응답 확인 실패',limit_reached:'대화 한도에 도달'};
++ // Chat results link to existing cards only: fal media actions (image S1, video S5) and saved 3D/motion proposals (S8).
+  function reviewTargets(p,turn){
++  const reviewMedia={prepare_image_action:'image',prepare_video_action:'video'};
+   const cid=p?.active_conversation?.id;
+   if(!cid||turn?.conversation_id!==cid||typeof turn.run_id!=='string'||!turn.run_id)return [];
+   const runs=(p.production_runs||[]).filter(run=>run.id===turn.run_id&&run.conversation_id===cid);
+   if(runs.length!==1)return [];
+   const targets=[];
+   for(const call of runs[0].calls||[]){
+-   const result=call.result;if(call.name!=='prepare_image_action'||result?.status!=='proposed'||result.role!=='image'||typeof result.action_id!=='string')continue;
+-   const actions=(p.media_actions||[]).filter(action=>action.id===result.action_id);
+-   if(actions.length===1&&actions[0].role==='image'&&typeof actions[0].shot==='string'&&p.shots?.[actions[0].shot])targets.push({id:actions[0].id,shot:actions[0].shot,approval:actions[0].approval,job:!!actions[0].job});
++   const result=call.result,role=reviewMedia[call.name];if(result?.status!=='proposed')continue;
++   if(role){
++    if(result.role!==role||typeof result.action_id!=='string')continue;
++    const actions=(p.media_actions||[]).filter(action=>action.id===result.action_id);
++    if(actions.length===1&&actions[0].role===role&&typeof actions[0].shot==='string'&&p.shots?.[actions[0].shot])targets.push({kind:role,id:actions[0].id,shot:actions[0].shot,approval:actions[0].approval,job:!!actions[0].job});
++   }else if(call.name==='propose_motion_scene'&&typeof result.proposal_id==='string'){
++    const items=(p.motion_proposals||[]).filter(item=>item.id===result.proposal_id);
++    if(items.length===1&&typeof items[0].shot==='string'&&p.shots?.[items[0].shot])targets.push({kind:'motion',id:items[0].id,shot:items[0].shot,approval:items[0].status,job:false});
++   }else if(call.name==='propose_scene_3d'&&typeof result.proposal_id==='string'&&typeof result.scene_id==='string'){
++    const records=(p.scenes_3d||[]).filter(record=>record.id===result.scene_id),items=records.length===1?(records[0].proposals||[]).filter(item=>item.id===result.proposal_id):[];
++    if(items.length===1&&typeof records[0].shot==='string'&&p.shots?.[records[0].shot])targets.push({kind:'scene',id:items[0].id,shot:records[0].shot,approval:items[0].status,job:false});
++   }
+   }
+-  return targets.filter(target=>targets.filter(other=>other.id===target.id).length===1);
++  return targets.filter(target=>targets.filter(other=>other.kind===target.kind&&other.id===target.id).length===1);
+  }
+  function currentReviewTarget(turnId,actionId,expectedScope){
+   if(scope!==expectedScope||key()!==expectedScope)return null;
+   const p=project(),turns=(p?.general_chat_turns||[]).filter(turn=>turn.id===turnId);
+   return turns.length===1?reviewTargets(p,turns[0]).find(target=>target.id===actionId)||null:null;
+  }
+- // Visible names separate same-scene targets by order and decision; server IDs stay in data-* only.
+- // Across turns, aria-describedby points each button at its turn's prompt paragraph.
+- function reviewLabel(target,list){const same=list.filter(other=>other.shot===target.shot),state=target.job?'작업 생성됨':{approved:'승인됨',held:'보류됨',rejected:'거절됨'}[target.approval];return target.shot+' 제작안 '+(same.length>1?(same.indexOf(target)+1)+'/'+same.length+' ':'')+(state?'보기 ('+state+')':'검토')}
+- const reviewMessages={busy:'진행 중인 요청이 끝난 뒤 다시 시도하세요.',dirty:'다른 장면의 제작안을 열려면 현재 편집을 먼저 저장하거나 초안을 취소하세요. 대화 초안은 유지됩니다.',missing:'이 제작안을 현재 대화에서 찾을 수 없습니다. 저장된 대화 상태를 다시 확인하세요.',blocked:'제작안 카드로 이동하지 못했습니다. 열린 작업 창과 장면 목록을 확인한 뒤 다시 시도하세요.'};
++ // Visible names separate targets by request ordinal, scene, kind, order and decision; server IDs stay in data-* only.
++ // The ordinal keeps names distinct across turns even for identical prompts (voice control, button lists);
++ // aria-describedby still points each button at its turn's prompt paragraph.
++ const reviewKinds={image:'이미지 제작안',video:'영상 제작안',scene:'3D 변경안',motion:'모션 변경안'};
++ function reviewLabel(target,list,ordinal){const same=list.filter(other=>other.shot===target.shot&&other.kind===target.kind),state=target.job?'작업 생성됨':{approved:'승인됨',applied:'적용됨',held:'보류됨',rejected:'거절됨'}[target.approval];return '요청 '+ordinal+' · '+target.shot+' '+reviewKinds[target.kind]+' '+(same.length>1?(same.indexOf(target)+1)+'/'+same.length+' ':'')+(state?'보기 ('+state+')':'검토')}
++ const reviewMessages={kept:'저장하지 않은 작업 창 입력을 유지했습니다. 제안을 보려면 그 입력을 저장하거나 취소하세요.',busy:'진행 중인 요청이 끝난 뒤 다시 시도하세요.',dirty:'다른 장면의 제작안을 열려면 현재 편집을 먼저 저장하거나 초안을 취소하세요. 대화 초안은 유지됩니다.',missing:'이 제작안을 현재 대화에서 찾을 수 없습니다. 저장된 대화 상태를 다시 확인하세요.',blocked:'제작안 카드로 이동하지 못했습니다. 열린 작업 창과 장면 목록을 확인한 뒤 다시 시도하세요.'};
+  function focusKey(b){return b?.dataset?.generalReviewAction?'review\n'+b.dataset.generalReviewAction+'\n'+b.dataset.generalReviewTurn:b?.dataset?.generalCancel?'cancel\n'+b.dataset.generalCancel:''}
+  function restoreFocus(value){if(value)[...el('generalChatTurns').querySelectorAll('[data-general-review-action],[data-general-cancel]')].find(b=>focusKey(b)===value)?.focus({preventScroll:true})}
+  function controls(){const p=project(),cap=p?.general_chat_connection;const blocked=!!busy||inFlight||!!pendingId()||!!pendingId.failed||!!dirty;const active=(p?.general_chat_turns||[]).some(t=>['queued','running','outcome_unknown','cancel_requested','awaiting_continuation_approval'].includes(t.status));el('generalChatPrepare').disabled=blocked||!allowed(cap)||cap?.new_preview_available===false||active||(p?.general_chat_previews||[]).length>0;el('generalChatRefresh').disabled=!!busy||inFlight;panel.querySelectorAll('[data-general-decision],[data-general-cancel],[data-general-review-action]').forEach(b=>b.disabled=b.dataset?.generalReviewAction?!!busy||inFlight:blocked||!allowed(cap)&&b.dataset?.generalDecision!=='reject'&&!b.dataset?.generalCancel||b.dataset?.generalDecision==='approve'&&b.closest?.('.general-chat-card')?.querySelector('[data-rights]')?.checked===false)}
+@@ -58,10 +71,11 @@
+   const reviewData=JSON.stringify(reviews);if(renderedReviews!==reviewData){
+    const checked=new Set([...el('generalChatReviews').querySelectorAll('input:checked')].map(x=>x.dataset.rights));const opened=new Set([...el('generalChatReviews').querySelectorAll('details[open]')].map(x=>x.dataset.detail));
+    const focused=document.activeElement?.dataset?.generalDecision||document.activeElement?.dataset?.rights;
+-   el('generalChatReviews').innerHTML=reviews.map(v=>`<article class="general-chat-card"><h3>${v.turn_id?'도구 결과 추가 전달 검토':'요청 전송 검토'}</h3><dl><dt>수신처</dt><dd>${esc(v.mode==='contract-fake'?'합성 시험 · 외부 전송 없음':v.destination)}</dd><dt>방식</dt><dd>${esc(label(v.mode))}</dd><dt>모델</dt><dd>${esc(v.binding?.model||'확인 필요')}</dd><dt>자료 범위</dt><dd>${esc(v.data_scope)}</dd><dt>한 회차 상한 / 최대 예약액</dt><dd>${money(v.maximum_micro)} / ${money(v.reserve_micro)}</dd><dt>이번 요청 총 상한</dt><dd>${v.total_maximum_micro==null?'합성 시험: 총 상한 미적용':money(v.total_maximum_micro)}</dd><dt>도구 범위</dt><dd>${esc((v.tool_scope||[]).map(name=>toolLabels[name]||'확인 필요').join(', '))}</dd></dl>${historyLabel(v)?`<p>${esc(historyLabel(v))}</p>`:''}<p>총 상한은 이번 요청과 이어지는 도구 결과 전달에 적용됩니다. 승인 후에도 서버에서 문맥과 예산을 다시 확인하며 자료 파일 자체는 전달하지 않습니다.</p><details data-detail="${esc(v.id)}" ${opened.has(v.id)?'open':''}><summary>전달할 전체 내용 보기 · 도구 결과 포함</summary><p>메시지 요청</p><pre>${esc(JSON.stringify(v.message_body,null,2))}</pre><p>토큰 수 확인 요청</p><pre>${esc(JSON.stringify(v.count_body,null,2))}</pre></details><label class="general-chat-rights"><input type="checkbox" data-rights="${esc(v.id)}" ${checked.has(v.id)?'checked':''}> 이 요청에 포함된 내용의 사용 및 전달 권한을 확인했습니다.</label><div class="general-chat-actions"><button type="button" data-general-decision="approve" data-preview="${esc(v.id)}" aria-describedby="generalChatApproveNote-${esc(v.id)}">확인한 내용 승인</button><button type="button" data-general-decision="reject" data-preview="${esc(v.id)}">전달 거절</button><p class="general-chat-approve-note" id="generalChatApproveNote-${esc(v.id)}" ${checked.has(v.id)?'hidden':''}>위의 사용 및 전달 권한을 확인하면 승인할 수 있습니다.</p></div></article>`).join('');
++   el('generalChatReviews').innerHTML=reviews.map(v=>`<article class="general-chat-card"><h3>${v.turn_id?'도구 결과 추가 전달 검토':'요청 전송 검토'}</h3><dl><dt>수신처</dt><dd>${esc(v.mode==='contract-fake'?'합성 시험 · 외부 전송 없음':v.destination)}</dd><dt>방식</dt><dd>${esc(label(v.mode))}</dd><dt>모델</dt><dd>${esc(v.binding?.model||'확인 필요')}</dd><dt>자료 범위</dt><dd>${esc(v.data_scope)}</dd><dt>한 회차 상한 / 최대 예약액</dt><dd>${money(v.maximum_micro)} / ${money(v.reserve_micro)}</dd><dt>이번 요청 총 상한</dt><dd>${v.total_maximum_micro==null?'합성 시험: 총 상한 미적용':money(v.total_maximum_micro)}</dd><dt>도구 범위</dt><dd>${esc((v.tool_scope||[]).map(name=>toolLabels[name]||'확인 필요').join(', '))}</dd></dl>${historyLabel(v)?`<p>${esc(historyLabel(v))}</p>`:''}<p class="lt-cost-facts">최대 예약 ${money(v.reserve_micro)} · 한 회차 상한 ${money(v.maximum_micro)}${v.total_maximum_micro==null?'':' · 이번 요청 총 상한 '+money(v.total_maximum_micro)} · 청구 금액 아님</p><details class="lt-provenance-detail"><summary>비용 상한 적용 방식</summary><p>총 상한은 이번 요청과 이어지는 도구 결과 전달에 적용됩니다. 승인 후에도 서버에서 문맥과 예산을 다시 확인하며 자료 파일 자체는 전달하지 않습니다.</p></details><details data-detail="${esc(v.id)}" ${opened.has(v.id)?'open':''}><summary>전달할 전체 내용 보기 · 도구 결과 포함</summary><p>메시지 요청</p><pre>${esc(JSON.stringify(v.message_body,null,2))}</pre><p>토큰 수 확인 요청</p><pre>${esc(JSON.stringify(v.count_body,null,2))}</pre></details><label class="general-chat-rights"><input type="checkbox" data-rights="${esc(v.id)}" ${checked.has(v.id)?'checked':''}> 이 요청에 포함된 내용의 사용 및 전달 권한을 확인했습니다.</label><div class="general-chat-actions"><button type="button" data-general-decision="approve" data-preview="${esc(v.id)}" aria-describedby="generalChatApproveNote-${esc(v.id)}">확인한 내용 승인 · 최대 ${money(v.reserve_micro)}</button><button type="button" data-general-decision="reject" data-preview="${esc(v.id)}">전달 거절</button><p class="general-chat-approve-note" id="generalChatApproveNote-${esc(v.id)}" ${checked.has(v.id)?'hidden':''}>위의 사용 및 전달 권한을 확인하면 승인할 수 있습니다.</p></div></article>`).join('');
+    renderedReviews=reviewData;if(focused)el('generalChatReviews').querySelector('[data-general-decision="'+focused+'"], [data-rights="'+focused+'"]')?.focus({preventScroll:true});
+   }
+-  const targets=turns.map(turn=>reviewTargets(p,turn)),turnData=JSON.stringify([turns,targets]);if(renderedTurns!==turnData){const focused=focusKey(document.activeElement);el('generalChatTurns').innerHTML=turns.map((t,i)=>{const actions=targets[i].map(target=>`<button type="button" data-general-review-action="${esc(target.id)}" data-general-review-turn="${esc(t.id)}" data-general-review-scope="${esc(scope)}" aria-describedby="generalChatTurnPrompt-${esc(t.id)}">${esc(reviewLabel(target,targets[i]))}</button>`).join('')+(['queued','running','awaiting_continuation_approval'].includes(t.status)?`<button type="button" data-general-cancel="${esc(t.id)}">대화 작업 중단</button>`:'');return `<article class="general-chat-card"><h3>${esc(states[t.status]||'상태 확인 필요')}</h3><p>${esc(label(t.mode))} · ${esc(t.model||'')}</p><p class="general-chat-text" id="generalChatTurnPrompt-${esc(t.id)}">${esc(t.prompt||'')}</p>${t.answer?`<p class="general-chat-text">${esc(t.answer)}</p><p>${t.mode==='anthropic-live'?'모델 답변과 변경안의 적용·출력 승인은 별도입니다.':'시험 응답이며 제작 결과나 편집 승인이 아닙니다.'}</p>`:''}${t.error?`<p>${esc(t.error)}</p>`:''}<p>${esc(usageLabel(t))} · 청구 ${t.billing_confirmed?'확인':'미확인'}</p>${actions?`<div class="general-chat-actions">${actions}</div>`:''}</article>`}).join('');renderedTurns=turnData;restoreFocus(focused)}
++  // D15 turn summary: model, project difference, quote total and kind, and reason from the same card projection.
++  const targets=turns.map(turn=>reviewTargets(p,turn)),facts=targets.map(list=>list.filter(t=>t.kind==='image'||t.kind==='video').map(t=>{const x=(p.media_actions||[]).find(a=>a.id===t.id);return{line:t.shot+' '+(t.kind==='video'?'영상':'이미지')+' · '+mediaFactsLine(x),detail:mediaFactsDetail(mediaFacts(x))}})),turnData=JSON.stringify([turns,targets,facts]);if(renderedTurns!==turnData){const focused=focusKey(document.activeElement);el('generalChatTurns').innerHTML=turns.map((t,i)=>{const actions=targets[i].map(target=>`<button type="button" data-general-review-action="${esc(target.id)}" data-general-review-turn="${esc(t.id)}" data-general-review-scope="${esc(scope)}" aria-describedby="generalChatTurnPrompt-${esc(t.id)}">${esc(reviewLabel(target,targets[i],i+1))}</button>`).join('')+(['queued','running','awaiting_continuation_approval'].includes(t.status)?`<button type="button" data-general-cancel="${esc(t.id)}">대화 작업 중단</button>`:'');return `<article class="general-chat-card"><h3>${esc(states[t.status]||'상태 확인 필요')}</h3><p>${esc(label(t.mode))} · ${esc(t.model||'')}</p><p class="general-chat-text" id="generalChatTurnPrompt-${esc(t.id)}">${esc(t.prompt||'')}</p>${t.answer?`<p class="general-chat-text">${esc(t.answer)}</p><p>${t.mode==='anthropic-live'?'모델 답변과 변경안의 적용·출력 승인은 별도입니다.':'시험 응답이며 제작 결과나 편집 승인이 아닙니다.'}</p>`:''}${t.error?`<p>${esc(t.error)}</p>`:''}<p>${esc(usageLabel(t))} · 청구 ${t.billing_confirmed?'확인':'미확인'}</p>${facts[i].length?`<ul class="lt-cost-facts general-chat-facts">${facts[i].map(f=>`<li>${esc(f.line)}</li>`).join('')}</ul><details class="lt-provenance-detail"><summary>제안 가격·출처 상세</summary>${facts[i].map(f=>f.detail).join('')}</details>`:''}${actions?`<div class="general-chat-actions">${actions}</div>`:''}</article>`}).join('');renderedTurns=turnData;restoreFocus(focused)}
+   controls();
+  }
+  el('generalChatReviews').onchange=e=>{const rights=e.target.closest('[data-rights]');if(!rights)return;const note=rights.closest('.general-chat-card')?.querySelector('.general-chat-approve-note');if(note)note.hidden=rights.checked;controls()};
+@@ -71,7 +85,7 @@
+  async function request(action,data){let outcome={status:'not_sent'};const current=scope;inFlight=true;controls();try{const ok=await act(action,data,undefined,value=>{outcome=value});if(current!==scope)return false;if(!ok){const messages={rejected:outcome.reason||'요청이 거절되었습니다. 입력을 확인하세요.',unknown:'요청 결과가 미확정입니다. 기존 요청 확인 후 계속하세요.',committed_refresh_failed:'저장됐지만 화면 갱신에 실패했습니다. 상태를 다시 확인하세요.',not_sent:'요청하지 못했습니다. 저장되지 않은 편집, 브라우저 저장소와 기존 요청을 확인하세요.'};el('generalChatStatus').textContent=messages[outcome.status]||'상태를 다시 확인하세요.'}return ok}finally{inFlight=false;refresh()}}
+  el('generalChatForm').onsubmit=async e=>{e.preventDefault();if(!allowed(project()?.general_chat_connection)||project()?.general_chat_connection?.new_preview_available===false||inFlight||busy||scope!==key())return;const cap=project().general_chat_connection,maximum=micro(el('generalChatMaximum').value),total=micro(el('generalChatTotal').value);if(!maximum||maximum>100000||(bounded(cap.mode)&&(!total||total<maximum||total>400000))){el('generalChatStatus').textContent=bounded(cap.mode)?'한 회차 상한은 0.000001~0.1 USD, 이번 요청 총 상한은 한 회차 상한 이상 0.4 USD 이하로 입력하세요.':'한 회차 비용 상한은 0.000001~0.1 USD로 입력하세요.';return}const data={song:song(),prompt:el('generalChatPrompt').value,maximum_micro:maximum};if(bounded(cap.mode))data.total_maximum_micro=total;if(await request('general_chat_preview',data))el('generalChatStatus').textContent='전달할 내용을 준비했습니다. 확인하고 승인 또는 거절하세요. 아직 전달하지 않았습니다.'};
+  el('generalChatReviews').onclick=async e=>{const b=e.target.closest('[data-general-decision]'),decision=b?.dataset.generalDecision;if(!b||inFlight||busy||scope!==key()||decision!=='reject'&&!allowed(project()?.general_chat_connection))return;const v=(project()?.general_chat_previews||[]).find(x=>x.id===b.dataset.preview);if(!v)return;const rights=[...el('generalChatReviews').querySelectorAll('[data-rights]')].find(x=>x.dataset.rights===v.id)?.checked===true;if(decision==='approve'&&!rights){el('generalChatStatus').textContent='내용의 사용 및 전달 권한을 확인해 주세요.';return}if(decision==='approve'&&!v.turn_id&&previewPrompt(v)!==el('generalChatPrompt').value){el('generalChatStatus').textContent='초안이 바뀌었거나 요청을 확인할 수 없습니다. 이 검토를 거절하고 새 내용을 준비하세요.';return}if(await request('general_chat_decide',{song:song(),preview_id:v.id,manifest_sha256:v.manifest_sha256,decision,rights_confirmed:rights}))el('generalChatStatus').textContent=decision==='approve'?'승인을 저장했습니다. 대화 상태를 확인하세요.':'전달을 거절했습니다.'};
+- el('generalChatTurns').onclick=async e=>{const review=e.target.closest('[data-general-review-action]');if(review){const expected=review.dataset.generalReviewScope,origin=focusKey(review);if(busy||inFlight){el('generalChatStatus').textContent=reviewMessages.busy;return}const target=currentReviewTarget(review.dataset.generalReviewTurn,review.dataset.generalReviewAction,expected);if(!target){if(scope===expected&&key()===expected)el('generalChatStatus').textContent=reviewMessages.missing;return}const valid=()=>!!currentReviewTarget(review.dataset.generalReviewTurn,review.dataset.generalReviewAction,expected);const result=await window.LoretuneAgentSidebar?.reviewMediaAction(target.id,expected,valid);if(scope!==expected||result==='superseded')return;el('generalChatStatus').textContent=result==='opened'?'':reviewMessages[result]||reviewMessages.blocked;if(result!=='opened')restoreFocus(origin);return}const b=e.target.closest('[data-general-cancel]');if(!b||busy||inFlight||scope!==key())return;if(await request('general_chat_cancel',{song:song(),turn:b.dataset.generalCancel}))el('generalChatStatus').textContent='중단 요청을 저장했습니다. 작업 상태를 확인하세요.'};
++ el('generalChatTurns').onclick=async e=>{const review=e.target.closest('[data-general-review-action]');if(review){const expected=review.dataset.generalReviewScope,origin=focusKey(review);if(busy||inFlight){el('generalChatStatus').textContent=reviewMessages.busy;return}const target=currentReviewTarget(review.dataset.generalReviewTurn,review.dataset.generalReviewAction,expected);if(!target){if(scope===expected&&key()===expected)el('generalChatStatus').textContent=reviewMessages.missing;return}const valid=()=>!!currentReviewTarget(review.dataset.generalReviewTurn,review.dataset.generalReviewAction,expected);const sidebar=window.LoretuneAgentSidebar,result=await (target.kind==='scene'||target.kind==='motion'?sidebar?.reviewStudioProposal(target.kind,target.id,expected,valid):sidebar?.reviewMediaAction(target.id,expected,valid));if(scope!==expected||result==='superseded')return;el('generalChatStatus').textContent=result==='opened'?'':reviewMessages[result]||reviewMessages.blocked;if(result!=='opened'&&result!=='kept')restoreFocus(origin);return}const b=e.target.closest('[data-general-cancel]');if(!b||busy||inFlight||scope!==key())return;if(await request('general_chat_cancel',{song:song(),turn:b.dataset.generalCancel}))el('generalChatStatus').textContent='중단 요청을 저장했습니다. 작업 상태를 확인하세요.'};
+  el('generalChatRefresh').onclick=async()=>{if(dirty)return el('generalChatStatus').textContent='저장되지 않은 편집을 먼저 저장하세요. 초안은 유지됩니다.';try{await refreshState()}catch{el('generalChatStatus').textContent='상태를 불러오지 못했습니다. 초안은 유지됩니다.'}};
+  panel.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const section=e.target.closest('details');if(section===panel&&sidebarHost){e.preventDefault();e.stopPropagation();closeHost?.();return}if(section?.open){e.preventDefault();e.stopPropagation();section.open=false;section.querySelector(':scope > summary')?.focus()}});
+  async function refreshState(){await windowRefresh();refresh();el('generalChatStatus').textContent='저장된 대화 상태를 확인했습니다.'}
+--- start/chat-sidebar.js
++++ chat-sidebar.js
+@@ -41,7 +41,11 @@
+  const preferenceStatus = make('p'); preferenceStatus.id = 'agentSettingsStatus'; preferenceStatus.setAttribute('role', 'status');
+  const preferenceRoute = make('p', 'agent-setting-note'), preferenceActive = make('p', 'agent-setting-note');
+  const preferencePolicy = make('p', 'agent-setting-note', '전체 편집은 허용된 비삭제 편집만 새 미승인 버전으로 저장합니다. 컷 제외·겹침 제거는 검토가 필요하며, 최종 출력·비용·전송·사용권 승인은 별도입니다. 계정 삭제는 금지하며 다른 파일 삭제도 대상별 명시 허가가 필요합니다.');
+- preferenceForm.append(modeLabel, modeSelect, effortLabel, effortSelect, preferenceSave, preferenceHelp, preferenceStatus); preferenceDetails.append(preferenceSummary, preferenceForm, preferenceRoute, preferenceActive, preferencePolicy); preferences.append(preferenceDetails); preferences.hidden = true;
++ // D21: chat model token rates, reservation and source at the decision point; secondary detail and the policy note (#46) in one disclosure.
++ const preferenceCost = make('p', 'lt-cost-facts'); preferenceCost.id = 'agentSettingsCost';
++ const preferenceDetail = make('details', 'lt-provenance-detail'), preferencePrice = make('p', 'agent-setting-note'), preferenceSource = make('a'); preferenceSource.target = '_blank'; preferenceSource.rel = 'noopener noreferrer';
++ preferenceDetail.append(make('summary', '', '대화 모델 가격 출처·권한 범위'), preferencePrice, preferenceSource, preferencePolicy);
++ preferenceForm.append(modeLabel, modeSelect, effortLabel, effortSelect, preferenceSave, preferenceHelp, preferenceStatus); preferenceDetails.append(preferenceSummary, preferenceCost, preferenceForm, preferenceRoute, preferenceActive, preferenceDetail); preferences.append(preferenceDetails); preferences.hidden = true;
+  const generalHost = make('div', 'agent-general-host'); chat.append(generalHost);
+  const legacy = make('details', 'agent-legacy-chat'); const legacyTitle = make('summary', '', '기존 연결 대화 · 별도 실행 이력'); legacy.append(legacyTitle, q('#modelChatPanel')); chat.append(legacy);
+  const proposalTitle = make('h2', '', '편집 변경안'); const proposals = make('section', 'agent-proposals'); proposals.setAttribute('aria-label', '편집 변경안 검토'); proposals.append(proposalTitle, q('#timelineProposals')); chat.append(proposals);
+@@ -83,14 +87,16 @@
+  }
+  function renderWorkStatus() {
+   const p = project(), groups = workGroups(state, p, song(), shotName), scope = conversationDraftKey('agent-work-status');
+-  const signature = JSON.stringify([scope, groups]); if (signature === workStatusSignature) return;
++  // D15: provider work rows carry the same model/quote/reason facts as the card for this scene's actions.
++  const facts = groups.some(group => group.key === 'provider') ? (p?.media_actions || []).filter(action => action.shot === shotName && action.job).map(action => action.shot + ' ' + (action.role === 'video' ? '영상' : '이미지') + ' · ' + mediaFactsLine(action)) : [];
++  const signature = JSON.stringify([scope, groups, facts]); if (signature === workStatusSignature) return;
+   workStatusSignature = signature; workStatus.hidden = !p; workEmpty.hidden = groups.length > 0; workDetails.hidden = !groups.length;
+   const counts = groups.reduce((all, group) => { for (const key in all) all[key] += group.buckets[key]; return all; }, { active: 0, attention: 0, result: 0, stopped: 0 });
+   const parts = [[counts.active, '진행'], [counts.attention, '확인 필요'], [counts.result, '결과 준비'], [counts.stopped, '취소·중단·만료']].filter(([count]) => count).map(([count, label]) => label + ' ' + count + '건');
+   workSummaryText.textContent = '제작 작업 · ' + parts.join(' · ');
+   const focusedKey = workRows.contains(document.activeElement) ? document.activeElement.dataset.agentWork : null;
+   workRows.replaceChildren();
+-  for (const group of groups) { const row = make('div', 'agent-work-row'), text = make('p', '', group.label + ' · ' + group.summary), button = make('button', '', '작업 보기'); button.type = 'button'; button.dataset.agentWork = group.key; button.setAttribute('aria-label', group.label + ' 작업 보기'); button.title = '입력은 보존하고 기존 제작 작업 화면에서 확인합니다.'; row.append(text, button); workRows.append(row); }
++  for (const group of groups) { const row = make('div', 'agent-work-row'), text = make('p', '', group.label + ' · ' + group.summary), button = make('button', '', '작업 보기'); button.type = 'button'; button.dataset.agentWork = group.key; button.setAttribute('aria-label', group.label + ' 작업 보기'); button.title = '입력은 보존하고 기존 제작 작업 화면에서 확인합니다.'; row.append(text, button); if (group.key === 'provider') for (const line of facts) row.append(make('p', 'lt-cost-facts', line)); workRows.append(row); }
+   if (focusedKey) workRows.querySelector('[data-agent-work="' + focusedKey + '"]')?.focus({ preventScroll: true });
+  }
+  function focusWorkTarget(target) {
+@@ -137,7 +143,7 @@
+   const check = () => {
+    if (sequence !== navigationSequence || scope !== conversationDraftKey('general-chat')) return 'superseded';
+    const p = project(), actions = (p?.media_actions || []).filter(action => action.id === id);
+-   if (typeof stillCurrent !== 'function' || !stillCurrent() || actions.length !== 1 || actions[0].role !== 'image' || !p.shots?.[actions[0].shot]) return 'missing';
++   if (typeof stillCurrent !== 'function' || !stillCurrent() || actions.length !== 1 || !['image', 'video'].includes(actions[0].role) || !p.shots?.[actions[0].shot]) return 'missing';
+    return dirty && actions[0].shot !== shotName ? 'dirty' : actions[0];
+   };
+   const shotButton = shot => { const buttons = [...document.querySelectorAll('#shotlist [data-shot]')].filter(button => button.dataset.shot === shot); return buttons.length === 1 && !buttons[0].disabled ? buttons[0] : null; };
+@@ -162,6 +168,45 @@
+   if (!cards[0].getClientRects().length || document.activeElement !== cards[0]) { choose('chat'); return 'blocked'; }
+   cards[0].dataset.reviewArrival = ''; cards[0].addEventListener('blur', () => { delete cards[0].dataset.reviewArrival; }, { once: true });
+   return 'opened';
++ }
++ // S8: open a saved 3D (Scene Studio) or motion proposal from chat. Same scoping, dirty protection and
++ // sequencing as reviewMediaAction; the studio keeps unsaved dialog input ('kept') instead of replacing it.
++ async function reviewStudioProposal(kind, id, scope, stillCurrent) {
++  const sequence = ++navigationSequence;
++  const launcher = () => q(kind === 'scene' ? '#sceneStudioButton' : '#motionButton');
++  const studio = () => kind === 'scene' ? window.AethonScene : window.AethonMotion;
++  const check = () => {
++   if (sequence !== navigationSequence || scope !== conversationDraftKey('general-chat')) return 'superseded';
++   const p = project();
++   const shots = kind === 'scene' ? (p?.scenes_3d || []).filter(record => (record.proposals || []).some(item => item.id === id)).map(record => record.shot) : (p?.motion_proposals || []).filter(item => item.id === id).map(item => item.shot);
++   if (typeof stillCurrent !== 'function' || !stillCurrent() || shots.length !== 1 || typeof shots[0] !== 'string' || !p.shots?.[shots[0]]) return 'missing';
++   return dirty && shots[0] !== shotName ? 'dirty' : shots[0];
++  };
++  const shotButton = shot => { const buttons = [...document.querySelectorAll('#shotlist [data-shot]')].filter(button => button.dataset.shot === shot); return buttons.length === 1 && !buttons[0].disabled ? buttons[0] : null; };
++  let shot = check(); if (shot === 'superseded' || shot === 'missing' || shot === 'dirty') return shot;
++  if (shot !== shotName && !shotButton(shot)) return 'blocked';
++  const closing = [...dialogStack].reverse().filter(dialog => dialog.open);
++  const closed = closing.map(dialog => new Promise(resolve => dialog.addEventListener('close', resolve, { once: true })));
++  for (const dialog of closing) dialog.close();
++  await Promise.all(closed); syncDialogs();
++  const again = () => { const value = check(); return ['superseded', 'missing', 'dirty'].includes(value) ? value : activeDialog ? 'blocked' : null; };
++  let stop = again(); if (stop) return stop;
++  setStep(3, { focus: false }); await Promise.resolve();
++  stop = again(); if (stop) return stop;
++  if (shot !== shotName) { const button = shotButton(shot); if (!button) return 'blocked'; button.dataset.reviewNavigation = ''; try { button.click(); } finally { delete button.dataset.reviewNavigation; } }
++  await Promise.resolve();
++  stop = again(); if (stop) return stop; if (check() !== shotName) return 'blocked';
++  const open = launcher(); if (!open || open.disabled || typeof studio()?.reveal !== 'function') return 'blocked';
++  // From here to reveal() nothing awaits, so no newer navigation can interleave.
++  choose('settings'); open.click(); syncDialogs();
++  const shown = studio().reveal(id);
++  if (shown !== 'opened' && shown !== 'kept') return shown === 'missing' ? 'missing' : 'blocked';
++  const target = q(shown === 'kept' ? (kind === 'scene' ? '#sceneStudioStatus' : '#motionStatus') : (kind === 'scene' ? '#sceneStudioSummary' : '#motionProposal'));
++  if (!target) return 'blocked';
++  focusWorkTarget(target);
++  if (document.activeElement !== target) return 'blocked';
++  target.dataset.reviewArrival = ''; target.addEventListener('blur', () => { delete target.dataset.reviewArrival; }, { once: true });
++  return shown;
+  }
+  workRows.addEventListener('click', event => { const button = event.target.closest('[data-agent-work]'); if (button) viewWork(button.dataset.agentWork); });
+  const modeNames = { read_only: '읽기 전용', review: '검토 후 편집', full_access: '전체 편집' };
+@@ -180,6 +225,11 @@
+   const scope = conversationDraftKey('agent-settings:' + current.selection) + ':' + current.revision;
+   if (preferenceScope !== scope) { preferenceScope = scope; modeSelect.value = current.mode; effortSelect.value = current.effort; preferenceStatus.textContent = ''; }
+   preferenceSummary.textContent = '에이전트 설정 · ' + modeNames[current.mode] + ' · ' + effortName(current.effort);
++  const rate = cap.token_price, hold = cap.reservation;
++  preferenceCost.textContent = '대화 모델 ' + cap.model + ' · 사용자가 선택한 모델 · ' + (rate ? '입력 ' + usd(rate.input_rate) + ' / 출력 ' + usd(rate.output_rate) + ' (100만 토큰당 · 문서 기준 · 청구 아님)' : '단가 기록 없음') + (hold ? ' · 회차당 최대 예약 ' + usd(hold.worst_per_round_micro / 1000000) + ' · 대화 상한 ' + usd(hold.conversation_cap_micro / 1000000) + ' 안 최대 ' + hold.worst_case_rounds_within_cap + '회차' : ' · 예약 기준 기록 없음');
++  preferencePrice.textContent = (rate ? '단가 개정 ' + rate.revision + (rate.long_context ? ' · 입력 ' + rate.long_context.threshold_input_tokens + '토큰 초과 시 입력 ' + usd(rate.long_context.input_rate) + ' / 출력 ' + usd(rate.long_context.output_rate) : '') : '단가 기록 없음') + (hold ? ' · 회차 상한 입력 ' + hold.max_input_tokens + ' / 출력 ' + hold.max_output_tokens + '토큰' : '') + ' · 권한 ' + modeNames[current.mode] + ' · 추론 강도 ' + effortName(current.effort) + ' · 에이전트는 모델·권한·추론 강도를 바꿀 수 없습니다.';
++  const source = typeof rate?.source === 'string' && /^https:\/\//.test(rate.source) ? rate.source : '';
++  preferenceSource.hidden = !source; if (source) { preferenceSource.href = source; preferenceSource.textContent = '단가 출처 ' + source; }
+   const active = prefs.active_response;
+   preferenceActive.textContent = active ? '현재 응답: ' + modeNames[active.effective_mode] + ' · ' + effortName(active.effort) + (prefs.settings_pending ? ' · 변경한 강도·권한 확장은 다음 새 요청부터 적용됩니다. 권한 축소는 즉시 반영됩니다.' : ' · 이미 승인한 응답의 본문·추론 강도는 유지됩니다.') : '다음 요청: ' + modeNames[current.mode] + ' · ' + effortName(current.effort);
+   preferenceRoute.textContent = !cap.general_route_supported ? '이 모델은 현재 일반 대화 연결에서 사용할 수 없습니다. 기존 별도 연결의 지원 여부를 확인하세요.' : !cap.general_route_configured ? '이 모델의 일반 대화 연결은 아직 설정되지 않았습니다. 설정 저장은 모델을 호출하지 않습니다.' : '현재 일반 대화 경로에서 지원하는 설정입니다. 계정·사용량·청구 확인은 별도입니다.';
+@@ -307,7 +357,7 @@
+  const stageObserver = new MutationObserver(() => { if (narrow.matches && selected === 'settings') { selected = 'chat'; opened = false; } apply(); });
+  stageObserver.observe(document.body, { attributes: true, attributeFilter: ['data-step', 'data-guided'] });
+  addEventListener('resize', () => width(preferredWidth)); narrow.addEventListener('change', () => { mobilePreview(); width(preferredWidth); apply(); });
+- window.LoretuneAgentSidebar = { refresh, open: () => { if (activeDialog) { dialogHosts.get(activeDialog).open = true; portal(activeDialog); } else choose('chat'); }, close: closeAgent, reviewMediaAction: async (...args) => { const result = await reviewMediaAction(...args); if (result === 'opened') backToChat.hidden = false; return result; } };
++ window.LoretuneAgentSidebar = { refresh, open: () => { if (activeDialog) { dialogHosts.get(activeDialog).open = true; portal(activeDialog); } else choose('chat'); }, close: closeAgent, reviewMediaAction: async (...args) => { const result = await reviewMediaAction(...args); if (result === 'opened') backToChat.hidden = false; return result; }, reviewStudioProposal };
+  window.LoretuneGeneralChat.mount({ container: generalHost, onClose: closeAgent });
+  width(preferredWidth); syncDialogs(); apply();
+  // Reuse the application's scoped public-state polling. This is presentation
+--- start/studio.css
++++ studio.css
+@@ -548,7 +548,10 @@
+ .lt-ui .lt-execution-card>.toolbar button { width:100%; font-size:var(--ui-item); }
+ .lt-ui .lt-execution-card>img { object-fit:contain; border-radius:var(--ui-radius-control); }
+ .lt-ui .lt-execution-card [data-action="action_execute"],
+-.lt-ui .lt-execution-card [data-action="action_decide"][data-decision="approved"] { background:var(--ui-strong); color:var(--ui-chrome); }
++.lt-ui .lt-execution-card [data-action="action_decide"][data-decision="approved"],
++.lt-ui .media-action-card [data-media-decision="approved"],
++.lt-ui .media-action-card [data-media-decision="execute"],
++.lt-ui .general-chat-card [data-general-decision="approve"] { background:var(--ui-strong); color:var(--ui-chrome); }
+ .lt-ui dialog { background:var(--ui-panel); border-color:var(--ui-control); border-radius:var(--ui-radius-dialog); padding:var(--ui-space-6); box-shadow:0 24px 80px var(--ui-shadow-deep); overscroll-behavior:contain; }
+ .lt-ui dialog h2 { font-size:var(--ui-title); letter-spacing:-.3px; }
+ .lt-ui dialog label { font-size:var(--ui-body-size); }
+@@ -749,6 +752,13 @@
+ .lt-ui .media-action-card button { border-color:var(--ui-control); }
+ /* Arrival mark after chat navigation; shown for mouse and keyboard alike, cleared on blur. No motion. */
+ .lt-ui .media-action-card[data-review-arrival] { outline:2px solid var(--ui-focus); outline-offset:var(--ui-space-1); }
++.lt-ui :is(#motionProposal,#sceneStudioSummary,#motionStatus,#sceneStudioStatus)[data-review-arrival] { outline:2px solid var(--ui-focus); outline-offset:var(--ui-space-1); }
++/* #44: one primary decision (approve or execute) spans the row; hold/reject share the next; input edit reads as a text action. */
++.lt-ui .media-action-card>.media-action-decisions { padding:var(--ui-space-2) 0 0; border:0; gap:var(--ui-space-2); flex-wrap:wrap; }
++.lt-ui .media-action-card>.media-action-decisions:empty { display:none; }
++.lt-ui .media-action-decisions [data-media-decision="approved"],.lt-ui .media-action-decisions [data-media-decision="execute"] { flex:1 1 100%; }
++.lt-ui .media-action-decisions [data-media-decision="held"],.lt-ui .media-action-decisions [data-media-decision="rejected"] { flex:1 1 0; }
++.lt-ui .media-action-card .media-action-edit { background:transparent; border-color:transparent; text-decoration:underline; text-underline-offset:var(--ui-space-1); }
+ .lt-ui .creator-comparison-identity { min-height:32px; margin:var(--ui-space-3) 0 var(--ui-space-2); gap:var(--ui-space-2); }
+ .lt-ui .creator-comparison-identity>b { font-weight:var(--ui-weight-label); }
+ .lt-ui .comparison-media-stage { display:flex; align-items:center; justify-content:center; width:100%; height:min(32vh,300px); min-height:180px; background:var(--ui-compare); border-radius:var(--ui-radius-control); overflow:hidden; }
+@@ -772,7 +782,7 @@
+ .lt-ui :where(#creatorEditReview,#reviewTake,#discardTakeReviewDraft) { min-height:44px; }
+ }
+ @media(forced-colors:active) {
+-.lt-ui :focus-visible,.lt-ui .media-action-card[data-review-arrival] { outline-color:Highlight; }
++.lt-ui :focus-visible,.lt-ui .media-action-card[data-review-arrival],.lt-ui :is(#motionProposal,#sceneStudioSummary,#motionStatus,#sceneStudioStatus)[data-review-arrival] { outline-color:Highlight; }
+ .lt-ui :is(.shot,#takes button)[aria-current="true"] { border:2px solid Highlight; box-shadow:none; }
+ .lt-ui .lt-review-state { color:CanvasText; }
+ }
+@@ -966,6 +976,9 @@
+ .lt-ui .agent-work-row { display:flex; gap:var(--ui-space-2); align-items:center; padding-block:var(--ui-space-2); }
+ .lt-ui .agent-work-row>p { flex:1; min-width:0; margin:0; }
+ .lt-ui .agent-work-row>button { flex:none; padding-inline:var(--ui-space-2); }
++.lt-ui .agent-work-row:has(>.lt-cost-facts) { flex-wrap:wrap; }
++.lt-ui .agent-work-row>.lt-cost-facts { flex:1 1 100%; font-size:var(--ui-meta); }
++.lt-ui .general-chat-facts { margin:var(--ui-space-2) 0; padding-left:var(--ui-space-4); }
+ .lt-ui .agent-chat-pane .general-chat { margin:var(--ui-space-4) 0; }
+ .lt-ui .general-chat[data-sidebar-hosted="true"]>#generalChatHeading { display:none; }
+ .lt-ui .agent-chat-pane .general-chat-card { border-color:var(--ui-line); border-radius:var(--ui-radius-control); padding:var(--ui-space-3); }
+--- start/scene-studio.js
++++ scene-studio.js
+@@ -81,7 +81,7 @@
+   else if(dirty)el('sceneStudioSummary').textContent='아직 저장하지 않은 구성이 있습니다.';
+   else if(p?.requires_review)el('sceneStudioSummary').textContent=r?.head?'실행 기준이 변경된 변경안입니다. 저장된 버전을 복원해 새 변경안으로 다시 검토하세요.':'실행 기준이 변경된 초안입니다. 변경안을 다시 저장한 뒤 승인하세요.';
+   else if(v?.requires_review&&!p)el('sceneStudioSummary').textContent='이전 승인과 결과는 보존됩니다. 저장된 버전을 복원해 새 변경안을 승인하세요.';
+-  else if(p){const kinds={cube:'상자',sphere:'구',plane:'평면'};const shapes=p.scene.objects.map(x=>x.kind==='mesh'?assetName(x):kinds[x.kind]||'도형').join(', ');el('sceneStudioSummary').textContent=`저장된 변경안: ${shapes} · 렌즈 ${p.scene.camera.lens_mm}mm · 조명 ${p.scene.lights.map(x=>x.energy_w+'W').join(', ')}. 각 항목을 펼쳐 확인한 뒤 승인하세요.`}
++  else if(p){const kinds={cube:'상자',sphere:'구',plane:'평면'};const shapes=p.scene.objects.map(x=>x.kind==='mesh'?assetName(x):kinds[x.kind]||'도형').join(', ');const o=p.origin,by=o?.actor==='agent'?` 모델 제안 · ${o.model_reason_label||'모델이 제시한 이유(검증 안 됨)'}: ${o.model_reason||''} · 대화 모델 ${o.provenance?.chat_model||'확인 필요'} · 권한 ${agentModeNames[o.provenance?.permission_mode]||'확인 필요'} · 추론 강도 ${agentEffortNames[o.provenance?.effort]||'확인 필요'}.`:'';el('sceneStudioSummary').textContent=`저장된 변경안: ${shapes} · 렌즈 ${p.scene.camera.lens_mm}mm · 조명 ${p.scene.lights.map(x=>x.energy_w+'W').join(', ')}.${by} 각 항목을 펼쳐 확인한 뒤 승인하세요.`}
+   else if(rejected)el('sceneStudioSummary').textContent='거절된 구성입니다. 내용을 다시 확인하고 새 변경안으로 저장할 수 있습니다.';
+   else if(v)el('sceneStudioSummary').textContent='승인된 구도입니다. 정지 후보 생성과 Take 검토는 별도입니다.';
+   else el('sceneStudioSummary').textContent='구성을 입력하고 변경안을 저장하세요.';
+@@ -159,5 +159,9 @@
+    }else status(pendingId()?'요청 결과를 아직 확인하지 못했습니다. 입력을 유지하며 기존 요청을 확인하세요.':'기존 요청의 결과와 입력을 확인하세요.');
+   }catch{if(scope===ctx)status('기존 요청 복구를 마치지 못했습니다. 입력을 유지하며 요청 상태를 확인하세요.')}finally{inFlight=false;controls()}
+  };
+- window.AethonScene={refresh};refresh();
++ // S8: chat navigation to a saved proposal. Unsaved 3D input is kept ('kept'), never replaced.
++ function reveal(id){const r=record(),item=(r?.proposals||[]).find(x=>x.id===id);if(!dialog.open||!item)return 'missing';
++  if(dirty&&source!==id){status('저장하지 않은 3D 입력을 유지했습니다. 대화에서 연 변경안을 보려면 입력을 저장하거나 취소하세요.');return 'kept'}
++  status(replaceable(r)?.id===id?'대화에서 연 변경안입니다. 항목을 펼쳐 확인한 뒤 승인하세요.':'대화에서 연 변경안은 현재 검토 대상이 아닙니다(상태: '+({proposed:'검토 전',held:'보류',rejected:'거절',approved:'승인됨',applied:'적용됨'}[item.status]||'확인 필요')+'). 현재 구도를 표시합니다.');return 'opened'}
++ window.AethonScene={refresh,reveal};refresh();
+ })();
+--- start/motion-studio.js
++++ motion-studio.js
+@@ -4,7 +4,7 @@
+  const reviewStatus=document.getElementById('takeReviewStatus');
+  if(reviewStatus&&typeof reviewStatus.after==='function')reviewStatus.after(button);else (document.getElementById('productionTools')||document.querySelector('.inspector')).append(button);
+  const dialog=document.createElement('dialog');dialog.id='motionDialog';dialog.setAttribute('aria-labelledby','motionTitle');
+- dialog.innerHTML='<div class="row"><h2 id="motionTitle">모션 구성·검토</h2><button type="button" id="motionClose">닫기</button></div><p>로컬 Mac 렌더 · 미디어 API 호출 없음. 모션 후보 생성 승인과 Take·최종 출력 승인은 별개입니다.</p><p id="motionContext"></p><p id="motionStatus" class="dialog-status" role="status" aria-live="polite"></p><button type="button" id="motionRecover" hidden>기존 요청 확인</button><button type="button" id="motionStart">텍스트 모션 직접 시작</button><label>저장된 변경안<select id="motionProposal"></select></label><div id="motionDetails"></div><label>레이어<select id="motionLayer"></select></label><div id="motionFields"></div><div class="toolbar"><button type="button" id="motionSave">변경안 저장</button><button type="button" id="motionCancel">초안 취소</button></div><div class="toolbar"><button type="button" id="motionApprove">구성 승인·새 버전 저장</button><button type="button" id="motionHold">보류</button><button type="button" id="motionReject">거절</button></div><label>저장 변경안의 프레임<input id="motionFrame" type="range" min="0" max="95" value="0"></label><button type="button" id="motionPreview">이 프레임 보기</button><img id="motionImage" alt="저장된 모션 구성 프레임" hidden style="width:100%;height:auto;max-height:360px;object-fit:contain"><div class="toolbar"><button type="button" id="motionRender">승인한 버전의 후보 렌더</button><select id="motionVersions" aria-label="복원할 모션 버전"></select><button type="button" id="motionRestore">이 버전을 변경안으로 복원</button></div><div id="motionJobs"></div>';
++ dialog.innerHTML='<div class="row"><h2 id="motionTitle">모션 구성·검토</h2><button type="button" id="motionClose">닫기</button></div><p class="lt-cost-facts">로컬 Mac 렌더 · 미디어 API 호출 없음</p><details class="lt-provenance-detail"><summary>승인 범위</summary><p>모션 후보 생성 승인과 Take·최종 출력 승인은 별개입니다.</p></details><p id="motionContext"></p><p id="motionStatus" class="dialog-status" role="status" aria-live="polite"></p><button type="button" id="motionRecover" hidden>기존 요청 확인</button><button type="button" id="motionStart">텍스트 모션 직접 시작</button><label>저장된 변경안<select id="motionProposal"></select></label><div id="motionDetails"></div><label>레이어<select id="motionLayer"></select></label><div id="motionFields"></div><div class="toolbar"><button type="button" id="motionSave">변경안 저장</button><button type="button" id="motionCancel">초안 취소</button></div><div class="toolbar"><button type="button" id="motionApprove">구성 승인·새 버전 저장</button><button type="button" id="motionHold">보류</button><button type="button" id="motionReject">거절</button></div><label>저장 변경안의 프레임<input id="motionFrame" type="range" min="0" max="95" value="0"></label><button type="button" id="motionPreview">이 프레임 보기</button><img id="motionImage" alt="저장된 모션 구성 프레임" hidden style="width:100%;height:auto;max-height:360px;object-fit:contain"><div class="toolbar"><button type="button" id="motionRender">승인한 버전의 후보 렌더</button><select id="motionVersions" aria-label="복원할 모션 버전"></select><button type="button" id="motionRestore">이 버전을 변경안으로 복원</button></div><div id="motionJobs"></div>';
+  document.body.append(dialog);
+  const el=id=>document.getElementById(id),drafts=new Map();let scope='',editing=null,source=null,version=0,dirty=false,layerIndex=0,previewGeneration=0;
+  const key=()=>JSON.stringify([song(),shotName,project()?.active_conversation?.id||'']);
+@@ -60,5 +60,10 @@
+  el('motionRender').onclick=async()=>{if(dirty||scope!==key())return;const s=project().shots[shotName],v=s.motion_versions.find(x=>x.id===s.motion_head);await request('motion_render',{song:song(),shot_id:s.stable_id||shotName,motion_revision:v.id,grant_id:v.approval.id});refresh()};
+  el('motionRestore').onclick=async()=>{if(dirty||scope!==key())return;const ctx=scope,inputVersion=version,s=project().shots[shotName];if(await request('motion_restore',{song:song(),shot_id:s.stable_id||shotName,base_motion_revision:s.motion_head,version:Number(el('motionVersions').value)})){if(scope!==ctx||version!==inputVersion)return;source=project().motion_proposals.at(-1).id;editing=structuredClone(current().scene);status('이전 구성을 새 변경안으로 복원했습니다. 새 승인이 필요합니다.');fields();refresh()}};
+  el('motionJobs').onclick=async e=>{const b=e.target.closest('[data-motion-cancel]');if(b){await request('cancel_job',{job:b.dataset.motionCancel});refresh()}};
+- window.AethonMotion={refresh};refresh();
++ // S8: chat navigation selects the saved proposal unless the dialog holds an unsaved edit ('kept').
++ function reveal(id){const x=(project()?.motion_proposals||[]).find(item=>item.id===id&&item.shot===shotName);if(!dialog.open||!x||scope!==key())return 'missing';
++  if(dirty&&source!==id){status('저장하지 않은 모션 수정을 유지했습니다. 대화에서 연 변경안을 보려면 수정안을 저장하거나 취소하세요.');return 'kept'}
++  if(source!==id){source=id;editing=structuredClone(x.scene);layerIndex=0;version++;previewGeneration++;el('motionImage').hidden=true;fields();refresh()}
++  status('대화에서 연 변경안입니다. 내용을 확인한 뒤 승인·보류·거절하세요.');return 'opened'}
++ window.AethonMotion={refresh,reveal};refresh();
+ })();
+--- start/tests/general_chat_review_navigation.cjs
++++ tests/general_chat_review_navigation.cjs
+@@ -16,7 +16,7 @@
+ context.project=()=>context.p;context.key=()=>context.currentScope;
+ vm.createContext(context);vm.runInContext(slice(ui,' function reviewTargets(',' function controls(')+';globalThis.targets=reviewTargets;globalThis.current=currentReviewTarget;globalThis.label=reviewLabel;',context);
+ const plain=value=>JSON.parse(JSON.stringify(value));
+-assert.deepEqual(plain(context.targets(context.p,turn)),[{id:'action',shot:'target',approval:'required',job:false}]);
++assert.deepEqual(plain(context.targets(context.p,turn)),[{kind:'image',id:'action',shot:'target',approval:'required',job:false}]);
+ assert.equal(context.current('turn','action','scope-A').id,'action');
+ for(const mutate of [
+  p=>delete p.general_chat_turns[0].run_id,
+@@ -43,10 +43,12 @@
+ nodes.set('generalChatTurns',{innerHTML:'',querySelectorAll(){return buttonsFrom(this.innerHTML)}});
+ Object.assign(context,{p:clone(project),renderedReviews:'',renderedTurns:'',el:node,layout(){},allowed:()=>false,configured:()=>false,bounded:()=>false,label:()=> 'fixture',usageLabel:()=> 'unverified',historyLabel:()=>'',money:()=>'',controls(){},draftRead:()=>'',document,states:{completed:'complete'}});
+ vm.runInContext(productEsc,context);
++// The product D15 fact helpers render the turn summary for media targets.
++vm.runInContext(slice(html,'// D15/#41: one money format','function drawMediaCreator(){'),context);
+ vm.runInContext(slice(ui,' function refresh(){'," el('generalChatPrompt').addEventListener")+';globalThis.draw=refresh;',context);
+ const turns=()=>node('generalChatTurns').innerHTML;
+ context.draw();assert.match(turns(),/data-general-review-action="action"/);
+-assert.match(turns(),/<div class="general-chat-actions"><button type="button" data-general-review-action="action"[^>]*>target 제작안 검토<\/button><\/div>/,'review buttons use the existing action group');
++assert.match(turns(),/<div class="general-chat-actions"><button type="button" data-general-review-action="action"[^>]*>요청 1 · target 이미지 제작안 검토<\/button><\/div>/,'review buttons use the existing action group');
+ context.p.media_actions=[];context.draw();assert.doesNotMatch(turns(),/data-general-review-action/,'same turns must invalidate after a destination disappears');assert.doesNotMatch(turns(),/general-chat-actions/,'no empty action group');
+ context.p=clone(project);const dangerous='긴 장면 <img src=x onerror=alert(1)> "검토"';context.p.shots={[dangerous]:{}};context.p.media_actions[0].shot=dangerous;context.draw();assert.doesNotMatch(turns(),/<img/);assert.match(turns(),/&lt;img/);
+ context.p=clone(project);context.currentScope='a" onfocus="x\' b';context.draw();assert.match(turns(),/data-general-review-scope="a&quot; onfocus=&quot;x&#39; b"/,'attribute boundary is escaped by the product esc');assert.equal(buttonsFrom(turns())[0].dataset.generalReviewScope,'a" onfocus="x\' b');context.currentScope='scope-A';context.draw();
+@@ -56,19 +58,21 @@
+ many.production_runs[0].calls=['a1','a2','a3'].map(id=>({name:'prepare_image_action',result:{status:'proposed',role:'image',action_id:id}}));
+ many.media_actions=[{id:'a1',role:'image',shot:'target',approval:'required'},{id:'a2',role:'image',shot:'target',approval:'rejected'},{id:'a3',role:'image',shot:'other',approval:'approved',job:{id:'j',state:'prepared'}}];
+ context.p=many;context.draw();let names=buttonsFrom(turns()).map(b=>b.text);
+-assert.deepEqual(names,['target 제작안 1/2 검토','target 제작안 2/2 보기 (거절됨)','other 제작안 보기 (작업 생성됨)']);
++assert.deepEqual(names,['요청 1 · target 이미지 제작안 1/2 검토','요청 1 · target 이미지 제작안 2/2 보기 (거절됨)','요청 1 · other 이미지 제작안 보기 (작업 생성됨)']);
+ assert.equal(new Set(names).size,names.length,'accessible names are unique');for(const name of names)assert.doesNotMatch(name,/a1|a2|a3|\bj\b/,'internal IDs stay out of names');
+-context.p.media_actions[0].approval='held';context.draw();assert.equal(buttonsFrom(turns())[0].text,'target 제작안 1/2 보기 (보류됨)','decision change re-renders the suffix');
++context.p.media_actions[0].approval='held';context.draw();assert.equal(buttonsFrom(turns())[0].text,'요청 1 · target 이미지 제작안 1/2 보기 (보류됨)','decision change re-renders the suffix');
+ 
+-// Two turns with one same-scene target each: names match, descriptions point at each turn's own prompt.
++// Two turns with one same-scene target each: names differ by request ordinal (I1, voice control), descriptions point at each turn's own prompt.
+ const twoTurns=clone(project);twoTurns.general_chat_turns=[{...turn,prompt:'첫 요청'},{...turn,id:'turn2',run_id:'run2',prompt:'둘째 요청'}];
+ twoTurns.production_runs.push({id:'run2',conversation_id:'current',calls:[{name:'prepare_image_action',result:{status:'proposed',role:'image',action_id:'action2'}}]});
+ twoTurns.media_actions.push({id:'action2',role:'image',shot:'target',approval:'required'});
+ const kept=context.p;context.p=twoTurns;context.draw();const pair=buttonsFrom(turns());
+-assert.deepEqual(pair.map(b=>b.text),['target 제작안 검토','target 제작안 검토'],'per-turn names may repeat across turns');
++assert.deepEqual(pair.map(b=>b.text),['요청 1 · target 이미지 제작안 검토','요청 2 · target 이미지 제작안 검토'],'names are distinct across turns');
+ assert.notEqual(pair[0].describedBy,pair[1].describedBy,'turns are separated by aria-describedby');
+ const promptText=id=>{const all=[...turns().matchAll(/<p class="general-chat-text" id="([^"]*)">([^<]*)<\/p>/g)].filter(m=>decode(m[1])===id);assert.equal(all.length,1,'describedby target exists once: '+id);return decode(all[0][2])};
+ assert.deepEqual(pair.map(b=>promptText(b.describedBy)),['첫 요청','둘째 요청']);
++// Identical prompts (e.g. a short retry): accessible names still differ, not only the descriptions.
++twoTurns.general_chat_turns.forEach(t=>t.prompt='다시');context.draw();const same=buttonsFrom(turns());assert.equal(new Set(same.map(b=>b.text)).size,2,'identical prompts keep distinct names');assert.deepEqual(same.map(b=>promptText(b.describedBy)),['다시','다시']);
+ context.p=kept;context.draw();
+ 
+ // Focus survives a re-render on the same review or cancel button.
+--- start/tests/studio_notice.cjs
++++ tests/studio_notice.cjs
+@@ -16,9 +16,10 @@
+ }
+ summary.listeners.click();detail.open=true;update();assert.equal(detail.open,true);
+ summary.listeners.click();detail.open=false;update();assert.equal(detail.open,false);
+-notice.error=true;update();assert.equal(detail.open,true);assert.equal(summary.textContent,'알림');
++notice.error=true;update();assert.equal(detail.open,true);assert.equal(summary.textContent,'오류 · '+notice.textContent,'#45: error summary names the cause');
++notice.textContent='가'.repeat(60);update();assert.equal(summary.textContent,'오류 · '+'가'.repeat(40)+'…','long causes are shortened');notice.textContent='';update();assert.equal(summary.textContent,'오류');notice.textContent='로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.';
+ notice.textContent='처리 결과 미확정 · 기존 요청을 확인하세요.';update();assert.equal(detail.open,true);assert.match(notice.textContent,/미확정/);
+-notice.error=false;notice.textContent='사용권 재확인이 필요합니다.';update();assert.equal(detail.open,true);
++notice.error=false;notice.textContent='사용권 재확인이 필요합니다.';update();assert.equal(detail.open,true);assert.equal(summary.textContent,'알림','non-error notices keep the generic label');
+ notice.dataset.inlineFeedback='true';notice.textContent='장면 안에서 저장 상태를 확인하세요.';update();assert.equal(detail.open,false);assert.equal(summary.textContent,notice.textContent);
+ notice.dataset.inlineFeedback='false';notice.textContent='저장했습니다.';update();assert.equal(detail.open,false);
+ const complexity='GLB 모델이 너무 복잡해 가져올 수 없습니다. 더 단순한 정적 GLB 파일을 선택하세요.';
+--- /dev/null
++++ tests/general_chat_b2_cards.cjs
+@@ -0,0 +1,220 @@
++'use strict';
++// B2: D15 facts on the model card, chat turn summary, work status and agent settings; chat review
++// navigation to video (S5), 3D and motion (S8) proposals; design #41 #44 #45 #46 #49; I1 names.
++// Runs the product functions sliced from the shipped files. Optional argv[2]: JSON of real server
++// projections written by tests/test_general_chat_b2_cards.py.
++const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
++const ui=fs.readFileSync('general-chat-ui.js','utf8'),sidebar=fs.readFileSync('chat-sidebar.js','utf8'),html=fs.readFileSync('index.html','utf8'),css=fs.readFileSync('studio.css','utf8');
++const scene=fs.readFileSync('scene-studio.js','utf8'),motion=fs.readFileSync('motion-studio.js','utf8');
++const slice=(source,a,b)=>{const start=source.indexOf(a),end=source.indexOf(b,start);assert.ok(start>=0&&end>start,'marker missing: '+a);return source.slice(start,end)};
++const line=(source,prefix)=>{const found=source.split('\n').find(value=>value.startsWith(prefix));assert.ok(found,'line missing: '+prefix);return found};
++const productEsc='var '+slice(html,'esc=s=>',';let stateReadEpoch');
++const productFacts=slice(html,'function mediaActionMarkup(x){','function drawMediaCreator(){');
++const decode=s=>s.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
++const clone=value=>JSON.parse(JSON.stringify(value));
++let completed=false;process.on('beforeExit',()=>{if(!completed){console.error('B2 card contracts did not complete');process.exitCode=1}});
++
++// Product card + fact helpers.
++const cards={creatorDiagnostic:()=>'',mediaRightsDrafts:new Map(),mediaDraftKey:value=>value};vm.createContext(cards);
++vm.runInContext(productEsc+';'+productFacts+';globalThis.card=mediaActionMarkup;globalThis.facts=mediaFacts;globalThis.factsLine=mediaFactsLine;globalThis.money=usd;',cards);
++const text=markup=>decode(markup.replace(/<[^>]+>/g,' ')).replace(/\s+/g,' ');
++const outsideDetails=markup=>markup.replace(/<details[\s\S]*?<\/details>/g,'');
++const insideDetails=markup=>(markup.match(/<details class="lt-provenance-detail">[\s\S]*?<\/details>/)||[''])[0];
++
++// #41: one money format.
++for(const [value,expected] of [['0.010000','$0.01'],['.1','$0.1'],[0.003687,'$0.003687'],[0.4,'$0.4'],['0','$0'],['0.35','$0.35'],['12','$12'],['abc','금액 확인 필요'],[null,'금액 확인 필요']])assert.equal(cards.money(value),expected,String(value));
++assert.equal(line(ui,' const money='),' const money=n=>usd(Number(n)/1000000);','chat review card uses the shared money format');
++
++// D15 card: agent proposal with a different model, documented-estimate quote and a priced unit.
++const unit={amount:'0.07',currency:'USD',unit:'second',source:'https://fal.ai/models/fal-ai/kling-video/v2.6/pro/image-to-video',fetched_at:'2026-10-28T09:28:18Z',revision:'fal-public-model-pages-20261028',kind:'documented-estimate'};
++const agentVideo={id:'v1',shot:'장면 1',role:'video',model:'fal-ai/kling-video/v2.6/pro/image-to-video',prompt:'blue',options:{duration:5,generate_audio:false},estimate:{amount:'0.35',currency:'USD'},estimate_kind:'documented-estimate',mode:'provider-unverified',estimate_expired:false,approval:'required',can_approve:true,can_execute:false,can_decide:true,reason:'입력·모델·예상 비용을 검토하세요.',output_policy:'비공개 출력',
++ price:{unit_price:unit,quantity:5,expected_total:{amount:'0.35',currency:'USD'},formula:'0.07 USD/초 × 5초 = 0.35 USD',quote_total:{amount:'0.35',currency:'USD'},matches_quote:true},price_source:'https://fal.ai/models/fal-ai/kling-video/v2.6/pro/image-to-video/api',price_revision:'quote-r1',quote_expires:4102444800,quote_expired:false,
++ record:'recorded',actor:'agent',model_reason:'움직임 품질이 더 높습니다.',model_reason_label:'모델이 제시한 이유(검증 안 됨)',provenance:{engine:'contract-fake',chat_model:'claude-haiku-5-5',permission_mode:'review',effort:'medium',run:'r',call:'c'},project_selection:'fal-kling-2-5-turbo',differs_from_project:true};
++let markup=cards.card(agentVideo),front=text(outsideDetails(markup)),detail=text(insideDetails(markup));
++for(const fact of ['견적 총액 $0.35 · 문서 기준 추정','단가 $0.07/초 · 문서 기준 추정','5초 · 무음','만료 시각','모델 fal-ai/kling-video/v2.6/pro/image-to-video · 프로젝트 선택과 다름 (프로젝트: fal-kling-2-5-turbo)','모델이 제시한 이유(검증 안 됨): 움직임 품질이 더 높습니다.'])assert.ok(front.includes(fact),'decision point shows: '+fact);
++for(const fact of ['단가 출처 '+unit.source,'개정 fal-public-model-pages-20261028','조회 2026-10-28T09:28:18Z','견적 출처 '+agentVideo.price_source,'개정 quote-r1','계산 0.07 USD/초 × 5초 = 0.35 USD','대화 모델 claude-haiku-5-5 · 권한 검토 후 편집 · 추론 강도 보통'])assert.ok(detail.includes(fact),'provenance detail shows: '+fact);
++assert.ok(!front.includes('대화 모델 claude'),'#46: provenance stays in the disclosure');
++assert.match(markup,/<a href="https:\/\/fal\.ai\/models\/fal-ai\/kling-video\/v2\.6\/pro\/image-to-video" target="_blank" rel="noopener noreferrer">/,'source is a link');
++assert.match(markup,/<p class="lt-cost-facts">견적 총액/,'#41/#46: cost facts use the shared one-line class');
++assert.equal((markup.match(/<details/g)||[]).length,1,'one disclosure for price, source, provenance and transfer conditions (diagnostic stubbed)');
++assert.ok(markup.indexOf('lt-cost-facts')<markup.indexOf('lt-provenance-detail'),'cost precedes secondary detail');
++assert.match(markup,/<div class="toolbar media-action-decisions"><button data-media-decision="approved" data-action="v1">이 조건 승인 · \$0\.35<\/button><button data-media-decision="held"[^>]*>보류<\/button><button data-media-decision="rejected"[^>]*>거절<\/button><\/div><button class="media-action-edit" data-media-edit="v1">/,'#41 amount on approve, #44 one primary then secondary decisions then a text action');
++markup=cards.card({...agentVideo,can_approve:false,can_execute:true,approval:'approved'});assert.match(markup,/data-media-decision="execute"[^>]*>승인한 작업 실행 · \$0\.35</);
++// Mismatch and fixture labels stay visible; an expired quote says so first.
++markup=cards.card({...agentVideo,mode:'contract-fake',estimate_kind:'fixture',estimate_expired:true,price:{...agentVideo.price,matches_quote:false,mismatch:'견적 총액과 단가×수량이 다릅니다. 둘 다 표시하며 어느 쪽도 자동 선택하지 않습니다.'}});
++front=text(outsideDetails(markup));assert.ok(front.includes('견적 만료 · 재확인 필요 · 견적 총액 $0.35 · 시험 견적 · 실제 청구 아님'));assert.ok(front.includes('견적 총액과 단가×수량이 다릅니다.'));assert.ok(front.includes('모의 전송 · 실제 AI 호출 없음'));
++// Job state: billing status joins the same cost line.
++markup=cards.card({...agentVideo,job:{id:'j',state:'running',cost:{billing_confirmed:false},recovery:{}}});assert.ok(text(outsideDetails(markup)).includes('실청구 확인 중 · 추정과 다를 수 있음'));assert.doesNotMatch(markup,/data-media-decision/);
++// Human preparation and a pre-D15 action.
++markup=cards.card({...agentVideo,actor:'local-owner',model_reason:null,model_reason_label:'프로젝트에서 사용자가 선택한 모델',provenance:dict0(),differs_from_project:false});
++front=text(outsideDetails(markup));assert.ok(front.includes('프로젝트 선택과 같음'));assert.ok(front.includes('프로젝트에서 사용자가 선택한 모델'));assert.ok(text(insideDetails(markup)).includes('사람이 직접 준비 · 대화 출처 없음'));assert.ok(!front.includes('검증 안 됨'));
++function dict0(){return {engine:null,chat_model:null,permission_mode:null,effort:null,run:null,call:null}}
++const old={...agentVideo,record:'출처 기록 없음(변경 전 준비)',actor:null,model_reason:null,model_reason_label:null,provenance:null,project_selection:null,differs_from_project:null};
++markup=cards.card(old);front=text(outsideDetails(markup));assert.ok(front.includes('출처 기록 없음(변경 전 준비)'));assert.ok(!front.includes('프로젝트 선택과'),'no comparison is invented for old actions');assert.ok(front.includes('단가 $0.07/초'));assert.ok(!text(insideDetails(markup)).includes('제안 출처'));
++// Fixture shapes without D15 fields (older tests) still render with explicit unknowns.
++markup=cards.card({id:'a',shot:'s',role:'image',model:'m',prompt:'p',estimate:{amount:'0.01',currency:'USD'},mode:'contract-fake',can_approve:true,can_decide:true});assert.ok(text(markup).includes('단가 기록 없음'));assert.ok(text(markup).includes('출처 기록 없음(변경 전 준비)'));
++// Reopen: the same projection after a JSON round trip renders identical markup.
++assert.equal(cards.card(clone(agentVideo)),cards.card(agentVideo));
++assert.equal(cards.factsLine(agentVideo),'모델 fal-ai/kling-video/v2.6/pro/image-to-video · 프로젝트 선택과 다름 (프로젝트: fal-kling-2-5-turbo) · 견적 $0.35 (문서 기준 추정) · 모델이 제시한 이유(검증 안 됨): 움직임 품질이 더 높습니다.');
++
++// #49 and #44 source contracts.
++assert.match(html,/<button id="prepareMedia" aria-describedby="mediaPreparationHint" data-runtime-blocked disabled>/,'#49 disabled reason is programmatically linked');
++const primary=slice(css,'.lt-ui .lt-execution-card [data-action="action_execute"],','{ background:var(--ui-strong); color:var(--ui-chrome); }');
++for(const selector of ['.media-action-card [data-media-decision="approved"]','.media-action-card [data-media-decision="execute"]','.general-chat-card [data-general-decision="approve"]'])assert.ok(primary.includes(selector),'#44 primary emphasis: '+selector);
++assert.match(line(css,'.lt-ui .media-action-card .media-action-edit {'),/background:transparent; border-color:transparent; text-decoration:underline;/);
++
++// Chat turn rendering (real refresh body).
++const turn={id:'turn',conversation_id:'current',run_id:'run',status:'completed',prompt:'요청'};
++const base={active_conversation:{id:'current'},general_chat_turns:[turn],shots:{target:{},other:{}},media_actions:[],motion_proposals:[],scenes_3d:[],
++ production_runs:[{id:'run',conversation_id:'current',calls:[]}]};
++function buttonsFrom(markup){return [...markup.matchAll(/<button type="button" ([^>]*)>([^<]*)<\/button>/g)].map(([,attrs,label])=>{const dataset={};for(const [,name,value] of attrs.matchAll(/data-general-([a-z-]+)="([^"]*)"/g))dataset['general'+name.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join('')]=decode(value);return{dataset,text:decode(label),focus(){}}})}
++const nodes=new Map(),node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',hidden:false,required:false,textContent:'',innerHTML:'',querySelectorAll:()=>[],querySelector:()=>null});return nodes.get(id)};
++nodes.set('generalChatTurns',{innerHTML:'',querySelectorAll(){return buttonsFrom(this.innerHTML)}});
++const view={p:clone(base),scope:'scope-A',renderedReviews:'',renderedTurns:'',el:node,layout(){},allowed:()=>true,configured:()=>false,bounded:()=>false,label:()=> 'fixture',usageLabel:()=> 'unverified',historyLabel:()=>'',controls(){},draftRead:()=>'',document:{activeElement:null},states:{completed:'complete'},key:()=> 'scope-A'};
++view.project=()=>view.p;vm.createContext(view);vm.runInContext(productEsc+';'+productFacts,view);
++vm.runInContext(line(ui,' const money=')+'\n'+line(ui,' const toolLabels=')+'\n'+slice(ui,' function reviewTargets(',' function controls(')+';globalThis.targets=reviewTargets;',view);
++vm.runInContext(slice(ui,' function refresh(){'," el('generalChatPrompt').addEventListener")+';globalThis.draw=refresh;',view);
++const turnsHTML=()=>node('generalChatTurns').innerHTML;
++function call(name,result){return {name,result:{status:'proposed',...result}}}
++
++// S5 video target and D15 turn summary.
++let p=clone(base);p.production_runs[0].calls=[call('prepare_video_action',{role:'video',action_id:'v1'})];p.media_actions=[{...agentVideo,shot:'target'}];
++assert.deepEqual(clone(view.targets(p,turn)),[{kind:'video',id:'v1',shot:'target',approval:'required',job:false}]);
++for(const mutate of [q=>q.production_runs[0].calls[0].result.role='image',q=>q.media_actions[0].role='image',q=>q.production_runs[0].calls[0].name='prepare_image_action',q=>q.media_actions.push(clone(q.media_actions[0]))]){const m=clone(p);mutate(m);assert.deepEqual(clone(view.targets(m,turn)),[]);}
++view.p=p;view.draw();
++assert.deepEqual(buttonsFrom(turnsHTML()).map(b=>b.text),['요청 1 · target 영상 제작안 검토']);
++assert.match(turnsHTML(),/<ul class="lt-cost-facts general-chat-facts"><li>target 영상 · 모델 fal-ai\/kling-video\/v2\.6\/pro\/image-to-video · 프로젝트 선택과 다름 \(프로젝트: fal-kling-2-5-turbo\) · 견적 \$0\.35 \(문서 기준 추정\) · 모델이 제시한 이유\(검증 안 됨\): 움직임 품질이 더 높습니다\.<\/li><\/ul>/);
++assert.ok(text(insideDetails(turnsHTML())).includes('대화 모델 claude-haiku-5-5 · 권한 검토 후 편집 · 추론 강도 보통'),'turn summary keeps provenance in the disclosure');
++// A price change re-renders the same turn.
++view.p=clone(p);view.p.media_actions[0].estimate={amount:'0.7',currency:'USD'};view.draw();assert.match(turnsHTML(),/견적 \$0\.7 /);
++
++// S8 motion and 3D targets.
++p=clone(base);p.production_runs[0].calls=[call('propose_motion_scene',{proposal_id:'m1'}),call('propose_scene_3d',{scene_id:'s1',proposal_id:'p1'}),call('propose_scene_3d',{scene_id:'s1',proposal_id:'p2'})];
++p.motion_proposals=[{id:'m1',shot:'target',status:'applied'}];p.scenes_3d=[{id:'s1',shot:'other',proposals:[{id:'p1',status:'proposed'},{id:'p2',status:'rejected'}]}];
++assert.deepEqual(clone(view.targets(p,turn)),[{kind:'motion',id:'m1',shot:'target',approval:'applied',job:false},{kind:'scene',id:'p1',shot:'other',approval:'proposed',job:false},{kind:'scene',id:'p2',shot:'other',approval:'rejected',job:false}]);
++view.p=p;view.draw();assert.deepEqual(buttonsFrom(turnsHTML()).map(b=>b.text),['요청 1 · target 모션 변경안 보기 (적용됨)','요청 1 · other 3D 변경안 1/2 검토','요청 1 · other 3D 변경안 2/2 보기 (거절됨)']);
++assert.doesNotMatch(turnsHTML(),/general-chat-facts/,'no media facts for 3D or motion targets');
++for(const mutate of [q=>q.motion_proposals.push(clone(q.motion_proposals[0])),q=>delete q.shots.target,q=>q.scenes_3d.push(clone(q.scenes_3d[0])),q=>q.scenes_3d[0].shot=null,q=>q.production_runs[0].conversation_id='foreign',q=>q.production_runs[0].calls.forEach(c=>c.result.status='blocked')]){
++ const m=clone(p);mutate(m);const kinds=clone(view.targets(m,turn)).map(t=>t.kind);assert.ok(kinds.length<3,'mutation drops a target: '+kinds);}
++
++// I1: identical prompts in two turns keep distinct names.
++p=clone(base);p.general_chat_turns=[{...turn,prompt:'다시'},{...turn,id:'turn2',run_id:'run2',prompt:'다시'}];
++p.production_runs=[{id:'run',conversation_id:'current',calls:[call('propose_motion_scene',{proposal_id:'m1'})]},{id:'run2',conversation_id:'current',calls:[call('propose_motion_scene',{proposal_id:'m2'})]}];
++p.motion_proposals=[{id:'m1',shot:'target',status:'proposed'},{id:'m2',shot:'target',status:'proposed'}];view.p=p;view.draw();
++assert.deepEqual(buttonsFrom(turnsHTML()).map(b=>b.text),['요청 1 · target 모션 변경안 검토','요청 2 · target 모션 변경안 검토']);
++
++// #41 chat send review card: amount on approve, cost facts line, policy sentence in the disclosure.
++view.p=clone(base);view.p.general_chat_previews=[{id:'pv',mode:'contract-fake',binding:{model:'claude-haiku-5-5'},data_scope:'scope',maximum_micro:10000,reserve_micro:3687,total_maximum_micro:40000,tool_scope:['prepare_video_action'],message_body:{},count_body:{}}];view.draw();
++const review=node('generalChatReviews').innerHTML;
++assert.match(review,/data-general-decision="approve"[^>]*>확인한 내용 승인 · 최대 \$0\.003687<\/button>/);
++assert.match(review,/<p class="lt-cost-facts">최대 예약 \$0\.003687 · 한 회차 상한 \$0\.01 · 이번 요청 총 상한 \$0\.04 · 청구 금액 아님<\/p>/);
++assert.match(review,/<details class="lt-provenance-detail"><summary>비용 상한 적용 방식<\/summary><p>총 상한은/);
++
++// Navigation: video media actions use the image route (S5).
++const navBase=(extra)=>{const events=[],d={activeElement:null};const c={Promise,navigationSequence:0,currentScope:'scope-A',dirty:false,shotName:'other',activeDialog:null,dialogStack:[],document:d,syncDialogs(){},setStep(step){events.push('step:'+step)},choose(name){c.navigationSequence++;events.push('tab:'+name)},focusWorkTarget(target){d.activeElement=target;events.push('focus:'+(target.id||target.dataset.actionCard))},conversationDraftKey:()=>c.currentScope,...extra};c.events=events;return c};
++const shotButton=c=>({dataset:{shot:'target'},disabled:false,click(){c.shotName='target';c.events.push('shot:target'+('reviewNavigation' in this.dataset?':quiet':''))}});
++(async()=>{
++ {const c=navBase({});const p=clone(base);p.media_actions=[{id:'v1',role:'video',shot:'target'}];c.project=()=>p;const card={dataset:{actionCard:'v1'},getClientRects:()=>[{}],addEventListener(){}},shot=shotButton(c);
++  c.document.querySelectorAll=selector=>selector==='[data-action-card]'?[card]:selector==='#shotlist [data-shot]'?[shot]:[];vm.createContext(c);vm.runInContext(slice(sidebar,' async function reviewMediaAction(',' async function reviewStudioProposal(')+';globalThis.go=reviewMediaAction;',c);
++  assert.equal(await c.go('v1','scope-A',()=>true),'opened');assert.equal(c.document.activeElement,card);
++  p.media_actions[0].role='audio';assert.equal(await c.go('v1','scope-A',()=>true),'missing');}
++
++ // Navigation to 3D / motion proposals (S8) with the real reviewStudioProposal.
++ function studioFixture(kind,{reveal='opened',launcherDisabled=false,dirty=false}={}){
++  const c=navBase({dirty});const p=clone(base);p.motion_proposals=[{id:'m1',shot:'target',status:'proposed'}];p.scenes_3d=[{id:'s1',shot:'target',proposals:[{id:'p1',status:'proposed'}]}];c.project=()=>p;c.p=p;
++  const shot=shotButton(c),targets={};for(const id of ['#motionProposal','#sceneStudioSummary','#motionStatus','#sceneStudioStatus'])targets[id]={id,dataset:{},addEventListener(name,callback){assert.equal(name,'blur');targets[id].blur=callback}};
++  const launcher={disabled:launcherDisabled,click(){c.events.push('launch:'+kind)}};
++  c.q=selector=>selector==='#sceneStudioButton'||selector==='#motionButton'?(selector===(kind==='scene'?'#sceneStudioButton':'#motionButton')?launcher:null):targets[selector]||null;
++  c.document.querySelectorAll=selector=>selector==='#shotlist [data-shot]'?[shot]:[];
++  c.window={AethonScene:{reveal:id=>{c.events.push('reveal:'+id);return reveal}},AethonMotion:{reveal:id=>{c.events.push('reveal:'+id);return reveal}}};
++  vm.createContext(c);vm.runInContext(slice(sidebar,' async function reviewStudioProposal(',' workRows.addEventListener')+';globalThis.go=reviewStudioProposal;',c);c.targets=targets;return c;
++ }
++ let c=studioFixture('motion');assert.equal(await c.go('motion','m1','scope-A',()=>true),'opened');
++ assert.deepEqual(c.events,['step:3','shot:target:quiet','tab:settings','launch:motion','reveal:m1','focus:#motionProposal'],'scene switch is quiet, the studio opens and only the proposal control takes focus');
++ assert.equal(c.targets['#motionProposal'].dataset.reviewArrival,'','arrival mark');c.targets['#motionProposal'].blur();assert.equal('reviewArrival' in c.targets['#motionProposal'].dataset,false);
++ c=studioFixture('scene');assert.equal(await c.go('scene','p1','scope-A',()=>true),'opened');assert.equal(c.document.activeElement.id,'#sceneStudioSummary');
++ c=studioFixture('scene',{reveal:'kept'});assert.equal(await c.go('scene','p1','scope-A',()=>true),'kept');assert.equal(c.document.activeElement.id,'#sceneStudioStatus','kept input: focus goes to the studio status that explains it');
++ c=studioFixture('motion',{dirty:true});assert.equal(await c.go('motion','m1','scope-A',()=>true),'dirty');assert.deepEqual(c.events,[],'unsaved timeline edit on another scene blocks before any change');
++ c=studioFixture('motion',{dirty:true});c.shotName='target';assert.equal(await c.go('motion','m1','scope-A',()=>true),'opened','dirty edit on the same scene does not block opening');
++ c=studioFixture('motion',{launcherDisabled:true});assert.equal(await c.go('motion','m1','scope-A',()=>true),'blocked');assert.equal(c.document.activeElement,null);
++ c=studioFixture('motion');assert.equal(await c.go('motion','missing','scope-A',()=>true),'missing');assert.deepEqual(c.events,[]);
++ c=studioFixture('motion');assert.equal(await c.go('motion','m1','scope-A',()=>false),'missing','stale chat reference');
++ c=studioFixture('motion');c.setStep=()=>{c.currentScope='scope-B'};assert.equal(await c.go('motion','m1','scope-A',()=>true),'superseded');assert.equal(c.document.activeElement,null);
++ c=studioFixture('scene',{reveal:'missing'});assert.equal(await c.go('scene','p1','scope-A',()=>true),'missing');
++ c=studioFixture('motion');c.focusWorkTarget=()=>{};assert.equal(await c.go('motion','m1','scope-A',()=>true),'blocked','target that cannot take focus is reported');assert.equal('reviewArrival' in c.targets['#motionProposal'].dataset,false);
++ c=studioFixture('motion');c.p.motion_proposals[0].shot='nowhere';assert.equal(await c.go('motion','m1','scope-A',()=>true),'missing');
++
++ // Real studio reveal(): unsaved dialog input is kept, otherwise the proposal is selected.
++ {const m={structuredClone,dialog:{open:true},shotName:'target',scope:'k',key:()=> 'k',dirty:true,source:'mine',editing:{draft:true},layerIndex:2,version:1,previewGeneration:0,statusText:'',fields(){m.fielded=true},refresh(){}};
++  m.el=()=>({hidden:false});m.status=value=>{m.statusText=value};m.project=()=>({motion_proposals:[{id:'m1',shot:'target',scene:{layers:[]}}]});vm.createContext(m);
++  vm.runInContext(slice(motion,' function reveal(id){',' window.AethonMotion=')+';globalThis.reveal=reveal;',m);
++  assert.equal(m.reveal('m1'),'kept');assert.deepEqual(m.editing,{draft:true});assert.equal(m.source,'mine');assert.match(m.statusText,/저장하지 않은 모션 수정을 유지/);
++  m.dirty=false;assert.equal(m.reveal('m1'),'opened');assert.equal(m.source,'m1');assert.deepEqual(clone(m.editing),{layers:[]});assert.equal(m.fielded,true);
++  assert.equal(m.reveal('other'),'missing');m.dialog.open=false;assert.equal(m.reveal('m1'),'missing');}
++ {const s={dialog:{open:true},dirty:true,source:'draft-source',statusText:''};s.status=value=>{s.statusText=value};
++  s.record=()=>({head:2,proposals:[{id:'p1',status:'proposed',base_revision:2},{id:'p0',status:'rejected',base_revision:1}]});s.replaceable=r=>r.proposals[0];
++  vm.createContext(s);vm.runInContext(slice(scene,' function reveal(id){',' window.AethonScene=')+';globalThis.reveal=reveal;',s);
++  assert.equal(s.reveal('p1'),'kept','dirty 3D input is preserved');assert.equal(s.source,'draft-source');assert.match(s.statusText,/저장하지 않은 3D 입력을 유지/);
++  s.dirty=false;assert.equal(s.reveal('p1'),'opened');assert.match(s.statusText,/대화에서 연 변경안입니다/);
++  assert.equal(s.reveal('p0'),'opened');assert.match(s.statusText,/현재 검토 대상이 아닙니다\(상태: 거절\)/);assert.equal(s.reveal('none'),'missing');}
++ // Scene Studio shows the agent origin of a pending proposal.
++ assert.match(scene,/모델 제안 · \$\{o\.model_reason_label\|\|'모델이 제시한 이유\(검증 안 됨\)'\}/);
++
++ // Chat click handler dispatches by kind; 'kept' keeps focus in the studio and explains.
++ {const status={textContent:''},d={activeElement:null},calls=[];const h={busy:false,inFlight:false,scope:'scope-A',currentScope:'scope-A',document:d,request:async()=>true,song:()=> 'A'};
++  h.p=clone(base);h.p.production_runs[0].calls=[call('propose_scene_3d',{scene_id:'s1',proposal_id:'p1'})];h.p.scenes_3d=[{id:'s1',shot:'target',proposals:[{id:'p1',status:'proposed'}]}];
++  h.project=()=>h.p;h.key=()=>h.currentScope;const turnsNode={querySelectorAll:()=>buttonsFrom('<button type="button" data-general-review-action="p1" data-general-review-turn="turn" data-general-review-scope="scope-A">x</button>').map(b=>(b.focus=function(){d.activeElement=this},b))};
++  h.el=id=>id==='generalChatStatus'?status:id==='generalChatTurns'?turnsNode:{};
++  h.window={LoretuneAgentSidebar:{reviewMediaAction:async()=>{calls.push('media');return 'opened'},reviewStudioProposal:async(kind,id)=>{calls.push(kind+':'+id);return h.answer}}};
++  vm.createContext(h);vm.runInContext(slice(ui,' function reviewTargets(',' function controls(')+'\n'+line(ui," el('generalChatTurns').onclick="),h);
++  const button={dataset:{generalReviewAction:'p1',generalReviewTurn:'turn',generalReviewScope:'scope-A'}},click=()=>turnsNode.onclick({target:{closest:selector=>selector==='[data-general-review-action]'?button:null}});
++  const messages={};{const m={};vm.createContext(m);vm.runInContext(line(ui,' const reviewMessages=')+';globalThis.out=reviewMessages;',m);Object.assign(messages,m.out)}
++  h.answer='kept';await click();assert.deepEqual(calls,['scene:p1']);assert.equal(status.textContent,messages.kept);assert.equal(d.activeElement,null,'kept: focus stays in the studio');
++  h.answer='blocked';await click();assert.equal(status.textContent,messages.blocked);assert.equal(d.activeElement?.dataset.generalReviewAction,'p1');
++  h.answer='opened';await click();assert.equal(status.textContent,'');}
++
++ // Work status rows carry the card's D15 facts (provider group only).
++ {const make=(tag,className,textValue)=>({tag,className,textContent:textValue||'',dataset:{},children:[],append(...nodes){this.children.push(...nodes)},setAttribute(){}});
++  const rows={children:[],contains:()=>false,replaceChildren(){this.children=[]},append(n){this.children.push(n)},querySelector:()=>null};
++  const w={make,workRows:rows,workStatus:{},workEmpty:{},workDetails:{},workSummaryText:{},workStatusSignature:'',shotName:'target',document:{activeElement:null},song:()=> 'A',conversationDraftKey:()=> 'k'};
++  w.p=clone(base);w.p.media_actions=[{...agentVideo,shot:'target',job:{id:'j',state:'running'}}];w.state={generation_jobs:[{id:'j',context:{song:'A',shot:'target'},state:'running'}],jobs:[]};w.project=()=>w.p;
++  vm.createContext(w);vm.runInContext(productEsc+';'+productFacts,w);vm.runInContext(slice(sidebar,' function workGroups(',' function focusWorkTarget(')+';globalThis.render=renderWorkStatus;',w);w.render();
++  const row=rows.children.find(r=>r.children.some(n=>n.dataset.agentWork==='provider'));assert.ok(row,'provider row');
++  assert.deepEqual(row.children.filter(n=>n.className==='lt-cost-facts').map(n=>n.textContent),['target 영상 · '+cards.factsLine(agentVideo)]);}
++
++ // Agent settings summary (D21) from the projection fields built by A2a.
++ {const make=(tag,className,textValue)=>({tag,className,textContent:textValue||'',value:'',children:[],append(...n){this.children.push(...n)},replaceChildren(){this.children=[]}});
++  const el=()=>make('x');const a={make,preferences:{},modeSelect:el(),effortSelect:el(),preferenceStatus:el(),preferenceSummary:el(),preferenceActive:el(),preferenceRoute:el(),preferenceSave:{},preferenceCost:el(),preferencePrice:el(),preferenceSource:{hidden:true},preferenceScope:'',preferenceChoices:'',busy:false,dirty:false,pendingId:()=>null,conversationDraftKey:k=>k};
++  vm.createContext(a);vm.runInContext(productEsc+';'+productFacts,a);vm.runInContext(slice(sidebar,' const modeNames = ',' modeSelect.addEventListener(')+';globalThis.render=renderPreferences;',a);
++  const capability={model:'claude-haiku-5-5',effort_options:['low','medium','high'],unsupported_efforts:[],general_route_supported:true,general_route_configured:true,
++   token_price:{input_rate:'.1',output_rate:'.5',unit:'USD per 1M tokens',long_context:{threshold_input_tokens:100000,input_rate:'.5',output_rate:'2.5'},source:'https://platform.claude.com/docs/en/about-claude/pricing',revision:'haiku-5-5-20261027-tiered'},
++   reservation:{max_input_tokens:16384,max_output_tokens:4096,worst_per_round_micro:3687,conversation_cap_micro:400000,worst_case_rounds_within_cap:108}};
++  a.render({agent_preferences:{current:{selection:'anthropic-haiku-5-5',mode:'review',effort:'medium',revision:1},capabilities:{modes:[{id:'review'}],models:{'anthropic-haiku-5-5':capability}}}});
++  assert.equal(a.preferenceCost.textContent,'대화 모델 claude-haiku-5-5 · 사용자가 선택한 모델 · 입력 $0.1 / 출력 $0.5 (100만 토큰당 · 문서 기준 · 청구 아님) · 회차당 최대 예약 $0.003687 · 대화 상한 $0.4 안 최대 108회차');
++  assert.equal(a.preferencePrice.textContent,'단가 개정 haiku-5-5-20261027-tiered · 입력 100000토큰 초과 시 입력 $0.5 / 출력 $2.5 · 회차 상한 입력 16384 / 출력 4096토큰 · 권한 검토 후 편집 · 추론 강도 보통 · 에이전트는 모델·권한·추론 강도를 바꿀 수 없습니다.');
++  assert.equal(a.preferenceSource.hidden,false);assert.equal(a.preferenceSource.href,capability.token_price.source);
++  a.preferenceScope='';a.render({agent_preferences:{current:{selection:'x',mode:'review',effort:'low',revision:2},capabilities:{modes:[{id:'review'}],models:{x:{...capability,token_price:null,reservation:null}}}}});
++  assert.equal(a.preferenceCost.textContent,'대화 모델 claude-haiku-5-5 · 사용자가 선택한 모델 · 단가 기록 없음 · 예약 기준 기록 없음');assert.equal(a.preferenceSource.hidden,true);
++  assert.match(sidebar,/preferenceDetail\.append\(make\('summary', '', '대화 모델 가격 출처·권한 범위'\), preferencePrice, preferenceSource, preferencePolicy\);/,'#46 policy note moved into the disclosure');}
++
++ // Real server projections (optional input from the Python wrapper).
++ if(process.argv[2]){
++  const real=JSON.parse(fs.readFileSync(process.argv[2],'utf8'));
++  const agent=real.agent_project.media_actions[0],reopened=real.agent_reopened.media_actions[0];
++  markup=cards.card(agent);front=text(outsideDetails(markup));
++  for(const fact of ['프로젝트 선택과 다름 (프로젝트: fal-flux-schnell)','견적 총액 $0.04 · 시험 견적 · 실제 청구 아님','단가 $0.04/MP · 문서 기준 추정','모델이 제시한 이유(검증 안 됨): '+real.reason])assert.ok(front.includes(fact),'real agent card: '+fact);
++  assert.ok(text(insideDetails(markup)).includes('대화 모델 claude-haiku-5-5 · 권한 전체 편집 · 추론 강도 높음'),'real provenance');
++  assert.ok(text(insideDetails(markup)).includes('개정 fal-public-model-pages-20261028'));
++  assert.equal(cards.card(reopened),markup,'reopen renders the same card from the stored projection');
++  view.p=real.agent_project;view.renderedTurns='';view.draw();
++  assert.ok(text(turnsHTML()).includes('장면 1 이미지 · '+cards.factsLine(agent)),'real chat turn summary');
++  assert.ok(buttonsFrom(turnsHTML()).some(b=>b.text==='요청 1 · 장면 1 이미지 제작안 검토'),'real review button');
++  front=text(outsideDetails(cards.card(real.owner_card)));assert.ok(front.includes('프로젝트에서 사용자가 선택한 모델'));assert.ok(front.includes('프로젝트 선택과 같음'));
++  front=text(outsideDetails(cards.card(real.old_card)));assert.ok(front.includes('출처 기록 없음(변경 전 준비)'));assert.ok(front.includes('단가 $0.003/MP · 문서 기준 추정'));
++  markup=cards.card(real.video_card);front=text(outsideDetails(markup));
++  for(const fact of ['장면 1 · 영상','견적 총액 $0.35','단가 $0.07/초 · 문서 기준 추정','5초 · 무음','프로젝트 선택과 다름 (프로젝트: fal-kling-2-5-turbo)','모델이 제시한 이유(검증 안 됨): '+real.video_reason])assert.ok(text(markup).includes(fact)||front.includes(fact),'real video card: '+fact);
++  assert.ok(text(insideDetails(markup)).includes('권한 검토 후 편집'));
++  console.log('real projections rendered: agent image, reopened, chat turn, owner, old, video');
++ }
++ completed=true;console.log('B2 D15 surfaces, review navigation kinds, design #41 #44 #45 #46 #49 and I1 names passed');
++})().catch(error=>{console.error(error);process.exitCode=1});
+--- /dev/null
++++ tests/test_general_chat_b2_cards.py
+@@ -0,0 +1,93 @@
++"""B2: D15 display on cards, chat turns, work status and agent settings; review navigation kinds; tool labels.
++
++Real server projections come from the isolated HTTP/SQLite fixtures of the A2a tests (contract-fake
++transport, fal transports fail if reached). No model, provider, count_tokens, paid call or browser.
++"""
++import json
++from pathlib import Path
++import subprocess
++import tempfile
++import unittest
++
++import chat_general
++from app import Store
++from tests import test_general_chat_media_d15 as d15
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++class ToolLabelTest(unittest.TestCase):
++    def test_tool_labels_match_allowed_tools(self):
++        source = (ROOT/'general-chat-ui.js').read_text()
++        line = next(x for x in source.splitlines() if x.startswith(' const toolLabels='))
++        out = subprocess.run(['node', '-e', line+';process.stdout.write(JSON.stringify(toolLabels))'],
++                             capture_output=True, text=True, check=True).stdout
++        labels = json.loads(out)
++        self.assertEqual(set(labels), set(chat_general.ALLOWED_TOOLS))
++        for name, label in labels.items():
++            self.assertTrue(label.strip(), name)
++            self.assertNotIn(name, label, 'internal tool names stay out of labels')
++
++
++class B2CardsTest(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        d15.VideoD15Test.setUpClass()
++
++    def image_case(self):
++        case = d15.GeneralChatImageD15Test('test_different_model_is_a_proposal_and_never_changes_project_settings')
++        case.setUp()
++        self.addCleanup(case.doCleanups)
++        return case
++
++    def projections(self):
++        agent = self.image_case()
++        agent.set_agent('full_access', 'high')
++        arguments = agent.m.arguments()
++        arguments['model_id'] = 'fal-flux-pro-1-1'
++        project = agent.m.send_tool('prepare_image_action', arguments)
++        reopened = Store(agent.f.tmp.name).state()['projects']['A']
++        agent.m.assert_no_media_execution()
++
++        owner = self.image_case()
++        owner.m.post('media_prepare', song='A', shot='장면 1', shot_revision=owner.m.project()['shots']['장면 1']['revision'],
++                     prompt=owner.m.prompt, options={'ratio':'16:9'}, refs=[])
++        owner_card, = owner.m.project()['media_actions']
++
++        old = self.image_case()
++        old.m.post('media_prepare', song='A', shot='장면 1', shot_revision=old.m.project()['shots']['장면 1']['revision'],
++                   prompt=old.m.prompt, options={'ratio':'16:9'}, refs=[])
++        with old.store.connect() as c:
++            identifier, body = c.execute('SELECT id,body FROM production_actions').fetchone()
++            value = json.loads(body)
++            value['options'].pop('proposal')
++            c.execute('UPDATE production_actions SET body=? WHERE id=?', (json.dumps(value), identifier))
++        old_card, = old.m.project()['media_actions']
++
++        video = d15.VideoD15Test('test_blocked_different_video_model_is_saved_as_proposal_only')
++        video.setUp()
++        self.addCleanup(video.doCleanups)
++        result = video.tool(video.arguments(model_id='fal-kling-2-6-pro'))
++        video_card = next(x for x in video.t.project()['media_actions'] if x['id'] == result['action_id'])
++        video.assert_nothing_reserved_or_sent()
++        return dict(agent_project=project, agent_reopened=reopened, owner_card=owner_card, old_card=old_card,
++                    video_card=video_card, reason=arguments['model_reason'], video_reason=d15.REASON)
++
++    def test_cards_turns_work_status_settings_and_navigation(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp)/'projections.json'
++            path.write_text(json.dumps(self.projections(), ensure_ascii=False))
++            result = subprocess.run(['node', 'tests/general_chat_b2_cards.cjs', str(path)], cwd=ROOT,
++                                    capture_output=True, text=True, timeout=60)
++        self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
++        self.assertIn('real projections rendered', result.stdout)
++        self.assertIn('B2 D15 surfaces', result.stdout)
++
++    def test_existing_review_navigation_and_notice_contracts(self):
++        for script in ('general_chat_review_navigation.cjs', 'studio_notice.cjs'):
++            result = subprocess.run(['node', 'tests/'+script], cwd=ROOT, capture_output=True, text=True, timeout=60)
++            self.assertEqual(result.returncode, 0, script+result.stdout+result.stderr)
++
++
++if __name__ == '__main__':
++    unittest.main()

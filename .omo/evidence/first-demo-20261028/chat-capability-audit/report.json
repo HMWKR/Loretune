@@ -1,0 +1,442 @@
+{
+  "schema": "loretune-chat-capability-audit/1",
+  "recorded_at": "2026-10-28T01:44:48.120687+00:00",
+  "agent": "/root/chat_capability_audit",
+  "configured_role": "codebase-explorer",
+  "requested_model_reasoning": "inherit session; no override requested",
+  "observed_provider_runtime_model": "not independently available",
+  "state": "READONLY_REPORTED",
+  "write_set": [
+    ".omo/evidence/first-demo-20261028/chat-capability-audit/report.json"
+  ],
+  "methodology_sources": [
+    "docs/design/CHAT-SESSION-PLAN.md",
+    "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+    "current server tool schema/dispatch/source",
+    "requirements-trace.json",
+    "ai-tool-contract-audit report: prior gap evidence only"
+  ],
+  "applied_methodology": "task→declared tool schema→runtime permission filter→dispatch→stored state→human approval trace; negative capability audit; source/actual transport/real model/billing separated",
+  "limits": [
+    "No source/test/MD/registry edits",
+    "No browser or running server access",
+    "No actual HTTP/API/model invocation; only local schema/validator introspection",
+    "Worker changes in progress: not a source-freeze or final acceptance",
+    "No team/authentication/security release claim"
+  ],
+  "source_before": {
+    "chat_general.py": {
+      "sha256": "edc4537ccbcd100d217ddc240f349001ddda3111324f54ba64f3edb7153c3e45",
+      "mtime_ns": 1793147295849613043
+    },
+    "chat_models.py": {
+      "sha256": "86806f32ec1d6720db1c29620735da84191320e12cef0183d5b86a69e8fb0f0b",
+      "mtime_ns": 1793151481689683381
+    },
+    "chat_protocols.py": {
+      "sha256": "a608e9dcad4bdc0325c90ca2030cc15d4b9f5e2774594d5719b4b47027c6257c",
+      "mtime_ns": 1793076739041246973
+    },
+    "chat_runtime.py": {
+      "sha256": "e1d8b7e0b694fe91a420333925ffe44972de063359bddaf0470e908eb2e01ec1",
+      "mtime_ns": 1793105349117320227
+    },
+    "production_tools.py": {
+      "sha256": "63a0fd75ed28d78c8524acc3e0e38ec66906a870b923f64fd6c11aa83e2036df",
+      "mtime_ns": 1793151687207414854
+    },
+    "production_context.py": {
+      "sha256": "c6f05454e9ea4c85651040fb44161f109488e4545bb88cded98264adfb71c671",
+      "mtime_ns": 1793151687207102270
+    },
+    "local_creation_tools.py": {
+      "sha256": "f3968c1b1b4f357d6dba57351b5988388984536011847e0f23fffd656121e571",
+      "mtime_ns": 1793151798800407942
+    },
+    "model_selection.py": {
+      "sha256": "97d8c826626afc93ad65216722f9aa850415a699897ce7b72c50e6f5b1e51925",
+      "mtime_ns": 1792942354015373074
+    },
+    "chat_sessions.py": {
+      "sha256": "f9e578aa0bf4a7ab8ccb04b8c64556929c979ca3a232de87f6e217fe3c2933f6",
+      "mtime_ns": 1793140275609861729
+    },
+    "motion_scene.py": {
+      "sha256": "aec910b146d0e04d53c2e5560d312adf16c5985875c66afbb937928acc8529a3",
+      "mtime_ns": 1793029278534793092
+    },
+    "scene_project.py": {
+      "sha256": "215d970a3c82cd69b915544e7146f99fbbb0e5710422aa6ffa218ef38f62a10e",
+      "mtime_ns": 1793129644981073359
+    },
+    "scene_spec.py": {
+      "sha256": "29f3956be9b5fa17d70c614128821c1c801d4a6643a80ce43487892b9fa36c65",
+      "mtime_ns": 1793128116563740578
+    },
+    "app.py": {
+      "sha256": "3bfee8d73c9f73559d9da050b673e9a1960c6c8d6d88fc66fa72859014edac67",
+      "mtime_ns": 1793147249836357986
+    },
+    "general-chat-ui.js": {
+      "sha256": "97fcf05ed3fcf7f355d5e0f21f07ca307de8191d7b2598b59ae995dfab25c854",
+      "mtime_ns": 1793126352217223913
+    },
+    "scene-studio.js": {
+      "sha256": "0b495399e63f54ba3e3d1eb537a4fb4b96dd829c76d7294aa2e8956965072289",
+      "mtime_ns": 1793150302823676554
+    },
+    "index.html": {
+      "sha256": "9149b47f1574fee572cc7395b25e38d37b784d2cfd440d134bf80408cef32e64",
+      "mtime_ns": 1793150302822662471
+    }
+  },
+  "source_after": {
+    "chat_general.py": {
+      "sha256": "edc4537ccbcd100d217ddc240f349001ddda3111324f54ba64f3edb7153c3e45",
+      "mtime_ns": 1793147295849613043
+    },
+    "chat_models.py": {
+      "sha256": "86806f32ec1d6720db1c29620735da84191320e12cef0183d5b86a69e8fb0f0b",
+      "mtime_ns": 1793151481689683381
+    },
+    "chat_protocols.py": {
+      "sha256": "a608e9dcad4bdc0325c90ca2030cc15d4b9f5e2774594d5719b4b47027c6257c",
+      "mtime_ns": 1793076739041246973
+    },
+    "chat_runtime.py": {
+      "sha256": "e1d8b7e0b694fe91a420333925ffe44972de063359bddaf0470e908eb2e01ec1",
+      "mtime_ns": 1793105349117320227
+    },
+    "production_tools.py": {
+      "sha256": "63a0fd75ed28d78c8524acc3e0e38ec66906a870b923f64fd6c11aa83e2036df",
+      "mtime_ns": 1793151687207414854
+    },
+    "production_context.py": {
+      "sha256": "c6f05454e9ea4c85651040fb44161f109488e4545bb88cded98264adfb71c671",
+      "mtime_ns": 1793151687207102270
+    },
+    "local_creation_tools.py": {
+      "sha256": "f3968c1b1b4f357d6dba57351b5988388984536011847e0f23fffd656121e571",
+      "mtime_ns": 1793151798800407942
+    },
+    "model_selection.py": {
+      "sha256": "97d8c826626afc93ad65216722f9aa850415a699897ce7b72c50e6f5b1e51925",
+      "mtime_ns": 1792942354015373074
+    },
+    "chat_sessions.py": {
+      "sha256": "f9e578aa0bf4a7ab8ccb04b8c64556929c979ca3a232de87f6e217fe3c2933f6",
+      "mtime_ns": 1793140275609861729
+    },
+    "motion_scene.py": {
+      "sha256": "aec910b146d0e04d53c2e5560d312adf16c5985875c66afbb937928acc8529a3",
+      "mtime_ns": 1793029278534793092
+    },
+    "scene_project.py": {
+      "sha256": "215d970a3c82cd69b915544e7146f99fbbb0e5710422aa6ffa218ef38f62a10e",
+      "mtime_ns": 1793129644981073359
+    },
+    "scene_spec.py": {
+      "sha256": "29f3956be9b5fa17d70c614128821c1c801d4a6643a80ce43487892b9fa36c65",
+      "mtime_ns": 1793128116563740578
+    },
+    "app.py": {
+      "sha256": "3bfee8d73c9f73559d9da050b673e9a1960c6c8d6d88fc66fa72859014edac67",
+      "mtime_ns": 1793147249836357986
+    },
+    "general-chat-ui.js": {
+      "sha256": "97fcf05ed3fcf7f355d5e0f21f07ca307de8191d7b2598b59ae995dfab25c854",
+      "mtime_ns": 1793126352217223913
+    },
+    "scene-studio.js": {
+      "sha256": "0b495399e63f54ba3e3d1eb537a4fb4b96dd829c76d7294aa2e8956965072289",
+      "mtime_ns": 1793150302823676554
+    },
+    "index.html": {
+      "sha256": "9149b47f1574fee572cc7395b25e38d37b784d2cfd440d134bf80408cef32e64",
+      "mtime_ns": 1793150302822662471
+    }
+  },
+  "source_unchanged_during_probe": true,
+  "actual_probe": {
+    "command": "python3 -B: import current tool definitions and selected validator; no network/credentials/DB",
+    "production_tool_names": [
+      "search_project_context",
+      "get_model_capabilities",
+      "propose_media_plan",
+      "estimate_media_plan",
+      "prepare_image_action",
+      "prepare_video_action",
+      "request_media_generation",
+      "get_generation_job",
+      "propose_timeline_edit",
+      "propose_timeline_changes",
+      "propose_motion_scene",
+      "request_motion_render",
+      "request_render",
+      "propose_memory_update"
+    ],
+    "general_allowed_tool_names": [
+      "search_project_context",
+      "propose_media_plan",
+      "propose_timeline_changes",
+      "propose_motion_scene",
+      "request_motion_render",
+      "request_render"
+    ],
+    "general_timeline_command_ops": [
+      "reorder_clips",
+      "set_captions",
+      "set_audio_offset",
+      "set_clip",
+      "remove_clips",
+      "append_clips",
+      "set_motion_overlay",
+      "clear_motion_overlay"
+    ],
+    "general_excluded_production_tools": [
+      "get_model_capabilities",
+      "estimate_media_plan",
+      "prepare_image_action",
+      "prepare_video_action",
+      "request_media_generation",
+      "get_generation_job",
+      "propose_timeline_edit",
+      "propose_memory_update"
+    ],
+    "selection_contract_results": {
+      "anthropic-haiku-5-5": {
+        "result": "accepted_by_selected_contract",
+        "wire_model": "claude-haiku-5-5"
+      },
+      "openai-gpt-6-luna": {
+        "result": "rejected_by_selected_contract",
+        "reason": "선택된 Claude 모델이 필요합니다."
+      },
+      "xai-grok-4-7": {
+        "result": "rejected_by_selected_contract",
+        "reason": "선택된 Claude 모델이 필요합니다."
+      }
+    },
+    "real_model_calls": 0,
+    "credentials_read": false,
+    "http_requests": 0,
+    "test_suite_run": false,
+    "browser_manipulated": false
+  },
+  "matrix": [
+    {
+      "id": "CAP01",
+      "task": "선택 모델로 일반 질의",
+      "general_chat": "Anthropic Haiku 5.5만 현재 selection 계약 허용",
+      "declared": [
+        "chat_general.py:177",
+        "chat_general.py:575",
+        "chat_models.py:7",
+        "chat_runtime.py:185"
+      ],
+      "persistence": "general_chat_previews/general_chat_turns의 binding에 모델·가격·대화·승인 본문 고정",
+      "verification": "이번 감사는 모듈 introspection과 선택 validator만 실행. 실제 모델/계정/청구 0. 기존 synthetic-only ChatRuntime은 OpenAI/xAI 계약이 있어도 자유 일반 대화 경로와 다름.",
+      "followup": "다른 등록 모델을 일반 상담에 연결하려면 별도 provider transport/consent/usage/취소·재시작 계약 검증 필요"
+    },
+    {
+      "id": "CAP02",
+      "task": "작품 검색·장면 계획",
+      "general_chat": "search_project_context/propose_media_plan 선언 및 dispatch 있음",
+      "declared": [
+        "production_tools.py:77",
+        "production_tools.py:82",
+        "production_context.py:129",
+        "chat_general.py:400"
+      ],
+      "persistence": "서버 snapshot+execution_targets; guided_plans에 제안 저장, 사람 승인 전 미디어 생성 없음",
+      "verification": "source 경로 확인; 이번 새 HTTP 실행 없음. 기존 ai-tool-contract-audit는 synthetic request body/search/기존 edit HTTP를 기록.",
+      "followup": "검색은 scoped snapshot이며 의미검색·벡터검색 아님"
+    },
+    {
+      "id": "CAP03",
+      "task": "컷·자막·음원 편집",
+      "general_chat": "propose_timeline_changes의 reorder/set_clip/remove/append/set_captions/set_audio_offset",
+      "declared": [
+        "local_creation_tools.py:15",
+        "local_creation_tools.py:177",
+        "local_creation_tools.py:223",
+        "local_creation_tools.py:249"
+      ],
+      "persistence": "제안만 저장→사람 review_timeline_proposal→새 timeline_head; 최종 출력 승인 별도",
+      "verification": "source + 실제 schema introspection; 현재 변경 중이므로 overlay 포함 최종 HTTP/전체회귀는 부모 수락 필요",
+      "followup": "드래그 캔버스·임의 다중 레이어 편집 지원으로 확대 표현하지 않기"
+    },
+    {
+      "id": "CAP04",
+      "task": "타이포 원본 생성·수정·후보 생성",
+      "general_chat": "propose_motion_scene/request_motion_render 있음",
+      "declared": [
+        "motion_scene.py:10",
+        "motion_scene.py:67",
+        "motion_scene.py:74",
+        "motion_scene.py:93",
+        "local_creation_tools.py:298"
+      ],
+      "persistence": "typed scene 제안→사람 approval→정확 revision/font/context의 local-motion job→Take",
+      "verification": "native 1920x1080/24fps,72–96frames,1–8 text/rect/circle,8keyframes 제한 source 확인. 실제 Claude 타이포 판단 미검증",
+      "followup": "모션 제안/실행 승인과 Take 선택/최종 승인 구별"
+    },
+    {
+      "id": "CAP05",
+      "task": "이미지·영상 위 타이포 겹치기",
+      "general_chat": "진행 중 코드에 set_motion_overlay/clear_motion_overlay 두 typed 명령, 승인 원본 metadata 조회가 존재",
+      "declared": [
+        "local_creation_tools.py:22",
+        "local_creation_tools.py:156",
+        "local_creation_tools.py:201",
+        "local_creation_tools.py:243",
+        "production_context.py:106",
+        "production_context.py:151"
+      ],
+      "persistence": "source revision/time/offset→server timeline_diff.motion_overlays→사람 승인 새 timeline; old approved preview schema 검사",
+      "verification": "현재 schema introspection에 새 op 2개 포함. 이번 감사에서 실행/렌더/새 diff UI는 미검증. 기존 audit는 이 보완 이전 gap 증거.",
+      "followup": "index.html:672 관측 시 새op 표시/불완전diff guard 미연동. 부모 UI worker 수락 후 재확인"
+    },
+    {
+      "id": "CAP06",
+      "task": "AI 이미지·영상 모델 생성",
+      "general_chat": "일반 자유대화의 허용 6tool에는 prepare_image/video_action,request_media_generation,get_generation_job 없음",
+      "declared": [
+        "chat_general.py:33",
+        "chat_general.py:400",
+        "production_tools.py:13",
+        "production_tools.py:90",
+        "production_tools.py:112",
+        "app.py:807"
+      ],
+      "persistence": "기존 production tool/controller/인간 grant 경로는 별도 존재. 일반 대화 접근 가능과 다름.",
+      "verification": "schema introspection으로 일반 허용목록에서 제외 확인; 실제 영상 모델 호출 0",
+      "followup": "first-demo 승인 전 실제 호출 금지. 일반 대화의 typed prepare/승인된 실행 연결을 별도 보완하고 concrete budget/data 승인 필요"
+    },
+    {
+      "id": "CAP07",
+      "task": "선택적 3D 대상·카메라·조명 편집",
+      "general_chat": "AI tool schema/dispatch/context의 scene3D 연결 없음",
+      "declared": [
+        "production_tools.py:9",
+        "local_creation_tools.py:292",
+        "production_context.py:162",
+        "scene_project.py:300",
+        "scene_project.py:349",
+        "scene_spec.py:123",
+        "app.py:776"
+      ],
+      "persistence": "사람 UI는 scene_create/propose/review→scene_records/proposals→scene_render job→정지 PNG Take 경로 있음",
+      "verification": "source 확인만. API/UI 존재는 AI가 직접 제안·조작 가능하다는 증거 아님.",
+      "followup": "동일 typed scene_spec 제안 경로를 AI 도구로 연결하려면 현재 대화 scoped context/actor provenance/human approval/renderer 권리 guard 유지 필요"
+    },
+    {
+      "id": "CAP08",
+      "task": "새 3D 메시 생성",
+      "general_chat": "미지원",
+      "declared": [
+        "scene_spec.py:66",
+        "scene-studio.js:8",
+        "scene_project.py:127",
+        "production_context.py:169"
+      ],
+      "persistence": "지원 도형 또는 가져온 정적 GLB의 구성·정지 이미지 생성; 새AI mesh 모델 실행 아님",
+      "verification": "source 확인. 3D는 선택 기능이며 핵심 음악영상 과업에 필수로 추가할 수 없음.",
+      "followup": "모델·자원·호환·license·승인 범위를 먼저 구체화해야 함"
+    },
+    {
+      "id": "CAP09",
+      "task": "최종 출력 요청·중복 방지",
+      "general_chat": "request_render 있음. 승인 grant 없으면 차단",
+      "declared": [
+        "local_creation_tools.py:273",
+        "local_creation_tools.py:280",
+        "local_creation_tools.py:288",
+        "app.py:1203"
+      ],
+      "persistence": "기존 승인별 job 우선 반환→estimate/render_job→실제 renderer→저장 SHA; 완성/납품 승인 분리",
+      "verification": "source 확인; 실제 UI/출력/다운로드 및 재시작은 부모 별도 증거. 이번 감사가 재실행하지 않음.",
+      "followup": "AI 설명만으로 완료/출력승인 판정 금지"
+    },
+    {
+      "id": "CAP10",
+      "task": "현재 영상 내용을 보고 편집 제안",
+      "general_chat": "현 상태 metadata/텍스트/typed motion source만 조회; 실제 프레임·영상/음원 bytes 전달 도구 없음",
+      "declared": [
+        "chat_general.py:424",
+        "chat_models.py:69",
+        "production_context.py:129",
+        "app.py:1354"
+      ],
+      "persistence": "자료 파일 자체 미전달로 고지. timeline-frame은 UI read-only PNG endpoint이며 AI tool에 없음.",
+      "verification": "전송 구조와 context 반환 source 확인; 멀티모달 관찰 미구현",
+      "followup": "콘텐츠를 보았다고 표현하지 않기. 선택 프레임 추출/전송 preview/권리·cost·모델 vision capability 확인 경로 필요"
+    },
+    {
+      "id": "CAP11",
+      "task": "현재 진행 작업 상태",
+      "general_chat": "전체 local/render/media/3D jobs를 일반 검색결과로 조회하지 않음. motion server_receipts는 승인 기록이며 실행 상태 아님",
+      "declared": [
+        "production_context.py:57",
+        "production_context.py:162",
+        "chat_general.py:33",
+        "app.py:339",
+        "app.py:391",
+        "app.py:449"
+      ],
+      "persistence": "UI /api/state/jobs/scene_3d_jobs/operations는 상태 저장·조회 있음. 일반 get_generation_job은 미허용.",
+      "verification": "source 확인. 현재 AI가 전체 job을 안다고 주장할 수 없음.",
+      "followup": "scope된 job summary 조회 추가; engine worker 수와 사람 협업자 상태 구분"
+    },
+    {
+      "id": "CAP12",
+      "task": "추천 사진·자산·라이선스",
+      "general_chat": "현재 작품 Take의 sha/rights/blocked/review와 참조 metadata 조회 가능; 외부 자산 검색·license verification 도구 없음",
+      "declared": [
+        "production_context.py:137",
+        "production_context.py:143",
+        "local_creation_tools.py:255",
+        "chat_general.py:33"
+      ],
+      "persistence": "이미 보유한 자산 metadata를 기초로 제안 가능; 실질 영상/사진 내용 파악은 CAP10 한계",
+      "verification": "source 확인. 사용권 문자열은 권한 확인 완료의 외부 증명 아님.",
+      "followup": "추천 출처·license·사용가능범위를 확인할 조회/반입 계약 필요; 자동 무허가 반입 금지"
+    },
+    {
+      "id": "CAP13",
+      "task": "일반 설정 조작",
+      "general_chat": "model_settings/conversation_model 등 UI/API가 있으나 AI tool에 변경 도구 없음",
+      "declared": [
+        "app.py:559",
+        "app.py:813",
+        "model_selection.py:36",
+        "production_tools.py:9"
+      ],
+      "persistence": "사람 설정 저장과 실행 중 다음 응답 예약 존재; AI 자기 권한/모델/비용 변경 금지",
+      "verification": "source 확인. 계정 삭제 제외 외 일반 설정 전반 지원 아님.",
+      "followup": "지원할 설정 allowlist+제안/승인·CAS 검증을 개별 정의; 비용/권리/보안 결정은 자동화하지 않기"
+    },
+    {
+      "id": "CAP14",
+      "task": "작업자 현황·인증·팀 ACL",
+      "general_chat": "현재 실제 사용자/협업자 presence/팀권한 모델 없음",
+      "declared": [
+        "app.py:1",
+        "app.py:394",
+        "app.py:1306",
+        "app.py:1483",
+        "chat_sessions.py:1",
+        "model_selection.py:24"
+      ],
+      "persistence": "single-local-workspace,authentication=False,local-owner attribution+요청 토큰; 대화 소속 격리는 multiuser auth 아님",
+      "verification": "source 확인. 사람/팀/역할/접속현황을 만들어 표시할 근거 없음.",
+      "followup": "현재는 작업 상태만 사실대로. 협업 조직/인증/ACL/presence는 제품 및 보안 설계 의존 후속"
+    }
+  ],
+  "scope_decisions_for_parent": [
+    "Do not present selected-model platform-wide control as complete: general chat media/3D/settings/job/vision/asset-search gaps remain.",
+    "Sidebar can expose truthful supported actions and local current job summaries, but people/ACL status requires a real identity system.",
+    "Current overlay source/schema work is observable but UI diff/render acceptance remains parent ownership."
+  ],
+  "whole_platform_complete": false
+}

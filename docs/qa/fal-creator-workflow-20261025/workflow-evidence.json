@@ -1,0 +1,106 @@
+{
+  "external_calls": 0,
+  "fake_submits": 2,
+  "generation_jobs": [
+    {
+      "id": "0a4dfcc3-af68-49f9-ba3c-190fb102f63b",
+      "state": "imported",
+      "model": "fal-ai/flux/schnell",
+      "take": 1,
+      "request": "d2867a17-afab-4f76-815c-e3407c333960",
+      "recovery_approvals_used": [
+        "c2d13cc042764c19b9b08ab23ecfb7c4"
+      ]
+    },
+    {
+      "id": "834df070-e9d8-482d-be04-c72a846d1f35",
+      "state": "imported",
+      "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+      "take": 2,
+      "request": "74711daa-a3e3-4ae8-94f7-b1ed7a1dfb7f",
+      "recovery_approvals_used": null
+    }
+  ],
+  "takes": [
+    {
+      "id": 1,
+      "sha256": "8e48b67972b8b795ac79a1ff3e9bb8dba6cfe2f4ab9cba8413d849eeaa4f1e52",
+      "provenance": {
+        "provider": "fal.ai",
+        "model": "fal-ai/flux/schnell",
+        "job": "0a4dfcc3-af68-49f9-ba3c-190fb102f63b",
+        "request_id": "d2867a17-afab-4f76-815c-e3407c333960",
+        "mode": "contract-fake"
+      }
+    },
+    {
+      "id": 2,
+      "sha256": "8d3974e0168d0cb5f57b1d1fecdf0c2f29337ddbfb9d89d82d91f675aebdbf55",
+      "provenance": {
+        "provider": "fal.ai",
+        "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+        "job": "834df070-e9d8-482d-be04-c72a846d1f35",
+        "request_id": "74711daa-a3e3-4ae8-94f7-b1ed7a1dfb7f",
+        "mode": "contract-fake"
+      }
+    }
+  ],
+  "selected": 2,
+  "output": {
+    "id": "e10e2094e9d3416487720de8f0f78eff",
+    "status": "completed",
+    "sha256": "22a304c2f0fb6fd53b9d655f43b9034babdae86e47f4943a66fd709921021567",
+    "duration": "5.000000",
+    "streams": [
+      {
+        "codec_type": "video",
+        "codec_name": "h264",
+        "width": 1920,
+        "height": 1080,
+        "duration": "5.000000"
+      },
+      {
+        "codec_type": "audio",
+        "codec_name": "aac",
+        "sample_rate": "48000",
+        "duration": "5.000000"
+      },
+      {
+        "codec_type": "subtitle",
+        "codec_name": "mov_text",
+        "duration": "4.500000"
+      }
+    ],
+    "audio_peak": 4317,
+    "srt": "1\n00:00:00,000 --> 00:00:04,500\n합성 제작 흐름 검증 · 원곡 보존\n\n",
+    "verified": {
+      "duration": 5.0,
+      "width": 1920,
+      "height": 1080,
+      "frame_rate": "24/1",
+      "audio_sample_rate": "48000",
+      "frame_timing": {
+        "fps": 24,
+        "policy": "nearest-internal-ceil-final",
+        "requested_duration": 5.0,
+        "duration": 5.0,
+        "clips": [
+          {
+            "start_frame": 0,
+            "end_frame": 120,
+            "frames": 120,
+            "start": 0.0,
+            "end": 5.0
+          }
+        ]
+      },
+      "streams": [
+        "video",
+        "audio",
+        "subtitle"
+      ],
+      "verified_at": 1792945636.801579
+    }
+  },
+  "runtime": "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-fal-creator-fixture-miuh1if7"
+}

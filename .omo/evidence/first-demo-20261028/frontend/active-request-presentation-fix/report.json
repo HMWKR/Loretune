@@ -1,0 +1,142 @@
+{
+  "schema": "active-request-presentation-fix/1",
+  "recorded_at": "2026-10-28T01:21:44.989857+00:00",
+  "status": "REPORTED; root actualUI/HTTP/recording acceptance pending",
+  "problem": "An active normal journal/cache/POST lifecycle was labelled unknown while saving notice was also shown",
+  "root_cause": "pendingId is an unsettled journal anchor, not an outcome classifier; updateRecovery unconditionally exposed unknown for any anchor",
+  "decision": "Presentation-only activeMutationRequestId outside canonical request envelope and mutationRequestActive(id) shared UI predicate",
+  "changes": {
+    "index.html": [
+      "Set active ID before async journal preparation and at direct sendRequest entry",
+      "Show existing saving status during preparation; hide unknown recovery only for matching active request while storage healthy",
+      "Clear active presentation on cache failure and send finally",
+      "Keep storage errors, unresolved anchors, GET reconciliation, 4xx rejection and committed-refresh-failure semantics"
+    ],
+    "motion-studio.js": [
+      "Recover button hides matching active request; existing blocked/dirty/grant conditions unchanged; optional helper absence preserves legacy context"
+    ],
+    "scene-studio.js": [
+      "Same presentation-only Recover visibility change; canonical same-ID replay and all source/rights/approval guards unchanged"
+    ],
+    "general-chat-ui.js": "Unchanged; existing busy/inFlight/pending/model safety regression retained",
+    "test_fixtures": "Five existing synthetic VM harnesses explicitly provide new helper/flag; every original assertion line unchanged",
+    "new_files": [
+      "tests/active_request_presentation.cjs",
+      "tests/test_active_request_presentation.py"
+    ]
+  },
+  "source_sha256": {
+    "index.html": "9149b47f1574fee572cc7395b25e38d37b784d2cfd440d134bf80408cef32e64",
+    "motion-studio.js": "ce2051887df86fa17a673a58a44f3205867eb8b67ebd57f24cca2a6b475a918d",
+    "scene-studio.js": "0b495399e63f54ba3e3d1eb537a4fb4b96dd829c76d7294aa2e8956965072289",
+    "tests/frontend_async_regressions.cjs": "0825e98d77cc85c7a021d56357c3c873e2621d33b7fd61718280f3461fb36de6",
+    "tests/general_chat_controls.cjs": "bcec015ddc5a89db43da184f5c7d214f343c70b777409f7154f21fa3643b3f27",
+    "tests/scene_request_recovery.cjs": "740a2e1335cad8c2c61f39079faaea8bb7565e9847bc275a414ebbe56eb43c9e",
+    "tests/frontend_proposal_drafts.cjs": "b5f57b5c0d1d91f77ce25e1a6c5454cb378ba38621c4683358fb903289e9bb26",
+    "tests/save_feedback.mjs": "0bf88f18a6aabab01ecdba8297b9eed1f8f70d3a563f602203ce3e0d9f99634c",
+    "tests/active_request_presentation.cjs": "e8e38ceb3871b9d789e6dc883670f11143472287c8398412043ba52ed113fca3",
+    "tests/test_active_request_presentation.py": "6c8d7831e45f3da1c4a46fe578366c7265e840cc015e988205dec21233e1dd89"
+  },
+  "preserved_invariants": {
+    "pendingId_function_unchanged": true,
+    "clearPending_function_unchanged": true,
+    "timeline_lock_function_unchanged": true,
+    "reconcile_GET_logic_unchanged": true,
+    "same_key_retry_availability_unchanged": true,
+    "general_chat_ui_source_not_changed": true
+  },
+  "legacy_assertions": {
+    "tests/frontend_async_regressions.cjs": {
+      "assertion_lines_before": 19,
+      "after": 19,
+      "identical": true
+    },
+    "tests/general_chat_controls.cjs": {
+      "assertion_lines_before": 6,
+      "after": 6,
+      "identical": true
+    },
+    "tests/scene_request_recovery.cjs": {
+      "assertion_lines_before": 20,
+      "after": 20,
+      "identical": true
+    },
+    "tests/frontend_proposal_drafts.cjs": {
+      "assertion_lines_before": 12,
+      "after": 12,
+      "identical": true
+    },
+    "tests/save_feedback.mjs": {
+      "assertion_lines_before": 16,
+      "after": 16,
+      "identical": true
+    }
+  },
+  "actual_verification": [
+    {
+      "path": "red.json",
+      "command": [
+        "node",
+        "tests/active_request_presentation.cjs"
+      ],
+      "exit_code": 1,
+      "expected_failure": "Normal cache preparation wrongly displayed unknown recovery before patch"
+    },
+    {
+      "path": "green-attempt1.json",
+      "command": [
+        "node",
+        "tests/active_request_presentation.cjs"
+      ],
+      "exit_code": 0,
+      "groups": 8,
+      "scope": "Actual UI methods and module controls with synthetic deferred journal/network, no real-provider claim"
+    },
+    {
+      "path": "related-tests.json",
+      "exit_code": 0,
+      "tests": 12,
+      "duration_seconds": 3.664,
+      "scope": "Related save/unknown/storage/proposal/general-chat/motion/timeline and isolated localHTTP scene recovery regressions"
+    },
+    {
+      "path": "scene-module-compatibility.json",
+      "exit_code": 0,
+      "tests": 1,
+      "duration_seconds": 0.079,
+      "scope": "Existing scene UI contract with legacy context compatibility"
+    },
+    {
+      "path": "syntax-check.json",
+      "exit_code": 0,
+      "targets": 9,
+      "scope": "Both changed JS modules and seven nonempty index inline scripts"
+    }
+  ],
+  "new_verification_cases": [
+    "active deferred journal cache before POST",
+    "active POST wait with unchanged canonical request ID/body and lock",
+    "normal200 clears anchor/active presentation",
+    "network loss,503,malformed200 preserve anchor and block duplicates",
+    "IDB/session write failure never POST and reset active presentation",
+    "persisted-only reload anchor and GET404 reconciliation remain visible and never POST",
+    "direct same-ID resend active display and failed resend retain same ID",
+    "rejected4xx versus committed-refresh-failure outcome distinction",
+    "midflight storage read failure stays visible despite active ID",
+    "motion/3D active,unknown,storage failure,helper-absent contexts preserve mutation blocks"
+  ],
+  "not_done": [
+    "No root Space91 action by worker",
+    "No live product browser saved/failed/reopen screen inspection by worker",
+    "No real provider/model/billing or external key access",
+    "No detector rerun by worker; no style/palette/layout changes",
+    "No whole-platform completion claim; current full874 is prior-source evidence after this source change"
+  ],
+  "handoff": [
+    "Root reloads new index/module assets before actual normal-save and unknown recovery inspection",
+    "Confirm normal saving shows status without unknown row/recovery buttons; actual timeout/failed response/reload still shows same-ID recovery and blocks mutation",
+    "Check focus after save and error separately without weakening recovery",
+    "Combined source inventory includes both newly added test files; root coordinates final full run and preserves prior874 receipts"
+  ],
+  "baseline_parent_reported": "Previous full-final874/492.666s exit0, source221/protected unchanged; not represented as current full regression"
+}

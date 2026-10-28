@@ -1,0 +1,124 @@
+{
+  "task": "GC-HISTORY-01",
+  "attempt": 1,
+  "status": "implemented_and_scoped_tests_pass",
+  "model": {
+    "configured_role": "lazycodex-worker-high",
+    "configured_model": "gpt-6-astra",
+    "configured_reasoning": "medium",
+    "observed_model_identity": "not independently observable; no Claude execution"
+  },
+  "changed_files": [
+    "chat_general.py",
+    "tests/test_general_chat_history.py"
+  ],
+  "source_sha256": {
+    "chat_general.py": "f5f5885b69ab0b85a13d07b826c9a503a854334a9b16600d905ebce2249d4516",
+    "tests/test_general_chat_history.py": "341b762b902d44585ae05288ca3e6f07f6c90f7b81bc81e29f56070923f35f59"
+  },
+  "implementation": [
+    "Full scoped accepted general requests via existing request_history; only original consumed rights consent qualifies",
+    "Last eight completed public answers explicitly unreviewed and not canon; no provider tool blocks copied",
+    "prompt exposed from existing bound field; history_context counts and sha256, full snapshot bound to consent manifest",
+    "Snapshot freshness before approval and through _current before count/message/tool boundaries; current turn excluded",
+    "Continuation retains exact snapshot and server-generated music marker; old manifests receive no retrospective injection",
+    "Existing byte/token/budget/consent limits unchanged; oversized history rejected without credential/network access"
+  ],
+  "verification": [
+    {
+      "scenario": "Original independent-turn regression",
+      "invocation": "python3 -m unittest tests.test_general_chat_history -v",
+      "observable": "FAIL before implementation: missing history_context",
+      "artifact": "before-test.log"
+    },
+    {
+      "scenario": "New history suite: 12 real-local-HTTP cases including scope, ten requests/eight answers, corrections, approval/count/message/tool boundaries, oversized history, tampering, cancellation, old consent, continuation",
+      "invocation": "python3 -m unittest tests.test_general_chat_history -v",
+      "observable": "12 tests OK",
+      "artifact": "final-history-tests.log"
+    },
+    {
+      "scenario": "Related regression suites, 10 new history tests before final two boundary tests were added",
+      "invocation": "python3 -m unittest tests.test_general_chat_history tests.test_general_chat_activation tests.test_general_chat_motion tests.test_chat_request_history tests.test_chat_preflight tests.test_chat_sessions tests.test_music_input_context -v",
+      "observable": "80 tests OK in 46.805s",
+      "artifact": "related-tests.log"
+    },
+    {
+      "scenario": "Two independently approved completed HTTP requests and exact second outgoing body containing first request and answer",
+      "invocation": "PYTHONPATH=. python3 .omo/evidence/general-chat-history-20261028/backend/capture_http.py",
+      "observable": "two completed turn rows; four synthetic provider calls; approved message body equals actual transport body",
+      "artifact": "two-turn-http-receipt.json"
+    }
+  ],
+  "failure_history": [
+    {
+      "artifact": "attempt2-test.log",
+      "cause": "New test fixture use() arguments in wrong order; test corrected; product behavior not weakened"
+    }
+  ],
+  "limitations": [
+    "Provider sockets are synthetic only; real Claude comprehension and production provider behavior unverified",
+    "UI owned and verified separately by root; no complete platform/production acceptance claimed",
+    "No new media render output claimed; existing related motion/music tests reused",
+    "Toolkit current attempt discovery failed due missing bun and node fallback; assigned .omo/evidence path used"
+  ],
+  "docs": "No markdown, registry, generated context, or memory changed",
+  "artifacts": {
+    "related-tests.log": {
+      "bytes": 119699,
+      "sha256": "43486eb12fada63f93975ab8951c670daab3beb6d66799d97eec39341d0bbc16"
+    },
+    "final-history-tests.log": {
+      "bytes": 13884,
+      "sha256": "6fdf3f6cab69970b9bc99500c70d6d530f1c1d02a640989eb1d98f8990bc9b92"
+    },
+    "attempt3-test.log": {
+      "bytes": 9342,
+      "sha256": "2d73ed9d5e5b81dfbd4c08aabf5e0aeb9c847819bd2327d92ca4c8c9b1a2c5fc"
+    },
+    "attempt2-test.log": {
+      "bytes": 9979,
+      "sha256": "5a3aef73ef703c6eba9071ae807610173a09e3efa1f77e0901d58b8f5b4325d4"
+    },
+    "final-chat_general.py": {
+      "bytes": 54256,
+      "sha256": "f5f5885b69ab0b85a13d07b826c9a503a854334a9b16600d905ebce2249d4516"
+    },
+    "capture_http.py": {
+      "bytes": 1306,
+      "sha256": "98e419a3a9c16ca5c44ba8cff092da3f782e1d4b3255645c624c79e703ca6570"
+    },
+    "final-test_general_chat_history.py": {
+      "bytes": 11014,
+      "sha256": "341b762b902d44585ae05288ca3e6f07f6c90f7b81bc81e29f56070923f35f59"
+    },
+    "before.sha256": {
+      "bytes": 82,
+      "sha256": "00d4f8f5e610e663fb1e653129c5abda4db7ee70fc2c7a683f73297a999a68f4"
+    },
+    "before-test.log": {
+      "bytes": 1788,
+      "sha256": "03475a7bf11d63f7b60bf6a468ba7a4742484dd2829dbfe4781de91a1f50b2bb"
+    },
+    "two-turn-http-receipt.json": {
+      "bytes": 209158,
+      "sha256": "a673519cb8f403e222536d4944b9e7adc9bd5bcf473063ac4f19fe4b6c2a763c"
+    },
+    "attempt1-test.log": {
+      "bytes": 1292,
+      "sha256": "0a1ed83c9e6c1670f92523faea8a430546133c308d1530a4c08bbacb7888155e"
+    },
+    "before-chat_general.py": {
+      "bytes": 50693,
+      "sha256": "99a8eaa7c3cd1787a89ca3369d3f43bfa5c864240d46413c03fdda8171ddaaf0"
+    },
+    "final-source-hashes.json": {
+      "bytes": 199,
+      "sha256": "48368d780a5b2e88713ce4bcbf16d17de036a938d07502964ba1cd69a791612f"
+    },
+    "http-capture.log": {
+      "bytes": 1157,
+      "sha256": "304698784c973a5adb8abe0a64bfd0d5a149f999334b5cf6bbb13286cde43a59"
+    }
+  }
+}

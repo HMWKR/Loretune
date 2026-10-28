@@ -1,0 +1,292 @@
+--- before/local_creation_tools.py
++++ after/local_creation_tools.py
+@@ -10,13 +10,21 @@
+ 
+ CHANGE_SCHEMA={'type':'array','minItems':1,'maxItems':30,'items':{'type':'object','properties':{'clip_index':{'type':'integer','minimum':0},'take':{'type':'integer','minimum':1},'trim':{'type':'number','minimum':0},'duration':{'type':'number','minimum':0.125}},'required':['clip_index','take','trim','duration'],'additionalProperties':False}}
+ def _command_schema(properties):return dict(type='object',properties=properties,required=list(properties),additionalProperties=False)
++OVERLAY_OPERATIONS={'set_motion_overlay','clear_motion_overlay'}
+ COMMAND_SCHEMA=dict(type='array',minItems=1,maxItems=30,items=dict(anyOf=[
+  _command_schema(dict(op=dict(type='string',enum=['reorder_clips']),order=dict(type='array',minItems=1,maxItems=30,items=dict(type='integer',minimum=0)))),
+  _command_schema(dict(op=dict(type='string',enum=['set_captions']),cues=dict(type='array',maxItems=100,items=_command_schema(dict(start=dict(type='number',minimum=0),end=dict(type='number',minimum=0),text=dict(type='string')))))),
+  _command_schema(dict(op=dict(type='string',enum=['set_audio_offset']),audio_version=dict(type='integer',minimum=1),source_offset_seconds=dict(type='number',minimum=0))),
+  _command_schema(dict(op=dict(type='string',enum=['set_clip']),**deepcopy(CHANGE_SCHEMA['items']['properties']))),
+  _command_schema(dict(op=dict(type='string',enum=['remove_clips']),clip_indices=dict(type='array',minItems=1,maxItems=30,items=dict(type='integer',minimum=0)))),
+- _command_schema(dict(op=dict(type='string',enum=['append_clips']),clips=dict(type='array',minItems=1,maxItems=30,items=_command_schema(dict(source_shot_id=dict(type='string',minLength=1,maxLength=200),source_take_id=dict(type='integer',minimum=1),trim=dict(type='number',minimum=0),duration=dict(type='number',minimum=0.125))))))
++ _command_schema(dict(op=dict(type='string',enum=['append_clips']),clips=dict(type='array',minItems=1,maxItems=30,items=_command_schema(dict(source_shot_id=dict(type='string',minLength=1,maxLength=200),source_take_id=dict(type='integer',minimum=1),trim=dict(type='number',minimum=0),duration=dict(type='number',minimum=0.125)))))),
++ _command_schema(dict(op=dict(type='string',enum=['set_motion_overlay']),clip_index=dict(type='integer',minimum=0),
++   source_shot_id=dict(type='string',minLength=1,maxLength=200,description='Same-project approved immutable motion source from motion_overlay_sources, not a Take or execution grant.'),
++   motion_revision=dict(type='integer',minimum=1),start=dict(type='number',minimum=0,description='Clip-local start seconds; source motion starts at frame0 here.'),
++   end=dict(type='number',minimum=0,description='Exclusive clip-local end seconds, within clip and source duration.'),
++   offset_x=dict(type='number',minimum=-1920,maximum=1920,description='Horizontal translation in the original1920x1080 logical canvas pixels.'),
++   offset_y=dict(type='number',minimum=-1080,maximum=1080,description='Vertical translation in the original1920x1080 logical canvas pixels. Source background is excluded; source layer motion/alpha stays.'))),
++ _command_schema(dict(op=dict(type='string',enum=['clear_motion_overlay']),clip_index=dict(type='integer',minimum=0)))
+ ]))
+ 
+ def validate_commands(commands):
+@@ -26,12 +34,17 @@
+   if not isinstance(c,dict):raise ValueError('typed command required')
+   op=c.get('op')
+   if not isinstance(op,str):raise ValueError('typed edit operation required')
+-  fields={'reorder_clips':{'op','order'},'set_captions':{'op','cues'},'set_audio_offset':{'op','audio_version','source_offset_seconds'},'set_clip':{'op','clip_index','take','trim','duration'},'remove_clips':{'op','clip_indices'},'append_clips':{'op','clips'}}.get(op)
++  fields={'reorder_clips':{'op','order'},'set_captions':{'op','cues'},'set_audio_offset':{'op','audio_version','source_offset_seconds'},'set_clip':{'op','clip_index','take','trim','duration'},'remove_clips':{'op','clip_indices'},'append_clips':{'op','clips'},'set_motion_overlay':{'op','clip_index','source_shot_id','motion_revision','start','end','offset_x','offset_y'},'clear_motion_overlay':{'op','clip_index'}}.get(op)
+   if fields is None or set(c)!=fields:raise ValueError('unknown edit command/fields')
+   if op=='set_clip':validate_changes([{k:v for k,v in c.items() if k!='op'}])
+-  key=(op,c.get('clip_index'))
++  key=('motion_overlay' if op in OVERLAY_OPERATIONS else op,c.get('clip_index'))
+   if key in seen:raise ValueError('duplicate edit target')
+   seen.add(key)
++  if op in OVERLAY_OPERATIONS:
++   if type(c['clip_index']) is not int or c['clip_index']<0:raise ValueError('explicit base clip index required')
++   if op=='set_motion_overlay':
++    if not isinstance(c['source_shot_id'],str) or not 1<=len(c['source_shot_id'])<=200:raise ValueError('explicit current-project motion source required')
++    editing.motion_overlay(dict(shot=c['source_shot_id'],**{k:c[k] for k in ('motion_revision','start','end','offset_x','offset_y')}),600)
+   if op=='reorder_clips':
+    if not isinstance(c['order'],list) or not 1<=len(c['order'])<=30 or any(type(i) is not int or i<0 for i in c['order']) or len(set(c['order']))!=len(c['order']):raise ValueError('explicit permutation required')
+   elif op=='remove_clips':
+@@ -93,19 +106,23 @@
+  added=[] if added is None else added
+  if sorted(order)!=remaining or len(candidate['clips'])!=len(remaining)+len(added):raise ValueError('invalid timeline occurrence mapping')
+  if candidate['clips'][len(remaining):]!=added:raise ValueError('invalid appended occurrence mapping')
+- clips=[]
++ clips=[];overlays=[]
+  for after_index,before_index in enumerate(order):
+   before=base['clips'][before_index];after=candidate['clips'][after_index]
+   if before['shot']!=after['shot']:raise ValueError('timeline occurrence changed shot')
+   a={k:deepcopy(before[k]) for k in ('take','trim','duration')};b={k:deepcopy(after[k]) for k in a}
+   if a!=b:clips.append(dict(base_clip_index=before_index,proposed_clip_index=after_index,before=a,after=b))
++  if before.get('motion_overlay')!=after.get('motion_overlay'):
++   overlays.append(dict(base_clip_index=before_index,proposed_clip_index=after_index,
++                        before=deepcopy(before.get('motion_overlay')),after=deepcopy(after.get('motion_overlay'))))
+  def difference(a,b):return dict(changed=False) if a==b else dict(changed=True,before=deepcopy(a),after=deepcopy(b))
+  result=dict(base_version=base['id'],clip_order=difference(indices,order),clips=clips,captions=difference(base['subtitles'],candidate['subtitles']),audio=difference(dict(version=base['audio'],source_offset_seconds=base['audio_offset']),dict(version=candidate['audio'],source_offset_seconds=candidate['audio_offset'])))
++ if overlays:result['motion_overlays']=overlays
+  if removed:result['removed_clips']=[dict(base_clip_index=i,before={k:deepcopy(base['clips'][i][k]) for k in ('shot','take','trim','duration')}) for i in indices if i in removed]
+  if added:result['added_clips']=[dict(proposed_clip_index=len(remaining)+i,after=deepcopy(clip)) for i,clip in enumerate(added)]
+  return result
+ 
+-def save_timeline_proposal(p,args,candidate,run,call,changes,commands=None,order=None,removed=None,added=None,added_sources=None):
++def save_timeline_proposal(p,args,candidate,run,call,changes,commands=None,order=None,removed=None,added=None,added_sources=None,overlay_sources=None):
+  base=editing.current(p);editing.validate(p,candidate)
+  proposal=dict(id=uuid.uuid4().hex,status='proposed',description=args['description'],base_version=base['id'],base_context=edit_context(p),timeline=candidate,changes=deepcopy(args['changes']),source=dict(run=run['id'],call=call['id'],model=run.get('provider_model'),mode=run['engine']),created=time.time())
+  proposal['changes']=changes
+@@ -113,6 +130,7 @@
+  proposal['timeline_diff']=timeline_diff(base,candidate,order,removed,added)
+  if commands is not None:proposal['commands']=deepcopy(commands)
+  if added_sources is not None:proposal['added_sources']=deepcopy(added_sources)
++ if overlay_sources is not None:proposal['overlay_sources']=deepcopy(overlay_sources)
+  p.setdefault('timeline_edit_proposals',[]).append(proposal)
+  return dict(status='proposed',proposal_id=proposal['id'],base_version=base['id'],changes=deepcopy(changes),changes_scope=proposal['changes_scope'],changes_semantics='legacy requested clip fields; no-op entries possible; timeline_diff is computed from base and candidate',timeline_diff=deepcopy(proposal['timeline_diff']),commands=deepcopy(commands),audio_version=candidate['audio'],audio_offset=candidate['audio_offset'],captions_preserved=candidate['subtitles']==base['subtitles'],applied=False,output_approved=False)
+ 
+@@ -131,10 +149,37 @@
+  value=dict(shot=name,take=take['id'],trim=editing.seconds(clip['trim']),duration=editing.seconds(clip['duration']))
+  return value,evidence
+ 
++def overlay_scope(c,run,commands,project_id=None):
++ """New operations require a new run and the actual approved manifest schema."""
++ requested={x['op'] for x in commands if x['op'] in OVERLAY_OPERATIONS}
++ if not requested:return True
++ if type(run.get('timeline_command_revision')) is not int or run['timeline_command_revision']!=2:return False
++ if c is None or not isinstance(project_id,str):return False
++ turns=[json.loads(row[0]) for row in c.execute('SELECT body FROM general_chat_turns WHERE project=?',(project_id,)) if json.loads(row[0]).get('run')==run['id']]
++ if not turns:return True
++ if len(turns)!=1:return False
++ row=c.execute('SELECT body FROM general_chat_previews WHERE id=?',(turns[0]['preview_id'],)).fetchone()
++ if row is None:return False
++ preview=json.loads(row[0])
++ if preview.get('state')!='consumed' or preview.get('rights_confirmed') is not True:return False
++ if preview.get('binding',{}).get('project')!=project_id or preview['binding'].get('conversation')!=run.get('conversation_id'):return False
++ definitions=[x for x in preview.get('message_body',{}).get('tools',[]) if x.get('name')=='propose_timeline_changes']
++ if len(definitions)!=1:return False
++ schema=definitions[0].get('input_schema',{}).get('properties',{}).get('commands',{}).get('items',{})
++ approved={op for branch in schema.get('anyOf',[]) for op in branch.get('properties',{}).get('op',{}).get('enum',[])}
++ return requested<=approved
++
++def overlay_source(store,c,p,clip):
++ value=editing.resolve_motion_overlay(p,clip['motion_overlay'],clip['duration'],runtime=True)
++ _,background=append_source(store,c,p,dict(source_shot_id=production_context.shot_id(p,clip['shot']),
++                                         source_take_id=clip['take'],trim=clip['trim'],duration=clip['duration']))
++ return dict(motion_source_sha256=guided.fingerprint(value['motion']),background=background)
++
+ def propose_timeline_commands(p,args,run,call,store=None,c=None):
+  validate_commands(args['commands']);base=editing.current(p)
++ if not overlay_scope(c,run,args['commands'],contracts.project_id(store.workspace_id,p['name']) if store else None):return dict(status='blocked',code='TOOL_SCHEMA_REVIEW_REQUIRED',retryable=False)
+  if args['timeline_version']!=base['id']:raise Conflict('타임라인 버전이 변경됐습니다.')
+- candidate=deepcopy(base);candidate.pop('approval',None);order=None;changes=[];removed=[];added=[];added_sources=[]
++ candidate=deepcopy(base);candidate.pop('approval',None);order=None;changes=[];removed=[];added=[];added_sources=[];overlay_commands=[]
+  for cmd in args['commands']:
+   if cmd['op']=='set_clip':
+    if cmd['clip_index']>=len(base['clips']):raise ValueError('clip outside current base timeline')
+@@ -150,17 +195,31 @@
+   elif cmd['op']=='append_clips':
+    for clip in cmd['clips']:
+     value,evidence=append_source(store,c,p,clip);added.append(value);added_sources.append(evidence)
++  elif cmd['op'] in OVERLAY_OPERATIONS:overlay_commands.append(cmd)
+   else:candidate['subtitles']=deepcopy(cmd['cues'])
+  if added and (order is not None or removed):raise ValueError('cannot append with reorder or remove in one proposal')
++ for cmd in overlay_commands:
++  if cmd['clip_index']>=len(base['clips']):raise ValueError('overlay outside current base timeline')
++  clip=candidate['clips'][cmd['clip_index']]
++  if cmd['op']=='clear_motion_overlay':clip.pop('motion_overlay',None)
++  else:
++   source=production_context.shot_key(p,cmd['source_shot_id'])
++   clip['motion_overlay']=dict(shot=source,**{k:cmd[k] for k in ('motion_revision','start','end','offset_x','offset_y')})
+  if removed:
+   if order is not None:raise ValueError('cannot reorder and remove in one proposal')
+   if any(i>=len(base['clips']) for i in removed) or len(removed)>=len(base['clips']):raise ValueError('remove must retain at least one base clip')
+   if any(x['clip_index'] in removed for x in changes):raise ValueError('cannot edit a removed base clip')
++  if any(x['clip_index'] in removed for x in overlay_commands):raise ValueError('cannot overlay a removed base clip')
+   order=[i for i in range(len(base['clips'])) if i not in removed]
+  check_changed_take_visibility(p,base,changes)
+  if order is not None:candidate['clips']=[candidate['clips'][i] for i in order]
+  candidate['clips'].extend(added)
+- return save_timeline_proposal(p,dict(args,changes=changes),candidate,run,call,changes,args['commands'],order,removed,added,added_sources if added else None)
++ overlay_sources=[]
++ for cmd in overlay_commands:
++  if cmd['op']!='set_motion_overlay':continue
++  index=order.index(cmd['clip_index']) if order is not None else cmd['clip_index']
++  overlay_sources.append(dict(proposed_clip_index=index,**overlay_source(store,c,p,candidate['clips'][index])))
++ return save_timeline_proposal(p,dict(args,changes=changes),candidate,run,call,changes,args['commands'],order,removed,added,added_sources if added else None,overlay_sources if overlay_sources else None)
+ 
+ def review_timeline(store,c,studio,name,data):
+  if set(data)!={'song','proposal_id','timeline_version','decision'}:raise ValueError('saved proposal and decision required')
+@@ -180,6 +239,13 @@
+    for clip,expected in zip(append['clips'],sources):
+     _,current_source=append_source(store,c,p,clip)
+     if current_source!=expected:raise Conflict('추가할 원본이 변경됐습니다. 새 제안을 검토하세요.')
++  sets=[cmd for cmd in item.get('commands',[]) if cmd.get('op')=='set_motion_overlay']
++  if sets:
++   sources=item.get('overlay_sources')
++   if not isinstance(sources,list) or len(sources)!=len(sets):raise ValueError('겹칠 모션 원본의 저장된 근거를 확인하세요.')
++   for expected in sources:
++    index=expected['proposed_clip_index'];current_source=dict(proposed_clip_index=index,**overlay_source(store,c,p,item['timeline']['clips'][index]))
++    if current_source!=expected:raise Conflict('겹칠 모션 또는 배경 원본이 변경됐습니다. 새 제안을 검토하세요.')
+   # Same save/validation/versioning service as the editor, never direct EDL mutation.
+   store.edit(c,studio,'timeline',dict(song=name,timeline=deepcopy(item['timeline'])))
+   item.update(status='applied',applied_version=p['timeline_head'])
+@@ -226,7 +292,7 @@
+ def _execute(store,c,studio,name,tool,args,run,call):
+  p=studio.projects[name]
+  if p.get('archived'):raise ValueError('archived project')
+- if tool=='execution_context':return __import__('production_context').read(c,store,p,name)
++ if tool=='execution_context':return __import__('production_context').read(c,store,p,name,query=args.get('query'))
+  if tool=='sources':return [dict(id=k,text=v) for k,v in evidence_sources(c,p,run).items()]
+  if tool=='propose_timeline_edit':return propose_timeline(p,args,run,call)
+  if tool=='propose_timeline_changes':return propose_timeline_commands(p,args,run,call,store,c)
+--- before/production_context.py
++++ after/production_context.py
+@@ -1,7 +1,7 @@
+ """Read-only current-project execution targets. Handles are references, not grants.
+ No paths, credentials or provider URLs. Execution always revalidates current state.
+ """
+-import json,math,time,uuid
++import json,math,re,time,uuid
+ from copy import deepcopy
+ import chat_sessions
+ import contracts,editing,ontology,project_ontology
+@@ -103,7 +103,35 @@
+   matches_selected_source=version['audio']==p.get('audio_selected'),matches_timeline_source=version['audio']==timeline.get('audio'))
+  return result
+ 
+-def read(c,store,p,name):
++def overlay_page_offset(query):
++ if not query or not query.startswith('motion-overlay-sources'):return 0
++ match=re.fullmatch(r'motion-overlay-sources offset=(\d{1,7})',query)
++ if not match:raise ValueError('motion-overlay-sources requires offset=0 or another bounded nonnegative integer')
++ return int(match[1])
++
++def motion_overlay_sources(p,query=None):
++ # Metadata pages only: never duplicate full historical motion scenes or grants
++ # into model context. The existing query tool can request the next bounded page.
++ offset=overlay_page_offset(query);limit=32
++ records=[(name,v) for name,shot in p['shots'].items() for v in shot.get('motion_versions',[])
++          if type(v.get('id')) is int and isinstance(v.get('approval'),dict) and v['approval'].get('actor')=='local-owner'
++          and v['approval'].get('scope')=='local-motion-candidate']
++ records.sort(key=lambda item:(shot_id(p,item[0]),item[1]['id']))
++ items=[]
++ for name,version in records[offset:offset+limit]:
++  item=dict(source_shot_id=shot_id(p,name),motion_revision=version['id'],requires_revalidation=True)
++  try:
++   validated=editing.approved_motion(version)
++   item.update(scene_hash=validated['scene_hash'],duration_seconds=validated['scene']['frame_count']/24,
++               layer_count=len(validated['scene']['layers']),approval_status='recorded_immutable_source')
++  except (ValueError,KeyError,TypeError):item['approval_status']='invalid_record'
++  items.append(item)
++ next_offset=offset+limit
++ return dict(items=items,offset=offset,limit=limit,total_records=len(records),
++             next_query='motion-overlay-sources offset='+str(next_offset) if next_offset<len(records) else None,
++             note='Approved immutable source metadata, not an execution grant. Match source_shot_id to shots[].name. Current font/scene/rights still revalidate. Source body is edited through a new motion proposal; source background is excluded when overlaying.')
++
++def read(c,store,p,name,query=None):
+  w=store.workspace_id;pid=contracts.project_id(w,name);shots=[]
+  observed,body=c.execute('SELECT revision,body FROM state WHERE id=1').fetchone()
+  source_projects=json.loads(body)['projects'];source_projects[name]=p
+@@ -125,10 +153,23 @@
+  t=editing.current(p);approval=t.get('approval',{})
+  visible_takes={shot['name']:{take['take_id'] for take in shot['takes']} for shot in shots}
+  timeline=dict(version=t['id'],clips=[dict(index=i,shot_id=shot_id(p,x['shot']),shot_name=x['shot'],take=x['take'] if x['take'] in visible_takes.get(x['shot'],set()) else None,trim=x['trim'],duration=x['duration']) for i,x in enumerate(t['clips'])],audio_version=t['audio'],audio_offset=t['audio_offset'],captions=deepcopy(t['subtitles']),profile=t['profile'],grant_id=approval.get('id') if timeline_grant_visible(p,t,approval.get('id')) else None)
++ for projected_clip,clip in zip(timeline['clips'],t['clips']):
++  if clip.get('motion_overlay'):
++   overlay=deepcopy(clip['motion_overlay']);source=overlay.pop('shot')
++   overlay.update(source_shot_name=source,source_shot_id=shot_id(p,source) if source in p['shots'] else None)
++   projected_clip['motion_overlay']=overlay
+  grants=[json.loads(r[0]) for r in c.execute('SELECT body FROM execution_grants WHERE workspace=? AND project=?',(w,pid))];actions=[]
+  for row in c.execute('SELECT body FROM production_actions WHERE workspace=? AND project=?',(w,pid)):
+   a=json.loads(row[0])
+   if not chat_sessions.owns(p,a['id']):continue
+   handles=[dict(grant_id=g['id'],expires=g['expires'],price_revision=g['price_revision'],money=g['money'].get(a['id'])) for g in grants if g['state']=='active' and g['expires']>time.time() and g['action_hashes'].get(a['id'])==a['hash']]
+   actions.append(dict(action_id=a['id'],plan_id=a['plan_id'],plan_revision=a['plan_revision'],role=a['role'],model=a['release_id'],mode=a['mode'],shot_id=shot_id(p,a['options']['shot']) if a['options'].get('shot') in p['shots'] else None,approval_handles=handles))
+- return dict(shots=shots,timeline=timeline,music_input=music_input(c,p,t),server_receipts=motion_receipts(p,pid,observed),plans=[dict(plan_id=x['id'],version=x['version'],state=x['status']) for x in p.get('guided_plans',[])],actions=actions,ontology_revision=ontology.snapshot(c,project_ontology.scope(w,pid))['revision'],note='현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다.')
++ return dict(shots=shots,timeline=timeline,music_input=music_input(c,p,t),server_receipts=motion_receipts(p,pid,observed),
++             motion_overlay_sources=motion_overlay_sources(p,query),
++             motion_overlay_contract=dict(commands=['set_motion_overlay','clear_motion_overlay'],clock='clip-local seconds; source frame0 starts at start; end is exclusive',
++               offsets='translation in original1920x1080 logical pixels; aspect-fit to output',source_background='excluded; layer motion/alpha/in-out retained',
++               sources_per_clip=1,source_layers_max=8,source_duration_seconds_range=[3,4],
++               approval='proposal only; human edit review then separate final timeline/output approval',
++               preview='saved timeline UI frame preview, not a model execution tool',
++               mesh_generation='not supported by these tools; optional internal3D workflows are separate capabilities'),
++             plans=[dict(plan_id=x['id'],version=x['version'],state=x['status']) for x in p.get('guided_plans',[])],actions=actions,ontology_revision=ontology.snapshot(c,project_ontology.scope(w,pid))['revision'],note='현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다.')
+--- before/production_tools.py
++++ after/production_tools.py
+@@ -26,7 +26,7 @@
+ def begin(project):
+     run=dict(id=uuid.uuid4().hex,conversation_id=chat_sessions.current(project),conversation_model_revision=chat_sessions.resolve(project,chat_sessions.current(project))['model_revision'],state='accepting_tools',engine='local-contract-rehearsal',
+              snapshot=model_selection.snapshot(project),calls=[],repair_count=0,
+-             limits=dict(tool_rounds=8,repairs=2),live_model_called=False)
++             limits=dict(tool_rounds=8,repairs=2),live_model_called=False,timeline_command_revision=2)
+     project.setdefault('production_runs',[]).append(run)
+     return deepcopy(run)
+ 
+@@ -41,6 +41,7 @@
+             raise ValueError('INVALID_TOOL_ARGUMENTS')
+         if t is int and args[k]<(0 if k in {'shot_revision','timeline_version','ontology_revision','base_motion_revision'} else 1):raise ValueError('INVALID_TOOL_ARGUMENTS')
+     if name=='propose_motion_scene':__import__('motion_scene').validate(args['scene'])
++    if name=='search_project_context':__import__('production_context').overlay_page_offset(args['query'])
+     if name=='propose_timeline_changes':__import__('local_creation_tools').validate_commands(args['commands'])
+     if name=='propose_timeline_edit':
+         import local_creation_tools
+@@ -78,7 +79,7 @@
+             result=dict(status='succeeded',context=deepcopy(run['snapshot']['value']['context']),search_mode='scoped-snapshot',note='현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님')
+             if local_tool is not None:
+                 result['sources']=local_tool('sources',{},run,call)
+-                result['execution_targets']=local_tool('execution_context',{},run,call)
++                result['execution_targets']=local_tool('execution_context',{'query':args['query']},run,call)
+         elif name=='propose_media_plan':
+             # Reuse deterministic plan implementation, preserving authored text.
+             result=dict(status='proposed',plan=guided.propose(project,args),cost_approval=False)
+--- before/chat_models.py
++++ after/chat_models.py
+@@ -34,6 +34,14 @@
+  'remove_clips uses distinct zero-based indices in that base timeline, preserves source media and remaining order, never removes all clips, and cannot be combined with reorder_clips or edits to removed clips. Captions do not move automatically; propose explicit valid caption changes when required. '
+  'append_clips adds explicitly identified visible current-project shot and take sources to the end, in listed order; it does not delete or approve the source, and cannot be combined with remove_clips or reorder_clips. Source rights, visibility, files and revision are checked again on human review. '
+  'Explain changed=true entries, removed_clips and added_clips as changes, distinguish proposed from applied/output-approved, and do not invent missing differences.')
++SYSTEM += (' execution_targets.timeline.clips[].motion_overlay records an existing overlay, not a flattened clip or an extra generation result. '
++ 'motion_overlay_sources lists approved immutable composition metadata in bounded pages; use its next_query with search_project_context for more, rather than inventing missing source versions. '
++ 'set_motion_overlay uses an exact source_shot_id and motion_revision, clip-local start/end seconds, and offset_x/offset_y in the original1920x1080 canvas pixels. '
++ 'Source frame0 starts at start; end is exclusive, source background is excluded, and source layer motion/alpha/in-out remain. clear_motion_overlay only removes the timeline reference, not the source. '
++ 'A reusable immutable source is separate from a current standalone-motion execution grant: a new head does not replace a deliberately referenced older approved source. '
++ 'timeline_diff.motion_overlays is the server-computed before/after placement; human edit review applies a new unapproved timeline and final output still needs its separate approval. '
++ 'TOOL_SCHEMA_REVIEW_REQUIRED means this run or its approved manifest did not authorize these new commands; start a fresh confirmed request rather than bypassing the boundary. '
++ 'Only claim current declared tool capabilities; these overlay tools do not generate3D meshes, provide a drag editor, or prove real model/account/billing readiness.')
+ 
+ def contract(selection):
+  if selection not in MODELS:raise ValueError('unsupported chat model; no fallback')

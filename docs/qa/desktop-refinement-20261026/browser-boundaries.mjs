@@ -1,0 +1,14 @@
+const fs=await import('node:fs/promises'),out='/Users/leesungmin/Desktop/Loretune/docs/qa/desktop-refinement-20261026/';const p=(await taskSpace(31)).page('p1');await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});await p.waitForFunction(()=>document.body.dataset.desktopShell==='bounded');
+await p.focus('#preflight .creator-diagnostic>summary');
+const closed=await p.evaluate(()=>{const d=document.querySelector('#preflight .creator-diagnostic'),e=d.querySelector('pre');return {open:d.open,technicalVisible:e.getClientRects().length>0,summary:d.querySelector('summary').textContent,note:document.querySelector('#preflight small').textContent}});
+await p.screenshot({path:out+'output-details-1920.png'});await p.keyboard.press('Enter');
+const opened=await p.evaluate(()=>({open:document.querySelector('#preflight .creator-diagnostic').open,technicalVisible:document.querySelector('#preflight .creator-diagnostic pre').getClientRects().length>0}));await p.keyboard.press('Enter');
+await p.click('.management>summary');await p.selectOption('#textScale','2');await p.click('.management>summary');await p.waitForFunction(()=>document.body.dataset.desktopShell==='flow');
+const expanded=await p.evaluate(()=>{const labels=[...document.querySelectorAll('#timeRuler span')].filter(e=>getComputedStyle(e).visibility!=='hidden').map(e=>{const r=e.getBoundingClientRect();return {text:e.textContent,left:r.left,right:r.right}});return {viewport:[innerWidth,innerHeight],doc:[document.documentElement.scrollWidth,document.documentElement.scrollHeight],bodyPx:getComputedStyle(document.body).fontSize,shell:document.body.dataset.desktopShell,labels}});
+await p.screenshot({path:out+'app-text200-1920.png'});
+await p.click('.management>summary');await p.selectOption('#textScale','1');await p.click('.management>summary');await p.waitForFunction(()=>document.body.dataset.desktopShell==='bounded');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await p.waitForFunction(()=>innerWidth===390&&document.body.dataset.desktopShell==='flow');
+const mobile=await p.evaluate(()=>({viewport:innerWidth,document:document.documentElement.scrollWidth,playerCount:document.querySelectorAll('#preview').length}));
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});await p.waitForFunction(()=>innerWidth===1920&&document.body.dataset.desktopShell==='bounded');
+if(closed.open||closed.technicalVisible||!opened.open||!opened.technicalVisible||expanded.doc[0]!==1920||mobile.document!==390)throw Error('boundary invariant failed');
+await fs.writeFile(out+'boundaries.json',JSON.stringify({at:new Date().toISOString(),closed,opened,expanded,mobile,limits:'app text scaling, not browser zoom; mobile horizontal-overflow smoke only'},null,2));console.log({pass:true,closed,opened,expanded,mobile});

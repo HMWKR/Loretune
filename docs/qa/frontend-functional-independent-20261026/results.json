@@ -1,0 +1,1070 @@
+{
+  "at": "2026-10-26T04:11:46.362034+00:00",
+  "criteria_sha256": "dac358193ab300990850fbd2a602afd74beba48e631085533bbc2507a1827ccb",
+  "counts": {
+    "PASS": 11,
+    "BLOCKED": 6,
+    "FAIL": 4,
+    "NOT RUN": 3
+  },
+  "score": null,
+  "cases": [
+    {
+      "id": "ENV01",
+      "area": "isolation",
+      "owner": "independent functional QA",
+      "layer": "audit",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Snapshot source; deny-all fake transport",
+      "steps": "Hash frozen HTML/CSS/JS; send permitted synthetic action then disallowed action/provider URL to fake transport",
+      "expected": "source matches; only synthetic allowlisted requests resolve; no real transport fallback",
+      "observed": {
+        "html": "0bfdbbb815c631f23e9188a02a1308aa87430d2db33ab61f4a60f8b7adfdf109",
+        "allowed": 1,
+        "blocked": 2,
+        "forwarded": 0
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#ENV01",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "https://playwright.dev/docs/best-practices"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "FUN01",
+      "area": "forms",
+      "owner": "independent functional QA",
+      "layer": "browser",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Synthetic form, native validity and Korean IME",
+      "steps": "Empty/invalid fields; compose Korean then Enter; repeated Enter/click while pending",
+      "expected": "visible native validation; no composition-triggered or duplicate mutation",
+      "observed": "Current supported CUA has no disclosed isolated context/init-script/route support; native form/IME mutation was not sent to shared localhost.",
+      "status": "BLOCKED",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "../independent-frontend-qa-environment-20261026/ENVIRONMENT.md"
+      ],
+      "severity": null,
+      "retest_status": "Requires supported isolated browser capability; no install/settings change/denial bypass attempted",
+      "criterion_sources": [
+        "https://testing-library.com/docs/guiding-principles/",
+        "https://playwright.dev/docs/actionability"
+      ],
+      "actual_environment": {
+        "runtime": "not executed",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "FUN02",
+      "area": "forms",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Review controller, 10000-char Korean reason",
+      "steps": "Missing decision/reason; valid long text; submit twice while unresolved; type newer draft",
+      "expected": "invalid sends zero; valid exact payload once; later draft preserved",
+      "observed": {
+        "submittedChars": 10000,
+        "calls": 1,
+        "newDraft": "새 한국어 초안",
+        "canonicalUnchanged": true
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#FUN02",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "https://testing-library.com/docs/guiding-principles/",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "FUN03",
+      "area": "model choice",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Three model select values and fake act",
+      "steps": "Submit mixed chat/image/video selection, empty image, chosen blocked video",
+      "expected": "all three independent values preserved; no first-model fallback or dispatch",
+      "observed": {
+        "payload": {
+          "action": "model_settings",
+          "payload": {
+            "song": "A",
+            "selections": {
+              "chat": "synthetic-chat",
+              "image": null,
+              "video": "synthetic-blocked-video"
+            },
+            "model_revision": 7
+          }
+        },
+        "canonicalUnchanged": true,
+        "providerDispatch": 0
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#FUN03",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "STA01",
+      "area": "snapshot and authority",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Existing F05/F06/F07, review-state/comparison regression",
+      "steps": "Run saved-request/new-draft and context-change fixtures against exact current source",
+      "expected": "project/shot/take scope and newer draft retained; comparison never selects/approves",
+      "observed": "Current snapshot test_comment_draft and test_studio_state wrappers passed:16 draft cases,9 review-store/controller cases,5 comparison cases. These inner counts are not added to the21unittest count. Does not revalidate server price/grant authorization.",
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "focused-tests.log"
+      ],
+      "severity": null,
+      "retest_status": "Closed F05/F06/F07 regression controls remain passed",
+      "criterion_sources": [
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "STA02",
+      "area": "snapshot and authority",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Saved output v1/current timeline v2 synthetic jobs",
+      "steps": "Render output card with prior revision and distinct take",
+      "expected": "prior version marked; caption/source job snapshot not relabelled current approval",
+      "observed": {
+        "markup": "<div class=\"job creator-output-card\"><header><b>출력 파일 준비됨 · 납품 검토 전</b><span class=\"badge\">이전 편집 결과</span></header><p>출력 버전 1 · <span class=\"creator-test-badge\">테스트 미디어</span></p><button data-play=\"/exports/synthetic-output.mp4\">결과 검토</button><p class=\"creator-downloads\"><a href=\"/exports/synthetic-output.mp4\" download>영상 저장</a><a href=\"/exports/synthetic-output.srt\" download>자막 저장</a></p><p>납품 검토: 검토 전</p><button data-delivery=\"synthetic-output\">납품 검토 승인</button><details class=\"creator-diagnostic\"><summary>출력 기록</summary><p>synthetic-output</p><p>오류 기록 없음</p><a href=\"/exports/synthetic-output.json\" download>제작 기록 다운로드</a></details></div>",
+        "canonicalUnchanged": true
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#STA02",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "ASY01",
+      "area": "asynchronous ordering",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Two deferred /api/state responses revisions 2 and 3",
+      "steps": "Start polls 1 and 2; deliver revision3 then revision2",
+      "expected": "UI state/revision/completed job cannot regress to older snapshot",
+      "observed": {
+        "afterNewer": 3,
+        "afterLateOlder": 2,
+        "drawRevisions": [
+          3,
+          2
+        ],
+        "source": "index.html:564"
+      },
+      "status": "FAIL",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#ASY01",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": "P2",
+      "retest_status": "Unfixed; positive controls in finding-controls.json",
+      "criterion_sources": [
+        "https://playwright.dev/docs/best-practices",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": "late older poll regressed state.revision\n\n2 !== 3\n"
+    },
+    {
+      "id": "ASY02",
+      "area": "asynchronous ordering",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Poll begun idle then busy/current state changes",
+      "steps": "Start poll; switch to new project or mark operation busy/dirty; deliver older state",
+      "expected": "destination context/draft/current snapshot are not overwritten by stale read",
+      "observed": {
+        "expectedRevision": 3,
+        "actualRevision": 2,
+        "busy": true,
+        "dirty": true,
+        "drawRevisions": [
+          2
+        ],
+        "source": "index.html:564"
+      },
+      "status": "FAIL",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#ASY02",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": "P2",
+      "retest_status": "Unfixed; positive controls in finding-controls.json",
+      "criterion_sources": [
+        "https://playwright.dev/docs/best-practices",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": "poll that started idle overwrote current state while busy\n\n2 !== 3\n"
+    },
+    {
+      "id": "ASY03",
+      "area": "uncertain outcomes",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Fake review/cancel request receipts",
+      "steps": "400;503;throw;truncated JSON; committed+refresh failure; GET unknown/committed",
+      "expected": "definite rejection distinct from unknown/committed; unknown blocks extra POST and uses same request GET",
+      "observed": {
+        "pendingId": "synthetic-1",
+        "requests": [
+          {
+            "caseId": "ASY03",
+            "url": "/api/action",
+            "method": "POST",
+            "action": "cancel_job",
+            "requestId": "synthetic-1",
+            "scope": "A",
+            "disposition": "synthetic-only",
+            "forwarded": false
+          },
+          {
+            "caseId": "ASY03",
+            "url": "/api/requests/synthetic-1",
+            "method": "GET",
+            "disposition": "synthetic-only",
+            "forwarded": false
+          }
+        ],
+        "cancellationReceipt": "unknown; no cancelled outcome inferred",
+        "canonicalUnchanged": true
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#ASY03",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "MED01",
+      "area": "async media",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Existing DM01–03 12 controlled scenarios",
+      "steps": "Run metadata/late events/dispose/compare/audio regression fixture",
+      "expected": "closed media defects remain fixed; selection/approval/draft hashes unchanged",
+      "observed": "Current snapshot media lifecycle wrapper passed12controlled event scenarios; time mapping/media module unit controls also passed. Not actual browser decode.",
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "focused-tests.log",
+        "snapshot/tests/media_async_lifecycle.cjs"
+      ],
+      "severity": null,
+      "retest_status": "Closed DM01–03 remain closed; FQ02 is a distinct ended-order case",
+      "criterion_sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "MED02",
+      "area": "async media",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Controlled active rejected play/error/waiting/ended events",
+      "steps": "Reject current play; stall/recover; end at exact and slightly shorter duration",
+      "expected": "no false playing or NaN; old events inert; terminal media stops or gives recovery feedback",
+      "observed": {
+        "details": [
+          {
+            "name": "current play rejection",
+            "label": "영상 재생이 차단됐습니다.",
+            "button": "편집 재생",
+            "frames": 0
+          },
+          {
+            "name": "waiting stalls clock and resumes",
+            "time": 1,
+            "frames": 0
+          },
+          {
+            "name": "ended delta 0",
+            "duration": 3,
+            "time": 2.95,
+            "button": "일시 정지",
+            "frames": 1,
+            "canonicalUnchanged": true
+          },
+          {
+            "name": "ended delta 0.025",
+            "duration": 2.975,
+            "time": 2.9250000000000003,
+            "button": "일시 정지",
+            "frames": 1,
+            "canonicalUnchanged": true
+          }
+        ]
+      },
+      "status": "FAIL",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#MED02",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": "P2",
+      "retest_status": "Unfixed; positive controls in finding-controls.json",
+      "criterion_sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": "terminal ended media leaves playing UI/RAF active"
+    },
+    {
+      "id": "MED03",
+      "area": "actual browser media",
+      "owner": "independent functional QA",
+      "layer": "browser",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Local generated video/audio plus corrupt fixture; isolated media routing required",
+      "steps": "Decode actual local data; delay metadata;404/corrupt/unsupported; reject autoplay; observe stalled/ended",
+      "expected": "actual decode/error states separated from mock API result; canonical unchanged",
+      "observed": "Actual browser media fault injection/isolated source routing unsupported in this session. Local FFmpeg fixtures prepared; not browser decoded.",
+      "status": "BLOCKED",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "../independent-frontend-qa-environment-20261026/ENVIRONMENT.md"
+      ],
+      "severity": null,
+      "retest_status": "Requires supported isolated browser capability; no install/settings change/denial bypass attempted",
+      "criterion_sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/play",
+        "https://web.dev/articles/lazy-loading-video"
+      ],
+      "actual_environment": {
+        "runtime": "not executed",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "TIM01",
+      "area": "time coordinates",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "30 fractional cuts, offset audio, adjacent Korean captions",
+      "steps": "Check global/local mapping at before/on/after boundaries; seek; compare; zero/invalid bounds",
+      "expected": "single cumulative coordinate; trimmed source correct; caption intervals half-open; finite labels",
+      "observed": {
+        "total": 3.9300000000000033,
+        "mapping": [
+          {
+            "shot": "s0",
+            "take": 1,
+            "duration": 0.131,
+            "trim": 0.5,
+            "index": 0,
+            "start": 0,
+            "end": 0.131,
+            "time": 0,
+            "local": 0,
+            "source": 0.5,
+            "total": 3.9300000000000033
+          },
+          {
+            "shot": "s0",
+            "take": 1,
+            "duration": 0.131,
+            "trim": 0.5,
+            "index": 0,
+            "start": 0,
+            "end": 0.131,
+            "time": 0.130999,
+            "local": 0.130999,
+            "source": 0.630999,
+            "total": 3.9300000000000033
+          },
+          {
+            "shot": "s1",
+            "take": 1,
+            "duration": 0.131,
+            "trim": 0.5,
+            "index": 1,
+            "start": 0.131,
+            "end": 0.262,
+            "time": 0.131,
+            "local": 0,
+            "source": 0.5,
+            "total": 3.9300000000000033
+          },
+          {
+            "shot": "s29",
+            "take": 1,
+            "duration": 0.13100000000000023,
+            "trim": 0.5,
+            "index": 29,
+            "start": 3.799000000000003,
+            "end": 3.9300000000000033,
+            "time": 3.929,
+            "local": 0.12999999999999678,
+            "source": 0.6299999999999968,
+            "total": 3.9300000000000033
+          },
+          {
+            "shot": "s29",
+            "take": 1,
+            "duration": 0.13100000000000023,
+            "trim": 0.5,
+            "index": 29,
+            "start": 3.799000000000003,
+            "end": 3.9300000000000033,
+            "time": 3.9300000000000033,
+            "local": 0.13100000000000023,
+            "source": 0.6310000000000002,
+            "total": 3.9300000000000033
+          }
+        ],
+        "observed": [
+          {
+            "time": 0,
+            "caption": "첫 자막"
+          },
+          {
+            "time": 0.999,
+            "caption": "첫 자막"
+          },
+          {
+            "time": 1,
+            "caption": "다음 자막"
+          },
+          {
+            "time": 3,
+            "caption": ""
+          }
+        ],
+        "sourceTimeOnly": "no decoded frame precision claimed",
+        "finite": true
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#TIM01",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "TIM02",
+      "area": "decoded frame precision",
+      "owner": "independent functional QA",
+      "layer": "browser",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Decoded local 24fps fixture",
+      "steps": "Observe presented mediaTime/frame for static seek and sustained audio clock",
+      "expected": "proposal: static seek <=1 decoded frame; exploratory AV drift <=100ms, not standard",
+      "observed": "No actual decoded frame callback/AV-clock evidence collected. ±1frame and100ms remain unmeasured proposals.",
+      "status": "BLOCKED",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "../independent-frontend-qa-environment-20261026/ENVIRONMENT.md"
+      ],
+      "severity": null,
+      "retest_status": "Requires supported isolated browser capability; no install/settings change/denial bypass attempted",
+      "criterion_sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement/requestVideoFrameCallback",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "not executed",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "STO01",
+      "area": "storage/recovery",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Memory storage deny/malformed/old schema, fresh store instance",
+      "steps": "Recreate store; read bad JSON/unsupported schema; deny setItem",
+      "expected": "valid scoped drafts restore; invalid shapes ignored; write-denied keeps in-memory draft and signals failure",
+      "observed": {
+        "badJSON": null,
+        "oldShape": null,
+        "scopedRestore": true,
+        "deniedDraft": {
+          "decision": "rejected",
+          "reason": "메모리 보존",
+          "revision": 1
+        },
+        "failureFlag": true
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#STO01",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "STO02",
+      "area": "storage/recovery",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "sessionStorage getItem throws SecurityError",
+      "steps": "Execute current pendingId, startup recovery assignment and submit guard",
+      "expected": "graceful no-send recovery message rather than uncaught initialization/submit exception",
+      "observed": {
+        "startup": {
+          "name": "SecurityError",
+          "message": "synthetic storage denied"
+        },
+        "submit": {
+          "name": "SecurityError",
+          "message": "synthetic storage denied"
+        },
+        "requests": 0,
+        "source": "index.html:264,284,310"
+      },
+      "status": "FAIL",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#STO02",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": "P2",
+      "retest_status": "Unfixed; positive controls in finding-controls.json",
+      "criterion_sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": "startup recovery visibility throws when storage access denied\n+ actual - expected\n\n+ {\n+   message: 'synthetic storage denied',\n+   name: 'SecurityError'\n+ }\n- 'graceful'\n"
+    },
+    {
+      "id": "STO03",
+      "area": "storage/recovery",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Synthetic IndexedDB open/transaction abort",
+      "steps": "Reject request cache put; submit duplicate during pending cache",
+      "expected": "zero POST on cache failure; busy released; duplicate sends at most one",
+      "observed": {
+        "cacheFailureSent": 0,
+        "cacheFailureBusy": false,
+        "cacheFailureMessage": [
+          [
+            "요청 복구 정보를 저장할 수 없습니다. 브라우저 저장소를 확인하세요.",
+            true
+          ]
+        ],
+        "transactionAbortSent": 0,
+        "transactionClosed": 1,
+        "duplicatePostCount": 1
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#STO03",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "PER01",
+      "area": "performance/resource lifecycle",
+      "owner": "independent functional QA",
+      "layer": "VM",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "30+30 synthetic controller changes with 1000-char Korean labels",
+      "steps": "Create/play/dispose across cycles; track RAF/active media callbacks and host duration",
+      "expected": "at most current active controller/RAF; disposed audio/video inactive; report host CPU samples, no browser p95 claim",
+      "observed": {
+        "fixture": {
+          "shots": 60,
+          "takes": 180,
+          "captions": 120,
+          "labelCharsAtLeast": 1000
+        },
+        "cycles": 60,
+        "checkpoints": [
+          {
+            "cycle": 1,
+            "active": 1,
+            "callbacks": 2,
+            "raf": 1
+          },
+          {
+            "cycle": 30,
+            "active": 1,
+            "callbacks": 2,
+            "raf": 1
+          },
+          {
+            "cycle": 31,
+            "active": 1,
+            "callbacks": 2,
+            "raf": 1
+          },
+          {
+            "cycle": 60,
+            "active": 1,
+            "callbacks": 2,
+            "raf": 1
+          }
+        ],
+        "maxActive": 1,
+        "maxCallbacks": 2,
+        "rafAfterStop": 0,
+        "hostOnlyMs": {
+          "samples": 60,
+          "min": 0.11195800000000133,
+          "p95": 0.18299999999999983,
+          "max": 0.30620800000000514
+        },
+        "limitations": "Node VM fixture holds all created elements deliberately; no DOM/heap/leak/INP/cached-browser-shot p95 claim",
+        "canonicalUnchanged": true
+      },
+      "status": "PASS",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "vm-results.json#PER01",
+        "suite.cjs",
+        "request-ledger.json"
+      ],
+      "severity": null,
+      "retest_status": "Current frozen snapshot control passed",
+      "criterion_sources": [
+        "https://web.dev/articles/optimize-long-tasks",
+        "../design-system-implementation-20261026/PRESENTATION-CONTRACT.md"
+      ],
+      "actual_environment": {
+        "runtime": "Node v26.11.1 VM; Python3.15.0 unittest wrapper",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      },
+      "error": null
+    },
+    {
+      "id": "PER02",
+      "area": "performance lab",
+      "owner": "independent functional QA",
+      "layer": "browser",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "1920x1080 and1280x900 isolated browser; base/60shots/3takes/120captions",
+      "steps": "Capture supported performance entries and >50ms tasks; inspect >200ms interactions",
+      "expected": "actual lab LCP/CLS/long tasks only; field p75 is NOT RUN; investigate >200ms",
+      "observed": "No supported live performance trace in an isolated browser; no lab LCP/CLS/long-task evidence or field p75.",
+      "status": "BLOCKED",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "../independent-frontend-qa-environment-20261026/ENVIRONMENT.md"
+      ],
+      "severity": null,
+      "retest_status": "Requires supported isolated browser capability; no install/settings change/denial bypass attempted",
+      "criterion_sources": [
+        "https://web.dev/articles/vitals",
+        "https://web.dev/articles/optimize-long-tasks"
+      ],
+      "actual_environment": {
+        "runtime": "not executed",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "PER03",
+      "area": "performance interaction",
+      "owner": "independent functional QA",
+      "layer": "browser",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Cached 30 distinct shot changes, repeated3cycles; pending work",
+      "steps": "Measure input-to-next-painted-state sample count90 and p95; count media/DOM/resources over cycles",
+      "expected": "Loretune proposed cached-shot p95 <=200ms; separate network/decode; no leak verdict from single heap sample",
+      "observed": "No supported isolated interactive browser trace; VM samples do not measure input-to-next-paint p95.",
+      "status": "BLOCKED",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "../independent-frontend-qa-environment-20261026/ENVIRONMENT.md"
+      ],
+      "severity": null,
+      "retest_status": "Requires supported isolated browser capability; no install/settings change/denial bypass attempted",
+      "criterion_sources": [
+        "https://web.dev/articles/vitals",
+        "https://web.dev/articles/optimize-long-tasks"
+      ],
+      "actual_environment": {
+        "runtime": "not executed",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "DES01",
+      "area": "keyboard/accessibility",
+      "owner": "design reviewer",
+      "layer": "design reviewer",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "1920x1080/1280x900; user-facing locators",
+      "steps": "Full keyboard flow, disabled/hidden controls, focus restoration",
+      "expected": "no force-click; truthful accessible labels; owner supplies actual evidence",
+      "observed": "Design reviewer owns this domain; no independent result imported or inferred.",
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [],
+      "severity": null,
+      "retest_status": "Await separate design evidence",
+      "criterion_sources": [
+        "https://playwright.dev/docs/actionability"
+      ],
+      "actual_environment": {
+        "runtime": "not executed here",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "DES02",
+      "area": "text/reflow",
+      "owner": "design reviewer",
+      "layer": "design reviewer",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "App100/150/200 and actual browser zoom separately",
+      "steps": "Check resize/reflow/clipping/scroll reachability",
+      "expected": "actual zoom distinct from app scaling/DPR; owner supplies evidence",
+      "observed": "Design reviewer owns this domain; no independent result imported or inferred.",
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [],
+      "severity": null,
+      "retest_status": "Await separate design evidence",
+      "criterion_sources": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "actual_environment": {
+        "runtime": "not executed here",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "XBR01",
+      "area": "cross-browser",
+      "owner": "pending capabilities",
+      "layer": "pending capabilities",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Chrome; cached Chromium/Firefox/WebKit; installed Safari",
+      "steps": "Record actual engine/version/context before each run",
+      "expected": "cache/installation is not coverage; WebKit != Safari; no unrun engine pass",
+      "observed": "Cache/app installation only; no browser engine launched/identified/executed for this suite. No WebKit=Safari claim.",
+      "status": "BLOCKED",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [
+        "../independent-frontend-qa-environment-20261026/ENVIRONMENT.md"
+      ],
+      "severity": null,
+      "retest_status": "Requires supported isolated browser capability; no install/settings change/denial bypass attempted",
+      "criterion_sources": [
+        "https://playwright.dev/docs/best-practices"
+      ],
+      "actual_environment": {
+        "runtime": "not executed",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    },
+    {
+      "id": "VIS01",
+      "area": "visual/geometry",
+      "owner": "design reviewer",
+      "layer": "design reviewer",
+      "threshold_type": "Loretune proposed acceptance; linked sources inform method/API behavior, not all numeric product limits",
+      "fixture": "Frozen same-state synthetic screenshot fixtures",
+      "steps": "1920primary1280secondary; expand inspector/precision; long content",
+      "expected": "same-environment differences only; no beauty/aggregate score",
+      "observed": "Design reviewer owns this domain; no independent result imported or inferred.",
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": "1920x1080 primary /1280x900 secondary when browser executed; N/A for VM",
+      "zoom": "not set/not measured; N/A for VM",
+      "evidence": [],
+      "severity": null,
+      "retest_status": "Await separate design evidence",
+      "criterion_sources": [
+        "../desktop-residual-20261026/REPORT-ko.md"
+      ],
+      "actual_environment": {
+        "runtime": "not executed here",
+        "browser": null,
+        "version": null,
+        "viewport": null,
+        "zoom": null
+      }
+    }
+  ]
+}

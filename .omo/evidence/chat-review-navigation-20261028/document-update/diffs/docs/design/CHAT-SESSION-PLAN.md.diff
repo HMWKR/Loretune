@@ -1,0 +1,13 @@
+--- docs/design/CHAT-SESSION-PLAN.md.before
++++ docs/design/CHAT-SESSION-PLAN.md
+@@ -1,4 +1,10 @@
+ # Aethon 복수 대화 구현 계획 · 2026-10-27 결정 반영
++
++## 제작안 검토 이동 수락 · 현재 작업 종료 경계 · 2026-10-28
++
++[현재 기능](../../.omo/evidence/chat-review-navigation-20261028/driver-acceptance.json)은 서버 소유 turn→run 관계를 읽기 전용 `run_id`로 공개하고, 현재 대화의 유일한 run/call/저장 이미지 제작안/장면이 일치할 때만 해당 답변에 검토 버튼을 표시한다. 답변 문구·최근 실행 순서로 추정하지 않는다. 기존 장면 선택·탭·native modal close·카드 포커스를 재사용하며 초안·권한·승인·생성 동작을 바꾸지 않는다.
++
++신규 API/VM6개·관련 기존 UI6개와 실제 화면의 접힌 도구·장면 전환·Enter/Space·모션/3D/대화 초안 보존·재열기를 확인했다. 이동 POST0·SQL 전체 fingerprint 전후 동일이며 실제 모델 호출은 없다. 이전 ‘검토 카드 이동 미구현’은 당시 기록이다.925전체 검사는 수정 전 기준이고,200% 조건은 halfCSSviewport/scale2 reflow이며 native 메뉴 확대는 미검증이다. [인계](../../session-handoff.md)에 따라 현재 작업까지만 끝내고 추가 구현을 중단한다.
+ 
+ ## 일반 대화 이미지 제작안 준비 · AGENT-TOOLS-02-MEDIA-PREP · 2026-10-28
+ 

@@ -1,0 +1,10 @@
+## 1차 시연의 실제 UI·내부 실행·소스 구분 · 2026-10-28
+
+사용자1–7 검증 방식과 기존81개 반영 문구를 보존하며 실제 결과를 연결한다. [제작 UI 연속 녹화](../../.omo/evidence/first-demo-20261028/main-demo-case-r3/first-demo-native-workflow.mp4)는100.333초이며 빈 음악 프로젝트→타이포 원본1/2·후보2개→선택적 사진·이미지/영상 위 겹치기·위치/시간 변경→타임라인1–3→승인·9초 출력/재생·다운로드·재열기를 수행했다. [실제33 POST/의도한400복구·저장/출력 추적](../../.omo/evidence/first-demo-20261028/main-demo-case-r3/api-state-output-trace.json)과 [출력 decode·음원·자막 검증](../../.omo/evidence/first-demo-20261028/main-demo-case-r3/actual-output-media-verification.json)을 연결한다. 음원1–10초 상관 .9991288은 수치 검증이고 실청/실사용자 시험이 아니다.
+
+[합성 대화 추가 녹화](../../.omo/evidence/first-demo-20261028/main-demo-case-r3/first-demo-synthetic-chat.mp4)는41.750초다. 같은 작업실의 원본·음원·편집1–3을 보존한 서버 재시작→UI Full Access·전송 검토→선택 Claude wire의 결정적 fixture→새 미승인 agent-draft4→별도 사람 출력 승인→실제9초 렌더·재생/다운로드·재열기를 [실제 기록](../../.omo/evidence/first-demo-20261028/main-demo-case-r3/synthetic-chat-ui-receipt.json)으로 확인했다. 서버4/UI3 불일치는 agent-draft refresh를 보완해 즉시4 표시와 dirty 보존을 확인했고, 승인 전 estimate/render 거절과 작업수 불변·최종 승인 분리를 유지했다. Full Access의5개 비삭제성 whitelist와 계정 삭제 영구 금지/다른 삭제 개별 허용을 넓히지 않는다.
+
+두 녹화는 무편집·무배속·구간 생략0의 실제 화면 캡처이며 무음이다. 실제9초 출력에 음원이 포함된다. 제작 녹화는63제품 소스 시작/종료 불변(index `f79217bd…75d9`), 추가 대화는 refresh 보완 뒤 index `be666645…7410`으로 [소스 시점](../../.omo/evidence/first-demo-20261028/main-demo-case-r3/synthetic-chat-recording-source.json)을 분리한다. {{FINAL_REGRESSION_TEXT}} {{FINAL_TRACE_AND_HANDOFF}}
+
+실제 모델·외부 공급자·청구 호출0이고 [합성 USD0.04 예산](../../.omo/evidence/first-demo-20261028/main-demo-case-r3/synthetic-chat-server/fixture-budget.json)은 UI 밖 시험 준비다. 이 증거는 Claude의 실제 추론/영상 이해·실비용 승인·일반 설정/3D/영상 도구 전체 제어·협업 인증/presence를 입증하지 않는다. 사용자의1차 녹화 검토와 구체 모델/자료/길이·규격/횟수/최대 비용/보관·실패 비용 승인 이후에만 실제 AI 영상 단계를 수행한다.1차 시연 수락과 전체 플랫폼 출시 준비는 별개다.
+

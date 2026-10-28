@@ -1,0 +1,1114 @@
+{
+  "schema": "native-music-workflow-benchmark/1",
+  "task_id": "music-native-workflow-benchmark-20261028",
+  "attempt": 4,
+  "status": "REPORTED",
+  "actual_provider_calls": 0,
+  "prior_attempt": "../attempt3/REPORT.json",
+  "private_data_access": false,
+  "credential_access": false,
+  "methodology": "Deterministic real HTTP actions, paired native outputs and artifact provenance",
+  "scope": "New approvals/candidates and third30s MP4 after exact sRGB fix. Same edited timeline order/audio/image/captions; existing native takes and outputs remain immutable.",
+  "source_before": {
+    "app.py": "a32b301cb489378d9e890414fa36ce17875c053af255216ee814898de0c0cab5",
+    "editing.py": "3e7b20c364a7a558da15da9d0979a46853eaa101216a40fd665ab73faa9af3c8",
+    "renderer.py": "2032babcdac01337e77e5fce9bef38c232e1c364daa465bed7fba26639708525",
+    "motion_scene.py": "aec910b146d0e04d53c2e5560d312adf16c5985875c66afbb937928acc8529a3",
+    "motion_renderer.py": "a83ccb5064d512d9350b37fb3842e2b8349fb1cf826d51c79fdb2c91c4f384e0",
+    "backup.py": "8d6c35fa5a0e39235a461f0f3fab622fbdd1d03c25cb76a811703624a0d790f6",
+    "loretune.py": "b59f5404537235e0c5dd00e9bbffd17aec834a22805a6288267c0964da5fc0d9",
+    "tests/test_motion.py": "7c6c7bcfda83b8d55d357f6d2b1a8e4024fdad692d3a2a4671f66a72d796ad38",
+    "native/motion_frame_renderer.swift": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d",
+    "tests/test_native_motion_color.py": "d9158bad5ebb5e599aabd4a15c41f8e49d59d7c267266f146241824954670b00"
+  },
+  "requests": [
+    {
+      "action": "motion_render",
+      "request_id": "11e693d3c6364d798fa99c1e08081756",
+      "body_sha256": "74ba72150c286bd654e39debafd576c5cf3039ffd18a217bd8b33b783c3a311a",
+      "status": 400,
+      "elapsed_seconds": 0.035792,
+      "error": "입력을 확인하세요: 폰트·렌더러가 변경됐습니다. 새 버전을 검토하세요."
+    },
+    {
+      "action": "motion_propose",
+      "request_id": "ae4af8f5b26243bd92a4b169c396a80d",
+      "body_sha256": "5a5910900e5b27df356cf1cfb1eed25a7c69b41ec08d7665cc7fb106368694ff",
+      "status": 200,
+      "elapsed_seconds": 0.002678,
+      "error": null
+    },
+    {
+      "action": "motion_review",
+      "request_id": "4cf9f6e648174816b7f10e419c9121fe",
+      "body_sha256": "4fe97b8f6a35c76b27287890315e5dd824ef409ad3ff74d7f4034d12666de9fe",
+      "status": 200,
+      "elapsed_seconds": 0.888438,
+      "error": null
+    },
+    {
+      "action": "motion_render",
+      "request_id": "4f6ce750dd004c569034432d1ced6f37",
+      "body_sha256": "b40cee69172be6b3355c362aaf4cddc04e18ac0101387209d2546cbd4cd37d62",
+      "status": 200,
+      "elapsed_seconds": 0.032402,
+      "error": null
+    },
+    {
+      "action": "declare_take_rights",
+      "request_id": "04cee03ed69d4fd6b51e5c20bb3d88a1",
+      "body_sha256": "959e7968df905494b7becbbc9bd65390ce140c72a25e76b25f5af92208d012dc",
+      "status": 200,
+      "elapsed_seconds": 0.002274,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "f76f8cc8eaf9486ba39d0cd5b222c57a",
+      "body_sha256": "e560c4896e96f7e68831eb396f675625ec0120d325c5782d23a55d234cb22d32",
+      "status": 200,
+      "elapsed_seconds": 0.002107,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "c31368967e9d4374a2bf741e4dfb8e46",
+      "body_sha256": "75cce4d3f3980f321953069200d961b5e03329ea560bfa0236b8774f54a8e719",
+      "status": 200,
+      "elapsed_seconds": 0.002174,
+      "error": null
+    },
+    {
+      "action": "motion_propose",
+      "request_id": "4185ef81c6df443b970f7605c7690a44",
+      "body_sha256": "39e58890b1513cacfd6c4627f408c24651dd66f50b8a2d854ce55d09ad66ff8d",
+      "status": 200,
+      "elapsed_seconds": 0.004163,
+      "error": null
+    },
+    {
+      "action": "motion_review",
+      "request_id": "3d6060d1e35d4eb5b6e0c8f16f517bf8",
+      "body_sha256": "07cbbe26f82d2962f4d41d715e8eb9fd03965f3ac8a55bbb10018c19070fc150",
+      "status": 200,
+      "elapsed_seconds": 0.075477,
+      "error": null
+    },
+    {
+      "action": "motion_render",
+      "request_id": "3361eeb53799400989cd756e5d950e6b",
+      "body_sha256": "31f0ac2cabcfb3e9d7a81623bdd3bac86b84c63aecd8a775359ce2975e7ab974",
+      "status": 200,
+      "elapsed_seconds": 0.03317,
+      "error": null
+    },
+    {
+      "action": "declare_take_rights",
+      "request_id": "45f119860f814e8b9a43c1000c9803c3",
+      "body_sha256": "8b032c059b974ca836879da671b6be4499b387ed58645e9048dfa9d1b6b0ad47",
+      "status": 200,
+      "elapsed_seconds": 0.002365,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "ad978a74e1094e659bc38572873dc3cc",
+      "body_sha256": "1ae13c5e06476d35334c8eda746cfd53966a6f0ad83995ad44c9ed52f19efb0b",
+      "status": 200,
+      "elapsed_seconds": 0.002275,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "dcc290ac1ab849b08feff6e110ec6c9a",
+      "body_sha256": "9fbc76efe4ccc90a2d364ce0864ae575451be5949dd30fd4457330c80e3dc6d2",
+      "status": 200,
+      "elapsed_seconds": 0.002415,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "1badf8978ead4619ac662f06bc723dd8",
+      "body_sha256": "13d17e5a601e0a057e33dbfff845207fc7191daaccbeaab9639b1616bac05103",
+      "status": 200,
+      "elapsed_seconds": 0.002884,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "feb0f8fbeea6434ca9df83b082511dbf",
+      "body_sha256": "cb2f2b3f3eafbda5a9aedd6ddacc615a027ab3ef1dba5edda78b5ce43bd38dab",
+      "status": 200,
+      "elapsed_seconds": 0.002543,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "0e23bdfbf5b5434abd39bb558b326452",
+      "body_sha256": "1331d97dd41052f80b77452d974cd04d628024dc956e0e7f659cc5f66d0a194e",
+      "status": 200,
+      "elapsed_seconds": 0.002557,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "5d236a2c0271408892a3e0933af9c290",
+      "body_sha256": "57c6d532f20d4f94e5e6bad88a2c858e1055808fb94d5d6ecd0cc2b3a8a8d129",
+      "status": 200,
+      "elapsed_seconds": 0.002643,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "e4512f2375ea4c15b53c01f9a407bb61",
+      "body_sha256": "3b644d0a42fd5c709bda916c44e9b377c27c198fcfd0aa2c39ff10fdab830a5f",
+      "status": 200,
+      "elapsed_seconds": 0.002571,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "69611c079f66496395d0ec416e9b1965",
+      "body_sha256": "ae1132871cfadeabaa960bec4756541eb55f330f4e706566c0fe0e910124354a",
+      "status": 200,
+      "elapsed_seconds": 0.002415,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "96876e0ca54545f587f293ef07d80b79",
+      "body_sha256": "742c93cc21d26baebd40052d7ef956bed49418aedfb6672777b6ce533c82e05a",
+      "status": 200,
+      "elapsed_seconds": 0.002546,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "e71d94a6c6f8448194214d7a03d765e9",
+      "body_sha256": "c776c49e4b1b7966fcf8cc25a824bf8a8854ecb57c1b34b3ee0fa63a4efec3dd",
+      "status": 200,
+      "elapsed_seconds": 0.00233,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "1330e08195ba47a7bc5a32decd512150",
+      "body_sha256": "44e0f79960e2e471238199b3ffcfd397479cbecb2cab12591ea6dfd3e359b711",
+      "status": 200,
+      "elapsed_seconds": 0.002386,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "a306a696a6174375b2202dd9a8b50fdb",
+      "body_sha256": "19c72578d5b50819f199bec65d857fecfba07274315c624499f0285752acde0c",
+      "status": 200,
+      "elapsed_seconds": 0.002591,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "11bc022b5b07462a9f3459f8787dcb11",
+      "body_sha256": "8fbf03234744baea9f3bd6fb4234e8af38820c08fb73418630a640662f1bc085",
+      "status": 200,
+      "elapsed_seconds": 0.002444,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "1f40e28d7d8d407187358e35d03101c0",
+      "body_sha256": "b4386b945c28b89510543b765de40752cb28b95a3e9d8e88691fbc179302deef",
+      "status": 200,
+      "elapsed_seconds": 0.002811,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "643ebc23674f4582aa40e8725db81844",
+      "body_sha256": "2cf93d3523923dd9566c4d4ab228ff653d674e7933a6b4606085bd9f3a761f41",
+      "status": 200,
+      "elapsed_seconds": 0.0027,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "1ab8496d40e14166abad062222935688",
+      "body_sha256": "7a92dbcf59d4923c8ec2b212581192b173ee6ce21c7e33cfb2e6c877bacb214d",
+      "status": 200,
+      "elapsed_seconds": 0.002703,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "9f83fbab7b0c4716a1ce93736b5f4e62",
+      "body_sha256": "2b1bfb1ff5e178f79c4149fa72983dc87942ad149ee289a6713d316b9c01f6d9",
+      "status": 200,
+      "elapsed_seconds": 0.002818,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "4aa03065f5a54827b100da8a47bf8b74",
+      "body_sha256": "51d9917643beeef0efc9941e5c5f5e8346ee62a76787e6144cb5d704db55de10",
+      "status": 200,
+      "elapsed_seconds": 0.002614,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "94232cdb9dbc417bb54a6a678356ee3b",
+      "body_sha256": "f3afd69bdb2838bc87fbe7f517b55e8faa6ee93245560a247a2c355b3a269e1f",
+      "status": 200,
+      "elapsed_seconds": 0.002338,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "e076f68f351e4ae4a38e7ec9c139dae8",
+      "body_sha256": "dae1e5d8903d5b1799c61c380bd054587eb0dd243d68b12c0e4e09a84009ff6a",
+      "status": 200,
+      "elapsed_seconds": 0.00251,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "406d521d6f654f369e20a373ca0651c3",
+      "body_sha256": "6e9dd5bc8613b3fc252bda8ae86f75241a6f303614e1a1321530bc1ddda86dd8",
+      "status": 200,
+      "elapsed_seconds": 0.002538,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "30ff372e823f43e3bb8600550da415cf",
+      "body_sha256": "ac31c2ba7056794c5b4f4253f6b4d2464643bdf9c054b68d913a473cf8080ccf",
+      "status": 200,
+      "elapsed_seconds": 0.002425,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "3a278f6c2e834095bd9d02f3b8c8308c",
+      "body_sha256": "68a9d137bfa3d21317acf33003f5473123fca4f0211c2c49db608c8a116895d4",
+      "status": 200,
+      "elapsed_seconds": 0.002448,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "1897f8f8e2504b06a5fc57d6f05dab12",
+      "body_sha256": "cd1afb2352bc040700d951d677157b3f64f6d3e31bbfa2a426572c97be7ee9c1",
+      "status": 200,
+      "elapsed_seconds": 0.002685,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "16872970d97c4cc9af7f8563419e600e",
+      "body_sha256": "b31f9ace24cd767fda2cb6bfc16eafa84bc711800dd0be7db8ad67fb3132f12e",
+      "status": 200,
+      "elapsed_seconds": 0.002463,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "f9c800f3b6664429ad4b80421cd4da18",
+      "body_sha256": "b5c550517fe24dc6b3272f8218b671e74dd2d068f836a0e6c507c09d7b2672f0",
+      "status": 200,
+      "elapsed_seconds": 0.002508,
+      "error": null
+    },
+    {
+      "action": "reuse_take",
+      "request_id": "604264100360451d857ec5cd2caf0903",
+      "body_sha256": "90f93be9fb592083f1264e40cfccc7c8cf5990354d71e94d626f06a9b16755f2",
+      "status": 200,
+      "elapsed_seconds": 0.002641,
+      "error": null
+    },
+    {
+      "action": "select",
+      "request_id": "bb37464cad4541d591909da110b9f5f4",
+      "body_sha256": "397d1dbd3d1ef357920bf4b80fa46937990a3e0c54c57af06531c3dcfc59f1b5",
+      "status": 200,
+      "elapsed_seconds": 0.002513,
+      "error": null
+    },
+    {
+      "action": "review_take",
+      "request_id": "c71aa0ea7f4b45c782280163d515d4a5",
+      "body_sha256": "e5cb7e5a32910ad85c3090f6d7f82da9390e4c474137a83858edc9def33fdb47",
+      "status": 200,
+      "elapsed_seconds": 0.002562,
+      "error": null
+    },
+    {
+      "action": "timeline",
+      "request_id": "868265d0958a46bd8f0e983b52f1f9ba",
+      "body_sha256": "0ff03ab64ae0d7240cecde1c5e650f1998d689581857f0c92b9ec86ba8444825",
+      "status": 200,
+      "elapsed_seconds": 0.002555,
+      "error": null
+    },
+    {
+      "action": "approve_timeline",
+      "request_id": "bf0d20e0592e4cccaa338aba58835fc5",
+      "body_sha256": "e3e1e1ae86c5cd60cf995a5b712fae92a3cd2cddc469661e3ba230625d8a5bff",
+      "status": 200,
+      "elapsed_seconds": 0.010514,
+      "error": null
+    },
+    {
+      "action": "render_job",
+      "request_id": "25c2abc170ab476485dadac0a8cfae8e",
+      "body_sha256": "ef897c61816a2c2fd09e6fbcabc6fbe1bb2488388018525679705e216b92fec2",
+      "status": 200,
+      "elapsed_seconds": 0.005883,
+      "error": null
+    },
+    {
+      "action": "project",
+      "request_id": "8a6040fc74304ef59e8be2ce79bdd2f0",
+      "body_sha256": "527801d918ae3489466a756da58d719e530c14d49b5db79c852486d46d7dbd00",
+      "status": 200,
+      "elapsed_seconds": 0.002396,
+      "error": null
+    },
+    {
+      "action": "shot",
+      "request_id": "bf807d58486f482a8e6798b3e52bce15",
+      "body_sha256": "74a562e13b2d4f0f602adde6df598fe58b2ae868c0629ca08e183e51070ce054",
+      "status": 200,
+      "elapsed_seconds": 0.001981,
+      "error": null
+    },
+    {
+      "action": "motion_propose",
+      "request_id": "9e9c94a1c7c04c83be40c1551494fcfb",
+      "body_sha256": "4fbcec5198abec7033296f233b5151a675b81360495f6f5454b1f3a315131f77",
+      "status": 200,
+      "elapsed_seconds": 0.00182,
+      "error": null
+    },
+    {
+      "action": "motion_review",
+      "request_id": "85b699cf94044ca18f9c4342f7c829a4",
+      "body_sha256": "8533a36101e5ab6511aa8196c1bb0eae79c782daa33a7db26fc6c8cd3217d39e",
+      "status": 200,
+      "elapsed_seconds": 0.849513,
+      "error": null
+    },
+    {
+      "action": "motion_render",
+      "request_id": "6f640e411f1d49d59be22a1688271178",
+      "body_sha256": "ba6d1b530d92b25c050ccd8f66dc187fe3c64108cbf35602ddeb6185c3319e13",
+      "status": 200,
+      "elapsed_seconds": 0.032878,
+      "error": null
+    }
+  ],
+  "checks": [
+    {
+      "name": "resume edited version2",
+      "passed": true,
+      "details": {
+        "version": 2
+      }
+    },
+    {
+      "name": "old output preserved before correction before",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f"
+      }
+    },
+    {
+      "name": "old output preserved before correction after",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "89608c3ed0002dca753d1cc733f993110aaffc343ff492e771d05cb8048bef63"
+      }
+    },
+    {
+      "name": "old motion approval rejects changed source",
+      "passed": true,
+      "details": {
+        "error": "입력을 확인하세요: 폰트·렌더러가 변경됐습니다. 새 버전을 검토하세요."
+      }
+    },
+    {
+      "name": "job completed abee0c9a9f9743f3804ebb619404d1e0",
+      "passed": true,
+      "details": {
+        "id": "abee0c9a9f9743f3804ebb619404d1e0",
+        "kind": "local-motion",
+        "status": "completed",
+        "elapsed_seconds": 4.893876,
+        "error": null,
+        "verified": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 24,
+          "frames": 72,
+          "duration": 3.0,
+          "kind": "local-motion-candidate",
+          "final_output_approved": false
+        }
+      }
+    },
+    {
+      "name": "new source pinned 장면01",
+      "passed": true,
+      "details": {
+        "font": {
+          "backend": "aethon-coretext-v1",
+          "font": "AppleSDGothicNeo-Regular",
+          "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+          "source_sha256": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d",
+          "os": "26.5.1",
+          "color_space": "sRGB"
+        },
+        "job": "abee0c9a9f9743f3804ebb619404d1e0"
+      }
+    },
+    {
+      "name": "corrected native candidate YUV color 장면01",
+      "passed": true,
+      "details": {
+        "actual": [
+          26,
+          42,
+          73
+        ],
+        "declared": [
+          26,
+          42,
+          74
+        ],
+        "tolerance": 4
+      }
+    },
+    {
+      "name": "job completed a5606b468372464d9b0dbba538cc400d",
+      "passed": true,
+      "details": {
+        "id": "a5606b468372464d9b0dbba538cc400d",
+        "kind": "local-motion",
+        "status": "completed",
+        "elapsed_seconds": 4.827844,
+        "error": null,
+        "verified": {
+          "width": 1920,
+          "height": 1080,
+          "fps": 24,
+          "frames": 72,
+          "duration": 3.0,
+          "kind": "local-motion-candidate",
+          "final_output_approved": false
+        }
+      }
+    },
+    {
+      "name": "new source pinned 장면02",
+      "passed": true,
+      "details": {
+        "font": {
+          "backend": "aethon-coretext-v1",
+          "font": "AppleSDGothicNeo-Regular",
+          "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+          "source_sha256": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d",
+          "os": "26.5.1",
+          "color_space": "sRGB"
+        },
+        "job": "a5606b468372464d9b0dbba538cc400d"
+      }
+    },
+    {
+      "name": "corrected native candidate YUV color 장면02",
+      "passed": true,
+      "details": {
+        "actual": [
+          74,
+          43,
+          26
+        ],
+        "declared": [
+          74,
+          42,
+          26
+        ],
+        "tolerance": 4
+      }
+    },
+    {
+      "name": "job completed 6ffb2cb52a7b4c898aaedd1713348091",
+      "passed": true,
+      "details": {
+        "id": "6ffb2cb52a7b4c898aaedd1713348091",
+        "kind": "final-render",
+        "status": "completed",
+        "elapsed_seconds": 3.796804,
+        "error": null,
+        "verified": {
+          "duration": 30.0,
+          "width": 1920,
+          "height": 1080,
+          "frame_rate": "24/1",
+          "audio_sample_rate": "48000",
+          "frame_timing": {
+            "fps": 24,
+            "policy": "nearest-internal-ceil-final",
+            "requested_duration": 30.0,
+            "duration": 30.0,
+            "clips": [
+              {
+                "start_frame": 0,
+                "end_frame": 60,
+                "frames": 60,
+                "start": 0.0,
+                "end": 2.5
+              },
+              {
+                "start_frame": 60,
+                "end_frame": 120,
+                "frames": 60,
+                "start": 2.5,
+                "end": 5.0
+              },
+              {
+                "start_frame": 120,
+                "end_frame": 180,
+                "frames": 60,
+                "start": 5.0,
+                "end": 7.5
+              },
+              {
+                "start_frame": 180,
+                "end_frame": 240,
+                "frames": 60,
+                "start": 7.5,
+                "end": 10.0
+              },
+              {
+                "start_frame": 240,
+                "end_frame": 300,
+                "frames": 60,
+                "start": 10.0,
+                "end": 12.5
+              },
+              {
+                "start_frame": 300,
+                "end_frame": 360,
+                "frames": 60,
+                "start": 12.5,
+                "end": 15.0
+              },
+              {
+                "start_frame": 360,
+                "end_frame": 420,
+                "frames": 60,
+                "start": 15.0,
+                "end": 17.5
+              },
+              {
+                "start_frame": 420,
+                "end_frame": 480,
+                "frames": 60,
+                "start": 17.5,
+                "end": 20.0
+              },
+              {
+                "start_frame": 480,
+                "end_frame": 540,
+                "frames": 60,
+                "start": 20.0,
+                "end": 22.5
+              },
+              {
+                "start_frame": 540,
+                "end_frame": 600,
+                "frames": 60,
+                "start": 22.5,
+                "end": 25.0
+              },
+              {
+                "start_frame": 600,
+                "end_frame": 660,
+                "frames": 60,
+                "start": 25.0,
+                "end": 27.5
+              },
+              {
+                "start_frame": 660,
+                "end_frame": 720,
+                "frames": 60,
+                "start": 27.5,
+                "end": 30.0
+              }
+            ]
+          },
+          "streams": [
+            "video",
+            "audio",
+            "subtitle"
+          ],
+          "verified_at": 1793125062.9070349
+        }
+      }
+    },
+    {
+      "name": "corrected.mp4 download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 477663
+      }
+    },
+    {
+      "name": "corrected MP4 hash",
+      "passed": true,
+      "details": {
+        "file": "corrected.mp4",
+        "sha256": "4f40c79ecfa23665d096fd8fea39790bff1d767b0580d8ce5c38c963d248e349",
+        "bytes": 477663,
+        "integrity": null
+      }
+    },
+    {
+      "name": "corrected.srt download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 131
+      }
+    },
+    {
+      "name": "corrected.json download",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "bytes": 19417
+      }
+    },
+    {
+      "name": "corrected 30s1080p24",
+      "passed": true,
+      "details": {
+        "width": 1920,
+        "height": 1080,
+        "rate": "24/1",
+        "duration": "30.000000"
+      }
+    },
+    {
+      "name": "corrected actual audio",
+      "passed": true,
+      "details": {
+        "samples": 1440000,
+        "frequency_hz": 439.9642857142857,
+        "rms": 5653.165247182997
+      }
+    },
+    {
+      "name": "same edited audio PCM",
+      "passed": true,
+      "details": {
+        "sha256": "aa3ed6d9eb964d3c99c809de6cfeb92d6d189bca19109a50dc3d69d2c854f8fc"
+      }
+    },
+    {
+      "name": "same edited captions",
+      "passed": true,
+      "details": {
+        "cues": "1\n00:00:00,000 --> 00:00:02,000\n선택 이미지를 더한 새 편집\n\n2\n00:00:28,000 --> 00:00:30,000\n수정 후 마지막 자막\n\n"
+      }
+    },
+    {
+      "name": "all12 corrected source colors",
+      "passed": true,
+      "details": {
+        "actual": [
+          [
+            15,
+            192,
+            128
+          ],
+          [
+            26,
+            42,
+            73
+          ],
+          [
+            74,
+            43,
+            26
+          ],
+          [
+            26,
+            42,
+            73
+          ],
+          [
+            74,
+            43,
+            26
+          ],
+          [
+            26,
+            42,
+            73
+          ],
+          [
+            74,
+            43,
+            26
+          ],
+          [
+            26,
+            42,
+            73
+          ],
+          [
+            74,
+            43,
+            26
+          ],
+          [
+            26,
+            42,
+            73
+          ],
+          [
+            74,
+            43,
+            26
+          ],
+          [
+            26,
+            42,
+            73
+          ]
+        ],
+        "expected": [
+          [
+            16,
+            192,
+            128
+          ],
+          [
+            26,
+            42,
+            74
+          ],
+          [
+            74,
+            42,
+            26
+          ],
+          [
+            26,
+            42,
+            74
+          ],
+          [
+            74,
+            42,
+            26
+          ],
+          [
+            26,
+            42,
+            74
+          ],
+          [
+            74,
+            42,
+            26
+          ],
+          [
+            26,
+            42,
+            74
+          ],
+          [
+            74,
+            42,
+            26
+          ],
+          [
+            26,
+            42,
+            74
+          ],
+          [
+            74,
+            42,
+            26
+          ],
+          [
+            26,
+            42,
+            74
+          ]
+        ],
+        "tolerance": 4
+      }
+    },
+    {
+      "name": "exact720frames and60frame cut boundaries",
+      "passed": true,
+      "details": {
+        "decoded_frames": 720,
+        "frames_per_cut": 60
+      }
+    },
+    {
+      "name": "old two timelines immutable",
+      "passed": true,
+      "details": {
+        "original_versions": 2
+      }
+    },
+    {
+      "name": "old source bytes immutable",
+      "passed": true,
+      "details": {
+        "original_assets": 3
+      }
+    },
+    {
+      "name": "old output preserved after correction before",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f"
+      }
+    },
+    {
+      "name": "old output preserved after correction after",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "sha256": "89608c3ed0002dca753d1cc733f993110aaffc343ff492e771d05cb8048bef63"
+      }
+    },
+    {
+      "name": "source-hashed compiled cache adds new binary",
+      "passed": true,
+      "details": {
+        "before": [
+          "motion-runtime/0cdd6525a01006e70cce75c0b8deeef48e4ef564143204ac1aea1e3fc1732044/frame-renderer"
+        ],
+        "after": [
+          "motion-runtime/0cdd6525a01006e70cce75c0b8deeef48e4ef564143204ac1aea1e3fc1732044/frame-renderer",
+          "motion-runtime/96072e4b8c4847c9ad26de186cf31d709729af39e59ed64a340b966094c15186/frame-renderer"
+        ]
+      }
+    },
+    {
+      "name": "historical-source job remains queued before upgrade",
+      "passed": true,
+      "details": {
+        "source_sha256": "a2f41e73a434d57e455729ccf8aad3cc6986c4f9caf1d0fcef7030633835896e"
+      }
+    },
+    {
+      "name": "queued old source refuses publication after upgrade",
+      "passed": true,
+      "details": {
+        "job": "798b1089ccdc4ac1875aa8d9e5a461cc",
+        "status": "failed",
+        "error": "승인 후 폰트·렌더러가 변경됐습니다.",
+        "takes": 0
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "id": "abee0c9a9f9743f3804ebb619404d1e0",
+      "kind": "local-motion",
+      "status": "completed",
+      "elapsed_seconds": 4.893876,
+      "error": null,
+      "verified": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 24,
+        "frames": 72,
+        "duration": 3.0,
+        "kind": "local-motion-candidate",
+        "final_output_approved": false
+      }
+    },
+    {
+      "id": "a5606b468372464d9b0dbba538cc400d",
+      "kind": "local-motion",
+      "status": "completed",
+      "elapsed_seconds": 4.827844,
+      "error": null,
+      "verified": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 24,
+        "frames": 72,
+        "duration": 3.0,
+        "kind": "local-motion-candidate",
+        "final_output_approved": false
+      }
+    },
+    {
+      "id": "6ffb2cb52a7b4c898aaedd1713348091",
+      "kind": "final-render",
+      "status": "completed",
+      "elapsed_seconds": 3.796804,
+      "error": null,
+      "verified": {
+        "duration": 30.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "24/1",
+        "audio_sample_rate": "48000",
+        "frame_timing": {
+          "fps": 24,
+          "policy": "nearest-internal-ceil-final",
+          "requested_duration": 30.0,
+          "duration": 30.0,
+          "clips": [
+            {
+              "start_frame": 0,
+              "end_frame": 60,
+              "frames": 60,
+              "start": 0.0,
+              "end": 2.5
+            },
+            {
+              "start_frame": 60,
+              "end_frame": 120,
+              "frames": 60,
+              "start": 2.5,
+              "end": 5.0
+            },
+            {
+              "start_frame": 120,
+              "end_frame": 180,
+              "frames": 60,
+              "start": 5.0,
+              "end": 7.5
+            },
+            {
+              "start_frame": 180,
+              "end_frame": 240,
+              "frames": 60,
+              "start": 7.5,
+              "end": 10.0
+            },
+            {
+              "start_frame": 240,
+              "end_frame": 300,
+              "frames": 60,
+              "start": 10.0,
+              "end": 12.5
+            },
+            {
+              "start_frame": 300,
+              "end_frame": 360,
+              "frames": 60,
+              "start": 12.5,
+              "end": 15.0
+            },
+            {
+              "start_frame": 360,
+              "end_frame": 420,
+              "frames": 60,
+              "start": 15.0,
+              "end": 17.5
+            },
+            {
+              "start_frame": 420,
+              "end_frame": 480,
+              "frames": 60,
+              "start": 17.5,
+              "end": 20.0
+            },
+            {
+              "start_frame": 480,
+              "end_frame": 540,
+              "frames": 60,
+              "start": 20.0,
+              "end": 22.5
+            },
+            {
+              "start_frame": 540,
+              "end_frame": 600,
+              "frames": 60,
+              "start": 22.5,
+              "end": 25.0
+            },
+            {
+              "start_frame": 600,
+              "end_frame": 660,
+              "frames": 60,
+              "start": 25.0,
+              "end": 27.5
+            },
+            {
+              "start_frame": 660,
+              "end_frame": 720,
+              "frames": 60,
+              "start": 27.5,
+              "end": 30.0
+            }
+          ]
+        },
+        "streams": [
+          "video",
+          "audio",
+          "subtitle"
+        ],
+        "verified_at": 1793125062.9070349
+      }
+    }
+  ],
+  "owned_temporary_root": "/tmp/loretune-native-music-benchmark-yl8hnchu",
+  "url": "http://127.0.0.1:53015",
+  "corrected": {
+    ".mp4": {
+      "file": "corrected.mp4",
+      "sha256": "4f40c79ecfa23665d096fd8fea39790bff1d767b0580d8ce5c38c963d248e349",
+      "bytes": 477663,
+      "integrity": null
+    },
+    ".srt": {
+      "file": "corrected.srt",
+      "sha256": "895ae445375d1217febe9f3c6f43d76d2fb9ca5df489ca57c6c0aca29153e3a8",
+      "bytes": 131,
+      "integrity": null
+    },
+    ".json": {
+      "file": "corrected.json",
+      "sha256": "e67cad84dcd2beb25f7eb615efe802a409b130f55adc765e3de6cc0948e99e49",
+      "bytes": 19417,
+      "integrity": null
+    }
+  },
+  "source_after": {
+    "app.py": "a32b301cb489378d9e890414fa36ce17875c053af255216ee814898de0c0cab5",
+    "editing.py": "3e7b20c364a7a558da15da9d0979a46853eaa101216a40fd665ab73faa9af3c8",
+    "renderer.py": "2032babcdac01337e77e5fce9bef38c232e1c364daa465bed7fba26639708525",
+    "motion_scene.py": "aec910b146d0e04d53c2e5560d312adf16c5985875c66afbb937928acc8529a3",
+    "motion_renderer.py": "a83ccb5064d512d9350b37fb3842e2b8349fb1cf826d51c79fdb2c91c4f384e0",
+    "backup.py": "8d6c35fa5a0e39235a461f0f3fab622fbdd1d03c25cb76a811703624a0d790f6",
+    "loretune.py": "b59f5404537235e0c5dd00e9bbffd17aec834a22805a6288267c0964da5fc0d9",
+    "tests/test_motion.py": "7c6c7bcfda83b8d55d357f6d2b1a8e4024fdad692d3a2a4671f66a72d796ad38",
+    "native/motion_frame_renderer.swift": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d",
+    "tests/test_native_motion_color.py": "d9158bad5ebb5e599aabd4a15c41f8e49d59d7c267266f146241824954670b00"
+  },
+  "changed_sources": [],
+  "limits": [
+    "Actual native/HTTP outputs and controlled historical-source upgrade fixture; no user/browser/model test.",
+    "Existing 30s output pair remains historical and unmodified; corrected output uses fresh approvals/takes/timeline.",
+    "One local timing sample, not production throughput."
+  ]
+}

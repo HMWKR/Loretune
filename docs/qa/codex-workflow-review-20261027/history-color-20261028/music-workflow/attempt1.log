@@ -1,0 +1,55 @@
+127.0.0.1 - - [28/Oct/2026 03:06:40] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:40] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:41] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:43] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:43] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:48] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:48] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:06:48] "POST /api/action HTTP/1.1" 400 -
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-workflow-benchmark-20261028/run.py", line 341, in <module>
+    main()
+    ~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-workflow-benchmark-20261028/run.py", line 229, in main
+    api.action('declare_take_rights', shot=shot, take=1,
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               evidence='직접 작성한 도형·한글 모션과 시스템 글꼴로 만든 내부 합성 후보')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-workflow-benchmark-20261028/run.py", line 130, in action
+    return self.post(name, song='음원 중심 30초 벤치마크', **data)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-workflow-benchmark-20261028/run.py", line 126, in post
+    assert code == expected, (action, code, value)
+           ^^^^^^^^^^^^^^^^
+AssertionError: ('declare_take_rights', 400, {'error': '입력을 확인하세요: 사용권 확인 대상을 지정하세요.'})

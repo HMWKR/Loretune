@@ -1,0 +1,117 @@
+{
+  "checked_at": "2026-10-25T10:44:05.703661+00:00",
+  "server_url": "http://127.0.0.1:8773",
+  "runtime_source_matches": {
+    "app.py": true,
+    "index.html": true,
+    "rehearsal_workflow.py": true,
+    "action_execution.py": true,
+    "production_tools.py": true,
+    "chat_protocols.py": true,
+    "anthropic_ontology.py": true
+  },
+  "full_regression": {
+    "tests": 194,
+    "seconds": 23.917,
+    "status": "pass",
+    "log": "frozen-app-evaluation-regression.log"
+  },
+  "usage_calculated_usd": "0.0049575",
+  "billing_confirmed": false,
+  "trials": [
+    {
+      "id": "ontology-smoke-001",
+      "state": "response_validation_failed",
+      "held_micro": 1434,
+      "actual_micro": 1153,
+      "request_id": "req_011CgNn1N4CFqz2GQs6XFV8b",
+      "usage_cost_usd": "0.0011523",
+      "billing_confirmed": false
+    },
+    {
+      "id": "ontology-eval-001",
+      "state": "response_validation_failed",
+      "held_micro": 4506,
+      "actual_micro": 1350,
+      "request_id": "req_011CgNnJnAFY48aPMNgGnsju",
+      "usage_cost_usd": "0.0013493",
+      "billing_confirmed": false
+    },
+    {
+      "id": "ontology-eval-002",
+      "state": "validated",
+      "held_micro": 4506,
+      "actual_micro": 1143,
+      "request_id": "req_011CgNnq6PSep9gS4pGoQk8p",
+      "usage_cost_usd": "0.0011427",
+      "billing_confirmed": false
+    },
+    {
+      "id": "claude-tools-representative-1",
+      "state": "verified_roundtrip",
+      "held_micro": 2458,
+      "actual_micro": 110,
+      "request_id": "req_011CgNoGiJPqGqzUde26B171",
+      "usage_cost_usd": "0.0001099",
+      "billing_confirmed": false
+    },
+    {
+      "id": "claude-tools-representative-2",
+      "state": "response_validation_failed",
+      "held_micro": 2458,
+      "actual_micro": 258,
+      "request_id": "req_011CgNoGsLr5bGTy9pTw8toA",
+      "usage_cost_usd": "0.0002575",
+      "billing_confirmed": false
+    },
+    {
+      "id": "claude-tools-diagnostic-1",
+      "state": "verified_roundtrip",
+      "held_micro": 2458,
+      "actual_micro": 112,
+      "request_id": "req_011CgNoQxXcca8QVS6X6bcJK",
+      "usage_cost_usd": "0.000112",
+      "billing_confirmed": false
+    },
+    {
+      "id": "claude-tools-diagnostic-2",
+      "state": "verified_roundtrip",
+      "held_micro": 2458,
+      "actual_micro": 389,
+      "request_id": "req_011CgNoRbEEtH8ZoYvqb9bby",
+      "usage_cost_usd": "0.0003889",
+      "billing_confirmed": false
+    },
+    {
+      "id": "claude-tools-diagnostic-3",
+      "state": "blocked_before_message",
+      "held_micro": 0,
+      "actual_micro": null,
+      "request_id": null,
+      "usage_cost_usd": null,
+      "billing_confirmed": false
+    },
+    {
+      "id": "claude-answer-v1-001",
+      "state": "semantic_failed",
+      "held_micro": 2458,
+      "actual_micro": 445,
+      "request_id": "req_011CgNp3zRkXojFjzqBCWFhs",
+      "usage_cost_usd": "0.0004449",
+      "billing_confirmed": false
+    }
+  ],
+  "fixes": {
+    "B01": [
+      "action_execution.py",
+      "app.py",
+      "chat_protocols.py",
+      "tests/test_rehearsal_workflow.py::test_b01_handoff_preserves_new_job_after_model_switch"
+    ],
+    "B02": [
+      "action_execution.py",
+      "production_tools.py",
+      "tests/test_rehearsal_workflow.py::test_b02_invalid_references_are_persisted_and_bounded"
+    ]
+  }
+}

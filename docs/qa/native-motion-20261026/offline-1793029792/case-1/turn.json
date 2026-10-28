@@ -1,0 +1,117 @@
+{
+  "id": "ce3b9aacf48a4c508c7dd3a6a9b497d0",
+  "project": "52d6fc30-e0a9-5fb5-96ea-0c79bc98ca68",
+  "name": "A",
+  "run": "3eff276e49274d16b1cad1861eb5c96c",
+  "prompt": "Synthetic test: query current project context, then propose exactly one original motion scene for shot 모션. You author all composition, colors, positions and timing. Use exactly three stable layers: title text \"새로운 리듬\", bar rectangle, dot circle. Four seconds, 1920x1080, 24fps, 96 frames. Title font_size 80 and textbox at least 800x150; keep visible content within canvas. Font system-ko-regular for all layers, shapes text empty. Give title and bar visible intervals 0..96 and animate their opacity or position. Give dot interval in_frame=0,out_frame=72, and at least two moving keyframes at frame 0 and frame 60, with no keys later than 60, so a future 12-frame shift fits. Use supported keyframes and easing only. Do not approve, render or execute code. After saved tool receipt explain in Korean what you proposed and that it still needs human approval.",
+  "status": "blocked_before_message",
+  "mode": "contract-fake",
+  "model": "claude-haiku-5-5",
+  "binding": "833c7a07210627e9582d5c5d7845f477b7aca6b58a93c96405c9988a36af3d61",
+  "answer": null,
+  "answer_review": "unreviewed",
+  "steps": [
+    {
+      "round": 0,
+      "mode": "contract-fake",
+      "input_sha256": "69a94892e4f738abf063ef5e03886cd7e2faaabdd109a39d90fd26122508fdf2",
+      "status": "preflight_started",
+      "request_id": null,
+      "tool_calls": []
+    }
+  ],
+  "usage_cost_usd": "0",
+  "billing_confirmed": false,
+  "handoff": {
+    "context": {
+      "value": {
+        "model_settings": {
+          "revision": 1,
+          "selections": {
+            "chat": "anthropic-haiku-5-5",
+            "image": null,
+            "video": null
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "anthropic-haiku-5-5"
+              },
+              "at": 1793029792.9590552
+            }
+          ]
+        },
+        "context": {
+          "music": null,
+          "snapshot": [],
+          "ontology": null
+        },
+        "approved_shots": [
+          {
+            "id": "모션",
+            "selected": null,
+            "revision": 0
+          }
+        ]
+      },
+      "sha256": "c78d34fc7650f21842f347773d277df1885237b2aeea4b5c093aec790abf83ba"
+    },
+    "messages": [],
+    "jobs": [],
+    "execution_targets": {
+      "shots": [
+        {
+          "shot_id": "5019457fbfd35f01948de78b180b0149",
+          "name": "모션",
+          "revision": 0,
+          "selected_take": null,
+          "takes": [],
+          "reference_head": null,
+          "reference_versions": [],
+          "motion": {
+            "revision": 0,
+            "scene": null,
+            "grant_id": null
+          }
+        }
+      ],
+      "timeline": {
+        "version": 0,
+        "clips": [
+          {
+            "index": 0,
+            "shot_id": "5019457fbfd35f01948de78b180b0149",
+            "shot_name": "모션",
+            "take": null,
+            "trim": 0,
+            "duration": 3
+          }
+        ],
+        "audio_version": null,
+        "audio_offset": 0,
+        "captions": [],
+        "profile": "landscape",
+        "grant_id": null
+      },
+      "plans": [],
+      "actions": [],
+      "ontology_revision": 0,
+      "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+    },
+    "instructions": "서버 상태만 작업 결과로 설명하세요. 미수집 결과를 완료로 설명하지 마세요.",
+    "embedding_policy": "unchanged",
+    "session_request_history": {
+      "schema_version": 1,
+      "scope": {
+        "workspace_id": "43a6eb7a-f7ad-4d04-a6d5-a8ceed4b02f3",
+        "project_id": "52d6fc30-e0a9-5fb5-96ea-0c79bc98ca68",
+        "conversation": "project-default"
+      },
+      "requests": [],
+      "digest": "2730380da6b1d6cd87edf215656eb083c9238a52ed4e0d4be1482fec771e9960"
+    }
+  },
+  "error": "요청을 안전하게 중단했습니다. 기존 결과·비용 상태를 확인하세요. 자동 재시도하지 않습니다."
+}

@@ -1,0 +1,281 @@
+--- a/anthropic_ontology.py
++++ b/anthropic_ontology.py
+@@ -15,8 +15,30 @@
+ ENDPOINT = 'https://api.anthropic.com/v1/messages'
+ 
+ 
++def verified_request_id(value):
++    if (isinstance(value, str) and value.startswith('req_') and 4 < len(value) < 200
++            and value.isascii() and all(c.isalnum() or c in '_-' for c in value)):
++        return value
++    return None
++
++
++def safe_failure(category='unavailable', http_status=None, request_id=None):
++    # Closed metadata only. Never stringify upstream exceptions or response bodies.
++    allowed = {'credentials', 'request_invalid', 'request_too_large', 'http',
++               'transport', 'malformed_response', 'input_limit', 'unavailable'}
++    value = {'category': category if isinstance(category, str) and category in allowed else 'unavailable'}
++    if type(http_status) is int and 100 <= http_status <= 599:
++        value['http_status'] = http_status
++    identifier = verified_request_id(request_id)
++    if identifier is not None:
++        value['request_id'] = identifier
++    return value
++
++
+ class ProposalError(ValueError):
+-    pass
++    def __init__(self, message, *, category='unavailable', http_status=None, request_id=None):
++        super().__init__(message)
++        self.failure = safe_failure(category, http_status, request_id)
+ 
+ 
+ def obj(properties):
+@@ -160,68 +182,75 @@
+         try:
+             payload = json.dumps(body, ensure_ascii=False, allow_nan=False).encode('utf-8')
+         except Exception:
+-            raise ProposalError('provider request invalid') from None
++            raise ProposalError('provider request invalid', category='request_invalid') from None
+         if len(payload) > self.max_request_bytes:
+-            raise ProposalError('provider request too large')
++            raise ProposalError('provider request too large', category='request_too_large')
+         return payload
+ 
+     def __call__(self, endpoint, headers, body):
+         # Pin complete URL: queries, userinfo, alternate ports and fragments fail.
+         if endpoint != self.endpoint:
+-            raise ProposalError('provider endpoint not allowed')
++            raise ProposalError('provider endpoint not allowed', category='request_invalid')
+         if not isinstance(headers, dict) or set(headers) != {'x-api-key', 'anthropic-version', 'content-type'}:
+-            raise ProposalError('provider headers invalid')
++            raise ProposalError('provider headers invalid', category='request_invalid')
+         if headers['anthropic-version'] != '2023-06-01' or headers['content-type'] != 'application/json':
+-            raise ProposalError('provider headers invalid')
++            raise ProposalError('provider headers invalid', category='request_invalid')
+         if any(not isinstance(v, str) or not v or '\r' in v or '\n' in v for v in headers.values()):
+-            raise ProposalError('provider headers invalid')
++            raise ProposalError('provider headers invalid', category='request_invalid')
+         payload = self.encode_body(body)
+         request = urllib.request.Request(self.endpoint, data=payload, headers=headers, method='POST')
+         opener = self._opener or urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect())
++        request_id = None
+         try:
+             deadline = time.monotonic() + self.timeout
+             with opener.open(request, timeout=self.timeout) as response:
+                 if response.geturl() != self.endpoint:
+-                    raise ProposalError('provider response origin invalid')
++                    raise ProposalError('provider response origin invalid', category='malformed_response')
++                request_id = verified_request_id(response.headers.get('request-id'))
+                 if response.status != 200:
+-                    raise ProposalError('provider HTTP response rejected')
++                    raise ProposalError('provider HTTP response rejected', category='http', http_status=response.status, request_id=request_id)
+                 mime = response.headers.get('Content-Type', '').split(';', 1)[0].strip().lower()
+                 if mime != 'application/json' or response.headers.get('Content-Encoding', 'identity').lower() != 'identity':
+-                    raise ProposalError('provider response format invalid')
++                    raise ProposalError('provider response format invalid', category='malformed_response', request_id=request_id)
+                 length = response.headers.get('Content-Length')
+                 expected = None
+                 if length is not None:
+                     if not length.isdigit() or int(length) > 100000:
+-                        raise ProposalError('provider response size invalid')
++                        raise ProposalError('provider response size invalid', category='malformed_response', request_id=request_id)
+                     expected = int(length)
+                 raw = bytearray()
+                 while True:
+                     if time.monotonic() >= deadline:
+-                        raise ProposalError('provider response timed out')
++                        raise ProposalError('provider response timed out', category='transport', request_id=request_id)
+                     block = response.read(min(16384, 100001 - len(raw)))
+                     if not block:
+                         break
+                     raw.extend(block)
+                     if len(raw) > 100000:
+-                        raise ProposalError('provider response too large')
++                        raise ProposalError('provider response too large', category='malformed_response', request_id=request_id)
+                 if expected is not None and len(raw) != expected:
+-                    raise ProposalError('provider response incomplete')
+-                result = json.loads(raw.decode('utf-8'))
++                    raise ProposalError('provider response incomplete', category='malformed_response', request_id=request_id)
++                try:
++                    result = json.loads(raw.decode('utf-8'))
++                except (ValueError, UnicodeError):
++                    raise ProposalError('provider response invalid', category='malformed_response', request_id=request_id) from None
+                 if not isinstance(result, dict):
+-                    raise ProposalError('provider response invalid')
+-                request_id=response.headers.get('request-id')
+-                if isinstance(request_id,str) and request_id.startswith('req_') and len(request_id)<200 and all(x.isalnum() or x in '_-' for x in request_id):
+-                    result['_request_id']=request_id
++                    raise ProposalError('provider response invalid', category='malformed_response', request_id=request_id)
++                # Only a validated header may supply provider request provenance.
++                result.pop('_request_id', None)
++                if request_id is not None:
++                    result['_request_id'] = request_id
+                 return result
+-        except ProposalError:
+-            raise ProposalError('provider response rejected; no automatic retry') from None
++        except ProposalError as exc:
++            raise ProposalError('provider response rejected; no automatic retry', **safe_failure(**exc.failure)) from None
+         except urllib.error.HTTPError as exc:
+             # Never read provider error body, which can echo prompts or credentials.
+-            code = exc.code if isinstance(exc.code, int) and 100 <= exc.code <= 599 else 0
++            code = exc.code if type(exc.code) is int and 100 <= exc.code <= 599 else None
++            request_id = verified_request_id(exc.headers.get('request-id')) if exc.geturl() == self.endpoint and exc.headers else None
+             exc.close()
+-            raise ProposalError(f'provider HTTP {code}; no automatic retry') from None
+-        except Exception:
+-            raise ProposalError('provider transport failed; outcome unknown; no automatic retry') from None
++            raise ProposalError('provider HTTP failure; no automatic retry', category='http', http_status=code, request_id=request_id) from None
++        except Exception:
++            raise ProposalError('provider transport failed; outcome unknown; no automatic retry', category='transport', request_id=request_id) from None
+ 
+ 
+ class BoundedCountTransport(BoundedMessagesTransport):
+--- a/chat_runtime.py
++++ b/chat_runtime.py
+@@ -76,19 +76,29 @@
+   encode(body)
+  def _call(self,body,*,count):
+   if not self.enabled:raise ValueError('provider disabled')
+-  key=None;headers=None
++  key=None;headers=None;failure_category='credentials'
+   try:
+    key=self.supplier('Anthropic_KEY')
+    if not isinstance(key,str) or not key:raise ValueError()
+    headers={'x-api-key':key,'anthropic-version':'2023-06-01','content-type':'application/json'}
++   failure_category='transport'
+    result=(self.count_transport if count else self.message_transport)(anthropic.BoundedCountTransport.endpoint if count else anthropic.ENDPOINT,headers,body)
++   failure_category='malformed_response'
+    # Never persist provider private reasoning or a response echoing a credential.
+    visible=[b for b in result.get('content',[]) if b.get('type') in {'text','tool_use'}]
+    if key in json.dumps({'content':visible,'request_id':result.get('_request_id'),'usage':result.get('usage')}):raise ValueError()
+    return result
+-  except Exception:raise ValueError('provider request/response unavailable; no automatic retry') from None
++  except Exception as exc:
++   failure=anthropic.safe_failure(**exc.failure) if isinstance(exc,anthropic.ProposalError) else anthropic.safe_failure(failure_category)
++   if isinstance(key,str) and key and key in failure.get('request_id',''):failure.pop('request_id')
++   raise anthropic.ProposalError('provider request/response unavailable; no automatic retry',**failure) from None
+   finally:key=None;headers=None
+- def count(self,body):return self._call({k:v for k,v in body.items() if k!='max_tokens'},count=True)['input_tokens']
++ def count(self,body):
++  result=self._call({k:v for k,v in body.items() if k!='max_tokens'},count=True)
++  tokens=result.get('input_tokens')
++  if type(tokens) is not int or tokens<0:
++   raise anthropic.ProposalError('provider count response invalid',category='malformed_response',request_id=result.get('_request_id'))
++  return tokens
+  def complete(self,body):return self._call(body,count=False)
+ 
+ class UsageJournal:
+@@ -203,7 +213,7 @@
+     if preflight is not None:preflight(body)
+     step['status']='count_started';self._save(t);self.journal.update(identifier,'count_started',step)
+     tokens=self.adapter.count(body);step['input_tokens_counted']=tokens
+-    if type(tokens) is not int or not 0<=tokens<=limits['input']:raise ValueError('input cap')
++    if type(tokens) is not int or not 0<=tokens<=limits['input']:raise anthropic.ProposalError('input cap',category='input_limit')
+     self._fresh(t);submitted=True;step['status']='message_started';self._save(t);self.journal.update(identifier,'message_started',step)
+     response=self.adapter.complete(body);received=True
+     usage=chat_models.usage(self.spec,response)
+@@ -229,9 +239,14 @@
+     messages=chat_models.continuation(self.spec,messages,response,tool_results)
+     step['status']='tools_applied';self.journal.update(identifier,'completed',step);self._save(t)
+    else:t.update(status='limit_reached',error='허용한 도구 회차에 도달했습니다. 저장된 결과를 검토하세요.');self._save(t)
+-  except Exception:
++  except Exception as exc:
+    status='response_validation_failed' if received else 'outcome_unknown' if submitted else 'blocked_before_message'
+-   if attempt:self.journal.update(attempt,status,{'turn':t['id'],'messages_submitted':submitted},release=not submitted)
++   if attempt:
++    metadata={'turn':t['id'],'messages_submitted':submitted}
++    if isinstance(exc,anthropic.ProposalError):
++     failure=dict(stage={'preflight_started':'preflight','count_started':'count','message_started':'messages'}.get(step['status'],'response'),**anthropic.safe_failure(**exc.failure))
++     step['failure']=failure;metadata['failure']=failure
++    self.journal.update(attempt,status,metadata,release=not submitted)
+    t.update(status=status,error='요청을 안전하게 중단했습니다. 기존 결과·비용 상태를 확인하세요. 자동 재시도하지 않습니다.');self._save(t)
+   self._close_run(t)
+   return True
+--- /dev/null
++++ b/tests/test_count_diagnostics.py
+@@ -0,0 +1,83 @@
++"""Offline provenance tests: never read an error body or persist upstream text."""
++import io,json,sqlite3,unittest,urllib.error
++from unittest.mock import Mock
++import anthropic_ontology as provider
++import chat_runtime as chat
++from tests import test_chat_runtime as fixture
++from test_anthropic_transport import Response
++
++KEY='synthetic-key-DO-NOT-RETAIN'
++PRIVATE='private-customer-DO-NOT-RETAIN'
++RID='req_synthetic_count_01'
++class NoRead(io.BytesIO):
++ def read(self,*args,**kwargs):raise AssertionError('error body must never be read')
++class DiagnosticsTest(unittest.TestCase):
++ setUp=fixture.ChatRuntimeTest.setUp
++ call=fixture.ChatRuntimeTest.call
++ connect=fixture.ChatRuntimeTest.connect
++ enqueue=fixture.ChatRuntimeTest.enqueue
++ turn=fixture.ChatRuntimeTest.turn
++ rows=fixture.ChatRuntimeTest.rows
++ def setup_diagnostic(self,*,count_failure=None,count_raw=b'{"input_tokens":100}',rid=RID,message_failure=None,supplier_failure=None):
++  self.co=Mock();self.mo=Mock();self.secret_calls=[]
++  if count_failure is not None:self.co.open.side_effect=count_failure
++  else:self.co.open.return_value=Response(count_raw,url=provider.BoundedCountTransport.endpoint,headers={'Content-Type':'application/json','request-id':rid})
++  if message_failure is not None:self.mo.open.side_effect=message_failure
++  else:self.mo.open.return_value=Response(json.dumps(fixture.response()).encode())
++  def supplier(name):
++   self.secret_calls.append(name)
++   if supplier_failure:raise supplier_failure
++   return KEY
++  a=chat.AnthropicChatAdapter(supplier,enabled=True,count_transport=provider.BoundedCountTransport(opener=self.co,max_request_bytes=65536),message_transport=provider.BoundedMessagesTransport(opener=self.mo,max_request_bytes=65536));a.mode='contract-fake';self.connect(a)
++ def execute(self):self.enqueue();self.runtime.process_next();return self.turn()
++ def failure(self):
++  t=self.turn()
++  with sqlite3.connect(self.journal) as c:meta=json.loads(c.execute('SELECT metadata FROM trials ORDER BY rowid DESC LIMIT 1').fetchone()[0])
++  self.assertEqual(t['steps'][-1]['failure'],meta['failure']);return meta['failure']
++ def no_leaks(self):
++  for p in self.root.rglob('*'):
++   if p.is_file():
++    data=p.read_bytes()
++    for value in [KEY,PRIVATE,'authorization','x-api-key']:
++     self.assertNotIn(value.encode(),data,str(p))
++ def test_count_http_status_and_header_id_no_error_body_or_secret(self):
++  failure=urllib.error.HTTPError(provider.BoundedCountTransport.endpoint,400,KEY+PRIVATE,{'request-id':RID,'authorization':KEY},NoRead((KEY+PRIVATE).encode()))
++  self.setup_diagnostic(count_failure=failure);self.execute()
++  self.assertEqual(self.failure(),dict(stage='count',category='http',http_status=400,request_id=RID))
++  self.assertEqual(self.rows(),[('blocked_before_message',0,None)]);self.mo.open.assert_not_called();self.no_leaks()
++ def test_invalid_http_status_and_request_id_are_omitted(self):
++  failure=urllib.error.HTTPError(provider.BoundedCountTransport.endpoint,999,PRIVATE,{'request-id':'req_bad\r\n'+KEY},NoRead())
++  self.setup_diagnostic(count_failure=failure);self.execute()
++  self.assertEqual(self.failure(),dict(stage='count',category='http'));self.no_leaks()
++ def test_count_transport_timeout_has_no_upstream_text_and_no_retry(self):
++  self.setup_diagnostic(count_failure=TimeoutError(KEY+PRIVATE));self.execute()
++  self.assertEqual(self.failure(),dict(stage='count',category='transport'))
++  self.assertEqual(self.rows(),[('blocked_before_message',0,None)]);self.assertFalse(self.runtime.process_next());self.assertEqual(self.co.open.call_count,1);self.mo.open.assert_not_called();self.no_leaks()
++ def test_malformed_json_preserves_only_valid_header_id(self):
++  self.setup_diagnostic(count_raw=(KEY+PRIVATE).encode());self.execute()
++  self.assertEqual(self.failure(),dict(stage='count',category='malformed_response',request_id=RID));self.no_leaks()
++ def test_missing_count_field_is_malformed_not_silent_transport_error(self):
++  self.setup_diagnostic(count_raw=json.dumps({'echo':KEY+PRIVATE}).encode());self.execute()
++  self.assertEqual(self.failure(),dict(stage='count',category='malformed_response',request_id=RID));self.no_leaks()
++ def test_response_body_cannot_supply_request_id(self):
++  self.setup_diagnostic(count_raw=json.dumps({'_request_id':'req_forged_body','echo':PRIVATE}).encode(),rid='invalid header')
++  self.execute();self.assertEqual(self.failure(),dict(stage='count',category='malformed_response'));self.no_leaks()
++ def test_credential_failure_is_classified_without_reading_files(self):
++  self.setup_diagnostic(supplier_failure=ValueError(KEY+PRIVATE));self.execute()
++  self.assertEqual(self.failure(),dict(stage='count',category='credentials'));self.co.open.assert_not_called();self.mo.open.assert_not_called();self.no_leaks()
++ def test_messages_timeout_stays_unknown_and_reserved(self):
++  self.setup_diagnostic(message_failure=TimeoutError(KEY+PRIVATE));self.execute()
++  self.assertEqual(self.failure(),dict(stage='messages',category='transport'))
++  self.assertEqual(self.rows(),[('outcome_unknown',2458,None)])
++  with self.assertRaises(ValueError):self.enqueue()
++  self.assertEqual(self.mo.open.call_count,1);self.assertFalse(self.runtime.process_next());self.no_leaks()
++ def test_request_id_echoing_credential_is_omitted(self):
++  failure=urllib.error.HTTPError(provider.BoundedCountTransport.endpoint,400,PRIVATE,{'request-id':'req_'+KEY},NoRead())
++  self.setup_diagnostic(count_failure=failure);self.execute()
++  self.assertEqual(self.failure(),dict(stage='count',category='http',http_status=400));self.no_leaks()
++ def test_over_limit_count_is_a_local_limit_failure(self):
++  self.setup_diagnostic(count_raw=b'{"input_tokens":4097}');self.execute()
++  self.assertEqual(self.failure(),dict(stage='count',category='input_limit'))
++  self.assertEqual(self.rows(),[('blocked_before_message',0,None)]);self.mo.open.assert_not_called();self.no_leaks()
++
++if __name__=='__main__':unittest.main()

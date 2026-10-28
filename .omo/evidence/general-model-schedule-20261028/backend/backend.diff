@@ -1,0 +1,250 @@
+--- before/app.py
++++ after/app.py
+@@ -339,7 +339,7 @@
+                 pid=contracts.project_id(self.workspace_id,name)
+                 p['general_chat_previews']=[chat_general.public_preview(x) for x in (json.loads(r[0]) for r in c.execute('SELECT body FROM general_chat_previews WHERE project=? AND conversation=? ORDER BY rowid',(pid,cid))) if x['state']=='pending']
+                 p['general_chat_turns']=[chat_general.public_turn(json.loads(r[0])) for r in c.execute('SELECT body FROM general_chat_turns WHERE project=? AND conversation=? ORDER BY rowid',(pid,cid))]
+-                p['general_chat_connection']=self.general_chat_runtime.capability() if self.general_chat_runtime else dict(available=False,mode='disconnected',external_transmission=False,reason='일반 채팅 연결 없음')
++                p['general_chat_connection']=self.general_chat_runtime.capability(chat_sessions.scoped(json.loads(body)['projects'][name],cid)) if self.general_chat_runtime else dict(configured=False,available=False,mode='disconnected',external_transmission=False,reason='일반 채팅 연결 없음')
+                 p['scenes_3d']=scene_project.public(c,self,p,name,cid)
+                 p['scene_3d_assets']=scene_project.public_assets(c,self,name,cid)
+                 p['scene_3d_connection']=scene_project.capability(self)
+--- before/chat_general.py
++++ after/chat_general.py
+@@ -177,6 +177,7 @@
+ def selected(p):
+     result = model_selection.resolve('chat', explicit=chat_sessions.selected_chat(p))['selection']
+     if not result or result['provider'] != 'anthropic': raise ValueError('선택된 Claude 모델이 필요합니다.')
++    if result['state'] in {'disabled','retired','integration_blocked'}:raise ValueError('선택한 모델은 현재 사용할 수 없습니다.')
+     return chat_models.contract(result['id'])
+ 
+ 
+@@ -184,13 +185,22 @@
+     return digest(c.execute('SELECT sha256,blocked,reason,updated FROM asset_rights ORDER BY sha256').fetchall())
+ 
+ 
+-def binding(c, store, p, name):
++def binding(c, store, p, name, *, turn=None):
+     spec = selected(p)
+     value=dict(workspace=store.workspace_id, project=contracts.project_id(store.workspace_id, name),
+                 conversation=chat_sessions.current(p), selection=spec['id'], model=spec['model'],
+                 model_revision=chat_sessions.resolve(p, chat_sessions.current(p))['model_revision'],
+                 context=model_selection.snapshot(p)['sha256'], rights=rights_snapshot(c),
+                 price_revision=spec['price_revision'])
++    session=chat_sessions.resolve(p,chat_sessions.current(p))
++    pending=session.get('pending_chat_selection') or {}
++    if (turn and pending.get('after_turn')==turn['id'] and
++        pending.get('execution_run')==turn['run'] and
++        pending.get('execution_selection')==turn['binding']['selection'] and
++        pending.get('reserved_model_revision')==session['model_revision'] and
++        pending.get('execution_model_revision')==turn['binding']['model_revision'] and
++        value['selection']==turn['binding']['selection'] and value['model']==turn['binding']['model']):
++        value['model_revision']=turn['binding']['model_revision']
+     transport=transport_binding(store)
+     if transport:value['transport']=transport
+     return value
+@@ -343,6 +353,7 @@
+ 
+ 
+ def finish_run(project, turn, status):
++    if status=='completed':chat_sessions.apply_completed_selection(project,turn)
+     run=next((r for r in project.get('production_runs',[]) if r['id']==turn['run']),None)
+     if run:
+         run['state']=status
+@@ -377,7 +388,7 @@
+ def create_preview(c, store, p, name, prompt, maximum_micro, *, turn=None, history=None, total_maximum_micro=None, music_context=None, history_snapshot=None):
+     if not isinstance(prompt,str) or not 1 <= len(prompt.strip()) <= 2000: raise ValueError('대화 입력을 확인하세요.')
+     if type(maximum_micro) is not int or not 1 <= maximum_micro <= 100000: raise ValueError('요청 비용 상한을 확인하세요.')
+-    bound = binding(c,store,p,name); spec=selected(p)
++    bound = binding(c,store,p,name,turn=turn); spec=selected(p)
+     if history is None:
+         history_snapshot=conversation_history(c,bound)
+         history=[]
+@@ -448,6 +459,8 @@
+            (json.loads(r[0]).get('conversation_id') or chat_sessions.default_id(p))==chat_sessions.current(p)
+            for r in c.execute('SELECT body FROM chat_turns WHERE project=?',(contracts.project_id(store.workspace_id,name),))):
+         raise ValueError('기존 대화 결과를 먼저 확인하세요.')
++    if chat_sessions.resolve(p,chat_sessions.current(p)).get('pending_chat_selection'):
++        raise ValueError('완료되지 않은 응답의 모델 예약이 남아 있습니다. 사용할 모델을 다시 선택하세요.')
+     return create_preview(c,store,p,name,data['prompt'],data['maximum_micro'],total_maximum_micro=data.get('total_maximum_micro'))
+ 
+ 
+@@ -474,7 +487,8 @@
+     if not data['rights_confirmed']:raise ValueError('전송할 내용의 사용 권한 확인이 필요합니다.')
+     check_music_context(c,p,item)
+     check_history(c,item)
+-    if item['expires']<=time.time() or binding(c,store,p,name)!=item['binding']:raise ValueError('확인한 문맥이 변경됐습니다. 다시 확인하세요.')
++    execution_turn=get_row(c,'general_chat_turns',item['turn_id']) if item['turn_id'] else None
++    if item['expires']<=time.time() or binding(c,store,p,name,turn=execution_turn)!=item['binding']:raise ValueError('확인한 문맥이 변경됐습니다. 다시 확인하세요.')
+     if digest(item['message_body'])!=item['message_sha256'] or digest(item['count_body'])!=item['count_sha256']:raise ValueError('전송 내용이 변경됐습니다.')
+     if item['turn_id']:
+         turn=get_row(c,'general_chat_turns',item['turn_id'])
+@@ -551,13 +565,21 @@
+             transport.validate();transport.require_activation(store.workspace_id)
+         self.store=store;self.transport=transport
+ 
+-    def capability(self):
+-        if isinstance(self.transport,LiveTransport):
+-            return dict(available=True,mode=self.transport.mode,external_transmission=not self.transport.test_only,
+-                        account_verified=False,billing_verified=False,
+-                        reason='서버 연결 설정됨 · 계정 접근·청구 미검증 · 각 회차의 전송 범위와 비용 상한을 확인하세요.' if not self.transport.test_only else '로컬 시험 전송: 실제 Claude 연결 아님')
+-        return dict(available=True, mode='contract-fake', external_transmission=False,
+-                    reason='테스트 계약: 실제 Claude 연결 아님')
++    def capability(self, p=None):
++        live=isinstance(self.transport,LiveTransport)
++        value=dict(configured=True,available=True,mode=self.transport.mode if live else 'contract-fake',
++                   external_transmission=live and not self.transport.test_only,
++                   account_verified=False,billing_verified=False,
++                   reason='서버 연결 설정됨 · 계정 접근·청구 미검증 · 각 회차의 전송 범위와 비용 상한을 확인하세요.' if live and not self.transport.test_only else '로컬 시험 전송: 실제 Claude 연결 아님')
++        if p is not None:
++            value['current_selection']=chat_sessions.selected_chat(p)
++            value['supported_selection']='anthropic-haiku-5-5'
++            try:selected(p)
++            except ValueError as exc:value.update(available=False,reason=str(exc))
++            pending=chat_sessions.resolve(p,chat_sessions.current(p)).get('pending_chat_selection')
++            value['new_preview_available']=value['available'] and not bool(pending)
++            if pending:value['new_preview_reason']='모델 예약이 남아 있습니다. 진행 중인 응답을 확인하고, 완료되지 않았다면 사용할 모델을 다시 선택하세요.'
++        return value
+ 
+     def _current(self,c,turn,preview):
+         state=json.loads(c.execute('SELECT body FROM state WHERE id=1').fetchone()[0]);p=state['projects'].get(turn['name'])
+@@ -568,7 +590,7 @@
+         p=chat_sessions.scoped(p,turn['conversation_id'])
+         check_music_context(c,p,preview)
+         check_history(c,preview)
+-        if binding(c,self.store,p,turn['name'])!=preview['binding'] or preview['expires']<=time.time():raise ValueError('확인한 문맥이 변경됐습니다.')
++        if binding(c,self.store,p,turn['name'],turn=turn)!=preview['binding'] or preview['expires']<=time.time():raise ValueError('확인한 문맥이 변경됐습니다.')
+         if manifest_digest(preview)!=preview['manifest_sha256'] or digest(preview['message_body'])!=preview['message_sha256'] or digest(preview['count_body'])!=preview['count_sha256']:raise ValueError('전송 내용이 변경됐습니다.')
+         if preview['binding'].get('transport'):
+             message=chat_runtime.anthropic.BoundedMessagesTransport(max_request_bytes=65536).encode_body(preview['message_body'])
+--- before/chat_sessions.py
++++ after/chat_sessions.py
+@@ -48,10 +48,13 @@
+  model_selection.validate_selection('chat',selection)
+  session=resolve(p,current(p))
+  if type(expected) is not int or expected!=session['model_revision']:raise Conflict('대화 모델 선택이 변경됐습니다.')
+- if general_chat_active(c,pid,current(p)):
+-  raise ValueError('진행 중인 일반 채팅 결과를 확인한 후 모델을 변경하세요.')
+  turns=[json.loads(row[0]) for row in c.execute('SELECT body FROM chat_turns WHERE project=?',(pid,))]
+  active=[t for t in turns if (t.get('conversation_id') or default_id(p))==current(p) and t['status'] in {'queued','running','cancel_requested','outcome_unknown'}]
++ general=[]
++ if c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='general_chat_turns'").fetchone():
++  general=[json.loads(row[0]) for row in c.execute('SELECT body FROM general_chat_turns WHERE project=?',(pid,))]
++  general=[t for t in general if t.get('conversation_id')==current(p) and t['status'] in {'queued','running','cancel_requested','outcome_unknown','awaiting_continuation_approval'}]
++ active+=general
+  if any(t['status'] in {'cancel_requested','outcome_unknown'} for t in active):
+   raise ValueError('취소 중이거나 결과 미확정인 응답을 먼저 확인하세요. 실행 모델은 바꾸지 않았습니다.')
+  if len(active)>1:raise ValueError('진행 중인 대화 상태를 먼저 확인하세요.')
+@@ -59,12 +62,27 @@
+  item=next(x for x in p['chat_sessions'] if x['id']==current(p))
+  if active:
+   item.update(pending_chat_selection=dict(selection=selection,after_turn=active[0]['id']),model_revision=expected+1)
++  if general:
++   item['pending_chat_selection'].update(execution_model_revision=general[0]['binding']['model_revision'],reserved_model_revision=expected+1,execution_run=general[0]['run'],execution_selection=general[0]['binding']['selection'])
+   return deepcopy(item)
+  item.pop('pending_chat_selection',None)
+  item.update(chat_override=True,chat_selection=selection,model_revision=expected+1)
+  for run in p.get('production_runs',[]):
+   if run['state']=='accepting_tools':run['state']='superseded'
+  return deepcopy(item)
++
++def execution_model_revision(p,run):
++ """Honor only a server-bound reservation; general claim_tool also checks the SQL turn."""
++ session=resolve(p,current(p));pending=session.get('pending_chat_selection') or {}
++ if (run.get('conversation_id')==current(p) and pending.get('after_turn') and
++     p.get('conversation_owners',{}).get(pending['after_turn'],{}).get('conversation_id')==current(p) and
++     pending.get('execution_run')==run['id'] and
++     pending.get('execution_selection')==selected_chat(p) and
++     pending.get('reserved_model_revision')==session['model_revision'] and
++     pending.get('execution_model_revision')==run.get('conversation_model_revision')):
++  return pending['execution_model_revision']
++ return session['model_revision']
++
+ 
+ def apply_completed_selection(p,turn):
+  """Apply only the choice tied to this completed turn inside its DB transaction."""
+--- before/production_tools.py
++++ after/production_tools.py
+@@ -62,7 +62,7 @@
+     if run['state']!='accepting_tools':raise ValueError('RUN_NOT_ACCEPTING_TOOLS')
+     if call['complete'] is not True:raise ValueError('INCOMPLETE_TOOL_ARGUMENTS')
+     if len(run['calls'])>=run['limits']['tool_rounds']:raise ValueError('TOOL_ROUND_LIMIT')
+-    if run.get('conversation_model_revision',0)!=chat_sessions.resolve(project,chat_sessions.current(project))['model_revision']:raise Conflict('대화 모델 선택이 변경됐습니다.')
++    if run.get('conversation_model_revision',0)!=chat_sessions.execution_model_revision(project,run):raise Conflict('대화 모델 선택이 변경됐습니다.')
+     if run['snapshot']['sha256']!=model_selection.snapshot(project)['sha256']:
+         raise Conflict('제작 문맥이 변경됐습니다. 새 실행 문맥에서 검토하세요.')
+     try:validate(call['name'],call['arguments'])
+--- before/tests/test_chat_general_http.py
++++ after/tests/test_chat_general_http.py
+@@ -173,22 +173,39 @@
+         run=next(r for r in self.state()['projects']['A']['production_runs'] if r['id']==result['general_chat_turn'].get('run')) if result['general_chat_turn'].get('run') else self.state()['projects']['A']['production_runs'][-1]
+         self.assertEqual(run['state'],'cancelled')
+ 
+-    def test_model_change_is_blocked_until_general_turn_resolved(self):
+-        first=self.preview();status,result=self.approve(first);self.assertEqual(status,200,result)
++    def test_model_change_reserves_until_completion_and_cancel_requires_reselection(self):
++        first=self.preview();status,result=self.approve(first);self.assertEqual(status,200,result)
++        with self.http.store.connect() as c:
++            original_preview=chat_general.get_row(c,'general_chat_previews',first['id'])
++            original_turn=chat_general.get_row(c,'general_chat_turns',result['turn']['id'])
+         project=self.state()['projects']['A'];model_revision=project['active_conversation']['model_revision']
+         status,_=self.action('conversation_model',song='A',selection='xai-grok-4-7',model_revision=model_revision)
+-        self.assertEqual(status,400)
++        self.assertEqual(status,200)
++        self.assertEqual(self.state()['projects']['A']['effective_chat_selection'],'anthropic-haiku-5-5')
+         status,_=self.action('model_settings',song='A',selections={'chat':'xai-grok-4-7'},model_revision=project['model_settings']['revision'])
+         self.assertEqual(status,400)
+         project=self.state()['projects']['A']
+         self.assertEqual(project['general_chat_turns'][-1]['status'],'queued')
+-        self.assertEqual(project['active_conversation']['model_revision'],model_revision)
++        with self.http.store.connect() as c:
++            self.assertEqual(chat_general.get_row(c,'general_chat_previews',first['id']),original_preview)
++            self.assertEqual(chat_general.get_row(c,'general_chat_turns',result['turn']['id']),original_turn)
++        self.assertEqual(project['active_conversation']['model_revision'],model_revision+1)
++        self.assertEqual(project['active_conversation']['pending_chat_selection']['after_turn'],result['turn']['id'])
+         status,_=self.action('general_chat_cancel',song='A',turn=result['turn']['id']);self.assertEqual(status,200)
+         status,_=self.action('conversation_model',song='A',selection='xai-grok-4-7',model_revision=model_revision)
++        self.assertEqual(status,409)
++        project=self.state()['projects']['A']
++        self.assertEqual(project['effective_chat_selection'],'anthropic-haiku-5-5')
++        self.assertIn('pending_chat_selection',project['active_conversation'])
++        status,_=self.action('conversation_model',song='A',selection='xai-grok-4-7',model_revision=model_revision+1)
+         self.assertEqual(status,200)
++        self.assertNotIn('pending_chat_selection',self.state()['projects']['A']['active_conversation'])
+ 
+     def test_running_model_change_does_not_invalidate_approved_reply(self):
+         first=self.preview();status,result=self.approve(first);self.assertEqual(status,200,result)
++        with self.http.store.connect() as c:
++            original_preview=chat_general.get_row(c,'general_chat_previews',first['id'])
++            original_turn=chat_general.get_row(c,'general_chat_turns',result['turn']['id'])
+         transport=self.http.store.general_chat_runtime.transport
+         transport.responses=[response()];original=transport.complete
+         ready=threading.Event();resume=threading.Event()
+@@ -202,7 +219,8 @@
+                 self.assertTrue(ready.wait(10))
+                 project=self.state()['projects']['A'];model_revision=project['active_conversation']['model_revision']
+                 status,_=self.action('conversation_model',song='A',selection='xai-grok-4-7',model_revision=model_revision)
+-                self.assertEqual(status,400)
++                self.assertEqual(status,200)
++                self.assertEqual(self.state()['projects']['A']['effective_chat_selection'],'anthropic-haiku-5-5')
+                 status,_=self.action('model_settings',song='A',selections={'chat':'xai-grok-4-7'},model_revision=project['model_settings']['revision'])
+                 self.assertEqual(status,400)
+             finally:
+@@ -210,7 +228,17 @@
+             self.assertFalse(worker.is_alive())
+         project=self.state()['projects']['A'];self.assertEqual(project['general_chat_turns'][-1]['status'],'completed')
+         self.assertEqual(project['production_runs'][-1]['state'],'completed')
++        with self.http.store.connect() as c:
++            self.assertEqual(chat_general.get_row(c,'general_chat_previews',first['id']),original_preview)
++            completed=chat_general.get_row(c,'general_chat_turns',result['turn']['id'])
++            self.assertEqual(completed['binding'],original_turn['binding'])
++            self.assertEqual(completed['model'],original_turn['model'])
++        self.assertEqual(len(transport.messages),1)
++        self.assertEqual(project['effective_chat_selection'],'xai-grok-4-7')
++        self.assertNotIn('pending_chat_selection',project['active_conversation'])
+         status,_=self.action('conversation_model',song='A',selection='xai-grok-4-7',model_revision=model_revision)
++        self.assertEqual(status,409)
++        status,_=self.action('conversation_model',song='A',selection='xai-grok-4-7',model_revision=model_revision+1)
+         self.assertEqual(status,200)
+     def connect_synthetic(self):
+         project=self.state()['projects']['A']

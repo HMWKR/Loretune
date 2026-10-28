@@ -1,0 +1,104 @@
+---
+license: mit
+pipeline_tag: image-to-3d
+tags:
+  - image-to-3d
+  - 3d-generation
+  - mesh-generation
+  - triposg
+base_model:
+  - VAST-AI/TripoSG
+---
+
+# TripoSG — image-to-3D mesh
+
+1.5B rectified-flow image-to-mesh generator. **≈20–30 s** per mesh on an
+RTX 5090, producing dense watertight geometry straight from a single photo.
+
+> **What this repo is:** the TripoSG and TripoSG-scribble pipelines plus the
+> RMBG-1.4 background remover they need — weights only, not a retrain. The
+> samples below were generated with this build, not copied from upstream.
+
+---
+
+## Samples
+
+Single image in, mesh out. Source images were rendered with Z-Image Turbo;
+the meshes are Blender Workbench clay renders of the raw `.glb` output — no
+cleanup, no retopology, no texturing.
+
+<table>
+<tr><td><img src="https://huggingface.co/ChrisColeTech/TripoSG/resolve/main/samples/src-robot.png" width="330" alt="source photograph of a retro robot toy"></td><td><img src="https://huggingface.co/ChrisColeTech/TripoSG/resolve/main/samples/mesh-robot.png" width="330" alt="generated mesh, front three-quarter view"></td></tr>
+<tr><td><sub>**source** — `a cute chunky retro robot toy standing upright, rounded metal body, simple friendly face, studio product photograph on a plain white background`</sub></td><td><sub>**mesh** — 15.2 MB `.glb`, generated in 30 s, seed 42</sub></td></tr>
+<tr><td><img src="https://huggingface.co/ChrisColeTech/TripoSG/resolve/main/samples/src-teapot.png" width="330" alt="source photograph of a porcelain teapot"></td><td><img src="https://huggingface.co/ChrisColeTech/TripoSG/resolve/main/samples/mesh-teapot.png" width="330" alt="generated mesh, front three-quarter view"></td></tr>
+<tr><td><sub>**source** — `an ornate ceramic teapot with a curved spout and handle, glazed blue and white porcelain, studio product photograph`</sub></td><td><sub>**mesh** — 37.6 MB `.glb`, generated in 18 s, seed 42</sub></td></tr>
+</table>
+
+### Textured (`img2mesh_textured`)
+
+The same robot run through the full chain — TripoSG shape, then the paint
+stage — instead of shape alone.
+
+<table>
+<tr><td><img src="https://huggingface.co/ChrisColeTech/TripoSG/resolve/main/samples/mesh-robot.png" width="330" alt="untextured shape output"></td><td><img src="https://huggingface.co/ChrisColeTech/TripoSG/resolve/main/samples/mesh-robot-textured.png" width="330" alt="same mesh after the paint stage"></td></tr>
+<tr><td><sub>**`img2mesh`** — 15.2 MB, 845k faces, **18 s**</sub></td><td><sub>**`img2mesh_textured`** — 27.6 MB with a baked base-colour texture, **+24 min** for the paint stage</sub></td></tr>
+</table>
+
+### Turntable
+
+Four views of the same mesh, 90° apart — the back is inferred, not copied.
+
+![robot turntable](https://huggingface.co/ChrisColeTech/TripoSG/resolve/main/samples/turntable-robot.png)
+
+![teapot turntable](https://huggingface.co/ChrisColeTech/TripoSG/resolve/main/samples/turntable-teapot.png)
+
+The chest panel, hand hooks and boot flare survive on the front; the unseen
+back is plausibly closed rather than hollow or spiked. Fine surface text and
+sub-millimetre detail do **not** survive — this is a shape model.
+
+## Recommended settings
+
+| Parameter | Production value | Meaning |
+|---|---|---|
+| `seed` | any | Deterministic per seed |
+| input | one RGB(A) image | Background is removed automatically via RMBG-1.4 |
+| output | `.glb` | Watertight triangle mesh, no texture |
+
+**Supported modes:** `img2mesh`, `img2mesh_textured` (texturing is a separate paint stage — see gotchas)
+
+### Notes and gotchas
+
+- **Give it one clean, centred subject on a plain background.** The pipeline
+  runs RMBG-1.4 first; a busy background costs you geometry, not just time.
+- **Mesh sizes vary hugely with subject complexity** — 15 MB for the robot,
+  38 MB for the teapot at identical settings. Budget disk accordingly if you
+  are generating in bulk.
+- **`img2mesh` output is untextured; texturing is a separate paint stage.**
+  `img2mesh_textured` chains a paint model after the shape model and does
+  produce a correctly textured mesh — but budget for it: on an 845k-face mesh
+  the paint stage took **≈24 minutes** (versus 18 s for the shape stage), and
+  nearly all of that is a pure-Python UV hole-filling loop rather than GPU
+  work. Plan the textured path as a batch job, not an interactive one.
+- **Orientation is consistent**: generated meshes come out facing +Y with the
+  source image's front as the front, so a fixed camera works across batches.
+- ≈10 GB VRAM resident at default settings.
+
+---
+
+## Files
+
+| Path | Size | Role |
+|---|---|---|
+| `split/TripoSG/transformer/` | 5.76 GB | main rectified-flow transformer |
+| `split/TripoSG/vae/` | 971 MB | shape VAE |
+| `split/TripoSG/image_encoder_dinov2/` | 1.22 GB | DINOv2 image encoder |
+| `split/TripoSG-scribble/` | 4.7 GB | scribble-conditioned variant (transformer + VAE + CLIP text encoder) |
+| `split/RMBG-1.4/` | 176 MB | background remover (run before meshing) |
+
+---
+
+## Provenance
+
+- **Upstream base model:** [`VAST-AI/TripoSG`](https://huggingface.co/VAST-AI/TripoSG) (MIT)
+- **This build:** redistributed as a split component tree alongside the scribble variant and RMBG-1.4. Weights are not retrained here.
+- **License:** MIT, per upstream.

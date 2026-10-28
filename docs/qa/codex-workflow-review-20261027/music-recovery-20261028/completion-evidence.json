@@ -1,0 +1,54 @@
+{
+  "schema": "music-recovery-closeout/1",
+  "recorded_at": "2026-10-27T22:13:06.658689+00:00",
+  "scope": "Three bounded product fixes, current document preservation audit, synthetic actual audio-only native workflow",
+  "functional_scope": "ACCEPTED",
+  "document_preservation_scope": "ACCEPTED within recorded baseline/current byte scope",
+  "independent_post_mr1": {
+    "report": "document-audit/post-mr1/report.json",
+    "artifacts_hash_verified": 32,
+    "mismatch": 0
+  },
+  "latest_document_changes": {
+    "existing_documents": 3,
+    "added_lines": 45,
+    "removed_or_replaced": 0,
+    "ordered_before_bytes_preserved": true
+  },
+  "product_checks": "57related tests24.683sOK and actual UI/native/FFmpeg/MP4/caption/reopen",
+  "whole_platform_complete": false,
+  "goal_status_change": false,
+  "gate": {
+    "command": [
+      "python3",
+      "/Users/leesungmin/.agents/skills/document-completion-gate/check.py",
+      "--root",
+      "/Users/leesungmin/Desktop/Loretune"
+    ],
+    "exit": 1,
+    "status": "blocked",
+    "findings": {
+      "REGISTERED_SOURCE_OUTDATED": 26,
+      "UNCLASSIFIED_DOCUMENT": 4
+    },
+    "warnings": {
+      "CONTEXT_STALE": 52
+    },
+    "evidence_sha256": "2aedc4dcbed582458e708e05e1eb32f7bd17252a642394cf3b235c49392753a7",
+    "policy_sha256": "513ce5591f5d898b87af6549b2acb86d4971618fb6f3f40acb5d6576c4b1d9d4",
+    "registration_plan": "registration-plan.json",
+    "registration_plan_sha256": "d0b340899f73fbfc9bdc43eae649b1b4609b0e932dcbace0a8385fb779791d68",
+    "approval_question_queued": true,
+    "approval_received": false,
+    "registration_performed": false
+  },
+  "permissions": {
+    "new_registration_approval_received": false,
+    "real_claude_budget_approval_received": false,
+    "protected_operations_executed": false
+  },
+  "remaining": "remaining-verified.json",
+  "historical_exception": "Two historical QA JSON T0 byte contents unrecovered; no Git/preT0 proof",
+  "lifecycle": "EgoSpace90closed, own server31208/36750exit0; source214stable",
+  "narrow_verification": "57 focused actual checks plus real workflow; document-only final phase ran preservation/links/source/media checks and read-only checker. No full819rerun or fake gate pass."
+}

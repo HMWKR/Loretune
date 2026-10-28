@@ -1,0 +1,53 @@
+{
+  "kind": "controlled Node VM events; no browser/media IO",
+  "results": [
+    {
+      "name": "DM01 pending seek applies latest trimmed frame without play",
+      "status": "pass"
+    },
+    {
+      "name": "DM02 old cut error waiting playing and loaded callbacks are inert",
+      "status": "pass"
+    },
+    {
+      "name": "DM02 replacement disposes old controller including detached Audio",
+      "status": "pass"
+    },
+    {
+      "name": "DM02 old compare canplay/error/loaded cannot change new pair",
+      "status": "pass"
+    },
+    {
+      "name": "DM03 entering comparison stops detached music and sequence RAF",
+      "status": "pass"
+    },
+    {
+      "name": "DM03 reverse transition stops compare before sequence plays",
+      "status": "pass"
+    },
+    {
+      "name": "late rejected play Promise cannot fail a later sequence attempt",
+      "status": "pass"
+    },
+    {
+      "name": "late compare Promise completion cannot start a disposed loop",
+      "status": "pass"
+    },
+    {
+      "name": "late compare Promise rejection cannot fail a replacement pair",
+      "status": "pass"
+    },
+    {
+      "name": "normal audio offset caption switch and canonical data remain intact",
+      "status": "pass"
+    },
+    {
+      "name": "compare common trimmed duration ends both and preserves approvals",
+      "status": "pass"
+    },
+    {
+      "name": "current error is still reported, not hidden by stale guards",
+      "status": "pass"
+    }
+  ]
+}

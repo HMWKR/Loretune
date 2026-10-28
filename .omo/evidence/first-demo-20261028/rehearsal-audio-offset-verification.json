@@ -1,0 +1,21 @@
+{
+  "method": "Read-only FFmpeg decode to mono48k float PCM; compare actual final audio against self-authored input1\u201310s with2048sample edge margin; wrong0\u20139s negative control",
+  "input_sha256": "253cf8452aed8b3374bd6ad210fbe3521cdd6c75ff1279b582ffeeeb5933823b",
+  "output_sha256": "9fca70231f532180ade160ba0d03375ad10dc6ae8d7a5898c3b5005ded8aa0a6",
+  "decoded_output_samples": 432000,
+  "expected_content_samples": 432000,
+  "correct_offset_1s": {
+    "samples": 427904,
+    "correlation": 0.9991287965794592,
+    "rms_error": 0.005822463860793359,
+    "reference_rms": 0.13946928101667203
+  },
+  "wrong_offset_0s": {
+    "samples": 427904,
+    "correlation": 0.12126280741281227,
+    "rms_error": 0.18532831974740482,
+    "reference_rms": 0.14039459552634947
+  },
+  "pass": true,
+  "limits": "Numerical signal/offset test only; no listening/user/production-wide audio quality claim"
+}

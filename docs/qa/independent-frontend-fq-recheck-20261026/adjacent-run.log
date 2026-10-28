@@ -1,0 +1,285 @@
+{
+  "at": "2026-10-26T04:55:47.117Z",
+  "sourceHtmlSha256": "07535dfd93c359de25a6bccdd2713635733ea51063beb6ecebb124867667eed3",
+  "environment": {
+    "node": "v26.11.1",
+    "browser": null,
+    "viewport": null,
+    "zoom": null,
+    "network": "offline VM fake only",
+    "realMediaDecode": false
+  },
+  "results": [
+    {
+      "id": "P-jobs",
+      "description": "Same revision jobs update independently applies",
+      "status": "PASS",
+      "observed": {
+        "revision": 7,
+        "value": [
+          {
+            "id": "synthetic-render",
+            "status": "running",
+            "progress": 65
+          }
+        ],
+        "draws": [
+          "drawJobs"
+        ],
+        "selectionApprovalTimelineModelsUnchanged": true
+      }
+    },
+    {
+      "id": "P-generation",
+      "description": "Same revision generation update independently applies",
+      "status": "PASS",
+      "observed": {
+        "revision": 7,
+        "value": [
+          {
+            "id": "synthetic-generation",
+            "status": "running",
+            "progress": 70
+          }
+        ],
+        "draws": [
+          "drawGeneration"
+        ],
+        "selectionApprovalTimelineModelsUnchanged": true
+      }
+    },
+    {
+      "id": "P-chat",
+      "description": "Same revision chat update independently applies",
+      "status": "PASS",
+      "observed": {
+        "revision": 7,
+        "value": [
+          {
+            "role": "assistant",
+            "content": "합성 응답"
+          }
+        ],
+        "draws": [
+          "drawModelChat",
+          "drawCreationProposals",
+          "drawGuided"
+        ],
+        "selectionApprovalTimelineModelsUnchanged": true
+      }
+    },
+    {
+      "id": "P-media",
+      "description": "Same revision media update independently applies",
+      "status": "PASS",
+      "observed": {
+        "revision": 7,
+        "value": [
+          {
+            "id": "synthetic-action",
+            "status": "running"
+          }
+        ],
+        "draws": [
+          "drawMediaCreator",
+          "drawImageConnection"
+        ],
+        "selectionApprovalTimelineModelsUnchanged": true
+      }
+    },
+    {
+      "id": "P-guards",
+      "description": "Shot/workspace/epoch/busy/dirty changes reject in-flight response",
+      "status": "PASS",
+      "observed": {
+        "variants": [
+          "shot",
+          "workspace",
+          "epoch",
+          "busy",
+          "dirty"
+        ]
+      }
+    },
+    {
+      "id": "P-bound",
+      "description": "At most two reads; first response may progress before second; sequence rejects late stale equal-revision update",
+      "status": "PASS",
+      "observed": {
+        "peakInFlight": 2,
+        "firstCompletionProgress": 20,
+        "finalProgress": 80,
+        "revision": 7
+      }
+    },
+    {
+      "id": "M-late",
+      "description": "Actual ended=true callbacks are inert after pause, clip switch, dispose, and controller replacement",
+      "status": "PASS",
+      "observed": {
+        "variants": [
+          {
+            "kind": "pause",
+            "ended": true,
+            "time": 0
+          },
+          {
+            "kind": "clip",
+            "ended": true,
+            "time": 3
+          },
+          {
+            "kind": "dispose",
+            "ended": true,
+            "time": 0
+          },
+          {
+            "kind": "controller",
+            "ended": true,
+            "time": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "M-trim",
+      "description": "Native ended uses trim and advances exactly one current cut without selection or approval writes",
+      "status": "PASS",
+      "observed": {
+        "secondSourceTimeAfterLoad": 1,
+        "finalTimelineTime": 6,
+        "canonicalUnchanged": true
+      }
+    },
+    {
+      "id": "M-short",
+      "description": "25ms deficit stays in existing tolerance; >50ms deficit fails without fabricated completion",
+      "status": "PASS",
+      "observed": {
+        "variants": [
+          {
+            "deficit": 0.025,
+            "time": 3,
+            "status": "재생 장면: A · Take 1 · 승인 버전"
+          },
+          {
+            "deficit": 0.051,
+            "time": 0,
+            "status": "영상 길이가 편집 구간보다 짧습니다. 길이·시작값을 확인하세요."
+          }
+        ]
+      }
+    },
+    {
+      "id": "M-audio",
+      "description": "Active original audio remains clock, manual pause freezes it, EOF allows video completion",
+      "status": "PASS",
+      "observed": {
+        "audioOffset": 1,
+        "activeTimeline": 2.4,
+        "manualPausePreserved": true,
+        "finalTimeline": 3,
+        "canonicalUnchanged": true
+      }
+    },
+    {
+      "id": "S-empty",
+      "description": "Empty storage and denied storage have distinct recovery UI and submit behavior",
+      "status": "PASS",
+      "observed": {
+        "emptyHidden": true,
+        "deniedHidden": false,
+        "deniedRecoverDisabled": true,
+        "requests": 0,
+        "notice": [
+          "브라우저 저장소를 확인할 수 없어 새 제출을 중단했습니다. 입력은 보존됩니다.",
+          true
+        ]
+      }
+    },
+    {
+      "id": "S-known",
+      "description": "Known IDs from cached read or in-memory request survive denied read, permit lookup only",
+      "status": "PASS",
+      "observed": {
+        "variants": [
+          {
+            "origin": "cached-read",
+            "requestId": "synthetic-known-cached-read",
+            "methods": [
+              "GET"
+            ],
+            "stillPending": true
+          },
+          {
+            "origin": "pending-request",
+            "requestId": "synthetic-known-pending-request",
+            "methods": [
+              "GET"
+            ],
+            "stillPending": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "S-settled",
+      "description": "Definite committed/rejected receipt stays definite if cleanup denied; no new write until recovery",
+      "status": "PASS",
+      "observed": {
+        "variants": [
+          {
+            "status": 200,
+            "outcomes": [
+              "not_sent",
+              "committed"
+            ],
+            "networkMethods": [
+              "POST"
+            ],
+            "recoveryCleared": true
+          },
+          {
+            "status": 400,
+            "outcomes": [
+              "not_sent",
+              "rejected"
+            ],
+            "networkMethods": [
+              "POST"
+            ],
+            "recoveryCleared": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "S-unknown",
+      "description": "Failed lookup never infers a committed receipt or clears pending draft",
+      "status": "PASS",
+      "observed": {
+        "status": "unknown_checked",
+        "knownRequestId": "synthetic-unresolved",
+        "draftClearCalls": 0,
+        "methods": [
+          "GET"
+        ]
+      }
+    },
+    {
+      "id": "S-draft",
+      "description": "Throwing sessionStorage property getter still preserves scoped in-memory Take draft",
+      "status": "PASS",
+      "observed": {
+        "draft": {
+          "decision": "changes_requested",
+          "reason": "입력을 지웠다가 다시 작성한 한국어 초안",
+          "revision": 1
+        },
+        "foreignProjectDraft": null,
+        "storageFailed": true,
+        "persistenceAcrossReload": "NOT VERIFIED / memory only"
+      }
+    }
+  ]
+}

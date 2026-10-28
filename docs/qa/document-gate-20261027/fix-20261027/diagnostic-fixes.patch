@@ -1,0 +1,241 @@
+--- a/tools/document-gate/check.py
++++ b/tools/document-gate/check.py
+@@ -5,6 +5,7 @@
+ JSON stdout is the evidence. Callers may save it explicitly, never automatically.
+ """
+ import argparse
++import errno
+ import hashlib
+ import json
+ import os
+@@ -14,7 +15,7 @@
+ import sys
+ 
+ POLICY = '.document-gate.json'
+-VERSION = '1.0.0'
++VERSION = '1.0.1'
+ MAX_BYTES = 12 * 1024 * 1024
+ MAX_FILES = 6000
+ SKIP_DIRS = {'.git','.codex','.agents','.aws','.ssh','.venv','venv','node_modules',
+@@ -47,7 +48,12 @@
+    try:os.stat('.git',dir_fd=fd,follow_symlinks=False)
+    except FileNotFoundError:pass
+    else:raise Invalid('nested repository excluded')
+-  source=os.open(parts[-1],os.O_RDONLY|os.O_NOFOLLOW,dir_fd=fd)
++  before=os.stat(parts[-1],dir_fd=fd,follow_symlinks=False)
++  if stat.S_ISLNK(before.st_mode):raise OSError(errno.ELOOP,'symlink file rejected')
++  if not stat.S_ISREG(before.st_mode) or before.st_size>MAX_BYTES:raise Invalid('unsupported or oversized file')
++  # Precheck avoids opening devices. NONBLOCK also prevents a FIFO swapped in
++  # after stat from waiting for a writer; fstat still validates the opened FD.
++  source=os.open(parts[-1],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=fd)
+   try:
+    meta=os.fstat(source)
+    if not stat.S_ISREG(meta.st_mode) or meta.st_size>MAX_BYTES:raise Invalid('unsupported or oversized file')
+@@ -80,6 +86,36 @@
+ 
+ def exact(obj,required,optional=()):
+  if not isinstance(obj,dict) or set(obj)-set(required)-set(optional) or set(required)-set(obj):raise Invalid('unknown or missing policy fields; commands are unsupported')
++
++def text_field(obj,key):
++ value=obj.get(key)
++ if not isinstance(value,str) or not value.strip():raise Invalid('invalid registry or receipt text field')
++ return value
++
++def hash_field(obj,key):
++ if not re.fullmatch(r'[a-f0-9]{64}',text_field(obj,key)):raise Invalid('invalid registry or receipt hash')
++
++def validate_heads(heads):
++ if not isinstance(heads,dict) or any(not isinstance(k,str) or not k.strip() or not isinstance(v,str) or not v.strip() for k,v in heads.items()):raise Invalid('invalid registry or receipt heads')
++
++def validate_registry(r):
++ """Validate fields used below; never interpret unrelated record payloads."""
++ if not isinstance(r,dict):raise Invalid('invalid registry object')
++ text_field(r,'project_id')
++ if not isinstance(r.get('objects'),list) or type(r.get('registry_revision')) is not int or r['registry_revision']<0:raise Invalid('unsupported registry schema')
++ validate_heads(r.get('heads'))
++ for item in r['objects']:
++  if not isinstance(item,dict):raise Invalid('invalid registry record')
++  if text_field(item,'kind')=='Document':
++   text_field(item,'id');text_field(item,'canonical_key')
++   relative(text_field(item,'file'));hash_field(item,'sha256')
++
++def validate_receipt(r):
++ if not isinstance(r,dict):raise Invalid('invalid receipt object')
++ if type(r.get('registry_revision')) is not int or r['registry_revision']<0:raise Invalid('invalid receipt revision')
++ relative(text_field(r,'context_file'))
++ hash_field(r,'context_sha256');hash_field(r,'registry_sha256')
++ validate_heads(r.get('heads',{}))
+ 
+ def validate_policy(p):
+  exact(p,{'schema_version','project_id','scan','registries','documents','contexts'})
+@@ -159,9 +195,8 @@
+   raw=read(root,path);sha=digest(raw);inputs[path]=sha;return raw,sha
+  registries={}
+  for spec in p['registries']:
+-  raw,sha=hashed(spec['path']);r=json.loads(raw)
++  raw,sha=hashed(spec['path']);r=json.loads(raw);validate_registry(r)
+   if r.get('project_id')!=spec['project_id']:raise Invalid('registry project identity mismatch')
+-  if not isinstance(r.get('objects'),list) or not isinstance(r.get('heads'),dict) or type(r.get('registry_revision')) is not int:raise Invalid('unsupported registry schema')
+   docs=[d for d in r['objects'] if d.get('kind')=='Document']
+   registries[spec['name']]=(spec,r,docs,sha)
+   for d in docs:
+@@ -176,6 +211,7 @@
+   except FileNotFoundError:issue('CLASSIFIED_FILE_MISSING',path);continue
+   if d.get('baseline_sha256') and actual!=d['baseline_sha256']:
+    issue('CLASSIFICATION_REVIEW_REQUIRED' if d['classification']=='legacy-review-pending' else 'PRESERVED_SOURCE_CHANGED',path)
++  if d['classification']=='legacy-review-pending':warnings.append(dict(code='CLASSIFICATION_REVIEW_PENDING',path=path))
+   if d['registration']=='review-pending':warnings.append(dict(code='REGISTRATION_REVIEW_PENDING',path=path))
+   if d['registration']!='required':continue
+   for target in d['registrations']:
+@@ -186,10 +222,11 @@
+    if hits[0].get('sha256')!=actual:issue('REGISTERED_SOURCE_OUTDATED',path,registry=spec['name'])
+  for ctx in p['contexts']:
+   spec,r,docs,sha=registries[ctx['registry']]
+-  raw,_=hashed(ctx['receipt']);receipt=json.loads(raw);stats['receipts_checked']+=1
++  raw,_=hashed(ctx['receipt']);receipt=json.loads(raw);validate_receipt(receipt);stats['receipts_checked']+=1
+   file=spec['base']+'/'+relative(receipt['context_file'])
+   _,context_sha=hashed(file)
+   reasons=[]
++  if ctx['usage']=='review-required':reasons.append('USAGE_REVIEW_REQUIRED')
+   if context_sha!=receipt.get('context_sha256'):reasons.append('CONTEXT_BYTES_CHANGED')
+   if sha!=receipt.get('registry_sha256') or r['registry_revision']!=receipt.get('registry_revision'):reasons.append('REGISTRY_CHANGED')
+   if any(r['heads'].get(k)!=v for k,v in receipt.get('heads',{}).items()):reasons.append('HEAD_CHANGED')
+--- a/tools/document-gate/SKILL.md
++++ b/tools/document-gate/SKILL.md
+@@ -10,10 +10,14 @@
+ - 정책은 가장 가까운 `.document-gate.json`이다. 중첩 Git/worktree 경계를 넘어 상위 정책을 물려받지 않는다. 프로젝트마다 경로·등록부·분류·문맥 기준을 선언하며 임의 명령은 받지 않는다.
+ - `not-configured`(2)는 정상 검증 통과가 아니다. 필요한 정책만 제안하고 승인 없이 새 registry나 온톨로지를 만들지 않는다. 프로젝트 간 설정을 복사해 자동 적용하지 않는다.
+ - `blocked`/`review-required`(1)는 등록 누락, 분류 미결정, 해시 불일치 또는 문맥 재검토다. 등록·승격·문맥 재생성은 별도 검토·권한이 필요하다. 검사 통과를 위해 역사 문서를 현행으로 승격하거나 hash만 덮어쓰지 않는다.
++- 문서 `legacy-review-pending`과 문맥 `review-required`는 해시·revision이 일치해도 미완료다. 역할을 명시적으로 검토·해소하기 전에는 통과로 보고하지 않는다.
+ - `invalid`(3)는 경로·정책·입력 안정성 검증 실패다. 비밀 파일·symlink·외부 경로를 우회해 읽지 않는다. 검사 자체를 못 했다고 보고한다.
++- 검사기는 일반 파일만 읽는다. FIFO/장치/디렉터리와 잘못된 registry·receipt 구조는 원문 없는 실패로 반환한다. 파일 크기·문서 수 제한은 전체 파일시스템 응답 시간의 보장이 아니다.
+ - `pass`(0)는 선언된 문서 범위의 기계적 정합성이다. 의미 정확성, 제품 구현, 실사용자 검증, 런타임 IP 온톨로지 완성을 뜻하지 않는다.
+ - 결과의 범위·제외·미결정과 evidence hash를 최종 보고에 포함한다. 변경 이후 다시 검사해 그 시점의 결과를 사용한다. 검사기는 stdout 외 파일을 쓰지 않는다.
+ 
+ 전역 AGENTS와 이 스킬은 실행을 안내하는 지침이다. 자동 실행을 보장하지 않는다. 지원되는 Codex Stop 어댑터는 `check.py --hook`이며 별도 신뢰 검토 후만 연결한다. transcript/assistant 원문을 읽거나 보관하지 않는다. Stop은 한 번의 후속 점검을 요청할 뿐 절대적 CI 차단이 아니다. `stop_hook_active`에서는 무한 반복 대신 미완료를 알린다. 보안·훅 신뢰 설정을 우회하지 않는다.
+ 
++Stop에서 미설정·처리된 검사 오류·재진입은 안내만 반환한다. 최초의 정상 미완료 결과만 계속 실행을 요청하며, 추가 Codex 턴과 사용량이 생길 수 있다. native 활성화 전 정확한 명령·검사기 해시·전역 적용 범위와 기존 훅 차이를 검토하고 사용자의 확인 및 공식 신뢰 절차를 거친다. 훅 정의의 신뢰가 외부 검사기 파일 내용을 고정한다는 보장은 없으므로 검사기 변경도 재검토한다. 현재 후보는 미활성 상태다.
++
+ 현재 지원 정책의 예는 프로젝트의 `.document-gate.json`이며 정책 없는 곳에 이 프로젝트의 규칙을 강제로 적용하지 않는다. 검사기를 CI/기존 pre-commit에 연결하려면 사용자가 지정한 프로젝트에서 기존 검사를 보존하여 명시적으로 연결한다. 전역 `core.hooksPath`를 변경하지 않는다.
+--- a/tests/document-gate/test_gate.py
++++ b/tests/document-gate/test_gate.py
+@@ -2,6 +2,7 @@
+ import contextlib,copy,hashlib,importlib.util,io,json,os
+ from pathlib import Path
+ import subprocess,sys,tempfile,unittest
++from unittest.mock import patch
+ 
+ ENGINE=Path(__file__).resolve().parents[2]/'tools/document-gate/check.py'
+ spec=importlib.util.spec_from_file_location('document_gate',ENGINE)
+@@ -124,4 +125,111 @@
+    with self.assertRaises(gate.Invalid):self.result()
+   finally:gate.inventory=original
+ 
++ def test_fresh_context_pending_usage_cannot_pass(self):
++  self.policy['contexts'][0]['usage']='review-required';self.save()
++  result,code=self.result();self.assertEqual(code,1)
++  self.assertIn('CONTEXT_REVIEW_REQUIRED',{x['code'] for x in result['findings']})
++  self.assertEqual(result['findings'][0]['reasons'],['USAGE_REVIEW_REQUIRED'])
++  for resolved in ['current','historical']:
++   self.policy['contexts'][0]['usage']=resolved;self.save()
++   self.assertEqual(self.result()[1],0)
++
++ def test_pending_classification_cannot_pass_with_exempt_or_valid_registration(self):
++  d=self.policy['documents'][0]
++  d.update(classification='legacy-review-pending',baseline_sha256=gate.digest(b'current'))
++  for registration in ['not-required','required']:
++   with self.subTest(registration=registration):
++    d['registration']=registration;self.save();result,code=self.result()
++    self.assertEqual(code,1);self.assertEqual(result['status'],'review-required')
++    self.assertIn('CLASSIFICATION_REVIEW_PENDING',{x['code'] for x in result['warnings']})
++  d['classification']='current';self.save();self.assertEqual(self.result()[1],0)
++
++ def assert_invalid_contract(self):
++  for mode in ['cli','hook']:
++   with self.subTest(mode=mode):
++    args=['--root',str(self.root)] if mode=='cli' else ['--hook']
++    payload=json.dumps(dict(hook_event_name='Stop',cwd=str(self.root),stop_hook_active=False))
++    proc=subprocess.run([sys.executable,'-B',str(ENGINE),*args],input=payload,text=True,capture_output=True,timeout=3)
++    self.assertEqual(proc.returncode,3 if mode=='cli' else 0)
++    self.assertEqual(proc.stderr,'');self.assertNotIn('PRIVATE_CANARY',proc.stdout)
++    result=json.loads(proc.stdout)
++    if mode=='cli':self.assertEqual(result['status'],'invalid')
++    else:self.assertIn('incomplete',result['systemMessage']);self.assertNotIn('decision',result)
++
++ def test_fifo_rejected_without_waiting_for_writer_cli_and_hook(self):
++  for name in ['docs/current.md','kit/registry.json','kit/generated/context.receipt.json',gate.POLICY]:
++   with self.subTest(path=name):
++    p=self.root/name;original=p.read_bytes();p.unlink();os.mkfifo(p,0o600)
++    try:self.assert_invalid_contract()
++    finally:p.unlink();p.write_bytes(original)
++
++ def test_fifo_swapped_after_stat_is_rejected_without_blocking(self):
++  # Isolated child timeout protects the test runner if NONBLOCK regresses.
++  script="""
++import importlib.util,os,pathlib,sys
++spec=importlib.util.spec_from_file_location('g',sys.argv[1]);g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
++root=pathlib.Path(sys.argv[2]);original=g.os.open
++def swapped(path,flags,*args,**kwargs):
++ if path=='current.md':
++  (root/'docs/current.md').unlink();os.mkfifo(root/'docs/current.md',0o600)
++ return original(path,flags,*args,**kwargs)
++g.os.open=swapped
++try:g.read(root,'docs/current.md')
++except g.Invalid:print('rejected')
++else:raise AssertionError('nonregular file accepted')
++"""
++  proc=subprocess.run([sys.executable,'-B','-c',script,str(ENGINE),str(self.root)],capture_output=True,text=True,timeout=3)
++  self.assertEqual(proc.returncode,0,proc.stderr);self.assertEqual(proc.stdout.strip(),'rejected')
++
++ def test_nonregular_file_rejected_before_open_and_limits_preserved(self):
++  p=self.root/'docs/device.md';os.mkfifo(p,0o600)
++  with patch.object(gate.os,'open',wraps=gate.os.open) as opened:
++   with self.assertRaises(gate.Invalid):gate.read(self.root,'docs/device.md')
++   self.assertNotIn('device.md',[call.args[0] for call in opened.call_args_list])
++  with patch.object(gate,'MAX_BYTES',3):
++   with self.assertRaises(gate.Invalid):gate.read(self.root,'docs/current.md')
++  with self.assertRaises(gate.Invalid):gate.read(self.root,'docs')
++
++ def test_malformed_registry_shapes_are_structured_and_redacted(self):
++  malformed=[None,[],17,'PRIVATE_CANARY']
++  malformed += [dict(self.registry,objects=[item]) for item in [None,[],17,'PRIVATE_CANARY',{},dict(kind=None),dict(kind=[])]]
++  malformed += [dict(self.registry,heads=h) for h in [None,[],{'Document:current':None},{'Document:current':[]}]]
++  malformed += [dict(self.registry,registry_revision=True),dict(self.registry,registry_revision=-1)]
++  for value in malformed:
++   with self.subTest(shape=type(value).__name__):
++    self.write('kit/registry.json',json.dumps(value));self.assert_invalid_contract()
++
++ def test_malformed_document_fields_are_structured_and_redacted(self):
++  for field in ['id','canonical_key','file','sha256']:
++   for bad in [None,[],{},17,'']:
++    with self.subTest(field=field,type=type(bad).__name__):
++     doc=dict(self.registry['objects'][0]);doc[field]=bad
++     self.write('kit/registry.json',json.dumps(dict(self.registry,objects=[doc])));self.assert_invalid_contract()
++  doc=dict(self.registry['objects'][0],sha256='PRIVATE_CANARY')
++  self.write('kit/registry.json',json.dumps(dict(self.registry,objects=[doc])));self.assert_invalid_contract()
++
++ def test_malformed_receipt_fields_are_structured_and_redacted(self):
++  name='kit/generated/context.receipt.json';receipt=json.loads((self.root/name).read_text())
++  malformed=[None,[],17,'PRIVATE_CANARY',{}]
++  malformed += [dict(receipt,**{key:bad}) for key in ['context_file','context_sha256','registry_sha256','heads'] for bad in [None,[],17]]
++  malformed += [dict(receipt,registry_revision=bad) for bad in [None,[],-1,True]]
++  malformed += [dict(receipt,heads={'Document:current':None})]
++  for value in malformed:
++   with self.subTest(shape=type(value).__name__):
++    self.write(name,json.dumps(value));self.assert_invalid_contract()
++
++ def test_valid_other_records_and_receipt_metadata_are_not_reinterpreted(self):
++  self.registry['objects'].append(dict(kind='Requirement',id='R1',custom={'not_a_document':None}))
++  self.registry_save()
++  name='kit/generated/context.receipt.json';receipt=json.loads((self.root/name).read_text())
++  receipt['extra_metadata']={'ignored':'PRIVATE_CANARY'};self.write(name,json.dumps(receipt))
++  result,code=self.result();self.assertEqual(code,0);self.assertNotIn('PRIVATE_CANARY',json.dumps(result))
++
++ def test_valid_but_different_receipt_revision_is_stale_not_invalid(self):
++  name='kit/generated/context.receipt.json';receipt=json.loads((self.root/name).read_text())
++  receipt['registry_revision']=17;self.write(name,json.dumps(receipt))
++  result,code=self.result();self.assertEqual(code,1)
++  self.assertIn('CONTEXT_STALE',{x['code'] for x in result['findings']})
++  self.assertEqual(gate.hook(dict(hook_event_name='Stop',cwd=str(self.root),stop_hook_active=False))['decision'],'block')
++
+ if __name__=='__main__':unittest.main()

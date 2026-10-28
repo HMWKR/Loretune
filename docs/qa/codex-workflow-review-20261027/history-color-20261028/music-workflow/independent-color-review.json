@@ -1,0 +1,130 @@
+{
+  "task_id": "NATIVE-COLOR-01",
+  "attempt": 1,
+  "status": "REPORTED",
+  "reviewer": "/root/general_activation_review",
+  "configured_role": "ce-reviewer",
+  "read_only_limit": "Product source read-only is the task contract; a separate OS sandbox enforcing it was not verified.",
+  "write_set": [".omo/evidence/music-workflow-benchmark-20261028/independent-color-review.json"],
+  "verdict": "No confirmed high or medium regression in the one-expression explicit-sRGB correction. Controlled existing PNGs independently decode to the recorded before/after values, and saved current jobs/Takes pin the new source hash while old approvals and queued historical-source jobs are rejected.",
+  "source_sha256": {
+    "native/motion_frame_renderer.swift": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d",
+    "tests/test_native_motion_color.py": "d9158bad5ebb5e599aabd4a15c41f8e49d59d7c267266f146241824954670b00"
+  },
+  "source_drift_observed": false,
+  "methodology": {
+    "sources_read": [
+      "color-probe/receipt.json",
+      "color-probe/before.swift",
+      "color-probe/explicit-srgb.swift",
+      "native/motion_frame_renderer.swift",
+      "tests/test_native_motion_color.py",
+      "motion_renderer.py: font_manifest, helper, frame, process",
+      "motion_scene.py: review and request_render",
+      "corrected-workflow.py: old approval and historical-source queued-job control",
+      "corrected/REPORT.json",
+      "corrected/state-corrected.json",
+      "corrected/queued-upgrade-job.json",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/skills/feature-verification/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-core/1.3.5/CODEX-RUNTIME.md"
+    ],
+    "applied": [
+      "Compare identical payload and copied source variants with one changed expression; distinguish source observation from inferred cause.",
+      "Independently hash/decode saved artifacts instead of treating recorded pass flags as the only evidence.",
+      "Trace source hash into compiled-cache identity, reviewed motion version, queued job and published Take provenance.",
+      "Separate controlled native pixel evidence, worker real-HTTP workflow receipts, reviewed logs, and production/user acceptance."
+    ],
+    "non_goals": ["Product/test/Markdown changes", "Provider, environment or credential access", "Full-suite rerun", "New native render or compiler run", "Formal design critique A/B", "User acceptance or production readiness"]
+  },
+  "code_review": [
+    {
+      "id": "COLOR-SPACE",
+      "observation": "The entire Swift diff against the preserved before.swift is the color() return expression: CGColor is now constructed with an explicit sRGB color space, matching the existing sRGB bitmap. Background fill, rect/circle fill and CoreText foreground all use this helper.",
+      "impact": "The source channels now enter the bitmap through the declared color space. The controlled probe demonstrates the observed channel correction without changing layout, text, geometry or scene inputs."
+    },
+    {
+      "id": "INPUT-ALPHA-TEXT",
+      "observation": "Hex length/prefix/UInt32 parsing, finite numeric checks, opacity 0..1, text size/line/glyph/box guards, layer limits and PNG validation are unchanged. color() receives background alpha=1 or a previously validated layer opacity. The same helper supplies text foreground alpha.",
+      "impact": "No input guard was weakened by the changed expression. Existing source validation remains the basis for invalid-input rejection; the reviewer did not claim a newly executed malformed-input matrix."
+    },
+    {
+      "id": "APPROVAL-CACHE-PROVENANCE",
+      "observation": "font_manifest contains the complete Swift SOURCE SHA256 and feeds helper's fingerprinted cache folder. Reviewed motion versions retain that manifest. request_render rejects a changed manifest before queue/reuse, and process compares the queued job manifest again before native rendering. Fresh Takes store the same manifest and job ID in provenance.",
+      "impact": "The corrected renderer receives a distinct compiled-cache identity and requires fresh reviewed versions. Existing approval-bound versions cannot silently acquire the corrected source through the normal request/start paths."
+    }
+  ],
+  "independent_artifact_checks": {
+    "method": "Read-only Python SHA256/JSON comparison and FFmpeg decoding of existing PNGs; no new product render or test-suite execution.",
+    "controlled_probe": {
+      "payload_sha256": "80aa67c8fbf96f03d576e55220195c43d28d8019af2df6d07920d949d52e784c",
+      "payload_hash_verified": true,
+      "declared_hex": "#1A2A4A",
+      "expected_rgb": [26, 42, 74],
+      "before_pixel_independently_decoded": [34, 57, 92],
+      "explicit_srgb_pixel_independently_decoded": [26, 42, 74],
+      "both_png_and_copied_source_hashes_match_receipt": true,
+      "explicit_srgb_copy_byte_identical_to_current_product_source": true,
+      "provenance_note": "receipt.json product_files_modified=false describes the earlier copied-source experiment. It is not a claim that the subsequent product correction did not occur."
+    },
+    "current_saved_workflow": {
+      "corrected_report_checks_reviewed": 28,
+      "all_recorded_checks_passed": true,
+      "corrected_mp4_srt_json_sizes_and_hashes_match": true,
+      "corrected_mp4_sha256": "4f40c79ecfa23665d096fd8fea39790bff1d767b0580d8ce5c38c963d248e349",
+      "saved_completed_native_jobs_pin_current_source": 2,
+      "saved_take_provenance_matches_job_and_source": true,
+      "cache_key_recomputed_from_saved_manifest": "motion-runtime/96072e4b8c4847c9ad26de186cf31d709729af39e59ed64a340b966094c15186/frame-renderer",
+      "new_cache_distinct_and_old_cache_preserved_in_receipt": true,
+      "corrected_report_all_ten_source_hashes_match_current_files": true
+    },
+    "historical_preservation": {
+      "old_before_mp4_sha256": "597066c85fb43c3ef52eb1e766319502a1645c6d0cc6ab399bfd6609aef12d3f",
+      "old_after_mp4_sha256": "89608c3ed0002dca753d1cc733f993110aaffc343ff492e771d05cb8048bef63",
+      "both_current_saved_files_match_prior_report_and_pre_post_correction_receipts": true,
+      "queued_historical_source_job_saved_status": "failed",
+      "queued_historical_source_job_download": null,
+      "queued_historical_source_job_source_matches_before_swift": true,
+      "queued_job_take_count_from_worker_http_check": 0,
+      "upgrade_fixture_method": "Ordinary HTTP propose/review/queue with motion_renderer.SOURCE temporarily pointing to the byte-identical old copied Swift, then restored before reopening and claiming. Product source files were not edited by that fixture."
+    }
+  },
+  "worker_execution_evidence_read_not_rerun": [
+    {
+      "path": "color-before-test.log",
+      "result": "2 tests / 2.169s / FAILED with 2 failures on old background and alpha channels",
+      "classification": "Preserved red baseline, not a current failure."
+    },
+    {
+      "path": "color-after-test.log",
+      "result": "2 tests / 1.935s / OK",
+      "coverage": "Exact opaque background and rect channels; circle interior source-over channels within one rounding step; exterior geometry; fully covered Korean/Latin foreground pixels and missing-glyph receipt."
+    },
+    {
+      "path": "color-related-motion.log",
+      "result": "22 tests / 13.131s / OK",
+      "coverage": "Schema and text bounds, approval/version isolation, old-grant rejection, cancel/publication rollback, restart lifecycle, actual CoreText candidate/reopen and related timeline contracts."
+    },
+    {
+      "path": "corrected/REPORT.json",
+      "result": "Worker actual native/HTTP workflow with 28 recorded passing checks and zero provider calls.",
+      "coverage": "Fresh approved native candidates, 30s 1920x1080/24fps MP4 with 12 cuts/720 decoded frames, PCM/caption preservation, source hash/cache/approval checks, old MP4/timeline/assets preservation and queued historical-source rejection.",
+      "limits": "The reviewer validated stored artifacts and selected raw saved state; did not repeat the HTTP workflow or claim a new full audio/video playback. YUV output checks use the recorded channel tolerance of 4, distinct from exact PNG channel assertions."
+    }
+  ],
+  "confirmed_high_medium_findings": [],
+  "false_positives_or_corrections": [],
+  "remaining_limits": [
+    "The correction is verified for the local Mac/CoreText/sRGB pipeline and synthetic scene samples; other operating systems, HDR, wide-gamut/ICC workflows and arbitrary imported color profiles are not accepted by this review.",
+    "No live browser, full-video visual/aural assessment, formal design A/B, expert typography quality rating or real-user/production acceptance was performed by this reviewer.",
+    "Approval compatibility evidence covers rejected old requests and queued jobs before start plus fresh jobs; source replacement during an already running render was not exercised.",
+    "The full regression running in a separate worker is not claimed complete by this artifact.",
+    "No new standalone renderer test was necessary after the one-expression diff, stored red/green checks and direct artifact/hash/provenance checks resolved the scoped questions. No duplicate native render/compiler/full-suite run was started."
+  ],
+  "source_or_tests_modified_by_reviewer": false,
+  "markdown_registry_or_context_modified": false,
+  "real_provider_calls": 0,
+  "browser_used": false,
+  "new_product_render_or_test_run": false,
+  "memory_files_used": false,
+  "parent_acceptance": "Pending; REPORTED is separate from driver acceptance."
+}

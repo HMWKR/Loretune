@@ -1,0 +1,14 @@
+index-focus-always rc=1 AssertionError [ERR_ASSERTION]: programmatic review click does not focus the preview tab
+no-flag rc=1 AssertionError [ERR_ASSERTION]: step heading and mobile panel focus are skipped; only the card receives focus
+flag-not-removed rc=1 AssertionError [ERR_ASSERTION]: navigation flag is removed after the programmatic click
+always-restore-focus rc=1 AssertionError [ERR_ASSERTION]: success keeps focus on the arrival card; the chat button is not refocused
+no-aria-labelledby rc=1 AssertionError [ERR_ASSERTION]: card article carries aria-labelledby
+mismatched-labelledby rc=1 AssertionError [ERR_ASSERTION]: aria-labelledby matches the card heading id
+no-describedby rc=1 AssertionError [ERR_ASSERTION]: turns are separated by aria-describedby
+no-prompt-id rc=1 AssertionError [ERR_ASSERTION]: describedby target exists once: generalChatTurnPrompt-turn
+toolLabel-typo rc=1 AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+Traceback (most recent call last):
+  File "<stdin>", line 20, in <module>
+AssertionError: ('css-literal-color', 4)
+css-literal-color rc=1 AssertionError [ERR_ASSERTION]: arrival outline uses the focus token
+no-optional-sidebar rc=1 TypeError: Cannot read properties of undefined (reading 'reviewMediaAction')

@@ -1,0 +1,132 @@
+{
+  "default": {
+    "local_jobs": {
+      "source": "local_jobs",
+      "items": [
+        {
+          "id": "default",
+          "kind": "local-render",
+          "execution_mode": "local-render",
+          "state": "queued",
+          "progress_percent": null,
+          "record_revision": null,
+          "input_version": {
+            "kind": "timeline",
+            "value": null
+          },
+          "output_kind": "video",
+          "output_sha256": null,
+          "output_registered": false,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    "provider_jobs": {
+      "source": "provider_jobs",
+      "items": [],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    "rehearsal_jobs": {
+      "source": "rehearsal_jobs",
+      "items": [],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    "general_chat": {
+      "source": "general_chat",
+      "items": [],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    "legacy_chat": {
+      "source": "legacy_chat",
+      "items": [],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    }
+  },
+  "sibling": {
+    "local_jobs": {
+      "source": "local_jobs",
+      "items": [
+        {
+          "id": "sibling",
+          "kind": "local-render",
+          "execution_mode": "local-render",
+          "state": "queued",
+          "progress_percent": null,
+          "record_revision": null,
+          "input_version": {
+            "kind": "timeline",
+            "value": null
+          },
+          "output_kind": "video",
+          "output_sha256": null,
+          "output_registered": false,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    "provider_jobs": {
+      "source": "provider_jobs",
+      "items": [],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    "rehearsal_jobs": {
+      "source": "rehearsal_jobs",
+      "items": [],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    "general_chat": {
+      "source": "general_chat",
+      "items": [
+        {
+          "id": "foreign_general",
+          "kind": "general-chat",
+          "execution_mode": "unrecognized",
+          "state": "failed",
+          "progress_percent": null,
+          "record_revision": null,
+          "input_version": null,
+          "output_kind": "text",
+          "output_sha256": null,
+          "output_registered": false,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    "legacy_chat": {
+      "source": "legacy_chat",
+      "items": [
+        {
+          "id": "private_legacy",
+          "kind": "legacy-chat",
+          "execution_mode": "unrecognized",
+          "state": "queued",
+          "progress_percent": null,
+          "record_revision": null,
+          "input_version": null,
+          "output_kind": "text",
+          "output_sha256": null,
+          "output_registered": false,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    }
+  }
+}

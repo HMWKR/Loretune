@@ -1,0 +1,59 @@
+{
+  "at": "2026-10-28T02:06:36.849535+00:00",
+  "observations": [
+    {
+      "directory": "rehearsal-playback-recording",
+      "seconds": 9.352,
+      "captured_frames": 6,
+      "finding": "Long page wait followed by sparse capture; unfit as fluid main demonstration"
+    },
+    {
+      "directory": "rehearsal-playback-recording-poll",
+      "seconds": 0.305,
+      "captured_frames": 5,
+      "failure": "Explicit undefined rejected by Ego evaluate argument serialization; retained failed take"
+    },
+    {
+      "directory": "rehearsal-playback-recording-poll-r2",
+      "seconds": 9.329,
+      "captured_frames": 243,
+      "finding": "Short DOM observation polling allowed sustained capture"
+    }
+  ],
+  "recording_fix": "observeUntil uses short read-only evaluate without explicit undefined, yields90ms between calls. Existing page actions remain real UI actions.",
+  "inference": "Long page wait likely occupies shared page command channel and delays screencast acknowledgments; same output observed with improved polling, transport scheduler not independently instrumented.",
+  "failed_encodings": [
+    {
+      "file": "rehearsal-playback-recording-poll-r2.mp4",
+      "result": "full decode0 but9.25s mismatches9.329 elapsed beyond one-frame bound"
+    },
+    {
+      "file": "rehearsal-playback-recording-poll-r2-v2.mp4",
+      "result": "explicit1microsecond JPEG input clock produced correct ffconcat packet timestamps through9.329 but encoded9.25; timebase hypothesis insufficient"
+    },
+    {
+      "file": "rehearsal-playback-recording-poll-r2-v3.mp4",
+      "result": "fps eof_action=pass still9.25; failed duration check retained"
+    }
+  ],
+  "adopted_encoder": "encode-recording-sampled.py latest actual JPEG at each elapsed-clock24fps sample;243 actual capture frames→224 encoded frames9.333333s; full decode0; captures/hashes/sampling schedule retained; no painted frames, interval omission or speedup",
+  "actual_platform_feature_substitution": false,
+  "main_complete_workflow_recording": "not made yet; this is a9s existing-output playback rehearsal only",
+  "additional_observation": {
+    "earlier_sampled_output": "1150x1080 despite subsequent captured frames1920x1080",
+    "cause_observed": "First captured JPEG1150x1080, later JPEG1920x1080. Encoder fixed output to first frame size. Earlier encode pass did not include dimensions; not accepted as final recording quality.",
+    "fix": "Before any recorded action, warm up until actual JPEG dimensions match settled viewport; reject size changes during recording; dimension-checked timestamp sampler."
+  },
+  "accepted_capability_probe": {
+    "record": "rehearsal-playback-recording-warmup/recording.json",
+    "output": "rehearsal-playback-recording-warmup.mp4",
+    "capture_frames": 248,
+    "recorded_seconds": 9.322,
+    "encoded_seconds": 9.333333,
+    "resolution": "1920x1080",
+    "decode_exit_code": 0,
+    "actual_browser_playback": "rehearsal-recording-actual-playback-warmup.json ready4/time1.063/pausedfalse",
+    "not_main_demo": true,
+    "silent": true
+  }
+}

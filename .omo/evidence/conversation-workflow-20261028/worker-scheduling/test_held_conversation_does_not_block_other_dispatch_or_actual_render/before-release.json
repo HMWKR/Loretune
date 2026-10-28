@@ -1,0 +1,395 @@
+{
+  "release_event_is_set": false,
+  "turns": [
+    {
+      "id": "a498dab64de84687a49d8daf4c42929b",
+      "binding": {
+        "workspace": "715e8459-1c28-4980-83a2-c9a682d07314",
+        "project": "04c405f6-267a-5e5f-ad06-98657681adb9",
+        "conversation": "542912eeba7458c09aaff91fd9e97bb2",
+        "selection": "anthropic-haiku-5-5",
+        "model": "claude-haiku-5-5",
+        "model_revision": 0,
+        "context": "2d460e366b5e87939fb4dd83a37b1409e017d76f2dd8731d2f886a5fec480ded",
+        "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "price_revision": "haiku-5-5-20261027-tiered"
+      },
+      "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+      "name": "A",
+      "run": "d92c35b49c474974a39f970eede2b237",
+      "prompt": "A 음악 장면 제안",
+      "status": "running",
+      "mode": "contract-fake",
+      "model": "claude-haiku-5-5",
+      "round": 0,
+      "preview_id": "a7a3215ac5ba45cf85f6258be574cff6",
+      "answer": null,
+      "error": null,
+      "usage": null,
+      "usage_cost_usd": "0",
+      "billing_confirmed": false,
+      "steps": [],
+      "reservation": "f87b6ebe-70e0-4d15-a23a-057705a49102",
+      "count_status": "response_received",
+      "submitted": true
+    },
+    {
+      "id": "0a447201850e492081ef900e52e94d8c",
+      "binding": {
+        "workspace": "715e8459-1c28-4980-83a2-c9a682d07314",
+        "project": "04c405f6-267a-5e5f-ad06-98657681adb9",
+        "conversation": "24e3a0177b854d8085c27124cd2a8010",
+        "selection": "anthropic-haiku-5-5",
+        "model": "claude-haiku-5-5",
+        "model_revision": 0,
+        "context": "2d460e366b5e87939fb4dd83a37b1409e017d76f2dd8731d2f886a5fec480ded",
+        "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "price_revision": "haiku-5-5-20261027-tiered"
+      },
+      "conversation_id": "24e3a0177b854d8085c27124cd2a8010",
+      "name": "A",
+      "run": "ee2f3bf936b14389b5e4ca4e98a8bb70",
+      "prompt": "B 음악 장면 제안",
+      "status": "completed",
+      "mode": "contract-fake",
+      "model": "claude-haiku-5-5",
+      "round": 0,
+      "preview_id": "cda416311c824d978275151a9d72b1bc",
+      "answer": "Saved proposal only; no approval or generated media.",
+      "error": null,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 100
+      },
+      "usage_cost_usd": "0.00006",
+      "billing_confirmed": false,
+      "steps": [
+        {
+          "round": 0,
+          "message_sha256": "f40b4189844087337bc8f891ab130d62deda0b2f504f71669794ff8900230c89",
+          "pricing_status": "priced",
+          "usage": {
+            "input_tokens": 100,
+            "output_tokens": 100
+          },
+          "usage_cost_usd": "0.00006"
+        }
+      ],
+      "reservation": "f102183b-d450-462d-a230-2d85115af111",
+      "count_status": "response_received",
+      "submitted": true,
+      "observed_usage": {
+        "input_tokens": {
+          "status": "valid",
+          "value": "100"
+        },
+        "output_tokens": {
+          "status": "valid",
+          "value": "100"
+        },
+        "cache_creation_input_tokens": {
+          "status": "absent"
+        },
+        "cache_read_input_tokens": {
+          "status": "absent"
+        },
+        "service_tier": {
+          "status": "absent"
+        }
+      },
+      "pricing_status": "priced",
+      "provider_response_observed": true
+    }
+  ],
+  "jobs": [
+    {
+      "id": "eaffdda520eb404bb2024cd94ff195dd",
+      "revision": 5,
+      "song": "A",
+      "status": "completed",
+      "progress": 100,
+      "created": 1793140422.062109,
+      "cancel_requested": false,
+      "snapshot": {
+        "name": "A",
+        "ip": "default",
+        "snapshot": [],
+        "shots": {
+          "0": {
+            "description": "synthetic local render",
+            "takes": [
+              {
+                "id": 1,
+                "asset": "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/tmpkzbubt2k/assets/4c8ff0b8b24e8f75341bf3dae1e8370621da5eed3e2d756fbef54672a5fedcb2.png",
+                "sha256": "4c8ff0b8b24e8f75341bf3dae1e8370621da5eed3e2d756fbef54672a5fedcb2",
+                "reason": "worker test",
+                "metadata": {
+                  "duration": 0.0,
+                  "codec": "png",
+                  "width": 64,
+                  "height": 64,
+                  "sample_rate": null,
+                  "channels": null
+                },
+                "rights": "직접 제작",
+                "filename": "worker-fixture.png",
+                "reference_version_at_upload": null,
+                "conversation_id": "542912eeba7458c09aaff91fd9e97bb2"
+              }
+            ],
+            "selected": 1,
+            "revision": 3,
+            "reviews": [
+              {
+                "take": 1,
+                "decision": "approved",
+                "reason": "fixture",
+                "actor": "local-owner",
+                "at": 1793140421.980627
+              }
+            ],
+            "duration": 3,
+            "trim": 0
+          }
+        },
+        "revision": 4,
+        "profile": "landscape",
+        "audio_versions": [],
+        "audio_selected": null,
+        "audio_offset": 0,
+        "timeline_versions": [
+          {
+            "id": 1,
+            "clips": [
+              {
+                "shot": "s",
+                "take": 1,
+                "duration": 3,
+                "trim": 0
+              }
+            ],
+            "audio": null,
+            "audio_offset": 0,
+            "subtitles": [],
+            "profile": "landscape",
+            "approval": {
+              "id": "6b60f7037b964c56bcbd6223fe9f7553",
+              "actor": "local-owner",
+              "at": 1793140421.9975228,
+              "execution_scope": "local-render",
+              "timeline_version": 1,
+              "scope": "로컬 단일 사용자 승인; 조직 권한 검증 아님",
+              "selected_take_snapshot": {
+                "s": 1
+              },
+              "conversation_id": "542912eeba7458c09aaff91fd9e97bb2"
+            }
+          }
+        ],
+        "timeline_head": 1,
+        "subtitles": [],
+        "comments": [],
+        "model_settings": {
+          "revision": 1,
+          "selections": {
+            "chat": "anthropic-haiku-5-5",
+            "image": null,
+            "video": null
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "anthropic-haiku-5-5"
+              },
+              "at": 1793140421.8687592
+            }
+          ]
+        },
+        "conversation_owners": {
+          "6b60f7037b964c56bcbd6223fe9f7553": {
+            "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+            "kind": "timeline_grants"
+          },
+          "a498dab64de84687a49d8daf4c42929b": {
+            "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+            "kind": "general_chat_turns"
+          },
+          "d92c35b49c474974a39f970eede2b237": {
+            "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+            "kind": "production_runs"
+          },
+          "0a447201850e492081ef900e52e94d8c": {
+            "conversation_id": "24e3a0177b854d8085c27124cd2a8010",
+            "kind": "general_chat_turns"
+          },
+          "ee2f3bf936b14389b5e4ca4e98a8bb70": {
+            "conversation_id": "24e3a0177b854d8085c27124cd2a8010",
+            "kind": "production_runs"
+          }
+        },
+        "chat_sessions": [
+          {
+            "id": "542912eeba7458c09aaff91fd9e97bb2",
+            "title": "기존 대화",
+            "revision": 10,
+            "chat_selection": null,
+            "model_revision": 0
+          },
+          {
+            "id": "24e3a0177b854d8085c27124cd2a8010",
+            "title": "B",
+            "revision": 2,
+            "chat_selection": null,
+            "model_revision": 0,
+            "created": 1793140422.0042932
+          }
+        ],
+        "production_runs": [
+          {
+            "id": "d92c35b49c474974a39f970eede2b237",
+            "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+            "conversation_model_revision": 0,
+            "state": "accepting_tools",
+            "engine": "contract-fake",
+            "snapshot": {
+              "value": {
+                "model_settings": {
+                  "revision": 1,
+                  "selections": {
+                    "chat": "anthropic-haiku-5-5",
+                    "image": null,
+                    "video": null
+                  },
+                  "history": [
+                    {
+                      "revision": 1,
+                      "actor": "local-owner",
+                      "changed": {
+                        "chat": "anthropic-haiku-5-5"
+                      },
+                      "at": 1793140421.8687592
+                    }
+                  ]
+                },
+                "context": {
+                  "music": null,
+                  "snapshot": [],
+                  "ontology": null
+                },
+                "approved_shots": [
+                  {
+                    "id": "s",
+                    "selected": 1,
+                    "revision": 3
+                  }
+                ]
+              },
+              "sha256": "2d460e366b5e87939fb4dd83a37b1409e017d76f2dd8731d2f886a5fec480ded"
+            },
+            "calls": [],
+            "repair_count": 0,
+            "limits": {
+              "tool_rounds": 8,
+              "repairs": 2
+            },
+            "live_model_called": false,
+            "provider_model": "claude-haiku-5-5"
+          }
+        ],
+        "_conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+        "audio": null,
+        "frame_timing": {
+          "fps": 24,
+          "policy": "nearest-internal-ceil-final",
+          "requested_duration": 3.0,
+          "duration": 3.0,
+          "clips": [
+            {
+              "start_frame": 0,
+              "end_frame": 72,
+              "frames": 72,
+              "start": 0.0,
+              "end": 3.0
+            }
+          ]
+        },
+        "timeline": {
+          "id": 1,
+          "clips": [
+            {
+              "shot": "s",
+              "take": 1,
+              "duration": 3,
+              "trim": 0
+            }
+          ],
+          "audio": null,
+          "audio_offset": 0,
+          "subtitles": [],
+          "profile": "landscape",
+          "approval": {
+            "id": "6b60f7037b964c56bcbd6223fe9f7553",
+            "actor": "local-owner",
+            "at": 1793140421.9975228,
+            "execution_scope": "local-render",
+            "timeline_version": 1,
+            "scope": "로컬 단일 사용자 승인; 조직 권한 검증 아님",
+            "selected_take_snapshot": {
+              "s": 1
+            },
+            "conversation_id": "542912eeba7458c09aaff91fd9e97bb2"
+          }
+        }
+      },
+      "download": "/exports/eaffdda520eb404bb2024cd94ff195dd.mp4",
+      "error": null,
+      "cost": {
+        "provider_calls": 0,
+        "provider_cost": 0,
+        "local_compute": "미계측",
+        "kind": "render-only"
+      },
+      "started": 1793140422.329736,
+      "sha256": "9220c7b3e941dfd509900cf6198ee9473657cd5cc2c95f64eb4528a7d98fc64b",
+      "sidecar_sha256": {
+        ".srt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        ".json": "3de854ecc17e0cc15da78b932f824e628b753202f05591f09f5d1b726d41ae8d"
+      },
+      "verified": {
+        "duration": 3.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "24/1",
+        "audio_sample_rate": null,
+        "frame_timing": {
+          "fps": 24,
+          "policy": "nearest-internal-ceil-final",
+          "requested_duration": 3.0,
+          "duration": 3.0,
+          "clips": [
+            {
+              "start_frame": 0,
+              "end_frame": 72,
+              "frames": 72,
+              "start": 0.0,
+              "end": 3.0
+            }
+          ]
+        },
+        "streams": [
+          "video"
+        ],
+        "verified_at": 1793140422.7711701
+      },
+      "finished": 1793140422.771994
+    }
+  ],
+  "worker_names": [
+    "loretune-worker-render-1",
+    "loretune-worker-generation-1",
+    "loretune-worker-general-chat-1",
+    "loretune-worker-general-chat-2"
+  ]
+}

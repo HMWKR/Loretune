@@ -1,0 +1,54 @@
+{
+  "checked_utc": "2026-10-27T01:59:06.934448+00:00",
+  "engine": "1.0.1",
+  "fixed_source_sha256": "33113f9e233f35f641815ef4dca2933b036466314cff6629586fa2b446a334fa",
+  "source_and_config_hashes": {
+    "/Users/leesungmin/.agents/skills/document-completion-gate/check.py": "33113f9e233f35f641815ef4dca2933b036466314cff6629586fa2b446a334fa",
+    "/Users/leesungmin/.codex/hooks.json": "1e0eee0729f46f8f35988ac7d9caf08c09fe1391fc3e1e66c5db844614f4e71d",
+    "/Users/leesungmin/.codex/AGENTS.md": "a158fbe1d8a2db5e23b6109740f5ba09b9eefd7a6ebc676a2c8988900ee0f7a5",
+    "/Users/leesungmin/Desktop/Loretune/.document-gate.json": "314449677cf0ba479c044089a75b1eea7cc64a5d7e9e3dc0d109bd7debc0c5be",
+    "/Users/leesungmin/Desktop/Loretune/docs/qa/document-gate-20261027/hooks.candidate.json": "90d85ce8c0143188401509ccf4aeb16d1674ce3db1424ea63ee54bcd7c10a3d6",
+    "/Users/leesungmin/Desktop/Loretune/docs/qa/independent-document-gate-audit-20261027/recheck.py": "3e0f54a98d82128b167f18420e77fd6c13fec903b3cabc12017c891e499c86f3"
+  },
+  "candidate_preserves_current_hooks": true,
+  "new_stop": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "/opt/homebrew/bin/python3 -B /Users/leesungmin/.agents/skills/document-completion-gate/check.py --hook",
+          "timeout": 15,
+          "statusMessage": "문서 분류·등록·문맥 상태 검사"
+        }
+      ]
+    }
+  ],
+  "primary_manifest_matches": {
+    ".document-gate.json": true,
+    "tools/document-gate/check.py": true,
+    "tools/document-gate/SKILL.md": true,
+    "tests/document-gate/test_gate.py": true,
+    "docs/qa/document-gate-20261027/REPORT-ko.md": true,
+    "docs/qa/document-gate-20261027/current-result.json": true,
+    "docs/qa/document-gate-20261027/hooks.candidate.json": true,
+    "docs/qa/document-gate-20261027/fix-20261027/fixture-tests.log": true,
+    "docs/qa/document-gate-20261027/fix-20261027/diagnostic-fixes.patch": true,
+    "docs/qa/document-gate-20261027/fix-20261027/before-recheck/results.json": true,
+    "docs/qa/document-gate-20261027/fix-20261027/after-global-recheck/results.json": true,
+    "docs/qa/document-gate-20261027/fix-20261027/GLOBAL-APPLIED.json": true,
+    "docs/qa/document-gate-20261027/fix-20261027/PRESERVATION.json": true,
+    "docs/qa/document-gate-20261027/fix-20261027/HOOK-CANDIDATE-CHECK.json": true
+  },
+  "original_cases_preserved": true,
+  "original_counterexamples_pass": 4,
+  "original_controls_pass": 3,
+  "adjacent_controls_pass": 2,
+  "full_suite_rerun": false,
+  "native_stop_or_trust_executed": false,
+  "canonical_writes": false,
+  "artifacts": {
+    "results.json": "aec968c98d61af8ddc4d7607d85d2ab988451cbac039c53372e2a79c9c6f4ea7",
+    "REPORT-ko.md": "cb750989615e2cbf91e270215c5d21467588c5dd9077e9813931bd183efcf5f3",
+    "recheck.py": "f4bca95b8f6f2084a6b7915a57e0c1306122cc19caeaf3a9e4c4a57bddacf6c5"
+  }
+}

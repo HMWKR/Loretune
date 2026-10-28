@@ -1,0 +1,107 @@
+{
+  "schema": "agent-preference-ui-contract/1",
+  "status": "implemented; focused and related backend verification complete; root UI integration is separate",
+  "mode_ids": {
+    "read_only": "조회만; 외부 텍스트 전송도 기존 동의/권리/비용 필요",
+    "review": "현재 제안→사람 검토 기본동작 유지",
+    "full_access": "서버 whitelist의 비삭제성 편집만 새 미승인 agent draft로 자동저장; 최종출력·원본승인·비용·권리 우회 아님"
+  },
+  "write": {
+    "action": "conversation_agent_settings",
+    "data": {
+      "song": "current project name",
+      "selection": "chat model selection ID",
+      "settings_revision": "current model-profile revision integer",
+      "mode": "read_only|review|full_access",
+      "effort": "that model supported effort string"
+    },
+    "envelope": "normal conversation_id/conversation_revision/shared_version plus globalrevision/requestid",
+    "errors": "unknown field/model/value400; staleprofile/conversation/sharedCAS409"
+  },
+  "read": "project.agent_preferences",
+  "read_fields": {
+    "current": "selected model desired profile; selection/revision/mode/effort",
+    "by_model": "desired profile keyed by model selection ID; capability details are separately under capabilities.models",
+    "active_response": "frozen selection/revision/mode/effort plus turn_id/status/effective_mode/permission_ceiling, or null; conflict separately indicated",
+    "next_request": "desired settings for next new logical turn",
+    "capabilities": "supported tools/effort by runtime path; provider support distinct from connected/account/billing proof",
+    "settings_pending": "true when desired profile differs from active frozen response"
+  },
+  "behavior": {
+    "inflight": "already-approved body/effort never rehashed or rewritten; tool-result continuation remains frozen effort",
+    "downgrade": "immediate server write restriction; cannot re-widen that active turn",
+    "upgrade": "only next new confirmed logical turn gains extra permission",
+    "legacy": "missing saved execution preferences means review/low ceiling, never FullAccess"
+  },
+  "effort": {
+    "anthropic-haiku-5-5": {
+      "general_supported": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "vendor_upper_not_implemented": [
+        "xhigh",
+        "max"
+      ],
+      "upper_reason": "current general path uses disabled thinking and rejects private thinking blocks"
+    },
+    "openai-gpt-6-luna": {
+      "legacy_supported": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "general_route_supported": false
+    },
+    "xai-grok-4-7": {
+      "legacy_supported": [
+        "low",
+        "medium",
+        "high",
+        "xhigh"
+      ],
+      "general_route_supported": false
+    }
+  },
+  "full_autoapply": {
+    "allowed": [
+      "set_clip",
+      "reorder_clips",
+      "set_captions",
+      "set_audio_offset",
+      "set_motion_overlay"
+    ],
+    "human_review_only": [
+      "remove_clips",
+      "clear_motion_overlay",
+      "append_clips",
+      "new motion source approval",
+      "final output approval"
+    ],
+    "actor": "agent-draft; never local-owner human approval",
+    "result": "applied draft/new timeline version + server diff + output_approved false"
+  },
+  "deletion": {
+    "account": "always prohibited",
+    "file_asset_project": "no delete tool/API implemented; FullAccess not target-specific delete approval",
+    "unknown_arbitrary_tool": "always rejected"
+  },
+  "UI_files_owned_by_other_worker": true,
+  "route_tool_scope": {
+    "general_read_only": [
+      "search_project_context"
+    ],
+    "legacy_read_only": [
+      "search_project_context",
+      "get_model_capabilities",
+      "get_generation_job"
+    ],
+    "review_and_full": "existing route/admin-approved tool names remain; only typed whitelisted timeline edits auto-save in full"
+  },
+  "actual_http_sample": "ui-projection-example.json",
+  "actual_http_trace": "agent-settings-http-verification.json"
+}

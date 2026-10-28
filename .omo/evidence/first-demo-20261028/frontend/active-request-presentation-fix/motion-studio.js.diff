@@ -1,0 +1,11 @@
+--- motion-studio.js before
++++ motion-studio.js current
+@@ -11,7 +11,7 @@
+  const status=text=>el('motionStatus').textContent=text;
+  function persist(){if(scope&&editing)drafts.set(scope,{editing:structuredClone(editing),source,version,dirty,layerIndex})}
+  function current(){return (project()?.motion_proposals||[]).find(x=>x.id===source)}
+- function controls(){const pending=typeof pendingId==='function'&&pendingId(),blocked=busy||!!pending||(typeof pendingId==='function'&&pendingId.failed);el('motionRecover').hidden=!pending;el('motionRecover').disabled=busy;const x=current(),s=project()?.shots[shotName],same=scope===key(),valid=same&&x&&['proposed','held'].includes(x.status)&&x.base_revision===(s?.motion_head||0)&&!dirty;
++ function controls(){const pending=typeof pendingId==='function'&&pendingId(),blocked=busy||!!pending||(typeof pendingId==='function'&&pendingId.failed);el('motionRecover').hidden=!pending||(typeof mutationRequestActive==='function'&&mutationRequestActive(pending)&&!pendingId.failed);el('motionRecover').disabled=busy;const x=current(),s=project()?.shots[shotName],same=scope===key(),valid=same&&x&&['proposed','held'].includes(x.status)&&x.base_revision===(s?.motion_head||0)&&!dirty;
+   for(const id of ['motionApprove','motionHold','motionReject'])el(id).disabled=blocked||!valid;
+   el('motionStart').disabled=blocked||!same||!s||dirty;el('motionSave').disabled=blocked||!same||!dirty;el('motionCancel').disabled=busy||!dirty;el('motionPreview').disabled=!same||!x||dirty;el('motionRender').disabled=blocked||!s?.motion_head||s.motion_grant_available!==true||dirty;el('motionRestore').disabled=blocked||!s?.motion_head||dirty;
+  }

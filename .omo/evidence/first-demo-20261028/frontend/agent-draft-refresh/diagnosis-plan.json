@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-28T12:56:01.772289",
+  "status": "PLAN_REPORTED_AWAITING_ROOT_GO",
+  "observed": ".omo/evidence/first-demo-20261028/synthetic-chat-ui/actual-ui-probe/immediate-agent-draft-checkpoint.json",
+  "cause": "generalChatChanged assigns fresh state but does not rebuild clean timeline draft/DOM; server timeline_head4 and clean draft.id3/old approval diverge",
+  "preferred": "after all existing apply-time guards, on saved head change or clean draft/head mismatch only, use received fresh state plus existing draw/drawJobs with draft=null",
+  "alternatives": [
+    "extra refresh GET duplicates I/O",
+    "redraw every run poll resets unchanged drafts/media"
+  ],
+  "invariants": [
+    "do not overwrite dirty",
+    "do not weaken scope/epoch/revision/order guards",
+    "same-head status poll must retain draft object",
+    "new saved agent draft must remain unapproved",
+    "no API/model/output action addition"
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 220202,
+      "sha256": "f79217bd9778af472f00c095a1152e259420a05f40c3b85cfd3cc293870175d9"
+    },
+    {
+      "path": "tests/frontend_async_regressions.cjs",
+      "bytes": 11150,
+      "sha256": "0825e98d77cc85c7a021d56357c3c873e2621d33b7fd61718280f3461fb36de6"
+    },
+    {
+      "path": "tests/test_frontend_async.py",
+      "bytes": 367,
+      "sha256": "15dd13b9980044908b23a7f03aa3816a704be4aea126bb2f21e085da23742fbf"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "image": {
+    "state": "unverified",
+    "available": false,
+    "can_prepare": false,
+    "mode": "disconnected",
+    "model": "fal-ai/flux/schnell",
+    "reason": "계약 구현 · 가격·계정·결과 수신 실제 검증 전",
+    "policy": "출력 접근·보관 조건과 비용은 준비된 작업에서 확인합니다."
+  },
+  "selection": {
+    "chat": "anthropic-haiku-5-5",
+    "image": "fal-flux-schnell",
+    "video": "fal-kling-2-5-turbo"
+  },
+  "imageCount": 2,
+  "selected": 2,
+  "jobs": [
+    {
+      "id": "834df070-e9d8-482d-be04-c72a846d1f35",
+      "state": "imported",
+      "take": 2
+    },
+    {
+      "id": "0a4dfcc3-af68-49f9-ba3c-190fb102f63b",
+      "state": "imported",
+      "take": 1
+    }
+  ],
+  "output": [
+    {
+      "id": "e10e2094e9d3416487720de8f0f78eff",
+      "status": "completed",
+      "verified": {
+        "duration": 5,
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "24/1",
+        "audio_sample_rate": "48000",
+        "frame_timing": {
+          "fps": 24,
+          "policy": "nearest-internal-ceil-final",
+          "requested_duration": 5,
+          "duration": 5,
+          "clips": [
+            {
+              "start_frame": 0,
+              "end_frame": 120,
+              "frames": 120,
+              "start": 0,
+              "end": 5
+            }
+          ]
+        },
+        "streams": [
+          "video",
+          "audio",
+          "subtitle"
+        ],
+        "verified_at": 1792945636.801579
+      }
+    }
+  ],
+  "browser": {
+    "duration": 5,
+    "width": 1920,
+    "height": 1080,
+    "cues": [
+      {
+        "start": 0,
+        "end": 4.5,
+        "text": "합성 제작 흐름 검증 · 원곡 보존"
+      }
+    ],
+    "testBadge": "테스트 미디어 포함"
+  }
+}

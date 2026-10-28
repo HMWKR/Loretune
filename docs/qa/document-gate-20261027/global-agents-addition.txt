@@ -1,0 +1,10 @@
+
+<!-- DOCUMENT_COMPLETION_GATE_V1_START -->
+## 프로젝트별 문서 완료 검사
+
+- 문서 작성·수정 작업에서는 `document-completion-gate` 스킬을 사용한다. 전역 검사기는 `~/.agents/skills/document-completion-gate/check.py`, 정책은 각 프로젝트의 `.document-gate.json`이다.
+- 기존 Python 3로 `check.py --root <현재 작업 디렉터리>`를 시작/완료 시 실행하고, 분류·등록·hash·문맥 재검토 및 최종 evidence를 확인한다. 정책 안의 임의 명령은 실행하지 않는다.
+- 정책이 없으면 `not-configured`로 보고하고 프로젝트에 맞는 설정을 제안한다. registry/온톨로지를 자동 생성하거나 다른 프로젝트 설정을 적용하지 않는다.
+- 누락·미결정·실행 실패를 완료로 표현하지 않는다. 등록/승격/생성문맥 변경은 실제 사용자 승인 범위에서만 수행한다. 역사/원본과 제품 런타임 온톨로지를 구별한다.
+- 이 지침은 기계적 자동 훅이 아니다. native hook의 활성화/신뢰는 별도 검토하며 기존 훅과 Git 설정을 보존한다.
+<!-- DOCUMENT_COMPLETION_GATE_V1_END -->

@@ -1,0 +1,57 @@
+- link "제작 단계로 건너뛰기":
+  - /url: "#flowHeading"
+- banner:
+  - generic: Loretune
+  - combobox "작품 선택":
+    - option "승인 자막 고정 버전 QA" [selected]
+  - generic "작품·설정"
+  - option "100%" [selected]
+  - option "150%"
+  - option "200%"
+  - generic "프로젝트 상태"
+  - button "모델 설정"
+- navigation "제작 순서":
+  - button "1 음악 입력"
+  - button "2 계획 검토"
+  - button "3 장면 제작·검토"
+  - button "4 편집·출력"
+- 'button "다음: 직접 쓴 계획을 검토하세요"'
+- heading "음악과 사용할 구간을 확인하세요" [level=2]
+- generic "저장 상태"
+- status: 로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.
+- dialog "제작 모델 기본값":
+  - status
+  - heading "제작 모델 기본값" [level=2]
+  - button "닫기" [active]
+  - paragraph: 새 작업의 기본 선택만 바꿉니다. 진행 중 작업·승인본·원곡은 유지됩니다. 온톨로지 구조화 제안용 Anthropic 연결은 채팅 모델 선택과 별개이며 현재 미연결입니다.
+  - text: 채팅·기획 모델
+  - combobox "채팅·기획 모델":
+    - option "미선택" [selected]
+    - option "claude-haiku-5-5 · 통합 미검증"
+  - paragraph: "선택 모델: 미선택"
+  - paragraph: 미선택 · 외부 실행 없음
+  - text: 이미지 모델
+  - combobox "이미지 모델":
+    - option "미선택" [selected]
+  - paragraph: "선택 모델: 미선택"
+  - paragraph: 이미지 공급자 미선택 · 기존 이미지 업로드를 이용하세요.
+  - text: 영상 모델
+  - combobox "영상 모델":
+    - option "미선택" [selected]
+    - option "fal-ai/kling-video/v2.6/pro/image-to-video · 결과 수신 차단"
+  - paragraph: "선택 모델: 미선택"
+  - paragraph: 미선택 · 외부 실행 없음
+  - button "기본 선택 저장 · 호출 없음"
+  - status: 설정 v0 · 이미지 활성 모델 없음 · 모델 선택을 저장해도 외부 실행 권한은 생기지 않습니다.
+- main:
+  - complementary:
+    - heading "음원 마스터" [level=2]
+    - paragraph:
+      - text: v1 synthetic-tone.wav
+      - text: 6.00초 · 48000Hz
+      - img "음원 첫 6초의 실제 진폭 파형"
+      - text: 6.0초 간이 진폭 · 실제 PCM 측정
+      - text: 비트·BPM 분석 아님
+    - generic "음악 구간 · 수동 확정"
+    - option "v1 synthetic-tone.wav" [selected]
+    - generic "새 음원 버전 연결"

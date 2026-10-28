@@ -1,0 +1,69 @@
+[
+  {
+    "kind": "fake-chat",
+    "tool": "propose_media_plan"
+  },
+  {
+    "kind": "fake-chat",
+    "tool": null
+  },
+  {
+    "kind": "fake-chat",
+    "tool": "prepare_image_action"
+  },
+  {
+    "kind": "fake-chat",
+    "tool": null
+  },
+  {
+    "kind": "fake-HTTP",
+    "method": "POST",
+    "model": "fal-flux-schnell",
+    "operation": "submit"
+  },
+  {
+    "kind": "fake-HTTP",
+    "method": "GET",
+    "model": "fal-flux-schnell",
+    "operation": "status"
+  },
+  {
+    "kind": "fake-HTTP",
+    "method": "GET",
+    "model": "fal-flux-schnell",
+    "operation": "result"
+  },
+  {
+    "kind": "fake-download",
+    "model": "fal-flux-schnell",
+    "attempt": 1
+  },
+  {
+    "kind": "fake-download",
+    "model": "fal-flux-schnell",
+    "attempt": 2
+  },
+  {
+    "kind": "fake-HTTP",
+    "method": "POST",
+    "model": "fal-kling-2-5-turbo",
+    "operation": "submit"
+  },
+  {
+    "kind": "fake-HTTP",
+    "method": "GET",
+    "model": "fal-kling-2-5-turbo",
+    "operation": "status"
+  },
+  {
+    "kind": "fake-HTTP",
+    "method": "GET",
+    "model": "fal-kling-2-5-turbo",
+    "operation": "result"
+  },
+  {
+    "kind": "fake-download",
+    "model": "fal-kling-2-5-turbo",
+    "attempt": 1
+  }
+]

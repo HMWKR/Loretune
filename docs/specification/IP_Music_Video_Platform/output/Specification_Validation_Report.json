@@ -1,0 +1,713 @@
+{
+  "schema_version": "2.0",
+  "as_of": "2026-10-23",
+  "executed_at_utc": "2026-10-23T13:11:12.711895+00:00",
+  "validator": "qa/validate_specification.py",
+  "validator_sha256": "8ffc2b5d5d6edc1898ff01ad005e21d4e391fd10b3676b2673c09c40780aa3f2",
+  "verified_scope": "document_and_contract_static_checks_only",
+  "static_execution_status": "executed",
+  "runtime_status": "not_run",
+  "platform_runtime_status": "not_run",
+  "counts": {
+    "functional_requirements": 96,
+    "acceptance_scenarios": 192,
+    "integration_scenarios": 29,
+    "screens": 38,
+    "roles": 9,
+    "flows": 12,
+    "flow_steps": 73,
+    "metrics": 32,
+    "experiments": 16,
+    "evaluation_cases": 48,
+    "fixtures": 12,
+    "trace_rows": 96,
+    "api_operations": 143,
+    "technical_decisions": 15,
+    "nfr": 15,
+    "technical_scenarios": 36,
+    "ux_scenarios": 38,
+    "source_records": 92,
+    "api_paths": 116,
+    "api_schemas": 122,
+    "api_core": 33,
+    "api_planned": 110,
+    "sql_tables": 51
+  },
+  "supplemental_counts": {
+    "business_requirements": 15,
+    "knowledge_management_requirements": 20,
+    "comparison_experiments": 4
+  },
+  "source_record_counts_by_registry": {
+    "business_sources.json": 13,
+    "cost_model.json": 1,
+    "duration_pricing_sources.json": 20,
+    "project_ontology_sources.json": 6,
+    "refero_evidence.json": 28,
+    "tech_sources.json": 12,
+    "workflow_sources.json": 12
+  },
+  "unique_source_urls": 81,
+  "source_count_note": "92 is a source-record count, not 92 independent webpages, verified facts, or primary studies. Excluded candidates remain in the evidence registry.",
+  "summary": {
+    "static_checks": 93,
+    "passed": 93,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "check": "functional_requirements count and unique IDs",
+      "passed": true,
+      "detail": "actual=96; expected=96; unique=96"
+    },
+    {
+      "check": "acceptance_scenarios count and unique IDs",
+      "passed": true,
+      "detail": "actual=192; expected=192; unique=192"
+    },
+    {
+      "check": "integration_scenarios count and unique IDs",
+      "passed": true,
+      "detail": "actual=29; expected=29; unique=29"
+    },
+    {
+      "check": "screens count and unique IDs",
+      "passed": true,
+      "detail": "actual=38; expected=38; unique=38"
+    },
+    {
+      "check": "roles count and unique IDs",
+      "passed": true,
+      "detail": "actual=9; expected=9; unique=9"
+    },
+    {
+      "check": "flows count and unique IDs",
+      "passed": true,
+      "detail": "actual=12; expected=12; unique=12"
+    },
+    {
+      "check": "flow_steps count and unique IDs",
+      "passed": true,
+      "detail": "actual=73; expected=73; unique=73"
+    },
+    {
+      "check": "metrics count and unique IDs",
+      "passed": true,
+      "detail": "actual=32; expected=32; unique=32"
+    },
+    {
+      "check": "experiments count and unique IDs",
+      "passed": true,
+      "detail": "actual=16; expected=16; unique=16"
+    },
+    {
+      "check": "evaluation_cases count and unique IDs",
+      "passed": true,
+      "detail": "actual=48; expected=48; unique=48"
+    },
+    {
+      "check": "fixtures count and unique IDs",
+      "passed": true,
+      "detail": "actual=12; expected=12; unique=12"
+    },
+    {
+      "check": "trace_rows count and unique IDs",
+      "passed": true,
+      "detail": "actual=96; expected=96; unique=96"
+    },
+    {
+      "check": "api_operations count and unique IDs",
+      "passed": true,
+      "detail": "actual=143; expected=143; unique=143"
+    },
+    {
+      "check": "technical_decisions count and unique IDs",
+      "passed": true,
+      "detail": "actual=15; expected=15; unique=15"
+    },
+    {
+      "check": "nfr count and unique IDs",
+      "passed": true,
+      "detail": "actual=15; expected=15; unique=15"
+    },
+    {
+      "check": "technical_scenarios count and unique IDs",
+      "passed": true,
+      "detail": "actual=36; expected=36; unique=36"
+    },
+    {
+      "check": "ux_scenarios count and unique IDs",
+      "passed": true,
+      "detail": "actual=38; expected=38; unique=38"
+    },
+    {
+      "check": "source_records count and unique IDs",
+      "passed": true,
+      "detail": "actual=92; expected=92; unique=92"
+    },
+    {
+      "check": "business_requirements count and unique IDs",
+      "passed": true,
+      "detail": "actual=15; expected=15; unique=15"
+    },
+    {
+      "check": "knowledge_management_requirements count and unique IDs",
+      "passed": true,
+      "detail": "actual=20; expected=20; unique=20"
+    },
+    {
+      "check": "comparison_experiments count and unique IDs",
+      "passed": true,
+      "detail": "actual=4; expected=4; unique=4"
+    },
+    {
+      "check": "FR IDs form FR-001..FR-096",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "AT IDs form two explicit cases per FR",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "trace covers every FR exactly once",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "FR screen_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "FR api_operation_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "FR test_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "FR integration_case_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "FR related_metric_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "FR related_experiment_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "trace screen_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "trace operation_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "trace acceptance_scenario_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "trace integration_scenario_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "trace related_metric_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "trace related_experiment_ids exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "AT FR references exist",
+      "passed": true,
+      "detail": "192 records inspected; reference existence only."
+    },
+    {
+      "check": "AT fixture references exist",
+      "passed": true,
+      "detail": "192 records inspected; reference existence only."
+    },
+    {
+      "check": "IT FR references exist",
+      "passed": true,
+      "detail": "29 records inspected; reference existence only."
+    },
+    {
+      "check": "IT fixture references exist",
+      "passed": true,
+      "detail": "29 records inspected; reference existence only."
+    },
+    {
+      "check": "AT API references exist",
+      "passed": true,
+      "detail": "192 records inspected; reference existence only."
+    },
+    {
+      "check": "IT experiment references exist",
+      "passed": true,
+      "detail": "29 records inspected; reference existence only."
+    },
+    {
+      "check": "screen next targets exist",
+      "passed": true,
+      "detail": "38 records inspected; reference existence only."
+    },
+    {
+      "check": "screen role presets exist",
+      "passed": true,
+      "detail": "38 records inspected; reference existence only."
+    },
+    {
+      "check": "role home screens exist",
+      "passed": true,
+      "detail": "9 records inspected; reference existence only."
+    },
+    {
+      "check": "flow role presets exist",
+      "passed": true,
+      "detail": "12 records inspected; reference existence only."
+    },
+    {
+      "check": "flow step screens exist",
+      "passed": true,
+      "detail": "73 records inspected; reference existence only."
+    },
+    {
+      "check": "flow step order is contiguous per flow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "experiment metric references exist",
+      "passed": true,
+      "detail": "16 records inspected; reference existence only."
+    },
+    {
+      "check": "experiment BUS references exist",
+      "passed": true,
+      "detail": "16 records inspected; reference existence only."
+    },
+    {
+      "check": "experiment FR references exist",
+      "passed": true,
+      "detail": "16 records inspected; reference existence only."
+    },
+    {
+      "check": "evaluation case experiment references exist",
+      "passed": true,
+      "detail": "48 records inspected; reference existence only."
+    },
+    {
+      "check": "evaluation case FR references exist",
+      "passed": true,
+      "detail": "48 records inspected; reference existence only."
+    },
+    {
+      "check": "comparison experiment BUS references exist",
+      "passed": true,
+      "detail": "4 records inspected; reference existence only."
+    },
+    {
+      "check": "API FR references exist",
+      "passed": true,
+      "detail": "143 records inspected; reference existence only."
+    },
+    {
+      "check": "API requirement map FR references exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "API requirement map operation references exist",
+      "passed": true,
+      "detail": "96 records inspected; reference existence only."
+    },
+    {
+      "check": "trace rows match the FR catalog fields and gates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "AT to FR links are reciprocal and two per FR",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "IT to FR links are reciprocal",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "release gates and baseline gates are explicit",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "AT planned API method/path/status match OpenAPI",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "API path and schema counts",
+      "passed": true,
+      "detail": "paths=116; schemas=122"
+    },
+    {
+      "check": "API core/planned are contract detail levels",
+      "passed": true,
+      "detail": "core/planned do not indicate implemented or runtime-tested endpoints."
+    },
+    {
+      "check": "OpenAPI YAML and JSON represent the same document",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "OpenAPI top-level implementation status is not_implemented",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "all API operations explicitly remain not_implemented",
+      "passed": true,
+      "detail": "143 operations inspected."
+    },
+    {
+      "check": "OpenAPI local JSON Pointer references resolve",
+      "passed": true,
+      "detail": "1672 occurrences; 126 distinct local refs. This is not full OpenAPI semantic validation."
+    },
+    {
+      "check": "OpenAPI references are local to the inspected contract",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "SQL defines 51 uniquely named tables",
+      "passed": true,
+      "detail": "Text declaration count only; SQL is not executed or migration-validated."
+    },
+    {
+      "check": "SQL referenced table declarations exist",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "FRs remain unimplemented and runtime-unverified",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "AT and IT execution statuses remain not_run with null results",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "AT concrete runtime bindings remain unprepared",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "metrics remain unmeasured with null observed values",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "evaluation experiments remain not_run with null results",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "evaluation cases remain not_run with null evidence",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "comparison experiments remain planned_not_run",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture artifacts remain planned and unprepared",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "trace execution results remain null and not_run",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "screens and flows remain proposed_not_implemented",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "technical/NFR/UX records remain specified_not_run",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "evaluation protocol asserts no platform or customer execution",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "BUS and KMR proposal records do not claim verified outcomes",
+      "passed": true,
+      "detail": "Separate CLI and calculator execution evidence is not evaluated here."
+    },
+    {
+      "check": "technical and UX table ID references exist",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "merged source registry preserves the input source ID sets",
+      "passed": true,
+      "detail": "Counts records, including repeated URLs and excluded candidates; does not validate the external claims."
+    },
+    {
+      "check": "source records carry explicit URLs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chapter source IDs resolve to the source registry",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "chapters contain no unresolved chat tool-citation syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "technical_decisions IDs match their source chapter tables",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "nonfunctional_requirements IDs match their source chapter tables",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "technical_scenarios IDs match their source chapter tables",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ux_scenarios IDs match their source chapter tables",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "pass": true,
+  "pass_meaning": "All listed static properties held for the hashed local input files. This does not mean any platform function, acceptance scenario, integration scenario, quality metric, or business hypothesis passed execution.",
+  "input_manifest": [
+    {
+      "path": "output/requirements_catalog.json",
+      "sha256": "7d755505942dc20b4ab174f1de95104a32b3ed09a55e7cebed91aecf74966458",
+      "bytes": 202752
+    },
+    {
+      "path": "output/acceptance_tests.json",
+      "sha256": "ff778611c1975c3d37c0633e2f7811a4fdde4d7d34fb99584a1532d6e99dcf57",
+      "bytes": 736936
+    },
+    {
+      "path": "output/integration_tests.json",
+      "sha256": "d362fed1d7508aa489a39dcbe5b50630318c329c6e57352cd9b0aa0a6bb792c5",
+      "bytes": 41466
+    },
+    {
+      "path": "output/screen_catalog.json",
+      "sha256": "40d86dc04abe70c6ab4ff81b458feaec3abf43a987cb14a53b663afec3c9eeaa",
+      "bytes": 118143
+    },
+    {
+      "path": "output/user_flows.json",
+      "sha256": "e3869342cfa839f4a1cbfb764913cbbdfae6e35e536dcf600ecabf30b6dbcc81",
+      "bytes": 41629
+    },
+    {
+      "path": "output/evaluation_protocol.json",
+      "sha256": "72bb49f11dfc64fed460a63bbc2740a5cebe7821b1e8ae95086c5914e7de4acd",
+      "bytes": 128651
+    },
+    {
+      "path": "output/fixture_registry.json",
+      "sha256": "ba0a98a3c8b495d810bf92efaa268af704097d3e1106416cceb451a23367990c",
+      "bytes": 4448
+    },
+    {
+      "path": "output/traceability_matrix.json",
+      "sha256": "5bcac9b33db10aa9aab840688e760cdffd6cb24da26abd12d966776181f34258",
+      "bytes": 112566
+    },
+    {
+      "path": "output/system_and_ux_tests.json",
+      "sha256": "1b9c254f490c5133496da523ff69a1dfdd982245446c90a2dc14a940025b83ce",
+      "bytes": 25056
+    },
+    {
+      "path": "output/source_registry.json",
+      "sha256": "9f017c0220d11fa75f1334b1ebe5d86328c6c69508d028c707025ab4c65d1a41",
+      "bytes": 93637
+    },
+    {
+      "path": "output/business_requirements.json",
+      "sha256": "75de261f0ff68993531813a24a4c7e47a7e59ce5034566e69ca14a97e00ab787",
+      "bytes": 6664
+    },
+    {
+      "path": "output/knowledge_management_requirements.json",
+      "sha256": "6d51b9a3e174fbcf9bcea5b34929ba8e609eab209a34a4fef1d2941dae6a67ff",
+      "bytes": 8390
+    },
+    {
+      "path": "output/comparison_protocol.json",
+      "sha256": "d3ad2ce50185d9fa0d9b17446b3631d627f371b5f7fc9a2657583b2ec44d64ac",
+      "bytes": 3599
+    },
+    {
+      "path": "output/technical_contracts.openapi.json",
+      "sha256": "e99579a677d69fcb80d9a00cc1d79a98ae78b525ebb4dce0231bc85a41d456a1",
+      "bytes": 680558
+    },
+    {
+      "path": "output/technical_contracts.openapi.yaml",
+      "sha256": "546e357beed85fb57d8cf725d219a9d6238473bfbd0e19b53aafdcef4e3bcce3",
+      "bytes": 452592
+    },
+    {
+      "path": "output/ontology_schema.sql",
+      "sha256": "3fa16a6f0e9234885c6e96fc3f20f64a68a190a86139b958c211127b5d5d3842",
+      "bytes": 59131
+    },
+    {
+      "path": "research/api_requirement_reference_map.json",
+      "sha256": "2fa912bda61da7a5143d445d84591a7afe758bfa3d9fd4c45ce39687bfcf5d2d",
+      "bytes": 27660
+    },
+    {
+      "path": "research/business_sources.json",
+      "sha256": "9992f79b7ac48d455e0ab84a4615ce4d0d78564c50f123217656dc84b2264f64",
+      "bytes": 9666
+    },
+    {
+      "path": "research/tech_sources.json",
+      "sha256": "88faaad117f7feba8d4a0695c8f936f2cbb7d336593d5545ad3e4781b752141a",
+      "bytes": 10480
+    },
+    {
+      "path": "research/refero_evidence.json",
+      "sha256": "85bd86639912ef5143be656bc547491b2a4ecbdc2bbec88b86a30949ef88ae14",
+      "bytes": 53478
+    },
+    {
+      "path": "research/workflow_sources.json",
+      "sha256": "60b3a831f3ab221e191a9be30a40087e63711a9ca4a1119fdf77f60b8fa53b43",
+      "bytes": 18324
+    },
+    {
+      "path": "research/project_ontology_sources.json",
+      "sha256": "afbdf87b8b0a3e6493d20834d943bf8bead686d51413ff10b9d90644d3c0a716",
+      "bytes": 3221
+    },
+    {
+      "path": "research/duration_pricing_sources.json",
+      "sha256": "c89b06391080d62b664ad20365a72d1030edaa27481ae7bad37c3e3d2c966090",
+      "bytes": 37835
+    },
+    {
+      "path": "project_kit/cost_model.json",
+      "sha256": "3d7e81cf59064d757640acf718e1268dceef56dbf147a34bfa087d7f5999ad13",
+      "bytes": 3505
+    },
+    {
+      "path": "chapters/00_overview.md",
+      "sha256": "304e86f49d28cf3892a189e68d21dd7fcb5446182974ed69035a8e9c73f65aef",
+      "bytes": 12138
+    },
+    {
+      "path": "chapters/01_business.md",
+      "sha256": "52bc0522da200e53389b6558ffbf6e40b75b56fe25033a9b656dfbadd6146dee",
+      "bytes": 27923
+    },
+    {
+      "path": "chapters/02_requirements.md",
+      "sha256": "54359f7980cc71d3d32993907e1b3a454cd59dc6b528be71d2309eb4b121a5a9",
+      "bytes": 83577
+    },
+    {
+      "path": "chapters/03_product_contracts.md",
+      "sha256": "b7b486281a17a2771d4d57f0d38423544b35cf63fc9b3fdd1dc80d83eb3e4228",
+      "bytes": 19263
+    },
+    {
+      "path": "chapters/04_technical.md",
+      "sha256": "6dd1a097f8369fada9340c53d5b82ccabf498069016db27667764eaec1f02f13",
+      "bytes": 66455
+    },
+    {
+      "path": "chapters/05_ux_flows.md",
+      "sha256": "962f88d3c641cebc6fedb453735d178267ded98723b36c8ab42d0d26c5b61033",
+      "bytes": 159820
+    },
+    {
+      "path": "chapters/06_validation.md",
+      "sha256": "42e27e6ce4956018300711277bce23f54fbb3c5299f4f0ad4ea997f96d3d92ae",
+      "bytes": 31113
+    },
+    {
+      "path": "chapters/07_workflow_and_pitch.md",
+      "sha256": "5b5b71eef59019e94498c6fa88d3b4fc8ae49fa779bb53ba93fea72caf6067f9",
+      "bytes": 46806
+    },
+    {
+      "path": "chapters/08_project_ontology_and_cli.md",
+      "sha256": "2639ee9e176f3e96c8a0d0803a671fe52eb15c85eb319ace90f41c172b51cf2f",
+      "bytes": 24176
+    },
+    {
+      "path": "chapters/09_cost_and_comparison.md",
+      "sha256": "a5e9ce0e95796b2180ccb07cac1bfed141b13c59683d3a30f343acc0aaef3279",
+      "bytes": 21810
+    }
+  ],
+  "separate_evidence_not_included": [
+    "16 document CLI tests: separate report; not included as platform or specification runtime passes.",
+    "10 cost calculator tests: separate report; not included as platform or specification runtime passes.",
+    "DOCX/PDF rendering and visual review: separate document artifact review reports."
+  ],
+  "not_verified": [
+    "Actual SQL migration, PostgreSQL constraints or RLS behavior",
+    "Actual HTTP API implementation or end-to-end platform behavior",
+    "Provider media generation, cancellation, billing or settlement",
+    "Real fixture creation, execution binding, assertion runners or runtime test coverage",
+    "Video quality, identity consistency, music fit or team preference outcomes",
+    "Load, restore, deletion or cross-IP isolation under runtime conditions",
+    "Paid demand, retention, actual customer labor or production unit costs",
+    "Freshness or truth of external webpages; source reference linkage only"
+  ]
+}

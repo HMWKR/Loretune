@@ -1,0 +1,246 @@
+[
+  {
+    "scenario": "same",
+    "selected": [
+      3,
+      6
+    ],
+    "output": [
+      3,
+      6
+    ],
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [],
+      "duration": 3,
+      "music_selection_warning": null,
+      "audio_version": 1,
+      "audio_start": 3,
+      "audio_end": 6,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    },
+    "reread_immutable": true
+  },
+  {
+    "scenario": "output-longer",
+    "selected": [
+      3,
+      4
+    ],
+    "output": [
+      3,
+      6
+    ],
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [
+        "현재 음악 선택 3.000–4.000초와 이 편집의 음원 출력 3.000–6.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요."
+      ],
+      "duration": 3,
+      "music_selection_warning": "현재 음악 선택 3.000–4.000초와 이 편집의 음원 출력 3.000–6.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.",
+      "audio_version": 1,
+      "audio_start": 3,
+      "audio_end": 6,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    },
+    "reread_immutable": true
+  },
+  {
+    "scenario": "output-shorter",
+    "selected": [
+      3,
+      9
+    ],
+    "output": [
+      3,
+      6
+    ],
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [
+        "현재 음악 선택 3.000–9.000초와 이 편집의 음원 출력 3.000–6.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요."
+      ],
+      "duration": 3,
+      "music_selection_warning": "현재 음악 선택 3.000–9.000초와 이 편집의 음원 출력 3.000–6.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.",
+      "audio_version": 1,
+      "audio_start": 3,
+      "audio_end": 6,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    },
+    "reread_immutable": true
+  },
+  {
+    "scenario": "offset-earlier",
+    "selected": [
+      3,
+      6
+    ],
+    "output": [
+      2,
+      5
+    ],
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [
+        "현재 음악 선택 3.000–6.000초와 이 편집의 음원 출력 2.000–5.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요."
+      ],
+      "duration": 3,
+      "music_selection_warning": "현재 음악 선택 3.000–6.000초와 이 편집의 음원 출력 2.000–5.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.",
+      "audio_version": 1,
+      "audio_start": 2,
+      "audio_end": 5,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    },
+    "reread_immutable": true
+  },
+  {
+    "scenario": "offset-later",
+    "selected": [
+      3,
+      6
+    ],
+    "output": [
+      4,
+      7
+    ],
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [
+        "현재 음악 선택 3.000–6.000초와 이 편집의 음원 출력 4.000–7.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요."
+      ],
+      "duration": 3,
+      "music_selection_warning": "현재 음악 선택 3.000–6.000초와 이 편집의 음원 출력 4.000–7.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.",
+      "audio_version": 1,
+      "audio_start": 4,
+      "audio_end": 7,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    },
+    "reread_immutable": true
+  },
+  {
+    "scenario": "fraction-equal",
+    "selected": [
+      0.1,
+      0.3
+    ],
+    "output": [
+      0.1,
+      0.30000000000000004
+    ],
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [
+        "24fps 누적 프레임 경계로 출력합니다. 요청 0.200초 → 출력 0.208초; 내부 컷 경계 오차 최대 1/48초, 마지막 경계는 원음·자막 보존을 위해 최대 1/24초 미만 연장. 음원·자막의 절대 시각은 보존합니다."
+      ],
+      "duration": 0.2,
+      "music_selection_warning": null,
+      "audio_version": 1,
+      "audio_start": 0.1,
+      "audio_end": 0.30000000000000004,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    },
+    "reread_immutable": true
+  },
+  {
+    "scenario": "millisecond-difference",
+    "selected": [
+      0.1,
+      0.301
+    ],
+    "output": [
+      0.1,
+      0.30000000000000004
+    ],
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [
+        "24fps 누적 프레임 경계로 출력합니다. 요청 0.200초 → 출력 0.208초; 내부 컷 경계 오차 최대 1/48초, 마지막 경계는 원음·자막 보존을 위해 최대 1/24초 미만 연장. 음원·자막의 절대 시각은 보존합니다.",
+        "현재 음악 선택 0.100–0.301초와 이 편집의 음원 출력 0.100–0.300초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요."
+      ],
+      "duration": 0.2,
+      "music_selection_warning": "현재 음악 선택 0.100–0.301초와 이 편집의 음원 출력 0.100–0.300초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.",
+      "audio_version": 1,
+      "audio_start": 0.1,
+      "audio_end": 0.30000000000000004,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    },
+    "reread_immutable": true
+  },
+  {
+    "scenario": "source-tail",
+    "selected": [
+      8,
+      9
+    ],
+    "output": [
+      8,
+      11
+    ],
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [
+        "선택한 음원이 영상보다 짧아 끝부분은 무음으로 채워집니다.",
+        "현재 음악 선택 8.000–9.000초와 이 편집의 음원 출력 8.000–11.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요."
+      ],
+      "duration": 3,
+      "music_selection_warning": "현재 음악 선택 8.000–9.000초와 이 편집의 음원 출력 8.000–11.000초가 다릅니다. 편집의 음원 시작과 컷 길이를 확인하세요.",
+      "audio_version": 1,
+      "audio_start": 8,
+      "audio_end": 11,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    },
+    "reread_immutable": true
+  },
+  {
+    "scenario": "different-audio-version",
+    "preflight": {
+      "ready": true,
+      "errors": [],
+      "warnings": [
+        "선택한 음원이 영상보다 짧아 끝부분은 무음으로 채워집니다."
+      ],
+      "duration": 3,
+      "music_selection_warning": null,
+      "audio_version": 1,
+      "audio_start": 8,
+      "audio_end": 11,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    }
+  },
+  {
+    "scenario": "existing-comment-block",
+    "preflight": {
+      "ready": false,
+      "errors": [
+        "미해결 검토 의견이 있습니다."
+      ],
+      "warnings": [
+        "선택한 음원이 영상보다 짧아 끝부분은 무음으로 채워집니다."
+      ],
+      "duration": 3,
+      "music_selection_warning": null,
+      "audio_version": 1,
+      "audio_start": 8,
+      "audio_end": 11,
+      "profile": "preview",
+      "note": "저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다."
+    }
+  }
+]

@@ -1,0 +1,771 @@
+--- a/generation_queue.py
++++ b/generation_queue.py
+@@ -28,9 +28,14 @@
+     def admit(self,scope,data,quote,context,key,*,approved=False,connection=None):
+         # This gate is controlled by a trusted runtime caller, never a client JSON flag.
+         if not approved:raise ValueError('마지막 live gate의 전송·비용 승인이 필요합니다.')
+-        if quote.get('model')!=MODEL or quote.get('money')!={'amount':'0.70','currency':'USD'} or quote.get('duration')!=10:
++        image=context.get('output_kind')=='image'
++        if image:
++            from runway_provider import MODEL as IMAGE_MODEL,validate_payload
++            validate_payload(data)
++            if quote.get('provider')!='runway' or quote.get('model')!=IMAGE_MODEL or quote.get('money')!={'amount':'0.08','currency':'USD'} or quote.get('output_count')!=1:raise ValueError('unapproved image quote')
++        elif quote.get('model')!=MODEL or quote.get('money')!={'amount':'0.70','currency':'USD'} or quote.get('duration')!=10:
+             raise ValueError('승인된 모델·10초 견적이 아닙니다.')
+-        if data.get('duration')!='10' or data.get('generate_audio') is not False:raise ValueError('승인된 출력 옵션이 아닙니다.')
++        if not image and (data.get('duration')!='10' or data.get('generate_audio') is not False):raise ValueError('승인된 출력 옵션이 아닙니다.')
+         digest=hashlib.sha256(json.dumps(dict(scope=scope,data=data,context=context,quote=quote),sort_keys=True).encode()).hexdigest()
+         with (nullcontext(connection) if connection is not None else self.store.connect()) as c:
+             if connection is None:c.execute('BEGIN IMMEDIATE')
+@@ -110,15 +115,21 @@
+         job=self.get(identifier)
+         if job['state'] not in {'accepted','running','cancel_sent'}:return job
+         status=adapter.status(job['receipt'])
+-        result=adapter.result(job['receipt']) if status['result_ready'] else None
++        result=(status.get('result') or adapter.result(job['receipt'])) if status['result_ready'] else None
+         with self.store.connect() as c:
+             c.execute('BEGIN IMMEDIATE')
+             latest=json.loads(c.execute('SELECT body FROM generation_jobs WHERE id=?',(identifier,)).fetchone()[0])
+             if latest['state'] not in {'accepted','running','cancel_sent'}:return latest
+             latest['state']=('cancelled_result' if latest.get('cancel_requested') else 'result_ready') if result else ('cancel_sent' if latest.get('cancel_requested') else 'running' if status['state']=='IN_PROGRESS' else 'accepted')
+             latest['result']=result
++            if status.get('terminal_state'):latest['state']=status['terminal_state']
++            latest['provider_state']=status.get('provider_state',status['state'])
+             # A result URL is not a downloaded/decoded take, approval, or billing receipt.
+             self.save(c,latest)
++        if status.get('billing'):
++            import provider_billing
++            provider_billing.reconcile(self.store,identifier,'runway-task',status['billing'],evidence_class='fixture' if job['mode']=='contract-fake' else 'authenticated-provider')
++            latest=self.get(identifier)
+         return latest
+ 
+     def import_result(self,identifier,download):
+@@ -134,7 +145,11 @@
+         raw=download(job['result']['url'])
+         current=self.get(identifier)
+         if current['state']!='downloading' or current.get('download_claim')!=claim:raise ValueError('수신 작업 소유권이 변경되었습니다.')
+-        path,metadata=self.store.save_media(raw,'.mp4','video',max_bytes=MAX_RESULT_BYTES,expected_duration=10)
++        image=context.get('output_kind')=='image'
++        if image:
++            extension='.png' if raw.startswith(b'\x89PNG\r\n\x1a\n') else '.jpg'
++            path,metadata=self.store.save_media(raw,extension,'video',max_bytes=16*1024*1024,expected_dimensions=tuple(map(int,job['input']['ratio'].split(':'))))
++        else:path,metadata=self.store.save_media(raw,'.mp4','video',max_bytes=MAX_RESULT_BYTES,expected_duration=10)
+         from loretune import Studio
+         with self.store.connect() as c:
+             c.execute('BEGIN IMMEDIATE')
+@@ -147,10 +162,10 @@
+             if project.get('archived'):raise ValueError('보관 해제 후 결과를 연결하세요.')
+             shot=project['shots'][context['shot']]
+             stale=shot['revision']!=context['shot_revision']
+-            studio.attach_take(context['song'],context['shot'],path,reason='fal.ai Kling 생성 결과; 별도 검토 필요',expected_revision=shot['revision'])
++            studio.attach_take(context['song'],context['shot'],path,reason='공급자 이미지 결과; 별도 검토 필요' if image else 'fal.ai Kling 생성 결과; 별도 검토 필요',expected_revision=shot['revision'])
+             take=shot['takes'][-1]
+-            take.update(metadata=metadata,rights=context['rights'],filename='kling-'+identifier+'.mp4',
+-                provenance=dict(provider='fal.ai',model=MODEL,job=identifier,request_id=latest['receipt']['request_id']),
++            take.update(metadata=metadata,rights=context['rights'],filename=('runway-'+identifier+extension) if image else 'kling-'+identifier+'.mp4',
++                provenance=dict(provider=job['quote'].get('provider','fal.ai'),model=job['quote']['model'],job=identifier,request_id=latest['receipt']['request_id']),
+                 reference_version_at_upload=context['reference_version'],stale_input=stale)
+             binding=context.get('action_binding')
+             if binding:
+@@ -168,6 +183,7 @@
+         if not row:raise ValueError('생성 작업이 없습니다.')
+         job=json.loads(row[0])
+         if job.get('cancel_requested'):return job
++        if job['context'].get('output_kind')=='image' and job['state']!='prepared':raise ValueError('Runway DELETE may delete completed output; post-submit cancellation is not enabled')
+         if job['state'] not in {'prepared','accepted','running','submitting','reconciliation_required'}:raise ValueError('취소 가능한 진행 작업이 아닙니다.')
+         job.update(cancel_requested=True,cancel_reason=reason)
+         if job['state']=='prepared':
+--- a/editing.py
++++ b/editing.py
+@@ -28,7 +28,7 @@
+         raise ValueError('시간은 0~600초의 유한 숫자여야 합니다.')
+     return round(value,3)
+ 
+-def probe(path, kind):
++def probe(path, kind, *, expected_dimensions=None):
+     exe=shutil.which('ffprobe')
+     if not exe: raise ValueError('FFprobe가 없어 미디어를 검사할 수 없습니다.')
+     try:
+@@ -37,6 +37,7 @@
+         streams=[s for s in d['streams'] if s['codec_type']==kind]
+         if not streams:raise ValueError('필요한 미디어 트랙이 없습니다.')
+         stream=streams[0]
++        if expected_dimensions is not None and (stream.get('width'),stream.get('height'))!=expected_dimensions:raise ValueError('미디어 크기가 승인 출력과 다릅니다.')
+         if kind=='video' and (stream.get('width',0)<=0 or stream.get('height',0)<=0):
+             raise ValueError('디코딩 가능한 영상 크기가 없습니다.')
+         if kind=='audio' and (int(stream.get('sample_rate',0))<=0 or stream.get('channels',0)<=0):
+--- a/model_selection.py
++++ b/model_selection.py
+@@ -6,6 +6,8 @@
+ 
+ ROLES=('chat','image','video')
+ CATALOG=(
++    dict(id='runway-gen4-image',release_id='runway:gen4_image:2024-11-06',connection_id=None,revision_pinning='api-version-only',role='image',provider='runway',model='gen4_image',
++         state='integration_unverified',reason='문서 계약·격리 fixture 구현; 제공자·보관 정책 선택 및 실제 연결 미검증',capabilities=dict(task='text/reference-to-image',max_references=3)),
+     dict(id='anthropic-haiku-5-5',release_id='anthropic:claude-haiku-5-5',connection_id=None,revision_pinning='unverified',role='chat',provider='anthropic',model='claude-haiku-5-5',
+          state='integration_unverified',reason='서버 도구 실행·합성 검증 경로 구현; 일반 프로젝트 실제 채팅 연결 미검증',capabilities=None),
+     dict(id='fal-kling-2-6-pro',release_id='fal:kling-video-v2.6-pro-i2v',connection_id=None,revision_pinning='unverified',role='video',provider='fal',model='fal-ai/kling-video/v2.6/pro/image-to-video',
+@@ -14,7 +16,7 @@
+ )
+ 
+ def catalog():
+-    return dict(models=deepcopy(CATALOG),roles=list(ROLES),image_notice='이미지 어댑터·활성 모델 없음',
++    return dict(models=deepcopy(CATALOG),roles=list(ROLES),image_notice='이미지 계약 구현 후보 1개; 활성 모델 없음',
+                 live_execution=False,scope='single-local-workspace',automatic_routing=False)
+ 
+ def settings(project):
+--- a/media_bridge.py
++++ b/media_bridge.py
+@@ -98,10 +98,10 @@
+         context={'song':job['context']['song']}, failure_code=job.get('failure_code'),
+         **{k:b.get(k) for k in ('action_id','plan_id','plan_revision','release_id','grant_id')},
+         external_calls=job.get('external_calls'), provider_completed=bool(job.get('result')),
+-        result=dict(sha256=job['asset_sha256'],output_slot='video') if job.get('asset_sha256') else None,
++        result=dict(sha256=job['asset_sha256'],output_slot=job.get('context',{}).get('output_kind','video')) if job.get('asset_sha256') else None,
+         result_approved=False, cost=dict(reservation_state=row[0] if row else 'unknown',
+             estimate=deepcopy(money), actual=ledger.money(row[1],money['currency']) if row and row[1] is not None and money else None,
+-            billing_confirmed=job.get('cost_confirmed',False)))
++            billing_confirmed=job.get('cost_confirmed',False),evidence=deepcopy(job.get('cost_evidence'))))
+ 
+ 
+ def receipt(c, workspace, project_id, project, action, grant_id):
+--- a/app.py
++++ b/app.py
+@@ -78,6 +78,7 @@
+             chat_runtime.initialize(c)
+         self.generation=GenerationQueue(self)
+         self.provider_adapter=None
++        self.image_pipeline=None
+         self.generation_approval=None
+         self.retrieval_approval=None
+         self.chat_runtime=None
+@@ -106,14 +107,14 @@
+                 job=json.loads(r[0])
+                 public={k:v for k,v in job.items() if k not in {'input','receipt','result'}}
+                 public['context']={k:v for k,v in job['context'].items() if k!='submission_binding'}
+-                public['can_recheck']=job['state']=='reconciliation_required' and bool(job.get('receipt'))
++                public['can_recheck']=job.get('context',{}).get('output_kind')!='image' and job['state']=='reconciliation_required' and bool(job.get('receipt'))
+                 public['provider_request_id']=(job.get('receipt') or {}).get('request_id')
+                 public['provider_completed']=bool(job.get('result'))
+                 public['retrieval_permission_blocked']=job['state']=='import_blocked' and job.get('failure_code') in {'provider_media_http_401','provider_media_http_403','provider_http_401','provider_http_403','cdn_token_http_401','cdn_token_http_403'}
+                 approval=self.retrieval_approval or {}
+                 resolved=approval.get('job')==job['id'] and approval.get('expires',0)>time.time() and bool(approval.get('evidence')) and bool(approval.get('id')) and approval['id'] not in job.get('retrieval_approvals_used',[])
+-                public['can_resume_result']=job['state'] in {'import_blocked','cancelled_result'} and bool(job.get('result')) and (not public['retrieval_permission_blocked'] or resolved)
+-                public['retention_notice']='공급자 파일 만료 1시간 요청. 정확한 삭제시각 미확인; 새 생성 없이 기존 결과만 회수합니다.' if job.get('result') else None
++                public['can_resume_result']=job.get('context',{}).get('output_kind')!='image' and job['state'] in {'import_blocked','cancelled_result'} and bool(job.get('result')) and (not public['retrieval_permission_blocked'] or resolved)
++                public['retention_notice']='Runway 서명 URL은 24–48시간 만료; fal 비공개 1시간 계약 아님' if job.get('context',{}).get('output_kind')=='image' else '공급자 파일 만료 1시간 요청. 정확한 삭제시각 미확인; 새 생성 없이 기존 결과만 회수합니다.' if job.get('result') else None
+                 saved['generation_jobs'].append(public)
+         saved['project_ids']={name:contracts.project_id(self.workspace_id,name) for name in saved['projects']}
+         for p in saved['projects'].values():
+@@ -163,7 +164,7 @@
+             provider=dict(connected=False,calls=0,cost=0,status='미연결; 실제 공급자 지연/과금은 측정하지 않음'),
+             scope='로컬 렌더 운영 기록; 계정 신원 감사·외부 모니터링·알림은 미지원')
+ 
+-    def save_media(self, raw, extension, kind, *, max_bytes=MAX_UPLOAD, expected_duration=None):
++    def save_media(self, raw, extension, kind, *, max_bytes=MAX_UPLOAD, expected_duration=None, expected_dimensions=None):
+         """Only publish verified media; invalid uploads leave no public asset."""
+         if not raw or len(raw)>max_bytes:raise ValueError(f'파일은 1바이트~{max_bytes//(1024*1024)}MB여야 합니다.')
+         digest=hashlib.sha256(raw).hexdigest()
+@@ -171,7 +172,9 @@
+         with tempfile.TemporaryDirectory(dir=self.root,prefix='upload-') as folder:
+             staging=Path(folder)/('source'+extension)
+             staging.write_bytes(raw)
+-            metadata=probe(staging,kind)
++            metadata=probe(staging,kind,expected_dimensions=expected_dimensions)
++            if expected_dimensions is not None:
++                if (metadata.get('width'),metadata.get('height'))!=expected_dimensions:raise ValueError('생성 이미지 해상도가 요청과 다릅니다.')
+             if expected_duration is not None:
+                 if abs(metadata.get('duration',0)-expected_duration)>.2:raise ValueError('생성 결과 길이가 요청한 길이와 다릅니다.')
+                 subprocess.run(['ffmpeg','-nostdin','-v','error','-xerror','-protocol_whitelist','file,pipe','-i',str(staging),'-map','0:v:0','-f','null','-'],capture_output=True,timeout=30,check=True)
+@@ -434,6 +437,7 @@
+                 if not row:raise ValueError('생성 작업이 없습니다.')
+                 job=json.loads(row[0])
+                 if job['context']['song']!=text(d['song']):raise ValueError('작품과 생성 작업이 다릅니다.')
++                if job.get('context',{}).get('output_kind')=='image' and a!='cancel_generation':raise ValueError('이미지 제공자 복구 연결은 아직 검증되지 않았습니다. 기존 요청을 보존하며 재전송하지 않습니다.')
+                 if a=='cancel_generation':self.generation.request_cancel(job['id'],text(d['reason']),c)
+                 elif a=='resume_generation_status':
+                     if job['state']!='reconciliation_required' or not job.get('receipt'):raise ValueError('조회할 제공자 접수번호가 없습니다. 재발행하지 않습니다.')
+@@ -687,10 +691,12 @@
+         media_bridge.validate_submission(c,self.workspace_id,contracts.project_id(self.workspace_id,prep['song']),project,job)
+ 
+     def process_generation(self):
++        if self.image_pipeline is not None and self.image_pipeline.process():return True
+         if self.provider_adapter is None:return False
+         with self.connect() as c:
+             jobs=[json.loads(r[0]) for r in c.execute('SELECT body FROM generation_jobs')]
+         for job in jobs:
++            if job.get('context',{}).get('output_kind')=='image':continue
+             try:
+                 if job['state']=='prepared':
+                     self.generation.dispatch(job['id'],self.provider_adapter,pre_submit=self.validate_generation_submission);return True
+--- a/action_execution.py
++++ b/action_execution.py
+@@ -51,7 +51,7 @@
+  if not isinstance(dependencies,(list,tuple)) or len(dependencies)!=len(set(dependencies)):raise ValueError('의존 작업 목록 오류')
+  for dependency in dependencies:get(c,'production_actions',w,p,dependency)
+  if context_kind not in {'full-v1','media-v1'}:raise ValueError('승인 문맥 종류 오류')
+- if (mode,connection_id) not in {('rehearsal',None),('provider','fal-kling-queue-v1')}:raise ValueError('지원하지 않는 실행 연결입니다.')
++ if (mode,connection_id) not in {('rehearsal',None),('provider','fal-kling-queue-v1'),('provider','runway-gen4-image-v1')}:raise ValueError('지원하지 않는 실행 연결입니다.')
+  value=dict(id=uuid.uuid4().hex,plan_id=plan_id,plan_revision=plan_revision,context_hash=context_hash,context_kind=context_kind,role=role,release_id=release_id,
+             inputs=deepcopy(inputs),options=deepcopy(options),dependencies=list(dependencies),mode=mode,connection_id=connection_id)
+  value['hash']=fingerprint(value);put(c,'production_actions',w,p,value);return value
+--- /dev/null
++++ b/runway_provider.py
+@@ -0,0 +1,117 @@
++"""Narrow, inactive Runway gen4_image adapter. No environment reads/retries.
++Official OpenAPI 2026-10-25, version 2024-11-06. Signed output != fal private ACL.
++"""
++import base64,json,re,time,uuid
++from urllib.parse import urlsplit
++from urllib.request import Request,build_opener
++from urllib.error import HTTPError,URLError
++from http.client import IncompleteRead
++from fal_provider import ProviderError,NoRedirect
++MODEL='gen4_image'
++BASE='https://api.dev.runwayml.com/v1/'
++VERSION='2024-11-06'
++CONNECTION='runway-gen4-image-v1'
++PRICE_SOURCE='https://docs.dev.runwayml.com/guides/pricing/'
++MAX_BYTES=16*1024*1024
++RATIOS={'1920:1080','1080:1920','1080:1080'}  # explicitly bounded 1080p subset
++
++def payload(prompt,ratio,references=()):
++    if not isinstance(prompt,str) or not prompt.strip() or len(prompt.encode('utf-16-le'))//2>1000:raise ValueError('Runway prompt must be 1–1000 UTF-16 units')
++    if ratio not in RATIOS:raise ValueError('unsupported image ratio')
++    if not isinstance(references,(list,tuple)) or len(references)>3:raise ValueError('at most three reference images')
++    result=dict(model=MODEL,promptText=prompt,ratio=ratio)
++    refs=[]
++    for n,raw in enumerate(references):
++        if not isinstance(raw,bytes) or not raw.startswith(b'\x89PNG\r\n\x1a\n'):raise ValueError('PNG references only in this integration')
++        uri='data:image/png;base64,'+base64.b64encode(raw).decode()
++        if len(uri)>5242880:raise ValueError('reference data URI exceeds 5MB')
++        refs.append(dict(uri=uri,tag='ref'+str(n+1)))
++    if refs:result['referenceImages']=refs
++    return result
++
++def validate_payload(data):
++    if not isinstance(data,dict) or set(data)-{'model','promptText','ratio','referenceImages'} or data.get('model')!=MODEL:raise ValueError('unsupported image request')
++    refs=[]
++    for n,item in enumerate(data.get('referenceImages',[])):
++        if set(item)!={'uri','tag'} or item['tag']!='ref'+str(n+1) or not item['uri'].startswith('data:image/png;base64,'):raise ValueError('unapproved reference role/input')
++        refs.append(base64.b64decode(item['uri'].split(',',1)[1],validate=True))
++    if payload(data.get('promptText'),data.get('ratio'),refs)!=data:raise ValueError('invalid image request')
++
++def estimate():
++    return dict(provider='runway',model=MODEL,kind='documented-estimate; invoice unverified',
++        money={'amount':'0.08','currency':'USD'},credits=8,output_count=1,source=PRICE_SOURCE,
++        checked='2026-10-25',expires=time.time()+300,automatic_retries=False)
++
++class RunwayImage:
++    def __init__(self,*,key=None,live_enabled=False,transport=None,output_hosts=()):
++        self._key=key;self.live_enabled=live_enabled;self._transport=transport
++        self.mode='contract-fake' if transport is not None else 'live-unverified' if live_enabled else 'disconnected'
++        # No wildcard CloudFront trust. Runtime must approve exact documented/observed host.
++        self.output_hosts=frozenset(output_hosts)
++        for host in self.output_hosts:
++            if not re.fullmatch(r'[a-z0-9-]+\.cloudfront\.net',host):raise ValueError('exact output host required')
++    def _request(self,method,path,body=None):
++        if not (method=='POST' and path=='text_to_image') and not (method in {'GET','DELETE'} and re.fullmatch(r'tasks/[0-9a-f-]{36}',path)):raise ProviderError('untrusted_provider_url')
++        headers={'Content-Type':'application/json','X-Runway-Version':VERSION}
++        if self._transport is not None:return self._transport(method,BASE+path,headers,body)
++        if not self.live_enabled or not self._key:raise ProviderError('provider_not_connected')
++        headers['Authorization']='Bearer '+self._key
++        try:
++            with build_opener(NoRedirect()).open(Request(BASE+path,method=method,headers=headers,data=json.dumps(body).encode() if body is not None else None),timeout=30) as response:
++                raw=response.read(2_000_001)
++                if len(raw)>2_000_000:raise ProviderError('provider_response_too_large',method=='POST')
++                return json.loads(raw) if raw else {}
++        except HTTPError as exc:
++            code=exc.code;exc.close();raise ProviderError('provider_http_'+str(code),method=='POST' and code>=500) from None
++        except (URLError,TimeoutError,OSError,ValueError,IncompleteRead):raise ProviderError('provider_response_uncertain',method=='POST') from None
++    @staticmethod
++    def identifier(receipt):
++        try:
++            value=uuid.UUID(receipt['request_id'])
++            if value.version!=4:raise ValueError()
++            return str(value)
++        except (KeyError,ValueError,TypeError):raise ProviderError('untrusted_provider_receipt') from None
++    def submit(self,data):
++        validate_payload(data);value=self._request('POST','text_to_image',data)
++        try:return {'request_id':self.identifier({'request_id':value['id']})}
++        except (ProviderError,KeyError,TypeError):raise ProviderError('provider_receipt_uncertain',True) from None
++    def status(self,receipt):
++        identifier=self.identifier(receipt);value=self._request('GET','tasks/'+identifier)
++        if value.get('id')!=identifier or value.get('status') not in {'PENDING','THROTTLED','RUNNING','SUCCEEDED','FAILED','CANCELLED'}:raise ProviderError('unknown_provider_state')
++        state=value['status'];terminal=state in {'FAILED','CANCELLED'}
++        # Returned task cost is provider-reported credits, never a USD payment invoice.
++        billing={'source':'runway-task','request_id':identifier,'provider_state':state,
++                 'credits':value.get('cost',{}).get('credits'),'estimated_credits':value.get('estimatedCost',{}).get('credits')}
++        result=None
++        if state=='SUCCEEDED':
++            outputs=value.get('output')
++            if not isinstance(outputs,list) or len(outputs)!=1:raise ProviderError('invalid_provider_result')
++            self.validate_output_url(outputs[0]);result=dict(url=outputs[0],content_type=None,approved=False,cost_confirmed=False)
++        return dict(state='IN_PROGRESS' if state=='RUNNING' else 'IN_QUEUE',provider_state=state,
++            result_ready=state=='SUCCEEDED',result=result,terminal_state=('failed' if state=='FAILED' else 'provider_cancelled') if terminal else None,billing=billing)
++    def validate_output_url(self,url):
++        try:
++            if not isinstance(url,str) or len(url)>16384:raise ValueError()
++            p=urlsplit(url)
++            if p.scheme!='https' or p.hostname not in self.output_hosts or p.username or p.password or p.port not in {None,443} or p.fragment or not p.path:raise ValueError()
++        except (TypeError,ValueError):raise ProviderError('untrusted_provider_output') from None
++    def cancel(self,receipt):
++        # DELETE also deletes a completed task; do not turn a cancel race into data loss.
++        raise ProviderError('cancel_unsupported_without_delete_authorization')
++    def download(self,url):
++        self.validate_output_url(url)
++        if not self.live_enabled and self._transport is None:raise ProviderError('provider_not_connected')
++        try:
++            # Signed URL only: never forward the API key or authentication header.
++            with build_opener(NoRedirect()).open(Request(url,headers={'Accept':'image/png,image/jpeg'}),timeout=30) as response:
++                mime=response.headers.get('Content-Type','').split(';')[0].lower()
++                if mime not in {'image/png','image/jpeg'}:raise ProviderError('result_mime_invalid')
++                length=response.headers.get('Content-Length')
++                if length is not None and (not length.isdigit() or not 0<int(length)<=MAX_BYTES):raise ProviderError('result_size_invalid')
++                raw=response.read(MAX_BYTES+1)
++                if not raw or len(raw)>MAX_BYTES or (length is not None and len(raw)!=int(length)):raise ProviderError('result_size_invalid')
++                if (mime=='image/png' and not raw.startswith(b'\x89PNG\r\n\x1a\n')) or (mime=='image/jpeg' and not raw.startswith(b'\xff\xd8\xff')):raise ProviderError('result_mime_invalid')
++                return raw
++        except HTTPError as exc:
++            code=exc.code;exc.close();raise ProviderError('download_http_'+str(code)) from None
++        except (URLError,TimeoutError,OSError,IncompleteRead):raise ProviderError('download_interrupted') from None
+--- /dev/null
++++ b/image_pipeline.py
+@@ -0,0 +1,103 @@
++"""Inactive image controller on the SAME actions/grants/generation queue/ledger.
++Trusted server runtime injection only; no public enable endpoint, key loading or default.
++"""
++from copy import deepcopy
++import hashlib,json,os,time
++from pathlib import Path
++import action_assets,action_execution as actions,contracts,guided,ledger,media_bridge,model_selection
++import runway_provider as runway
++from fal_provider import ProviderError
++
++class ImagePipeline:
++    def __init__(self,store,adapter,gate=None):
++        self.store=store;self.adapter=adapter;self.gate=deepcopy(gate)
++    def project(self,c,name):
++        state=json.loads(c.execute('SELECT body FROM state WHERE id=1').fetchone()[0])
++        p=state['projects'].get(name)
++        if not p or p.get('archived'):raise ValueError('current non-archived project required')
++        return p,contracts.project_id(self.store.workspace_id,name)
++    def data(self,c,p,action):
++        action_assets.validate(c,self.store,p,{'action':action})
++        raw=[]
++        for ref in action['inputs'].get('asset_refs',[]):
++            t=next(x for x in p['shots'][ref['shot']]['takes'] if x['id']==ref['take'])
++            with os.fdopen(os.open(t['asset'],os.O_RDONLY|os.O_NOFOLLOW),'rb') as f:value=f.read(4*1024*1024)
++            if hashlib.sha256(value).hexdigest()!=ref['sha256']:raise ValueError('reference changed')
++            raw.append(value)
++        return runway.payload(action['inputs']['prompt'],action['options']['ratio'],raw)
++    def prepare(self,name,shot,prompt,ratio,refs=(),*,expected_revision):
++        with self.store.connect() as c:
++            c.execute('BEGIN IMMEDIATE');p,pid=self.project(c,name);target=p['shots'][shot]
++            if target['revision']!=expected_revision:raise ValueError('stale shot')
++            plan=next((x for x in p.get('guided_plans',[]) if x['id']==target.get('plan_id')),None)
++            if not plan or plan['status']!='applied' or shot not in plan['shots'] or plan['context_hash']!=guided.fingerprint(guided.context(p)):raise ValueError('current applied plan required')
++            if len(refs)>3:raise ValueError('maximum three references')
++            if any(r.get('role') not in {'character','style'} for r in refs):raise ValueError('image generation accepts character/style guidance; never silently reinterpret start/end frames')
++            quote=runway.estimate()
++            action=actions.propose(c,self.store.workspace_id,pid,plan_id=plan['id'],plan_revision=plan['version'],
++                context_hash=model_selection.media_snapshot(p)['sha256'],context_kind='media-v1',role='image',
++                release_id=runway.MODEL,inputs=dict(prompt=prompt,asset_refs=deepcopy(list(refs))),
++                options=dict(shot=shot,shot_revision=expected_revision,ratio=ratio,quote=quote,
++                    output_policy='runway-signed-url-24-48h; local-copy; not-fal-private-1h'),mode='provider',connection_id=runway.CONNECTION)
++            data=self.data(c,p,action)
++            return dict(action=action,quote=quote,input_sha256=guided.fingerprint(data))
++    def check_gate(self,name,pid,action,data):
++        gate=self.gate or {};quote=action['options']['quote']
++        required=dict(workspace=self.store.workspace_id,project=pid,action_hash=action['hash'],
++            input_sha256=guided.fingerprint(data),model=runway.MODEL,output_policy=action['options']['output_policy'])
++        if any(gate.get(k)!=v for k,v in required.items()) or gate.get('expires',0)<=time.time() or gate.get('maximum_units')!=80000 or gate.get('maximum_calls')!=1:raise ValueError('explicit image input/cost/output-policy gate required')
++        if quote['expires']<=time.time():raise ValueError('expired image estimate')
++        if self.adapter.mode!='contract-fake' and gate.get('live_approved') is not True:raise ValueError('image live verification not authorized')
++    def admit(self,name,action_id,*,human_approved=False):
++        if human_approved is not True:raise ValueError('human approval required; model cannot approve')
++        with self.store.connect() as c:
++            c.execute('BEGIN IMMEDIATE');p,pid=self.project(c,name);w=self.store.workspace_id
++            a=actions.get(c,'production_actions',w,pid,action_id)
++            if (a['mode'],a['role'],a['connection_id'],a['release_id'])!=('provider','image',runway.CONNECTION,runway.MODEL):raise ValueError('wrong image action')
++            prior=c.execute('SELECT job FROM provider_action_jobs WHERE workspace=? AND project=? AND action=?',(w,pid,a['id'])).fetchone()
++            if prior:return self.store.generation.get(prior[0])
++            data=self.data(c,p,a);self.check_gate(name,pid,a,data)
++            quote=deepcopy(a['options']['quote']);price=guided.fingerprint(quote)
++            g=actions.grant(c,w,pid,[a['id']],actor='local-owner',approved=True,expires=min(self.gate['expires'],quote['expires']),price_revision=price,money_by_action={a['id']:quote['money']})
++            actions.validate(a,g,model_selection.action_context(p,a),price)
++            scope='project:'+pid;b=ledger.budget(c,w,scope)
++            if not b:raise ValueError('provider budget missing')
++            quote['budget_revision']=b['revision']
++            binding=dict(action_id=a['id'],action_hash=a['hash'],grant_id=g['id'],grant_hash=g['hash'],plan_id=a['plan_id'],plan_revision=a['plan_revision'],release_id=a['release_id'],connection_id=runway.CONNECTION,price_revision=price,workspace=w,project=pid)
++            context=dict(song=name,shot=a['options']['shot'],shot_revision=a['options']['shot_revision'],reference_version=None,
++                rights='사용권 미확인',output_kind='image',action_binding=binding,execution_mode=self.adapter.mode,
++                submission_binding=dict(gate_hash=guided.fingerprint(self.gate),adapter_identity=id(self.adapter)))
++            job=self.store.generation.admit(scope,data,quote,context,'image:'+w+':'+pid+':'+a['id'],approved=True,connection=c)
++            media_bridge.bind(c,w,pid,job);return job
++    def validate_submission(self,c,job):
++        p,pid=self.project(c,job['context']['song']);b=job['context']['action_binding'];w=self.store.workspace_id
++        if (b['workspace'],b['project'],b['connection_id'])!=(w,pid,runway.CONNECTION):raise ValueError('job scope mismatch')
++        row=c.execute('SELECT job FROM provider_action_jobs WHERE workspace=? AND project=? AND action=?',(w,pid,b['action_id'])).fetchone()
++        if not row or row[0]!=job['id']:raise ValueError('job mapping mismatch')
++        a=actions.get(c,'production_actions',w,pid,b['action_id']);g=actions.get(c,'execution_grants',w,pid,b['grant_id'])
++        price=guided.fingerprint({k:v for k,v in job['quote'].items() if k!='budget_revision'})
++        actions.validate(a,g,model_selection.action_context(p,a),price)
++        if a['hash']!=b['action_hash'] or g['hash']!=b['grant_hash'] or g['money'][a['id']]!=job['quote']['money']:raise ValueError('grant changed')
++        if not g['external_transmission'] or a['connection_id']!=runway.CONNECTION or a['role']!='image' or a['release_id']!=runway.MODEL:raise ValueError('wrong provider authority')
++        if p['shots'][job['context']['shot']]['revision']!=job['context']['shot_revision']:raise ValueError('shot changed')
++        data=self.data(c,p,a);self.check_gate(job['context']['song'],pid,a,data)
++        if data!=job['input'] or job['context']['submission_binding']!=dict(gate_hash=guided.fingerprint(self.gate),adapter_identity=id(self.adapter)):raise ValueError('immutable input/runtime changed')
++    def process(self):
++        with self.store.connect() as c:jobs=[json.loads(r[0]) for r in c.execute('SELECT body FROM generation_jobs')]
++        for j in jobs:
++            if j['context'].get('output_kind')!='image':continue
++            try:
++                if j['state']=='prepared':self.store.generation.dispatch(j['id'],self.adapter,pre_submit=self.validate_submission);return True
++                if j['state'] in {'accepted','running'} and time.time()-j['updated']>=5:self.store.generation.poll(j['id'],self.adapter);return True
++                if j['state']=='result_ready':self.store.generation.import_result(j['id'],self.adapter.download);return True
++            except Exception as exc:
++                with self.store.connect() as c:
++                    c.execute('BEGIN IMMEDIATE');latest=json.loads(c.execute('SELECT body FROM generation_jobs WHERE id=?',(j['id'],)).fetchone()[0])
++                    latest['state']='import_blocked' if latest['state'] in {'result_ready','downloading'} else 'reconciliation_required'
++                    latest['failure_code']=exc.code if isinstance(exc,ProviderError) else 'local_image_validation_failed'
++                    latest['last_error']='이미지 결과 수집/조회 보류. 기존 요청 보존; 자동 재발행 없음.'
++                    row=c.execute('SELECT state FROM reservations WHERE id=?',(latest['reservation'],)).fetchone()
++                    if row and row[0]=='reserved':ledger.command(c,self.store.workspace_id,latest['scope'],'uncertain',{'reservation':latest['reservation']},j['id']+':image-uncertain')
++                    self.store.generation.save(c,latest)
++                return True
++        return False
+--- /dev/null
++++ b/provider_billing.py
+@@ -0,0 +1,105 @@
++"""Recorded provider evidence -> local ledger. No fetching, credentials or invoice claims.
++Only trusted server reconciliation code calls this module; no model/public write tool.
++"""
++from decimal import Decimal,InvalidOperation,ROUND_CEILING
++import hashlib,json,time
++import ledger
++from generation_queue import GenerationQueue
++
++def initialize(c):
++    c.execute('CREATE TABLE IF NOT EXISTS provider_cost_observations (workspace TEXT, job TEXT, digest TEXT, body TEXT, PRIMARY KEY(workspace,job,digest))')
++
++def nonnegative(value):
++    if type(value) not in (int,float,str):raise ValueError('invalid provider amount')
++    try:n=Decimal(str(value))
++    except InvalidOperation:raise ValueError('invalid provider amount') from None
++    if not n.is_finite() or n<0 or n>Decimal('9000000000'):raise ValueError('invalid provider amount')
++    return n
++
++def normalize(source,record,job):
++    rid=(job.get('receipt') or {}).get('request_id')
++    if not rid or record.get('request_id')!=rid:raise ValueError('billing request ownership mismatch')
++    if source=='fal-billed':
++        if job['quote']['provider']!='fal.ai' or record.get('endpoint_id')!=job['quote']['model']:raise ValueError('billing model mismatch')
++        total=nonnegative(record['cost_total']);sub=nonnegative(record['cost_subtotal']);discount=nonnegative(record['cost_discount'])
++        nano=record['cost_estimate_nano_usd']
++        if type(nano) is not int or nano<0 or Decimal(nano)/1_000_000_000!=total or sub-discount!=total:raise ValueError('inconsistent billing amounts')
++        # Local ledger precision is micro-USD: round upward conservatively; preserve exact nano evidence.
++        micro=int((total*1_000_000).to_integral_value(rounding=ROUND_CEILING))
++        return dict(kind='provider_reported_usd',
++            exact_nano_usd=nano,ledger_money=ledger.money(micro,'USD'),rounding_nano_usd=micro*1000-nano,
++            quantity=str(nonnegative(record['quantity'])) if record.get('quantity') is not None else None,
++            unit=record.get('unit') if record.get('unit') in {'image','second','megapixel','video'} else None)
++    if source=='runway-task':
++        if job['quote']['provider']!='runway':raise ValueError('billing provider mismatch')
++        terminal=record.get('provider_state') in {'SUCCEEDED','FAILED','CANCELLED'}
++        value=record.get('credits') if terminal else record.get('estimated_credits')
++        if value is None:return dict(kind='unknown')
++        credit=nonnegative(value)
++        if terminal and type(value) is not int:raise ValueError('terminal credits must be integer')
++        # Credits paid at an account's historical purchase rate/tax are NOT a USD invoice.
++        return dict(kind='provider_reported_credits' if terminal else 'estimated',credits=str(credit),
++            nominal_usd=str(credit*Decimal('0.01')),invoice_confirmed=False)
++    raise ValueError('unsupported cost source')
++
++def reconcile(store,identifier,source,record,*,evidence_class):
++    if evidence_class not in {'fixture','recorded-provider','authenticated-provider'}:raise ValueError('trusted evidence class required')
++    with store.connect() as c:
++        c.execute('BEGIN IMMEDIATE');initialize(c)
++        row=c.execute('SELECT body FROM generation_jobs WHERE id=?',(identifier,)).fetchone()
++        if not row:raise ValueError('unknown local job')
++        job=json.loads(row[0]);binding=job.get('context',{}).get('action_binding')
++        if binding and binding.get('workspace')!=store.workspace_id:raise ValueError('cross-workspace job')
++        r=c.execute('SELECT r.state,r.actual,b.workspace,b.scope FROM reservations r JOIN budgets b ON b.id=r.budget WHERE r.id=? AND r.job=?',(job['reservation'],job['id'])).fetchone()
++        if not r or (r[2],r[3])!=(store.workspace_id,job['scope']):raise ValueError('reservation ownership mismatch')
++        fake=job.get('mode')=='contract-fake'
++        if fake!=(evidence_class=='fixture'):raise ValueError('fixture/live billing evidence cannot cross')
++        normalized=normalize(source,record,job)
++        clean=dict(source=source,request_id=job['receipt']['request_id'],model=job['quote']['model'],
++            evidence_class=evidence_class,**normalized)
++        digest=hashlib.sha256(json.dumps(clean,sort_keys=True).encode()).hexdigest()
++        prior=c.execute('SELECT body FROM provider_cost_observations WHERE workspace=? AND job=? AND digest=?',(store.workspace_id,identifier,digest)).fetchone()
++        if prior:return json.loads(prior[0])
++        clean.update(digest=digest,observed_at=time.time(),invoice_confirmed=False)
++        if normalized['kind']=='provider_reported_usd':
++            desired=ledger.units(normalized['ledger_money'])
++            if r[0] in {'settled','disputed'}:
++                # Timestamp is request time, not revision time. Changed records cannot order refunds safely.
++                if r[1]!=desired:clean['reconciliation']='conflicting_record_requires_review'
++                else:clean['reconciliation']='matched_existing_settlement'
++            else:
++                ledger.command(c,store.workspace_id,job['scope'],'settle',dict(reservation=job['reservation'],money=normalized['ledger_money']),'provider:'+identifier+':'+digest)
++                clean['reconciliation']='settled_from_provider_record'
++            if clean['reconciliation']!='conflicting_record_requires_review':job['cost_confirmed']=not fake
++        else:
++            clean['reconciliation']='reservation_retained'
++            if normalized['kind']=='provider_reported_credits' and r[0]=='reserved':
++                ledger.command(c,store.workspace_id,job['scope'],'uncertain',{'reservation':job['reservation']},identifier+':credits-unconverted')
++        job['cost_evidence']=clean
++        c.execute('INSERT INTO provider_cost_observations VALUES (?,?,?,?)',(store.workspace_id,identifier,digest,json.dumps(clean)))
++        GenerationQueue.save(c,job)
++        return clean
++
++
++def record_fal_usage(store,response,*,evidence_class):
++    """Official /models/usage time buckets: NEVER allocate aggregate cost to one job."""
++    if evidence_class not in {'fixture','recorded-provider','authenticated-provider'}:raise ValueError('trusted evidence class required')
++    if not isinstance(response,dict) or not isinstance(response.get('time_series'),list) or len(response['time_series'])>1000:raise ValueError('bounded usage page required')
++    records=[]
++    for bucket in response['time_series']:
++        if not isinstance(bucket.get('bucket'),str) or len(bucket['bucket'])>64 or not isinstance(bucket.get('results'),list) or len(bucket['results'])>1000:raise ValueError('invalid usage bucket')
++        for row in bucket['results']:
++            endpoint=row.get('endpoint_id')
++            if not isinstance(endpoint,str) or not 1<=len(endpoint)<=200 or row.get('currency')!='USD':raise ValueError('invalid usage endpoint/currency')
++            total=nonnegative(row['cost_total']);sub=nonnegative(row['cost_subtotal']);discount=nonnegative(row['cost_discount'])
++            if sub-discount!=total:raise ValueError('inconsistent usage totals')
++            records.append(dict(source='fal-usage-estimate',kind='aggregate_estimate',bucket=bucket['bucket'],endpoint_id=endpoint,
++                amount_usd=str(total),quantity=str(nonnegative(row['quantity'])),evidence_class=evidence_class,
++                job_attribution=None,billing_confirmed=False,invoice_confirmed=False))
++    with store.connect() as c:
++        c.execute('BEGIN IMMEDIATE')
++        c.execute('CREATE TABLE IF NOT EXISTS provider_usage_snapshots (workspace TEXT, digest TEXT, body TEXT, PRIMARY KEY(workspace,digest))')
++        for record in records:
++            digest=hashlib.sha256(json.dumps(record,sort_keys=True).encode()).hexdigest()
++            c.execute('INSERT OR IGNORE INTO provider_usage_snapshots VALUES (?,?,?)',(store.workspace_id,digest,json.dumps(record)))
++    return records
+--- /dev/null
++++ b/tests/test_runway_image_pipeline.py
+@@ -0,0 +1,164 @@
++"""Real image adapter/queue/SQLite/filesystem with synthetic HTTP and PNG. No live calls."""
++import base64,hashlib,io,json,subprocess,tempfile,time,unittest,uuid,wave
++from concurrent.futures import ThreadPoolExecutor
++from pathlib import Path
++from unittest.mock import patch
++from app import Store
++import action_execution as actions,contracts,guided,ledger,model_selection,runway_provider as rw
++from image_pipeline import ImagePipeline
++from image_adapter import SyntheticImageAdapter
++from fal_provider import ProviderError
++
++class ImagePipelineTest(unittest.TestCase):
++ @classmethod
++ def setUpClass(cls):
++  with tempfile.TemporaryDirectory() as folder:
++   path=Path(folder)/'fixture.png'
++   subprocess.run(['ffmpeg','-v','error','-f','lavfi','-i','color=blue:s=1920x1080','-frames:v','1',str(path)],check=True)
++   cls.png=path.read_bytes()
++ def setUp(self):
++  self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.store=Store(self.tmp.name);self.calls=[]
++  self.call('project',name='synthetic',era='default',story=0)
++  b=io.BytesIO()
++  with wave.open(b,'wb') as f:f.setparams((1,2,8000,0,'NONE','not compressed'));f.writeframes(b'\0\0'*8000)
++  self.call('audio',song='synthetic',filename='synthetic.wav',content=base64.b64encode(b.getvalue()).decode(),rights='synthetic owned')
++  self.call('music_structure',song='synthetic',audio=1,start=0,end=1,sections=[])
++  self.plan=self.call('guided_plan',song='synthetic',goal='synthetic',scenes='blue geometry',kind='visualizer')['plan']
++  self.call('apply_guided_plan',song='synthetic',plan=self.plan)
++  self.adapter=rw.RunwayImage(transport=self.transport,output_hosts={'dnznrvs05pmza.cloudfront.net'})
++  self.pipeline=ImagePipeline(self.store,self.adapter);self.store.image_pipeline=self.pipeline
++  self.rid='11111111-1111-4111-8111-111111111111'
++  self.url='https://dnznrvs05pmza.cloudfront.net/synthetic.png?_jwt=synthetic-signed-canary'
++ def call(self,action,**data):return self.store.mutate(dict(action=action,data=data,revision=self.store.state()['revision'],request_id=uuid.uuid4().hex))
++ def project(self):return self.store.state()['projects']['synthetic']
++ def shot(self):return self.project()['shots']['장면 1']
++ def transport(self,method,url,headers,body):
++  self.calls.append((method,url,headers,body))
++  if method=='POST':return {'id':self.rid}
++  return dict(id=self.rid,status='SUCCEEDED',output=[self.url],cost={'credits':8})
++ def prepare(self,refs=()):
++  result=self.pipeline.prepare('synthetic','장면 1','blue geometry','1920:1080',refs,expected_revision=self.shot()['revision']);self.prep=result
++  self.pipeline.gate=dict(workspace=self.store.workspace_id,project=contracts.project_id(self.store.workspace_id,'synthetic'),
++   action_hash=result['action']['hash'],input_sha256=result['input_sha256'],model=rw.MODEL,output_policy=result['action']['options']['output_policy'],
++   maximum_units=80000,maximum_calls=1,expires=time.time()+240)
++  with self.store.connect() as c:ledger.patch_budget(c,self.store.workspace_id,'project:'+self.pipeline.gate['project'],dict(limit={'amount':'0.08','currency':'USD'},maxConcurrentJobs=1,allowAutomaticRetries=False),0)
++  return result['action']['id']
++ def start(self,refs=()):return self.pipeline.admit('synthetic',self.prepare(refs),human_approved=True)
++ def finish(self,j):
++  self.store.process_generation();self.store.generation.poll(j['id'],self.adapter)
++  response=io.BytesIO(self.png);response.headers={'Content-Type':'image/png','Content-Length':str(len(self.png))}
++  with patch('runway_provider.build_opener') as opener:
++   opener.return_value.open.return_value=response;self.store.process_generation()
++   req=opener.return_value.open.call_args.args[0];self.assertNotIn('Authorization',req.headers)
++  return self.store.generation.get(j['id'])
++ def test_real_adapter_contract_registers_unapproved_take_and_same_action_receipt(self):
++  j=self.start();self.assertEqual(self.pipeline.admit('synthetic',self.prep['action']['id'],human_approved=True)['id'],j['id'])
++  out=self.finish(j);self.assertEqual(out['state'],'imported')
++  take=self.shot()['takes'][0];self.assertEqual(take['sha256'],hashlib.sha256(self.png).hexdigest());self.assertIsNone(self.shot()['selected'])
++  self.assertEqual(take['rights'],'사용권 미확인');self.assertEqual(take['provenance']['model'],'gen4_image');self.assertEqual(take['metadata']['width'],1920)
++  self.assertEqual(self.calls[0][1],rw.BASE+'text_to_image');self.assertEqual(self.calls[0][2]['X-Runway-Version'],'2024-11-06')
++  self.assertEqual(self.calls[0][3],{'model':'gen4_image','promptText':'blue geometry','ratio':'1920:1080'})
++  with self.store.connect() as c:
++   self.assertEqual(c.execute('SELECT count(*) FROM reservations').fetchone()[0],1)
++   receipt=actions.request_from_plan(c,self.store.workspace_id,self.pipeline.gate['project'],self.project(),dict(plan_id=self.plan,action_id=self.prep['action']['id'],grant_id=j['context']['action_binding']['grant_id']))
++  self.assertEqual(receipt['result']['output_slot'],'image');self.assertFalse(receipt['cost']['billing_confirmed']);self.assertIsNone(receipt['cost']['actual'])
++  self.assertEqual(receipt['cost']['evidence']['kind'],'provider_reported_credits')
++  self.assertNotIn('synthetic-signed-canary',json.dumps(self.store.state())+json.dumps(receipt))
++  self.assertEqual(Store(self.tmp.name).state()['projects']['synthetic']['shots']['장면 1']['takes'][0],take)
++ def test_concurrent_admit_and_worker_only_submit_once(self):
++  aid=self.prepare()
++  with ThreadPoolExecutor(max_workers=2) as pool:jobs=list(pool.map(lambda _:self.pipeline.admit('synthetic',aid,human_approved=True),range(2)))
++  self.assertEqual(jobs[0]['id'],jobs[1]['id'])
++  with ThreadPoolExecutor(max_workers=2) as pool:list(pool.map(lambda _:self.store.process_generation(),range(2)))
++  self.assertEqual(len(self.calls),1)
++ def test_revoked_rights_grant_and_changed_media_block_before_submit(self):
++  for case in ['rights','grant','media','price']:
++   with self.subTest(case=case):
++    self.setUp()
++    raw=SyntheticImageAdapter().generate(dict(prompt='fixture',width=32,height=32))['bytes']
++    self.call('take',song='synthetic',shot='장면 1',shot_revision=self.shot()['revision'],filename='fixture.png',content=base64.b64encode(raw).decode(),reason='fixture',rights='synthetic owned')
++    t=self.shot()['takes'][0];ref=dict(shot='장면 1',take=t['id'],sha256=t['sha256'],role='style');j=self.start([ref])
++    if case=='rights':self.call('asset_rights',sha256=t['sha256'],blocked=True,reason='fixture revoke')
++    if case=='media':self.call('model_settings',song='synthetic',selections={'image':'runway-gen4-image'},model_revision=0)
++    with self.store.connect() as c:
++     if case=='grant':actions.revoke(c,self.store.workspace_id,self.pipeline.gate['project'],j['context']['action_binding']['grant_id'],1)
++     if case=='price':j['quote']['money']['amount']='0.07';self.store.generation.save(c,j)
++    self.store.process_generation();self.assertEqual(self.calls,[]);self.assertEqual(self.store.generation.get(j['id'])['state'],'submission_blocked')
++ def test_chat_handoff_does_not_invalidate_media(self):
++  j=self.start();self.call('model_settings',song='synthetic',selections={'chat':'anthropic-haiku-5-5'},model_revision=0)
++  self.store.process_generation();self.assertEqual(self.store.generation.get(j['id'])['state'],'accepted')
++ def test_unknown_submit_survives_restart_without_reissue(self):
++  j=self.start()
++  def lost(*args):self.calls.append(args);raise TimeoutError()
++  self.adapter._transport=lost;self.store.process_generation();self.store.generation.recover();self.store.process_generation()
++  self.assertEqual(len(self.calls),1);self.assertEqual(self.store.generation.get(j['id'])['state'],'reconciliation_required')
++  with self.store.connect() as c:self.assertEqual(c.execute('SELECT state FROM reservations').fetchone()[0],'uncertain')
++ def test_cancel_before_submit_only_and_post_submit_never_deletes(self):
++  j=self.start()
++  with self.store.connect() as c:self.store.generation.request_cancel(j['id'],'fixture',c)
++  self.store.process_generation();self.assertEqual(self.calls,[])
++  self.setUp();j=self.start();self.store.process_generation()
++  with self.store.connect() as c:
++   with self.assertRaisesRegex(ValueError,'DELETE'):self.store.generation.request_cancel(j['id'],'fixture',c)
++  with self.assertRaises(ProviderError):self.adapter.cancel({'request_id':self.rid})
++  self.assertEqual(len(self.calls),1)
++ def test_provider_failure_and_cancelled_are_terminal_but_not_free(self):
++  for state in ['FAILED','CANCELLED']:
++   with self.subTest(state=state):
++    self.setUp();j=self.start();self.store.process_generation();self.adapter._transport=lambda *a:dict(id=self.rid,status=state,cost={'credits':3})
++    out=self.store.generation.poll(j['id'],self.adapter);self.assertIn(out['state'],{'failed','provider_cancelled'});self.assertFalse(out['cost_confirmed'])
++    self.assertFalse(self.store.process_generation());self.assertEqual(self.shot()['takes'],[])
++ def test_wrong_dimensions_or_truncation_never_publish_asset(self):
++  for raw in [self.png[:30],SyntheticImageAdapter().generate(dict(prompt='x',width=32,height=32))['bytes']]:
++   self.setUp();j=self.start();self.store.process_generation();self.store.generation.poll(j['id'],self.adapter)
++   with patch.object(self.adapter,'download',return_value=raw):self.store.process_generation()
++   self.assertEqual(self.store.generation.get(j['id'])['state'],'import_blocked');self.assertEqual(self.shot()['takes'],[])
++   self.assertFalse((self.store.root/'assets'/(hashlib.sha256(raw).hexdigest()+'.png')).exists())
++ def test_role_scope_and_human_gate_not_model_flags(self):
++  aid=self.prepare()
++  with self.assertRaises(ValueError):self.pipeline.admit('synthetic',aid)
++  self.call('project',name='foreign',era='default',story=0)
++  with self.assertRaises(ValueError):self.pipeline.admit('foreign',aid,human_approved=True)
++  self.pipeline.gate['input_sha256']='wrong'
++  with self.assertRaises(ValueError):self.pipeline.admit('synthetic',aid,human_approved=True)
++  with self.store.connect() as c:self.assertEqual(c.execute('SELECT count(*) FROM reservations').fetchone()[0],0)
++ def test_payload_and_output_security_boundaries(self):
++  for prompt in ['', '😀'*501]:
++   with self.assertRaises(ValueError):rw.payload(prompt,'1920:1080')
++  for url in ['http://dnznrvs05pmza.cloudfront.net/x','https://127.0.0.1/x','https://evil.cloudfront.net/x','https://u@dnznrvs05pmza.cloudfront.net/x','https://dnznrvs05pmza.cloudfront.net:444/x']:
++   with self.assertRaises(ProviderError):self.adapter.validate_output_url(url)
++  with self.assertRaises(ProviderError):rw.RunwayImage().submit(rw.payload('test','1920:1080'))
++  self.assertFalse(model_selection.resolve('image',explicit='runway-gen4-image')['executable'])
++
++ def test_image_denied_download_cannot_use_legacy_resume_endpoint(self):
++  j=self.start();self.store.process_generation();self.store.generation.poll(j['id'],self.adapter)
++  with patch.object(self.adapter,'download',side_effect=ProviderError('download_http_403')):self.store.process_generation()
++  self.assertEqual(self.store.generation.get(j['id'])['state'],'import_blocked')
++  with self.assertRaisesRegex(ValueError,'복구 연결'):self.call('resume_generation_result',song='synthetic',job=j['id'])
++  self.assertEqual(len(self.calls),2);self.assertEqual(self.shot()['takes'],[])
++ def test_result_registration_rollback_is_recoverable_same_request_no_auto_submit(self):
++  j=self.start();self.store.process_generation();self.store.generation.poll(j['id'],self.adapter)
++  with patch('loretune.Studio.attach_take',side_effect=RuntimeError('fixture registration crash')):
++   with self.assertRaises(RuntimeError):self.store.generation.import_result(j['id'],lambda url:self.png)
++  self.assertEqual(self.shot()['takes'],[]);self.assertEqual(self.store.generation.get(j['id'])['state'],'downloading')
++  self.store.generation.recover();self.assertEqual(self.store.generation.get(j['id'])['state'],'import_blocked')
++  self.assertFalse(self.store.process_generation());self.assertEqual(len(self.calls),2)
++ def test_image_http_faults_redirect_and_body_boundaries_are_bounded(self):
++  from urllib.error import HTTPError
++  for code in [301,401,403,404,410,429,503]:
++   with patch('runway_provider.build_opener') as opener:
++    opener.return_value.open.side_effect=HTTPError(self.url,code,'fixture',{},None)
++    with self.assertRaises(ProviderError):self.adapter.download(self.url)
++    self.assertEqual(opener.return_value.open.call_count,1)
++  for raw,headers in [(b'bad',{'Content-Type':'text/html'}),(self.png,{'Content-Type':'image/jpeg'}),(self.png,{'Content-Type':'image/png','Content-Length':str(len(self.png)+1)}),(self.png,{'Content-Type':'image/png','Content-Length':str(rw.MAX_BYTES+1)})]:
++   with patch('runway_provider.build_opener') as opener:
++    response=io.BytesIO(raw);response.headers=headers;opener.return_value.open.return_value=response
++    with self.assertRaises(ProviderError):self.adapter.download(self.url)
++ def test_api_credential_only_on_exact_host_and_never_saved(self):
++  response=io.BytesIO(json.dumps({'id':self.rid}).encode());response.headers={'Content-Type':'application/json'}
++  with patch('runway_provider.build_opener') as opener:
++   opener.return_value.open.return_value=response
++   adapter=rw.RunwayImage(key='synthetic-secret-canary',live_enabled=True)
++   result=adapter.submit(rw.payload('synthetic','1920:1080'));request=opener.return_value.open.call_args.args[0]
++   self.assertEqual(request.host,'api.dev.runwayml.com');self.assertEqual(request.headers['Authorization'],'Bearer synthetic-secret-canary')
++   self.assertNotIn('canary',json.dumps(result))
+--- /dev/null
++++ b/tests/test_provider_billing.py
+@@ -0,0 +1,56 @@
++"""Synthetic provider records only; no billing API/account access."""
++import json,tempfile,time,unittest,uuid
++from concurrent.futures import ThreadPoolExecutor
++from app import Store
++import fal_provider,ledger,provider_billing as billing
++class BillingTest(unittest.TestCase):
++ def setUp(self):
++  self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.s=Store(self.tmp.name)
++  self.quote=fal_provider.estimate();self.quote['budget_revision']=1
++  with self.s.connect() as c:ledger.patch_budget(c,self.s.workspace_id,'fixture',dict(limit={'amount':'1','currency':'USD'},maxConcurrentJobs=4,allowAutomaticRetries=False),0)
++  self.job=self.s.generation.admit('fixture',{'duration':'10','generate_audio':False},self.quote,{'song':'fixture','execution_mode':'contract-fake'},'fixture',approved=True)
++  self.job.update(receipt={'request_id':'fixture-request'},state='import_blocked')
++  with self.s.connect() as c:self.s.generation.save(c,self.job)
++  self.record=dict(request_id='fixture-request',endpoint_id=fal_provider.MODEL,timestamp='2026-10-25T00:00:00Z',quantity=10,unit='second',cost_subtotal=.7,cost_discount=0,cost_total=.7,cost_estimate_nano_usd=700000000)
++ def run_record(self,record=None,source='fal-billed'):
++  return billing.reconcile(self.s,self.job['id'],source,record or self.record,evidence_class='fixture')
++ def reservation(self):
++  with self.s.connect() as c:return c.execute('SELECT state,actual FROM reservations').fetchone()
++ def test_estimate_never_settles_then_exact_billed_record_settles_once(self):
++  usage={'time_series':[{'bucket':'2026-10-25T00:00:00Z','results':[dict(self.record,currency='USD')]}]}
++  out=billing.record_fal_usage(self.s,usage,evidence_class='fixture')[0];self.assertEqual(out['kind'],'aggregate_estimate');self.assertIsNone(out['job_attribution']);self.assertEqual(self.reservation(),('reserved',None))
++  out=self.run_record();self.assertEqual(self.reservation(),('settled',700000));self.assertEqual(self.run_record(),out)
++  j=self.s.generation.get(self.job['id']);self.assertEqual(j['state'],'import_blocked');self.assertFalse(j['cost_confirmed']);self.assertFalse(out['invoice_confirmed'])
++ def test_concurrent_record_never_double_charges(self):
++  with ThreadPoolExecutor(max_workers=2) as pool:out=list(pool.map(lambda _:self.run_record(),range(2)))
++  self.assertEqual(out[0],out[1]);self.assertEqual(self.reservation(),('settled',700000))
++  with self.s.connect() as c:self.assertEqual(c.execute("SELECT count(*) FROM ledger_events WHERE kind='settled'").fetchone()[0],1)
++ def test_identity_and_numeric_validation_fail_without_mutation(self):
++  for patch in [dict(request_id='other'),dict(endpoint_id='other'),dict(cost_total=-1),dict(cost_estimate_nano_usd=700000001),dict(cost_discount=.1),dict(cost_total='NaN')]:
++   with self.subTest(patch=patch):
++    with self.assertRaises(ValueError):self.run_record(dict(self.record,**patch))
++    self.assertEqual(self.reservation(),('reserved',None))
++ def test_changed_record_is_conflict_not_invented_refund(self):
++  self.run_record();r=dict(self.record,cost_total=.5,cost_discount=.2,cost_estimate_nano_usd=500000000)
++  out=self.run_record(r);self.assertEqual(out['reconciliation'],'conflicting_record_requires_review');self.assertEqual(self.reservation(),('settled',700000))
++ def test_nano_precision_retained_with_conservative_local_rounding(self):
++  r=dict(self.record,cost_total=.000000001,cost_subtotal=.000000001,cost_estimate_nano_usd=1)
++  out=self.run_record(r);self.assertEqual(out['exact_nano_usd'],1);self.assertEqual(out['rounding_nano_usd'],999);self.assertEqual(self.reservation(),('settled',1))
++ def test_late_charge_after_verified_unsubmitted_marks_disputed(self):
++  with self.s.connect() as c:ledger.command(c,self.s.workspace_id,'fixture','release',{'reservation':self.job['reservation']},'fixture-release')
++  self.run_record();self.assertEqual(self.reservation(),('disputed',700000))
++ def test_fixture_cannot_authenticate_real_billing_and_record_does_not_copy_secrets(self):
++  with self.assertRaises(ValueError):billing.reconcile(self.s,self.job['id'],'fal-billed',self.record,evidence_class='authenticated-provider')
++  self.run_record(dict(self.record,token='secret-canary',url='https://signed.invalid/?secret',auth_method='private-canary'))
++  with self.s.connect() as c:raw=''.join(r[0] for r in c.execute('SELECT body FROM provider_cost_observations'))
++  self.assertNotIn('canary',raw);self.assertNotIn('signed.invalid',raw)
++ def test_unknown_or_missing_receipt_never_releases(self):
++  with self.assertRaises(ValueError):self.run_record(source='unknown')
++  self.job['receipt']=None
++  with self.s.connect() as c:self.s.generation.save(c,self.job)
++  with self.assertRaises(ValueError):self.run_record()
++  self.assertEqual(self.reservation(),('reserved',None))
++ def test_overspend_record_does_not_claim_provider_budget_enforcement(self):
++  out=self.run_record(dict(self.record,cost_total=1.2,cost_subtotal=1.2,cost_estimate_nano_usd=1200000000))
++  self.assertEqual(self.reservation(),('disputed',1200000))
++  with self.s.connect() as c:self.assertEqual(ledger.budget(c,self.s.workspace_id,'fixture')['data']['overrun']['amount'],'0.2')

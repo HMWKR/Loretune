@@ -1,0 +1,63 @@
+{
+  "schema": "controlled-color-driver-acceptance/1",
+  "recorded_at": "2026-10-27T21:04:45.213657+00:00",
+  "decision": "ACCEPTED as controlled diagnostic outputs; not a product color correction or commercial equivalence",
+  "report_sha256": "7884cd8ebf0a7e05313c84f663794c0be61af59dfe3a0619c5e335091e82d6b7",
+  "manifest_files_checked": 38,
+  "mismatches": [],
+  "original_bytes_equal": true,
+  "geometry_independently_decoded_from_original": {
+    "vertices": 42186,
+    "triangles": 84216,
+    "sha256": "755e958cbc0353d33659708cb482f1e1431b2e4988ddd662be84cf12225bd6ad"
+  },
+  "linear_ROIs_independently_recomputed_with_stdlib": {
+    "seat_interior": {
+      "box": [
+        210,
+        145,
+        260,
+        165
+      ],
+      "means": {
+        "raw-float-pbr": 0.7052383771853328,
+        "inverse-srgb-float-pbr": 0.35474972939243615,
+        "raw-float-emission": 0.5545400614188015
+      },
+      "changes": {
+        "A_inverse_srgb_linear_Y_percent_change": -49.697897779149095,
+        "B_emission_linear_Y_percent_change": -21.36842245709617
+      }
+    },
+    "backrest_interior": {
+      "box": [
+        220,
+        70,
+        260,
+        95
+      ],
+      "means": {
+        "raw-float-pbr": 0.4519021843175471,
+        "inverse-srgb-float-pbr": 0.20071211355092375,
+        "raw-float-emission": 0.5198679384268701
+      },
+      "changes": {
+        "A_inverse_srgb_linear_Y_percent_change": -55.585053465932056,
+        "B_emission_linear_Y_percent_change": 15.039925999021975
+      }
+    }
+  },
+  "actual_output_images_manually_viewed": [
+    "raw-float-pbr.png",
+    "inverse-srgb-float-pbr.png",
+    "raw-float-emission.png",
+    "original case-2-chair.png"
+  ],
+  "observations": "Raw PBR is pale beige; inverse-sRGB candidate darker brown; emission remains pale. Input and generated chair differ in geometry and camera. No image-aligned quality metric or correct encoding established.",
+  "product_color_adapter_changed": false,
+  "render_rerun": false,
+  "notes": [
+    "Root default Python lacks numpy; no dependencies installed. Independent NPY/GLB decoding used standard library.",
+    "Rejected background-mask attempt retained; ROI statistics only, not whole-object error attribution."
+  ]
+}

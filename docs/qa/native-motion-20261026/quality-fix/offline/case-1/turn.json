@@ -1,0 +1,477 @@
+{
+  "id": "9c60f12fb866453da154f4019b44e4f6",
+  "project": "2bc5e4b1-5351-5cc0-82dd-def0c40e2516",
+  "name": "A",
+  "run": "888c167dbc9841f09d40dc8887d0c3b7",
+  "prompt": "현재 합성 작품의 모션 장면을 서버에서 조회해 주세요. 저장된 모션 버전과 대기 중 변경안 각각에 대해 승인 주체, 승인 범위, 적용 버전과 아직 필요한 검토를 한국어로 설명해 주세요. 이 승인이 최종 영상 납품까지 허용하는지와 지금 렌더할 수 있다고 확정할 수 있는지도 구분해 주세요. 온톨로지 유무를 모션 승인 여부와 혼동하지 말고 조회된 근거만 쓰세요. 새 제안·승인·렌더·적용은 하지 마세요.",
+  "status": "completed",
+  "mode": "contract-fake",
+  "model": "claude-haiku-5-5",
+  "binding": "d88bb360cf957564c029a4f5ba4ae01ba481f1ebc912fdf72eb584a6689402e6",
+  "answer": "Offline synthetic answer, not Claude quality evidence.",
+  "answer_review": "unreviewed",
+  "steps": [
+    {
+      "round": 0,
+      "mode": "contract-fake",
+      "input_sha256": "db825d993536832a7f3c6e011b7d202b89598e334ddaa1dce7ad9dc2b4493f1d",
+      "status": "tools_applied",
+      "request_id": "fake",
+      "tool_calls": [
+        {
+          "call": {
+            "id": "cee66d927b9056ffadef459f4434a721",
+            "name": "search_project_context",
+            "arguments": {
+              "query": "current execution targets and approval state"
+            },
+            "complete": true
+          },
+          "result": {
+            "status": "succeeded",
+            "context": {
+              "music": null,
+              "snapshot": [],
+              "ontology": null
+            },
+            "search_mode": "scoped-snapshot",
+            "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님",
+            "sources": [
+              {
+                "id": "turn:9c60f12fb866453da154f4019b44e4f6",
+                "text": "현재 합성 작품의 모션 장면을 서버에서 조회해 주세요. 저장된 모션 버전과 대기 중 변경안 각각에 대해 승인 주체, 승인 범위, 적용 버전과 아직 필요한 검토를 한국어로 설명해 주세요. 이 승인이 최종 영상 납품까지 허용하는지와 지금 렌더할 수 있다고 확정할 수 있는지도 구분해 주세요. 온톨로지 유무를 모션 승인 여부와 혼동하지 말고 조회된 근거만 쓰세요. 새 제안·승인·렌더·적용은 하지 마세요."
+              }
+            ],
+            "execution_targets": {
+              "shots": [
+                {
+                  "shot_id": "5019457fbfd35f01948de78b180b0149",
+                  "name": "모션",
+                  "revision": 0,
+                  "selected_take": null,
+                  "takes": [],
+                  "reference_head": null,
+                  "reference_versions": [],
+                  "motion": {
+                    "revision": 1,
+                    "scene": {
+                      "schema_version": 1,
+                      "width": 1920,
+                      "height": 1080,
+                      "fps": 24,
+                      "frame_count": 96,
+                      "background": "#101820",
+                      "layers": [
+                        {
+                          "id": "title",
+                          "kind": "text",
+                          "text": "새로운 리듬",
+                          "font": "system-ko-regular",
+                          "font_size": 80,
+                          "width": 1000,
+                          "height": 160,
+                          "color": "#FFFFFF",
+                          "in_frame": 0,
+                          "out_frame": 96,
+                          "keyframes": [
+                            {
+                              "frame": 0,
+                              "x": 460,
+                              "y": 400,
+                              "opacity": 0,
+                              "easing": "easeInOutCubic"
+                            },
+                            {
+                              "frame": 40,
+                              "x": 460,
+                              "y": 380,
+                              "opacity": 1,
+                              "easing": "easeInOutCubic"
+                            },
+                            {
+                              "frame": 95,
+                              "x": 460,
+                              "y": 380,
+                              "opacity": 1,
+                              "easing": "linear"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "bar",
+                          "kind": "rect",
+                          "text": "",
+                          "font": "system-ko-regular",
+                          "font_size": 24,
+                          "width": 1200,
+                          "height": 12,
+                          "color": "#4F8EF7",
+                          "in_frame": 0,
+                          "out_frame": 96,
+                          "keyframes": [
+                            {
+                              "frame": 0,
+                              "x": 160,
+                              "y": 600,
+                              "opacity": 0,
+                              "easing": "easeInOutCubic"
+                            },
+                            {
+                              "frame": 30,
+                              "x": 360,
+                              "y": 600,
+                              "opacity": 1,
+                              "easing": "easeInOutCubic"
+                            },
+                            {
+                              "frame": 95,
+                              "x": 360,
+                              "y": 600,
+                              "opacity": 1,
+                              "easing": "linear"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "dot",
+                          "kind": "circle",
+                          "text": "",
+                          "font": "system-ko-regular",
+                          "font_size": 24,
+                          "width": 60,
+                          "height": 60,
+                          "color": "#F7A44F",
+                          "in_frame": 0,
+                          "out_frame": 72,
+                          "keyframes": [
+                            {
+                              "frame": 0,
+                              "x": 200,
+                              "y": 800,
+                              "opacity": 1,
+                              "easing": "linear"
+                            },
+                            {
+                              "frame": 60,
+                              "x": 1700,
+                              "y": 800,
+                              "opacity": 1,
+                              "easing": "linear"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "grant_id": "d53b2a000e854b0abbdcf3bf74ca50a6",
+                    "approval": {
+                      "id": "d53b2a000e854b0abbdcf3bf74ca50a6",
+                      "actor": "local-owner",
+                      "scope": "local-motion-candidate",
+                      "motion_revision": 1,
+                      "scene_hash": "79570f421f002e544533df4f8f7cba9d7a1c65a5c11f8d24107d1f60bb6ed3ef",
+                      "matches_current_context": true,
+                      "requires_revalidation": true
+                    },
+                    "approval_status": "recorded",
+                    "requires_revalidation": true,
+                    "proposals": [
+                      {
+                        "proposal_id": "1a1961da832d47f4a30b77cfecb4b52b",
+                        "base_revision": 1,
+                        "status": "proposed",
+                        "applied": false,
+                        "requires_human_review": true
+                      }
+                    ]
+                  }
+                }
+              ],
+              "timeline": {
+                "version": 0,
+                "clips": [
+                  {
+                    "index": 0,
+                    "shot_id": "5019457fbfd35f01948de78b180b0149",
+                    "shot_name": "모션",
+                    "take": null,
+                    "trim": 0,
+                    "duration": 3
+                  }
+                ],
+                "audio_version": null,
+                "audio_offset": 0,
+                "captions": [],
+                "profile": "landscape",
+                "grant_id": null
+              },
+              "plans": [],
+              "actions": [],
+              "ontology_revision": 0,
+              "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+            }
+          }
+        }
+      ],
+      "input_tokens_counted": 100,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 50
+      },
+      "usage_cost_usd": "0.000035",
+      "stop_reason": "tool_use",
+      "output_sha256": "43d8d83e17e03ddcbed112532bda6b4cdb8f4f5beabbc175eac929373016916f",
+      "visible_response": [
+        {
+          "type": "tool_use",
+          "id": "d980c336f0ff4da08bac58d3c5a4d530",
+          "name": "search_project_context",
+          "input": {
+            "query": "current execution targets and approval state"
+          }
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "contract-fake",
+      "input_sha256": "ee29b5682f89d8f2bcf170f109c2238d2d85e789a6502a6845ed75d7e400efb3",
+      "status": "answer_received",
+      "request_id": "fake",
+      "tool_calls": [],
+      "input_tokens_counted": 100,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 50
+      },
+      "usage_cost_usd": "0.000035",
+      "stop_reason": "end_turn",
+      "output_sha256": "954baff80cf6675ea5924a3aee0391cbacd1c3dd1d0656c26dfff6ca9749cfb8",
+      "visible_response": [
+        {
+          "type": "text",
+          "text": "Offline synthetic answer, not Claude quality evidence."
+        }
+      ]
+    }
+  ],
+  "usage_cost_usd": "0.000070",
+  "billing_confirmed": false,
+  "handoff": {
+    "context": {
+      "value": {
+        "model_settings": {
+          "revision": 1,
+          "selections": {
+            "chat": "anthropic-haiku-5-5",
+            "image": null,
+            "video": null
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "anthropic-haiku-5-5"
+              },
+              "at": 1793041090.080378
+            }
+          ]
+        },
+        "context": {
+          "music": null,
+          "snapshot": [],
+          "ontology": null
+        },
+        "approved_shots": [
+          {
+            "id": "모션",
+            "selected": null,
+            "revision": 0
+          }
+        ]
+      },
+      "sha256": "dc735c81988ea7ded72a939f939e4689b0dfa251fad299a554fbcef974c431bb"
+    },
+    "messages": [],
+    "jobs": [],
+    "execution_targets": {
+      "shots": [
+        {
+          "shot_id": "5019457fbfd35f01948de78b180b0149",
+          "name": "모션",
+          "revision": 0,
+          "selected_take": null,
+          "takes": [],
+          "reference_head": null,
+          "reference_versions": [],
+          "motion": {
+            "revision": 1,
+            "scene": {
+              "schema_version": 1,
+              "width": 1920,
+              "height": 1080,
+              "fps": 24,
+              "frame_count": 96,
+              "background": "#101820",
+              "layers": [
+                {
+                  "id": "title",
+                  "kind": "text",
+                  "text": "새로운 리듬",
+                  "font": "system-ko-regular",
+                  "font_size": 80,
+                  "width": 1000,
+                  "height": 160,
+                  "color": "#FFFFFF",
+                  "in_frame": 0,
+                  "out_frame": 96,
+                  "keyframes": [
+                    {
+                      "frame": 0,
+                      "x": 460,
+                      "y": 400,
+                      "opacity": 0,
+                      "easing": "easeInOutCubic"
+                    },
+                    {
+                      "frame": 40,
+                      "x": 460,
+                      "y": 380,
+                      "opacity": 1,
+                      "easing": "easeInOutCubic"
+                    },
+                    {
+                      "frame": 95,
+                      "x": 460,
+                      "y": 380,
+                      "opacity": 1,
+                      "easing": "linear"
+                    }
+                  ]
+                },
+                {
+                  "id": "bar",
+                  "kind": "rect",
+                  "text": "",
+                  "font": "system-ko-regular",
+                  "font_size": 24,
+                  "width": 1200,
+                  "height": 12,
+                  "color": "#4F8EF7",
+                  "in_frame": 0,
+                  "out_frame": 96,
+                  "keyframes": [
+                    {
+                      "frame": 0,
+                      "x": 160,
+                      "y": 600,
+                      "opacity": 0,
+                      "easing": "easeInOutCubic"
+                    },
+                    {
+                      "frame": 30,
+                      "x": 360,
+                      "y": 600,
+                      "opacity": 1,
+                      "easing": "easeInOutCubic"
+                    },
+                    {
+                      "frame": 95,
+                      "x": 360,
+                      "y": 600,
+                      "opacity": 1,
+                      "easing": "linear"
+                    }
+                  ]
+                },
+                {
+                  "id": "dot",
+                  "kind": "circle",
+                  "text": "",
+                  "font": "system-ko-regular",
+                  "font_size": 24,
+                  "width": 60,
+                  "height": 60,
+                  "color": "#F7A44F",
+                  "in_frame": 0,
+                  "out_frame": 72,
+                  "keyframes": [
+                    {
+                      "frame": 0,
+                      "x": 200,
+                      "y": 800,
+                      "opacity": 1,
+                      "easing": "linear"
+                    },
+                    {
+                      "frame": 60,
+                      "x": 1700,
+                      "y": 800,
+                      "opacity": 1,
+                      "easing": "linear"
+                    }
+                  ]
+                }
+              ]
+            },
+            "grant_id": "d53b2a000e854b0abbdcf3bf74ca50a6",
+            "approval": {
+              "id": "d53b2a000e854b0abbdcf3bf74ca50a6",
+              "actor": "local-owner",
+              "scope": "local-motion-candidate",
+              "motion_revision": 1,
+              "scene_hash": "79570f421f002e544533df4f8f7cba9d7a1c65a5c11f8d24107d1f60bb6ed3ef",
+              "matches_current_context": true,
+              "requires_revalidation": true
+            },
+            "approval_status": "recorded",
+            "requires_revalidation": true,
+            "proposals": [
+              {
+                "proposal_id": "1a1961da832d47f4a30b77cfecb4b52b",
+                "base_revision": 1,
+                "status": "proposed",
+                "applied": false,
+                "requires_human_review": true
+              }
+            ]
+          }
+        }
+      ],
+      "timeline": {
+        "version": 0,
+        "clips": [
+          {
+            "index": 0,
+            "shot_id": "5019457fbfd35f01948de78b180b0149",
+            "shot_name": "모션",
+            "take": null,
+            "trim": 0,
+            "duration": 3
+          }
+        ],
+        "audio_version": null,
+        "audio_offset": 0,
+        "captions": [],
+        "profile": "landscape",
+        "grant_id": null
+      },
+      "plans": [],
+      "actions": [],
+      "ontology_revision": 0,
+      "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+    },
+    "instructions": "서버 상태만 작업 결과로 설명하세요. 미수집 결과를 완료로 설명하지 마세요.",
+    "embedding_policy": "unchanged",
+    "session_request_history": {
+      "schema_version": 1,
+      "scope": {
+        "workspace_id": "7561d592-bbcc-4bf9-a2f1-51b0030e51c1",
+        "project_id": "2bc5e4b1-5351-5cc0-82dd-def0c40e2516",
+        "conversation": "project-default"
+      },
+      "requests": [],
+      "digest": "c794db81e28b04f6b122a0646ca77d4cab70e029edb7881094fccee546391fca"
+    }
+  }
+}

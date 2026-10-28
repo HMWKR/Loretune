@@ -1,0 +1,265 @@
+{
+  "task_id": "general-live-activation-20261028",
+  "attempt": 1,
+  "state": "REPORTED",
+  "driver_acceptance": "pending-independent-review",
+  "source_writes": "DONE",
+  "owned_write_set": [
+    "app.py",
+    "chat_general.py",
+    "general_chat_config.py",
+    "tests/test_general_chat_activation.py"
+  ],
+  "source_sha256": {
+    "app.py": "a32b301cb489378d9e890414fa36ce17875c053af255216ee814898de0c0cab5",
+    "chat_general.py": "99a8eaa7c3cd1787a89ca3369d3f43bfa5c864240d46413c03fdda8171ddaaf0",
+    "general_chat_config.py": "5a82649be4b6827f85061ab5aef56b957b5ac942c9448e6786b5d313f8d30562",
+    "tests/test_general_chat_activation.py": "600db0522d0cfd35bb01fa858a80fa99b93ffbb25349a20dd0513fdbf18c21f9",
+    "ledger.py": "7b7b334da273fac0dc34f1a2c151e2aeb2692370e76e6c807ef37689e3909ff7",
+    "chat_models.py": "f4675c16693776d19bcaab72e2486485ab5754bf8f6f382365f0f2baa3d81419",
+    "chat_runtime.py": "e1d8b7e0b694fe91a420333925ffe44972de063359bddaf0470e908eb2e01ec1",
+    "anthropic_ontology.py": "2f97cd79e6c9b15a6f8d49814647791fd5a13ae0faef36aca788ff1b86e6802f"
+  },
+  "result": "The existing bounded Claude production branch is now reachable through explicit validated default-off startup configuration and still requires exact per-round consent, project-budget reservation and atomic count/message claims. No production configuration was activated and no real provider request was made.",
+  "configuration": {
+    "file": "general_chat_config.py",
+    "CLI": "python3 app.py --data <existing local data dir> --general-chat-config <administrator JSON path>",
+    "required_fields": {
+      "version": "integer1",
+      "enabled": "boolean, absent configuration means disabled",
+      "workspace_id": "canonical UUID matching Store",
+      "connection_id": "1-64 ASCII letters/digits/_/-",
+      "connection_revision": "positive exact JSON integer",
+      "model": "claude-haiku-5-5",
+      "price_revision": "current matching server contract"
+    },
+    "excluded": "Secret values, endpoints, headers, alternate transport, test_only and all unknown/duplicate fields are rejected. Symlink, non-regular, oversized or group/world-writable configuration is rejected with a value-free error.",
+    "credential_boundary": "Configuration load, build, preview and approval read no key. Only the existing adapter operation invokes the lazy injected supplier; default supplier accesses only Anthropic_KEY at that time. No .env file is auto-loaded or read by this implementation/task.",
+    "default_off": "No configuration or enabled=false returns no general runtime and no credential/network access. Existing legacy runtime is preserved. An enabled actual general connection and legacy chat_configuration are explicitly incompatible; prior fixture/loopback combinations remain supported.",
+    "verification_label": "Runtime availability means configured ability to request execution. account_verified=false and billing_verified=false; actual account/model access, paid billing and production readiness remain unverified."
+  },
+  "changed_behavior": [
+    {
+      "path": "app.py:server and CLI",
+      "detail": "Closed-schema startup contract/factory, mutually exclusive general sources, no dual live legacy ledger, workspace check before recovery, optional CLI configuration. Standard launch remains disconnected."
+    },
+    {
+      "path": "chat_general.py:LiveTransport/Runtime/transport_binding",
+      "detail": "Three unconditional non-test layers become validated trusted activation checks. Exact production bounded types, no custom opener/endpoint, pinned adapter/supplier/transports, model/price/connection revision and activation hash remain bound. No SDK or new send runtime."
+    },
+    {
+      "path": "chat_general.py:Runtime exception path",
+      "detail": "Only exact actual LiveTransport + exact AnthropicChatAdapter + current owned active operation + exact sanitized ProposalError category=credentials proves adapter provider transport not entered. Its current sending attempt becomes not_sent via the official ledger API and its current hold is released. Remote/timeout/model/billing/unknown failures retain uncertainty. Lost ownership cannot upgrade a prior unknown attempt."
+    },
+    {
+      "path": "chat_general.py:public_turn/finish_run",
+      "detail": "Public count/message not_sent and actionable key-reset/new-consent guidance distinguish known non-submission. Earlier observed model response/usage and costs take precedence and remain preserved; a persistent submitted flag alone does not decide the current attempt."
+    },
+    {
+      "path": "ledger.py (different worker)",
+      "detail": "Root-authorized cooperating worker added owned sending→not_sent finish_attempt support and common exposure protection for failed usage journal persistence. This worker did not edit ledger.py or existing tests; final integrated ledger hash is recorded."
+    }
+  ],
+  "methodology": {
+    "sources": [
+      ".omo/evidence/general-live-adapter-discovery-20261028.json",
+      ".omo/evidence/anthropic-general-live-contract-20261028.json",
+      "installed Karpathy and feature-verification instructions previously read",
+      "existing pinned transports and shared ledger attempt/manifest contracts"
+    ],
+    "applied": [
+      "reuse existing ports/adapters, no SDK or framework",
+      "explicit default-off trusted startup contract",
+      "exact manifest and project-scoped ledger state machine",
+      "isolated actual platform HTTP with only provider stdlib opener replaced in test code",
+      "normal/error/recovery and current-reservation attempt evidence"
+    ],
+    "skill_execution": "Installed skill instructions were read and applied; no fictional skill CLI command was invoked."
+  },
+  "verification": [
+    {
+      "modules": [
+        "tests.test_general_chat_activation"
+      ],
+      "execution": "standard unittest loader/runner through Python; related runner adds project tests directory to sys.path as discovery does",
+      "tests_run": 22,
+      "result": "PASS",
+      "skipped": 0,
+      "log": ".omo/evidence/general-live-activation-20261028/narrow-final-22.log",
+      "sha256": "2d3dea8e3886e605834abf968884c24f9c9410cc2dd67864adafcc22be4e2843"
+    },
+    {
+      "modules": [
+        "tests.test_chat_live_contract",
+        "tests.test_anthropic_transport",
+        "tests.test_chat_general_http",
+        "tests.test_music_input_context"
+      ],
+      "execution": "standard unittest loader/runner through Python; related runner adds project tests directory to sys.path as discovery does",
+      "tests_run": 82,
+      "result": "PASS",
+      "skipped": 0,
+      "log": ".omo/evidence/general-live-activation-20261028/related-attempt1.log",
+      "sha256": "f8062527ef24d3341baf1075ffbe6dadcb20e730ed03f73f91b9a4c88c19702c"
+    }
+  ],
+  "narrow_total": 22,
+  "related_total": 82,
+  "full_suite_run": false,
+  "direct_receipts": [
+    {
+      "test": "test_actual_media_controller_reservation_blocks_general_approval_in_same_budget",
+      "crossflow": "actual media controller admission -> general-chat approval",
+      "budget_scope": "project:e7eccd1b-1327-5e4c-b5bc-cdd41bb770e1",
+      "chat_status": 400,
+      "reservations": 1,
+      "external_provider_calls": 0
+    },
+    {
+      "test": "test_later_round_message_credentials_failure_preserves_earlier_observed_usage",
+      "boundary": "later-round credential failure",
+      "reservation": [
+        "cancelled",
+        null
+      ],
+      "current_attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "not_sent"
+        ]
+      ],
+      "prior_reservation": [
+        "estimated",
+        60
+      ],
+      "live_model_called_preserves_prior_observation": true,
+      "automatic_retry": false
+    },
+    {
+      "test": "test_missing_credential_acquisition_stays_lazy_and_does_not_open_provider",
+      "boundary": "credential missing before provider transport",
+      "mode": "anthropic-live",
+      "provider_network_requests": 0,
+      "reservation": [
+        "cancelled",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "not_sent"
+        ]
+      ],
+      "turn_status": "blocked_before_message"
+    },
+    {
+      "test": "test_missing_message_credential_after_successful_count",
+      "boundary": "message credential missing after observed count",
+      "mode": "anthropic-live",
+      "provider_network_requests": 1,
+      "reservation": [
+        "cancelled",
+        null
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "not_sent"
+        ]
+      ],
+      "turn_status": "blocked_before_message",
+      "live_model_called": false
+    },
+    {
+      "test": "test_production_branch_music_edit_human_approval_render_and_verified_receipt",
+      "workflow": "real platform HTTP -> production adapter branch -> synthetic provider socket -> human edit approval -> real local MP4 -> receipt",
+      "actual_AI_requests": 0,
+      "runtime_mode": "anthropic-live",
+      "mp4_sha256": "7ef4b67f2a013615678bbc104679beb34d513f6410180fdd6d543e65b4a1732d",
+      "stream_types": [
+        "audio",
+        "subtitle",
+        "video"
+      ],
+      "approved_audio_version": 1,
+      "audio_offset": 0.25,
+      "output_approved": false,
+      "provider_socket_requests": 16
+    },
+    {
+      "test": "test_real_mode_exact_wire_bytes_and_estimate_without_verified_account_claim",
+      "mode": "anthropic-live",
+      "provider_network": "synthetic stdlib opener only",
+      "wire_hashes": [
+        "042a382ab5814658c16eda3b47e95d752222a1b8cc33efe17ff95a3324330f06",
+        "8fc65fbebc2f3649f4b172ced9a7e97739a261bfb9e84a6fffeaa26f034d9500"
+      ],
+      "reservation": [
+        "estimated",
+        60
+      ],
+      "attempts": [
+        [
+          "chat-count",
+          "observed"
+        ],
+        [
+          "chat-message",
+          "observed"
+        ]
+      ],
+      "billing_confirmed": false
+    }
+  ],
+  "workflow_evidence": "New permanent HTTP workflow test uploads synthetic music+optional picture, reads execution context through production-mode adapter, obtains a typed offset/subtitle edit proposal, completes distinct continuation consents, applies human review and timeline approval, requests the real internal render, re-reads a completed same-grant receipt and downloads/hash-checks actual MP4 video/audio/subtitle tracks. Provider output is controlled synthetic data; the local renderer/output are actual.",
+  "budget_integration": "New crossflow tests use actual HTTP media_action_decide execute and general_chat_decide controllers and the real project:<pid> budget. Image admission reserves .01 and blocks chat admission; a chat reservation blocks image admission. No rehearsal-scope injection, second reservation or provider dispatch. Concurrent conversation admission also has one budget winner.",
+  "credential_boundary_before": {
+    "json": ".omo/evidence/general-live-activation-20261028/credential-before-observed.json",
+    "log": ".omo/evidence/general-live-activation-20261028/credential-before-observed.log",
+    "observed": "Before the not_sent change, missing count key already released its hold but recorded attempt unknown; missing message key after successful count left reservation uncertain/attempt unknown/live_model_called null. This is the measured baseline. Initial expectation that count itself retained uncertain was wrong and remains in credential-before.log."
+  },
+  "credential_boundary_after": "None, empty and exception suppliers are lazy until approved execution and create no adapter provider request. Current count or message attempt is not_sent; the current reservation is cancelled, live_model_called=false if no earlier response exists, and fresh explicit consent can succeed after fixing settings. If a prior round has observed usage, its estimated60 and live_model_called=true remain; only the later unsubmitted reservation is released.",
+  "preserved_failures": [
+    {
+      "log": "credential-before.log",
+      "reason": "Initial expected state assumed count credentials failure held uncertain. Actual code already released count hold; measured baseline was corrected and preserved separately."
+    },
+    {
+      "log": "crossflow-attempt1.log",
+      "reason": "Initial test expected typed production_tool budget rejection to be blocked, but the existing tool collapses that case to invalid_arguments. The final integration tests use the actual creator UI media controller, which returns HTTP400 with budget reason. Product tool classification was not changed or hidden."
+    }
+  ],
+  "before_after_evidence": {
+    "original_full_text": ".omo/evidence/general-live-activation-20261028/source-before.json",
+    "reviewable_diff_and_new_files": ".omo/evidence/general-live-activation-20261028/source-diff.json",
+    "preservation": "Existing app.py/chat_general.py text was captured before modifications. Source changes are additions/targeted gate and failure-state replacements; no reset/stash/commit/head copy, unrelated code deletion or other-worker edit reversal."
+  },
+  "known_limits": [
+    "Actual provider entitlement, region/key/billing identity and live usage shapes were not tested. An administrator connection ID/revision is a declaration, not proof of the account.",
+    "Actual-mode usage remains strict: missing/null/unknown/nonzero unsupported dimensions are not zero and do not allow tools. Standard supported observations are estimates, not invoices. Request-bound trusted general-chat billing reconciliation remains a separate incomplete capability.",
+    "No authentication/team production promotion: the application remains its existing local single-owner boundary. No deployment, operational data change or production-readiness acceptance occurred.",
+    "The same-user trusted startup and injected supplier remain server authority. A supplier is expected to acquire credentials only. The new not_sent classification proves the exact adapter did not delegate to its provider transport; it is not a claim about arbitrary side effects inside unrelated trusted Python code.",
+    "Existing raw-DB metadata corruption/preflight limitation is unchanged; no audio parser or media fallback expansion was included."
+  ],
+  "operational_boundaries": {
+    "actual_external_API_requests": 0,
+    "paid_AI_requests": 0,
+    "credential_or_user_env_read": false,
+    "existing_user_data_modified": false,
+    "existing_defaultoff_server_activated": false,
+    "parent_server_51815_touched": false,
+    "browser_used": false,
+    "MD_or_registry_changed": false,
+    "fixtures": "TempStore + synthetic audio/image and fake key only",
+    "production_provider_socket": "Only tests patch stdlib build_opener; production bounded instances retain _opener=None"
+  },
+  "handoff": "REPORTED, source writes DONE. Parent independent acceptance, final broad regression/browser review and any real-account authorization are separate. Do not count this stage into the earlier725 full-suite receipt."
+}

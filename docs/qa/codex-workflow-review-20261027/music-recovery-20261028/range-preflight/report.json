@@ -1,0 +1,114 @@
+{
+  "status": "REPORTED; parent acceptance pending",
+  "issue": "UX-MUSIC-SPAN-11",
+  "changes": [
+    "editing.py",
+    "tests/test_editing.py"
+  ],
+  "methods": [
+    "Karpathy surgical minimum change",
+    "feature-verification actual loopback HTTP plus decoded output",
+    "millisecond comparisons matching music.finite/editing.seconds"
+  ],
+  "commands": [
+    {
+      "invocation": "python3 .omo/evidence/music-recovery-20261028/range-preflight/probe.py before",
+      "exit_code": 0,
+      "artifact": "before/result.json"
+    },
+    {
+      "invocation": "python3 -m unittest tests.test_editing.MusicRangePreflightTest -v",
+      "exit_code": 0,
+      "tests": 6,
+      "artifact": "range-tests.log"
+    },
+    {
+      "invocation": "python3 -m unittest tests.test_editing tests.test_music_input_context tests.test_timeline_repeated_http -v",
+      "exit_code": 0,
+      "tests": 46,
+      "seconds": 21.972,
+      "artifact": "scoped-tests.log"
+    },
+    {
+      "invocation": "python3 .omo/evidence/music-recovery-20261028/range-preflight/probe.py after",
+      "exit_code": 0,
+      "artifact": "after/result.json"
+    },
+    {
+      "invocation": "python3 .omo/evidence/music-recovery-20261028/range-preflight/probe.py after-matrix",
+      "exit_code": 0,
+      "http_boundary_cases": 10,
+      "artifact": "after-matrix/http-boundary-matrix.json"
+    }
+  ],
+  "criteria": [
+    {
+      "scenario": "source10 selected3-4 timeline3-6 approved real HTTP/render",
+      "observable": "before warnings empty; after one precise warning; ready/errors identical",
+      "artifacts": [
+        "before/result.json",
+        "after/result.json",
+        "before/estimate.json",
+        "after/estimate.json"
+      ]
+    },
+    {
+      "scenario": "same approved workflow exported before/after",
+      "observable": "MP4 exact bytes equal, duration3.0s, 520Hz matches original offset3; all selected music/timeline/Take/asset fields unchanged",
+      "artifacts": [
+        "before/output.mp4",
+        "after/output.mp4",
+        "before/ffprobe.json",
+        "after/ffprobe.json",
+        "before/output-start.pcm",
+        "after/output-start.pcm",
+        "before/project-before-estimate.json",
+        "before/project-after-render.json",
+        "after/project-before-estimate.json",
+        "after/project-after-render.json"
+      ]
+    },
+    {
+      "scenario": "same/short/long/earlier/later/fractional/millisecond/tail/different audio/blocked comment",
+      "observable": "10 actual HTTP cases satisfy warning and existing ready/errors conditions",
+      "artifacts": [
+        "after-matrix/http-boundary-matrix.json",
+        "after-matrix/http-events.json"
+      ]
+    },
+    {
+      "scenario": "missing selection/head, silent output, latest music head and all boundary unit checks",
+      "observable": "6 added test methods pass, includes subtests; no project mutation in each preflight read",
+      "artifacts": [
+        "range-tests.log",
+        "change.patch"
+      ]
+    },
+    {
+      "scenario": "existing editing and music model context and repeated timeline regressions",
+      "observable": "46 tests pass, no skips",
+      "artifacts": [
+        "scoped-tests.log"
+      ]
+    }
+  ],
+  "limits": [
+    "No production user data or user usability study",
+    "No live model/provider calls; existing fixture model transports in scoped tests are not provider validation",
+    "No browser/visual acceptance here; parent owns UI verification",
+    "No full819 rerun; relevant editing/music-context/repeated-timeline checks only",
+    "No document registry/context/source document changes",
+    "Selection advisory compares current music_head to saved timeline, not a new music-revision approval binding",
+    "Existing frame-grid output warning retained; selection advisory compares existing requested audio output interval using millisecond precision"
+  ],
+  "prior_failure": {
+    "artifact": "before-probe-cli-failure.log",
+    "cause": "Evidence-only ffmpeg invocation .1 option rejected; changed probe option to0.1 and reran full actual HTTP flow",
+    "product_failure": false
+  },
+  "source_hashes": {
+    "editing.py": "5c13c8e0b270585dc85f0ca7de594566a1ea684fba733541ea3aeed4117d4c0d",
+    "tests/test_editing.py": "fd1a175f44813c29b78ef58707c4edcb7615b5e78fcde0dc1e700aecd5b85d2f"
+  },
+  "output_sha256": "9742cad134f08c47e7f9f10555966ff85c744d8ea605f5af59cbe5dc42456490"
+}

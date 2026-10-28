@@ -1,0 +1,32 @@
+{
+  "path": "/Users/leesungmin/Desktop/Loretune/scene_assets.py",
+  "sha256": "00137112cc48da1def1fb9974c8c6b07dc45f6b318ab5198a163402fa0f606bd",
+  "read_only": true,
+  "excerpts": [
+    {
+      "start_line": 16,
+      "end_line": 43,
+      "text": "PROFILE = 'gltf2-static-pbr-v1'\nCOLOR_PROFILE = 'gltf2-static-pbr-color-v2'\nSUPPORTED_PROFILES = (PROFILE, COLOR_PROFILE)\nMAX_BYTES = 8 * 1024 * 1024\nMAX_JSON_BYTES = 512 * 1024\nMAX_JSON_DEPTH = 24\nMAX_VERTICES = 50_000\nMAX_TRIANGLES = 100_000\nMAX_NODES = 32\nMAX_NODE_DEPTH = 16\nMAX_MESHES = 16\nMAX_PRIMITIVES = 64\nMAX_MATERIALS = 16\nMAX_IMAGES = 8\nMAX_TEXTURES = 16\nMAX_IMAGE_EDGE = 2048\nMAX_IMAGE_PIXELS = 16 * 1024 * 1024\nMAX_VIEWS = 256\nMAX_ACCESSORS = 128\nMAX_ACCESSOR_VALUES = MAX_VERTICES * 12 + MAX_TRIANGLES * 3\nMAX_COORDINATE = 1_000_000\nMAX_IMAGE_CHUNKS = 4096\nMAX_JPEG_SCANS = 64\n_COMPONENTS = {5121: ('B', 1), 5123: ('H', 2), 5125: ('I', 4), 5126: ('f', 4)}\n_DIMENSIONS = {'SCALAR': 1, 'VEC2': 2, 'VEC3': 3, 'VEC4': 4}\n_ERROR = '\uc9c0\uc6d0\ud558\uc9c0 \uc54a\uac70\ub098 \uc190\uc0c1\ub41c GLB \ubaa8\ub378\uc785\ub2c8\ub2e4.'\n_COMPLEXITY_ERROR = 'GLB \ubaa8\ub378\uc774 \ub108\ubb34 \ubcf5\uc7a1\ud574 \uac00\uc838\uc62c \uc218 \uc5c6\uc2b5\ub2c8\ub2e4. \ub354 \ub2e8\uc21c\ud55c \uc815\uc801 GLB \ud30c\uc77c\uc744 \uc120\ud0dd\ud558\uc138\uc694.'\n"
+    },
+    {
+      "start_line": 116,
+      "end_line": 126,
+      "text": "    def check(item, path=()):\n        if isinstance(item, dict):\n            for key,child in item.items():\n                if key == 'extras' and len(path) == 2 and path[0] == 'meshes' and type(path[1]) is int:\n                    # Only a bounded exporter marker; admission below still requires COLOR_0.\n                    if type(child) is dict and set(child) == {'processed'} and child['processed'] is True:\n                        continue\n                if key in {'uri','extensions','extras'}:\n                    _fail('\uc678\ubd80 \ucc38\uc870\uc640 \ud655\uc7a5 \uae30\ub2a5\uc774 \uc5c6\ub294 \uc815\uc801 GLB\ub9cc \uc9c0\uc6d0\ud569\ub2c8\ub2e4.')\n                check(child, path+(key,))\n        elif isinstance(item,list):"
+    },
+    {
+      "start_line": 358,
+      "end_line": 366,
+      "text": "        if type(items) is not list or not items:_fail()\n        mesh_vertices=mesh_triangles=0;bounds=None\n        for primitive in items:\n            primitives+=1\n            if primitives>MAX_PRIMITIVES:_fail()\n            _object(primitive,('attributes','indices','material','mode'),('attributes',))\n            if type(primitive.get('mode',4)) is not int or primitive.get('mode',4)!=4:_fail('\uc815\uc801 \uc0bc\uac01\ud615 mesh\ub97c \ud3ec\ud568\ud55c GLB\ub9cc \uc9c0\uc6d0\ud569\ub2c8\ub2e4.')\n            attributes=_object(primitive['attributes'],('POSITION','NORMAL','TEXCOORD_0','TANGENT','COLOR_0'),('POSITION',))\n            position,position_view,points=decoded[_reference(attributes['POSITION'],decoded)]"
+    },
+    {
+      "start_line": 442,
+      "end_line": 445,
+      "text": "    nodes=_array(document,'nodes',MAX_NODES,minimum=1);matrices=[];parents=[0]*len(nodes)\n    for node in nodes:\n        _object(node,('name','mesh','children','matrix','translation','rotation','scale'))\n        if 'mesh' in node:_reference(node['mesh'],mesh_counts)"
+    },
+    {
+      "start_line": 481,
+      "end_line": 503,
+      "text": "def validate_glb(raw):\n    \"\"\"Return bounded metadata for unchanged bytes, or a value-free ValueError.\n\n    Callers must bind the hash/profile to an immutable file, project/conversation\n    and rights/approval state, then revalidate those bytes at renderer admission.\n    JPEG marker/dimension validation is not a pixel-decoder security guarantee.\n    \"\"\"\n    try:\n        document,binary=_container(raw)\n        _object(document,('asset','scene','scenes','nodes','meshes','accessors','bufferViews','buffers','images','textures','samplers','materials','extensionsUsed','extensionsRequired'),('asset','scenes','nodes','meshes','accessors','bufferViews','buffers'))\n        asset=_object(document['asset'],('version','minVersion','generator','copyright'),('version',))\n        if asset['version']!='2.0' or asset.get('minVersion','2.0')!='2.0':_fail()\n        for key in ('generator','copyright'):\n            if key in asset and (type(asset[key]) is not str or len(asset[key])>2048):_fail()\n        for key in ('extensionsUsed','extensionsRequired'):\n            if key in document and document[key]!=[]:_fail('\uc555\ucd95 \ubc0f glTF \ud655\uc7a5 \uae30\ub2a5\uc740 \ud604\uc7ac \uc9c0\uc6d0\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.')\n        buffers=_array(document,'buffers',1,minimum=1)\n        _object(buffers[0],('byteLength','name'),('byteLength',));length=_integer(buffers[0]['byteLength'],1,MAX_BYTES)\n        if not length<=len(binary)<=length+3 or any(binary[length:]):_fail()\n        binary=binary[:length]\n        views,decoded=_views_and_accessors(document,binary)\n        images,textured=_textures_and_materials(document,binary,views)\n        counts,has_colors=_meshes(document,decoded,textured)"
+    }
+  ]
+}

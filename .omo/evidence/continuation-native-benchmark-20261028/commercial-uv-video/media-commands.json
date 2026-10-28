@@ -1,0 +1,43 @@
+[
+  {
+    "step": "ffprobe",
+    "command": [
+      "/opt/homebrew/bin/ffprobe",
+      "-v",
+      "error",
+      "-show_format",
+      "-show_streams",
+      "-of",
+      "json",
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/continuation-native-benchmark-20261028/commercial-uv-video/UV(2).mp4"
+    ],
+    "exit_code": 0,
+    "stderr_path": "ffprobe.stderr.txt"
+  },
+  {
+    "step": "full_decode",
+    "command": [
+      "/opt/homebrew/bin/ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-v",
+      "error",
+      "-xerror",
+      "-threads",
+      "2",
+      "-i",
+      "/Users/leesungmin/Desktop/Loretune/.omo/evidence/continuation-native-benchmark-20261028/commercial-uv-video/UV(2).mp4",
+      "-map",
+      "0:v:0",
+      "-map",
+      "0:a?",
+      "-f",
+      "null",
+      "-"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.7517154170200229,
+    "stderr_path": "full-decode.stderr.txt",
+    "all_video_audio_streams": true
+  }
+]

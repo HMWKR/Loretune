@@ -1,0 +1,52 @@
+--- before/chat_runtime.py
++++ chat_runtime.py
+@@ -44,6 +44,19 @@
+   p=result['plan'];return dict(status='proposed',plan={k:deepcopy(p[k]) for k in ['id','version','status','scenes','questions']},cost_approval=False)
+  return deepcopy(result)
+ 
++def request_history(workspace_id,project_id,turns):
++ """Lossless accepted user-request evidence, separate from recent dialogue.
++
++ Callers supply project-scoped rows in insertion order. Status is processing
++ history, not approval or an automatically extracted active constraint.
++ """
++ records=[dict(turn_id=t['id'],sequence=i,text=t['prompt'],
++               source_hash=hashlib.sha256(t['prompt'].encode('utf-8')).hexdigest(),
++               status=t['status']) for i,t in enumerate(turns,1)]
++ value=dict(schema_version=1,scope=dict(workspace_id=workspace_id,project_id=project_id,
++            conversation='project-default'),requests=records)
++ return dict(value,digest=guided.fingerprint(value))
++
+ class AnthropicChatAdapter:
+  selection='anthropic-haiku-5-5'
+  provider='anthropic'
+@@ -51,8 +64,10 @@
+  mode='anthropic-live'
+  def __init__(self,credential_supplier,*,enabled=False,count_transport=None,message_transport=None):
+   self.supplier=credential_supplier;self.enabled=enabled
+-  self.count_transport=count_transport or anthropic.BoundedCountTransport()
+-  self.message_transport=message_transport or anthropic.BoundedMessagesTransport(timeout=60)
++  # Ordered request evidence and tool results exceed extraction's 12 KB envelope.
++  # This independent byte ceiling never replaces the counted token/budget gates.
++  self.count_transport=count_transport or anthropic.BoundedCountTransport(max_request_bytes=65536)
++  self.message_transport=message_transport or anthropic.BoundedMessagesTransport(timeout=60,max_request_bytes=65536)
+  def _call(self,body,*,count):
+   if not self.enabled:raise ValueError('provider disabled')
+   key=None;headers=None
+@@ -129,7 +144,7 @@
+   if set(data)!={'song','prompt'} or not isinstance(data['prompt'],str) or not 1<=len(data['prompt'].strip())<=2000:raise ValueError('대화 입력을 확인하세요.')
+   self.guard(name,p,data['prompt'])
+   project_id=contracts.project_id(self.store.workspace_id,name)
+-  existing=[json.loads(row[0]) for row in c.execute('SELECT body FROM chat_turns WHERE project=?',(project_id,))]
++  existing=[json.loads(row[0]) for row in c.execute('SELECT body FROM chat_turns WHERE project=? ORDER BY rowid',(project_id,))]
+   if 'max_turns' in self.approval and len(existing)>=self.approval['max_turns']:raise ValueError('승인된 대화 횟수를 모두 사용했습니다.')
+   if self.approval.get('one_per_prompt') and any(t['prompt']==data['prompt'] for t in existing):raise ValueError('이미 접수한 입력입니다. 기존 대화 결과를 확인하세요.')
+   if any(json.loads(row[0])['status'] in {'queued','running','cancel_requested','outcome_unknown'} for row in c.execute('SELECT body FROM chat_turns WHERE project=?',(project_id,))):raise ValueError('진행 중이거나 결과 미확정인 대화를 먼저 확인하세요.')
+@@ -139,6 +154,7 @@
+          answer=None,answer_review='unreviewed',steps=[],usage_cost_usd='0',billing_confirmed=False)
+   import action_execution
+   handoff=chat_protocols.handoff(p,name,action_execution.project_jobs(c,self.store.workspace_id,project_id,name),__import__('production_context').read(c,self.store,p,name))
++  handoff['session_request_history']=request_history(self.store.workspace_id,project_id,existing)
+   for x in [v for v in existing if v['status']=='completed'][-8:]:
+    handoff['messages'].append(dict(role='user',text=x['prompt']))
+    if x.get('answer'):handoff['messages'].append(dict(role='assistant',text=x['answer'],review='unreviewed'))

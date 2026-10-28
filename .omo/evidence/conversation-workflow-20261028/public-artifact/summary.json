@@ -1,0 +1,220 @@
+{
+  "status": "REPORTED; parent acceptance pending",
+  "utc": "2026-10-27T22:29:33.076734+00:00",
+  "bounded_scope": "One public Riko final GLB inspection, no product changes. No external AI calls or keys.",
+  "download_method": {
+    "tool": "python3 urllib.request.urlopen",
+    "timeout_seconds": 30,
+    "request_method": "GET",
+    "metadata_limit_bytes": 1048576,
+    "glb_limit_bytes": 12582912,
+    "network_failures_observed_in_this_agent": [],
+    "parent_reported_prior_web_cache_miss": "Not repeated; normal public HTTP returned 200 for all three exact URLs."
+  },
+  "workflow_status_probe": {
+    "invocation": "omo-agent-toolkit ulw-loop status --json",
+    "exit_code": 127,
+    "stderr": "bun runtime not found and node fallback CLI missing",
+    "fallback_evidence_dir": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/conversation-workflow-20261028/public-artifact",
+    "tool_installed_or_changed": false
+  },
+  "independently_verified": {
+    "final_glb_hash_and_bytes": "matches published artifact metadata",
+    "geometry": "22899 vertex records; 22754 indexed triangles; one mesh instance",
+    "rig": "one skin with 23 joints, six animation entries",
+    "images": "three embedded 2048x2048 images (two JPEG, one PNG); dimensions/byte ranges only",
+    "buffers": "all bufferView/accessor byte ranges within single embedded BIN; finite accessor values; primitive index range valid",
+    "weight_sum_max_error": 1.0558869689702988e-07,
+    "negative_weights": 0
+  },
+  "author_reported_not_reproduced": {
+    "mesh_generation": {
+      "route": "P2-20260801@tripo",
+      "prompt": "Generate the independently reviewed character part from its named views.",
+      "input_views": [
+        {
+          "view": "front",
+          "sha256": "88c70587092d3fb540b58f123f89d1bde7d5a1e717be4b639eda690a21441b25"
+        },
+        {
+          "view": "back",
+          "sha256": "70cf50e383226666f0ba90fdf4eb774f8d350c9b320c2c91058d0873eb41eb7e"
+        }
+      ],
+      "settings": {
+        "texture": true,
+        "pbr": true,
+        "quad": true,
+        "face_limit": 10000
+      },
+      "plan_sha256": "b70d6489b8c38bd5cb917bbd572b26d2ba6e768bd2322bbf9701032bf40dab5e",
+      "provider_output_sha256": "f388ecf1d5946c39649bcce9b561639af57ec711e99f765ea3dc8040e44a8a39",
+      "assembly_sha256": "a1fe8c24f870f5b7885b509a2c1a1100e18535a5b40af69288989bfcb9db77c8",
+      "assembly_report_sha256": "077006dfb8df316cdfba072e9f911ba27d9942a2e994f7a862663fad83491878"
+    },
+    "rig_generation": {
+      "route": "v1.0-20240301@tripo",
+      "settings": {
+        "rig_type": "biped",
+        "spec": "mixamo",
+        "out_format": "glb"
+      },
+      "plan_sha256": "464b8bb774e7eafad3f13eab642901d2b9e71eacb5b13ed8b6811a87b2788f3c",
+      "provider_output_sha256": "04f1caf5d899c83dff900b6468b836b6bb6154d6cda1d6d93b453523b9fbdd51",
+      "adapted_output_sha256": "9a1edcfd31ee3f71eea3f0557306e43e74c09de36bc71697bd8a8a041f7bf93e",
+      "local_processing": "Preserve geometry, UVs and textures; restore source normals, apply matte material policy, and add original diagnostic clips.",
+      "local_manifest_sha256": "7dd8c9c5c903bdf7a17bf4efce341da2030a6fa48081e12c2e69ef4150e898ae"
+    },
+    "pipeline_status": "failed",
+    "pipeline_failure_reason": "Both automatic rigs were rejected for arm-driven hanging-hair deformation.",
+    "skin_repair": {
+      "operation": "local_skin_weight_correction",
+      "input_sha256": "9a1edcfd31ee3f71eea3f0557306e43e74c09de36bc71697bd8a8a041f7bf93e",
+      "output_sha256": "c3db2031bda77b7128d19d8e5b25c1c001a615390f0d50f1ff1577bd2048aca3",
+      "record_sha256": "65cf142d2813233359fe0ddece62e5c727764ea4e8d8298b418aa05be6d1ef59",
+      "selection": {
+        "method": "vertex base-color sample plus position height; coincident UV/normal seam vertices synchronized at 1e-6 position rounding",
+        "criteria": "y > 0.64 OR (y > 0.32 AND R > 230 AND B > 135 AND B > 1.08*G) in original GLB local coordinates, nearest baseColorTexture texel in 0..255 RGB",
+        "selected_vertices": 12357,
+        "changed_vertices": 5480,
+        "total_vertices": 22899,
+        "min_prior_head_weight_selected": 0.0,
+        "selected_with_prior_nonhead_influence": 5480
+      },
+      "preservation": {
+        "byte_length_identical": true,
+        "json_chunk_byte_identical": true,
+        "all_bytes_outside_joint_and_weight_buffer_ranges_identical": true,
+        "position_normal_uv_indices_images_materials_skeleton_inverse_bind_matrices_animation_bytes_identical": true,
+        "source_sha256_unchanged": true
+      },
+      "implementation_sha256": "cd513459ffb4aecaef7f99307d63c05cb07a148e2b81d7bf6fd4e5c47cf52adf",
+      "mutation": {
+        "attributes": [
+          "JOINTS_0",
+          "WEIGHTS_0"
+        ],
+        "target_node": "mixamorig:Head",
+        "target_skin_joint_index": 6,
+        "target_weights": [
+          1,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "render_settings": {
+      "source_sha256": "c3db2031bda77b7128d19d8e5b25c1c001a615390f0d50f1ff1577bd2048aca3",
+      "record_sha256": "95fa4b6128d57e03582db28563a06080ead869a0dfc443b8e58366cf3d81e05d",
+      "implementation_sha256": "92f3e54245f37831371d6c0220b9b40d4c9fed418f87f8c229cbab2c59b798b6",
+      "blender_version": "5.2.1 LTS",
+      "engine": "CYCLES",
+      "samples": 32,
+      "pose": "rest",
+      "material_policy": "unchanged imported GLB materials",
+      "background_srgb": [
+        240,
+        235,
+        227
+      ],
+      "camera": {
+        "matrix_public": [
+          [
+            0.9219821056073614,
+            -0.035551359538497807,
+            0.3855970666055187,
+            3.009391800998128
+          ],
+          [
+            0.0,
+            0.9957766514544958,
+            0.09180882538226637,
+            1.716521695837146
+          ],
+          [
+            -0.3872324843550917,
+            -0.08464609413928051,
+            0.9180882538226636,
+            7.16521820766225
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "orthographic_scale": 2.508550321251708,
+        "minimum_model_margin_pixels": 78.1016949152542
+      },
+      "rendered_png_sha256": "e72e751dca1f1ee6a518fcfd26996a2238abd51d55302cfd28dc660a95ab209d"
+    }
+  },
+  "paired_proof": {
+    "edited_final_output": "bytes independently verified",
+    "original_source_art_url": "https://raw.githubusercontent.com/softmarshmallow/fx-games/d6dd92f8c6877c5389e4d1223391b228eaa02d63/library/characters/riko/sd_flat.webp",
+    "source_image_downloaded": false,
+    "front_back_inputs": "hashes only in metadata; no verified bytes",
+    "provider_raw_mesh": "hash only; no verified bytes",
+    "provider_raw_rig": "hash only; no verified bytes",
+    "pre_repair_glb": "hash only; no verified bytes",
+    "quality_or_repair_improvement_conclusion": "not established; final bytes alone cannot prove claimed 5480-vertex edit or unchanged other buffers",
+    "broad_tree_search": "not repeated per parent instruction"
+  },
+  "platform_fit": {
+    "checked_numeric_metrics": "all 15 listed metrics within current limits",
+    "compatibility": "not compatible with current static profile according to source inspection",
+    "reason": "KHR_materials_specular, skins, animations, JOINTS_0/WEIGHTS_0, inverse bind MAT4 and skin node fields are unsupported",
+    "validator_called": false,
+    "asset_ingested_or_rendered": false,
+    "recommendation_scope": "Optional future adapter research only. Do not auto-strip rig/materials or loosen admission limits for this example."
+  },
+  "rights_boundary": {
+    "source_code_license_not_media_license": true,
+    "artifact_metadata_status": "redistribution-approved",
+    "downstream_platform_embedding_or_redistribution_permission": "not established; no legal applicability judgment",
+    "repository_policy_evidence": "download-receipts.json policy_lines",
+    "raw_media_location": "owned OS temporary directory only"
+  },
+  "skill_use": {
+    "read": [
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-andrej-karpathy-skills/1.2.1/skills/karpathy-guidelines/SKILL.md",
+      "/Users/leesungmin/.codex/plugins/cache/codex-harness/harness-andrej-karpathy-skills/1.2.1/CODEX-RUNTIME.md"
+    ],
+    "applied": "small bounded read-only probe; explicit limits and proof separation",
+    "skill_commands_executed": []
+  },
+  "criteria": [
+    {
+      "scenario": "Exact final public bytes",
+      "invocation": "python3 .omo/evidence/conversation-workflow-20261028/public-artifact/inspect_glb.py",
+      "observable": "exit 0 and author_final_hash_and_size_match=true",
+      "artifact": "inspection-report.json"
+    },
+    {
+      "scenario": "Resource bounds and geometry",
+      "invocation": "python3 .omo/evidence/conversation-workflow-20261028/public-artifact/inspect_glb.py",
+      "observable": "all accessor bounds assertions pass, 22899 vertices / 22754 triangles",
+      "artifact": "inspection-report.json"
+    },
+    {
+      "scenario": "Compare current static profile without ingest",
+      "invocation": "AST/source inspection in inspect_glb.py",
+      "observable": "15 numeric comparisons within; unsupported format features explicitly identified",
+      "artifact": "platform-policy-snapshot.json"
+    },
+    {
+      "scenario": "Separate provenance claims from paired evidence",
+      "invocation": "Read pinned public-metadata.json and compare final GLB bytes",
+      "observable": "raw/source input gaps enumerated, no quality parity claim",
+      "artifact": "summary.json"
+    }
+  ],
+  "non_goals": [
+    "No general platform completion",
+    "No same-input commercial/open-source benchmark",
+    "No image editing or re-render",
+    "No product code or document registration changes"
+  ]
+}

@@ -1,0 +1,1181 @@
+[
+  {
+    "label": "gradio_helpers",
+    "url": "https://raw.githubusercontent.com/gradio-app/gradio/gradio%405.23.1/gradio/helpers.py",
+    "status": 200,
+    "bytes": 50190,
+    "sha256": "e3c771b8d6f189c013f8472120475030c96f0a13a9a2a7f6885f0b00089f954c",
+    "selected_lines": [
+      {
+        "line": 140,
+        "source": "        if cache_examples is None:"
+      },
+      {
+        "line": 141,
+        "source": "            if ("
+      },
+      {
+        "line": 142,
+        "source": "                os.getenv(\"GRADIO_CACHE_EXAMPLES\", \"\").lower() in [\"true\", \"lazy\"]"
+      },
+      {
+        "line": 143,
+        "source": "                and fn is not None"
+      },
+      {
+        "line": 144,
+        "source": "                and outputs is not None"
+      },
+      {
+        "line": 145,
+        "source": "            ):"
+      },
+      {
+        "line": 146,
+        "source": "                self.cache_examples = True"
+      },
+      {
+        "line": 147,
+        "source": "        elif cache_examples == \"lazy\":"
+      },
+      {
+        "line": 148,
+        "source": "            warnings.warn("
+      },
+      {
+        "line": 149,
+        "source": "                \"In future versions of Gradio, the `cache_examples` parameter will no longer accept a value of 'lazy'. To enable lazy caching in \""
+      },
+      {
+        "line": 150,
+        "source": "                \"Gradio, you should set `cache_examples=True`, and `cache_mode='lazy'` instead.\""
+      },
+      {
+        "line": 151,
+        "source": "            )"
+      },
+      {
+        "line": 152,
+        "source": "            self.cache_examples = \"lazy\""
+      },
+      {
+        "line": 153,
+        "source": "        elif cache_examples in [True, False]:"
+      },
+      {
+        "line": 154,
+        "source": "            self.cache_examples = cache_examples"
+      },
+      {
+        "line": 155,
+        "source": "        else:"
+      },
+      {
+        "line": 156,
+        "source": "            raise ValueError("
+      },
+      {
+        "line": 157,
+        "source": "                f\"The `cache_examples` parameter should be either True or False, not {cache_examples}\""
+      },
+      {
+        "line": 158,
+        "source": "            )"
+      },
+      {
+        "line": 159,
+        "source": "        if self.cache_examples and (fn is None or outputs is None):"
+      },
+      {
+        "line": 160,
+        "source": "            raise ValueError(\"If caching examples, `fn` and `outputs` must be provided\")"
+      },
+      {
+        "line": 161,
+        "source": ""
+      },
+      {
+        "line": 162,
+        "source": "        if (cache_mode_env := os.getenv(\"GRADIO_CACHE_MODE\")) and cache_mode is None:"
+      },
+      {
+        "line": 163,
+        "source": "            if cache_mode_env.lower() == \"eager\":"
+      },
+      {
+        "line": 164,
+        "source": "                cache_mode = \"eager\""
+      },
+      {
+        "line": 165,
+        "source": "            elif cache_mode_env.lower() == \"lazy\":"
+      },
+      {
+        "line": 166,
+        "source": "                cache_mode = \"lazy\""
+      },
+      {
+        "line": 167,
+        "source": "            else:"
+      },
+      {
+        "line": 168,
+        "source": "                cache_mode = \"eager\""
+      },
+      {
+        "line": 169,
+        "source": "                warnings.warn("
+      },
+      {
+        "line": 170,
+        "source": "                    \"The `GRADIO_CACHE_MODE` environment variable must be either 'eager' or 'lazy'. \""
+      },
+      {
+        "line": 171,
+        "source": "                    \"Defaulting to 'eager'.\""
+      },
+      {
+        "line": 172,
+        "source": "                )"
+      },
+      {
+        "line": 173,
+        "source": ""
+      },
+      {
+        "line": 174,
+        "source": "        if self.cache_examples and cache_mode == \"lazy\":"
+      },
+      {
+        "line": 175,
+        "source": "            self.cache_examples = \"lazy\""
+      },
+      {
+        "line": 349,
+        "source": "            if self.cache_examples:"
+      },
+      {
+        "line": 350,
+        "source": ""
+      },
+      {
+        "line": 351,
+        "source": "                def load_example_input(example_tuple):"
+      },
+      {
+        "line": 352,
+        "source": "                    _, example_value = example_tuple"
+      },
+      {
+        "line": 353,
+        "source": "                    processed_example = self._get_processed_example(example_value)"
+      },
+      {
+        "line": 354,
+        "source": "                    return utils.resolve_singleton(processed_example)"
+      },
+      {
+        "line": 355,
+        "source": ""
+      },
+      {
+        "line": 356,
+        "source": "                def load_example_output(example_tuple):"
+      },
+      {
+        "line": 357,
+        "source": "                    example_id, _ = example_tuple"
+      },
+      {
+        "line": 358,
+        "source": "                    cached_outputs = self.load_from_cache(example_id)"
+      },
+      {
+        "line": 359,
+        "source": "                    return utils.resolve_singleton(cached_outputs)"
+      },
+      {
+        "line": 360,
+        "source": ""
+      },
+      {
+        "line": 361,
+        "source": "                self.cache_event = self.load_input_event = self.dataset.click("
+      },
+      {
+        "line": 362,
+        "source": "                    load_example_input,"
+      },
+      {
+        "line": 363,
+        "source": "                    inputs=[self.dataset],"
+      },
+      {
+        "line": 364,
+        "source": "                    outputs=self.inputs,"
+      },
+      {
+        "line": 365,
+        "source": "                    show_progress=\"hidden\","
+      },
+      {
+        "line": 366,
+        "source": "                    postprocess=False,"
+      },
+      {
+        "line": 367,
+        "source": "                    queue=False,"
+      },
+      {
+        "line": 368,
+        "source": "                    show_api=False,"
+      },
+      {
+        "line": 369,
+        "source": "                ).then("
+      },
+      {
+        "line": 370,
+        "source": "                    load_example_output,"
+      },
+      {
+        "line": 371,
+        "source": "                    inputs=[self.dataset],"
+      },
+      {
+        "line": 372,
+        "source": "                    outputs=self.outputs,"
+      },
+      {
+        "line": 373,
+        "source": "                    postprocess=False,"
+      },
+      {
+        "line": 374,
+        "source": "                    api_name=self.api_name,"
+      },
+      {
+        "line": 375,
+        "source": "                    show_api=False,"
+      },
+      {
+        "line": 376,
+        "source": "                )"
+      },
+      {
+        "line": 471,
+        "source": "    async def cache(self, example_id: int | None = None) -> None:"
+      },
+      {
+        "line": 472,
+        "source": "        \"\"\""
+      },
+      {
+        "line": 473,
+        "source": "        Caches examples so that their predictions can be shown immediately."
+      },
+      {
+        "line": 474,
+        "source": "        Parameters:"
+      },
+      {
+        "line": 475,
+        "source": "            example_id: The id of the example to process (zero-indexed). If None, all examples are cached."
+      },
+      {
+        "line": 476,
+        "source": "        \"\"\""
+      },
+      {
+        "line": 477,
+        "source": "        if self.root_block is None:"
+      },
+      {
+        "line": 478,
+        "source": "            raise Error(\"Cannot cache examples if not in a Blocks context.\")"
+      },
+      {
+        "line": 479,
+        "source": "        if Path(self.cached_file).exists() and example_id is None:"
+      },
+      {
+        "line": 480,
+        "source": "            print("
+      },
+      {
+        "line": 481,
+        "source": "                f\"Using cache from '{utils.abspath(self.cached_folder)}' directory. If method or examples have changed since last caching, delete this folder to clear cache.\\n\""
+      },
+      {
+        "line": 482,
+        "source": "            )"
+      },
+      {
+        "line": 483,
+        "source": "        else:"
+      },
+      {
+        "line": 484,
+        "source": "            print(f\"Caching examples at: '{utils.abspath(self.cached_folder)}'\")"
+      },
+      {
+        "line": 485,
+        "source": "            self.cache_logger.setup(self.outputs, self.cached_folder)"
+      },
+      {
+        "line": 486,
+        "source": "            generated_values = []"
+      },
+      {
+        "line": 487,
+        "source": "            if inspect.isgeneratorfunction(self.fn):"
+      },
+      {
+        "line": 488,
+        "source": ""
+      },
+      {
+        "line": 489,
+        "source": "                def get_final_item(*args):  # type: ignore"
+      },
+      {
+        "line": 490,
+        "source": "                    x = None"
+      },
+      {
+        "line": 491,
+        "source": "                    generated_values.clear()"
+      },
+      {
+        "line": 492,
+        "source": "                    for x in self.fn(*args):  # noqa: B007  # type: ignore"
+      },
+      {
+        "line": 493,
+        "source": "                        generated_values.append(x)"
+      },
+      {
+        "line": 494,
+        "source": "                    return x"
+      },
+      {
+        "line": 495,
+        "source": ""
+      },
+      {
+        "line": 496,
+        "source": "                fn = get_final_item"
+      },
+      {
+        "line": 497,
+        "source": "            elif inspect.isasyncgenfunction(self.fn):"
+      },
+      {
+        "line": 498,
+        "source": ""
+      },
+      {
+        "line": 499,
+        "source": "                async def get_final_item(*args):"
+      },
+      {
+        "line": 500,
+        "source": "                    x = None"
+      },
+      {
+        "line": 501,
+        "source": "                    generated_values.clear()"
+      },
+      {
+        "line": 502,
+        "source": "                    async for x in self.fn(*args):  # noqa: B007  # type: ignore"
+      },
+      {
+        "line": 503,
+        "source": "                        generated_values.append(x)"
+      },
+      {
+        "line": 504,
+        "source": "                    return x"
+      },
+      {
+        "line": 505,
+        "source": ""
+      },
+      {
+        "line": 506,
+        "source": "                fn = get_final_item"
+      },
+      {
+        "line": 507,
+        "source": "            else:"
+      },
+      {
+        "line": 508,
+        "source": "                fn = self.fn"
+      },
+      {
+        "line": 509,
+        "source": ""
+      },
+      {
+        "line": 510,
+        "source": "            # create a fake dependency to process the examples and get the predictions"
+      },
+      {
+        "line": 511,
+        "source": "            from gradio.events import EventListenerMethod"
+      },
+      {
+        "line": 512,
+        "source": ""
+      },
+      {
+        "line": 513,
+        "source": "            _, fn_index = self.root_block.default_config.set_event_trigger("
+      },
+      {
+        "line": 514,
+        "source": "                [EventListenerMethod(Context.root_block, \"load\")],"
+      },
+      {
+        "line": 515,
+        "source": "                fn=fn,"
+      },
+      {
+        "line": 516,
+        "source": "                inputs=self.inputs,"
+      },
+      {
+        "line": 517,
+        "source": "                outputs=self.outputs,"
+      },
+      {
+        "line": 518,
+        "source": "                preprocess=self.preprocess and not self._api_mode,"
+      },
+      {
+        "line": 519,
+        "source": "                postprocess=self.postprocess and not self._api_mode,"
+      },
+      {
+        "line": 520,
+        "source": "                batch=self.batch,"
+      },
+      {
+        "line": 521,
+        "source": "            )"
+      },
+      {
+        "line": 522,
+        "source": ""
+      },
+      {
+        "line": 523,
+        "source": "            if self.outputs is None:"
+      },
+      {
+        "line": 524,
+        "source": "                raise ValueError(\"self.outputs is missing\")"
+      },
+      {
+        "line": 525,
+        "source": "            for i, example in enumerate(self.non_none_examples):"
+      },
+      {
+        "line": 526,
+        "source": "                if example_id is not None and i != example_id:"
+      },
+      {
+        "line": 527,
+        "source": "                    continue"
+      },
+      {
+        "line": 528,
+        "source": "                processed_input = self._get_processed_example(example)"
+      },
+      {
+        "line": 529,
+        "source": "                for index, keep in enumerate(self.input_has_examples):"
+      },
+      {
+        "line": 530,
+        "source": "                    if not keep:"
+      },
+      {
+        "line": 531,
+        "source": "                        processed_input.insert(index, None)"
+      },
+      {
+        "line": 532,
+        "source": "                if self.batch:"
+      },
+      {
+        "line": 533,
+        "source": "                    processed_input = [[value] for value in processed_input]"
+      },
+      {
+        "line": 534,
+        "source": "                with utils.MatplotlibBackendMananger():"
+      },
+      {
+        "line": 535,
+        "source": "                    prediction = await self.root_block.process_api("
+      },
+      {
+        "line": 536,
+        "source": "                        block_fn=self.root_block.default_config.fns[fn_index],"
+      },
+      {
+        "line": 537,
+        "source": "                        inputs=processed_input,"
+      },
+      {
+        "line": 538,
+        "source": "                        request=None,"
+      },
+      {
+        "line": 539,
+        "source": "                    )"
+      },
+      {
+        "line": 540,
+        "source": "                output = prediction[\"data\"]"
+      },
+      {
+        "line": 541,
+        "source": "                if generated_values:"
+      },
+      {
+        "line": 542,
+        "source": "                    output = await merge_generated_values_into_output("
+      },
+      {
+        "line": 543,
+        "source": "                        self.outputs, generated_values, output"
+      },
+      {
+        "line": 544,
+        "source": "                    )"
+      },
+      {
+        "line": 545,
+        "source": "                if self.batch:"
+      },
+      {
+        "line": 546,
+        "source": "                    output = [value[0] for value in output]"
+      },
+      {
+        "line": 547,
+        "source": "                self.cache_logger.flag(output)"
+      },
+      {
+        "line": 548,
+        "source": "            # Remove the \"fake_event\" to prevent bugs in loading interfaces from spaces"
+      },
+      {
+        "line": 549,
+        "source": "            self.root_block.default_config.fns.pop(fn_index)"
+      },
+      {
+        "line": 550,
+        "source": ""
+      },
+      {
+        "line": 551,
+        "source": "    def load_from_cache(self, example_id: int) -> list[Any]:"
+      },
+      {
+        "line": 552,
+        "source": "        \"\"\"Loads a particular cached example for the interface."
+      },
+      {
+        "line": 553,
+        "source": "        Parameters:"
+      },
+      {
+        "line": 554,
+        "source": "            example_id: The id of the example to process (zero-indexed)."
+      },
+      {
+        "line": 555,
+        "source": "        \"\"\""
+      },
+      {
+        "line": 556,
+        "source": "        if self.cache_examples == \"lazy\":"
+      },
+      {
+        "line": 557,
+        "source": "            if (cached_index := self._get_cached_index_if_cached(example_id)) is None:"
+      },
+      {
+        "line": 558,
+        "source": "                client_utils.synchronize_async(self.cache, example_id)"
+      },
+      {
+        "line": 559,
+        "source": "                with open(self.cached_indices_file, \"a\") as f:"
+      },
+      {
+        "line": 560,
+        "source": "                    f.write(f\"{example_id}\\n\")"
+      },
+      {
+        "line": 561,
+        "source": "                with open(self.cached_indices_file) as f:"
+      },
+      {
+        "line": 562,
+        "source": "                    example_id = len(f.readlines()) - 1"
+      },
+      {
+        "line": 563,
+        "source": "            else:"
+      },
+      {
+        "line": 564,
+        "source": "                example_id = cached_index"
+      },
+      {
+        "line": 565,
+        "source": ""
+      },
+      {
+        "line": 566,
+        "source": "        with open(self.cached_file, encoding=\"utf-8\") as cache:"
+      },
+      {
+        "line": 567,
+        "source": "            examples = list(csv.reader(cache))"
+      },
+      {
+        "line": 568,
+        "source": ""
+      },
+      {
+        "line": 569,
+        "source": "        example = examples[example_id + 1]  # +1 to adjust for header"
+      },
+      {
+        "line": 570,
+        "source": "        output = []"
+      },
+      {
+        "line": 571,
+        "source": "        if self.outputs is None:"
+      },
+      {
+        "line": 572,
+        "source": "            raise ValueError(\"self.outputs is missing\")"
+      },
+      {
+        "line": 573,
+        "source": "        for component, value in zip(self.outputs, example, strict=False):"
+      },
+      {
+        "line": 574,
+        "source": "            value_to_use = value"
+      },
+      {
+        "line": 575,
+        "source": "            try:"
+      },
+      {
+        "line": 576,
+        "source": "                value_as_dict = ast.literal_eval(value)"
+      },
+      {
+        "line": 577,
+        "source": "                # File components that output multiple files get saved as a python list"
+      },
+      {
+        "line": 578,
+        "source": "                # need to pass the parsed list to serialize"
+      },
+      {
+        "line": 579,
+        "source": "                # TODO: Better file serialization in 4.0"
+      },
+      {
+        "line": 580,
+        "source": "                if isinstance(value_as_dict, list) and isinstance("
+      },
+      {
+        "line": 581,
+        "source": "                    component, components.File"
+      },
+      {
+        "line": 582,
+        "source": "                ):"
+      },
+      {
+        "line": 583,
+        "source": "                    value_to_use = value_as_dict"
+      },
+      {
+        "line": 584,
+        "source": "                if not utils.is_prop_update(value_as_dict):"
+      },
+      {
+        "line": 585,
+        "source": "                    raise TypeError(\"value wasn't an update\")  # caught below"
+      },
+      {
+        "line": 586,
+        "source": "                output.append(value_as_dict)"
+      },
+      {
+        "line": 587,
+        "source": "            except (ValueError, TypeError, SyntaxError):"
+      },
+      {
+        "line": 588,
+        "source": "                output.append(component.read_from_flag(value_to_use))"
+      },
+      {
+        "line": 589,
+        "source": "        return output"
+      },
+      {
+        "line": 590,
+        "source": ""
+      },
+      {
+        "line": 591,
+        "source": ""
+      },
+      {
+        "line": 592,
+        "source": "async def merge_generated_values_into_output("
+      },
+      {
+        "line": 593,
+        "source": "    components: Sequence[Component], generated_values: list, output: list"
+      },
+      {
+        "line": 594,
+        "source": "):"
+      },
+      {
+        "line": 595,
+        "source": "    from gradio.components.base import StreamingOutput"
+      },
+      {
+        "line": 596,
+        "source": ""
+      },
+      {
+        "line": 597,
+        "source": "    for output_index, output_component in enumerate(components):"
+      },
+      {
+        "line": 598,
+        "source": "        if isinstance(output_component, StreamingOutput) and output_component.streaming:"
+      },
+      {
+        "line": 599,
+        "source": "            binary_chunks = []"
+      },
+      {
+        "line": 600,
+        "source": "            desired_output_format = None"
+      },
+      {
+        "line": 601,
+        "source": "            for i, chunk in enumerate(generated_values):"
+      },
+      {
+        "line": 602,
+        "source": "                if len(components) > 1:"
+      },
+      {
+        "line": 603,
+        "source": "                    chunk = chunk[output_index]"
+      },
+      {
+        "line": 604,
+        "source": "                processed_chunk = output_component.postprocess(chunk)"
+      }
+    ]
+  },
+  {
+    "label": "triposg_space_app",
+    "url": "https://huggingface.co/spaces/VAST-AI/TripoSG/resolve/d51c5f2f4d5182f925a403b286d1e9faf519aaa2/app.py",
+    "status": 200,
+    "bytes": 15494,
+    "sha256": "b46cd3320b2a3ddfe4812a9ae4a999eb5af553005deceef50a295fa8953d4aa2",
+    "selected_lines": [
+      {
+        "line": 130,
+        "source": "    return seed"
+      },
+      {
+        "line": 131,
+        "source": ""
+      },
+      {
+        "line": 132,
+        "source": "@spaces.GPU(duration=180)"
+      },
+      {
+        "line": 133,
+        "source": "def run_full(image: str, req: gr.Request):"
+      },
+      {
+        "line": 134,
+        "source": "    seed = 0"
+      },
+      {
+        "line": 135,
+        "source": "    num_inference_steps = 50"
+      },
+      {
+        "line": 136,
+        "source": "    guidance_scale = 7.5"
+      },
+      {
+        "line": 137,
+        "source": "    simplify = True"
+      },
+      {
+        "line": 138,
+        "source": "    target_face_num = DEFAULT_FACE_NUMBER"
+      },
+      {
+        "line": 139,
+        "source": "    "
+      },
+      {
+        "line": 140,
+        "source": "    image_seg = prepare_image(image, bg_color=np.array([1.0, 1.0, 1.0]), rmbg_net=rmbg_net)"
+      },
+      {
+        "line": 141,
+        "source": ""
+      },
+      {
+        "line": 142,
+        "source": "    outputs = triposg_pipe("
+      },
+      {
+        "line": 143,
+        "source": "        image=image_seg,"
+      },
+      {
+        "line": 144,
+        "source": "        generator=torch.Generator(device=triposg_pipe.device).manual_seed(seed),"
+      },
+      {
+        "line": 145,
+        "source": "        num_inference_steps=num_inference_steps,"
+      },
+      {
+        "line": 146,
+        "source": "        guidance_scale=guidance_scale"
+      },
+      {
+        "line": 147,
+        "source": "    ).samples[0]"
+      },
+      {
+        "line": 148,
+        "source": "    print(\"mesh extraction done\")"
+      },
+      {
+        "line": 149,
+        "source": "    mesh = trimesh.Trimesh(outputs[0].astype(np.float32), np.ascontiguousarray(outputs[1]))"
+      },
+      {
+        "line": 150,
+        "source": ""
+      },
+      {
+        "line": 255,
+        "source": ""
+      },
+      {
+        "line": 256,
+        "source": "@spaces.GPU(duration=90)"
+      },
+      {
+        "line": 257,
+        "source": "@torch.no_grad()"
+      },
+      {
+        "line": 258,
+        "source": "def image_to_3d("
+      },
+      {
+        "line": 259,
+        "source": "    image: Image.Image,"
+      },
+      {
+        "line": 260,
+        "source": "    seed: int,"
+      },
+      {
+        "line": 261,
+        "source": "    num_inference_steps: int,"
+      },
+      {
+        "line": 262,
+        "source": "    guidance_scale: float,"
+      },
+      {
+        "line": 263,
+        "source": "    simplify: bool,"
+      },
+      {
+        "line": 264,
+        "source": "    target_face_num: int,"
+      },
+      {
+        "line": 265,
+        "source": "    req: gr.Request"
+      },
+      {
+        "line": 266,
+        "source": "):"
+      },
+      {
+        "line": 267,
+        "source": "    outputs = triposg_pipe("
+      },
+      {
+        "line": 268,
+        "source": "        image=image,"
+      },
+      {
+        "line": 269,
+        "source": "        generator=torch.Generator(device=triposg_pipe.device).manual_seed(seed),"
+      },
+      {
+        "line": 270,
+        "source": "        num_inference_steps=num_inference_steps,"
+      },
+      {
+        "line": 271,
+        "source": "        guidance_scale=guidance_scale"
+      },
+      {
+        "line": 272,
+        "source": "    ).samples[0]"
+      },
+      {
+        "line": 273,
+        "source": "    print(\"mesh extraction done\")"
+      },
+      {
+        "line": 274,
+        "source": "    mesh = trimesh.Trimesh(outputs[0].astype(np.float32), np.ascontiguousarray(outputs[1]))"
+      },
+      {
+        "line": 275,
+        "source": ""
+      },
+      {
+        "line": 289,
+        "source": ""
+      },
+      {
+        "line": 290,
+        "source": "@spaces.GPU(duration=120)"
+      },
+      {
+        "line": 291,
+        "source": "@torch.no_grad()"
+      },
+      {
+        "line": 292,
+        "source": "def run_texture(image: Image, mesh_path: str, seed: int, req: gr.Request):"
+      },
+      {
+        "line": 293,
+        "source": "    height, width = 768, 768"
+      },
+      {
+        "line": 294,
+        "source": "    # Prepare cameras"
+      },
+      {
+        "line": 295,
+        "source": "    cameras = get_orthogonal_camera("
+      },
+      {
+        "line": 296,
+        "source": "        elevation_deg=[0, 0, 0, 0, 89.99, -89.99],"
+      },
+      {
+        "line": 297,
+        "source": "        distance=[1.8] * NUM_VIEWS,"
+      },
+      {
+        "line": 298,
+        "source": "        left=-0.55,"
+      },
+      {
+        "line": 299,
+        "source": "        right=0.55,"
+      },
+      {
+        "line": 300,
+        "source": "        bottom=-0.55,"
+      },
+      {
+        "line": 301,
+        "source": "        top=0.55,"
+      },
+      {
+        "line": 302,
+        "source": "        azimuth_deg=[x - 90 for x in [0, 90, 180, 270, 180, 180]],"
+      },
+      {
+        "line": 303,
+        "source": "        device=DEVICE,"
+      },
+      {
+        "line": 304,
+        "source": "    )"
+      },
+      {
+        "line": 305,
+        "source": "    ctx = NVDiffRastContextWrapper(device=DEVICE, context_type=\"cuda\")"
+      },
+      {
+        "line": 306,
+        "source": ""
+      },
+      {
+        "line": 307,
+        "source": "    mesh = load_mesh(mesh_path, rescale=True, device=DEVICE)"
+      },
+      {
+        "line": 308,
+        "source": "    render_out = render("
+      },
+      {
+        "line": 309,
+        "source": "        ctx,"
+      },
+      {
+        "line": 424,
+        "source": "            textured_model_output = gr.Model3D(label=\"Textured GLB\", interactive=False)"
+      },
+      {
+        "line": 425,
+        "source": ""
+      },
+      {
+        "line": 426,
+        "source": "    with gr.Row():"
+      },
+      {
+        "line": 427,
+        "source": "        examples = gr.Examples("
+      },
+      {
+        "line": 428,
+        "source": "            examples=["
+      },
+      {
+        "line": 429,
+        "source": "                f\"{TRIPOSG_CODE_DIR}/assets/example_data/{image}\""
+      },
+      {
+        "line": 430,
+        "source": "                for image in os.listdir(f\"{TRIPOSG_CODE_DIR}/assets/example_data\")"
+      },
+      {
+        "line": 431,
+        "source": "            ],"
+      },
+      {
+        "line": 432,
+        "source": "            fn=run_full,"
+      },
+      {
+        "line": 433,
+        "source": "            inputs=[image_prompts],"
+      },
+      {
+        "line": 434,
+        "source": "            outputs=[seg_image, model_output, textured_model_output],"
+      },
+      {
+        "line": 435,
+        "source": "            cache_examples=True,"
+      },
+      {
+        "line": 436,
+        "source": "        )"
+      },
+      {
+        "line": 437,
+        "source": ""
+      },
+      {
+        "line": 438,
+        "source": "    gen_button.click("
+      },
+      {
+        "line": 439,
+        "source": "        run_segmentation,"
+      },
+      {
+        "line": 440,
+        "source": "        inputs=[image_prompts],"
+      },
+      {
+        "line": 441,
+        "source": "        outputs=[seg_image]"
+      },
+      {
+        "line": 442,
+        "source": "    ).then("
+      },
+      {
+        "line": 443,
+        "source": "        get_random_seed,"
+      },
+      {
+        "line": 444,
+        "source": "        inputs=[randomize_seed, seed],"
+      },
+      {
+        "line": 445,
+        "source": "        outputs=[seed],"
+      },
+      {
+        "line": 446,
+        "source": "    ).then("
+      },
+      {
+        "line": 447,
+        "source": "        image_to_3d,"
+      },
+      {
+        "line": 448,
+        "source": "        inputs=["
+      },
+      {
+        "line": 449,
+        "source": "            seg_image,"
+      },
+      {
+        "line": 450,
+        "source": "            seed,"
+      },
+      {
+        "line": 451,
+        "source": "            num_inference_steps,"
+      },
+      {
+        "line": 452,
+        "source": "            guidance_scale,"
+      }
+    ],
+    "cache_mode_mentions": []
+  }
+]

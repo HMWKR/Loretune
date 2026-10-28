@@ -1,0 +1,99 @@
+{
+  "status": "REPORTED",
+  "scope": "Optional original COLOR_0 GLB admission and immutable profile propagation; no provider calls or renderer changes",
+  "changed_files": [
+    "scene_assets.py",
+    "scene_spec.py",
+    "scene_project.py",
+    "scene-studio.js",
+    "tests/test_scene_vertex_colors.py",
+    "tests/test_scene_vertex_colors_native.py"
+  ],
+  "source_freeze": "source-freeze.json",
+  "renderer_sha256": "be41e10eb8bebb43ae8ccc1f33156b3f83c4bddd5f422604707e99d7e9664353",
+  "renderer_matches_baseline": true,
+  "methodology": {
+    "skills_read": [
+      "karpathy-guidelines SKILL.md + CODEX-RUNTIME.md",
+      "feature-verification SKILL.md + CODEX-RUNTIME.md + live-feature-verify/uncompromising-rigor",
+      "Impeccable craft-floor.md for single filter edit; no critique or audit command executed"
+    ],
+    "primary_source": "https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes",
+    "installed_importer": "installed-importer.json",
+    "applied": "Closed profile extension, immutable old-version compatibility, negative input tests, real HTTP/native workflow, quantified importer precision"
+  },
+  "decisions": {
+    "v1_unchanged": true,
+    "v2": "gltf2-static-pbr-color-v2",
+    "v2_trigger": "validated COLOR_0 only",
+    "color_formats": "VEC3/VEC4 FLOAT or normalized UNSIGNED_BYTE/UNSIGNED_SHORT; finite RGB [0,1], alpha=1, matching POSITION count and four-byte vertex alignment",
+    "metadata_exception": "only meshes[i].extras exact {processed:true}; strict boolean; requires v2",
+    "unchanged_guards": "Existing resource limits, external URI/extension/sparse/animation restrictions, original bytes/hash and scoped rights/approval checks"
+  },
+  "verification": [
+    {
+      "scenario": "Unsupported vertex colors before change",
+      "invocation": "PYTHONPATH=tests:. python3 -m unittest test_scene_vertex_colors -v",
+      "observable": "4 tests, errors7 before implementation",
+      "artifact": "red.log"
+    },
+    {
+      "scenario": "Final related unit/HTTP/native/UI regression",
+      "invocation": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-m",
+        "unittest",
+        "test_scene_vertex_colors",
+        "test_scene_vertex_colors_native",
+        "test_scene_assets",
+        "test_scene_asset_workflow",
+        "test_scene_asset_render",
+        "test_scene_contract",
+        "test_scene_ui",
+        "-v"
+      ],
+      "observable": "Ran 64 tests in 160.237s; OK; exit0; skips0",
+      "artifact": "native-related.log"
+    },
+    {
+      "scenario": "Two original TripoSR artifacts through private import, approval, render, camera/light edit, reapproval, Take and rights revocation",
+      "invocation": "test_scene_vertex_colors_native.VertexColorNativeTest.test_actual_assets_import_approve_render_edit_take_and_revoke",
+      "observable": "2 actual assets, 4 PNG192x192, different render hashes, original bytes exact, stale grant rejected, source revocation blocks both downloads403",
+      "artifact": "native/receipt.json"
+    },
+    {
+      "scenario": "Installed Blender color and geometry probe",
+      "invocation": "PYTHONPATH=.:tests python3 .omo/evidence/scene-vertex-colors-20261028/run_probe.py",
+      "observable": "5 assets; shader color links observed; nondegenerate triangle coordinate multiset agrees rounded to6decimals; measured nonzero color error",
+      "artifact": "color-probe.json"
+    },
+    {
+      "scenario": "Original v1 compatibility",
+      "invocation": "before/final metadata and SceneSpec fingerprint equality assertions",
+      "observable": "same metadata and scene hash",
+      "artifact": "v1-compatibility.json"
+    }
+  ],
+  "manual_visual_review": {
+    "paths": [
+      "native/0-revision-1.png",
+      "native/1-revision-1.png"
+    ],
+    "observation": "Small generated objects visibly rendered; this is not final asset-quality acceptance; edited views not manually reviewed"
+  },
+  "limits": [
+    "Blender BYTE_COLOR quantizes linear values: cube max0.0041069299567, chair0.00366200465782, known float fixture0.00308257341385. Original GLB color bytes preserved; importer attributes not float-lossless.",
+    "Cube original92304 triangles include4 repeated-index degenerate triangles; Blender retains92300 valid faces. Chair84216 retained. Parent accepted explicit limitation; renderer unchanged.",
+    "192x192 internal still workflow only; not commercial Tripo parity, final quality, watertight topology, material editing, animation or actual Claude/video provider validation.",
+    "No new live browser/visual UI acceptance. Existing UI regression in related suite only; root owns later acceptance.",
+    "Native probe uses same pinned image/install but standalone probe resource envelope differs from production render; actual HTTP render uses production isolated worker."
+  ],
+  "failures_preserved": [
+    "native-related-attempt-1.log",
+    "native-related-attempt-1-exit.json",
+    "native-attempt-1-diagnosis.json",
+    "probe-attempt-1.json"
+  ],
+  "root_decision": "Root explicitly accepted raw-byte preservation vs importer quantization/degenerate-face distinction; requested no renderer/docs/registry change and no new full suite or UI work.",
+  "toolkit_status": "omo-agent-toolkit ulw-loop status --json exit127: bun runtime and node fallback missing; used assigned .omo/evidence path"
+}

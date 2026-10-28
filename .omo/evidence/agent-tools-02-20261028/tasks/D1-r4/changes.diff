@@ -1,0 +1,192 @@
+--- a/docs/design/FRAME-OBSERVATION-DESIGN-ko.md
++++ b/docs/design/FRAME-OBSERVATION-DESIGN-ko.md
+@@ -4,6 +4,7 @@
+ 문서 게이트 등록·분류·승격은 하지 않는다. 등록은 따로 승인받는다(PLAN-ko.md:143 "등록은 별도 승인"). 따라서 등록이 승인되기 전까지 읽기 전용 문서 게이트(`tools/document-gate/check.py`)는 이 파일을 `UNCLASSIFIED_DOCUMENT`로 보고한다. 이것은 예상된 결과이며, 경고를 없애려고 등록하지 않는다.
+ > 2차 수정(2026-10-28): critic 판정(wf_18a38ed0-25d)과 codex 검수(`codex-gate/review-1.md`)를 반영했다. 고친 곳은 §3, §4-1~4-3, §5-1~5-2, §7, §8, §9, §10, §11이다.
+ > 3차 수정(2026-10-28): r2 critic 판정(`rework-r2-verdicts.json`의 D1 항목)을 반영했다. 프레임 바이트가 도구 실행에서 `result_message`까지 가는 경로와 보관 위치 전수(§4-4 신설), 중복·누적 상한(§4-3, §10), 공식 이미지 표 값과 등급(§4-3, §11), D20 사용자 결정(PLAN-ko.md:196)에 따른 §7 예약액 재계산, `chat_runtime.py` 줄 이동(+3) 정정(§4-1, §10)이다.
++> 4차 수정(2026-10-28): r3 critic 판정(`tasks/D1-frame-observation-design-r3/verdict-wave2.json`)의 minor 6건을 반영했다. v1 대상을 저장된 편집 프레임으로 한정하고 모션은 거절(§1, §3, §4-4, §6), 렌더 단계를 마지막 라운드 판정(`chat_general.py:773`) 뒤로 고정(§4-4), 중복·누적 판정의 경계 정의(§4-3), 요청 도중 권한 축소 시 재인가와 읽기 도구 분류(§4-4), SQLite 삭제 잔존과 이전 백업(§4-4 표, §9 A5, §11), 인용 검사의 `eval` 제거(`tasks/D1-r4/check_citations.py`)다.
+ 
+ > **줄 번호 기준**: 소스 파일(`*.py`·`*.js`)의 줄 번호는 편집 전 고정 사본 `.omo/evidence/agent-tools-02-20261028/before/<파일>` 기준이다. 문서를 쓰는 동안 다른 트랙이 `chat_general.py`·`app.py`·`chat_protocols.py`·`production_context.py`·`production_tools.py`·`general-chat-ui.js`를 동시에 고쳤고, 그 결과 현재 파일의 줄이 일부 밀렸다(예: `result_message` 줄이 before 777에서 현재 778로 이동). 구현할 때는 줄 번호를 다시 확인한다(PLAN-ko.md:164). 문서(`.md`) 줄 번호는 현재 파일 기준이다. 예외로, 앞에 `./`를 붙인 인용(예: `./chat_runtime.py:178`)은 **현재 프로젝트 파일** 기준이다. 다른 트랙의 변경 뒤 사실을 가리킬 때만 쓴다.
+ > 확신도 표기: [검증됨] 파일을 직접 읽어 확인 · [추정] 코드 패턴에서 추론 · [미확인] 공식 문서나 실제 측정이 필요함.
+@@ -13,6 +14,7 @@
+ ## 1. 목적과 범위
+ 
+ - 목적: 일반 대화 모델이 **저장된 편집(타임라인)이나 모션 변경안의 실제 프레임 몇 장**을 보고 답하게 한다. 지금은 모델이 텍스트로 된 상태만 받으며, 영상은 보지 못한다.
++- **v1 범위**: 저장된 편집(타임라인)의 프레임만 다룬다. 모션 변경안 프레임은 §3에 적은 공백(revision·권리 고정 없음, 출력 크기 상한 없음)이 채워지기 전까지 **거절**한다(§4-4 1단계, §6). 모션을 넣으려면 §9 A2에서 따로 승인받는다.
+ - 이 문서가 다루지 않는 것: 실제 구현, 실제 모델 호출, 외부 전송, 비용 승인. 이 항목들은 이번 범위 밖이다(PLAN-ko.md:126 "프레임·이미지 바이트 모델 전송 구현").
+ - 현재 상태 [검증됨]: 프레임 관찰 기능은 "없음 / 설계 문서만 S13 / 외부·유료 있음"이다(PLAN-ko.md:81). 이전 도구 감사도 "실제 프레임"을 일반 대화의 연결 공백으로 분류했다(`docs/design/CHAT-SESSION-PLAN.md:67`).
+ 
+@@ -39,7 +41,7 @@
+ 설계 결정:
+ - 도구는 위 두 함수를 **그대로 호출만** 한다. 새 FFmpeg 명령, 새 합성기, 새 해상도 경로는 만들지 않는다.
+ - `timeline_preview`가 이미 하는 "렌더 전후 권리·revision 재검사"를 그대로 물려받는다.
+-- `motion_preview`에는 revision 고정과 권리 검사가 없다(`app.py:412-419`) [검증됨]. 모션 장면 텍스트에 미공개 가사가 들어갈 수 있으므로, 모션 프레임을 외부로 보내기 전에는 변경안의 id와 scene 해시를 결과에 묶어야 한다. 이 부분은 새로 추가해야 할 보완이다. 모션 프레임의 출력 PNG 바이트 상한도 재사용 전에 채워야 할 공백이다(위 표).
++- `motion_preview`에는 revision 고정과 권리 검사가 없다(`app.py:412-419`) [검증됨]. 모션 장면 텍스트에 미공개 가사가 들어갈 수 있으므로, 모션 프레임을 외부로 보내기 전에는 변경안의 id와 scene 해시를 결과에 묶어야 한다. 이 부분은 새로 추가해야 할 보완이다. 모션 프레임의 출력 PNG 바이트 상한도 재사용 전에 채워야 할 공백이다(위 표). 그래서 v1은 `motion_preview`를 호출하지 않고 모션 대상을 1단계에서 거절한다(§1, §4-4). 나중에 모션을 넣을 때는 timeline과 같은 3단계 경로(1단계 영수증, 쓰기 트랜잭션 밖 렌더, 미리보기 생성 시 블록 배열)에 다음을 더한다. 변경안 id와 scene sha256을 영수증에 묶고 렌더 직후와 3단계에서 다시 대조하기, 출력 PNG 바이트 상한, 권리 검사, 그리고 §10의 timeline 테스트를 모션에도 같은 형태로 두기.
+ - 렌더 해상도는 프로젝트 profile을 따른다(`renderer.py:106`, `editing.py:10`의 preview 640×360 / landscape 1920×1080 / portrait 1080×1920). 모델에 보낼 때는 별도로 축소해야 할 수 있다(§4 바이트 상한). 축소 단계가 새로 들어가는 것이므로 승인 항목에 넣는다.
+ 
+ ## 4. 이미지 블록 프로토콜과 상한
+@@ -65,7 +67,7 @@
+ ### 4-3. 개수와 바이트 상한 (제안값, 승인 필요)
+ | 항목 | 제안 | 근거 |
+ |---|---|---|
+-| 한 호출의 프레임 수 | **1~4**, 기본 1. **0장 요청은 거절**한다(렌더·전송 없음) | 작업 지시 상한 4. 이력이 누적되므로(`chat_models.py:99`) 한 턴 전체에서도 **누적 4장 이하**. `timeline_preview`는 한 번에 1프레임만 렌더하고 잠금을 기다리지 않는다(`app.py:423`). 따라서 4장은 잠금 호출 4회로 나눠 렌더하고, 4장 모두 같은 revision이어야 한다(호출마다 `:432`가 대조). **중복**: 한 호출 안에서 같은 `(clip_index, frame)`이 두 번 이상 나오면 호출 전체를 거절한다(렌더 0회). 서버가 조용히 중복을 지우지 않는다. 지우면 모델이 요청한 개수와 coverage가 결과와 달라진다. 이전 라운드에서 이미 요청한 같은 `(timeline_revision, clip_index, frame)`을 다시 요청해도 거절한다. 그 프레임은 이미 이력에 있어 다시 보내면 바이트와 비용만 늘어난다(`chat_models.py:99`). **누적**: 판정 기준은 같은 턴의 production run에 쌓인 영수증이다. run은 턴마다 하나 만들어지고(`chat_general.py:529`), 이전 호출은 `run['calls']`에 남는다(`production_tools.py:64`, `:139`). 이미 요청한 프레임 수와 이번 요청 수의 합이 4를 넘으면 이번 호출 **전체**를 거절한다. 예를 들어 3장 다음 2장 요청은 거절하고, 1장만 골라 렌더하지 않는다. 렌더가 나중에 실패한 요청도 누적에 넣는다. 그래야 판정이 영수증만으로 끝나고, 실패를 반복해 상한을 우회할 수 없다 |
++| 한 호출의 프레임 수 | **1~4**, 기본 1. **0장 요청은 거절**한다(렌더·전송 없음) | 작업 지시 상한 4. 이력이 누적되므로(`chat_models.py:99`) 한 턴 전체에서도 **누적 4장 이하**. `timeline_preview`는 한 번에 1프레임만 렌더하고 잠금을 기다리지 않는다(`app.py:423`). 따라서 4장은 잠금 호출 4회로 나눠 렌더하고, 4장 모두 같은 revision이어야 한다(호출마다 `:432`가 대조). **중복**: 한 호출 안에서 같은 `(clip_index, frame)`이 두 번 이상 나오면 호출 전체를 거절한다(렌더 0회). 서버가 조용히 중복을 지우지 않는다. 지우면 모델이 요청한 개수와 coverage가 결과와 달라진다. 이전 라운드에서 **실제로 전달된** 같은 `(timeline_revision, clip_index, frame)`을 다시 요청해도 거절한다. 그 프레임은 이미 이력에 있어 다시 보내면 바이트와 비용만 늘어난다(`chat_models.py:99`). "전달됨"은 3단계가 블록 배열을 미리보기에 실은 프레임만 뜻한다. 3단계는 그 목록을 바이트 없이 run의 `frame_deliveries`에 적는다(§4-4). 렌더가 실패한 프레임(잠금 충돌 `busy`, revision 변경, 권리 실패, 바이트 초과, 권한 축소)은 이력에 없으므로 중복이 아니고, 같은 턴 안에서 다시 요청할 수 있다. **누적**: 판정 기준은 같은 턴의 production run에 쌓인 영수증이다. run은 턴마다 하나 만들어지고(`chat_general.py:529`), 이전 호출은 `run['calls']`에 남는다(`production_tools.py:64`, `:139`). 누적에 들어가는 것은 1단계를 **통과한** 영수증(`status:'render_pending'`)의 프레임 수다. 1단계에서 거절된 호출(0장, 중복, 누적 초과, 인수 오류, 권한 거절, 모션 대상)은 렌더를 예약하지 않았으므로 0장으로 센다. 1단계를 통과했지만 2·3단계에서 실패한 요청은 누적에 **넣는다**. 그래서 `busy` 뒤 같은 프레임을 다시 요청하면 허용되지만 누적은 2장이 된다. 이미 통과한 프레임 수와 이번 요청 수의 합이 4를 넘으면 이번 호출 **전체**를 거절한다. 예를 들어 3장 다음 2장 요청은 거절하고, 1장만 골라 렌더하지 않는다. 실패를 누적에 넣는 이유는 판정이 영수증만으로 끝나고, 실패를 반복해 렌더 횟수 상한을 우회할 수 없게 하기 위해서다. 재요청은 허용되므로 중복 규칙과 충돌하지 않는다 |
+ | 바이트(**실제로 묶이는 상한**) | 승인값 ≤ N KiB(원본 바이트). 넘으면 거절하고 자동으로 품질을 낮추지 않음 | 64KiB 전송 상한(`chat_general.py:460-461`, `anthropic_ontology.py:175-176`)이 실제 한계다. count 본문과 message 본문에 각각 적용된다. 트랙 A1 재작업(r2)의 오프라인 측정에 따르면 review·full_access의 첫 요청 `message_body`만으로 17,149바이트다(`tasks/A1-server-read-tools-r2/token-budget.json`의 `modes.review.r2`, 이력 없음. wave 1 값은 17,532). 이 값도 Wave 2 도구 추가로 다시 늘 수 있다 [추정]. 남는 몫은 65,536 − 17,149 = 48,387바이트다. base64는 원본의 4/3배로 늘어나므로, 첫 이어쓰기에서도 **원본 프레임 바이트는 모두 합쳐 약 36,290바이트 이하**다. 이어쓰기 이력이 쌓이면 남는 몫은 더 줄어든다. 640×360 PNG 한 장의 실제 크기는 측정하지 않았다 [미확인] |
+ | 토큰 | 프레임 포함 count가 `MAX_INPUT` 이하가 아니면 전송 거절(`chat_general.py:646` 재사용) | 공식 계산식: 이미지 1장 = `⌈width / 28⌉ × ⌈height / 28⌉` 시각 토큰(platform.claude.com/docs/en/build-with-claude/vision "Resolution and token cost", 2026-10-28 이 작업에서 다시 열어 확인) [검증됨: 문서]. 공식 등급 표: High-resolution = "Claude 4.7 and later models", 긴 변 2,576px, 이미지당 최대 4,784 / Standard = "All other models", 1,568px, 1,568. 공식 예시 표의 1920×1080 행: Standard는 1456×819로 축소되어 1,560, High-resolution은 축소 없이 2,691. 대화 모델 Haiku 5.5(`chat_models.py:8`)는 "Claude 4.7 and later models"에 속하므로 **고해상도 등급**이다 [검증됨: 문서 표의 등급 범위. 이 모델이 이미지 입력을 지원하는지는 별도로 미확인, §4-2]. 프로필별 계산(고해상도 등급): preview 640×360 → 축소 없음, 23×13 = **299**, 4장 ≈ 1,196 / landscape 1920×1080 → 축소 없음, 69×39 = **2,691**(공식 표 값과 같음) / portrait 1080×1920 → 긴 변 1,920 ≤ 2,576, 39×69 = 2,691 ≤ 4,784라 축소 없음, 2,691 [산수 검증됨]. 표준 등급 모델이라면 1920×1080은 1456×819, 1,560이다. 1,568·4,784는 등급별 **이미지당 상한**이지 장당 비용이 아니다(1차 문서의 오류를 정정). D20 결정으로 `MAX_INPUT`이 16384가 되면(§4-1) 텍스트 본문의 4096 초과 문제는 풀린다. A1 r2 측정 첫 요청 17,149바이트는 관측 비율(1.97~2.31 B/토큰)로 약 7,424~8,705토큰이다(`token-budget.json`) [추정: 실측 count 아님]. 텍스트만 보면 16384토큰은 약 32,276~37,847바이트에서 걸리므로 64KiB보다 **토큰 상한이 먼저** 걸린다. 프레임은 base64 바이트에 비해 토큰이 적어(preview 1장 299토큰) **64KiB 바이트 상한이 먼저** 걸린다 [추정: 640×360 PNG 실제 크기 미측정]. landscape 4장(10,764토큰)은 텍스트와 합치면 16384를 넘을 수 있지만, 그 전에 바이트 상한에 걸린다 [추정] |
+ | 저장 | run, journal, requests 테이블에는 바이트를 넣지 않고 `sha256`, 크기, 해상도만 넣음 | 스펙 `:418`. 바이트가 지나가는 경로와 보관 위치 전수, 멱등 재실행 의미는 §4-4에 정한다. 요약하면 바이트가 남는 곳은 미리보기 행(`message_body`·`count_body` 2벌, 남은 라운드마다 다시 2벌)과 그 행을 돌려주는 브라우저 응답, 그리고 그 행을 복사하는 백업이다. 보관 정책은 승인 항목이다(§9 A5) |
+@@ -82,10 +84,15 @@
+ 따라서 바이트를 `execute` 결과에 실으면 바이트가 `state` 본문의 run과 `requests` 테이블에 영속된다. 스펙 `:418`("원본 이미지를 무조건 복제하지 않는다")을 어긴다. 반대로 결과에서 바이트만 빼면 멱등 재실행(위 2·3)이 같은 결과를 재현하지 못한다. 또 렌더를 `execute` 안에서 하면 FFmpeg 렌더(`renderer.py:111`, 최대 30초) 동안 쓰기 잠금을 쥔다. 4장이면 최대 약 120초다 [추정: 렌더 시간 미측정]. `timeline_preview`는 상태를 자기 연결로 읽으므로(`app.py:425-426`) 쓰기 트랜잭션이 필요 없다.
+ 
+ **결정 (권장안 i — 영수증은 영속, 바이트는 트랜잭션 밖에서 휘발)**
+-1. **1단계(mutate 안, 렌더 없음)**: `execute`의 프레임 분기는 렌더하지 않는다. 권한(`agent_preferences.authorize`), 인수 검증, §4-3의 개수·중복·누적 판정만 한다. 그다음 **바이트 없는 요청 영수증**을 결과로 돌려준다. 예: `{status:'render_pending', target:{timeline_revision, clip_index}, frames:[{frame}]}`. `run['calls']`와 `requests` 테이블에는 이 영수증만 남는다. 거절도 같은 경로로 구조화 결과가 된다(렌더 0회).
+-2. **2단계(mutate 커밋 뒤, 쓰기 트랜잭션 밖)**: 일반 대화 런타임이 영수증의 대상으로 `timeline_preview`를 프레임마다 호출한다(`app.py:421`). 대화 범위는 서버가 turn의 `conversation_id`로 넣는다(`chat_general.py:770`에서 도구 요청에 넣는 것과 같은 값). 바이트는 이 함수의 메모리에만 있다. 렌더 결과 폴더는 렌더 직후 지워진다(`app.py:439-442`). 잠금 충돌, revision 변경, 권리 실패, 바이트 상한 초과가 하나라도 생기면 **전체를 거절**한다. 이때 tool_result는 이미지 없는 문자열 결과(`status:'blocked'`와 코드)가 된다.
+-3. **3단계(미리보기 생성)**: 성공하면 프레임 도구 전용 경로로 블록 배열 tool_result를 만든다(§4-2 결정 (a)). 텍스트 블록에는 `frames[].sha256`·바이트 수·해상도를 넣는다. 같은 메타를 **바이트 없이** turn 행 step에도 기록한다. 이 기록은 다음 미리보기를 만드는 트랜잭션(`chat_general.py:783-790`) 안에서 한다. 모델이 실제로 받은 최종 결과는 미리보기 행 본문에 남는다. `run['calls']`의 영수증은 "무엇을 요청했는가"의 기록이다. 이 구분을 결과 문서와 테스트에 명시한다.
++1. **1단계(mutate 안, 렌더 없음)**: `execute`의 프레임 분기는 렌더하지 않는다. 권한(`agent_preferences.authorize`, 기존 호출 위치 `production_tools.py:75`), 인수 검증, 대상 종류 판정(`target.kind`가 `'timeline'`이 아니면 `TARGET_KIND_UNSUPPORTED`로 거절, §1 v1 범위), §4-3의 개수·중복·누적 판정만 한다. 그다음 **바이트 없는 요청 영수증**을 결과로 돌려준다. 예: `{status:'render_pending', target:{kind:'timeline', timeline_revision, clip_index}, frames:[{frame}]}`. `run['calls']`와 `requests` 테이블에는 이 영수증만 남는다. 거절도 같은 경로로 구조화 결과가 된다(렌더 0회).
++2. **2단계(mutate 커밋 뒤, 쓰기 트랜잭션 밖)**: **위치는 마지막 라운드 판정 뒤다.** 현재 루프는 도구 실행(`chat_general.py:771`) 직후 `turn['round']+1>=MAX_ROUNDS`(`:773`)이면 결과 메시지를 만들지 않고 턴을 끝낸다(`:774-776`). 2단계는 이 판정을 통과한 뒤, `result_message`(`:777`) 앞에서만 실행한다. 그래서 마지막 라운드의 프레임 호출은 1단계 영수증만 남고 렌더는 0회다. 그 영수증은 누적에 들어가지만 턴이 이미 끝났으므로 이후 판정에 영향이 없다. 2단계는 먼저 권한을 다시 확인한다(아래 "요청 도중 권한 축소"). 그다음 영수증의 대상으로 `timeline_preview`를 프레임마다 호출한다(`app.py:421`). 대화 범위는 서버가 turn의 `conversation_id`로 넣는다(`chat_general.py:770`에서 도구 요청에 넣는 것과 같은 값). 바이트는 이 함수의 메모리에만 있다. 렌더 결과 폴더는 렌더 직후 지워진다(`app.py:439-442`). 잠금 충돌, revision 변경, 권리 실패, 바이트 상한 초과, 권한 축소가 하나라도 생기면 **전체를 거절**한다. 이때 tool_result는 이미지 없는 문자열 결과(`status:'blocked'`와 코드)가 된다.
++3. **3단계(미리보기 생성)**: 다음 미리보기를 만드는 트랜잭션(`chat_general.py:783-790`) 안에서 먼저 권한을 다시 확인한다. 통과하면 프레임 도구 전용 경로로 블록 배열 tool_result를 만든다(§4-2 결정 (a)). 텍스트 블록에는 `frames[].sha256`·바이트 수·해상도를 넣는다. 같은 메타를 **바이트 없이** turn 행 step에도 기록하고, 전달된 `(timeline_revision, clip_index, frame, sha256)` 목록을 run의 `frame_deliveries`에 추가한다(§4-3 중복 판정의 기준). run 기록은 이 트랜잭션이 state 본문을 다시 쓰는 기존 방식(`close_run`, `chat_general.py:378-383`)을 따른다. 모델이 실제로 받은 최종 결과는 미리보기 행 본문에 남는다. `run['calls']`의 영수증은 "무엇을 요청했는가"의 기록이다. 이 구분을 결과 문서와 테스트에 명시한다.
+ 
++**요청 도중 권한 축소** [검증됨: 코드 구조]
++- 지금 권한 판정은 1단계의 `authorize`뿐이다. `authorize`는 `effective_mode`가 `read_only`이고 도구가 `READ_TOOLS`에 없으면 거절한다(`agent_preferences.py:75-79`). `effective_mode`는 실행 고정값, run의 `agent_permission_ceiling`, **현재** 프로필 모드 중 가장 낮은 값이다(`agent_preferences.py:61-67`). 사용자가 턴 진행 중에 모드를 낮추면 `update`가 진행 중 run의 상한을 낮춘다(`agent_preferences.py:93-99`). 그러므로 1단계 뒤에 권한이 낮아질 수 있다.
++- 결정: 2단계 렌더 전과 3단계 트랜잭션 안에서 `authorize(project, run, <프레임 도구 이름>)`를 다시 부른다. 2단계는 `chat_general.py:764-766`처럼 현재 state를 읽어 판정하고, 3단계는 `_current`가 돌려준 프로젝트로 판정한다(`chat_general.py:784`). 실패하면 렌더하지 않거나(2단계) 렌더한 바이트를 버리고(3단계) 이미지 없는 `status:'blocked'`, `code:'AGENT_READ_ONLY'` 결과를 싣는다. 사람이 이어쓰기 미리보기를 승인해야 전송되므로 재인가가 없어도 무단 전송은 아니다. 그래도 사람이 낮춘 권한으로 만든 미리보기에 이미지가 들어 있으면 동의 카드가 권한 설정과 어긋나므로 재인가를 둔다.
++- 분류: 프레임 도구는 **읽기 도구로 분류하지 않는다**(`READ_TOOLS`, `agent_preferences.py:14`에 넣지 않음). 따라서 `read_only`에서는 1단계에서 거절되고 도구 정의에서도 빠진다(`tools_for`, `agent_preferences.py:70-72`, 사용처 `chat_general.py:424`). 이유: 이 도구는 상태를 조회만 하는 다른 읽기 도구와 달리 로컬 FFmpeg 렌더를 일으키고, 자산에서 파생된 이미지 바이트를 외부 전송 대상으로 만든다(§8 결론). 이 분류는 §9 A2 승인 때 함께 확인한다.
++
+ **멱등 재실행의 의미**
+ - 같은 `request_id`로 mutate가 다시 들어오면 `requests` 테이블이 같은 영수증을 돌려준다(`app.py:497`). 같은 call id면 `run['calls']`가 같은 영수증을 돌려준다(`production_tools.py:67`). 영수증에는 바이트가 없으므로 재실행 결과가 정확히 같다.
+ - 바이트는 **미리보기 행이 만들어지기 전까지만** 휘발성 캐시다. 그 사이에 프로세스가 중단되면 `recover`가 turn을 `outcome_unknown`으로 동결하고 자동 재호출하지 않는다(`chat_general.py:549-555`). 사람이 아직 보지 않았고 공급자에게도 가지 않은 바이트이므로 잃어도 된다.
+@@ -103,7 +110,9 @@
+ | 브라우저 응답 | 있음: 미리보기를 만드는 응답, 그리고 `/api/state`가 **대기 중 미리보기 전부의 두 본문**을 상태를 읽을 때마다 돌려준다 | `chat_general.py:233-234`, `:469`, `:546`, `app.py:384` |
+ | 동의 카드 화면 | 있음: "전달할 전체 내용 보기"가 두 본문을 JSON 원문으로 출력 | `general-chat-ui.js:55` |
+ | 공급자 전송 | 라운드마다 2회(count_tokens, messages) | `chat_general.py:642-646` |
+-| 오프라인 백업 | 있음: 데이터 폴더의 모든 파일(`studio.sqlite3` 포함)을 복사하므로 미리보기 행의 바이트도 복사된다 | `backup.py:51`, `:63` |
++| 오프라인 백업 | 있음: 데이터 폴더의 모든 파일(`studio.sqlite3` 포함)을 복사하므로 미리보기 행의 바이트도 복사된다. 행을 지우기 **전에** 만든 백업에는 삭제 뒤에도 바이트가 남는다(백업 쪽 삭제는 별도) | `backup.py:51`, `:63` |
++| SQLite 파일의 빈 페이지 | 있음(행 삭제 뒤에도): 저장소 연결은 PRAGMA를 하나도 설정하지 않는다(`app.py:277-278`). 그래서 `secure_delete`는 꺼져 있고 `auto_vacuum`도 없다. 미리보기 행을 `DELETE`해도 본문 바이트가 DB 파일의 빈 페이지에 그대로 남는다. `PRAGMA secure_delete=ON` 또는 `VACUUM` 뒤에는 남지 않는다 | 실측 `tasks/D1-r4/sqlite-probe/probe.log`(SQLite 3.54.0) |
++| SQLite 롤백 journal | 기본 `journal_mode=delete`라 커밋 뒤 `-journal` 파일은 지워진다(실측 폴더에 `-journal` 파일 없음). 지워진 파일 블록이 파일시스템에 남는지는 SQLite 밖의 문제다 [추정] | 같은 실측의 `journal_mode=delete`와 폴더 목록 |
+ | 공급자 시도 원장 | 0 (요청 해시만) | `ledger.py:135` |
+ | 렌더 임시 폴더 | 렌더 직후 삭제 | `app.py:439-442` |
+ | legacy 대화 행 `step['tool_calls']`·사용량 journal | 0이어야 함: 프레임 도구는 legacy에서 항상 거절(§4-1, §10) | `chat_runtime.py:330`, `:333` |
+@@ -126,12 +135,13 @@
+ 
+ 모델에 돌려주는 텍스트 블록(압축 영수증)의 예:
+ ```
+-{status:'observed', target:{kind:'timeline'|'motion', timeline_revision|proposal_id+scene_sha256, clip_index},
++{status:'observed', target:{kind:'timeline', timeline_revision, clip_index},
+  frames:[{frame, seconds, width, height, media_type, bytes, sha256}],
+  coverage:{sampled:N, of_frames:<컷 전체 프레임 수>, interval_frames, clips_observed:[i], clips_not_observed:'나머지 컷', audio:'관찰 안 함'},
+  not_done:{full_video_analysis:false, audio_analysis:false, approval:false, applied:false, external_calls:0(도구 자체)},
+  rights:{checked_at:[tool], status:'confirmed'|'blocked'|'unconfirmed'}}
+ ```
++- v1의 `target.kind`는 `'timeline'` 하나다. `'motion'`을 요청하면 1단계에서 `TARGET_KIND_UNSUPPORTED`로 거절하고 렌더 0회다(§1, §4-4).
+ - 위 coverage 형식은 스펙 `:134`와 원칙 9(PLAN-ko.md:54)를 따른다. 모델이 "영상 전체가 좋다"고 말하지 못하게, 시스템 문구에 "coverage 밖은 보지 않았다고 말할 것"을 추가한다. 현재 시스템 문구가 서버 상태만 설명하도록 정한 방식(`chat_protocols.py:70` instructions)과 같은 계열이다.
+ - 경로, grant, 내부 ID는 넣지 않는다. 작업 상태 조회의 비노출 원칙(`CHAT-SESSION-PLAN.md:45`)을 따른다.
+ 
+@@ -175,10 +185,10 @@
+ | # | 승인 항목 | 구체 내용 |
+ |---|---|---|
+ | A1 | 모델 | 이미지 입력을 보낼 정확한 모델 ID(예: `claude-haiku-5-5`)와, 그 모델의 이미지 지원 확인 방법(Models API 조회 = 외부 호출) |
+-| A2 | 자료 | 어떤 작품, 편집, 모션의 프레임을 보낼지. 실제 얼굴, 미공개 곡, 공개 전 설정의 포함 여부. 외부 전송 허용 필드를 신설할지와 그 판정 단위(§5-2). **전송 지점이 두 곳**이라는 점(라운드마다 count_tokens와 messages, §4-1)과 브라우저 응답과 동의 카드에 두 본문이 노출된다는 점(`chat_general.py:233-234`, `general-chat-ui.js:55`)을 포함한다 |
++| A2 | 자료 | 어떤 작품과 편집의 프레임을 보낼지. 모션 변경안 프레임은 v1에서 거절하며, 넣으려면 §3의 보완(변경안 id·scene sha256 고정, 출력 바이트 상한, 권리 검사)을 먼저 승인받는다. 프레임 도구를 읽기 도구로 보지 않아 `read_only`에서 거절하는 분류(§4-4)를 확인한다. 실제 얼굴, 미공개 곡, 공개 전 설정의 포함 여부. 외부 전송 허용 필드를 신설할지와 그 판정 단위(§5-2). **전송 지점이 두 곳**이라는 점(라운드마다 count_tokens와 messages, §4-1)과 브라우저 응답과 동의 카드에 두 본문이 노출된다는 점(`chat_general.py:233-234`, `general-chat-ui.js:55`)을 포함한다 |
+ | A3 | 개수와 크기 | 호출당, 턴당 프레임 수(0 거절, ≤4). 프레임당 바이트 상한, 해상도. **실제로 묶이는 상한은 64KiB 전송 바이트**다(§4-3). 선택지는 다음과 같다. ① 축소 또는 JPEG 변환(새 축소 단계 추가) ② transport 바이트 상한 상향(`anthropic_ontology.py:175-176`의 65536 상한을 바꾸는 ontology 변경) ③ Files API(`file_id` 참조)로 요청 본문을 작게 유지. ③은 이력이 다시 전송될 때 본문 크기를 줄이지만, **공급자 저장소에 별도로 업로드하는 외부 전송**이다. 따라서 업로드·보관·삭제를 따로 승인받아야 한다. `MAX_INPUT` 상향은 D20에서 사용자가 결정했다(상한만 상향, [가정] 16384, PLAN-ko.md:196). 이 상향은 프레임의 바이트 상한을 풀지 않는다(§7) |
+ | A4 | 최대 비용 | 라운드당 예약액(D20 가정 16384 기준 3,687 micro, 한 턴 최대 14,748 micro, §7)과 대화 총상한(현재 ≤ USD 0.40). 이미지 토큰을 측정하는 `count_tokens` 호출 예산 |
+-| A5 | 보관 | base64가 남는 모든 위치의 보관 기간과 삭제 정책: 미리보기 행의 `message_body`·`count_body` 2벌, 남은 라운드의 미리보기 행마다 다시 2벌, 브라우저 응답(미리보기 생성 응답과 `/api/state`의 대기 미리보기), 그리고 그 행을 복사하는 오프라인 백업(§4-4 보관 위치 전수). 바이트를 run·`requests` 테이블에 영속하는 대안 ii를 택한다면 스펙 `:418`의 예외 승인도 여기에 포함한다. 계정 삭제는 영구 금지이고, 다른 삭제는 대상별로 개별 허용을 받는다 |
++| A5 | 보관 | base64가 남는 모든 위치의 보관 기간과 삭제 정책: 미리보기 행의 `message_body`·`count_body` 2벌, 남은 라운드의 미리보기 행마다 다시 2벌, 브라우저 응답(미리보기 생성 응답과 `/api/state`의 대기 미리보기), 그리고 그 행을 복사하는 오프라인 백업(§4-4 보관 위치 전수). **행 삭제만으로는 바이트가 지워지지 않는다**(§4-4 표의 SQLite 행, 실측). 프레임이 든 행을 지우는 정책은 `PRAGMA secure_delete=ON`(삭제 전에 켜야 함) 또는 삭제 뒤 `VACUUM`을 함께 정해야 한다. 둘 다 DB 전체에 영향을 준다(`secure_delete`는 모든 삭제의 쓰기량, `VACUUM`은 파일 재작성 동안의 잠금과 여유 공간) [추정: 영향 크기 미측정]. 또 삭제 **전에** 만든 백업에는 바이트가 남으므로, 그 백업을 어떻게 다룰지(보관 기간, 대상별 삭제 허용)도 이 승인에 넣는다. 바이트를 run·`requests` 테이블에 영속하는 대안 ii를 택한다면 스펙 `:418`의 예외 승인도 여기에 포함한다. 계정 삭제는 영구 금지이고, 다른 삭제는 대상별로 개별 허용을 받는다 |
+ | A6 | 재검사 수준 | 전송 직전에 다시 렌더해 해시를 대조할지, 메타데이터만 대조할지(§5-2) |
+ | A7 | 음원 측정값(S11) | 표식을 분리하는 방식과, 진행 중 이어쓰기가 무효가 되는 것을 받아들일지(§8) |
+ 
+@@ -191,8 +201,14 @@
+   - 미지원 공급자나 모델에는 이미지 0개를 전송하고 거절한다(AT38).
+   - 5장 이상, 바이트 초과, `MAX_INPUT` 초과는 거절한다.
+   - **같은 프레임 중복 요청**: 한 호출 안에 같은 `(clip_index, frame)`이 두 번 있으면 호출 전체를 거절하고 렌더 0회다. 결과에 조용히 1장으로 줄인 흔적이 없어야 한다.
+-  - **라운드 간 누적**: 같은 턴에서 3장 요청 뒤 2장을 요청하면 두 번째 호출 전체를 거절하고 렌더 0회다(누적 5장째 거절). 1장만 골라 렌더하지 않는다. 이전 3장의 이력은 그대로 남는다. 렌더가 실패했던 요청도 누적에 들어간다.
+-  - **이전 라운드와 같은 프레임 재요청**: 같은 `(timeline_revision, clip_index, frame)`을 다른 라운드에서 다시 요청하면 거절하고 렌더 0회다.
++  - **라운드 간 누적**: 같은 턴에서 3장 요청 뒤 2장을 요청하면 두 번째 호출 전체를 거절하고 렌더 0회다(누적 5장째 거절). 1장만 골라 렌더하지 않는다. 이전 3장의 이력은 그대로 남는다. 1단계를 통과한 뒤 렌더가 실패했던 요청도 누적에 들어간다.
++  - **1단계 거절은 누적 0장**: 중복이나 누적 초과로 1단계에서 거절된 호출 뒤에, 남은 몫만큼의 새 요청이 허용되는지 확인한다(예: 3장 통과 → 2장 거절 → 1장 허용).
++  - **이전 라운드와 같은 프레임 재요청**: 이전 라운드에서 전달된(`frame_deliveries`에 있는) 같은 `(timeline_revision, clip_index, frame)`을 다시 요청하면 거절하고 렌더 0회다.
++  - **busy 뒤 재요청**: 1라운드에서 잠금 충돌로 `status:'busy'`가 된 프레임을 다음 라운드에서 다시 요청하면 중복으로 거절하지 않고 렌더한다. 누적은 두 요청을 모두 센다(2장). 자동 재시도는 0회다.
++  - **마지막 라운드 렌더 0회**: `turn['round']+1>=MAX_ROUNDS`인 라운드(`chat_general.py:773`)에서 프레임 도구를 호출하면 렌더 호출 0회, 미리보기 생성 0회, turn 상태 `limit_reached`임을 단언한다.
++  - **모션 대상 거절**: `target.kind:'motion'`은 `TARGET_KIND_UNSUPPORTED`로 거절하고 `motion_preview` 호출 0회다.
++  - **요청 도중 권한 축소**: 1단계 통과 뒤 2단계 전에, 그리고 2단계 렌더 뒤 3단계 전에 각각 모드를 `read_only`로 낮춘다. 두 경우 모두 미리보기 행 본문에 이미지 블록 0개, 결과 `code:'AGENT_READ_ONLY'`임을 단언한다. 앞의 경우는 렌더 호출 0회도 단언한다. `read_only`로 시작한 턴에서는 도구 정의에 프레임 도구가 없음을 단언한다.
++  - **삭제 잔존**: 프레임이 든 미리보기 행을 지우는 정책을 구현하면, 삭제 뒤 DB 파일 바이트에 프레임 base64가 남지 않음을 파일 바이트 검색으로 단언한다(`tasks/D1-r4/sqlite-probe/probe.py`와 같은 방식).
+   - 권리가 blocked이거나 unconfirmed이면 전송을 거절한다.
+   - 렌더 후 편집 revision이 바뀌면 거절한다.
+   - data_scope 문구가 프레임 수와 일치한다.
+@@ -212,6 +228,7 @@
+ ## 11. 미확인·가정
+ 
+ - [검증됨: 문서] 토큰 계산식 `⌈width / 28⌉ × ⌈height / 28⌉`, 등급 표(High-resolution = "Claude 4.7 and later models", 2,576px·4,784 / Standard = "All other models", 1,568px·1,568), 1920×1080 예시(Standard 1456×819·1,560 / High-resolution 축소 없음·2,691). platform.claude.com/docs/en/build-with-claude/vision을 2026-10-28에 다시 열어 확인했다. 이 표에 따르면 Haiku 5.5는 고해상도 등급이다.
++- [검증됨: 실측] SQLite 3.54.0(이 작업의 python3.15)에서 PRAGMA 없이 연 DB는 `journal_mode=delete`, `secure_delete=0`, `auto_vacuum=0`이다. 미리보기 행 형태의 본문을 `DELETE`한 뒤에도 파일에서 표식 문자열이 삭제 전과 같은 65회 검출됐고, `VACUUM` 뒤 0회, `secure_delete=ON`에서는 삭제 직후 0회였다(`tasks/D1-r4/sqlite-probe/probe.log`). 실제 `studio.sqlite3`가 아니라 같은 연결 방식의 축소 모형이다.
+ - [미확인] Haiku 5.5가 이미지 입력을 지원하는지(Models API 조회 = 외부 호출). count_tokens 호출의 과금 여부. 640×360 프레임 PNG의 실제 바이트. FFmpeg 렌더 출력이 같은 입력에서 같은 바이트인지(§4-4 멱등 재실행).
+ - [추정] 64KiB에서 남는 여유가 48,387바이트라는 값. A1 r2 측정(첫 요청 17,149바이트, 이력 없음)을 기준으로 했으며, Wave 2 도구 추가와 이어쓰기 이력에 따라 줄어든다.
+ - [가정] `MAX_INPUT` = 16384(D20, PLAN-ko.md:196). 사용자가 값을 바꾸면 §7 표를 같은 공식으로 다시 계산한다. 렌더 시간(4장 최대 약 120초 잠금)은 FFmpeg 시간 제한에서 나온 상한이며 측정값이 아니다.
+--- a/tasks/D1-frame-observation-design-r3/check_citations.py
++++ b/tasks/D1-r4/check_citations.py
+@@ -1,8 +1,8 @@
+-"""D1 r3 citation check for docs/design/FRAME-OBSERVATION-DESIGN-ko.md (read-only).
++"""D1 r4 citation check for docs/design/FRAME-OBSERVATION-DESIGN-ko.md (read-only).
+ 
+ Run from the project root:
+   PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/opt/python@3.15/bin/python3.15 -B \
+-    .omo/evidence/agent-tools-02-20261028/tasks/D1-frame-observation-design-r3/check_citations.py
++    .omo/evidence/agent-tools-02-20261028/tasks/D1-r4/check_citations.py [doc-path]
+ 
+ Part 1 (range): every explicit `name.ext:N[-M][,K]` anchor in the doc must name an
+ existing file whose length covers every cited line. Source files resolve to the
+@@ -10,8 +10,10 @@
+ Part 2 (content): hand-listed anchors, including bare `:N` anchors whose file is
+ given by context, must contain the expected substring on the cited line.
+ r3: every expected substring is non-empty (asserted); './' entries check current files.
+-Exit 1 on any failure. Writes nothing.
++r4: no eval(); the legacy default list is parsed with ast.literal_eval (literal only).
++An optional doc-path argument checks a copy (used for the negative run). Exit 1 on any failure. Writes nothing.
+ """
++import ast
+ import re
+ import sys
+ from pathlib import Path
+@@ -19,7 +21,7 @@
+ ROOT = Path.cwd()
+ EV = ROOT / '.omo/evidence/agent-tools-02-20261028'
+ BEFORE = EV / 'before'
+-DOC = ROOT / 'docs/design/FRAME-OBSERVATION-DESIGN-ko.md'
++DOC = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'docs/design/FRAME-OBSERVATION-DESIGN-ko.md'
+ MD = {
+     'PLAN-ko.md': EV / 'PLAN-ko.md',
+     'CHAT-SESSION-PLAN.md': ROOT / 'docs/design/CHAT-SESSION-PLAN.md',
+@@ -153,10 +155,24 @@
+     ('./chat_runtime.py', 17, 'LEGACY_DEFAULT_TOOLS=['), ('./chat_runtime.py', 178, 'list(LEGACY_DEFAULT_TOOLS)'),
+     ('./chat_runtime.py', 334, 'chat_protocols.result_message'), ('./chat_runtime.py', 335, 'chat_models.continuation'),
+     ('./chat_general.py', 29, 'MAX_INPUT = 16384'),
++    # r4 additions: final-round cutoff, mid-request permission, delivery record, SQLite connect.
++    ('chat_general.py', 774, 'with self.store.connect() as c:'), ('chat_general.py', 775, "status='limit_reached'"),
++    ('chat_general.py', 776, 'return True'), ('chat_general.py', 764, 'with self.store.connect() as c:'),
++    ('chat_general.py', 765, 'SELECT revision,body FROM state'), ('chat_general.py', 766, "json.loads(raw)['projects']"),
++    ('chat_general.py', 784, 'p=self._current(c,turn,preview)'), ('chat_general.py', 424, 'agent_preferences.tools_for('),
++    ('chat_general.py', 378, 'def close_run'), ('chat_general.py', 383, 'UPDATE state SET revision=?,body=?'),
++    ('agent_preferences.py', 14, 'READ_TOOLS={'), ('agent_preferences.py', 61, 'def effective_mode'),
++    ('agent_preferences.py', 66, 'MODES[current'), ('agent_preferences.py', 70, 'def tools_for'),
++    ('agent_preferences.py', 72, "mode=='read_only'"), ('agent_preferences.py', 75, 'def authorize'),
++    ('agent_preferences.py', 79, 'AGENT_READ_ONLY'), ('agent_preferences.py', 93, "project.get('production_runs'"),
++    ('agent_preferences.py', 99, "run['agent_permission_ceiling']=mode"),
++    ('production_tools.py', 75, 'agent_preferences.authorize(project,run'),
++    ('app.py', 277, 'def connect'), ('app.py', 278, 'sqlite3.connect(self.db, timeout=30)'),
++    ('app.py', 417, "prefix='motion-preview-'"),
+ ]
+ assert all(expected for _, _, expected in CHECKS), 'empty expected substring is a vacuous check'
+ assert 'request_media_generation' not in lines(resolve('./chat_runtime.py'))[16], 'legacy default must exclude execution tool'
+-assert len(eval(lines(resolve('./chat_runtime.py'))[16].split('=', 1)[1])) == 13
++assert len(ast.literal_eval(lines(resolve('./chat_runtime.py'))[16].split('=', 1)[1].strip())) == 13
+ for name, n, expected in CHECKS:
+     text = lines(resolve(name))
+     ok = 1 <= n <= len(text) and expected in text[n - 1]
+@@ -170,7 +186,11 @@
+               # r2 statements corrected in r3
+               '1456×816', 'PLAN-ko.md:161', '네트워크 금지라 원문을 다시 열지 않음', '`chat_runtime.py:175` 기본 `TOOLS`',
+               '이 문제는 프레임과 별개로 먼저 풀어야 한다', '약 48,000바이트', '약 36,000바이트',
+-              '기본 도구는 `production_tools.TOOLS` 전체다(`chat_runtime.py:175`)', 'Haiku 5.5의 등급은 미확인'):
++              '기본 도구는 `production_tools.TOOLS` 전체다(`chat_runtime.py:175`)', 'Haiku 5.5의 등급은 미확인',
++              # r3 statements corrected in r4
++              "kind:'timeline'|'motion'", 'timeline_revision|proposal_id+scene_sha256',
++              '렌더가 나중에 실패한 요청도 누적에 넣는다', '이전 라운드에서 이미 요청한 같은',
++              '어떤 작품, 편집, 모션의 프레임을 보낼지'):
+     if stale in doc:
+         fails += 1; print('STALE', stale)
+ 

@@ -1,0 +1,757 @@
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/chat_general.py	2026-10-28 19:57:31
++++ chat_general.py	2026-10-28 22:42:23
+@@ -29,6 +29,14 @@
+ MAX_INPUT = 16384
+ MAX_OUTPUT = 4096
+ MAX_ROUNDS = 4
++# Per-turn continuation budget (SRV-r3). Each continuation carries every earlier round of the
++# turn, so a tool result that would push the next body past BODY_CAP - CONTINUATION_MARGIN is
++# replaced by a CONTEXT_BUDGET_EXHAUSTED notice. The margin leaves room for the next round's
++# assistant message plus such a notice, so a model that keeps following next_query cannot lock
++# the conversation as outcome_unknown.
++BODY_CAP = 65536
++CONTINUATION_MARGIN = 8192
++CONTINUATION_LIMIT = BODY_CAP - CONTINUATION_MARGIN
+ CONVERSATION_CAP_MICRO = 400000
+ MAX_OBSERVED_TOKEN_DIGITS = 256
+ MAX_OBSERVED_TOKENS = 10 ** MAX_OBSERVED_TOKEN_DIGITS - 1
+@@ -290,6 +298,27 @@
+ 
+ class MusicContextChanged(ValueError):
+     pass
++
++
++class ContextBudgetExhausted(ValueError):
++    def __init__(self, size):
++        super().__init__('continuation body over budget');self.size=size
++
++
++def wire_bytes(body):
++    """Byte length of BoundedMessagesTransport.encode_body's serialization of body."""
++    return len(json.dumps(body,ensure_ascii=False,allow_nan=False).encode('utf-8'))
++
++
++def budget_notice(call, result, size, bytes_left):
++    """Model-facing stand-in for a tool result that does not fit this turn's budget."""
++    query=call['arguments'].get('query') if call['name']=='search_project_context' else None
++    return dict(status='context_budget_exhausted',code='CONTEXT_BUDGET_EXHAUSTED',tool=call['name'],tool_status=result.get('status'),
++                saved_ids={k:result[k] for k in ('proposal_id','preference_id','action_id','job_id','scene_id','plan_id') if isinstance(result.get(k),str)},
++                result_included=False,body_bytes_with_result=size,body_limit_bytes=CONTINUATION_LIMIT,bytes_left=max(0,bytes_left),
++                next_query=query,retry='new_turn',
++                note='The tool ran and its result is stored, but it does not fit the request size budget of this turn, so it is not included. '
++                     'Do not request more lookups in this turn. Answer with what you have; the user can continue in a new turn (pass next_query to search_project_context there).')
+ 
+ 
+ def check_music_context(c,p,item):
+@@ -408,7 +437,7 @@
+     turn.pop('pending_tool',None);put(c,'general_chat_turns',turn)
+ 
+ 
+-def create_preview(c, store, p, name, prompt, maximum_micro, *, turn=None, history=None, total_maximum_micro=None, music_context=None, history_snapshot=None):
++def create_preview(c, store, p, name, prompt, maximum_micro, *, turn=None, history=None, total_maximum_micro=None, music_context=None, history_snapshot=None, body_limit=None):
+     if not isinstance(prompt,str) or not 1 <= len(prompt.strip()) <= 2000: raise ValueError('대화 입력을 확인하세요.')
+     if type(maximum_micro) is not int or not 1 <= maximum_micro <= 100000: raise ValueError('요청 비용 상한을 확인하세요.')
+     bound = binding(c,store,p,name,turn=turn); spec=selected(p)
+@@ -437,6 +466,8 @@
+         body['thinking']={'type':'disabled'}
+         if type(total_maximum_micro) is not int or not 1<=total_maximum_micro<=CONVERSATION_CAP_MICRO:
+             raise ValueError('대화 전체 비용 상한을 확인하세요.')
++    # Checked before anything is stored or reserved; the caller decides what to send instead.
++    if body_limit is not None and wire_bytes(body)>body_limit:raise ContextBudgetExhausted(wire_bytes(body))
+     count={k:deepcopy(v) for k,v in body.items() if k!='max_tokens'}
+     worst=int((chat_models.cost(spec,MAX_INPUT,MAX_OUTPUT)*1000000).to_integral_value(rounding=ROUND_CEILING))
+     if worst>maximum_micro: raise ValueError('요청 상한이 최대 예약액보다 작습니다.')
+@@ -791,7 +822,22 @@
+                     turn.update(status='limit_reached',error='대화 전체 비용 상한에 도달해 추가 전송을 중단했습니다.')
+                     put(c,'general_chat_turns',turn);close_run(c,turn,turn['status']);return True
+                 turn['round']+=1
+-                following=create_preview(c,self.store,p,turn['name'],turn['prompt'],preview['maximum_micro'],turn=turn,history=continuation,total_maximum_micro=preview.get('total_maximum_micro'),music_context=music_context,history_snapshot=preview.get('history_snapshot'))
++                try:following=create_preview(c,self.store,p,turn['name'],turn['prompt'],preview['maximum_micro'],turn=turn,history=continuation,total_maximum_micro=preview.get('total_maximum_micro'),music_context=music_context,history_snapshot=preview.get('history_snapshot'),body_limit=CONTINUATION_LIMIT)
++                except ContextBudgetExhausted as full:
++                    # Bytes the result text takes inside the body (JSON string), so the rest is exact.
++                    text=tool_message['content'][0]['content']
++                    left=CONTINUATION_LIMIT-(full.size-wire_bytes(text)+wire_bytes(''))
++                    notice=budget_notice(call,result,full.size,left)
++                    tool_message=chat_protocols.result_message(normalized,call['id'],notice,provider='anthropic',run_id=turn['run'])
++                    continuation=chat_models.continuation(spec,preview['message_body']['messages'],response,[tool_message])
++                    try:following=create_preview(c,self.store,p,turn['name'],turn['prompt'],preview['maximum_micro'],turn=turn,history=continuation,total_maximum_micro=preview.get('total_maximum_micro'),music_context=preview.get('music_context'),history_snapshot=preview.get('history_snapshot'),body_limit=BODY_CAP)
++                    except ContextBudgetExhausted as over:
++                        # Even the notice does not fit: nothing was created, reserved or sent for the
++                        # next round, so the turn ends in a state that allows a new request.
++                        turn['round']-=1
++                        turn.update(status='limit_reached',context_budget=dict(code='CONTEXT_BUDGET_EXHAUSTED',body_bytes=over.size,limit_bytes=BODY_CAP,next_query=notice['next_query']),
++                                    error='이어쓰기 전송 내용이 64KiB 전송 상한을 넘어 이번 대화 회차를 마쳤습니다(CONTEXT_BUDGET_EXHAUSTED). 이어쓰기 요청은 만들거나 전송하지 않았습니다. 새 요청으로 이어 가세요.')
++                        put(c,'general_chat_turns',turn);close_run(c,turn,turn['status']);return True
+                 turn.update(status='awaiting_continuation_approval',preview_id=following['id']);put(c,'general_chat_turns',turn)
+             return True
+         except Exception as exc:
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/chat_models.py	2026-10-28 11:36:35
++++ chat_models.py	2026-10-28 22:41:57
+@@ -74,6 +74,24 @@
+   if key in value:value[key]=[anthropic_wire_schema(child) for child in value[key]]
+  return value
+ 
++def openai_wire_schema(schema):
++ """OpenAI strict function schemas: move string length bounds into descriptions.
++
++ https://developers.openai.com/api/docs/guides/structured-outputs lists only pattern and
++ format for strings in strict mode; minLength/maxLength are unsupported keywords there.
++ The original schemas and production validators remain authoritative.
++ """
++ value=deepcopy(schema);bounds={key:value.pop(key) for key in ('minLength','maxLength') if key in value}
++ if bounds:
++  import json
++  value['description']=(value.get('description','')+' Server-enforced constraints: '+json.dumps(bounds,sort_keys=True)+'.').strip()
++ for key in ('properties','$defs','definitions'):
++  if key in value:value[key]={name:openai_wire_schema(child) for name,child in value[key].items()}
++ if isinstance(value.get('items'),dict):value['items']=openai_wire_schema(value['items'])
++ for key in ('anyOf','allOf','oneOf'):
++  if key in value:value[key]=[openai_wire_schema(child) for child in value[key]]
++ return value
++
+ def body(spec,history,tools,output,*,effort='low'):
+  from agent_preferences import EFFORTS
+  if effort not in EFFORTS[spec['id']]:raise ValueError('해당 모델의 실행 경로가 지원하지 않는 추론 강도입니다.')
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/chat_protocols.py	2026-10-28 21:33:16
++++ chat_protocols.py	2026-10-28 22:41:57
+@@ -96,7 +96,7 @@
+  definitions=[]
+  for name,fields in production_tools.TOOLS.items():
+   schema=dict(type='object',properties={key:dict(type='integer' if value is int else 'string') for key,value in fields.items()},required=list(fields),additionalProperties=False)
+-  # Same 1..300 bound production_tools enforces; the Anthropic wire moves it into the description.
++  # Same 1..300 bound production_tools enforces; the Anthropic and OpenAI wires move it into the description.
+   if 'model_reason' in fields:schema['properties']['model_reason']=dict(MODEL_REASON_SCHEMA)
+   if name=='propose_timeline_edit':
+    import local_creation_tools
+@@ -108,5 +108,6 @@
+    schema=deepcopy(__import__('scene_spec').PROPOSAL_SCHEMA);schema['properties']['model_reason']=dict(MODEL_REASON_SCHEMA);schema['required'].append('model_reason')
+   if name=='propose_preference_rule':schema['properties']['category']=dict(type='string',enum=sorted(__import__('preferences').CATEGORIES))
+   if provider=='anthropic':definitions.append(dict(name=name,description=DESCRIPTIONS[name],input_schema=schema))
++  elif provider=='openai':definitions.append(dict(type='function',name=name,description=DESCRIPTIONS[name],parameters=__import__('chat_models').openai_wire_schema(schema),strict=True))
+   else:definitions.append(dict(type='function',name=name,description=DESCRIPTIONS[name],parameters=schema,strict=True))
+  return definitions
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/fal_dispatch.py	2026-10-28 21:46:30
++++ fal_dispatch.py	2026-10-28 22:41:47
+@@ -77,7 +77,8 @@
+  def estimate_plan(self,c,p,name,plan_id,offset=0):
+   if not any(x['id']==plan_id for x in p.get('guided_plans',[])):return dict(status='not_found')
+   pid=contracts.project_id(self.store.workspace_id,name)
+-  rows=c.execute('SELECT body FROM production_actions WHERE workspace=? AND project=?',(self.store.workspace_id,pid)).fetchall()
++  # Insertion order, so items prepared between pages land on a later page (stable offsets).
++  rows=c.execute('SELECT body FROM production_actions WHERE workspace=? AND project=? ORDER BY rowid',(self.store.workspace_id,pid)).fetchall()
+   items=[];excluded=dict(held=0,rejected=0,expired=0,not_connected=0,stale=0);now=time.time()
+   for row in rows:
+    a=json.loads(row[0])
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/local_creation_tools.py	2026-10-28 21:34:30
++++ local_creation_tools.py	2026-10-28 22:41:40
+@@ -329,12 +329,16 @@
+  origin=agent_origin(p,run,call,args['model_reason'])
+  # The scene handler rechecks scope, current head (Conflict when stale), allowed fields and asset scope/blocked rights.
+  saved=scene_project.handle(c,store,p,name,'scene_propose',dict(song=name,scene_id=row[0],base_revision=args['base_revision'],operations=deepcopy(args['operations'])),origin=origin)
+- return dict(status='proposed',scene_id=saved['scene_id'],proposal_id=saved['proposal_id'],base_revision=args['base_revision'],
++ # A reused proposal reports its own stored status (proposed or held) and origin, not this call's.
++ return dict(status=saved['status'],scene_id=saved['scene_id'],proposal_id=saved['proposal_id'],base_revision=args['base_revision'],
+              changes=[dict(target=x['target'],id=x['id'],field=x['field']) for x in args['operations']],
+-             applied=False,approval_required=True,render_requested=False,external_calls=0,**origin,duplicate=saved.get('duplicate',False),
++             applied=False,approval_required=True,render_requested=False,external_calls=0,**deepcopy(saved.get('origin',origin)),duplicate=saved.get('duplicate',False),
+              note=('같은 내용의 대기 중 변경안이 이미 있어 새로 저장하지 않았습니다(proposal_id가 기존 변경안). ' if saved.get('duplicate') else '')+
+                   'Scene Studio에서 사람이 승인해야 적용됩니다. 승인·렌더·자산 사용권 확인은 하지 않았습니다.')
+ 
++# Open (proposed) candidates per project and category; same default as the scene pending limit.
++PREFERENCE_PENDING_LIMIT=10
++
+ def propose_preference(p,name,args,run,call,items):
+  """S10: one pending candidate for this project; never activated by an agent in any mode."""
+  import preferences
+@@ -348,9 +352,14 @@
+  same=next((x for x in items if x['status']=='proposed' and (x.get('origin') or {}).get('actor')=='agent' and
+             (x['ip'],x['song'],x['category'],x['value'],x['evidence'],x['reason'],x['supersedes'])==(ip,name,args['category'],args['value'],args['evidence'],args['model_reason'],supersedes)),None)
+  if same:
+-  return dict(status='proposed',preference_id=same['id'],category=same['category'],scope='current-project',replaces_active=supersedes,
+-              applied=False,active=False,approval_required=True,**origin,duplicate=True,
++  # The stored candidate keeps the first call's origin; report that one.
++  return dict(status='proposed',preference_id=same['id'],category=same['category'],scope='current-project',replaces_active=supersedes,
++              applied=False,active=False,approval_required=True,**deepcopy(same['origin']),duplicate=True,
+               note='같은 내용의 대기 중 후보가 이미 있어 새로 저장하지 않았습니다(preference_id가 기존 후보). 사용자가 연출 취향에서 승인해야 활성화됩니다.')
++ open_=sum(1 for x in items if (x['ip'],x['song'],x['category'],x['status'])==(ip,name,args['category'],'proposed'))
++ if open_>=PREFERENCE_PENDING_LIMIT:
++  return dict(status='blocked',code='PREFERENCE_CANDIDATE_LIMIT',retryable=False,category=args['category'],open_candidates=open_,limit=PREFERENCE_PENDING_LIMIT,
++              note='이 속성에 검토 대기 중인 후보가 상한만큼 있어 새 후보를 저장하지 않았습니다. 사용자가 연출 취향에서 기존 후보를 승인·거절한 뒤 다시 제안하세요.')
+  item=preferences.propose(items,ip=ip,song=name,category=args['category'],value=args['value'],evidence=args['evidence'],reason=args['model_reason'],supersedes=supersedes)
+  item['origin']=deepcopy(origin)
+  return dict(status='proposed',preference_id=item['id'],category=item['category'],scope='current-project',replaces_active=supersedes,
+@@ -363,7 +372,7 @@
+  if p.get('archived'):raise ValueError('archived project')
+  # Grant visibility moved from the HTTP preflight for model tools; human endpoints keep it.
+  if tool in {'request_render','request_motion_render'}:chat_sessions.guard_refs(p,dict(grant_id=args['grant_id']))
+- if tool=='execution_context':return __import__('production_context').read(c,store,p,name,query=args.get('query'))
++ if tool=='execution_context':return __import__('production_context').read(c,store,p,name,query=args.get('query'),bounded=True)
+  if tool=='sources':return [dict(id=k,text=v) for k,v in evidence_sources(c,p,run).items()]
+  if tool=='propose_timeline_edit':return propose_timeline(p,args,run,call)
+  if tool=='propose_timeline_changes':return propose_timeline_commands(p,args,run,call,store,c)
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/production_context.py	2026-10-28 21:33:43
++++ production_context.py	2026-10-28 22:57:30
+@@ -219,33 +219,56 @@
+   limit_per_source=limit,sources=groups,collaboration=dict(available=False,reason='single-local-workspace; no authenticated team/presence data'),
+   note='Stored status during this lookup, not a grant, model vision, verified file contents or final-output approval. Output SHA/registration are recorded metadata only. Caller transaction provides a snapshot when active; otherwise sources are sequential observations. Requery for newer status; no automatic retry or cost change.')
+ 
++# Items per list page in a search_project_context result (shots, actions, plans).
++# Counts and next_query in list_pages report the rest (SRV-r3, 64KiB continuation body).
++CONTEXT_LIST_LIMIT=8
++LIST_PAGE=re.compile(r'context-(shots|actions|plans) offset=(\d{1,7})')
++
++def list_page(query):
++ """(list name, offset) for a later list page query, else None."""
++ match=LIST_PAGE.fullmatch(query or '')
++ return (match[1],int(match[2])) if match else None
++
++def page_list(kind,items,offset):
++ # Source order (shot insertion, action rowid, plan list), so items added later land on later pages.
++ page=items[offset:offset+CONTEXT_LIST_LIMIT];following=offset+CONTEXT_LIST_LIMIT
++ return page,dict(total=len(items),offset=offset,limit=CONTEXT_LIST_LIMIT,not_shown=len(items)-len(page),truncated=len(page)<len(items),
++                  next_query=f'context-{kind} offset={following}' if following<len(items) else None)
++
+ # Scenes per page. A full page (each scene with 10 pending proposals) plus the tool
+ # definitions must fit the 64KiB continuation body with margin (SRV-r2 measurement).
+ SCENE_STATUS_LIMIT=8
+ 
+-def scene_status_offset(query):
+- """None when the query is not a scene-status page; otherwise scenes skipped from the newest end."""
+- if query=='scene-status':return 0
+- match=re.fullmatch(r'scene-status offset=(\d{1,7})',query or '')
+- return int(match[1]) if match else None
++def scene_status_cursor(query):
++ """None when the query is not a scene-status page; '' for the newest page; else the scene_id the page ends before."""
++ if query=='scene-status':return ''
++ match=re.fullmatch(r'scene-status before=([0-9a-f]{32})',query or '')
++ return match[1] if match else None
+ 
+-def scene_status(c,store,p,name,observed_revision,offset=0):
++def scene_status(c,store,p,name,observed_revision,before=''):
+  # Current conversation only. Never loads trusted 3D configuration or runs a renderer.
++ # Pages are anchored to a scene id (not a count), so a scene saved between pages
++ # cannot shift a later page; it only joins the newest page.
+  import scene_project
+  scenes=scene_project.status(c,store,p,name,chat_sessions.current(p))
+- end=max(len(scenes)-offset,0);start=max(end-SCENE_STATUS_LIMIT,0);page=scenes[start:end]
++ found=None
++ if before:
++  found=next((i for i,x in enumerate(scenes) if x['scene_id']==before),None)
++  end=found if found is not None else 0
++ else:end=len(scenes)
++ start=max(end-SCENE_STATUS_LIMIT,0);page=scenes[start:end]
+  return dict(scope='current-project-current-conversation',observed_revision=observed_revision,
+   scenes_3d=page,scenes_3d_total=len(scenes),scenes_3d_truncated=len(page)<len(scenes),
+-  scenes_3d_not_shown=len(scenes)-len(page),offset=offset,limit=SCENE_STATUS_LIMIT,
+-  next_query='scene-status offset='+str(offset+SCENE_STATUS_LIMIT) if start>0 else None,
++  scenes_3d_not_shown=len(scenes)-len(page),before=before or None,cursor_found=None if not before else found is not None,limit=SCENE_STATUS_LIMIT,
++  next_query='scene-status before='+scenes[start]['scene_id'] if start>0 else None,
+   connection=dict(available=scene_project.capability(store)['available'],external_transmission=False),
+-  note='Stored 3D scene heads and pending proposals, not an execution grant, render result or final-output approval. requires_review means the shot context or project ontology changed since that version or pending proposal was saved, so approval or rendering will be refused. Pending proposals are proposed/held ones based on the current head; stale_total counts older ones that can no longer be approved. head 0 means no approved version: its first draft is reviewed in Scene Studio and change proposals need base_revision equal to a head of 1 or more. Pages hold '+str(SCENE_STATUS_LIMIT)+' scenes, newest first by offset; request next_query for older scenes. Each scene keeps its latest 10 pending proposals; *_total, *_truncated and scenes_3d_not_shown report omissions, and older pending proposals are reviewed in Scene Studio. Approval and rendering stay human actions in Scene Studio.')
++  note='Stored 3D scene heads and pending proposals, not an execution grant, render result or final-output approval. requires_review means the shot context or project ontology changed since that version or pending proposal was saved, so approval or rendering will be refused. Pending proposals are proposed/held ones based on the current head; stale_total counts older ones that can no longer be approved. head 0 means no approved version: its first draft is reviewed in Scene Studio and change proposals need base_revision equal to a head of 1 or more. Pages hold '+str(SCENE_STATUS_LIMIT)+' scenes, newest first; request next_query for older scenes (cursor_found false means that scene is gone: start again with scene-status). Each scene keeps its latest 10 pending proposals; *_total, *_truncated and scenes_3d_not_shown report omissions, and older pending proposals are reviewed in Scene Studio. Approval and rendering stay human actions in Scene Studio.')
+ 
+-def read(c,store,p,name,query=None):
++def read(c,store,p,name,query=None,bounded=False):
+  w=store.workspace_id;pid=contracts.project_id(w,name);shots=[]
+  observed,body=c.execute('SELECT revision,body FROM state WHERE id=1').fetchone()
+  if query=='work-status':return dict(work_status=work_status(c,store,p,name,observed))
+- if scene_status_offset(query) is not None:return dict(scene_status=scene_status(c,store,p,name,observed,scene_status_offset(query)))
++ if scene_status_cursor(query) is not None:return dict(scene_status=scene_status(c,store,p,name,observed,scene_status_cursor(query)))
+  source_projects=json.loads(body)['projects'];source_projects[name]=p
+  projected={'shots':deepcopy(p['shots'])}
+  chat_sessions.project_references(source_projects,projected,chat_sessions.current(p))
+@@ -271,14 +294,14 @@
+    overlay.update(source_shot_name=source,source_shot_id=shot_id(p,source) if source in p['shots'] else None)
+    projected_clip['motion_overlay']=overlay
+  grants=[json.loads(r[0]) for r in c.execute('SELECT body FROM execution_grants WHERE workspace=? AND project=?',(w,pid))];actions=[]
+- for row in c.execute('SELECT body FROM production_actions WHERE workspace=? AND project=?',(w,pid)):
++ for row in c.execute('SELECT body FROM production_actions WHERE workspace=? AND project=? ORDER BY rowid',(w,pid)):
+   a=json.loads(row[0])
+   if not chat_sessions.owns(p,a['id']):continue
+   handles=[dict(grant_id=g['id'],expires=g['expires'],price_revision=g['price_revision'],money=g['money'].get(a['id'])) for g in grants if g['state']=='active' and g['expires']>time.time() and g['action_hashes'].get(a['id'])==a['hash']]
+   actions.append(dict(action_id=a['id'],plan_id=a['plan_id'],plan_revision=a['plan_revision'],role=a['role'],model=a['release_id'],mode=a['mode'],shot_id=shot_id(p,a['options']['shot']) if a['options'].get('shot') in p['shots'] else None,approval_handles=handles))
+- return dict(shots=shots,timeline=timeline,music_input=music_input(c,p,t),server_receipts=motion_receipts(p,pid,observed),
++ value=dict(shots=shots,timeline=timeline,music_input=music_input(c,p,t),server_receipts=motion_receipts(p,pid,observed),
+              supported_context_queries=[dict(query='work-status',purpose='Current conversation work status; bounded recorded metadata, not participant presence or video pixels'),
+-               dict(query='scene-status',purpose='Current conversation 3D scene heads, approval state and pending proposals, paged by "scene-status offset=N"; no grants, asset paths or scene bodies')],
++               dict(query='scene-status',purpose='Current conversation 3D scene heads, approval state and pending proposals, paged by its next_query; no grants, asset paths or scene bodies')],
+              motion_overlay_sources=motion_overlay_sources(p,query),
+              motion_overlay_contract=dict(commands=['set_motion_overlay','clear_motion_overlay'],clock='clip-local seconds; source frame0 starts at start; end is exclusive',
+                offsets='translation in original1920x1080 logical pixels; aspect-fit to output',source_background='excluded; layer motion/alpha/in-out retained',
+@@ -287,3 +310,12 @@
+                preview='saved timeline UI frame preview, not a model execution tool',
+                mesh_generation='not supported by these tools; optional internal3D workflows are separate capabilities'),
+              plans=[dict(plan_id=x['id'],version=x['version'],state=x['status']) for x in p.get('guided_plans',[])],actions=actions,ontology_revision=ontology.snapshot(c,project_ontology.scope(w,pid))['revision'],note='현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다.')
++ if not bounded:return value
++ # search_project_context (bounded): shots, actions and plans are paged like scene-status.
++ page=list_page(query);pages={}
++ for kind in ([page[0]] if page else ['shots','actions','plans']):
++  value[kind],pages[kind]=page_list(kind,value[kind],page[1] if page else 0)
++ if page:return {page[0]:value[page[0]],'list_pages':pages,'note':value['note']}
++ # Counts and next_query appear whenever a list is cut; an uncut result equals the unbounded read.
++ if any(x['truncated'] for x in pages.values()):value['list_pages']=pages
++ return value
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/scene_project.py	2026-10-28 21:34:30
++++ scene_project.py	2026-10-28 22:41:40
+@@ -399,7 +399,7 @@
+             # An agent repeating an identical pending change reuses that proposal instead of stacking copies.
+             same=next((x for x in (json.loads(r[0]) for r in c.execute('SELECT body FROM scene_proposals WHERE scene=? AND conversation=? ORDER BY rowid',(record['id'],cid)))
+                        if 'origin' in x and x['status'] in {'proposed','held'} and x['base_revision']==record['head'] and x['scene_hash']==scene_spec.fingerprint(value)),None)
+-            if same:return dict(scene_id=record['id'],proposal_id=same['id'],status=same['status'],duplicate=True)
++            if same:return dict(scene_id=record['id'],proposal_id=same['id'],status=same['status'],duplicate=True,origin=deepcopy(same['origin']))
+         item=dict(id=uuid.uuid4().hex,scene_id=record['id'],conversation_id=cid,base_revision=record['head'],scene=value,scene_hash=scene_spec.fingerprint(value),changes=changes,context=_context(p,shot),ontology_revision=current_onto,status='proposed',created=time.time())
+         if origin is not None:item['origin']=deepcopy(origin)  # S7b: actor, model_reason (unverified), server provenance
+         _save(c,'scene_proposals',item)
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/tests/test_general_chat_activation.py	2026-10-28 18:42:40
++++ tests/test_general_chat_activation.py	2026-10-28 23:09:04
+@@ -158,9 +158,10 @@
+             path = Path(folder) / 'bad.json'
+             path.write_text(json.dumps({'api_key': FAKE_KEY}))
+             data = Path(folder) / 'untouched'
+-            result = subprocess.run([sys.executable, 'app.py', '--data', str(data), '--port', '0',
++            # -B and PYTHONDONTWRITEBYTECODE: this child gets a minimal env, so it must not write __pycache__ (SRV-r3).
++            result = subprocess.run([sys.executable, '-B', 'app.py', '--data', str(data), '--port', '0',
+                                      '--general-chat-config', str(path)], capture_output=True, text=True,
+-                                    timeout=10, env={'PATH': '/usr/bin:/bin'})
++                                    timeout=10, env={'PATH': '/usr/bin:/bin', 'PYTHONDONTWRITEBYTECODE': '1'})
+             self.assertEqual(result.returncode, 2)
+             self.assertNotIn(FAKE_KEY, result.stderr)
+             self.assertFalse(data.exists())
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/tests/test_general_chat_body_cap.py	2026-10-28 21:46:55
++++ tests/test_general_chat_body_cap.py	2026-10-28 22:45:58
+@@ -87,7 +87,8 @@
+         self.assertEqual((len(status['scenes_3d']), status['scenes_3d_total'], status['scenes_3d_not_shown'], status['scenes_3d_truncated']),
+                          (limit, WORST_SCENES, WORST_SCENES-limit, True))
+         self.assertTrue(all((x['pending_total'], len(x['pending_proposals'])) == (WORST_PENDING, WORST_PENDING) for x in status['scenes_3d']))
+-        self.assertEqual(status['next_query'], 'scene-status offset=%d' % limit)
++        # Cursor page (SRV-r3): the next page ends before the oldest scene shown here.
++        self.assertEqual(status['next_query'], 'scene-status before=%s' % status['scenes_3d'][0]['scene_id'])
+         size = wire(follow['message_body'])
+         self.assertLess(size, CAP)
+         self.assertLessEqual(size, CAP-MARGIN)
+@@ -174,37 +175,74 @@
+         self.a.process()
+         return result['turn']['id']
+ 
+-    def test_old_single_page_cap_is_rejected_before_send_and_the_turn_state_is_recorded(self):
++    def test_old_single_page_result_is_withheld_with_a_budget_notice_and_the_turn_continues(self):
++        # SRV-r2 recorded this case as outcome_unknown (pre-send rejection). SRV-r3: the result that would
++        # overflow is replaced by CONTEXT_BUDGET_EXHAUSTED before any continuation is built or sent.
+         rejected = [];original = anthropic.BoundedMessagesTransport.encode_body
+         def spy(transport, body):
+             try:return original(transport, body)
+             except anthropic.ProposalError as exc:
+-                rejected.append((exc.failure.get('category'), len(json.dumps(body, ensure_ascii=False, allow_nan=False).encode('utf-8'))));raise
++                rejected.append(exc.failure.get('category'));raise
+         with patch.object(production_context, 'SCENE_STATUS_LIMIT', WORST_SCENES), patch.object(anthropic.BoundedMessagesTransport, 'encode_body', spy):
+             identifier = self.run_turn()  # the pre-SRV-r2 single 32-scene page
+-        category, size = rejected[0]
+-        self.assertEqual((len(rejected), category), (1, 'request_too_large'))
+-        self.assertGreater(size, CAP)
++        self.assertEqual(rejected, [])
+         turn, held, attempts = self.a.reservation(identifier)
+-        project = self.a.project()
+-        # Round 1 (count + message) was sent; the oversized continuation never reached the opener.
++        self.assertEqual(turn['status'], 'awaiting_continuation_approval')
+         self.assertEqual([r[0] for r in self.a.socket.requests], [anthropic.BoundedCountTransport.endpoint, anthropic.ENDPOINT])
+         self.assertEqual(attempts, [('chat-count', 'observed'), ('chat-message', 'observed')])
+-        with self.a.http.store.connect() as c:  # the projection hides consumed previews; count stored rows
+-            self.assertEqual([r[0] for r in c.execute('SELECT id FROM general_chat_previews')], [turn['preview_id']])  # no continuation preview
+-        # The search tool ran and its result was recorded; no continuation preview was created.
++        self.assertEqual(held[0], 'estimated')
++        project = self.a.project()
+         call, = [c for r in project['production_runs'] if r['id'] == turn['run'] for c in r['calls']]
+-        self.assertEqual((call['name'], call['result']['status']), ('search_project_context', 'succeeded'))
+-        # Recorded state of the turn after the pre-send rejection (see SRV-r2 result.md).
+-        self.assertEqual(turn['status'], 'outcome_unknown')
+-        self.assertEqual(turn['error'], '요청을 중단했습니다. 기존 결과와 비용 상태를 확인하세요. 자동 재시도하지 않습니다.')
++        self.assertEqual((call['name'], call['result']['status'], call['result']['execution_targets']['scene_status']['scenes_3d_total']),
++                         ('search_project_context', 'succeeded', WORST_SCENES))  # the full result is stored
++        follow = project['general_chat_previews'][-1]
++        size = wire(follow['message_body'])
++        notice = tool_result(follow['message_body'])
++        self.assertEqual((notice['code'], notice['tool'], notice['tool_status'], notice['result_included'], notice['next_query'], notice['retry']),
++                         ('CONTEXT_BUDGET_EXHAUSTED', 'search_project_context', 'succeeded', False, 'scene-status', 'new_turn'))
++        self.assertGreater(notice['body_bytes_with_result'], CAP)
++        self.assertEqual(notice['body_limit_bytes'], chat_general.CONTINUATION_LIMIT)
++        self.assertLessEqual(size, chat_general.CONTINUATION_LIMIT)
++        record('over-cap-live-rejection', dict(withheld_body_bytes=notice['body_bytes_with_result'], notice_body_bytes=size, bytes_left=notice['bytes_left'],
++                                               turn_status=turn['status'], reservation=held, attempts=attempts, sent_requests=len(self.a.socket.requests)))
++
++    def test_over_cap_continuation_ends_the_turn_recoverably_with_zero_provider_writes(self):
++        # Round 2: a long answer text plus another lookup. Even the budget notice cannot fit, so
++        # nothing is created, reserved or sent for round 3 and a new request is allowed.
++        self.a.socket.replies = [activation.reply([use('q0', 'search_project_context', {'query':'scene-status'})], 'tool_use')]
++        preview = self.a.preview()
++        status, result = self.a.approve(preview);self.assertEqual(status, 200, result)
++        identifier = result['turn']['id'];self.a.process()
++        for round_ in (1, 2):
++            turn, _, _ = self.a.reservation(identifier)
++            self.assertEqual(turn['status'], 'awaiting_continuation_approval')
++            follow = self.a.project()['general_chat_previews'][-1]
++            query = tool_result(follow['message_body'])['execution_targets']['scene_status']['next_query']
++            blocks = ([dict(type='text', text='가'*4700)] if round_ == 2 else [])+[use('q%d' % round_, 'search_project_context', {'query':query})]
++            self.a.socket.replies = [activation.reply(blocks, 'tool_use')]
++            status, result = self.a.approve(follow);self.assertEqual(status, 200, result)
++            self.a.process()
++        turn, held, attempts = self.a.reservation(identifier)
++        self.assertEqual(turn['status'], 'limit_reached')
++        self.assertIn('CONTEXT_BUDGET_EXHAUSTED', turn['error'])
++        self.assertEqual(turn['context_budget']['code'], 'CONTEXT_BUDGET_EXHAUSTED')
++        self.assertGreater(turn['context_budget']['body_bytes'], CAP)
++        self.assertEqual(turn['round'], 2)
++        # Zero provider writes for the rejected round: 3 rounds x (count + message) only.
++        self.assertEqual([r[0] for r in self.a.socket.requests], [anthropic.BoundedCountTransport.endpoint, anthropic.ENDPOINT]*3)
++        with self.a.http.store.connect() as c:
++            previews = c.execute('SELECT body FROM general_chat_previews').fetchall()
++            states = [r[0] for r in c.execute('SELECT state FROM reservations')]
++        self.assertEqual(len(previews), 3)  # first + 2 continuations; none for the rejected round
++        # Nothing is held: each sent round is estimated from its received response, no reservation exists for the
++        # rejected one (ledger 'release' applies only to 'reserved', and none is left).
++        self.assertEqual(states, ['estimated']*3)
+         self.assertEqual(held[0], 'estimated')
+-        self.assertEqual(turn['pricing_status'], 'priced')
+-        # That status blocks new previews in this conversation.
+         status, value = self.a.action('general_chat_preview', song='A', prompt='다음 요청', maximum_micro=10000, total_maximum_micro=10000)
+-        self.assertEqual(status, 400, value)
+-        record('over-cap-live-rejection', dict(rejected_body_bytes=size, rejection=category, turn_status=turn['status'], error=turn['error'], reservation=held, attempts=attempts,
+-                                               sent_requests=len(self.a.socket.requests), new_preview_http_status=status))
++        self.assertEqual(status, 200, value)
++        self.assertEqual(len(self.a.socket.requests), 6)  # a preview sends nothing
++        record('over-cap-recoverable-end', dict(turn_status=turn['status'], error=turn['error'], context_budget=turn['context_budget'],
++                                                reservations=states, sent_requests=len(self.a.socket.requests), new_preview_http_status=status))
+ 
+     def test_paged_result_continues_in_live_mode(self):
+         identifier = self.run_turn()
+@@ -213,7 +251,227 @@
+         follow = self.a.project()['general_chat_previews'][-1]
+         self.assertLessEqual(wire(follow['message_body']), CAP-MARGIN)
+         self.assertEqual(len(self.a.socket.requests), 2)
++
++
++
++def next_query(value):
++    """First non-null next_query in a tool result, as a model following the result would pick it."""
++    if isinstance(value, dict):
++        if value.get('next_query'):return value['next_query']
++        value = list(value.values())
++    if isinstance(value, list):
++        for item in value:
++            found = next_query(item)
++            if found:return found
++    return None
++
++
++def follow_in_one_turn(test, first_call, project, process):
++    """Scripted model: one lookup, then it follows next_query in the SAME turn through MAX_ROUNDS.
++
++    Every continuation preview is approved as a user would. Returns per-round (status, body bytes, result)."""
++    transport = test.store.general_chat_runtime.transport
++    name, arguments = first_call
++    transport.responses = [response([use('r0', name, arguments)], 'tool_use')]
++    status, value = test.f.approve(test.f.preview());test.assertEqual(status, 200, value)
++    process()
++    rounds = []
++    for round_ in range(1, chat_general.MAX_ROUNDS+1):
++        latest = project()
++        turn = latest['general_chat_turns'][-1]
++        test.assertNotEqual(turn['status'], 'outcome_unknown', turn.get('error'))
++        if turn['status'] != 'awaiting_continuation_approval':
++            rounds.append((turn['status'], None, None));break
++        follow = latest['general_chat_previews'][-1]
++        result = tool_result(follow['message_body'])
++        rounds.append((turn['status'], wire(follow['message_body']), result))  # wire() raises over 65,536
++        query = next_query(result)
++        transport.responses = [response([use('r%d' % round_, 'search_project_context', {'query':query})], 'tool_use') if query else response()]
++        status, value = test.f.approve(follow);test.assertEqual(status, 200, value)
++        process()
++    return rounds
++
++
++class InTurnPagingBudgetTest(unittest.TestCase):
++    """SRV-r3 serious: following next_query inside one turn must never pass the 64KiB cap or lock the turn."""
++    def check(self, rounds, label):
++        sizes = [size for _, size, _ in rounds if size is not None]
++        codes = [result.get('code') for _, _, result in rounds if result is not None]
++        self.assertTrue(all(size < CAP for size in sizes), sizes)
++        self.assertEqual(rounds[-1][0], 'limit_reached')  # MAX_ROUNDS, the existing per-turn round limit
++        self.assertEqual(len(sizes), chat_general.MAX_ROUNDS-1)
++        self.assertIn('CONTEXT_BUDGET_EXHAUSTED', codes)
++        # Every notice keeps the query for a new turn and is itself under the margin limit.
++        for _, size, result in rounds:
++            if result is not None and result.get('code') == 'CONTEXT_BUDGET_EXHAUSTED':
++                self.assertEqual((result['result_included'], result['retry']), (False, 'new_turn'))
++                self.assertTrue(result['next_query'])
++                self.assertGreater(result['body_bytes_with_result'], chat_general.CONTINUATION_LIMIT)
++                self.assertLessEqual(size, chat_general.CONTINUATION_LIMIT+chat_general.CONTINUATION_MARGIN)
++        record('in-turn-'+label, dict(body_bytes=sizes, codes=codes, final=rounds[-1][0], cap=CAP, limit=chat_general.CONTINUATION_LIMIT))
++        return [result for _, _, result in rounds if result is not None and result.get('code') == 'CONTEXT_BUDGET_EXHAUSTED']
++
++    def scene_fixture(self):
++        self.f = base.GeneralChatHTTPTest('test_preview_approval_tool_and_continuation_require_distinct_consent')
++        self.f.setUp();self.addCleanup(self.f.doCleanups)
++        self.store = self.f.http.store;seed_scenes(self.store)
++        return lambda:self.f.state()['projects']['A'], lambda:self.assertTrue(self.store.general_chat_runtime.process_next())
++
++    def test_estimate_pages_followed_in_one_turn(self):
++        m = EstimateBodyCapTest('test_estimate_items_are_paged_with_counts_totals_and_a_fetch_path');m.setUp();self.addCleanup(m.doCleanups)
++        self.f, self.store = m.f, m.store
++        process = lambda:self.assertTrue(self.store.general_chat_runtime.process_next())
++        notices = self.check(follow_in_one_turn(self, ('estimate_media_plan', {'plan_id':m.plan}), m.m.project, process), 'estimate')
++        # The withheld page is reachable in a new turn and fits there.
++        status, value = self.f.action('general_chat_preview', song='A', prompt='다음 요청', maximum_micro=10000)
++        self.assertEqual(status, 200, value)
++        self.f.approve(value['general_chat_preview'], decision='reject')
++        turn, follow = m.turn('search_project_context', {'query':notices[0]['next_query']})
++        self.assertEqual(turn['status'], 'awaiting_continuation_approval')
++        self.assertLessEqual(wire(follow['message_body']), chat_general.CONTINUATION_LIMIT)
++        self.assertEqual(len(tool_result(follow['message_body'])['media_estimate']['actions']), fal_dispatch.ESTIMATE_ITEM_LIMIT)
+ 
++    def test_scene_status_pages_followed_in_one_turn(self):
++        project, process = self.scene_fixture()
++        self.check(follow_in_one_turn(self, ('search_project_context', {'query':'scene-status'}), project, process), 'scene-status')
+ 
++    def test_plain_query_then_scene_status_in_one_turn(self):
++        project, process = self.scene_fixture()
++        transport = self.store.general_chat_runtime.transport;queries = iter(['scene-status'])
++        # Round 1 asks scene-status (critic probe_plain); later rounds follow next_query.
++        original = next_query
++        def pick(value):return next(queries, None) or original(value)
++        with patch(__name__+'.next_query', pick):
++            rounds = follow_in_one_turn(self, ('search_project_context', {'query':'project overview'}), project, process)
++        self.assertEqual(rounds[0][2]['execution_targets']['list_pages']['shots']['total'], len(project()['shots']))
++        self.assertIn('scene_status', rounds[1][2].get('execution_targets', {}))
++        self.check(rounds, 'plain-then-scene-status')
++
++    def test_live_mode_three_reads_then_rounds_never_lock_the_conversation(self):
++        # critic probe_live: plain query, scene-status, then its next_query, in live mode (synthetic opener).
++        a = activation.GeneralChatActivationHTTPTest('test_real_mode_exact_wire_bytes_and_estimate_without_verified_account_claim')
++        a.setUp();self.addCleanup(a.doCleanups);seed_scenes(a.http.store)
++        a.socket.replies = [activation.reply([use('q0', 'search_project_context', {'query':'project overview'})], 'tool_use')]
++        status, result = a.approve(a.preview());self.assertEqual(status, 200, result)
++        identifier = result['turn']['id'];a.process();sizes = [];statuses = []
++        for round_ in range(1, chat_general.MAX_ROUNDS+1):
++            turn, held, _ = a.reservation(identifier);statuses.append(turn['status'])
++            self.assertNotEqual(turn['status'], 'outcome_unknown', turn.get('error'))
++            if turn['status'] != 'awaiting_continuation_approval':break
++            follow = a.project()['general_chat_previews'][-1];sizes.append(wire(follow['message_body']))
++            query = 'scene-status' if round_ == 1 else next_query(tool_result(follow['message_body']))
++            a.socket.replies = [activation.reply([use('q%d' % round_, 'search_project_context', {'query':query})], 'tool_use')]
++            status, result = a.approve(follow);self.assertEqual(status, 200, result)
++            a.process()
++        self.assertEqual(statuses[-1], 'limit_reached')
++        self.assertTrue(all(size < CAP for size in sizes), sizes)
++        self.assertEqual(len(a.socket.requests), 2*chat_general.MAX_ROUNDS)
++        status, value = a.action('general_chat_preview', song='A', prompt='다음 요청', maximum_micro=10000, total_maximum_micro=10000)
++        self.assertEqual(status, 200, value)
++        record('in-turn-live', dict(body_bytes=sizes, statuses=statuses, sent_requests=len(a.socket.requests), new_preview_http_status=status))
++
++
++class StablePagesTest(unittest.TestCase):
++    """Records saved between two page reads neither repeat nor skip an item (critic minor)."""
++    def test_scene_saved_between_pages_does_not_shift_the_cursor(self):
++        f = base.GeneralChatHTTPTest('test_preview_approval_tool_and_continuation_require_distinct_consent')
++        f.setUp();self.addCleanup(f.doCleanups);store = f.http.store
++        seed_scenes(store, scenes=10, pending=0)
++        def page(query):
++            with store.connect() as c:
++                p = json.loads(c.execute('SELECT body FROM state WHERE id=1').fetchone()[0])['projects']['A']
++                return production_context.read(c, store, p, 'A', query=query)['scene_status']
++        first = page('scene-status');original = [x['scene_id'] for x in first['scenes_3d']]
++        seed_scenes_extra(store, 'late')  # a newer scene saved between the two reads
++        second = page(first['next_query'])
++        self.assertTrue(second['cursor_found'])
++        self.assertEqual(second['scenes_3d_total'], 11)
++        self.assertEqual(len(second['scenes_3d']), 2)
++        seen = [x['scene_id'] for x in second['scenes_3d']]+original
++        self.assertEqual(len(seen), 10);self.assertEqual(len(set(seen)), 10)
++        self.assertIsNone(second['next_query'])
++        newest = page('scene-status')['scenes_3d']
++        self.assertNotIn(newest[-1]['scene_id'], seen)  # the late scene joins the newest page only
++        gone = page('scene-status before='+'0'*32)
++        self.assertEqual((gone['scenes_3d'], gone['cursor_found'], gone['next_query']), ([], False, None))
++
++    def test_action_prepared_between_estimate_pages_lands_on_a_later_page(self):
++        m = EstimateBodyCapTest('test_estimate_items_are_paged_with_counts_totals_and_a_fetch_path');m.setUp();self.addCleanup(m.doCleanups)
++        turn, follow = m.turn('estimate_media_plan', {'plan_id':m.plan})
++        page = tool_result(follow['message_body']);listed = [x['action_id'] for x in page['actions']];query = page['next_query']
++        m.f.approve(follow, decision='reject')
++        arguments = m.m.arguments();arguments['model_reason'] = 'late'
++        run = m.m.post('production_run', song='A')['run']['id']
++        late = m.m.post('production_tool', song='A', run=run, call=dict(id=uuid.uuid4().hex, name='prepare_image_action', arguments=arguments, complete=True))['tool']['action_id']
++        while query:
++            turn, follow = m.turn('search_project_context', {'query':query})
++            page = tool_result(follow['message_body'])['media_estimate']
++            self.assertEqual(page['actions_total'], m.ACTIONS+1)
++            listed += [x['action_id'] for x in page['actions']];query = page['next_query']
++            m.f.approve(follow, decision='reject')
++        self.assertEqual(len(listed), m.ACTIONS+1);self.assertEqual(len(set(listed)), m.ACTIONS+1)
++        self.assertEqual(listed[-1], late)
++
++
++class BoundedContextListsTest(unittest.TestCase):
++    """General search_project_context lists (shots, actions, plans) carry counts and next_query (contract)."""
++    def test_shot_and_plan_lists_are_paged_and_cover_every_item_once(self):
++        f = base.GeneralChatHTTPTest('test_preview_approval_tool_and_continuation_require_distinct_consent')
++        f.setUp();self.addCleanup(f.doCleanups);store = f.http.store
++        seed_scenes(store, scenes=20, pending=0)
++        for i in range(12):  # saved plan proposals, as the propose_media_plan tool saves them
++            status, value = f.action('production_run', song='A');self.assertEqual(status, 200, value)
++            status, value = f.action('production_tool', song='A', run=value['run']['id'], call=dict(id=uuid.uuid4().hex, name='propose_media_plan',
++                                     arguments=dict(goal='plan %d' % i, scenes='s', style='', constraints='', kind='visualizer'), complete=True))
++            self.assertEqual((status, value['tool']['status']), (200, 'proposed'), value)
++        project = f.state()['projects']['A'];limit = production_context.CONTEXT_LIST_LIMIT
++        def turn(query):
++            store.general_chat_runtime.transport.responses = [response([use('lists', 'search_project_context', {'query':query})], 'tool_use')]
++            status, result = f.approve(f.preview());self.assertEqual(status, 200, result)
++            self.assertTrue(store.general_chat_runtime.process_next())
++            follow = f.state()['projects']['A']['general_chat_previews'][-1]
++            self.assertLessEqual(wire(follow['message_body']), chat_general.CONTINUATION_LIMIT)
++            f.approve(follow, decision='reject')
++            return tool_result(follow['message_body'])['execution_targets']
++        first = turn('project overview')
++        for kind, key, total in (('shots', 'shot_id', len(project['shots'])), ('plans', 'plan_id', len(project.get('guided_plans', [])))):
++            with self.subTest(kind=kind):
++                meta = first['list_pages'][kind]
++                self.assertGreater(total, limit)
++                self.assertEqual((len(first[kind]), meta['total'], meta['not_shown'], meta['truncated'], meta['next_query']),
++                                 (limit, total, total-limit, True, 'context-%s offset=%d' % (kind, limit)))
++                seen = [x[key] for x in first[kind]];query = meta['next_query']
++                while query:
++                    page = turn(query)
++                    self.assertEqual(set(page), {kind, 'list_pages', 'note'})  # only that list, not the whole context again
++                    seen += [x[key] for x in page[kind]];query = page['list_pages'][kind]['next_query']
++                self.assertEqual(len(seen), total);self.assertEqual(len(set(seen)), total)
++        self.assertEqual(first['list_pages']['actions'], dict(total=0, offset=0, limit=limit, not_shown=0, truncated=False, next_query=None))
++
++    def test_action_list_is_paged(self):
++        m = EstimateBodyCapTest('test_estimate_items_are_paged_with_counts_totals_and_a_fetch_path');m.setUp();self.addCleanup(m.doCleanups)
++        turn, follow = m.turn('search_project_context', {'query':'project overview'})
++        targets = tool_result(follow['message_body'])['execution_targets'];meta = targets['list_pages']['actions']
++        limit = production_context.CONTEXT_LIST_LIMIT
++        self.assertEqual((len(targets['actions']), meta['total'], meta['not_shown'], meta['next_query']), (limit, m.ACTIONS, m.ACTIONS-limit, 'context-actions offset=%d' % limit))
++        m.f.approve(follow, decision='reject')
++        seen = [x['action_id'] for x in targets['actions']];query = meta['next_query']
++        while query:
++            turn, follow = m.turn('search_project_context', {'query':query})
++            page = tool_result(follow['message_body'])['execution_targets']
++            seen += [x['action_id'] for x in page['actions']];query = page['list_pages']['actions']['next_query']
++            m.f.approve(follow, decision='reject')
++        self.assertEqual(seen, [x['id'] for x in m.m.actions()])  # rowid order, each once
++
++
++def seed_scenes_extra(store, shot):
++    def call(action, **data):
++        with store.connect() as c:revision = c.execute('SELECT revision FROM state WHERE id=1').fetchone()[0]
++        return store.mutate(dict(action=action, data=data, revision=revision, request_id=uuid.uuid4().hex))
++    call('shot', song='A', shot=shot, description='synthetic 3D')
++    with store.connect() as c:project = json.loads(c.execute('SELECT body FROM state WHERE id=1').fetchone()[0])['projects']['A']
++    created = call('scene_create', song='A', shot_id=production_context.shot_id(project, shot), scene=sample())['scene']
++    call('scene_review', song='A', scene_proposal_id=created['proposal_id'], decision='approved')
++
+ if __name__ == '__main__':
+     unittest.main()
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/tests/test_general_chat_media_d15.py	2026-10-28 21:44:06
++++ tests/test_general_chat_media_d15.py	2026-10-28 22:47:52
+@@ -182,8 +182,11 @@
+                 wire = tools[name]['input_schema']['properties']['model_reason']
+                 self.assertEqual(wire['type'], 'string')
+                 self.assertIn('"maxLength": 300', wire['description']);self.assertIn('"minLength": 1', wire['description'])
+-                openai = next(d for d in chat_protocols.tool_definitions('openai') if d['name'] == name)
+-                self.assertEqual(openai['parameters']['properties']['model_reason'], dict(type='string', minLength=1, maxLength=300))
++                # OpenAI strict mode does not support minLength/maxLength (structured-outputs guide): the
++                # bounds travel in the description there too, never as schema keywords (SRV-r3).
++                openai = next(d for d in chat_protocols.tool_definitions('openai') if d['name'] == name)['parameters']['properties']['model_reason']
++                self.assertEqual(openai['type'], 'string');self.assertFalse({'minLength', 'maxLength'} & set(openai))
++                self.assertIn('"maxLength": 300', openai['description']);self.assertIn('"minLength": 1', openai['description'])
+         for name in ('prepare_image_action', 'prepare_video_action'):
+             self.assertIn('model_reason (1-300 chars)', tools[name]['description'])
+ 
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/tests/test_general_chat_scene_preference_tools.py	2026-10-28 22:12:57
++++ tests/test_general_chat_scene_preference_tools.py	2026-10-28 22:47:33
+@@ -153,6 +153,19 @@
+         self.assertNotEqual(fresh['proposal_id'], first['proposal_id'])
+         self.assertEqual(self.s.status()['scenes_3d'][0]['pending_total'], 2)
+         self.assertEqual(mine['scene_id'], fresh['scene_id'])
++
++    def test_duplicate_reports_the_stored_proposal_origin_and_held_status(self):
++        # SRV-r3 minor: a reused proposal reports what is stored, not the repeating call's origin or 'proposed'.
++        self.s.approved();self.s.settings('review', 'medium')
++        first, first_run, first_call = self.s.tool('propose_scene_3d', scene_args(self.s.shot_id()))
++        self.s.call('scene_review', song='A', scene_proposal_id=first['proposal_id'], decision='held')
++        self.s.settings('full_access', 'high')
++        again, run, call = self.s.tool('propose_scene_3d', scene_args(self.s.shot_id()))
++        self.assertEqual((again['duplicate'], again['proposal_id'], again['status']), (True, first['proposal_id'], 'held'))
++        self.assertEqual(again['provenance'], dict(engine='local-contract-rehearsal', chat_model=None, permission_mode='review', effort='medium', run=first_run, call=first_call['id']))
++        self.assertNotEqual((again['provenance']['run'], again['provenance']['call']), (run, call['id']))
++        saved = next(x for x in self.s.records()[0]['proposals'] if x['id'] == first['proposal_id'])
++        self.assertEqual(saved['origin'], {k:again[k] for k in ('actor', 'model_reason', 'model_reason_label', 'provenance')})
+ 
+     def test_full_access_never_auto_applies_and_human_approval_keeps_origin(self):
+         self.s.approved();self.s.settings('full_access', 'high')
+@@ -375,6 +388,38 @@
+         fresh, _, _ = self.s.tool('propose_preference_rule', self.args())
+         self.assertEqual((fresh['duplicate'], len(self.s.raw()['preferences'])), (False, 3))
+ 
++    def test_duplicate_candidate_reports_the_stored_origin(self):
++        self.s.settings('review', 'medium')
++        first, first_run, first_call = self.s.tool('propose_preference_rule', self.args())
++        self.s.settings('full_access', 'high')
++        again, _, _ = self.s.tool('propose_preference_rule', self.args())
++        self.assertEqual((again['duplicate'], again['preference_id']), (True, first['preference_id']))
++        self.assertEqual(again['provenance'], dict(engine='local-contract-rehearsal', chat_model=None, permission_mode='review', effort='medium', run=first_run, call=first_call['id']))
++        saved, = self.s.raw()['preferences']
++        self.assertEqual(saved['origin'], {k:again[k] for k in ('actor', 'model_reason', 'model_reason_label', 'provenance')})
++
++    def test_open_candidates_per_category_are_capped_with_a_structured_refusal(self):
++        limit = __import__('local_creation_tools').PREFERENCE_PENDING_LIMIT
++        self.assertEqual(limit, 10)
++        for i in range(limit):
++            result, _, _ = self.s.tool('propose_preference_rule', self.args(value='앵글 %d' % i))
++            self.assertEqual((result['status'], result['duplicate']), ('proposed', False))
++        before = self.s.raw()['preferences']
++        refused, _, _ = self.s.tool('propose_preference_rule', self.args(value='앵글 넘침'))
++        self.assertEqual(refused, dict(status='blocked', code='PREFERENCE_CANDIDATE_LIMIT', retryable=False, category='camera', open_candidates=limit, limit=limit, note=refused['note']))
++        self.assertIn('연출 취향', refused['note'])
++        self.assertEqual(self.s.raw()['preferences'], before)
++        # An identical repeat still reuses its candidate; another category is unaffected.
++        again, _, _ = self.s.tool('propose_preference_rule', self.args(value='앵글 0'))
++        self.assertEqual((again['status'], again['duplicate']), ('proposed', True))
++        other, _, _ = self.s.tool('propose_preference_rule', self.args(category='color'))
++        self.assertEqual((other['status'], other['duplicate']), ('proposed', False))
++        # A human review frees a slot.
++        self.s.call('preference_review', id=before[0]['id'], decision='rejected', reason='owner')
++        fresh, _, _ = self.s.tool('propose_preference_rule', self.args(value='앵글 넘침'))
++        self.assertEqual(fresh['status'], 'proposed')
++        self.assertEqual(sum(x['status'] == 'proposed' and x['category'] == 'camera' for x in self.s.raw()['preferences']), limit)
++
+     def test_restart_keeps_the_pending_candidate(self):
+         result, _, _ = self.s.tool('propose_preference_rule', self.args())
+         reopened = app.Store(self.s.tmp.name).state()['preferences']
+--- .omo/evidence/agent-tools-02-20261028/tasks/SRV-r3/start/tests/test_strict_wire_schema.py	2026-10-27 03:23:24
++++ tests/test_strict_wire_schema.py	2026-10-28 22:47:52
+@@ -32,6 +32,24 @@
+   out=chat_models.anthropic_wire_schema(source)
+   self.assertIn('minimum',out['properties']);self.assertNotIn('minimum',out['properties']['minimum'])
+   self.assertEqual(source['properties']['minimum']['minimum'],2)
++ def test_openai_strict_definitions_carry_no_string_length_keywords(self):
++  # SRV-r3: unsupported in OpenAI strict mode; moved into descriptions, sources unchanged.
++  source=deepcopy(production_tools.TOOLS)
++  def walk(value):
++   if isinstance(value,dict):
++    self.assertFalse(set(value)&{'minLength','maxLength'})
++    for v in value.values():walk(v)
++   elif isinstance(value,list):
++    for v in value:walk(v)
++  tools=chat_protocols.tool_definitions('openai');walk(tools)
++  self.assertTrue(all(x['strict'] for x in tools))
++  commands=next(x for x in tools if x['name']=='propose_timeline_changes')['parameters']
++  self.assertIn('Server-enforced constraints',json.dumps(commands,ensure_ascii=False))
++  self.assertEqual(production_tools.TOOLS,source)
++  original=dict(type='object',properties={'text':dict(type='string',minLength=1,maxLength=5)},required=['text'],additionalProperties=False)
++  out=chat_models.openai_wire_schema(original)
++  self.assertEqual(out['properties']['text'],dict(type='string',description='Server-enforced constraints: {"maxLength": 5, "minLength": 1}.'))
++  self.assertEqual(original['properties']['text']['maxLength'],5)
+  def test_other_provider_contracts_unchanged(self):
+   for name in ['openai-gpt-6-luna','xai-grok-4-7']:
+    spec=chat_models.contract(name);tools=chat_protocols.tool_definitions(spec['provider'])

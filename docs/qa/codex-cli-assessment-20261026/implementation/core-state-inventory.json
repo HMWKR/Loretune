@@ -1,0 +1,644 @@
+{
+  "time": "2026-10-26T07:58:14.107Z",
+  "records": [
+    {
+      "dialog": "projectDialog",
+      "text": "다음 작품 시작\n닫기\n이전 곡의 승인 설정을 선택 계승\n세계관·이야기 설정\n작품명\n승인 설정으로 작품 만들기",
+      "controls": [
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "inheritSource",
+          "name": "source_song",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "clone_structure",
+          "type": "checkbox",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "inherit_reason",
+          "type": "text",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "ip",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "era",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "story",
+          "type": "number",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "name",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "box": {
+        "x": 640,
+        "y": 368.8515625,
+        "width": 640,
+        "height": 342.296875
+      },
+      "focused": "BUTTON",
+      "closed": true
+    },
+    {
+      "dialog": "settingDialog",
+      "text": "세계관 설정\n닫기\n\n새 승인 설정은 이후 작품에만 적용합니다. 현재는 단일 로컬 사용자 기준이며 조직 권한 기능이 아닙니다.\n\n세계관\n기본 IP\n설정 내용\n시대 / 분기\n시작 순서\n끝 순서 (선택)\n설정 승인·저장\n새 세계관 만들기\n설정 후보 · 정정 제안",
+      "controls": [
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "ip",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "text",
+          "type": "textarea",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "era",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "valid_from",
+          "type": "number",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "valid_to",
+          "type": "number",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "name",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "description",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "ip",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "text",
+          "type": "textarea",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "era",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "valid_from",
+          "type": "number",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "valid_to",
+          "type": "number",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "supersedes",
+          "type": "number",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "evidence",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "reason",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "box": {
+        "x": 640,
+        "y": 222.1015625,
+        "width": 640,
+        "height": 635.7890625
+      },
+      "focused": "BUTTON",
+      "closed": true
+    },
+    {
+      "dialog": "preferencesDialog",
+      "text": "연출 취향 · 명시적 검토\n닫기\n\n현재 작품의 IP 기준입니다. take 선택이나 비용 절약은 자동으로 취향이 되지 않습니다. 공식 설정·사용권을 바꾸지 않습니다.\n\n적용 범위\n현재 작품의 예외\n속성\n색감\n질감\n카메라\n편집 리듬\n해석한 규칙\n원문·예시·반례 근거\n이유\n정정 대상 v번호 (신규는 공란)\n검토 후보로 저장\n승인·중지·복원 이유\n\n명시적으로 등록한 취향이 없습니다.\n\n승인 규칙은 다음 채팅 초안의 문맥 기록에만 포함됩니다. 로컬 초안 문장을 AI로 재작성하지 않으며 기존 기획·영상은 보존합니다.",
+      "controls": [
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "scope",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "category",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "value",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "evidence",
+          "type": "textarea",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "reason",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "supersedes",
+          "type": "number",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "preferenceReviewReason",
+          "name": "",
+          "type": "text",
+          "disabled": false,
+          "required": false
+        }
+      ],
+      "box": {
+        "x": 640,
+        "y": 120.7578125,
+        "width": 640,
+        "height": 838.4765625
+      },
+      "focused": "BUTTON",
+      "closed": true
+    },
+    {
+      "dialog": "ontologyDialog",
+      "text": "캐릭터·장소·스타일\n닫기\n\n여러 장면에서 일관되게 사용할 캐릭터·장소·스타일을 저장하세요. 검토 후 원하는 장면에 연결할 수 있습니다.\n\n새 설정\n\n새 설정 작성\n역할\n인물\n장소\n스타일\n이름\n설명\n출처 또는 직접 작성 근거\n검토 후보로 저장\n승인 버전 0\n\n현재 장면: 01 빛의 시작\n\n선택한 설정을 현재 장면에 연결\n\n저장된 설정이 없습니다.\n\n설정·제작 연결 기록",
+      "controls": [
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "entity",
+          "type": "hidden",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "ontologyNew",
+          "name": "",
+          "type": "button",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "kind",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "label",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "description",
+          "type": "textarea",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "evidence",
+          "type": "textarea",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "ontologyBind",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "box": {
+        "x": 640,
+        "y": 114.3046875,
+        "width": 640,
+        "height": 851.3828125
+      },
+      "focused": "BUTTON",
+      "closed": true
+    },
+    {
+      "dialog": "libraryDialog",
+      "text": "프로젝트 자산함\n닫기\n검색\n유형\n전체\n이미지\n영상\n범위\n현재 작품\n현재 IP 전체\n이 로컬 작업실 전체\n\n재사용 대상: 현재 작품의 선택 샷. 원본과 사용권 근거만 연결하고 승인·선택 상태는 가져오지 않습니다.\n\n검토 상태\n전체 take\n승인된 take만\nVIDEO\n\nlandscape.mp4\n\n디자인 시스템 기능 QA 20261026 / 01 빛의 시작 · Take 1\n직접 만든 합성 테스트 패턴 · 승인됨선택 샷에 연결\nVIDEO\n\nportrait.mp4\n\n디자인 시스템 기능 QA 20261026 / 01 빛의 시작 · Take 2\n직접 만든 합성 테스트 패턴 · 검토 필요선택 샷에 연결\n\nstill.png\n\n디자인 시스템 기능 QA 20261026 / 01 빛의 시작 · Take 3\n직접 만든 합성 테스트 패턴 · 검토 필요선택 샷에 연결\nVIDEO\n\nlandscape.mp4\n\n디자인 시스템 기능 QA 20261026 / 02 움직임과 만남 · Take 1\n직접 만든 합성 테스트 패턴 · 승인됨선택 샷에 연결\nVIDEO\n\nportrait.mp4\n\n디자인 시스템 기능 QA 20261026 / 02 움직임과 만남 · Take 2\n직접 만든 합성 테스트 패턴 · 검토 필요선택 샷에 연결\n\nstill.png\n\n디자인 시스템 기능 QA 20261026 / 02 움직임과 만남 · Take 3\n직접 만든 합성 테스트 패턴 · 검토 필요선택 샷에 연결\nVIDEO\n\nlandscape.mp4\n\n디자인 시스템 기능 QA 20261026 / 03 여운을 남기는 마지막 장면 · Take 1\n직접 만든 합성 테스트 패턴 · 승인됨선택 샷에 연결\nVIDEO\n\nportrait.mp4\n\n디자인 시스템 기능 QA 20261026 / 03 여운을 남기는 마지막 장면 · Take 2\n직접 만든 합성 테스트 패턴 · 검토 필요선택 샷에 연결\n\nstill.png\n\n디자인 시스템 기능 QA 20261026 / 03 여운을 남기는 마지막 장면 · Take 3\n직접 만든 합성 테스트 패턴 · 검토 필요선택 샷에 연결\n\n현재 작품 take의 원본 링크입니다. 연결은 새 take를 만들며, 출처 프로젝트를 수정하지 않습니다.",
+      "controls": [
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "assetSearch",
+          "name": "",
+          "type": "text",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "assetType",
+          "name": "",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "assetScope",
+          "name": "",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "assetReview",
+          "name": "",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "box": {
+        "x": 640,
+        "y": 16,
+        "width": 640,
+        "height": 1048
+      },
+      "focused": "BUTTON",
+      "closed": true
+    },
+    {
+      "dialog": "rightsDialog",
+      "text": "자산 사용 중지 · 재검토\n닫기\n\n같은 파일을 사용하는 모든 작품에 적용됩니다. 파일은 보존하고 재사용·렌더·결과 다운로드를 제한합니다. 로컬 사용자 진술이며 법적 권리 검증은 아닙니다.\n\n현재 작품 자산\ntone.wav · 07614993 · 사용 가능\nlandscape.mp4 · 8d3974e0 · 사용 가능\nportrait.mp4 · 5b6fe95f · 사용 가능\nstill.png · 03688c61 · 사용 가능\nlandscape.mp4 · 8d3974e0 · 사용 가능\nportrait.mp4 · 5b6fe95f · 사용 가능\nstill.png · 03688c61 · 사용 가능\nlandscape.mp4 · 8d3974e0 · 사용 가능\nportrait.mp4 · 5b6fe95f · 사용 가능\nstill.png · 03688c61 · 사용 가능\n조치\n사용 중지\n근거 재검토 후 사용 재개\n중지 또는 재개 근거\n선택 자산 사용 상태 적용",
+      "controls": [
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "rightsAsset",
+          "name": "sha256",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "blocked",
+          "type": "select-one",
+          "disabled": false,
+          "required": false
+        },
+        {
+          "id": "",
+          "name": "reason",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "box": {
+        "x": 640,
+        "y": 327.953125,
+        "width": 640,
+        "height": 424.09375
+      },
+      "focused": "BUTTON",
+      "closed": true
+    },
+    {
+      "dialog": "budgetDialog",
+      "text": "제작 예산\n닫기\n\n모델 작업에 사용할 예산입니다. 예산 저장은 유료 실행 승인이 아닙니다.\n\n한도 (USD)\n공급자 동시 작업 한도\n예산 저장\n최신 예산 비교\n\n설정된 제작 예산이 없습니다.\n비용 상세 기록",
+      "controls": [
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "amount",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "concurrency",
+          "type": "number",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "reloadBudget",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "box": {
+        "x": 640,
+        "y": 313,
+        "width": 640,
+        "height": 453.9921875
+      },
+      "focused": "BUTTON",
+      "closed": true
+    },
+    {
+      "dialog": "archiveDialog",
+      "text": "작품 보관 관리\n닫기\n\n현재 제작 중\n\n보관하면 제작 변경을 차단하고 결과 재생·다운로드는 유지합니다. 물리 삭제·보관 기한 자동 삭제는 실행하지 않습니다.\n\n보관 또는 해제 이유\n작품 보관",
+      "controls": [
+        {
+          "id": "",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        },
+        {
+          "id": "",
+          "name": "reason",
+          "type": "text",
+          "disabled": false,
+          "required": true
+        },
+        {
+          "id": "archiveSubmit",
+          "name": "",
+          "type": "submit",
+          "disabled": false
+        }
+      ],
+      "box": {
+        "x": 640,
+        "y": 384.25,
+        "width": 640,
+        "height": 311.4921875
+      },
+      "focused": "BUTTON",
+      "closed": true
+    }
+  ],
+  "models": [
+    {
+      "role": "chat",
+      "value": "anthropic-haiku-5-5",
+      "name": "claude-haiku-5-5",
+      "reason": "연결 확인 전에는 실행할 수 없습니다.",
+      "stored": null
+    },
+    {
+      "role": "image",
+      "value": "fal-flux-schnell",
+      "name": "fal-ai/flux/schnell",
+      "reason": "연결 확인 전에는 실행할 수 없습니다.",
+      "stored": null
+    },
+    {
+      "role": "video",
+      "value": "fal-kling-2-6-pro",
+      "name": "fal-ai/kling-video/v2.6/pro/image-to-video",
+      "reason": "결과 연결이 차단되어 사용할 수 없습니다.",
+      "stored": null
+    },
+    {
+      "role": "video",
+      "value": "fal-kling-2-5-turbo",
+      "name": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+      "reason": "연결 확인 전에는 실행할 수 없습니다.",
+      "stored": null
+    },
+    {
+      "role": "image",
+      "value": "",
+      "name": "",
+      "reason": "기존 이미지를 연결하거나 모델을 고르세요.",
+      "stored": null
+    }
+  ],
+  "chat": {
+    "disabled": true,
+    "input": "합성 QA: 미연결 요청은 전송하지 않습니다.",
+    "capability": "연결 없음 · 지금은 요청할 수 없습니다.\n\n연결 상세",
+    "stored": "합성 QA: 미연결 요청은 전송하지 않습니다.",
+    "actualPosts": 0
+  },
+  "projectUnchanged": true
+}

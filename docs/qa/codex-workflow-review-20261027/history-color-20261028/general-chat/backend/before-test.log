@@ -1,0 +1,27 @@
+test_independent_turn_retains_previous_request (tests.test_general_chat_history.GeneralChatHistoryTest.test_independent_turn_retains_previous_request) ... 127.0.0.1 - - [28/Oct/2026 03:09:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "PATCH /v1/workspaces/13cef38a-ba94-4e8d-a5b6-1f5c5592b6c3/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:09:09] "POST /api/action HTTP/1.1" 200 -
+ERROR
+
+======================================================================
+ERROR: test_independent_turn_retains_previous_request (tests.test_general_chat_history.GeneralChatHistoryTest.test_independent_turn_retains_previous_request)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_history.py", line 16, in test_independent_turn_retains_previous_request
+    self.assertEqual(second['history_context']['request_count'], 1)
+                     ~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: 'history_context'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.552s
+
+FAILED (errors=1)

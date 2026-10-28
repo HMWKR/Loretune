@@ -1,0 +1,270 @@
+--- before/studio.css
++++ after/studio.css
+@@ -969,6 +969,11 @@
+ .lt-ui .agent-preferences-form { padding-block:var(--ui-space-2); }
+ .lt-ui .agent-preferences-form button { margin-top:var(--ui-space-3); }
+ .lt-ui .agent-setting-note,.lt-ui #agentSettingsStatus { font-size:var(--ui-meta); }
++.lt-ui .agent-work-status { margin:0 0 var(--ui-space-3); font-size:var(--ui-item); border-bottom:1px solid var(--ui-line); }
++.lt-ui .agent-work-status>details>summary { padding-block:var(--ui-space-2); cursor:pointer; overflow-wrap:anywhere; }
++.lt-ui .agent-work-row { display:flex; gap:var(--ui-space-2); align-items:center; padding-block:var(--ui-space-2); }
++.lt-ui .agent-work-row>p { flex:1; min-width:0; margin:0; }
++.lt-ui .agent-work-row>button { flex:none; padding-inline:var(--ui-space-2); }
+ .lt-ui .agent-chat-pane .general-chat { margin:var(--ui-space-4) 0; }
+ .lt-ui .general-chat[data-sidebar-hosted="true"]>#generalChatHeading { display:none; }
+ .lt-ui .agent-chat-pane .general-chat-card { border-color:var(--ui-line); border-radius:var(--ui-radius-control); padding:var(--ui-space-3); }
+--- before/chat-sidebar.js
++++ after/chat-sidebar.js
+@@ -25,6 +25,9 @@
+  const toggle = make('button', 'agent-toggle', 'AI 대화'); toggle.id = 'agentToggle'; toggle.type = 'button'; toggle.setAttribute('aria-controls', sidebar.id); q('.lt-studio-shell').append(toggle);
+  const context = make('p', 'agent-context'); context.id = 'agentContext'; chat.append(context);
+  const savedHint = make('p', 'agent-saved-hint', '서버에 저장된 작품·편집을 기준으로 대화합니다.'); chat.append(savedHint);
++ const workStatus = make('section', 'agent-work-status'); workStatus.id = 'agentWorkStatus'; workStatus.setAttribute('aria-label', '현재 대화의 제작 작업');
++ const workEmpty = make('p', 'agent-setting-note', '저장된 제작 작업 없음'), workDetails = make('details'), workSummary = make('summary'), workSummaryText = make('span'), workRows = make('div');
++ workSummaryText.setAttribute('role', 'status'); workSummaryText.setAttribute('aria-live', 'polite'); workSummary.append(workSummaryText); workDetails.append(workSummary, workRows); workStatus.append(workEmpty, workDetails); chat.append(workStatus);
+  chat.append(q('#conversationControls'));
+  const preferences = make('div', 'agent-preferences-slot'); preferences.id = 'agentPreferencesSlot'; chat.append(preferences);
+  const preferenceDetails = make('details', 'agent-preferences'), preferenceSummary = make('summary', '', '에이전트 설정');
+@@ -43,6 +46,81 @@
+  let opened = true, selected = 'chat', activeDialog = null, drag = null, preferredWidth = DEFAULT_WIDTH;
+  const dialogHosts = new Map(), dialogStack = [];
+  let preferenceScope = '', preferenceChoices = '';
++ let workStatusSignature = '';
++ function workGroups(snapshot, p, name, shot) {
++  if (!p) return [];
++  const cid = p.active_conversation?.id;
++  const visible = j => !!j && (!j.conversation_id || j.conversation_id === cid) && (!j.context?.conversation_id || j.context.conversation_id === cid);
++  const local = (snapshot?.jobs || []).filter(j => visible(j) && j.song === name);
++  const records = [];
++  const localNames = { queued: '대기', running: '진행', completed: '결과 준비', failed: '실패', cancelled: '취소', interrupted: '중단', outcome_unknown: '상태 확인 필요' };
++  const providerNames = { prepared: '대기', submitting: '접수 확인 중', accepted: '접수됨', running: '생성 중', result_ready: '결과 수신 대기', downloading: '결과 연결 중', imported: 'Take 연결됨', failed: '실패', submission_blocked: '전송 전 차단', expired: '견적 만료 · 전송 안 됨', reconciliation_required: '접수 확인 필요', import_blocked: '결과 연결 실패', cancel_pending: '취소 전송 대기', cancel_sent: '취소 요청 중', cancelled: '전송 전 취소', cancelled_result: '취소 후 결과 · 검토 필요' };
++  function add(key, label, jobs, field, names) {
++   if (!jobs.length) return;
++   const counts = new Map(), buckets = { active: 0, attention: 0, result: 0, stopped: 0 };
++   for (const j of jobs) {
++    const value = j[field], text = names[value] || '상태 확인 필요'; counts.set(text, (counts.get(text) || 0) + 1);
++    if (['completed', 'imported'].includes(value)) buckets.result++;
++    else if (['cancelled', 'interrupted', 'expired'].includes(value)) buckets.stopped++;
++    else if (['queued', 'running', 'prepared', 'submitting', 'accepted', 'result_ready', 'downloading', 'cancel_pending', 'cancel_sent'].includes(value)) buckets.active++;
++    else buckets.attention++;
++   }
++   records.push({ key, label, count: jobs.length, summary: [...counts].map(([text, count]) => text + ' ' + count + '건').join(' · '), buckets });
++  }
++  add('output', '출력', local.filter(j => !j.kind && j.snapshot?.timeline), 'status', localNames);
++  add('motion', '선택 장면 모션', local.filter(j => shot && j.kind === 'local-motion' && j.shot === shot), 'status', localNames);
++  const scene = (p.scenes_3d || []).find(s => shot && (s.shot === shot || p.shots?.[shot]?.stable_id && s.shot_id === p.shots[shot].stable_id));
++  add('scene', '선택 장면 3D', (p.scene_3d_jobs || []).filter(j => visible(j) && scene && j.scene_id === scene.id), 'status', localNames);
++  const provider = new Map();
++  for (const j of snapshot?.generation_jobs || []) if (visible(j) && j.context?.song === name && shot && j.context.shot === shot && typeof j.id === 'string') provider.set(j.id, j);
++  for (const action of p.media_actions || []) if (action.shot === shot && visible(action) && visible(action.job) && typeof action.job?.id === 'string' && !provider.has(action.job.id)) provider.set(action.job.id, action.job);
++  add('provider', '선택 장면 AI 미디어', [...provider.values()], 'state', providerNames);
++  return records;
++ }
++ function renderWorkStatus() {
++  const p = project(), groups = workGroups(state, p, song(), shotName), scope = conversationDraftKey('agent-work-status');
++  const signature = JSON.stringify([scope, groups]); if (signature === workStatusSignature) return;
++  workStatusSignature = signature; workStatus.hidden = !p; workEmpty.hidden = groups.length > 0; workDetails.hidden = !groups.length;
++  const counts = groups.reduce((all, group) => { for (const key in all) all[key] += group.buckets[key]; return all; }, { active: 0, attention: 0, result: 0, stopped: 0 });
++  const parts = [[counts.active, '진행'], [counts.attention, '확인 필요'], [counts.result, '결과 준비'], [counts.stopped, '취소·중단·만료']].filter(([count]) => count).map(([count, label]) => label + ' ' + count + '건');
++  workSummaryText.textContent = '제작 작업 · ' + parts.join(' · ');
++  const focusedKey = workRows.contains(document.activeElement) ? document.activeElement.dataset.agentWork : null;
++  workRows.replaceChildren();
++  for (const group of groups) { const row = make('div', 'agent-work-row'), text = make('p', '', group.label + ' · ' + group.summary), button = make('button', '', '작업 보기'); button.type = 'button'; button.dataset.agentWork = group.key; button.setAttribute('aria-label', group.label + ' 작업 보기'); button.title = '입력은 보존하고 기존 제작 작업 화면에서 확인합니다.'; row.append(text, button); workRows.append(row); }
++  if (focusedKey) workRows.querySelector('[data-agent-work="' + focusedKey + '"]')?.focus({ preventScroll: true });
++ }
++ function focusWorkTarget(target) {
++  if (!target) return;
++  for (let parent = target.parentElement; parent; parent = parent.parentElement) if (parent.tagName === 'DETAILS') parent.open = true;
++  target.tabIndex = -1; target.focus({ preventScroll: true }); target.scrollIntoView({ block: 'center' });
++ }
++ function viewWork(key) {
++  if (!workGroups(state, project(), song(), shotName).some(group => group.key === key)) return;
++  const desiredDialog = key === 'motion' ? q('#motionDialog') : key === 'scene' ? q('#sceneStudioDialog') : null;
++  const target = () => {
++   if (key === 'output') return q('#jobs');
++   if (key === 'motion') return q('#motionJobs');
++   if (key === 'scene') return q('#sceneStudioJobs');
++   if ((project()?.media_actions || []).some(action => action.shot === shotName && action.job)) return q('#mediaActionCards');
++   const video = (state?.generation_jobs || []).some(job => job.context?.song === song() && job.context.shot === shotName && job.context.output_kind !== 'image' && job.context.dispatch !== 'fal-model-queue-v1');
++   return q(video ? '#generationPreparations' : '#imageRecoveryJobs');
++  };
++  if (activeDialog && activeDialog === desiredDialog) { focusWorkTarget(target()); return; }
++  const scope = conversationDraftKey('agent-work-status');
++  for (const dialog of [...dialogStack].reverse()) dialog.close();
++  queueMicrotask(() => {
++   syncDialogs(); if (scope !== conversationDraftKey('agent-work-status')) return;
++   setStep(key === 'output' ? 4 : 3);
++   // Let the original stage/mobile controllers settle before selecting review.
++   queueMicrotask(() => {
++    if (scope !== conversationDraftKey('agent-work-status')) return;
++    choose('settings');
++    if (desiredDialog) { const launcher = key === 'motion' ? q('#motionButton') : q('#sceneStudioButton'); if (!launcher || launcher.disabled) return; launcher.click(); syncDialogs(); }
++    focusWorkTarget(target());
++   });
++  });
++ }
++ workRows.addEventListener('click', event => { const button = event.target.closest('[data-agent-work]'); if (button) viewWork(button.dataset.agentWork); });
+  const modeNames = { read_only: '읽기 전용', review: '검토 후 편집', full_access: 'FullAccess' };
+  function renderPreferences(p) {
+   const prefs = p?.agent_preferences, current = prefs?.current, cap = prefs?.capabilities?.models?.[current?.selection];
+@@ -91,6 +169,7 @@
+   if (context.textContent !== text) context.textContent = text;
+   const hint = activeDialog ? '이 작업 창의 미저장 입력은 아직 AI에 반영되지 않습니다. 저장된 작품·편집을 기준으로 대화합니다.' : dirty ? '현재 편집에 미저장 변경이 있습니다. 저장 후 대화에 반영됩니다.' : '서버에 저장된 작품·편집을 기준으로 대화합니다.';
+   if (savedHint.textContent !== hint) savedHint.textContent = hint;
++  renderWorkStatus();
+   renderPreferences(p);
+   legacy.hidden = q('#modelChatPanel').hidden;
+   proposals.hidden = !q('#timelineProposals').childElementCount;
+@@ -178,4 +257,7 @@
+  window.LoretuneAgentSidebar = { refresh, open: () => { if (activeDialog) { dialogHosts.get(activeDialog).open = true; portal(activeDialog); } else choose('chat'); }, close: closeAgent };
+  window.LoretuneGeneralChat.mount({ container: generalHost, onClose: closeAgent });
+  width(preferredWidth); syncDialogs(); apply();
++ // Reuse the application's scoped public-state polling. This is presentation
++ // only: no new requests, providers, job creation, or execution-state writes.
++ setInterval(() => { if (!document.hidden) renderWorkStatus(); }, 1500);
+ })();
+--- before/tests/chat_sidebar.cjs
++++ after/tests/chat_sidebar.cjs
+@@ -11,7 +11,7 @@
+  const wait=()=>page.waitForFunction(()=>!busy&&!pendingId());
+  const visible=selector=>page.$eval(selector,e=>!!e.getClientRects().length);
+  const snapshot=async name=>{if(evidence){await page.screenshot({path:path.join(evidence,name+'.png')})}};
+- assert.equal(await visible('#agentSidebar'),true);assert.equal(await page.$eval('#agentToggle',e=>e.getAttribute('aria-expanded')),'true');
++ assert.equal(await visible('#agentSidebar'),true);assert.equal(await page.$eval('#agentToggle',e=>e.getAttribute('aria-expanded')),'true');assert.equal(await visible('#agentWorkStatus'),false,'no project must not invent production status');
+  await page.evaluate(()=>{window.sidebarIdentity={chat:document.getElementById('agentChatPane'),general:document.getElementById('generalChatPanel'),prompt:document.getElementById('generalChatPrompt'),conversation:document.getElementById('conversationSelect'),model:document.getElementById('conversationModelSelect')};});
+  await page.type('#generalChatPrompt','단일 창 입력 보존');await page.click('.agent-close');assert.equal(await visible('#agentSidebar'),false);assert.equal(await page.evaluate(()=>document.activeElement.id),'agentToggle');
+  await page.click('#agentToggle');assert.equal(await page.$eval('#generalChatPrompt',e=>e.value),'단일 창 입력 보존');
+@@ -19,7 +19,7 @@
+  const bounds=await page.$eval('.agent-resizer',e=>e.getBoundingClientRect().toJSON());await page.mouse.move(bounds.x+6,bounds.y+80);await page.mouse.down();await page.mouse.move(bounds.x+190,bounds.y+80);await page.mouse.up();const mouseWidth=await page.$eval('.agent-resizer',e=>Number(e.getAttribute('aria-valuenow')));assert.ok(mouseWidth>=288&&mouseWidth<=600);await page.reload({waitUntil:'networkidle0'});assert.equal(await page.$eval('.agent-resizer',e=>Number(e.getAttribute('aria-valuenow'))),mouseWidth);
+  await page.click('.agent-close');await page.click('#emptyNewProject');await page.waitForSelector('#projectDialog[open]');
+  await page.click('#projectDialog .agent-dialog-launcher');assert.equal(await page.$eval('#agentChatPane',e=>e.closest('dialog').id),'projectDialog');await page.type('#project input[name=name]','사이드바 기능 검증');await page.click('#project button.primary');await wait();await page.waitForFunction(()=>!document.getElementById('projectDialog').open&&!!project());
+- await page.click('#agentToggle');await page.type('#generalChatPrompt','첫 대화의 입력');await page.evaluate(()=>{window.sidebarIdentity={chat:document.getElementById('agentChatPane'),general:document.getElementById('generalChatPanel'),prompt:document.getElementById('generalChatPrompt'),conversation:document.getElementById('conversationSelect'),model:document.getElementById('conversationModelSelect')};});
++ await page.click('#agentToggle');assert.match(await page.$eval('#agentWorkStatus',e=>e.textContent),/저장된 제작 작업 없음/);await page.type('#generalChatPrompt','첫 대화의 입력');await page.evaluate(()=>{window.sidebarIdentity={chat:document.getElementById('agentChatPane'),general:document.getElementById('generalChatPanel'),prompt:document.getElementById('generalChatPrompt'),conversation:document.getElementById('conversationSelect'),model:document.getElementById('conversationModelSelect')};});
+  // All stages use the exact node, independent of the old planning visibility.
+  for(const stage of ['2','3','4','1']){await page.click('.flow-nav [data-step="'+stage+'"]');assert.equal(await visible('#agentSidebar'),true);assert.equal(await page.evaluate(()=>sidebarIdentity.prompt===document.getElementById('generalChatPrompt')),true,'stage changes retain the existing prompt node');}
+  await page.evaluate(()=>{window.sidebarIdentity={chat:document.getElementById('agentChatPane'),general:document.getElementById('generalChatPanel'),prompt:document.getElementById('generalChatPrompt'),conversation:document.getElementById('conversationSelect'),model:document.getElementById('conversationModelSelect')};});
+--- before/tests/work_status.cjs
++++ after/tests/work_status.cjs
+@@ -0,0 +1,32 @@
++'use strict';
++const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
++const source=fs.readFileSync('chat-sidebar.js','utf8');
++const code=source.slice(source.indexOf(' function workGroups('),source.indexOf(' function renderWorkStatus('));const context={};vm.createContext(context);vm.runInContext(code+';globalThis.groups=workGroups;',context);
++const p={active_conversation:{id:'current'},shots:{s:{stable_id:'sid'}},scenes_3d:[{id:'scene',shot_id:'sid'}],scene_3d_jobs:[{scene_id:'scene',status:'running'},{scene_id:'other-scene',status:'failed'}],media_actions:[{shot:'s',job:{id:'provider',state:'running'}},{shot:'s',job:{id:'linked-only',state:'imported'}}]};
++const state={jobs:[{song:'A',status:'running',snapshot:{timeline:{}}},{song:'A',status:'completed',snapshot:{timeline:{}}},{song:'B',status:'failed',snapshot:{timeline:{}}},{song:'A',conversation_id:'private',status:'failed',snapshot:{timeline:{}}},{song:'A',kind:'local-motion',shot:'s',status:'failed'},{song:'A',kind:'local-motion',shot:'other',status:'completed'},{song:'A',kind:'future-tool',status:'completed'}],generation_jobs:[{id:'provider',context:{song:'A',shot:'s'},state:'running'},{id:'private',conversation_id:'private',context:{song:'A',shot:'s'},state:'failed'},{id:'other',context:{song:'A',shot:'other'},state:'failed'}]};
++let rows=context.groups(state,p,'A','s');assert.deepEqual(Array.from(rows,r=>r.key),['output','motion','scene','provider']);assert.equal(rows[0].count,2);assert.equal(rows[1].count,1);assert.equal(rows[2].count,1);assert.equal(rows[3].count,2,'linked provider records deduplicate by actual job id');assert.equal(rows[3].buckets.result,1);assert.equal(rows[3].buckets.active,1);assert.match(rows[1].summary,/실패 1건/);assert.equal(context.groups(state,null,'A','s').length,0);assert.deepEqual(Array.from(context.groups(state,p,'A','other'),r=>r.key),['output','motion','provider']);
++state.generation_jobs[0].state='unknown-new-state';rows=context.groups(state,p,'A','s');assert.match(rows.at(-1).summary,/상태 확인 필요/);assert.equal(rows.at(-1).buckets.attention,1);assert.doesNotMatch(JSON.stringify(rows),/private|other-scene|unknown-new-state|future-tool/);console.log('work status source contract, scoping, unknown state and provider dedup passed');
++
++async function browserTest(url,phase,evidence){
++ const {createRequire}=require('node:module'),puppeteer=createRequire('/opt/homebrew/lib/noop.js')('puppeteer-core');const browser=await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--no-sandbox']});let page;
++ try{
++  page=await browser.newPage();await page.setViewport({width:1920,height:1080});const errors=[],actions=[];page.on('pageerror',error=>errors.push(error.message));page.on('request',r=>{if(r.method()==='POST')actions.push(JSON.parse(r.postData()||'{}').action)});await page.goto(url,{waitUntil:'networkidle0'});await page.waitForFunction(()=>!!project()?.active_conversation);
++  await page.select('#songs','Status A');await page.waitForFunction(()=>song()==='Status A'&&!!project()?.active_conversation&&!busy);
++  await page.waitForSelector('[data-agent-work="provider"]');assert.equal(await page.$eval('#agentWorkStatus details',e=>e.open),false);if(evidence)await page.screenshot({path:path.join(evidence,'compact-default-1920.png')});await page.$eval('#agentWorkStatus details',e=>e.open=true);
++  const text=()=>page.$eval('#agentWorkStatus',e=>e.textContent);assert.match(await text(),/진행 3건/);assert.match(await text(),/확인 필요 1건/);assert.match(await text(),/결과 준비 1건/);assert.doesNotMatch(await text(),/private|SECRET|\.mp4|[a-f0-9]{32}/);
++  if(evidence)await page.screenshot({path:path.join(evidence,'active-1920.png')});
++  fs.writeFileSync(phase,JSON.stringify({phase:'fail-output'}));await page.waitForFunction(()=>document.querySelector('#agentWorkStatus summary').textContent.includes('확인 필요 2건'),{timeout:10000});assert.match(await page.$eval('#agentWorkStatus [data-agent-work="output"]',e=>e.parentElement.textContent),/실패 1건/);
++  if(evidence)await page.screenshot({path:path.join(evidence,'failed-1920.png')});
++  for(const [key,target,dialog] of [['output','jobs',null],['motion','motionJobs','motionDialog'],['scene','sceneStudioJobs','sceneStudioDialog'],['provider','generationPreparations',null]]){
++   if(await page.$eval('#agentSidebar',e=>e.hidden))await page.click('#agentToggle');else if(await page.$eval('#agentChatTab',e=>e.getAttribute('aria-selected'))!=='true')await page.click('#agentToggle');
++   await page.$eval('#agentWorkStatus details',e=>e.open=true);await page.focus('[data-agent-work="'+key+'"]');await page.keyboard.press('Enter');await page.waitForFunction(target=>document.activeElement.id===target,{},target);assert.equal(await page.$eval('#'+target,e=>!!e.getClientRects().length),true,'keyboard work link must expose its existing real card container');
++   if(dialog){assert.equal(await page.$eval('#'+dialog,e=>e.open),true);await page.evaluate(id=>document.getElementById(id).close(),dialog);await page.waitForFunction(()=>!document.getElementById('agentChatPane').closest('dialog'));}
++  }
++  await page.click('#agentToggle');const defaultConversation=await page.$eval('#conversationSelect',e=>e.value);const other=await page.$$eval('#conversationSelect option',(options,id)=>options.find(x=>x.value!==id).value,defaultConversation);await page.select('#conversationSelect',other);await page.waitForFunction(id=>project()?.active_conversation?.id===id&&!conversationSwitching,{},other);await page.waitForFunction(()=>document.querySelectorAll('[data-agent-work]').length===1);assert.match(await text(),/실패 1건/);assert.doesNotMatch(await text(),/모션|3D|AI 미디어/);
++  await page.select('#songs','Status B');await page.waitForFunction(()=>song()==='Status B'&&!!project()?.active_conversation);await page.waitForFunction(()=>document.querySelectorAll('[data-agent-work]').length===1);assert.match(await text(),/실패 1건/);assert.doesNotMatch(await text(),/모션|3D|AI 미디어/);
++  await page.setViewport({width:375,height:900});await page.waitForFunction(()=>document.querySelector('.agent-resizer').hidden&&document.querySelector('.agent-work').hidden);await page.$eval('#agentWorkStatus details',e=>e.open=true);await page.focus('[data-agent-work="output"]');await page.keyboard.press('Enter');await page.waitForFunction(()=>document.activeElement.id==='jobs'&&!document.getElementById('agentSettingsPane').hidden);assert.equal(await page.$eval('#jobs',e=>!!e.getClientRects().length),true);if(evidence)await page.screenshot({path:path.join(evidence,'mobile-output-375.png')});
++  assert.deepEqual(errors,[]);assert.deepEqual(actions,[],'work status and keyboard navigation must never create a job or invoke a model');
++  const result={result:'passed',kind:'actual isolated HTTP public projection with persisted synthetic job-state fixtures; no rendering or provider invocation',checks:['active/failed/result state distinction','existing public conversation/project/selected-shot boundary','provider dedup','unknown state handling','real card navigation by keyboard','auto refresh from existing public-state polling','no IDs/paths in default work summary'],actions,errors};if(evidence)fs.writeFileSync(path.join(evidence,'browser-result.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
++ }catch(error){if(page){console.error(await page.$eval('#agentWorkStatus',e=>e.textContent));if(evidence)await page.screenshot({path:path.join(evidence,'failure.png')});}throw error}finally{await browser.close()}
++}
++if(process.argv[2])browserTest(process.argv[2],process.argv[3],process.argv[4]).catch(error=>{console.error(error);process.exitCode=1});
+--- before/tests/test_work_status_ui.py
++++ after/tests/test_work_status_ui.py
+@@ -0,0 +1,88 @@
++"""UI projection fixtures are synthetic saved states, never real model/render proof."""
++import json
++import os
++from pathlib import Path
++import shutil
++import subprocess
++import tempfile
++from threading import Thread
++import time
++import unittest
++import uuid
++
++import app
++import chat_sessions
++import production_context
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++class WorkStatusUITest(unittest.TestCase):
++    def test_actual_source_projection_contract(self):
++        result = subprocess.run(['node', 'tests/work_status.cjs'], cwd=ROOT, capture_output=True, text=True)
++        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
++
++    @unittest.skipUnless(shutil.which('node') and Path('/opt/homebrew/lib/node_modules/puppeteer-core').exists() and Path('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome').exists(), 'installed isolated browser unavailable')
++    def test_http_projection_navigation_and_live_state_change(self):
++        with tempfile.TemporaryDirectory() as directory:
++            server = app.server(Path(directory)/'data', 0)
++            store = server.store
++
++            def mutate(action, **data):
++                return store.mutate(dict(action=action, data=data, revision=store.state()['revision'], request_id=uuid.uuid4().hex))
++
++            for name in ['Status A', 'Status B']:
++                mutate('project', name=name, era='default', story=0)
++                mutate('shot', song=name, shot='status-shot', description='작업 상태 UI 합성 검증')
++            private = mutate('conversation_create', song='Status A', title='별도 대화')['conversation']['id']
++            p = store.state()['projects']['Status A']
++            cid = chat_sessions.default_id(p)
++            # A real draft record supplies the existing 3D dialog's shot binding.
++            scene = dict(schema_version=1, width=96, height=96, background=[.1,.1,.1], objects=[dict(id='subject',kind='cube',position=[0,0,0],rotation_degrees=[0,0,0],scale=[1,1,1],color=[.1,.3,.8])],camera=dict(position=[5,-7,5],target=[0,0,0],lens_mm=50),lights=[dict(id='key',position=[3,-4,6],target=[0,0,0],energy_w=800,size_m=3,color=[1,1,1])])
++            sid = mutate('scene_create', song='Status A', shot_id=production_context.shot_id(p,'status-shot'), scene=scene)['scene']['scene_id']
++            jobs = []
++
++            def job(name, status, **extra):
++                value = dict(id=uuid.uuid4().hex,song=name,status=status,progress=25,snapshot=dict(timeline=dict(id=0,clips=[]),shots={}),error=None,download=None,fixture='UI projection only; not an executed render')
++                value.update(extra); jobs.append(value); return value
++
++            output = job('Status A','running')
++            job('Status A','completed')
++            job('Status A','failed',kind='local-motion',shot='status-shot',error='합성 상태 검증 오류')
++            job('Status A','running',kind='local-3d-still',shot='status-shot',scene_id=sid,scene_revision=0,conversation_id=cid)
++            hidden = job('Status A','failed',conversation_id=private)
++            job('Status B','failed')
++            provider = dict(id=uuid.uuid4().hex, context=dict(song='Status A',shot='status-shot'),state='running',receipt=None,result=None,input=None,cost_confirmed=False,fixture='UI projection only; no provider call')
++            with store.connect() as connection:
++                revision, raw = connection.execute('SELECT revision,body FROM state WHERE id=1').fetchone()
++                state = json.loads(raw)
++                state['projects']['Status A'].setdefault('conversation_owners',{})[hidden['id']] = dict(conversation_id=private,kind='jobs')
++                connection.execute('UPDATE state SET body=? WHERE id=1',(json.dumps(state,ensure_ascii=False),))
++                for value in jobs:
++                    connection.execute('INSERT INTO jobs VALUES (?,?)',(value['id'],json.dumps(value,ensure_ascii=False)))
++                connection.execute('INSERT INTO generation_jobs VALUES (?,?,?,?)',(provider['id'],uuid.uuid4().hex,'synthetic-ui-state',json.dumps(provider)))
++            thread = Thread(target=server.serve_forever,daemon=True);thread.start()
++            phase = Path(directory)/'browser-phase.json'
++            evidence = os.environ.get('LORETUNE_WORK_STATUS_EVIDENCE')
++            command = ['node','tests/work_status.cjs',f'http://127.0.0.1:{server.server_port}',str(phase)]
++            if evidence:
++                Path(evidence).mkdir(parents=True,exist_ok=True);command.append(evidence)
++            try:
++                process = subprocess.Popen(command,cwd=ROOT,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
++                deadline = time.monotonic()+60;changed=False
++                while process.poll() is None and time.monotonic()<deadline:
++                    if phase.exists() and not changed:
++                        with store.connect() as connection:
++                            value=json.loads(connection.execute('SELECT body FROM jobs WHERE id=?',(output['id'],)).fetchone()[0]);value.update(status='failed',error='합성 상태 전환 검증 오류')
++                            connection.execute('UPDATE jobs SET body=? WHERE id=?',(json.dumps(value,ensure_ascii=False),output['id']))
++                        changed=True
++                    time.sleep(.03)
++                if process.poll() is None:
++                    process.kill()
++                stdout,stderr=process.communicate(timeout=5)
++                if evidence:
++                    (Path(evidence)/'invocation.json').write_text(json.dumps(dict(command=command,returncode=process.returncode,stdout=stdout,stderr=stderr,synthetic_fixture=True,actual_provider_calls=0),ensure_ascii=False,indent=2)+'\n')
++                self.assertTrue(changed,'browser must request the saved fixture state transition')
++                self.assertEqual(process.returncode,0,stdout+stderr)
++            finally:
++                server.shutdown();server.server_close();thread.join(timeout=5)

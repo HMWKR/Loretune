@@ -1,0 +1,173 @@
+{
+  "turn": {
+    "id": "7d77e0cb793244bdb984934756185c62",
+    "binding": {
+      "workspace": "9835eb49-2013-41b9-b268-972d0feea521",
+      "project": "09368c0b-4dd8-559e-8787-f2b2a4319690",
+      "conversation": "542912eeba7458c09aaff91fd9e97bb2",
+      "selection": "anthropic-haiku-5-5",
+      "model": "claude-haiku-5-5",
+      "model_revision": 0,
+      "context": "754d9ed8e5f134d326e687efe6083f1941771a1d709ccb2240ff5101c959f347",
+      "rights": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "price_revision": "haiku-5-5-20261027-tiered",
+      "transport": {
+        "mode": "anthropic-live",
+        "connection_id": "synthetic-account-declaration",
+        "connection_revision": 1,
+        "destination": "https://api.anthropic.com",
+        "activation_sha256": "c874cfe8702c25f9f4cf775c3b36f648359dcad8b297d18e104846e78fe4033d"
+      }
+    },
+    "conversation_id": "542912eeba7458c09aaff91fd9e97bb2",
+    "name": "A",
+    "run": "3d5fed2c2f484a63a6677a6dde68410f",
+    "prompt": "현재 음원으로 내부 편집을 도와줘",
+    "status": "cancelled",
+    "mode": "anthropic-live",
+    "model": "claude-haiku-5-5",
+    "round": 0,
+    "preview_id": "c5fc79bf7e224b7ca57f11a1efe6f46b",
+    "answer": null,
+    "error": "요청을 취소했습니다. 이미 수신한 사용량과 비용 기록은 보존했습니다.",
+    "usage": {
+      "input_tokens": 100,
+      "output_tokens": 100
+    },
+    "usage_cost_usd": "0.00006",
+    "billing_confirmed": false,
+    "steps": [
+      {
+        "round": 0,
+        "message_sha256": "4ed18477377b94fee747320330aa4088e6a39436912e29f4377951dbd8fa8a24",
+        "pricing_status": "priced",
+        "request_id": "req_synthetic_2",
+        "usage": {
+          "input_tokens": 100,
+          "output_tokens": 100
+        },
+        "usage_cost_usd": "0.00006"
+      }
+    ],
+    "total_maximum_micro": 10000,
+    "estimated_used_micro": 60,
+    "reservation": "aa6a2466-bea7-4d69-9100-3bbff7be2255",
+    "count_status": "response_received",
+    "submitted": true,
+    "observed_usage": {
+      "input_tokens": {
+        "status": "valid",
+        "value": "100"
+      },
+      "output_tokens": {
+        "status": "valid",
+        "value": "100"
+      },
+      "cache_creation_input_tokens": {
+        "status": "valid",
+        "value": "0"
+      },
+      "cache_read_input_tokens": {
+        "status": "valid",
+        "value": "0"
+      },
+      "service_tier": {
+        "status": "valid",
+        "value": "standard"
+      },
+      "speed": {
+        "status": "valid",
+        "value": "standard"
+      },
+      "inference_geo": {
+        "status": "valid",
+        "value": "global"
+      },
+      "server_tool_use": {
+        "status": "valid"
+      }
+    },
+    "pricing_status": "priced",
+    "provider_response_observed": true
+  },
+  "reservation": [
+    "estimated",
+    60
+  ],
+  "attempts": [
+    [
+      "chat-count",
+      "observed"
+    ],
+    [
+      "chat-message",
+      "observed"
+    ]
+  ],
+  "budget": [
+    {
+      "id": "41b2a6ef-2f9d-4104-ae8c-12c556142587",
+      "revision": 1,
+      "state": "active",
+      "data": {
+        "scope": "project:09368c0b-4dd8-559e-8787-f2b2a4319690",
+        "limit": {
+          "amount": "1",
+          "currency": "USD"
+        },
+        "reserved": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "netConfirmed": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "netEstimated": {
+          "amount": "0.00006",
+          "currency": "USD"
+        },
+        "available": {
+          "amount": "0.99994",
+          "currency": "USD"
+        },
+        "overrun": {
+          "amount": "0",
+          "currency": "USD"
+        },
+        "maxConcurrentJobs": 4,
+        "allowAutomaticRetries": false,
+        "activeReservations": 0,
+        "uncertainReservations": 0,
+        "costScope": "provider-only; local compute unmetered"
+      }
+    }
+  ],
+  "during_cancel": {
+    "status": "cancel_requested",
+    "reservation": [
+      "reserved",
+      null
+    ]
+  },
+  "ledger_events": [
+    [
+      "budget_changed",
+      1000000,
+      "금액 설정은 실제 지출 또는 외부 전송 승인이 아님"
+    ],
+    [
+      "reserved",
+      2458,
+      "요청액 예약; 실제 차감 아님"
+    ],
+    [
+      "usage_estimated",
+      60,
+      "사용량 기반 추정; 실제 청구 확인 아님"
+    ]
+  ],
+  "synthetic_socket_requests": 2,
+  "actual_provider_calls": 0,
+  "elapsed_seconds": null
+}

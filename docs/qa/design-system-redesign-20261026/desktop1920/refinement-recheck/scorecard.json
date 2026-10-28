@@ -1,0 +1,808 @@
+{
+  "rubric": "v1.0+v1.1-no-page-scroll-addendum",
+  "purpose": "design_quality_expert_review_not_product_readiness",
+  "viewport_css": [
+    1920,
+    1080
+  ],
+  "status": "bounded_V1_V4_independent_recheck_complete",
+  "axes": [
+    {
+      "id": "A",
+      "name": "workspace 구성·밀도",
+      "max": 20,
+      "items": [
+        {
+          "id": "A1",
+          "name": "역할 구역과 시선 이동",
+          "max": 6,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 4.5,
+          "evidence": [
+            "../final-audit/01-selected-1920.png",
+            "../final-audit/15-production-empty-1920.png"
+          ],
+          "measurement": "rail184px·중앙1376px·inspector288px. 장면→미디어→검토를 동시에 식별한다.",
+          "judgment": "구역 역할과 인접성이 명료하다. 세 구역의 실제 작업 순서/탐색 시간을 사람에게 검증하지 않았으며 복잡한 장면 제작 상세는 내부 스크롤이 필요하다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 4.5,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "15-production-empty-1920.png"
+          ]
+        },
+        {
+          "id": "A2",
+          "name": "핵심 media/transport/시간축 가시성과 bounded shell",
+          "max": 6,
+          "status": "assessed_sample",
+          "anchor": 4,
+          "earned": 6.0,
+          "evidence": [
+            "01-selected-1920.json",
+            "05-sequence-1920.json",
+            "06-expanded-sequence-1920.json",
+            "precision-keyboard.json",
+            "boundaries.json",
+            "../final-audit/long-panels.json"
+          ],
+          "measurement": "기본·sequence·정밀 편집 문서 1080/1080px, timeline 하단1064px. 정밀 입력·버튼34개와 진단 summary1개를1920 및1280에서 Tab 이동, 중심 가림0.",
+          "judgment": "기존 bounded shell의 강점을 유지한다. 긴 rail/메모 스트레스는 이전 직접 증거를 유지하며 이번 새 실행으로 바꾸지 않는다. 상세는 내부 스크롤을 사용한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 4,
+          "previous_earned": 6.0,
+          "evidence_disposition": "rechecked_current_actual_runtime",
+          "prior_evidence": [
+            "01/02/03/12/13 캡처·JSON",
+            "keyboard-detail.json",
+            "long-panels.json"
+          ]
+        },
+        {
+          "id": "A3",
+          "name": "읽기 밀도·행 길이",
+          "max": 4,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.0,
+          "evidence": [
+            "../final-audit/01-selected-1920.png",
+            "../final-audit/07-review-dirty-1920.png",
+            "../final-audit/12-long-panels-1920.png"
+          ],
+          "measurement": "inspector288px,본문14px/23.8px. 긴 한글 입력과 메모는 줄바꿈되며 본문 폭이 중앙 전체로 늘어나지 않는다.",
+          "judgment": "본문 읽기와 그룹은 안정적이다. 긴 메모는 단락 구조/요약 없이 세로 길이가 커진다. 이는 접근 불가가 아닌 읽기 부담이며 자동 요약 새 기능을 요구하는 것은 아니다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.0,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "07-review-dirty-1920.png",
+            "12-long-panels-1920.png"
+          ]
+        },
+        {
+          "id": "A4",
+          "name": "1920 공간 사용과1280 적응",
+          "max": 4,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.0,
+          "evidence": [
+            "01-selected-1920.png",
+            "05-sequence-1920.png",
+            "06-expanded-sequence-1920.png",
+            "07-expanded-sequence-1280.png",
+            "geometry.json",
+            "boundaries.json"
+          ],
+          "measurement": "1920 실제 contain 영상: 기본718.07×403.91, sequence598.96×336.91, 정밀504.86×283.98px. 1280 정밀218.14×122.70px. 문서1080/900px.",
+          "judgment": "1920 정밀 영상의 면적은 이전334.12×187.95보다2.28배로 개선됐다. 하지만1280 정밀 영상은 이전291.03×163.70보다 면적 약44% 작다. 보조 viewport의 세부 미디어 판단 부담 때문에4가 아니다. 이 감점은A4에만 반영한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 2,
+          "previous_earned": 2.0,
+          "evidence_disposition": "rechecked_current_actual_runtime",
+          "prior_evidence": [
+            "01/02/03/04/11 캡처·JSON"
+          ]
+        }
+      ],
+      "coverage_max": 20,
+      "earned_on_assessed": 16.5
+    },
+    {
+      "id": "B",
+      "name": "정보·행동 위계",
+      "max": 15,
+      "items": [
+        {
+          "id": "B1",
+          "name": "작품·장면·Take·버전 맥락",
+          "max": 5,
+          "status": "assessed_sample",
+          "anchor": 4,
+          "earned": 5.0,
+          "evidence": [
+            "05-sequence-1920.png",
+            "06-expanded-sequence-1920.png",
+            "02-keyboard-comparison-1920.png",
+            "end.json"
+          ],
+          "measurement": "편집 선택01/Take1과 재생 장면02/Take1을 명시적으로 구분. sequence시각2.172/7초, 선택·승인·편집 project hash불변.",
+          "judgment": "정해진 장면 선택/sequence/비교 표본에서 대상 역할이 명확하고 모순이 없다. 재생이 편집 선택을 바꾸지 않는다. 이는 객체 문맥의 표본 평가이며 실제 사용자의 이해 시간을 측정한 것은 아니다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.75,
+          "evidence_disposition": "rechecked_current_actual_runtime",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "02-sequence-1920.png",
+            "06-comparison-video-video-1920.png"
+          ]
+        },
+        {
+          "id": "B2",
+          "name": "상태에 맞는 다음 행동",
+          "max": 5,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.75,
+          "evidence": [
+            "../final-audit/01-selected-1920.png",
+            "../final-audit/07-review-dirty-1920.png",
+            "../final-audit/08-model-dialog-1920.png",
+            "../final-audit/13-output-state-1920.png",
+            "13-controlled-rejection-ready-1920.png",
+            "14-controlled-unknown-ready-1920.png"
+          ],
+          "measurement": "승인완료=검토수정,dirty=활성저장/취소,출력준비=결과검토/저장/납품검토전.",
+          "judgment": "승인 완료에는 검토 수정, dirty에는 활성 저장/취소, 통제된 거절에는 수정 후 재저장, unknown에는 기존 저장 확인이 표시된다. 반려/미검토 inspector와 실제 비용 commit의 모든 변형은 이번 표본에 없으므로3을 유지한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.75,
+          "evidence_disposition": "retained plus controlled error samples",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "07-review-dirty-1920.png",
+            "08-model-dialog-1920.png",
+            "13-output-state-1920.png"
+          ]
+        },
+        {
+          "id": "B3",
+          "name": "중복·진단·중요 사실 노출",
+          "max": 5,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.75,
+          "evidence": [
+            "diagnostic.json",
+            "controlled-errors.json",
+            "06-expanded-sequence-1920.png",
+            "11-model-selected-blocked-1920.png"
+          ],
+          "measurement": "일상 문구는 저장된 버전·승인 상태 중심. 자산 해시 검증 방식은 닫힌 검증 상세 안에서 checkVisibility=false, Enter로true. 테스트 미디어·모델 불가 이유·실행 승인 별도 안내 유지.",
+          "judgment": "기존 기본 노출 기술 설명 문제는 해소됐다. 진단을 삭제하지 않고 사용자가 필요할 때 열 수 있다. 계획 commit·공급자 오류 등 모든 경로의 진단 분리까지 실제 관찰하지 않았으므로 전 범위4를 선언하지 않는다. 모델 창의 공간 감점은D2에서만 다룬다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 2,
+          "previous_earned": 2.5,
+          "evidence_disposition": "rechecked_current_actual_runtime",
+          "prior_evidence": [
+            "08-model-dialog-1920.png",
+            "13-output-state-1920.png",
+            "15-production-empty-1920.png"
+          ]
+        }
+      ],
+      "coverage_max": 15,
+      "earned_on_assessed": 12.5
+    },
+    {
+      "id": "C",
+      "name": "색상·semantic 상태",
+      "max": 15,
+      "items": [
+        {
+          "id": "C1",
+          "name": "surface/action/선택/focus/검토 의미",
+          "max": 5,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.75,
+          "evidence": [
+            "../final-audit/styles-states.json",
+            "../final-audit/01-selected-1920.png",
+            "../final-audit/07-review-dirty-1920.png",
+            "13-controlled-rejection-ready-1920.png",
+            "14-controlled-unknown-ready-1920.png"
+          ],
+          "measurement": "선택#2A2A28+왼쪽#D8D8D2표식,hover#303030,focus#E4DDBE 2px dashed/offset2,승인은✓+텍스트.",
+          "judgment": "기존 선택 면/왼쪽 표식, focus 점선, 승인 기호의 역할을 유지한다. 이번에는 오류 면과 비활성 저장의 실제 픽셀도 확인했다. forced-colors와 모든 반려/실행 상태는 미검증이므로3을 유지한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.75,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "styles-states.json",
+            "01-selected-1920.png",
+            "07-review-dirty-1920.png"
+          ]
+        },
+        {
+          "id": "C2",
+          "name": "필수 전경·배경·경계 대비",
+          "max": 5,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.75,
+          "evidence": [
+            "../final-audit/contrast.csv",
+            "../final-audit/styles-states.json",
+            "../final-audit/07-review-dirty-1920.json",
+            "controlled-error-clean-captures.json",
+            "contrast-addendum.csv"
+          ],
+          "measurement": "실제불투명배경쌍:본문/패널12.78,보조/패널9.15,컨트롤경계/raised4.21,경계/hover3.58,focus/hover9.67. 현재 오류#FFB49D/오류면#28201E도 opacity1 실제쌍으로9.325:1 확인.",
+          "judgment": "측정한 필수본문·경계·focus는 필요한 대비를 확보한다. 반투명dialog backdrop와nativevideo overlay 모든 위치/상태를 측정한 것은 아니며 전체WCAG 인증이 아니다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.75,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "contrast.csv",
+            "styles-states.json",
+            "07-review-dirty-1920.json"
+          ]
+        },
+        {
+          "id": "C3",
+          "name": "상태의 비색상 단서",
+          "max": 5,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.75,
+          "evidence": [
+            "../final-audit/01-selected-1920.png",
+            "../final-audit/06-comparison-video-video-1920.png",
+            "../final-audit/production-state.json",
+            "13-controlled-rejection-ready-1920.png",
+            "14-controlled-unknown-ready-1920.png"
+          ],
+          "measurement": "선택 aria-pressed+왼쪽표식,승인✓/검토전○+문구,모델미선택 문구,dirty저장활성.",
+          "judgment": "선택·승인·focus의 기존 비색상 단서를 유지하며 오류 문구/왼쪽 경계, unknown의 비활성 저장과 활성 조회를 추가로 확인했다. 모든 provider/권리/계획 오류의 비색상 단서는 표본 밖이므로3을 유지한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.75,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "06-comparison-video-video-1920.png",
+            "production-state.json"
+          ]
+        }
+      ],
+      "coverage_max": 15,
+      "earned_on_assessed": 11.25
+    },
+    {
+      "id": "D",
+      "name": "타입·간격·형태",
+      "max": 15,
+      "items": [
+        {
+          "id": "D1",
+          "name": "한국어·숫자·3단계 위계",
+          "max": 5,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.75,
+          "evidence": [
+            "../final-audit/styles-states.json",
+            "../final-audit/07/09/10 캡처"
+          ],
+          "measurement": "제목20px/600/28px;항목13px/500/19.5px;본문14px/400/23.8px;메타12px,시간tabular-nums.",
+          "judgment": "제목·본문·메타의 세 읽기 층위가 분명하고 긴한글도 읽힌다.12px 메타가 많은 편집 화면 특성상 확대 때 패널폭과 줄 수의 절충이 남는다. 테스트화질은 평가하지 않는다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.75,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "styles-states.json",
+            "07/09/10 캡처"
+          ]
+        },
+        {
+          "id": "D2",
+          "name": "간격·정렬·그룹",
+          "max": 4,
+          "status": "assessed_sample",
+          "anchor": 4,
+          "earned": 4.0,
+          "evidence": [
+            "04-model-empty-1920.png",
+            "11-model-selected-blocked-1920.png",
+            "12-model-long-unavailable-1920.png",
+            "model-states.json"
+          ],
+          "measurement": "미선택 모델창 외곽 높이559.09px; 실제 모델 미검증/차단 선택은657.09px, 합성 긴 이름은683.28px. 긴 이름67.20px 줄바꿈, 가로overflow0.",
+          "judgment": "기존 미선택 사실을 세 줄로 반복하던 공간 문제가 해결됐다. 관련 label/select/현재 이유와 상세가 한 그룹이고, 긴 이름은 필요한 때만 전체를 보여준다. 이번 표본에서 간격·정렬의 의미 있는 잔여는 재현되지 않았다. 타입 굵기/아이콘 미감은D1/D4에서 별도 평가한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.0,
+          "evidence_disposition": "rechecked_current_actual_runtime",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "08-model-dialog-1920.png",
+            "styles-states.json"
+          ]
+        },
+        {
+          "id": "D3",
+          "name": "radius/border/shadow 역할",
+          "max": 3,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 2.25,
+          "evidence": [
+            "../final-audit/styles-states.json",
+            "../final-audit/studio.css:30–39,669–758"
+          ],
+          "measurement": "control6px,panel8px,dialog12px 계열. 기본panel은shadow없음,선택은2pxinset표식.",
+          "judgment": "면·경계·형태의 역할이 비교적 명료하다. 시간축 버튼은0pxradius로연속성을보존한다.모든컴포넌트예외의완전한정규화까지검증한것은아니다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 2.25,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "styles-states.json",
+            "studio.css:30–39,669–758"
+          ]
+        },
+        {
+          "id": "D4",
+          "name": "icon·썸네일·대체 상태",
+          "max": 3,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 2.25,
+          "evidence": [
+            "../final-audit/01-selected-1920.png",
+            "../final-audit/05-comparison-image-video-1920.png",
+            "../final-audit/06-comparison-video-video-1920.png"
+          ],
+          "measurement": "실제영상첫프레임poster,이미지thumbnail,영상nativecontrols. 검토✓/○와disclosure›/삼각형.",
+          "judgment": "실제asset의대표이미지가대상인지를돕고허위이미지를쓰지않는다.텍스트glyph와native아이콘이혼용되어광학무게가완전히같지는않다.새아이콘세트를도입할필요까지단정하지않는다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 2.25,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "05-comparison-image-video-1920.png",
+            "06-comparison-video-video-1920.png"
+          ]
+        }
+      ],
+      "coverage_max": 15,
+      "earned_on_assessed": 12.25
+    },
+    {
+      "id": "E",
+      "name": "미디어·시간축 작업",
+      "max": 15,
+      "items": [
+        {
+          "id": "E1",
+          "name": "원본·preview·aspect·poster 맥락",
+          "max": 3,
+          "status": "assessed_sample",
+          "anchor": 4,
+          "earned": 3.0,
+          "evidence": [
+            "../final-audit/01-selected-1920.png",
+            "../final-audit/05/06 비교 캡처·JSON"
+          ],
+          "measurement": "원본320×180/180×320,contain비율보존.비교두stage약471×300px.원본5초와편집1초구분.",
+          "judgment": "정의한이미지/영상및혼합비율표본에서왜곡·crop없이실제poster와출처를보여준다.영상콘텐츠품질·장시간코덱호환성은별도다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 4,
+          "previous_earned": 3.0,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "05/06 비교 캡처·JSON"
+          ]
+        },
+        {
+          "id": "E2",
+          "name": "공통 시간좌표·길이·파형",
+          "max": 4,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.0,
+          "evidence": [
+            "../final-audit/02-sequence-1920.json",
+            "../final-audit/styles-states.json"
+          ],
+          "measurement": "ruler/wave/track x233,w1350px공유.1/2/4초폭192.852/385.711/771.422.재생2.172s playheadx651.953,예측651.886(약0.07px차).",
+          "judgment": "시간좌표와비례는실측으로맞는다.파형은실측진폭이며fixture가작은일정신호라거의평평하다.실제음악의강약/긴타임라인유용성은이fixture로검증하지못했다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.0,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "02-sequence-1920.json",
+            "styles-states.json"
+          ]
+        },
+        {
+          "id": "E3",
+          "name": "현재 위치·transport·seek/sequence",
+          "max": 4,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.0,
+          "evidence": [
+            "../final-audit/02-sequence-1920.png/json",
+            "../final-audit/06-comparison-video-video-1920.json"
+          ],
+          "measurement": "sequence00:02.172/00:07.000과원본frame약1.4386s,장면02자막.비교상대1.000s에서source1.250/1.000s.",
+          "judgment": "시간과trim관계를관찰할수있고실제재생·멈춤이된다.로딩중seek/장시간브라우저동기검증은이번직접표본에없다.DM01–03코드종료를재결함으로계산하지않는다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.0,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "02-sequence-1920.png/json",
+            "06-comparison-video-video-1920.json"
+          ]
+        },
+        {
+          "id": "E4",
+          "name": "Take 비교·audition과채택 분리",
+          "max": 3,
+          "status": "assessed_sample",
+          "anchor": 4,
+          "earned": 3.0,
+          "evidence": [
+            "../final-audit/05/06 비교 캡처",
+            "../final-audit/comparison-draft-journey.json",
+            "../final-audit/start.json",
+            "../final-audit/end.json"
+          ],
+          "measurement": "초기Take1과3으로상이한기본값.영상+이미지,가로+세로영상시험.비교무음·짧은1초구간정지·선택/승인/편집불변.",
+          "judgment": "정해진표본에서비교와채택이구분되고모달닫기복귀가명확하다.프레임정밀비교가아니라는표시를보존한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 4,
+          "previous_earned": 3.0,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "05/06 비교 캡처",
+            "comparison-draft-journey.json",
+            "start.json",
+            "end.json"
+          ]
+        },
+        {
+          "id": "E5",
+          "name": "음원·자막·편집 버전 관계",
+          "max": 1,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 0.75,
+          "evidence": [
+            "../final-audit/02-sequence-1920.png",
+            "../final-audit/13-output-state-1920.png"
+          ],
+          "measurement": "편집7초,음원v1/0.5–7.5초,저장버전1·출력승인됨,납품검토전의별도표시.",
+          "judgment": "화면에서음원·자막·출력버전관계를추적할수있다.새렌더·실제오디오청취·MP4자막재추출은이번에하지않았고기능팀증거로분리한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 0.75,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "02-sequence-1920.png",
+            "13-output-state-1920.png"
+          ]
+        }
+      ],
+      "coverage_max": 15,
+      "earned_on_assessed": 12.75
+    },
+    {
+      "id": "F",
+      "name": "상호작용 상태·키보드",
+      "max": 10,
+      "items": [
+        {
+          "id": "F1",
+          "name": "상태 전이·입력 보존",
+          "max": 4,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.0,
+          "evidence": [
+            "controlled-errors.json",
+            "10-newer-draft-preserved-1920.png",
+            "keyboard-initial.json",
+            "end.json"
+          ],
+          "measurement": "이전 dirty→단계 전환→취소를 보존. 이번 controlled unknown에서 장면02 초안/오류 오염0,01복귀 초안 보존. receipt 응답 대기 중 새 문자를 입력한 뒤 committed 합성 응답에도 새 초안 유지.",
+          "judgment": "새 비동기/장면 전환 표본은 안정적이다. 프로젝트 간 전환·브라우저 종료 후 미확정 요청 복구·실제 서버 저장 지연은 이번 독립 시험에서 실행하지 않았다. 전체 상태전이 최고앵커가 아니라3을 유지한다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.0,
+          "evidence_disposition": "new controlled browser evidence plus retained old cancel evidence",
+          "prior_evidence": [
+            "07-review-dirty-1920.png",
+            "review-cancel.json",
+            "end.json"
+          ]
+        },
+        {
+          "id": "F2",
+          "name": "핵심 keyboard/focus",
+          "max": 3,
+          "status": "assessed_sample",
+          "anchor": 4,
+          "earned": 3.0,
+          "evidence": [
+            "keyboard-initial.json",
+            "precision-keyboard.json",
+            "boundaries.json",
+            "03-keyboard-dirty-1920.png"
+          ],
+          "measurement": "reload한 초기BODY에서 Tab/Enter/Arrow/문자입력/Escape만으로 미리보기·비교·닫기·검토 수정·초안 취소·출처·모델창 여정 완료. 52관측/8목표. 정밀 구간35Tab 모두 가시.",
+          "judgment": "고정 H3에 정의된 핵심 여정을 처음부터 키보드만으로 완료하고 비교/모델/취소의 focus 복귀를 확인했다. 정밀 폼 구간만 summary 명시focus 진입을 사용했으며 이를 초기 여정과 구분한다. 모든 native 영상 메뉴나 스크린리더 검증은 아니다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 2.25,
+          "evidence_disposition": "rechecked_current_actual_runtime",
+          "prior_evidence": [
+            "keyboard-detail.json",
+            "comparison-draft-journey.json",
+            "review-cancel.json",
+            "long-panels.json"
+          ]
+        },
+        {
+          "id": "F3",
+          "name": "실패 영향·복구",
+          "max": 2,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 1.5,
+          "evidence": [
+            "controlled-errors.json",
+            "controlled-error-clean-captures.json",
+            "13-controlled-rejection-ready-1920.png",
+            "14-controlled-unknown-ready-1920.png"
+          ],
+          "measurement": "2회 실행을 합쳐 변경POST4건·기존조회GET4건 모두 브라우저에서 가로챔. 400거절=입력 유지/다시 저장 가능. unknown=새 저장 disabled/기존 조회. 조회 응답 후 새 초안 보존. DB 전달0.",
+          "judgment": "실패 영향과 다음 행동을 실제 UI에서 확인했으므로U에서 평가 가능으로 변경한다. 다만unknown 안내의 “연결이 돌아오면”은 정상 연결의404unknown에도 원인을 네트워크로 좁혀 말한다. “잠시 후 기존 저장 확인”처럼 확인된 사실 중심 표현이 더 정확하므로3. 실제 서버 장애/청구/DB commit은 증명하지 않는다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": null,
+          "previous_earned": null,
+          "evidence_disposition": "new controlled browser response test; not real server fault",
+          "prior_evidence": [
+            "미실행"
+          ]
+        },
+        {
+          "id": "F4",
+          "name": "motion/reduced-motion",
+          "max": 1,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 0.75,
+          "evidence": [
+            "../final-audit/reduced-motion.json",
+            "../final-audit/studio.css:552–554,754–756,810–812"
+          ],
+          "measurement": "CDP의prefers-reduced-motion:reduce 실제match=true.버튼/shot/preview/summary transition·animation0s,scrollauto.",
+          "judgment": "선호설정에따른장식동작제거는확인했다.전체장시간모션·OS설정·의도된영상재생의모든조합은시험하지않았다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 0.75,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "reduced-motion.json",
+            "studio.css:552–554,754–756,810–812"
+          ]
+        }
+      ],
+      "coverage_max": 10,
+      "earned_on_assessed": 8.25
+    },
+    {
+      "id": "G",
+      "name": "디자인 시스템 일관성",
+      "max": 10,
+      "items": [
+        {
+          "id": "G1",
+          "name": "token→component 관리",
+          "max": 4,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 3.0,
+          "evidence": [
+            "../final-audit/studio.css:1–64,669–758,824–857",
+            "../final-audit/styles-states.json"
+          ],
+          "measurement": "동일 primitive/semantic 역할과 컴포넌트 토큰 유지. 현재 CSS 870행; 이번 변경은 기존 bounded rule 조정 및 model/transport 규칙 추가.",
+          "judgment": "토큰 역할은 유지되고 current computed 값에서 충돌은 재현되지 않았다. selector/조건별 override 추적 부담은 남는다. 중복이 곧 기능 결함이라는 뜻은 아니며 코드 축약을 새 필수 목표로 추가하지 않는다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 3.0,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "studio.css:1–64,669–758,824–857",
+            "styles-states.json"
+          ]
+        },
+        {
+          "id": "G2",
+          "name": "scale·responsive 계약",
+          "max": 3,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 2.25,
+          "evidence": [
+            "15-app-text200-1920.png",
+            "boundaries.json",
+            "07-expanded-sequence-1280.json",
+            "../final-audit/09-app150-1920.png"
+          ],
+          "measurement": "현재 앱200% 본문28px, flow, 문서2505px,가로1920px/넘침0; 눈금 겹침0. 1280 정밀 문서900px와35Tab 접근 보존. 이전150%표본은 역사적 유지.",
+          "judgment": "큰 글자에서는 의도적으로 페이지 reflow/스크롤을 허용한다. 이는 기본1920 무스크롤 요구와 충돌하지 않는다. 실제 browser200/400%zoom·screenreader·사용자 text-spacing은 미검증이며 앱배율로 대체하지 않는다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 2.25,
+          "evidence_disposition": "current app200 and1280; retained previous app150",
+          "prior_evidence": [
+            "09/10/11 캡처·JSON",
+            "index.html:728–755"
+          ]
+        },
+        {
+          "id": "G3",
+          "name": "component/state 재사용",
+          "max": 3,
+          "status": "assessed_sample",
+          "anchor": 3,
+          "earned": 2.25,
+          "evidence": [
+            "../final-audit/01-selected-1920.png",
+            "../final-audit/06-comparison-video-video-1920.png",
+            "../final-audit/styles-states.json"
+          ],
+          "measurement": "rail/Take/inspector가같은승인✓/검토전○언어,선택은표식/pressed.시간축은길이·대상중심.",
+          "judgment": "동일의미의주요상태가반복적용된다.모든오류/반려/empty변형의실제표본은없으며glyph/상세문구의잔여는각주축에서만계산했다.",
+          "limitations": [
+            "표본 한계와 미검증은 판단 칸 및 상태 매트릭스 참조"
+          ],
+          "previous_anchor": 3,
+          "previous_earned": 2.25,
+          "evidence_disposition": "retained_prior_direct_evidence; relevant code unchanged; not a new execution",
+          "prior_evidence": [
+            "01-selected-1920.png",
+            "06-comparison-video-video-1920.png",
+            "styles-states.json"
+          ]
+        }
+      ],
+      "coverage_max": 10,
+      "earned_on_assessed": 7.5
+    }
+  ],
+  "gates": {
+    "H1_media_seek_sync": {
+      "status": "UNVERIFIED",
+      "evidence": [
+        "02-sequence-1920.json",
+        "06-comparison-video-video-1920.json",
+        "S:independent-design-media-recheck-20261026/REPORT.md"
+      ],
+      "reason": "미디어 수명 로직은 표시 문자열 외 변경 없음. 기존 DM01–03 코드 재검증은 유지한다. 현재 sequence/비교/ready 상태는 관찰했으나 loading seek·stale event·이전 audio loop의 모든 반례를 이번 실제브라우저에서 재실행하지 않았다. 닫힌 결함의 재개가 아니다."
+    },
+    "H2_approval_cost_version": {
+      "status": "UNVERIFIED",
+      "evidence": [
+        "start.json",
+        "end.json",
+        "08-model-dialog-1920.png",
+        "13-output-state-1920.png"
+      ],
+      "reason": "현재 프로젝트 해시 불변, 모델 선택≠실행 승인 표시, controlled unknown/복구 분기를 확인했다. 실제 비용/실행 승인commit·실청구·실DB저장은 수행하지 않아 전체gate는U다."
+    },
+    "H3_keyboard": {
+      "status": "PASS",
+      "scope": "고정 rubric의 정의된 핵심 keyboard 여정 및 표본 정밀 컨트롤",
+      "evidence": [
+        "keyboard-initial.json",
+        "precision-keyboard.json",
+        "boundaries.json"
+      ],
+      "reason": "초기BODY부터 정상Tab으로 미리보기/비교/Escape/검토수정/초안취소/출처와 모델창을 완료. nativevideo 모든 메뉴/스크린리더까지 확장하지 않음."
+    },
+    "H4_contrast": {
+      "status": "PASS",
+      "scope": "측정한본문·상태·컨트롤경계·선택표식·focus의실제불투명배경쌍",
+      "evidence": [
+        "../final-audit/contrast.csv",
+        "../final-audit/styles-states.json",
+        "controlled-error-clean-captures.json",
+        "contrast-addendum.csv"
+      ],
+      "reason": "기존 실제 필수쌍을 유지하고 오류#FFB49D/#28201E도 실제 opacity1배경쌍9.325:1로 추가 확인. 전체WCAG/nativeoverlay 인증 아님."
+    }
+  },
+  "coverage_max_points": 100,
+  "earned_on_assessed": 81.0,
+  "overall_score": 81.0,
+  "at_utc": "2026-10-26T03:05:56.350Z",
+  "source": {
+    "index.html": "5fcc2cca3058d390968c08ce674463c08c6e777ed8c569e1c386d08fc41fd99b",
+    "studio.css": "3a76cbdf0dc05834473d9d8a9d628f19bd12fcb363a216ee3a36faa1740268c4",
+    "studio-media.js": "65e2468ec5ac6f53310383f2ec0939aa2adb4793e47da5dcca7b0f20b861e328",
+    "app.py": "7fffd1402ebf8d1ea6f3c8828034145d158859ed4ba7aebf76656bc78f85163d"
+  },
+  "display_score": "81.0",
+  "coverage_definition": "26/26 items assessable via bounded current/retained evidence, not all states tested or product readiness",
+  "prior_scorecard": "../final-audit/scorecard.json"
+}

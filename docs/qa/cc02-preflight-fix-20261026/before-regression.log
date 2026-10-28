@@ -1,0 +1,56 @@
+test_count_network_failure_is_not_messages_submission_and_does_not_retry (test_chat_preflight.ChatPreflightTest.test_count_network_failure_is_not_messages_submission_and_does_not_retry) ... ok
+test_exact_messages_limit_and_smaller_control_send_exact_validated_payload (test_chat_preflight.ChatPreflightTest.test_exact_messages_limit_and_smaller_control_send_exact_validated_payload) ... ok
+test_later_round_local_rejection_preserves_completed_usage_and_tool_result (test_chat_preflight.ChatPreflightTest.test_later_round_local_rejection_preserves_completed_usage_and_tool_result) ... ok
+test_messages_network_failure_keeps_unknown_reservation_and_duplicate_guard (test_chat_preflight.ChatPreflightTest.test_messages_network_failure_keeps_unknown_reservation_and_duplicate_guard) ... ok
+test_one_byte_above_messages_limit_never_count_or_messages (test_chat_preflight.ChatPreflightTest.test_one_byte_above_messages_limit_never_count_or_messages) ... FAIL
+test_original_count_fits_messages_does_not_releases_without_transmission (test_chat_preflight.ChatPreflightTest.test_original_count_fits_messages_does_not_releases_without_transmission) ... FAIL
+test_preflight_releases_only_this_reservation (test_chat_preflight.ChatPreflightTest.test_preflight_releases_only_this_reservation) ... FAIL
+
+======================================================================
+FAIL: test_one_byte_above_messages_limit_never_count_or_messages (test_chat_preflight.ChatPreflightTest.test_one_byte_above_messages_limit_never_count_or_messages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 109, in test_one_byte_above_messages_limit_never_count_or_messages
+    self.assertEqual(self.turn()['status'], 'blocked_before_message')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'outcome_unknown' != 'blocked_before_message'
+- outcome_unknown
++ blocked_before_message
+
+
+======================================================================
+FAIL: test_original_count_fits_messages_does_not_releases_without_transmission (test_chat_preflight.ChatPreflightTest.test_original_count_fits_messages_does_not_releases_without_transmission)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 90, in test_original_count_fits_messages_does_not_releases_without_transmission
+    self.assertEqual(self.turn()['status'], 'blocked_before_message')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'outcome_unknown' != 'blocked_before_message'
+- outcome_unknown
++ blocked_before_message
+
+
+======================================================================
+FAIL: test_preflight_releases_only_this_reservation (test_chat_preflight.ChatPreflightTest.test_preflight_releases_only_this_reservation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_chat_preflight.py", line 140, in test_preflight_releases_only_this_reservation
+    self.assertEqual(self.rows(), [('outcome_unknown', 1234, None), ('blocked_before_message', 0, None)])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('outcome_unknown', 1234, None), ('outcome_unknown', 5735, None)] != [('outcome_unknown', 1234, None), ('blocked_before_message', 0, None)]
+
+First differing element 1:
+('outcome_unknown', 5735, None)
+('blocked_before_message', 0, None)
+
+- [('outcome_unknown', 1234, None), ('outcome_unknown', 5735, None)]
+?                                      --    ^^^^^^^^   ^^^^
+
++ [('outcome_unknown', 1234, None), ('blocked_before_message', 0, None)]
+?                                     ++  +++++++ +++  ^^^^^   ^
+
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.192s
+
+FAILED (failures=3)

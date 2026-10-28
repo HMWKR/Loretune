@@ -1,0 +1,187 @@
+{
+ "prepare_image_action": {
+  "bytes": 1715,
+  "sample": {
+   "status": "proposed",
+   "action_id": "b69f17e1e1274084b7c266d01c6766b3",
+   "plan_id": "7f35be95be664b91bef18e2fbacf1a8d",
+   "plan_revision": 1,
+   "model": "fal-ai/flux/schnell",
+   "role": "image",
+   "prompt": "음원의 리듬을 담은 푸른 음악 무대",
+   "output_options": {
+    "ratio": "16:9"
+   },
+   "estimate": {
+    "amount": "0.01",
+    "currency": "USD"
+   },
+   "price": {
+    "unit_price": {
+     "amount": "0.003",
+     "currency": "USD",
+     "unit": "megapixel",
+     "source": "https://fal.ai/models/fal-ai/flux/schnell",
+     "fetched_at": "2026-10-28T09:28:18Z",
+     "revision": "fal-public-model-pages-20261028",
+     "kind": "documented-estimate"
+    },
+    "quantity": 1,
+    "expected_total": {
+     "amount": "0.003",
+     "currency": "USD"
+    },
+    "formula": "올림(1024×576 px ÷ 1MP) × 0.003 USD/MP = 0.003 USD",
+    "quote_total": {
+     "amount": "0.01",
+     "currency": "USD"
+    },
+    "matches_quote": false,
+    "mismatch": "견적 총액과 단가×수량이 다릅니다. 둘 다 표시하며 어느 쪽도 자동 선택하지 않습니다."
+   },
+   "price_kind": "fixture",
+   "price_source": "https://fal.ai/models/fal-ai/flux/schnell/api",
+   "price_revision": "synthetic-not-real",
+   "quote_expires": 1793180559.6257122,
+   "quote_expired": false,
+   "record": "recorded",
+   "actor": "agent",
+   "model_reason": "프로젝트 이미지 모델과 같은 저비용 모델",
+   "model_reason_label": "모델이 제시한 이유(검증 안 됨)",
+   "provenance": {
+    "engine": "contract-fake",
+    "chat_model": "claude-haiku-5-5",
+    "permission_mode": "review",
+    "effort": "low",
+    "run": "57f1396e0b2e4fd2991e1a5d0f496c16",
+    "call": "3ce92ca3a83d54ffb9a472304347be81"
+   },
+   "project_selection": "fal-flux-schnell",
+   "differs_from_project": false,
+   "model_state": "integration_unverified",
+   "approval": "required",
+   "mode": "contract-fake",
+   "external_calls": 0
+  }
+ },
+ "estimate_media_plan_1_item": {
+  "bytes": 1841,
+  "sample": {
+   "status": "estimated",
+   "actions": [
+    {
+     "action_id": "b69f17e1e1274084b7c266d01c6766b3",
+     "model": "fal-ai/flux/schnell",
+     "role": "image",
+     "money": {
+      "amount": "0.01",
+      "currency": "USD"
+     },
+     "price_kind": "fixture",
+     "expired": false,
+     "excluded": null,
+     "price": {
+      "unit_price": {
+       "amount": "0.003",
+       "currency": "USD",
+       "unit": "megapixel",
+       "source": "https://fal.ai/models/fal-ai/flux/schnell",
+       "fetched_at": "2026-10-28T09:28:18Z",
+       "revision": "fal-public-model-pages-20261028",
+       "kind": "documented-estimate"
+      },
+      "quantity": 1,
+      "expected_total": {
+       "amount": "0.003",
+       "currency": "USD"
+      },
+      "formula": "올림(1024×576 px ÷ 1MP) × 0.003 USD/MP = 0.003 USD",
+      "quote_total": {
+       "amount": "0.01",
+       "currency": "USD"
+      },
+      "matches_quote": false,
+      "mismatch": "견적 총액과 단가×수량이 다릅니다. 둘 다 표시하며 어느 쪽도 자동 선택하지 않습니다."
+     },
+     "price_source": "https://fal.ai/models/fal-ai/flux/schnell/api",
+     "price_revision": "synthetic-not-real",
+     "quote_expires": 1793180559.6257122,
+     "quote_expired": false,
+     "record": "recorded",
+     "actor": "agent",
+     "model_reason": "프로젝트 이미지 모델과 같은 저비용 모델",
+     "model_reason_label": "모델이 제시한 이유(검증 안 됨)",
+     "provenance": {
+      "engine": "contract-fake",
+      "chat_model": "claude-haiku-5-5",
+      "permission_mode": "review",
+      "effort": "low",
+      "run": "57f1396e0b2e4fd2991e1a5d0f496c16",
+      "call": "3ce92ca3a83d54ffb9a472304347be81"
+     },
+     "project_selection": "fal-flux-schnell",
+     "differs_from_project": false
+    }
+   ],
+   "total": {
+    "amount": "0.01",
+    "currency": "USD"
+   },
+   "excluded": {
+    "held": 0,
+    "rejected": 0,
+    "expired": 0,
+    "not_connected": 0,
+    "stale": 0
+   },
+   "billing_confirmed": false,
+   "approval": false,
+   "label": "이 대화에서 준비된 현재 유효 작업의 견적 합계입니다(제외 건수는 excluded). 계획 전체 견적이나 청구 금액이 아닙니다."
+  }
+ },
+ "get_agent_settings": {
+  "bytes": 869,
+  "sample": {
+   "status": "succeeded",
+   "chat_model": {
+    "id": "anthropic-haiku-5-5",
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "selection_reason": "사용자가 선택한 모델",
+    "price": {
+     "input_rate": ".1",
+     "output_rate": ".5",
+     "unit": "USD per 1M tokens",
+     "long_context": {
+      "threshold_input_tokens": 100000,
+      "input_rate": ".5",
+      "output_rate": "2.5"
+     },
+     "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+     "revision": "haiku-5-5-20261027-tiered"
+    }
+   },
+   "effort": "low",
+   "permission": {
+    "saved": "review",
+    "frozen": "review",
+    "effective": "review"
+   },
+   "reservation": {
+    "max_input_tokens": 16384,
+    "max_output_tokens": 4096,
+    "worst_per_round_micro": 3687,
+    "conversation_cap_micro": 400000,
+    "worst_case_rounds_within_cap": 108
+   },
+   "agent_can_change": false,
+   "note": "권한·effort·모델은 사용자만 바꿀 수 있습니다. 이 결과는 읽기 전용입니다."
+  }
+ },
+ "get_model_capabilities_video": {
+  "bytes": 1481
+ },
+ "get_model_capabilities_image": {
+  "bytes": 1300
+ }
+}

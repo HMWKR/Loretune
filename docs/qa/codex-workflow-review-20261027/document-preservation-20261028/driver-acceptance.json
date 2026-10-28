@@ -1,0 +1,46 @@
+{
+  "schema": "driver-acceptance/1",
+  "recorded_at": "2026-10-27T17:56:37.329284+00:00",
+  "tasks": [
+    {
+      "task_id": "doc-preservation-current-20261028",
+      "worker": "/root/document_preservation_recheck",
+      "role": "explorer",
+      "configured_model": "gpt-6-astra fixed by explorer role",
+      "configured_reasoning": "low fixed by explorer role",
+      "write_set": [],
+      "methodology_sources": [
+        ".document-gate.json",
+        "docs/qa/DOCUMENT-INVENTORY-20261027.md",
+        "current-690/document-preservation/audit.json"
+      ],
+      "applied_methodology": "Safe relative path inventory reconciliation and full SHA256 comparison",
+      "verification_standard": "All2156 paths, policy611/544/53, registered285, historical4 actual hashes",
+      "status": "ACCEPTED",
+      "independent_driver_receipt": "audit.json"
+    },
+    {
+      "task_id": "doc-semantic-preservation-current-20261028",
+      "worker": "/root/general_activation_review",
+      "role": "ce-reviewer",
+      "configured_model": "inherited session; actual provider/model not independently measured",
+      "write_set": [],
+      "methodology_sources": [
+        "adoption-docs-20261027/BEFORE.json and before/",
+        "current-690/document-before.json",
+        "current-725/document-before.json"
+      ],
+      "applied_methodology": "Before/current textual diff and requirement trace; preserve historical status and original requirements",
+      "verification_standard": "13 major files and13 full before hashes; changed-line meaning and explicit user working principles",
+      "status": "ACCEPTED",
+      "independent_driver_receipt": "semantic-review.json"
+    }
+  ],
+  "non_goals": [
+    "No registration/promotion/context regeneration",
+    "No outside backups or Trash",
+    "No proof of unknown pre-T0 deletions",
+    "No platform completion claim"
+  ],
+  "limitations": "Read-only role instructions do not establish an OS-enforced filesystem sandbox. Worker reports checked against current artifacts by driver."
+}

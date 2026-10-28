@@ -1,0 +1,235 @@
+{
+  "status": "REPORTED; model generation succeeded, preprocessing improvement NOT established",
+  "scenario": "one explicit known-synthetic-background alpha/official0.85padding/0.5gray composite variant vs original chair",
+  "methodology_sources": [
+    "VAST-AI-Research/TripoSR@107cefdc244c39106fa830359024f6a2f1c78871/run.py:79,144-147,190",
+    "same-source tsr/utils.py:416-454"
+  ],
+  "changed_factor": "preprocessing recipe as a whole; mask/padding/background effects cannot be separately attributed",
+  "fixed_conditions": {
+    "weights": "stabilityai/TripoSR@5b521936b01fbe1890f6f9baed0254ab6351c04a",
+    "seed": 0,
+    "mc_resolution": 256,
+    "cpu_threads": 2,
+    "chunk_size": 4096,
+    "torch": "2.10.0",
+    "safe_load": "weights_only=True",
+    "network": "OS sandbox deny network; repeated socket EPERM smoke",
+    "axis": "no coordinate transform; upstream direct mesh export; camera helper documents Z-up"
+  },
+  "preprocessing": {
+    "rule": "alpha0 iff all source RGB channels exactly58, otherwise255; no tolerance, flood fill, rembg or learned model",
+    "original_size": [
+      512,
+      512
+    ],
+    "transparent_pixels": 87612,
+    "opaque_pixels": 174532,
+    "transparent_fraction": 0.3342132568359375,
+    "foreground_bbox_inclusive": [
+      0,
+      0,
+      511,
+      511
+    ],
+    "official_ratio": 0.85,
+    "official_composite_float_background": 0.5,
+    "result_uint8_background": [
+      127,
+      127,
+      127
+    ],
+    "derived_size": [
+      601,
+      601
+    ],
+    "helper_boundary_note": "original helper maximum-coordinate-exclusive slice retained without correction",
+    "scope": "synthetic known constant background only; not arbitrary-photo segmentation",
+    "hashes": {
+      "case-2-chair.png": "e673407b9000388e4bb4e9cc382f1a91043468665c2170d996bdd21ad526835e",
+      "chair-known-bg-alpha.png": "8d43ce3619d3511e39d7c6a9a5c4cc539b5bd8b78df0b6747537dbfa725b4b86",
+      "chair-official-ratio085-rgba.png": "88b1bcc36f91a94032258366c3d9aeaac58f2f72745418b6285ca7d658ed27d2",
+      "chair-derived-input.png": "04f45e4321751552d949409329838b2a24682739e90fd8bfc9d7c723b4627c63"
+    }
+  },
+  "baseline": {
+    "result": {
+      "resolution": 256,
+      "default_quality": true,
+      "vertices": 42186,
+      "faces": 84216,
+      "bounds": [
+        [
+          -0.43153151869773865,
+          -0.35704219341278076,
+          -0.42914462089538574
+        ],
+        [
+          0.3162113428115845,
+          0.36667370796203613,
+          0.46720337867736816
+        ]
+      ],
+      "watertight": false,
+      "bytes": 1686596,
+      "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+      "seconds": 26.404223625024315,
+      "input_sha256": "e673407b9000388e4bb4e9cc382f1a91043468665c2170d996bdd21ad526835e",
+      "background_pixel": [
+        58,
+        58,
+        58
+      ],
+      "crop": "none",
+      "background_removal": false,
+      "torch": "2.10.0",
+      "threads": 2,
+      "interop_threads": 2,
+      "chunk_size": 4096,
+      "device": "cpu"
+    },
+    "inspection": {
+      "original": {
+        "path": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-cpu-artifact-20261028/chair-attempt-1/chair-resolution256-original.glb",
+        "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+        "bytes": 1686596,
+        "vertices": 42186,
+        "faces": 84216,
+        "visual_kind": "vertex",
+        "watertight": false,
+        "euler_number": -74,
+        "component_count": 1,
+        "platform_validation_error": "외부 참조와 확장 기능이 없는 정적 GLB만 지원합니다."
+      }
+    }
+  },
+  "variant": {
+    "result": {
+      "resolution": 256,
+      "default_quality": true,
+      "vertices": 129841,
+      "faces": 259260,
+      "bounds": [
+        [
+          -0.17272746562957764,
+          -0.5112577080726624,
+          -0.5186448097229004
+        ],
+        [
+          0.480224609375,
+          0.5111382007598877,
+          0.49219071865081787
+        ]
+      ],
+      "watertight": false,
+      "bytes": 5189600,
+      "sha256": "b21a787c86346ff3a3f090beb32e41e5dc0a2a120fe5cd106de1512dc617b937",
+      "seconds": 27.70244162500603,
+      "input_sha256": "04f45e4321751552d949409329838b2a24682739e90fd8bfc9d7c723b4627c63",
+      "background_pixel": [
+        127,
+        127,
+        127
+      ],
+      "crop": "official resize_foreground0.85 in derived input",
+      "background_removal": "exact known synthetic RGB58 mask; not rembg",
+      "torch": "2.10.0",
+      "threads": 2,
+      "interop_threads": 2,
+      "chunk_size": 4096,
+      "device": "cpu"
+    },
+    "inspection": {
+      "original": {
+        "path": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028/chair-preprocessed-resolution256-original.glb",
+        "sha256": "b21a787c86346ff3a3f090beb32e41e5dc0a2a120fe5cd106de1512dc617b937",
+        "bytes": 5189600,
+        "vertices": 129841,
+        "faces": 259260,
+        "visual_kind": "vertex",
+        "watertight": false,
+        "euler_number": -163,
+        "component_count": 177,
+        "platform_validation_error": "지원하지 않거나 손상된 GLB 모델입니다."
+      }
+    },
+    "execution": {
+      "invocation": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028/network-deny.sb",
+        "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/venv/bin/python",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028/infer.py",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028",
+        "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/model",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028/chair-derived-input.png",
+        "256"
+      ],
+      "exit_code": 0,
+      "seconds": 29.966650582966395,
+      "peak_tree_rss_bytes": 2783281152,
+      "termination_reason": null,
+      "limits": {
+        "rss_bytes": 8589934592,
+        "seconds": 1200,
+        "disk_bytes": 12884901888
+      },
+      "network": "OS sandbox deny network; tested separately",
+      "environment_keys": [
+        "HF_HOME",
+        "HF_HUB_DISABLE_IMPLICIT_TOKEN",
+        "HF_HUB_OFFLINE",
+        "MKL_NUM_THREADS",
+        "OMP_NUM_THREADS",
+        "PATH",
+        "PYTHONPATH",
+        "TMPDIR",
+        "TOKENIZERS_PARALLELISM",
+        "TRANSFORMERS_OFFLINE"
+      ]
+    }
+  },
+  "observations": [
+    "ExactRGB58mask transparent33.4213percent, opaque bbox covers entire512 image; complete object segmentation is not established",
+    "Variant geometry exceeds current50000vertex/100000triangle import limits",
+    "Connected components increased1to177; nonwatertight in both",
+    "Original vertex colors and geometry preserved without reduction or replacement"
+  ],
+  "interpretation": "No basis to adopt this exact known-color preprocessing condition as an improvement. Incomplete background isolation may contribute; causal attribution unproven. Visual comparison remains parent responsibility.",
+  "non_claims": [
+    "Not a test of arbitrary-user-photo background removal",
+    "Not commercial Tripo access or quality equivalence",
+    "Not platform workflow/production completion",
+    "No new packages/downloads/provider calls/product or MD edits"
+  ],
+  "actual_invocation": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028/network-deny.sb",
+    "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/venv/bin/python",
+    "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028/infer.py",
+    "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028",
+    "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-triposr-l_j5eauq/model",
+    "/Users/leesungmin/Desktop/Loretune/.omo/evidence/triposr-preprocess-controlled-20261028/chair-derived-input.png",
+    "256"
+  ],
+  "binary_observables": {
+    "generation": "exit0,GLB5189600bytes,SHArecorded",
+    "network": "cpu-smoke.py.log EPERM",
+    "preservation": "all prior files same SHA",
+    "profile": "reject;geometry limits exceeded;no adaptation"
+  },
+  "artifact_paths": [
+    "preprocessing.json",
+    "weight-integrity.json",
+    "cpu-smoke.py.log",
+    "result-256.json",
+    "execution-256.json",
+    "resources-256.jsonl",
+    "chair-preprocessed-resolution256-original.glb",
+    "platform-profile-inspection.json",
+    "validator-source-sha.json",
+    "preservation-and-process-check.json"
+  ],
+  "temporary_file_logical_bytes": 3574599096
+}

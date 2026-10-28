@@ -1,0 +1,28 @@
+{
+  "at": "2026-10-28T05:21:05.303615+00:00",
+  "method": "Direct functions tools.view_image original detail; four actual local PNGs viewed",
+  "viewed_files": [
+    "cube/comparison.png",
+    "chair/comparison.png",
+    "../paired-3d-benchmark-inputs-20261028/case-1-cube.png",
+    "../paired-3d-benchmark-inputs-20261028/case-2-chair.png"
+  ],
+  "observations": [
+    {
+      "case": "cube",
+      "fact": "Both conditions occupy visibly less of the fixed reference frame. GT-assisted rotation changes orientation without eliminating size mismatch; visible reference-only blue regions persist in all five views.",
+      "interpretation": "Known-transform control has similarly large residuals under frozen maxside-AABB normalization, so this cannot be isolated as model-only shape error."
+    },
+    {
+      "case": "chair",
+      "fact": "Seat/backrest/leg silhouette structure corresponds. Raw-basis orientation differs; one registered transform makes orientation closer across the five fixed views, but reference-only and prediction-only regions remain, including legs/seat/backrest outline.",
+      "interpretation": "Registration improves this conditional comparison. Remaining discrepancies mix reconstruction and the verified normalization/registration confound; no real-world fidelity score or hidden-view correctness claim."
+    }
+  ],
+  "not_reviewed": [
+    "Material/texture/lighting/normal or photorealism quality",
+    "Raw commercial Tripo model for matching input",
+    "Product UI or new platform render",
+    "Actual user preference or music-video usefulness"
+  ]
+}

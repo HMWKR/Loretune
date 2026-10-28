@@ -1,0 +1,86 @@
+{
+  "mode": "after",
+  "actual_provider_calls": 0,
+  "socket_operations": "forbidden",
+  "shared_database_opened": false,
+  "sources": {
+    "chat_runtime": {
+      "path": "/Users/leesungmin/Desktop/Loretune/chat_runtime.py",
+      "sha256": "50ec18343dc4619aa2df8a5ffda7008a0a96c6bef71917c805c482700a51c54a"
+    },
+    "anthropic_ontology": {
+      "path": "/Users/leesungmin/Desktop/Loretune/anthropic_ontology.py",
+      "sha256": "e7021df88da62058a746b370f6eca26aa26f45012a3ae7a2195c3cea2be6d0f0"
+    }
+  },
+  "cases": [
+    {
+      "case": "original_65529_65549",
+      "count_body_bytes": 65529,
+      "messages_body_bytes": 65549,
+      "count_opener_calls": 0,
+      "messages_opener_calls": 0,
+      "synthetic_credential_supplier_calls": 0,
+      "status": "blocked_before_message",
+      "ledger": [
+        [
+          "blocked_before_message",
+          0,
+          null
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    },
+    {
+      "case": "exact_messages_65536",
+      "count_body_bytes": 65516,
+      "messages_body_bytes": 65536,
+      "count_opener_calls": 1,
+      "messages_opener_calls": 1,
+      "synthetic_credential_supplier_calls": 2,
+      "status": "completed",
+      "ledger": [
+        [
+          "completed",
+          5735,
+          60
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    },
+    {
+      "case": "count_timeout",
+      "count_body_bytes": null,
+      "messages_body_bytes": null,
+      "count_opener_calls": 1,
+      "messages_opener_calls": 0,
+      "synthetic_credential_supplier_calls": 1,
+      "status": "blocked_before_message",
+      "ledger": [
+        [
+          "blocked_before_message",
+          0,
+          null
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    },
+    {
+      "case": "messages_timeout",
+      "count_body_bytes": null,
+      "messages_body_bytes": null,
+      "count_opener_calls": 1,
+      "messages_opener_calls": 1,
+      "synthetic_credential_supplier_calls": 2,
+      "status": "outcome_unknown",
+      "ledger": [
+        [
+          "outcome_unknown",
+          5735,
+          null
+        ]
+      ],
+      "subsequent_enqueue_blocked": true
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "task_id":"known-not-sent-attempt-20261028",
+  "attempt":2,
+  "status":"REPORTED; pending root acceptance and integrated runtime verification",
+  "change":"ledger.finish_attempt accepts not_sent for an attempt in sending state with its exact owner and within the caller's transaction. The trusted caller must prove transport was not invoked. This records provenance only: it does not alter reservations, refund, create a monetary event, authorize resending, add a public API, or reclassify observed/unknown attempts.",
+  "schema":"ledger.py initialize creates provider_attempts.state as NOT NULL TEXT with no CHECK constraint. Repository Python source search found one CREATE TABLE definition. No migration was added. The isolated initialized SQLite database accepts the new value; historical external databases were not inspected.",
+  "source_sha256":{"ledger.py":"7b7b334da273fac0dc34f1a2c151e2aeb2692370e76e6c807ef37689e3909ff7","tests/test_ledger_not_sent.py":"2886f75585c9f6cf213984b11a561efa416093d5bed549843a2f54dafe9372f0"},
+  "before":{"log":"attempt2-before.log","sha256":"461e433058af06fce8e54e32216b536954096bb983931460cf17233b24447c7c","result":"5 targeted tests, 2 errors: existing state whitelist rejected not_sent before implementation."},
+  "after":{"log":"attempt2-final.log","sha256":"1a1cf696310630c5fad8d9f2eab31f0281bc132a3bea05c6518368ed85e700c1","command":"python3 -B -m unittest -v tests.test_ledger_not_sent tests.test_ledger tests.test_provider_attempts tests.test_general_scope_journal_guard","result":"33 tests passed including five dedicated state-machine tests. Wrong or foreign owner, nonexistent ID, no transaction, and already observed or unknown attempts cannot be reclassified; reservation and events are unchanged; recover preserves not_sent; replay and late evidence for that attempt are rejected."},
+  "integration":"The authorized runtime worker was informed to call ledger.finish_attempt(c, attempt_id, owner, 'not_sent') only after a closed-type adapter's exact pre-transport credentials failure is established, and to handle any reservation release separately in the same authorized transaction. This task did not modify chat_general.py or app.py, and does not claim integrated runtime behavior is complete.",
+  "limitations":"No account credentials, real API, provider request or user data used. The previous attempt1 report records its then-current ledger hash; this intentional second ledger edit supersedes that hash. Only local fixture and relevant regression evidence is established."
+}

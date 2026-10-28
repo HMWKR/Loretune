@@ -1,0 +1,215 @@
+--- .omo/evidence/agent-tools-02-20261028/tasks/A1-server-read-tools-r2/before-r2/chat_runtime.py	2026-10-28 17:38:36
++++ chat_runtime.py	2026-10-28 17:38:52
+@@ -13,6 +13,9 @@
+ import agent_preferences
+ import chat_protocols,contracts,guided,model_selection,production_tools
+ 
++# D1: explicit legacy default scope; a model may not submit media generation.
++LEGACY_DEFAULT_TOOLS=['search_project_context','get_model_capabilities','propose_media_plan','estimate_media_plan','prepare_image_action','prepare_video_action','get_generation_job','propose_timeline_edit','propose_timeline_changes','propose_motion_scene','request_motion_render','request_render','propose_memory_update']
++
+ def initialize(c):
+  c.execute('CREATE TABLE IF NOT EXISTS chat_turns (id TEXT PRIMARY KEY, project TEXT NOT NULL, body TEXT NOT NULL)')
+ 
+@@ -172,7 +175,7 @@
+   self.store=store;self.adapter=adapter;self.approval=deepcopy(approval);self.spec=chat_models.contract(getattr(adapter,'selection','anthropic-haiku-5-5'));self.journal=UsageJournal(journal_path,adapter.mode)
+  def limits(self):
+   a=self.approval
+-  value=dict(input=a.get('max_input_tokens',4096),output=a.get('max_output_tokens',4096),turn=a.get('turn_cap_micro',10000),tools=a.get('tools',list(production_tools.TOOLS)))
++  value=dict(input=a.get('max_input_tokens',4096),output=a.get('max_output_tokens',4096),turn=a.get('turn_cap_micro',10000),tools=a.get('tools',list(LEGACY_DEFAULT_TOOLS)))
+   if any(type(value[k]) is not int or not 1<=value[k]<=16384 for k in ['input','output']):raise ValueError('token limits unavailable')
+   if type(value['turn']) is not int or not 1<=value['turn']<=100000:raise ValueError('turn budget unavailable')
+   if not isinstance(value['tools'],list) or not value['tools'] or any(t not in production_tools.TOOLS for t in value['tools']) or len(set(value['tools']))!=len(value['tools']):raise ValueError('tool scope unavailable')
+--- .omo/evidence/agent-tools-02-20261028/tasks/A1-server-read-tools-r2/before-r2/fal_dispatch.py	2026-10-28 17:38:36
++++ fal_dispatch.py	2026-10-28 17:39:19
+@@ -73,13 +73,22 @@
+   if not any(x['id']==plan_id for x in p.get('guided_plans',[])):return dict(status='not_found')
+   pid=contracts.project_id(self.store.workspace_id,name)
+   rows=c.execute('SELECT body FROM production_actions WHERE workspace=? AND project=?',(self.store.workspace_id,pid)).fetchall()
+-  items=[]
++  items=[];excluded=dict(held=0,rejected=0,expired=0,not_connected=0,stale=0);now=time.time()
+   for row in rows:
+    a=json.loads(row[0])
+    if a['plan_id']!=plan_id or a['connection_id']!=CONNECTION or not chat_sessions.owns(p,a['id']):continue
+-   if p.get('media_action_reviews',{}).get(a['id'],{}).get('decision') in {'held','rejected'}:continue
+-   q=a['options']['quote'];items.append(dict(action_id=a['id'],model=a['release_id'],role=a['role'],money=q['money'],price_kind=q['kind'],expired=q['expires']<=time.time()))
+-  return dict(status='estimated' if items and not any(x['expired'] for x in items) else 'incomplete',actions=items,total=ledger.money(sum(ledger.units(x['money']) for x in items),'USD') if items and not any(x['expired'] for x in items) else None,billing_confirmed=False,approval=False,label='이 대화에서 준비된 작업(보류·거절 제외)의 견적 합계입니다. 계획 전체 견적이나 청구 금액이 아닙니다.')
++   decision=p.get('media_action_reviews',{}).get(a['id'],{}).get('decision')
++   if decision in {'held','rejected'}:excluded[decision]+=1;continue
++   q=a['options']['quote']
++   try:self.adapter(a);reason=None
++   except actions.ExecutionBlocked:reason='not_connected'
++   # Same media-snapshot freshness check approve() applies.
++   if reason is None and model_selection.action_context(p,a)!=a['context_hash']:reason='stale'
++   if reason is None and q['expires']<=now:reason='expired'
++   if reason:excluded[reason]+=1
++   items.append(dict(action_id=a['id'],model=a['release_id'],role=a['role'],money=q['money'],price_kind=q['kind'],expired=q['expires']<=now,excluded=reason))
++  current=[x for x in items if x['excluded'] is None];complete=bool(current) and not excluded['expired']
++  return dict(status='estimated' if complete else 'incomplete',actions=items,total=ledger.money(sum(ledger.units(x['money']) for x in current),'USD') if complete else None,excluded=excluded,billing_confirmed=False,approval=False,label='이 대화에서 준비된 현재 유효 작업의 견적 합계입니다(제외 건수는 excluded). 계획 전체 견적이나 청구 금액이 아닙니다.')
+  def gate(self,pid,a,data):
+   ad=self.adapter(a);g=self.gates.get(a['id'],{});q=a['options']['quote']
+   required=dict(workspace=self.store.workspace_id,project=pid,action_hash=a['hash'],input_sha256=guided.fingerprint(data),model=a['release_id'],output_policy=a['options']['output_policy'],maximum_units=ledger.units(q['money']),maximum_calls=1)
+--- .omo/evidence/agent-tools-02-20261028/tasks/A1-server-read-tools-r2/before-r2/chat_protocols.py	2026-10-28 17:38:36
++++ chat_protocols.py	2026-10-28 17:41:49
+@@ -4,22 +4,22 @@
+ import production_tools
+ import model_selection
+ PROVIDERS={'anthropic','openai','xai'}
+-# One line each: what the server does and what it never does. Kept short for the input cap.
++# One line each, minimum that disambiguates; result fields/labels carry the rest. Kept short for the input cap.
+ DESCRIPTIONS={
+- 'search_project_context':'Read the current project approved context and execution targets. Scoped snapshot, not semantic search.',
+- 'get_model_capabilities':'List catalog models for a role. Catalog only; not proof of a live connection.',
+- 'propose_media_plan':'Save a scene plan proposal for human review. No media generation or cost approval.',
+- 'estimate_media_plan':'Sum saved quotes of actions prepared in this conversation for a plan, excluding held/rejected. Not a whole-plan quote or a bill.',
+- 'prepare_image_action':'Save one image generation action with a quote for human approval. Does not generate or spend.',
+- 'prepare_video_action':'Save one video generation action from an approved start frame for human approval. Does not generate or spend.',
+- 'request_media_generation':'Submit a saved action only with a human-issued approval grant.',
+- 'get_generation_job':'Read state and result receipt of a generation or render job owned by this conversation.',
+- 'propose_timeline_edit':'Save a timeline change-list proposal for human review.',
+- 'propose_timeline_changes':'Propose typed timeline commands against a timeline version. Human review unless Full Access auto-drafts allowed commands.',
+- 'propose_motion_scene':'Save a motion scene proposal for a shot for human review.',
+- 'request_motion_render':'Request a local motion render with a human-approved motion grant.',
+- 'request_render':'Request a local timeline export with a human-approved timeline grant.',
+- 'propose_memory_update':'Propose a project memory update with source evidence for human review.',
++ 'search_project_context':'Read approved project context and execution targets.',
++ 'get_model_capabilities':'List catalog models for a role.',
++ 'propose_media_plan':'Save a scene plan proposal for review.',
++ 'estimate_media_plan':"Sum saved quotes of this conversation's prepared actions for a plan.",
++ 'prepare_image_action':'Save one image action with a quote for approval.',
++ 'prepare_video_action':'Save one video action from an approved start frame for approval.',
++ 'request_media_generation':'Submit a saved action with a human-issued grant.',
++ 'get_generation_job':'Read a job owned by this conversation.',
++ 'propose_timeline_edit':'Save a timeline change-list proposal for review.',
++ 'propose_timeline_changes':'Propose typed timeline commands against a timeline version.',
++ 'propose_motion_scene':'Save a motion scene proposal for a shot.',
++ 'request_motion_render':'Request a local motion render with an approved motion grant.',
++ 'request_render':'Request a local timeline export with an approved timeline grant.',
++ 'propose_memory_update':'Propose a project memory update with source evidence.',
+ }
+ 
+ 
+--- .omo/evidence/agent-tools-02-20261028/tasks/A1-server-read-tools-r2/before-r2/tests/test_general_chat_tool_invariants.py	2026-10-28 17:38:36
++++ tests/test_general_chat_tool_invariants.py	2026-10-28 17:40:45
+@@ -36,13 +36,12 @@
+         self.assertEqual(agent_preferences.AUTO_DRAFT_COMMANDS,
+                          {'set_clip', 'reorder_clips', 'set_captions', 'set_audio_offset', 'set_motion_overlay'})
+ 
+-    def test_legacy_runtime_default_scope_is_pinned_pending_decision(self):
+-        # D1 evidence: the legacy route intentionally lets a model submit an
+-        # action only with a human-issued grant (tests/test_fal_multimodel.py
+-        # request(), tests/test_execution_context.py). It is not narrowed here.
++    def test_legacy_runtime_default_scope_excludes_media_generation(self):
++        # D1 (user approved): the legacy default is an explicit list without
++        # request_media_generation; every other tool stays, in TOOLS order.
+         value = chat_runtime.ChatRuntime.limits(SimpleNamespace(approval={}))
+-        self.assertEqual(value['tools'], list(production_tools.TOOLS))
+-        self.assertIn('request_media_generation', value['tools'])
++        self.assertNotIn('request_media_generation', value['tools'])
++        self.assertEqual(value['tools'], [t for t in production_tools.TOOLS if t != 'request_media_generation'])
+ 
+     def test_every_tool_has_a_short_specific_description(self):
+         self.assertEqual(set(chat_protocols.DESCRIPTIONS), set(production_tools.TOOLS))
+@@ -119,10 +118,22 @@
+ 
+     def test_unknown_missing_and_hidden_source_are_invalid_media_input(self):
+         self.hidden_take()
+-        for changes in (dict(source_shot_id='unknown-shot'), dict(source_take_id=98), {}):
+-            with self.subTest(changes=changes):
+-                result = self.tool(**changes)
+-                self.assertEqual((result['status'], result['code']), ('invalid_arguments', 'INVALID_MEDIA_INPUT'))
++        with self.store.connect() as c:
++            revision, body = c.execute('SELECT revision,body FROM state WHERE id=1').fetchone()
++            state = json.loads(body)
++            # Visible control take: no conversation origin, so it is shared and reaches prepare.
++            state['projects']['A']['shots']['장면 1']['takes'].append(dict(id=100, sha256='f'*64, asset='/missing'))
++            c.execute('UPDATE state SET revision=?,body=? WHERE id=1', (revision+1, json.dumps(state, ensure_ascii=False)))
++        pipe = self.store.media_dispatch
++        with patch.object(pipe, 'prepare', wraps=pipe.prepare) as prepare:
++            for changes in (dict(source_shot_id='unknown-shot'), dict(source_take_id=98), {}):
++                with self.subTest(changes=changes):
++                    result = self.tool(**changes)
++                    self.assertEqual((result['status'], result['code']), ('invalid_arguments', 'INVALID_MEDIA_INPUT'))
++                    self.assertEqual(prepare.call_count, 0)
++            # Positive control: the same arguments with a visible take do reach prepare.
++            self.tool(source_take_id=100, source_sha256='f'*64)
++            self.assertGreaterEqual(prepare.call_count, 1)
+         self.assertEqual(self.m.actions(), [])
+         self.m.assert_no_media_execution()
+ 
+--- .omo/evidence/agent-tools-02-20261028/tasks/A1-server-read-tools-r2/before-r2/tests/test_general_chat_estimate.py	2026-10-28 17:38:36
++++ tests/test_general_chat_estimate.py	2026-10-28 17:39:59
+@@ -18,12 +18,16 @@
+     def plan(self):
+         return self.m.project()['guided_plans'][-1]['id']
+ 
+-    def prepare(self):
++    def prepare(self, **extra):
+         # The fixture quote is bound to this exact prompt; each call saves a new action.
+         project = self.m.project()
+         return self.m.post('media_prepare', song='A', shot='장면 1', shot_revision=project['shots']['장면 1']['revision'],
+-                           prompt=self.m.prompt, options={'ratio':'16:9'}, refs=[])['media_action']['action']['id']
++                           prompt=self.m.prompt, options={'ratio':'16:9'}, refs=[], **extra)['media_action']['action']['id']
+ 
++    def select(self, **selections):
++        self.m.post('model_settings', song='A', selections=selections,
++                    model_revision=self.m.project()['model_settings']['revision'])
++
+     def edit_state(self, change):
+         with self.store.connect() as c:
+             revision, body = c.execute('SELECT revision,body FROM state WHERE id=1').fetchone()
+@@ -69,6 +73,7 @@
+         result = self.estimate()
+         self.assertEqual([x['action_id'] for x in result['actions']], [kept])
+         self.assertEqual(result['total'], {'amount':'0.01','currency':'USD'})
++        self.assertEqual(result['excluded'], dict(held=1, rejected=1, expired=0, not_connected=0, stale=0))
+         self.m.assert_no_media_execution()
+ 
+     def test_actions_owned_by_another_conversation_are_excluded(self):
+@@ -97,8 +102,35 @@
+         self.assertEqual(result['status'], 'incomplete')
+         self.assertIsNone(result['total'])
+         self.assertTrue(result['actions'][0]['expired'])
++        self.assertEqual(result['actions'][0]['excluded'], 'expired')
++        self.assertEqual(result['excluded']['expired'], 1)
+         self.m.assert_no_media_execution()
+ 
++    def test_connection_present_but_model_adapter_absent_is_not_connected_and_excluded(self):
++        first, second = self.prepare(), self.prepare()
++        self.assertIsNotNone(self.store.media_dispatch)
++        self.store.media_dispatch.adapters.clear()
++        result = self.estimate()
++        self.assertEqual(result['status'], 'incomplete')
++        self.assertIsNone(result['total'])
++        self.assertEqual({x['action_id']:x['excluded'] for x in result['actions']}, {first:'not_connected', second:'not_connected'})
++        self.assertEqual(result['excluded'], dict(held=0, rejected=0, expired=0, not_connected=2, stale=0))
++        self.m.assert_no_media_execution()
++
++    def test_changed_media_inputs_mark_old_quote_stale_and_exclude_it(self):
++        old = self.prepare()
++        # Project media selection is an approval input (media-v1 snapshot); changing it stales the old quote.
++        self.select(image='fal-flux-pro-1-1')
++        current = self.prepare(model='fal-flux-schnell')
++        # A chat-model-only change is outside the media snapshot and keeps the current quote valid.
++        self.select(chat='anthropic-haiku-5-5')
++        result = self.estimate()
++        self.assertEqual(result['status'], 'estimated')
++        self.assertEqual({x['action_id']:x['excluded'] for x in result['actions']}, {old:'stale', current:None})
++        self.assertEqual(result['total'], {'amount':'0.01','currency':'USD'})
++        self.assertEqual(result['excluded'], dict(held=0, rejected=0, expired=0, not_connected=0, stale=1))
++        self.m.assert_no_media_execution()
++
+     def test_missing_media_connection_is_not_connected(self):
+         self.prepare()
+         self.store.media_dispatch = None
+--- .omo/evidence/agent-tools-02-20261028/tasks/A1-server-read-tools-r2/before-r2/tests/test_chat_preflight.py	2026-10-28 17:47:58
++++ tests/test_chat_preflight.py	2026-10-28 17:47:58
+@@ -35,7 +35,8 @@
+         self.runtime.approval.update(max_input_tokens=16384, max_output_tokens=8192, turn_cap_micro=25000)
+ 
+     def final_body(self, turn):
+-        definitions = chat_protocols.tool_definitions('anthropic')
++        # Mirror the runtime: only the approved legacy scope (D1 default excludes request_media_generation).
++        definitions = [d for d in chat_protocols.tool_definitions('anthropic') if d['name'] in self.runtime.limits()['tools']]
+         for item in definitions:
+             item['strict'] = True
+             if item['name'] == 'propose_media_plan':

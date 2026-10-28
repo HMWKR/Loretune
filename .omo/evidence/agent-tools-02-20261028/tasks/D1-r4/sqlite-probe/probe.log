@@ -1,0 +1,9 @@
+default.sqlite3: sqlite 3.54.0 journal_mode=delete secure_delete=0 auto_vacuum=0 | marker hits before_delete=65 rows_after_delete=0 file_hits_after_delete=65 after_vacuum(False)=65
+vacuum.sqlite3: sqlite 3.54.0 journal_mode=delete secure_delete=0 auto_vacuum=0 | marker hits before_delete=65 rows_after_delete=0 file_hits_after_delete=65 after_vacuum(True)=0
+secure.sqlite3: sqlite 3.54.0 journal_mode=delete secure_delete=1 auto_vacuum=0 | marker hits before_delete=65 rows_after_delete=0 file_hits_after_delete=0 after_vacuum(False)=0
+--- folder listing after run (no -journal file left):
+drwxr-xr-x@ 5 leesungmin  staff    160 10월 28 21:28 .
+drwxr-xr-x@ 5 leesungmin  staff    160 10월 28 21:28 ..
+-rw-r--r--@ 1 leesungmin  staff  32768 10월 28 21:28 default.sqlite3
+-rw-r--r--@ 1 leesungmin  staff  32768 10월 28 21:28 secure.sqlite3
+-rw-r--r--@ 1 leesungmin  staff  28672 10월 28 21:28 vacuum.sqlite3

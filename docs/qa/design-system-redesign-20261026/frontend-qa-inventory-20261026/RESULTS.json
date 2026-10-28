@@ -1,0 +1,550 @@
+{
+  "locked_at_utc": "2026-10-26T04:03:14.289335+00:00",
+  "scope": "visual/CSS/keyboard/accessibility state only; no aggregate score",
+  "primary": [
+    1920,
+    1080
+  ],
+  "secondary": [
+    1280,
+    900
+  ],
+  "mobile": "deferred",
+  "source_hashes": {
+    "index.html": "0bfdbbb815c631f23e9188a02a1308aa87430d2db33ab61f4a60f8b7adfdf109",
+    "studio.css": "2fbba70fa95d035aecd19a0fd9a2e7e3e00c5f6b789cf3fe0c3eed5cbef5cfab",
+    "studio-media.js": "65e2468ec5ac6f53310383f2ec0939aa2adb4793e47da5dcca7b0f20b861e328"
+  },
+  "cases": [
+    {
+      "id": "ENV01",
+      "name": "렌더링 환경/fixture 고정",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "method / evidence protocol",
+      "fixture": "existing project",
+      "steps": "브라우저버전/viewport/DPR/visualscale/fonts ready/실제platformfont/소스·servedhash 기록",
+      "expected": "현재소스일치,로드/폰트완료조건기록;누락값을추정하지않음",
+      "observed": "Source/served hashes match at start/end. Actual rendered fonts sampled in heading/body/timecode. CSS viewport/DPR/locale/timezone captured. Exact browser product build and OS version unavailable; UA is labelled UA, not exact version.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "environment.json",
+        "evidence/platform-fonts-roles.json",
+        "evidence/end.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "L01",
+      "name": "기본 승인 작업대 두 viewport",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing approved shot01",
+      "steps": "1920×1080/1280×900,앱100%,기본Take를캡처",
+      "expected": "문서세로scroll없음,preview/Take/timeline/review주요진입점함께가시,clipping없는경계",
+      "observed": "Default at 1920 has document1920×1080 and1280 has1280×900. Preview, Take row, timeline and review entry are present. Media is synthetic.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/05-selected-stable-1920.png",
+        "evidence/06-default-1280.png"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "L02",
+      "name": "sequence+정밀 편집 두 viewport",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing01 editing /02 playback 2.172s",
+      "steps": "같은장면/시간/자막,상세펼침",
+      "expected": "문서높이viewport,내부scroll허용,조작접근,media contain;최소면적숫자임의설정안함",
+      "observed": "Sequence2.172s/7s, editing scene01 versus playback scene02, captions and expanded precision controls. Document heights1080/900. Preview interior approx284/163px high. Internal precision scrolling is required and permitted; this is not a decoded-sync test.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/07-expanded-1280.png",
+        "evidence/08-expanded-1920.png",
+        "evidence/precision-keyboard.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "L03",
+      "name": "긴 목록/한글 메모",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "temporaryDOM60rail/40paragraphs",
+      "steps": "원본clone보존후목록/메모늘리고패널끝Tab;복원",
+      "expected": "document넘침없음,끝focus접근;실제60장면성능으로주장안함",
+      "observed": "VF02: actual first-card class hierarchy with only long title text replaced:108px title box/417px scrollWidth, overflow-wrap normal and word-break keep-all; no visible full-name affordance on card.60-card/40-paragraph DOM-only fixture retains document1080px and end focus. Not60 persisted scenes or a backend test.",
+      "status": "FAIL",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/long-title-metrics.json",
+        "evidence/long-unbroken-title-1920.png",
+        "evidence/long-content-valid.json",
+        "evidence/long-content-structure-preserved-1920.png"
+      ],
+      "severity": "P3",
+      "retest_status": "single-card fixture corroborated; not fixed"
+    },
+    {
+      "id": "S01",
+      "name": "계획 empty",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing empty conversation/plan",
+      "steps": "계획단계열기,제출안함",
+      "expected": "빈상태대상/다음입력명확,불필요한내부상세기본노출없음",
+      "observed": "Plan empty form shows purpose/constraints/scenes and clearly says preview has no external transmission. No form submitted.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/plan-empty-1920.png"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "S02",
+      "name": "미검토/반려 review 상태",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing authorized fixture if present",
+      "steps": "저장없이보기가능한표본만선택;없으면NOT RUN",
+      "expected": "현재scene/Take/검토상태/맞는행동;합성DOM은실제경로와별도",
+      "observed": "Existing selected Takes are approved. Selecting another Take would write canonical state, so unreviewed/rejected inspector transition was not performed. Comparison shows unreviewed text but is not equivalent coverage.",
+      "status": "NOT RUN",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/comparison-portrait-landscape-1920.png"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "S03",
+      "name": "dirty/cancel 두 viewport",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "temporary local review draft",
+      "steps": "검토수정→긴한글입력→취소;저장없음",
+      "expected": "저장/취소구별,입력가시,취소후focus복귀,canonical불변",
+      "observed": "1920 and1280 temporary long review drafts show enabled save/cancel; cancel returns focus to creatorEditReview and saved reason. Canonical project hash unchanged. No save invoked.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/03-dirty-1920.png",
+        "evidence/dirty-1280.png",
+        "evidence/keyboard-initial.json",
+        "evidence/end.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "S04",
+      "name": "error/unknown 시각표현",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "temporary in-memory presentation fixture only",
+      "steps": "기존error rendering에fixture상태만주입;서버요청없음",
+      "expected": "오류인접,원인중립,disabled저장과조회구분,긴문구줄바꿈;복구기능시험아님",
+      "observed": "Presentation-only existing alert/recovery elements made visible with current cause-neutral copy; save disabled. Shift+Tab focuses existing lookup control, values remain shown. DOM restored, draft cancelled. No real failure, save or lookup executed.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/unknown-presentation-1920.png",
+        "evidence/unknown-presentation.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "S05",
+      "name": "실제 loading/poster-unavailable",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "evidence gap",
+      "fixture": "functional owner controlled fixture",
+      "steps": "안전한로딩시점근거제공시검사;없으면NOT RUN",
+      "expected": "loading을성공/실패와구별,안정화전캡처를일반완료화면으로채택하지않음",
+      "observed": "No safe current queued/running/partial/failed/loading/poster-unavailable runtime fixture supplied. Existing stable ready media is not evidence for those states.",
+      "status": "NOT RUN",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "M01",
+      "name": "모델 미선택/미검증/차단/긴이름",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "actual catalog unsaved + synthetic long name",
+      "steps": "모델창열고저장없이선택/긴이름표시,Escape복원",
+      "expected": "선택/불가이유/승인별도구별,모델명전체접근,가로넘침없음",
+      "observed": "Actual catalog unsaved unset/unverified/blocked states rendered. Meaningful model name and reason available; three selections reset without saving. Long-name paragraph wrapping checked by temporary text-only presentation fixture, not a new catalog item.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/04-model-empty-1920.png",
+        "evidence/model-selected-blocked-1920.png",
+        "evidence/long-model-label-presentation-1920.png"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "D01",
+      "name": "비교 dialog/contain",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing Take1/3 image-video",
+      "steps": "비교열기,두media크기/identity측정,Escape",
+      "expected": "동등boundedstage/원본비율,닫기focus복귀,상태는색만의존안함",
+      "observed": "Actual image/video and landscape/portrait video comparisons. Both stages471×300, contain fit. Underlying sizes320×180 and180×320 retained. Escape returns to compareButton.1:1/transparent comparison not sampled.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/02-comparison-1920.png",
+        "evidence/comparison-portrait-landscape-1920.png",
+        "evidence/comparison-aspect.json",
+        "evidence/keyboard-initial.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX01",
+      "name": "이름/역할/상태 트리",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/",
+        "https://playwright.dev/docs/accessibility-testing"
+      ],
+      "threshold_type": "method / evidence protocol",
+      "fixture": "default/dialog/dirty",
+      "steps": "CDP accessibility snapshot과user-facingname검사",
+      "expected": "현재선택/disabled/expanded/name노출기록;스크린리더발화통과대체아님",
+      "observed": "CDP AX samples: initial14,dirty33,model-dialog6 relevant controls; no empty names among these nonignored roles. Selected accessible names and expanded/disabled properties saved. Not screen-reader speech or all-screen audit.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/initial-AX-controls.json",
+        "evidence/dirty-AX-controls.json",
+        "evidence/model-dialog-AX-controls.json",
+        "evidence/selected-names.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX02",
+      "name": "초기 keyboard-only",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://playwright.dev/docs/actionability"
+      ],
+      "threshold_type": "WCAG AA boundary + Loretune proposal",
+      "fixture": "reload initial page",
+      "steps": "초기BODY부터Tab/Enter/Arrow/Escape,미리보기/비교/검토취소/출처/모델",
+      "expected": "AA:focus완전히가려지지않음;제품:전체control가시.명시focus로전체여정대체금지",
+      "observed": "From initial BODY,52 keyboard observations reach8 task targets with Tab/Enter/Arrow/Escape and no programmatic focus replacing initial journey. Comparison/cancel/model return verified. No save/approval/generation.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/keyboard-initial.json",
+        "evidence/01-default-1920.png"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX03",
+      "name": "정밀 폼 keyboard 두 viewport",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ],
+      "threshold_type": "WCAG AA boundary + Loretune proposal",
+      "fixture": "L02",
+      "steps": "summary에서연속Tab,상세패널scroll관찰",
+      "expected": "AA최소와제품전체가시를따로기록",
+      "observed": "35 consecutive Tab targets in precision panel at both viewports.1280 all fully visible. First1920 immediate sample caught profile below clip, but same-path bounded recheck reached fully visible profile958–999px and centre hit. Other34 fully visible. Initial raw evidence retained; no persistent reproduced focus defect here. A double-RAF stabilization attempt did not resolve and was stopped; no general animation timing claim.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/precision-keyboard.json",
+        "evidence/profile-focus-recheck-1920.json",
+        "evidence/profile-focus-recheck-1920.png"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX04",
+      "name": "실제 색상쌍",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      ],
+      "threshold_type": "WCAG AA boundary",
+      "fixture": "normal/selected/focus/dirty/error",
+      "steps": "computedFG/BG/opacity층+스크린샷으로계산",
+      "expected": "보통문자4.5:1,large3:1,필수비문자3:1;장식/비활성예외구분,반투명배경임의대체금지",
+      "observed": "20 sampled real text/nontext pairs meet applicable4.5/3 ratios. Error pair uses explicit presentation fixture. No text exists in playhead, so inherited text color is excluded from text contrast. Decorative dividers/disabled contrast not falsely failed. Not all-state WCAG certification.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/computed-roles-states.json",
+        "evidence/contrast.csv",
+        "evidence/contrast-exclusions.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX05",
+      "name": "forced-colors",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "same selected/dirty",
+      "steps": "CDPforcedcolorsactive,match확인,선택/focus/오류단서캡처;복원",
+      "expected": "shadow없이도필수단서/텍스트보존;실제Windows사용자환경통과아님",
+      "observed": "Partial: forced-colors active was confirmed; selected+dirty and keyboard-focused sync states captured, text and borders retained. Error+focus under forced-colors was not run, so the complete locked state set is not marked PASS. Not native Windows high contrast.",
+      "status": "NOT RUN",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/forced-colors-dirty-1920.png",
+        "evidence/forced-colors-keyboard-1920.png",
+        "evidence/emulation.json",
+        "evidence/scale-forced-focus.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX06",
+      "name": "reduced-motion",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "same editor",
+      "steps": "CDPmedia reduce확인,computedtransition/animation,복원",
+      "expected": "불필요장식motion제거;영상재생을임의비활성화하지않음",
+      "observed": "prefers-reduced-motion reduce confirmed;20 visible control samples have0s transition/animation, scroll auto. Media element retained. Intended playback/motion event continuity not evaluated here.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/emulation.json",
+        "evidence/reduced-motion-1920.png"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX07",
+      "name": "앱100/150/200% 두 viewport",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "same editor",
+      "steps": "textScale정상UI변경,문서/패널/라벨/조작확인,복원",
+      "expected": "글자확대와reflow,가로넘침/핵심clipping없음;브라우저zoom으로부르지않음",
+      "observed": "VF01: at1280×900 app200%, Tab toTake3 leaves only67.96/157.60px width visible; takes scrollLeft0 with619px scrollWidth/529px clientWidth. Same after screenshot and repeat. Other captured app100/150/200 states reflow without page horizontal overflow. Browser zoom not implied.",
+      "status": "FAIL",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/layout-scales-pointer.json",
+        "evidence/scale2-take3-recheck.json",
+        "evidence/scale2-take3-recheck-1280.png",
+        "evidence/scale-2-1920.png"
+      ],
+      "severity": "P2",
+      "retest_status": "reproduced twice; not fixed"
+    },
+    {
+      "id": "AX08",
+      "name": "실제 browser200/400%",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      ],
+      "threshold_type": "WCAG AA boundary",
+      "fixture": "same app100 editor",
+      "steps": "정상브라우저확대경로지원확인,실제배율변화를검증한때만실행",
+      "expected": "지원불가/변화미확인시BLOCKED;DPR/CSStransform/resize로대체금지",
+      "observed": "Normal ControlOrMeta+Equal caused no change to inner dimensions/DPR/visualViewport/body size/preview bounds. Reset ControlOrMeta+0 likewise. No supported actual200/400% effect confirmed; device metrics/appscale not substituted. No denial; tool/browser path limitation.",
+      "status": "BLOCKED",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/browser-zoom-attempt.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX09",
+      "name": "비드래그 pointer 대안",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+      ],
+      "threshold_type": "WCAG AA boundary",
+      "fixture": "existing timeline/range",
+      "steps": "drag없이단일pointer로위치선택/숫자입력UI접근;저장없음",
+      "expected": "해당drag과업에single-pointer대안,keyboard만으로통과하지않음;미디어decode정확도별도",
+      "observed": "Existing timeline scene02 single pointer click moved preview mode tosequence/time1.000. Non-drag controls and numeric fields accessible; no reorder/save mutation tested. Not a full inventory of all drag operations or decode precision.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/layout-scales-pointer.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "AX10",
+      "name": "기존 axe 실행",
+      "source": [
+        "https://playwright.dev/docs/accessibility-testing"
+      ],
+      "threshold_type": "method / evidence protocol",
+      "fixture": "meaningful default/dialog/dirty",
+      "steps": "현재설치/페이지axe존재확인후가능할때실행;설치금지",
+      "expected": "위반/incomplete/pass모두보존;자동검사=전체인증아님",
+      "observed": "window.axe undefined and no bundle found in inspected project/QA-tool scope. No installation or external-script injection. An automated scan was not run; absence is not an application defect.",
+      "status": "BLOCKED",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "environment.json"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    },
+    {
+      "id": "VR01",
+      "name": "같은환경 screenshot 재현성",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "method / evidence protocol",
+      "fixture": "paused ready selected scene",
+      "steps": "font/미디어ready/포커스/hover/scroll고정한2캡처바이트차이와위치확인",
+      "expected": "차이는변화근거;미감점수아님;오류/중요영역mask나baseline교체금지",
+      "observed": "Two paused-ready same-state PNGs are byte-identical. This supports repeatability of this sample, not beauty or all dynamic states. Old baselines retained; no meaningful area masked.",
+      "status": "PASS",
+      "browser": "Ego Lite0.6.0.20; UA Chromium-family",
+      "version": "UA Chrome/154.0.0.0; exact engine/product build unavailable (Browser.getVersion not found)",
+      "viewport": "1920×1080 primary;1280×900 where explicitly stated",
+      "zoom": "actual browser zoom unconfirmed; CDP device metrics DPR1,visualViewport.scale1; app100/150/200 as stated",
+      "evidence": [
+        "evidence/05-selected-stable-1920.png",
+        "evidence/05-selected-repeat-1920.png"
+      ],
+      "severity": null,
+      "retest_status": "not yet retested after any code change"
+    }
+  ],
+  "completed_at_utc": "2026-10-26T04:26:25.136Z",
+  "counts": {
+    "PASS": 15,
+    "FAIL": 2,
+    "NOT RUN": 3,
+    "BLOCKED": 2
+  },
+  "aggregate_score": null,
+  "historical_score": "81/100 belongs to prior mixed rubric; no recalculation",
+  "coverage_note": "case status is scoped; partial states and environmental limitations are explicit. DOM presentation fixtures are not server faults."
+}

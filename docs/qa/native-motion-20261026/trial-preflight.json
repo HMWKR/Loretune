@@ -1,0 +1,30 @@
+{
+  "model": "claude-haiku-5-5",
+  "stage": {
+    "id": "native-motion-edit-20261026",
+    "cap_micro": 75000
+  },
+  "max_messages": 9,
+  "max_input_tokens": 16384,
+  "max_output_tokens": 8192,
+  "max_round_cost_usd": "0.0057344",
+  "max_nine_cost_usd": "0.0516096",
+  "prompts": [
+    "Synthetic test: query current project context, then propose exactly one original motion scene for shot 모션. You author all composition, colors, positions and timing. Use exactly three stable layers: title text \"새로운 리듬\", bar rectangle, dot circle. Four seconds, 1920x1080, 24fps, 96 frames. Title font_size 80 and textbox at least 800x150; keep visible content within canvas. Font system-ko-regular for all layers, shapes text empty. Give title and bar visible intervals 0..96 and animate their opacity or position. Give dot interval in_frame=0,out_frame=72, and at least two moving keyframes at frame 0 and frame 60, with no keys later than 60, so a future 12-frame shift fits. Use supported keyframes and easing only. Do not approve, render or execute code. After saved tool receipt explain in Korean what you proposed and that it still needs human approval.",
+    "Query the current approved motion version in shot 모션. Propose a new version that delays ONLY the dot circle by exactly 12 frames: add 12 to its in_frame, out_frame and every keyframe frame. Preserve every other dot value, and all scene settings, title and bar byte-for-byte as data. Do not move positions, change color/text, approve or render. Explain the actual saved proposal and unchanged layers in Korean after the tool receipt.",
+    "Query current project timeline. Propose, do not apply, exactly these three changes using propose_timeline_changes: reorder all three base clips to 3 → 1 → 2 (zero-based order [2,0,1]); replace all captions with 0..1 seconds \"시작\", 1..2 seconds \"움직임\", 2..3 seconds \"완성\"; keep original audio version 1 but start from source offset 1 second. Preserve all clip Takes, trims and durations, and other settings. Do not approve or render. Explain the saved proposal in Korean; changing cut order does not automatically move captions."
+  ],
+  "prompt_hashes": [
+    "4b088d27495cc80cf98c1dcc51a71e378ecf77c38e7712f27dbba97e033b01f9",
+    "e602950ae22a27b50757cbe8282743bbef15728c696f64543da98c986fc80753",
+    "4a429479d495b35cba9dfa88a61c0f30c5b5205d4a5c4b7f5369cefe641c089c"
+  ],
+  "tools": [
+    "search_project_context",
+    "propose_motion_scene",
+    "propose_timeline_changes"
+  ],
+  "real_fal_calls": 0,
+  "retries": 0,
+  "synthetic_only": true
+}

@@ -1,0 +1,18 @@
+--- tests/scene_request_recovery.cjs before
++++ tests/scene_request_recovery.cjs current
+@@ -5,13 +5,13 @@
+ const slice=(start,end)=>html.slice(html.indexOf(start),html.indexOf(end,html.indexOf(start)));
+ const line=start=>html.split('\n').find(value=>value.startsWith(start));
+ const helper=slice('/* Only explicit, same-body local scene retries;', 'function pendingId(');
+-const methods=line('function pendingId(')+'\n'+line('function updateRecovery(')+'\n'+line('function clearPending(')+'\n'+slice('async function sendRequest(', 'async function upload(');
++const methods=line('function pendingId(')+'\n'+line('function mutationRequestActive(')+'\n'+line('function updateRecovery(')+'\n'+line('function clearPending(')+'\n'+slice('async function sendRequest(', 'async function upload(');
+ const response=(body,status=200)=>({ok:status<400,status,json:async()=>body});
+ const makeState=()=>({workspace_id:'workspace-a',revision:4,token:'synthetic-only',projects:{A:{active_conversation:{id:'conversation-a',revision:2,shared_version:'a'.repeat(64)}}}});
+ function fixture(initial=makeState()){
+  const nodes=new Map(),storage=new Map(),cache=new Map(),notices=[],calls=[];let count=0;
+  const $=id=>{if(!nodes.has(id))nodes.set(id,{hidden:false,disabled:false,textContent:'',dataset:{},hasAttribute:()=>false,focus(){}});return nodes.get(id)};
+- const c={console,Map,Set,Error,JSON,Number,Object,Uint8Array,TextEncoder,encodeURIComponent,crypto:webcrypto,state:initial,stateReadEpoch:0,busy:false,dirty:false,conversationSwitching:false,pendingRequest:null,$,song:()=> 'A',document:{querySelector:$,querySelectorAll:()=>[],getElementById:id=>$('#'+id)},sessionStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value),removeItem:key=>storage.delete(key)},requestCache:async(action,id,value)=>{if(action==='put')cache.set(id,structuredClone(value));if(action==='delete')cache.delete(id);return cache.has(id)?structuredClone(cache.get(id)):undefined},message:(...values)=>notices.push(values),drawModelChat(){},renderTakeReview(){},productionReviewErrors:new Map(),takeReviewStore:{clearRevision(){}},refresh:async()=>{},fetch:async(url,options)=>{calls.push({url,options});if(options)throw Error('synthetic request not delivered');return response({status:'unknown'},404)}};
++ const c={console,Map,Set,Error,JSON,Number,Object,Uint8Array,TextEncoder,encodeURIComponent,crypto:webcrypto,state:initial,stateReadEpoch:0,busy:false,dirty:false,conversationSwitching:false,pendingRequest:null,activeMutationRequestId:null,$,song:()=> 'A',document:{querySelector:$,querySelectorAll:()=>[],getElementById:id=>$('#'+id)},sessionStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value),removeItem:key=>storage.delete(key)},requestCache:async(action,id,value)=>{if(action==='put')cache.set(id,structuredClone(value));if(action==='delete')cache.delete(id);return cache.has(id)?structuredClone(cache.get(id)):undefined},message:(...values)=>notices.push(values),drawModelChat(){},renderTakeReview(){},productionReviewErrors:new Map(),takeReviewStore:{clearRevision(){}},refresh:async()=>{},fetch:async(url,options)=>{calls.push({url,options});if(options)throw Error('synthetic request not delivered');return response({status:'unknown'},404)}};
+  vm.createContext(c);vm.runInContext(helper+methods,c);
+  return {c,storage,cache,notices,calls,$,count:()=>count};
+ }

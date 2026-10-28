@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "source_sha256": "ebd080a0575271aec9ba383055f91ffab5774e2a1bae736f4268b98ef1299e58",
+  "binary_sha256": "91cd0157a669b13f6d6dcf33addf976dc94021d389c0115390ef3cb41e7fc685",
+  "manifest": {
+    "backend": "aethon-coretext-v1",
+    "font": "AppleSDGothicNeo-Regular",
+    "font_sha256": "e33989af92c53dd2b80efd88f50c404094a046658d0e7a7692619587570e616c",
+    "source_sha256": "faf5a64d5d5871cfb9cfdfc94073aa86b5831526bf92fd5f65dff756171ce99d",
+    "os": "26.5.1",
+    "color_space": "sRGB"
+  },
+  "single_line_visible_png_identical": true,
+  "checks": [
+    {
+      "name": "two-line-default",
+      "invocation": [
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/motion-runtime/96072e4b8c4847c9ad26de186cf31d709729af39e59ed64a340b966094c15186/frame-renderer",
+        "validate",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/two-line-default.png"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\"color_space\":\"sRGB\",\"height\":1080,\"text\":[{\"bounds\":[[163.03999999999999,842.31985408782964,568.56000000000006,70],[163.28,738.2398540878296,362.00000000000006,70.080000000000013]],\"font\":\"AppleSDGothicNeo-Regular\",\"glyph_count\":15,\"glyph_missing\":false,\"id\":\"title\"}],\"width\":1920}",
+      "stderr": ""
+    },
+    {
+      "name": "two-line-default-visible",
+      "invocation": [
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/motion-runtime/96072e4b8c4847c9ad26de186cf31d709729af39e59ed64a340b966094c15186/frame-renderer",
+        "png",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/two-line-default-visible.png"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\"color_space\":\"sRGB\",\"height\":1080,\"text\":[{\"bounds\":[[163.03999999999999,842.31985408782964,568.56000000000006,70],[163.28,738.2398540878296,362.00000000000006,70.080000000000013]],\"font\":\"AppleSDGothicNeo-Regular\",\"glyph_count\":15,\"glyph_missing\":false,\"id\":\"title\"}],\"width\":1920}",
+      "stderr": ""
+    },
+    {
+      "name": "two-line-old-box",
+      "invocation": [
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/motion-runtime/96072e4b8c4847c9ad26de186cf31d709729af39e59ed64a340b966094c15186/frame-renderer",
+        "validate",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/two-line-old-box.png"
+      ],
+      "exit_code": 1,
+      "expected_exit_code": 1,
+      "stdout": "",
+      "stderr": "Motion frame/font validation failed\n"
+    },
+    {
+      "name": "one-line-default",
+      "invocation": [
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/motion-runtime/96072e4b8c4847c9ad26de186cf31d709729af39e59ed64a340b966094c15186/frame-renderer",
+        "validate",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/one-line-default.png"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\"color_space\":\"sRGB\",\"height\":1080,\"text\":[{\"bounds\":[[163.03999999999999,842.31985408782964,568.56000000000006,70]],\"font\":\"AppleSDGothicNeo-Regular\",\"glyph_count\":9,\"glyph_missing\":false,\"id\":\"title\"}],\"width\":1920}",
+      "stderr": ""
+    },
+    {
+      "name": "one-line-new-visible",
+      "invocation": [
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/motion-runtime/96072e4b8c4847c9ad26de186cf31d709729af39e59ed64a340b966094c15186/frame-renderer",
+        "png",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/one-line-new-visible.png"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\"color_space\":\"sRGB\",\"height\":1080,\"text\":[{\"bounds\":[[163.03999999999999,842.31985408782964,568.56000000000006,70]],\"font\":\"AppleSDGothicNeo-Regular\",\"glyph_count\":9,\"glyph_missing\":false,\"id\":\"title\"}],\"width\":1920}",
+      "stderr": ""
+    },
+    {
+      "name": "one-line-old-visible",
+      "invocation": [
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/motion-runtime/96072e4b8c4847c9ad26de186cf31d709729af39e59ed64a340b966094c15186/frame-renderer",
+        "png",
+        "/Users/leesungmin/Desktop/Loretune/.omo/evidence/music-recovery-20261028/motion-default/one-line-old-visible.png"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\"color_space\":\"sRGB\",\"height\":1080,\"text\":[{\"bounds\":[[163.03999999999999,842.31985408782964,568.56000000000006,70]],\"font\":\"AppleSDGothicNeo-Regular\",\"glyph_count\":9,\"glyph_missing\":false,\"id\":\"title\"}],\"width\":1920}",
+      "stderr": ""
+    }
+  ],
+  "rationale": "Two 80px lines require 2*80*1.3=208px; new starter 240px leaves 32px room. Existing user scenes are not migrated.",
+  "boundary": "This verifies actual JS handlers in a DOM stub and actual CoreText binary; browser workflow acceptance remains with root."
+}

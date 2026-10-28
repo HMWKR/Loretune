@@ -1,0 +1,41 @@
+{
+  "scope": "NM-Q01/NM-Q02, synthetic Claude Haiku 5.5 explanation sample, not general model quality",
+  "reviewer": "primary agent manual comparison to actual server records; not independent/user study",
+  "criteria": [
+    {
+      "id": "NM-Q01-record",
+      "result": "PASS sampled",
+      "evidence": "live/case-1/turn.json",
+      "observation": "Existing revision1 actor local-owner, scope local-motion-candidate and scene binding recognized; pending proposal unapproved; ontology null explicitly independent."
+    },
+    {
+      "id": "NM-Q01-version",
+      "result": "initial FAIL; final targeted PASS",
+      "evidence": "live/final-clarification/result.json",
+      "observation": "First answer conflated motion composition application with timeline adoption. Final one-response server-lookup explanation correctly distinguishes them and says Take/audio not prerequisite for candidate rendering."
+    },
+    {
+      "id": "NM-Q01-revalidation",
+      "result": "PARTIAL, residual explanation error",
+      "evidence": "live/final-clarification/result.json",
+      "observation": "Correctly says execution must revalidate and final delivery is not authorized. But unnecessarily cites empty ontology/snapshot/sources as inability to know context match, despite matches_current_context=true. Exact scene record remains authoritative; no execution gate changed."
+    },
+    {
+      "id": "NM-Q02-diff",
+      "result": "PASS sampled",
+      "evidence": "live/case-2/turn.json",
+      "observation": "Correctly explains 0,1,2 → 2,0,1, old/new captions, audio offset0→1 with same version1, and unchanged Take/trim/duration. Does not interpret legacy changes=[] as no timeline changes."
+    },
+    {
+      "id": "NM-Q02-authority",
+      "result": "PASS sampled",
+      "evidence": "live/case-2/turn.json",
+      "observation": "States saved proposal only, applied=false/output_approved=false and human review required. Actual base/source state preserved; no new renderer job."
+    }
+  ],
+  "limits": [
+    "First five responses used actual model tool/result loops. Last response used a real server-invoked scoped lookup, not a new model-selected tool roundtrip.",
+    "Six-response limit exhausted; no seventh response, silent repair, model fallback or claim of perfect explanation.",
+    "Five initial responses predate final two SYSTEM sentences. Last response is final-source explanation sample. Frontend is unchanged; no fresh browser QA."
+  ]
+}

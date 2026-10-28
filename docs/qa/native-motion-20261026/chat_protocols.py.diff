@@ -1,0 +1,11 @@
+--- before/chat_protocols.py
++++ chat_protocols.py
+@@ -68,6 +68,8 @@
+   if name=='propose_timeline_edit':
+    import local_creation_tools
+    schema['properties']['changes']=deepcopy(local_creation_tools.CHANGE_SCHEMA)
++  if name=='propose_motion_scene':schema['properties']['scene']=deepcopy(__import__('motion_scene').SCHEMA)
++  if name=='propose_timeline_changes':schema['properties']['commands']=deepcopy(__import__('local_creation_tools').COMMAND_SCHEMA)
+   if provider=='anthropic':definitions.append(dict(name=name,description='Loretune server-controlled '+name,input_schema=schema))
+   else:definitions.append(dict(type='function',name=name,description='Loretune server-controlled '+name,parameters=schema,strict=True))
+  return definitions

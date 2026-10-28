@@ -1,0 +1,836 @@
+{
+  "captured_utc": "2026-10-25",
+  "source": "https://docs.dev.runwayml.com/openapi.json",
+  "source_sha256": "57333d74bdd1f3a9d5bb8a27eb381bb9f6ee34f9ec36ac65fa1d2d89eaaa7865",
+  "version": {
+    "name": "X-Runway-Version",
+    "in": "header",
+    "required": true,
+    "description": "The version of the RunwayML API being used. You can read more about versioning [here](/api-details/versioning).",
+    "schema": {
+      "type": "string",
+      "const": "2024-11-06",
+      "default": "2024-11-06"
+    }
+  },
+  "input_gen4_image": {
+    "title": "gen4_image",
+    "type": "object",
+    "properties": {
+      "promptText": {
+        "description": "A non-empty string up to 1000 characters (measured in UTF-16 code units). This should describe in detail what should appear in the output.",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000
+      },
+      "seed": {
+        "description": "If unspecified, a random number is chosen. Varying the seed integer is a way to get different results for the same other request parameters. Using the same seed integer for an identical request will produce similar results.",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295
+      },
+      "ratio": {
+        "description": "The resolution of the output image.",
+        "type": "string",
+        "enum": [
+          "1024:1024",
+          "1080:1080",
+          "1168:880",
+          "1360:768",
+          "1440:1080",
+          "1080:1440",
+          "1808:768",
+          "1920:1080",
+          "1080:1920",
+          "2112:912",
+          "1280:720",
+          "720:1280",
+          "720:720",
+          "960:720",
+          "720:960",
+          "1680:720"
+        ]
+      },
+      "referenceImages": {
+        "description": "An array of up to three images to be used as references for the generated image output.",
+        "maxItems": 3,
+        "type": "array",
+        "items": {
+          "title": "ReferenceImage",
+          "type": "object",
+          "properties": {
+            "uri": {
+              "description": "A HTTPS URL, Runway or data URI containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+              "example": "https://example.com/image.jpg",
+              "anyOf": [
+                {
+                  "description": "A HTTPS URL, Runway upload URI, or base64 data URI (e.g. `data:image/png;base64,...`, up to 5MB) containing an encoded image. See [our docs](/assets/inputs#images) on image inputs for more information.",
+                  "example": "https://example.com/image.jpg",
+                  "type": "string",
+                  "minLength": 13,
+                  "maxLength": 2048,
+                  "pattern": "^https:\\/\\/.*"
+                },
+                {
+                  "description": "A Runway upload URI. See https://docs.dev.runwayml.com/assets/uploads for more information.",
+                  "example": "runway://<token>",
+                  "type": "string",
+                  "minLength": 13,
+                  "maxLength": 5000,
+                  "pattern": "^runway:\\/\\/.*"
+                },
+                {
+                  "description": "A data URI containing encoded media, up to 5MB.",
+                  "example": "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+                  "type": "string",
+                  "minLength": 13,
+                  "maxLength": 5242880,
+                  "pattern": "^data:image\\/.*"
+                }
+              ]
+            },
+            "tag": {
+              "description": "A tag to identify the reference image. This is used to reference the image in prompt text. Must be 3-16 characters, start with a letter, and use only letters, digits, and underscores (no hyphens or other punctuation).",
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 16,
+              "pattern": "^[a-z][a-z0-9_]+$"
+            }
+          },
+          "required": [
+            "uri"
+          ]
+        }
+      },
+      "contentModeration": {
+        "description": "Settings that affect the behavior of the content moderation system.",
+        "type": "object",
+        "properties": {
+          "publicFigureThreshold": {
+            "description": "When set to `low`, the content moderation system will be less strict about preventing generations that include recognizable public figures.",
+            "type": "string",
+            "enum": [
+              "auto",
+              "low"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "model": {
+        "type": "string",
+        "const": "gen4_image"
+      }
+    },
+    "required": [
+      "promptText",
+      "ratio",
+      "model"
+    ]
+  },
+  "task_contract": {
+    "get": {
+      "tags": [
+        "Task management"
+      ],
+      "summary": "Get task detail",
+      "description": "Return details about a task. Consumers of this API should not expect updates more frequent than once every five seconds for a given task.",
+      "x-codeSamples": [
+        {
+          "lang": "TypeScript",
+          "label": "Node SDK",
+          "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\n// Fetch the current state of the task:\nconst task = await client.tasks.retrieve(\n  '17f20503-6c24-4c16-946b-35dbbce2af2f'\n);\n\n// Or, wait for the task to succeed or fail:\nconst task = await client.tasks\n  .retrieve('17f20503-6c24-4c16-946b-35dbbce2af2f')\n  .waitForTaskOutput();"
+        },
+        {
+          "lang": "Python",
+          "label": "Python SDK",
+          "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\ntask_id = '17f20503-6c24-4c16-946b-35dbbce2af2f'\n\n# Fetch the current state of the task:\ntask = client.tasks.retrieve(id=task_id)\nprint(task)\n\n# Or, wait for the task to succeed or fail:\ntask = client.tasks.retrieve(id=task_id).wait_for_task_output()\nprint(task)"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+          },
+          "description": "The ID of a previously-submitted task that has not been canceled or deleted."
+        },
+        {
+          "$ref": "#/components/parameters/X-Runway-Version"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "description": "A pending task",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "The ID of the task being returned.",
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                      },
+                      "createdAt": {
+                        "description": "The timestamp that the task was submitted at.",
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                      },
+                      "status": {
+                        "type": "string",
+                        "const": "PENDING"
+                      },
+                      "estimatedCost": {
+                        "description": "Estimated cost, computed against current pricing.",
+                        "type": "object",
+                        "properties": {
+                          "credits": {
+                            "description": "Estimated cost of the generation in credits.",
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "credits"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "status",
+                      "estimatedCost"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "description": "A throttled task",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "The ID of the task being returned.",
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                      },
+                      "createdAt": {
+                        "description": "The timestamp that the task was submitted at.",
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                      },
+                      "status": {
+                        "type": "string",
+                        "const": "THROTTLED"
+                      },
+                      "estimatedCost": {
+                        "description": "Estimated cost, computed against current pricing.",
+                        "type": "object",
+                        "properties": {
+                          "credits": {
+                            "description": "Estimated cost of the generation in credits.",
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "credits"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "status",
+                      "estimatedCost"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "description": "A cancelled or deleted task",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "The ID of the task being returned.",
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                      },
+                      "createdAt": {
+                        "description": "The timestamp that the task was submitted at.",
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                      },
+                      "status": {
+                        "type": "string",
+                        "const": "CANCELLED"
+                      },
+                      "cost": {
+                        "description": "Final cost in credits for a terminal task. Fully refunded tasks report 0; tasks that later returned unused prepaid credits report what remains charged.",
+                        "type": "object",
+                        "properties": {
+                          "credits": {
+                            "description": "Credits charged for this task.",
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "credits"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "status",
+                      "cost"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "description": "A running task",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "The ID of the task being returned.",
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                      },
+                      "createdAt": {
+                        "description": "The timestamp that the task was submitted at.",
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                      },
+                      "status": {
+                        "type": "string",
+                        "const": "RUNNING"
+                      },
+                      "progress": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "estimatedCost": {
+                        "description": "Estimated cost, computed against current pricing.",
+                        "type": "object",
+                        "properties": {
+                          "credits": {
+                            "description": "Estimated cost of the generation in credits.",
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "credits"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "status",
+                      "progress",
+                      "estimatedCost"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "description": "A failed task",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "The ID of the task being returned.",
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                      },
+                      "createdAt": {
+                        "description": "The timestamp that the task was submitted at.",
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                      },
+                      "status": {
+                        "type": "string",
+                        "const": "FAILED"
+                      },
+                      "failure": {
+                        "description": "A human-friendly reason for the failure. We do not recommend returning this to users directly without adding context.",
+                        "type": "string"
+                      },
+                      "failureCode": {
+                        "description": "A machine-readable error code for the failure. See https://docs.dev.runwayml.com/errors/task-failures/ for more information.",
+                        "type": "string"
+                      },
+                      "cost": {
+                        "description": "Final cost in credits for a terminal task. Fully refunded tasks report 0; tasks that later returned unused prepaid credits report what remains charged.",
+                        "type": "object",
+                        "properties": {
+                          "credits": {
+                            "description": "Credits charged for this task.",
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "credits"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "status",
+                      "failure",
+                      "cost"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "description": "A succeeded task",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "The ID of the task being returned.",
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+                      },
+                      "createdAt": {
+                        "description": "The timestamp that the task was submitted at.",
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                      },
+                      "status": {
+                        "type": "string",
+                        "const": "SUCCEEDED"
+                      },
+                      "output": {
+                        "description": "An array of URLs that return the output of the task. These URLs will expire within 24-48 hours; fetch the task again to get fresh URLs. It is expected that you download the assets at these URLs and store them in your own storage system.",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      },
+                      "cost": {
+                        "description": "Final cost in credits for a terminal task. Fully refunded tasks report 0; tasks that later returned unused prepaid credits report what remains charged.",
+                        "type": "object",
+                        "properties": {
+                          "credits": {
+                            "description": "Credits charged for this task.",
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "credits"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "status",
+                      "output",
+                      "cost"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "status"
+                }
+              },
+              "examples": {
+                "pending": {
+                  "title": "Pending task",
+                  "summary": "An example of a pending task",
+                  "value": {
+                    "id": "17f20503-6c24-4c16-946b-35dbbce2af2f",
+                    "status": "PENDING",
+                    "createdAt": "2024-06-27T19:49:32.334Z",
+                    "estimatedCost": {
+                      "credits": 25
+                    }
+                  }
+                },
+                "throttled": {
+                  "title": "Throttled task",
+                  "summary": "An example of a throttled task",
+                  "value": {
+                    "id": "355e42da-b3f9-4b65-9be2-fb10bda026fc",
+                    "status": "THROTTLED",
+                    "createdAt": "2024-06-27T19:49:32.335Z",
+                    "estimatedCost": {
+                      "credits": 25
+                    }
+                  }
+                },
+                "running": {
+                  "title": "Running task",
+                  "summary": "An example of a running task",
+                  "value": {
+                    "id": "08388106-1b46-4f5c-bd46-1c1d7ee86892",
+                    "status": "RUNNING",
+                    "createdAt": "2024-06-27T19:49:32.335Z",
+                    "progress": 0.2,
+                    "estimatedCost": {
+                      "credits": 25
+                    }
+                  }
+                },
+                "succeeded": {
+                  "title": "Succeeded task",
+                  "summary": "An example of a succeeded task",
+                  "value": {
+                    "id": "d2e3d1f4-1b3c-4b5c-8d46-1c1d7ee86892",
+                    "status": "SUCCEEDED",
+                    "createdAt": "2024-06-27T19:49:32.335Z",
+                    "output": [
+                      "https://example.com/output1.jpg",
+                      "https://example.com/output2.jpg"
+                    ],
+                    "cost": {
+                      "credits": 25
+                    }
+                  }
+                },
+                "failed": {
+                  "title": "Failed task",
+                  "summary": "An example of a failed task",
+                  "value": {
+                    "id": "6da960dd-ef88-40fc-9628-02e9b6a6a008",
+                    "status": "FAILED",
+                    "createdAt": "2024-06-27T19:49:32.335Z",
+                    "failure": "The provided image was flagged by content moderation.",
+                    "failureCode": "SAFETY.INPUT.IMAGE",
+                    "cost": {
+                      "credits": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "The task does not exist, or was deleted or canceled.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "error"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": [
+        "Task management"
+      ],
+      "summary": "Cancel or delete a task",
+      "description": "Tasks that are running, pending, or throttled can be canceled by invoking this method. Invoking this method for other tasks will delete them.\n\nThe output data associated with a deleted task will be deleted from persistent storage in accordance with our data retention policy. Aborted and deleted tasks will not be able to be fetched again in the future.",
+      "x-codeSamples": [
+        {
+          "lang": "TypeScript",
+          "label": "Node SDK",
+          "source": "// npm install --save @runwayml/sdk\nimport RunwayML from '@runwayml/sdk';\n\n// The env var RUNWAYML_API_SECRET is expected to contain your API key.\nconst client = new RunwayML();\n\nawait client.tasks.delete('17f20503-6c24-4c16-946b-35dbbce2af2f');"
+        },
+        {
+          "lang": "Python",
+          "label": "Python SDK",
+          "source": "# pip install runwayml\nfrom runwayml import RunwayML\n\n# The env var RUNWAYML_API_SECRET is expected to contain your API key.\nclient = RunwayML()\n\nclient.tasks.delete(id='17f20503-6c24-4c16-946b-35dbbce2af2f')"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+          },
+          "description": "The ID of a previously-submitted task that has not been canceled or deleted."
+        },
+        {
+          "$ref": "#/components/parameters/X-Runway-Version"
+        }
+      ],
+      "responses": {
+        "204": {
+          "description": "This endpoint will produce a 204 No Content response indicating successful cancellation or deletion. Calling this endpoint for tasks which have already been deleted or aborted will result in a 404: for idempotency purposes, it is safe to ignore these 404 errors."
+        }
+      }
+    }
+  },
+  "image_responses": {
+    "200": {
+      "description": "The task that was created.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "The ID of the task that was created. Use this to retrieve the task later.",
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
+              },
+              "estimatedCost": {
+                "description": "The maximum credits this task may charge. The final amount may be lower after the task completes.",
+                "type": "object",
+                "properties": {
+                  "credits": {
+                    "description": "Estimated cost of the generation in credits.",
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "credits"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "estimatedCost"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "400": {
+      "description": "The request was rejected. Inspect `error` or `issues` (when present) and retry with a corrected request.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "error": {
+                "description": "A message describing why the request was rejected.",
+                "type": "string"
+              },
+              "issues": {
+                "description": "Field-level validation issues when the request failed Zod body/query validation. Omitted for other 400s.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "description": "A machine-readable issue code from request validation.",
+                      "type": "string"
+                    },
+                    "path": {
+                      "description": "The path to the invalid field in the request body or query.",
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      }
+                    },
+                    "message": {
+                      "description": "A human-readable description of the issue.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "path",
+                    "message"
+                  ],
+                  "additionalProperties": {}
+                }
+              },
+              "reason": {
+                "description": "A machine-readable rejection reason when one applies — e.g. DEPRECATED_MODEL when the requested model has reached its sunset date.",
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^SAFETY\\.(INPUT|OUTPUT)\\.(TEXT|IMAGE|VIDEO|AUDIO|AVATAR)$"
+                  },
+                  {
+                    "type": "string",
+                    "const": "SAFETY.INPUT.PUBLIC_FIGURE"
+                  },
+                  {
+                    "type": "string",
+                    "const": "SAFETY.INPUT.MULTIMODAL"
+                  },
+                  {
+                    "type": "string",
+                    "const": "SAFETY.OUTPUT.MULTIMODAL"
+                  },
+                  {
+                    "type": "string",
+                    "const": "SAFETY.INPUT.THIRD_PARTY"
+                  },
+                  {
+                    "type": "string",
+                    "const": "SAFETY.OUTPUT.THIRD_PARTY"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INPUT_PREPROCESSING.SAFETY.THIRD_PARTY"
+                  },
+                  {
+                    "type": "string",
+                    "const": "DEPRECATED_MODEL.THIRD_PARTY"
+                  },
+                  {
+                    "type": "string",
+                    "const": "DEPRECATED_MODEL"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^INTERNAL\\.BAD_OUTPUT\\.(CODE01|CODE02|CODE03|CODE04|CODE05)$"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^INPUT_PREPROCESSING\\.SAFETY\\.(TEXT|IMAGE|VIDEO)$"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INPUT_PREPROCESSING.INTERNAL"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INPUT_PREPROCESSING.VALIDATION"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INPUT_VALIDATION.VIDEO.TOO_MANY_SHOTS"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INPUT_VALIDATION.VIDEO.UNSUPPORTED_FPS"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INPUT_VALIDATION.VIDEO.HDR_SOURCE"
+                  },
+                  {
+                    "type": "string",
+                    "const": "ASSET.MISSING"
+                  },
+                  {
+                    "type": "string",
+                    "const": "ASSET.INVALID"
+                  },
+                  {
+                    "type": "string",
+                    "const": "SANDBOX.WORKSPACE_LIMIT"
+                  },
+                  {
+                    "type": "string",
+                    "const": "SANDBOX.CONTAINER_LOST"
+                  },
+                  {
+                    "type": "string",
+                    "const": "SANDBOX.NOT_RESUMABLE"
+                  },
+                  {
+                    "type": "string",
+                    "const": "FORBIDDEN"
+                  },
+                  {
+                    "type": "string",
+                    "const": "QUOTA"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^THIRD_PARTY\\.(INPUT_VALIDATION|OUTPUT_VALIDATION|RATE_LIMITED|TIMEOUT|UNAVAILABLE)$"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INTERNAL.TIMEOUT"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INTERNAL.HDR_COMPOSE"
+                  },
+                  {
+                    "type": "string",
+                    "const": "INTERNAL"
+                  },
+                  {
+                    "type": "string",
+                    "const": "UNKNOWN"
+                  }
+                ]
+              },
+              "docUrl": {
+                "description": "A link to the public API documentation.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "error"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "429": {
+      "description": "You have exceeded the rate limit for this endpoint.",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "error"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  }
+}

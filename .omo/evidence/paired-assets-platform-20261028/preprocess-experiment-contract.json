@@ -1,0 +1,30 @@
+{
+  "task_id": "triposr-preprocess-controlled-20261028",
+  "recorded_at": "2026-10-27T19:34:30.165497+00:00",
+  "objective": "Test one official preprocessing variant against existing original-image chair generation, without claiming commercial equivalence",
+  "Agent": "triposr_cpu_artifact",
+  "Role": "isolated local public-model experiment",
+  "Model": "fixed by existing worker role; actual provider identity not independently measured",
+  "Reasoning": "fixed by existing worker role",
+  "Methodology sources": [
+    "pinned TripoSR107cefd run.py and tsr/utils.py",
+    "https://github.com/VAST-AI-Research/TripoSR/blob/107cefdc244c39106fa830359024f6a2f1c78871/run.py",
+    "existing original chair input and pinned model run evidence"
+  ],
+  "Applied methodology": "Single-variable preprocessing A/B: retain original512PNG untouched; derive explicit known-synthetic-background alpha mask; official resize_foreground0.85 and0.5gray composite. Same weights256meshresolution/seed/thread CPU settings. Record modified input and exact conditions.",
+  "Scope": "one chair input variant only; inspect pinned recipe and model export coordinate convention first",
+  "Write set": [
+    ".omo/evidence/triposr-preprocess-controlled-20261028/**",
+    "existing owned task temp only, no shared source/env writes"
+  ],
+  "Dependency": "existing original model outputs, verified isolated weights/runtime; no new install/download",
+  "Non-goals/limits": [
+    "No paid/commercial/Claude/video provider calls or keys/.env/private inputs",
+    "No arbitrary-user-image background removal capability claim",
+    "No rewriting original inputs/raw output/previous evidence",
+    "No lossy mesh/material substitution to pass import",
+    "No new dependencies/model weights; stop if required",
+    "No product or document changes"
+  ],
+  "Verification standard": "Source code/pin/license/weights SHA and OS network-denial remain verified; original input/output unchanged; new preprocessingcondition/input/output/time/RSS/topology/colors recorded. CPU2threads20min/RSS8GiB/disk12GiB bound, actualprocess handles and terminal cleanup."
+}

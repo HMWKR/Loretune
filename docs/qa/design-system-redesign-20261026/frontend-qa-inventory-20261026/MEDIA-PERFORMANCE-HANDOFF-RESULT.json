@@ -1,0 +1,88 @@
+{
+  "FQ02_BROWSER": {
+    "status": "NOT RUN",
+    "reason": "No existing saved silent sequence in authorized QA-project inventory. All saved versions inspected have audio=1. No edit made to manufacture one.",
+    "vm_finding": "FQ02 remains the functional auditor’s reproduced finding; not refuted or browser-confirmed"
+  },
+  "PER_OBS_30": {
+    "status": "PARTIAL OBSERVATION; paint measurement BLOCKED",
+    "evidence": "evidence/cached-selection-lab30.json",
+    "valid": {
+      "samples": 30,
+      "counts": [
+        {
+          "n": 0,
+          "time": 1103166.1000000238,
+          "nodes": 1169,
+          "video": 3,
+          "audio": 1,
+          "playing": 0,
+          "heapSupported": true,
+          "heap": 8040491
+        },
+        {
+          "n": 15,
+          "time": 1105668.5,
+          "nodes": 1169,
+          "video": 3,
+          "audio": 1,
+          "playing": 0,
+          "heapSupported": true,
+          "heap": 8948175
+        },
+        {
+          "n": 30,
+          "time": 1108136.5,
+          "nodes": 1169,
+          "video": 3,
+          "audio": 1,
+          "playing": 0,
+          "heapSupported": true,
+          "heap": 8148409
+        },
+        {
+          "n": "after observers removed",
+          "time": 1108140.1000000238,
+          "nodes": 1169,
+          "video": 3,
+          "audio": 1,
+          "playing": 0,
+          "heapSupported": true,
+          "heap": 8148409
+        }
+      ],
+      "longtask_entries": [],
+      "visibility": "visible",
+      "supported_entry_types": [
+        "element",
+        "event",
+        "first-input",
+        "interaction-contentful-paint",
+        "largest-contentful-paint",
+        "layout-shift",
+        "long-animation-frame",
+        "longtask",
+        "mark",
+        "measure",
+        "navigation",
+        "paint",
+        "resource",
+        "soft-navigation",
+        "visibility-state"
+      ]
+    },
+    "invalid_latency": {
+      "reason": "Capture listener queued microtask ran before application bubbling handler; recorded title is the previous scene in all30 cases. Discard duration values as DOM-ready or paint timings.",
+      "mismatches": 30,
+      "p95": null
+    },
+    "limits": [
+      "No frame accuracy/AV-drift/natural-ended pass",
+      "No fieldCWV pass, no90-sample performance acceptance",
+      "No leak conclusion from small counts/heap sample"
+    ]
+  },
+  "canonical_unchanged": true,
+  "end_evidence": "evidence/end.json",
+  "request_evidence": "Browser guard logs GET/api/state and source GETs only; blocked[]; no action/submit button invoked. This is not backend provider isolation proof."
+}

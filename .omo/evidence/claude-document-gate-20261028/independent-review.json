@@ -1,0 +1,91 @@
+{
+  "task_id": "claude-document-gate-20261028",
+  "reviewed_at": "2026-10-28T07:01:16.317426+00:00",
+  "status": "ACCEPTED_PROPOSAL_ONLY_DEPLOYMENT_BLOCKED",
+  "methodology_sources": [
+    "https://code.claude.com/docs/en/hooks",
+    "https://code.claude.com/docs/en/settings",
+    "/Users/leesungmin/.agents/skills/document-completion-gate/SKILL.md"
+  ],
+  "applied_methodology": "Independent official schema and read-only executable contract checks",
+  "checks": [
+    {
+      "case": "blocked_first_stop",
+      "pass": true,
+      "exit_code": 0,
+      "response": {
+        "decision": "block",
+        "reason": "Document gate: blocked. Run the read-only checker, report gaps and request any required registration approval. Do not auto-register or promote documents."
+      },
+      "stderr": ""
+    },
+    {
+      "case": "reentry_warning_only",
+      "pass": true,
+      "exit_code": 0,
+      "response": {
+        "systemMessage": "Document gate: blocked. Run the read-only checker, report gaps and request any required registration approval. Do not auto-register or promote documents. Continued once already; report incomplete status honestly."
+      },
+      "stderr": ""
+    },
+    {
+      "case": "no_policy",
+      "pass": true,
+      "exit_code": 0,
+      "response": {
+        "systemMessage": "Document gate: not-configured. No registry or project files were created."
+      },
+      "stderr": ""
+    },
+    {
+      "case": "invalid_input",
+      "pass": true,
+      "exit_code": 0,
+      "response": {
+        "systemMessage": "Document gate could not validate this project. Report the gate as incomplete; do not claim pass."
+      },
+      "stderr": ""
+    }
+  ],
+  "protected_hashes_unchanged": {
+    "/Users/leesungmin/.claude/settings.json": true,
+    "/Users/leesungmin/.claude/settings.local.json": true,
+    "/Users/leesungmin/.codex/hooks.json": true,
+    "/Users/leesungmin/.agents/skills/document-completion-gate/check.py": true,
+    "/Users/leesungmin/Desktop/Loretune/.document-gate.json": true
+  },
+  "proposal_present_at_review": true,
+  "proposal_observed": {
+    "hooks": {
+      "Stop": [
+        {
+          "hooks": [
+            {
+              "type": "command",
+              "command": "/opt/homebrew/bin/python3 -B /Users/leesungmin/.agents/skills/document-completion-gate/check.py --hook",
+              "timeout": 15
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "project_setting_present_at_review": false,
+  "confirmed_checker_defects": [],
+  "deployment_blocker": {
+    "source": "Driver tool rejection reported to reviewer; not independently retried",
+    "tool": "apply_patch",
+    "target": "/Users/leesungmin/Desktop/Loretune/.claude/settings.local.json",
+    "message": "DENIED_PATH: Write target is a protected state, dependency or secret path",
+    "reviewer_response": "No alternate writes/activation or permission bypass attempted"
+  },
+  "limits": [
+    "No actual Claude process, native dispatcher, settings reload, workspace trust acceptance or model execution was performed",
+    "Command outputs are direct subprocess checks using synthetic Stop inputs, not native hook dispatch evidence",
+    "Project registration/classification/current context regeneration remains unauthorized and unmodified",
+    "Old fablize-only Stop guidance may require explicit project interpretation; proposed gate is latest user-requested opt-in and no global rule was edited"
+  ],
+  "acceptance_scope": "Prepared additive project Stop-hook proposal and shared checker compatibility only; protected-path deployment was denied, so Claude gate installation/activation/native dispatch are not verified",
+  "proposal_expected_exact_match": true,
+  "proposal_sha256": "73ed3f15e13de3e65f83ce27662949338d924a830695669c655ccfa69cebba4b"
+}

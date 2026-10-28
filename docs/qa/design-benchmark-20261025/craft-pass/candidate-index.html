@@ -1,0 +1,780 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Loretune · 제작 스튜디오</title>
+<style>
+:root{color-scheme:dark;--bg:#101010;--panel:#171717;--raised:#222;--line:#414141;--text:#f5f5f5;--muted:#b5b5b5;--text-scale:1}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:calc(14px * var(--text-scale))/1.5 system-ui,sans-serif}header{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:32px;padding:0 24px}header b{font-size:calc(24px * var(--text-scale));letter-spacing:-1px}header span{color:var(--muted)}button,a,input,select,textarea{font:inherit}button,.download{border:1px solid var(--line);background:#262626;color:white;border-radius:6px;padding:9px 12px;cursor:pointer;min-height:40px;text-decoration:none}button:hover{background:#363636}button.primary{background:#f5f5f5;color:#101010;border-color:#f5f5f5}button:disabled{opacity:.45;cursor:wait}button.active{border-color:#fff;background:#343434}input,select,textarea{background:#101010;color:white;border:1px solid #737373;border-radius:5px;width:100%;padding:9px}input[type=file]{font-size:calc(12px * var(--text-scale))}label{display:block;font-size:calc(12px * var(--text-scale));color:#ccc;margin:10px 0 5px}h1{font-size:calc(20px * var(--text-scale));margin:0}h2{font-size:calc(15px * var(--text-scale));margin:0 0 12px}h3{font-size:calc(14px * var(--text-scale));margin:12px 0}p{margin:8px 0}.muted,small{color:var(--muted)}small{font-size:calc(11px * var(--text-scale))}.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0;flex:1}.toolbar{padding:16px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line)}.toolbar select{width:230px}.toolbar .spacer{flex:1}#notice{padding:8px 24px;background:#222;color:#ddd;font-size:calc(12px * var(--text-scale));min-height:34px}.error{color:#ffb49d!important}main{display:grid;grid-template-columns:230px minmax(360px,1fr) 310px;min-height:calc(100vh - 160px)}aside{padding:16px;border-right:1px solid var(--line)}article{padding:20px;min-width:0}.inspector{border-left:1px solid var(--line);border-right:0;min-width:0}section{padding:16px 0;border-bottom:1px solid var(--line)}section:first-child{padding-top:0}.shot{display:flex;gap:12px;width:100%;text-align:left;margin:8px 0}.thumb{width:68px;height:44px;background:#080808;object-fit:cover}.empty{padding:40px 20px;text-align:center;color:var(--muted);border:1px dashed #555;border-radius:8px}.preview{aspect-ratio:16/9;background:#050505;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--line);border-radius:8px}.preview img,.preview video{width:100%;height:100%;object-fit:contain}.preview.portrait{aspect-ratio:9/16;max-height:560px;margin:auto}.take-strip{display:flex;gap:10px;overflow:auto;padding:14px 0}.take-strip button{min-width:100px;text-align:left}.take-strip img{width:90px;height:54px;object-fit:cover;display:block;margin-bottom:6px}.badge{font-size:calc(11px * var(--text-scale));padding:3px 6px;border:1px solid #666;border-radius:4px;color:#ddd}.timeline{margin-top:20px;border:1px solid var(--line);border-radius:8px;padding:14px;background:#141414}.clip-row{display:grid;grid-template-columns:28px 1fr 1fr 70px 70px 66px;gap:6px;align-items:center;margin:6px 0;font-size:calc(12px * var(--text-scale))}.clip-row input,.clip-row select{padding:6px}.clip-row button{padding:2px;min-height:30px}.track{display:flex;height:28px;gap:2px;margin:12px 0;background:#0a0a0a}.track span{display:flex;align-items:center;background:#383838;border:1px solid #777;padding:3px;overflow:hidden;white-space:nowrap;font-size:calc(11px * var(--text-scale))}.caption-row{display:grid;grid-template-columns:65px 65px 1fr 30px;gap:5px;margin:6px 0}.caption-row button{padding:2px}.job{background:#222;border:1px solid var(--line);border-radius:6px;padding:12px;margin:10px 0;overflow-wrap:anywhere}.job a{color:white;display:inline-block;margin:8px}.job progress{width:100%;accent-color:#ccc}dialog{background:#171717;color:white;border:1px solid #555;border-radius:10px;width:min(640px,95vw);max-height:90vh;overflow:auto;padding:24px}dialog::backdrop{background:#000b}details{margin:12px 0}summary{cursor:pointer;color:#ccc}.library{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}.library img{width:100%;height:90px;object-fit:cover}audio{width:100%;height:36px}#downloadPreview{margin:12px 0}#downloadPreview video{width:100%;max-height:360px}#compareDialog small{overflow-wrap:anywhere;display:block}#compareDialog img,#compareDialog video{max-height:50vh;object-fit:contain;background:#080808}:focus-visible{outline:2px solid #fff;outline-offset:3px}[hidden]{display:none!important}@media(max-width:1050px){main{grid-template-columns:190px minmax(300px,1fr)}.inspector{grid-column:1/-1;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:24px}.toolbar{flex-wrap:wrap}}@media(max-width:700px){header{padding:12px;height:auto;gap:16px}header{flex-wrap:wrap}header span:not(#providerBadge){display:none}header #providerBadge{display:inline-block}.toolbar{padding:12px}.toolbar select{width:100%}main{display:block}aside{border-bottom:1px solid var(--line)}#shotlist{display:flex;overflow:auto}.shot{min-width:160px}.inspector{display:block}article{padding:12px}.clip-row{grid-template-columns:20px 1fr 1fr 58px 58px 54px;gap:3px}.clip-row input,.clip-row select{font-size:calc(11px * var(--text-scale));min-width:0}.caption-row{grid-template-columns:55px 55px 1fr 26px}.toolbar button{font-size:calc(12px * var(--text-scale))}h1{font-size:calc(16px * var(--text-scale))}}
+
+::placeholder{color:var(--muted);opacity:1}button,input,select,textarea,.download{border-color:#777}p,li,h1,h2,label{overflow-wrap:anywhere}.clip-row button{min-width:26px;min-height:32px}button{white-space:normal;word-break:keep-all}small,.badge{font-size:calc(12px * var(--text-scale))}label{font-size:calc(14px * var(--text-scale))}.toolbar{gap:10px;flex-wrap:wrap}.toolbar>button{flex-shrink:0}.toolbar select{max-width:100%}.toolbar .spacer{display:none}.management{position:relative;margin:0}.management[open]{width:100%;padding:12px;border:1px solid var(--line)}.management button{margin:4px}.flow-nav{display:flex;flex-wrap:wrap;gap:8px;padding:16px 24px;background:var(--panel)}.flow-nav button[aria-current=step]{background:var(--text);color:var(--bg)}.flow-summary{padding:0 24px 12px;background:var(--panel)}#guidedBrief{max-width:760px}.guide-next{margin:16px 0}.guided-card{border:1px solid var(--line);padding:16px;border-radius:8px;margin:16px 0}body[data-guided=true]:not([data-step="4"]) #review,body[data-guided=true]:not([data-step="4"]) #render{display:none}body[data-guided=true] main{display:block;max-width:1100px;margin:auto}body[data-guided=true] #chatWorkspace{display:none}body[data-guided=true][data-step="1"] #chatPanel,body[data-guided=true][data-step="3"] #chatPanel,body[data-guided=true][data-step="4"] #chatPanel{display:none}body[data-guided=true][data-step="2"] main{display:none}body[data-guided=true][data-step="1"] main>article,body[data-guided=true][data-step="1"] .inspector,body[data-guided=true][data-step="1"] .shot-board,body[data-guided=true][data-step="1"] .snapshot-section{display:none}body[data-guided=true][data-step="3"] .audio-section,body[data-guided=true][data-step="3"] .snapshot-section,body[data-guided=true][data-step="3"] .timeline,body[data-guided=true][data-step="3"] .render-section{display:none}body[data-guided=true][data-step="4"] main>aside:not(.inspector),body[data-guided=true][data-step="4"] .inspector>section:not(.render-section),body[data-guided=true][data-step="4"] .preview,body[data-guided=true][data-step="4"] #takes,body[data-guided=true][data-step="4"] #compareButton{display:none}body[data-guided=true] .inspector{display:block;border:0}#flowSummary{overflow-wrap:anywhere}#flowNext{margin-left:24px}.timeline{overflow-x:auto}.clip-row{min-width:430px}.row{flex-wrap:wrap}input,textarea,select{max-width:100%}dialog .row>button{flex:0 0 auto}#notice{overflow-wrap:anywhere}.skip-link{position:fixed;top:-60px;left:8px;z-index:10;padding:10px;background:white;color:black}.skip-link:focus{top:8px}@media(max-width:700px){.toolbar{gap:8px}.toolbar>button{font-size:calc(14px * var(--text-scale))}.flow-nav,.flow-summary{padding:12px}button{min-height:44px}.caption-row{grid-template-columns:1fr 1fr}.caption-row input[data-field=text]{grid-column:1/-1}.row>label{flex-basis:160px}#chatPanel{padding:12px!important}.toolbar select{width:100%}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+<style id="designPolish">
+/* Integration candidate. Load after existing styles; no data or visibility changes. */
+:root { --polish-radius:8px; --polish-gap:16px; }
+#modelSettingsPanel { padding-inline:16px; }
+#modelSettingsPanel p { line-height:1.6; overflow-wrap:anywhere; }
+#modelDefaultsBar{padding-block:6px;font-size:calc(12px * var(--text-scale))}#modelDefaultsSummary{flex:1;min-width:0;overflow-wrap:anywhere}
+header { gap:20px; }
+.toolbar { padding-block:10px; }
+.flow-nav { padding-block:10px; }
+.flow-summary { padding-bottom:16px; }
+#flowHeading { font-size:calc(20px * var(--text-scale)); line-height:1.4; margin-bottom:8px; }
+#flowSummary { color:var(--muted); max-width:90ch; line-height:1.65; }
+#flowNext { margin:8px 0 0; background:var(--text); color:var(--bg); border-color:var(--text); font-weight:600; }
+#flowNext:hover { background:#ddd; }
+button, .download, input, select, textarea { border-radius:var(--polish-radius); }
+button[aria-pressed=true] { box-shadow:inset 0 -3px 0 var(--text); }
+summary { min-height:44px; padding-block:10px; }
+.management summary { padding-inline:8px; }
+textarea { line-height:1.65; resize:vertical; }
+.guided-card, .job { padding:20px; }
+.guided-card h2, .job b { line-height:1.5; }
+.guided-card li { margin-block:8px; }
+.badge { flex:0 1 auto; overflow-wrap:anywhere; }
+.row, .flow-nav, .toolbar { min-width:0; }
+.row > *, .toolbar > *, .flow-nav > * { max-width:100%; }
+.preview { background:#050505; }
+.take-strip { scroll-padding-inline:8px; }
+.take-strip button { flex:0 0 auto; }
+@media(min-width:1000px) {
+ body[data-guided=true][data-step="3"] main { display:grid; grid-template-columns:220px minmax(0,1fr); align-items:start; }
+ body[data-guided=true][data-step="3"] main>.inspector { grid-column:1/-1; border-top:1px solid var(--line); }
+}
+@media(max-width:700px) {
+ header { gap:12px; }
+ #flowHeading { font-size:calc(18px * var(--text-scale)); }
+ .flow-nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .flow-nav button { padding-inline:8px; }
+ .toolbar { padding-block:8px; }
+ .guided-card, .job { padding:14px; }
+ #flowNext { width:100%; }
+}
+@media(prefers-reduced-motion:reduce) {
+ *, *::before, *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+}
+
+</style>
+<style id="loretuneSemanticSystem">
+/* Loretune semantic system v2. Opt-in only. See DECISIONS.md for provenance. */
+.lt-system {
+  --lt-canvas:#101010; --lt-surface:#171717; --lt-surface-raised:#222;
+  --lt-media:#050505; --lt-text:#f5f5f5; --lt-text-secondary:#b5b5b5;
+  --lt-text-disabled:#999; --lt-line:#414141; --lt-control-border:#777;
+  --lt-action:#f5f5f5; --lt-on-action:#101010; --lt-hover:#363636;
+  --lt-selected:#303030; --lt-danger:#ffb49d; --lt-warning:#e6c58b;
+  --lt-focus:#fff; --lt-space-1:4px; --lt-space-2:8px; --lt-space-3:12px;
+  --lt-space-4:16px; --lt-space-6:24px; --lt-space-8:32px;
+  --lt-radius-small:4px; --lt-radius-control:8px; --lt-radius-panel:12px;
+  --lt-font:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --lt-meta:calc(12px * var(--text-scale,1));
+  --lt-body:calc(14px * var(--text-scale,1));
+  --lt-section:calc(16px * var(--text-scale,1));
+  --lt-title:calc(20px * var(--text-scale,1));
+  --lt-duration:120ms; --lt-ease:cubic-bezier(.2,0,0,1);
+  --bg:var(--lt-canvas); --panel:var(--lt-surface); --raised:var(--lt-surface-raised);
+  --text:var(--lt-text); --muted:var(--lt-text-secondary); --line:var(--lt-line);
+  background:var(--lt-canvas); color:var(--lt-text); font:var(--lt-body)/1.5 var(--lt-font);
+}
+.lt-system :where(button,input,select,textarea,.download) { font:inherit; border-radius:var(--lt-radius-control); }
+.lt-system :where(button,.download) { min-height:40px; padding:8px 12px; border:1px solid var(--lt-control-border); background:var(--lt-surface-raised); color:var(--lt-text); }
+.lt-system :where(button,.download):not(:disabled):hover { background:var(--lt-hover); }
+.lt-system :where(button.primary,#flowNext) { background:var(--lt-action); color:var(--lt-on-action); border-color:var(--lt-action); font-weight:600; }
+.lt-system :where(button.primary,#flowNext):not(:disabled):hover { background:#ddd; }
+.lt-system button:disabled { opacity:1; background:var(--lt-surface-raised); color:var(--lt-text-disabled); border-color:var(--lt-line); cursor:not-allowed; box-shadow:none; }
+.lt-system [aria-busy="true"] { cursor:progress; }
+.lt-system :where(button.active,button[aria-pressed="true"],.flow-nav button[aria-current="step"]) { color:var(--lt-text); background:var(--lt-selected); border-color:var(--lt-control-border); box-shadow:inset 0 -2px var(--lt-text); }
+.lt-system .flow-nav button[aria-current="step"] { color:var(--lt-text); background:var(--lt-selected); border-color:var(--lt-control-border); box-shadow:inset 0 -2px var(--lt-text); }
+.lt-system :focus-visible { outline:2px solid var(--lt-focus); outline-offset:3px; }
+.lt-system :where(input,select,textarea) { border:1px solid var(--lt-control-border); padding:9px 12px; background:var(--lt-canvas); color:var(--lt-text); min-width:0; }
+.lt-system :where(input,textarea)[aria-invalid="true"] { border-color:var(--lt-danger); }
+.lt-system textarea { line-height:1.6; }
+.lt-system :where(p,li) { line-height:1.6; overflow-wrap:anywhere; }
+.lt-system :where(h1,#flowHeading) { font-size:var(--lt-title); line-height:1.4; font-weight:650; }
+.lt-system h2 { font-size:var(--lt-section); line-height:1.5; font-weight:600; }
+.lt-system h3 { font-size:var(--lt-body); line-height:1.5; font-weight:600; }
+.lt-system :where(small,.badge,#modelDefaultsBar) { font-size:var(--lt-meta); line-height:1.5; }
+.lt-system label { font-size:var(--lt-body); color:var(--lt-text-secondary); }
+.lt-system header { min-height:48px; height:auto; padding:8px 24px; gap:16px; }
+.lt-system header b { font-size:22px; }
+.lt-system .lt-project-bar { display:flex; flex-wrap:wrap; align-items:center; border-bottom:1px solid var(--lt-line); }
+.lt-system .lt-project-bar>.toolbar { border-bottom:0; padding:6px 24px; }
+.lt-system .lt-project-bar>.toolbar:first-child { flex:1 1 540px; }
+.lt-system .lt-project-bar>.toolbar:last-child { flex:0 1 auto; }
+.lt-system .flow-nav { padding:8px 24px; gap:8px; }
+.lt-system .flow-summary { padding:4px 24px 12px; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 24px; align-items:center; }
+.lt-system #flowHeading { margin:0; }
+.lt-system #flowSummary { margin:0; grid-column:1; max-width:90ch; }
+.lt-system #flowNext { margin:0; grid-column:2; grid-row:1/3; max-width:320px; }
+.lt-system #notice { padding:6px 24px; min-height:30px; font-size:var(--lt-meta); }
+.lt-system #modelDefaultsBar { padding:6px 24px; }
+.lt-system #modelDefaultsSummary { color:var(--lt-text-secondary); }
+.lt-system .preview { width:100%; max-width:720px; margin-inline:auto; background:var(--lt-media); border:1px solid var(--lt-line); border-radius:var(--lt-radius-control); }
+.lt-system .preview.portrait { max-width:300px; }
+.lt-system .preview :where(img,video) { object-fit:contain; }
+.lt-system .shot { padding:10px; gap:12px; }
+.lt-system .shot .thumb { border-radius:var(--lt-radius-small); flex-shrink:0; }
+.lt-system :where(.guided-card,.job,.timeline) { border:1px solid var(--lt-line); border-radius:var(--lt-radius-panel); background:var(--lt-surface); padding:16px; }
+.lt-system .guided-card h2 { margin-bottom:12px; }
+.lt-system .guided-card li { margin-block:8px; }
+.lt-system .badge { border-radius:var(--lt-radius-small); }
+.lt-system dialog { width:min(640px,calc(100vw - 32px)); max-height:calc(100dvh - 32px); padding:24px; border:1px solid var(--lt-control-border); border-radius:var(--lt-radius-panel); background:var(--lt-surface); box-shadow:0 16px 48px #0006; }
+.lt-system dialog::backdrop { background:#000b; }
+.lt-system dialog .row { align-items:flex-start; }
+.lt-system dialog .row>h2 { margin:6px 0 16px; }
+.lt-system .lt-status { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--lt-line); border-radius:4px; padding:4px 8px; font-size:var(--lt-meta); }
+.lt-system .lt-status[data-state="review"] { color:var(--lt-warning); }
+.lt-system :where(.lt-status[data-state="failed"],.lt-inline-error) { color:var(--lt-danger); }
+.lt-system .lt-status[data-state="approved"] { border-color:var(--lt-text); font-weight:600; }
+.lt-system .lt-entity { display:inline-flex; flex-wrap:wrap; gap:4px; padding:4px 8px; border:1px solid var(--lt-line); border-radius:4px; font-size:var(--lt-meta); }
+.lt-system .lt-timecode { font-family:ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+.lt-system .lt-model-name { overflow-wrap:anywhere; font-size:var(--lt-meta); color:var(--lt-text-secondary); }
+.lt-system .lt-empty { padding:24px; text-align:center; color:var(--lt-text-secondary); }
+@media(min-width:1100px) {
+ .lt-system[data-guided="true"] main { max-width:1280px; }
+ .lt-system[data-guided="true"][data-step="3"] main { grid-template-columns:220px minmax(0,1fr); }
+ .lt-system #chatPanel { max-width:1280px!important; }
+ .lt-system #chatPanel:not([hidden]) { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:24px; }
+ .lt-system #chatPanel>h1,.lt-system #chatPanel>p,.lt-system #chatPanel>details { grid-column:1/-1; }
+ .lt-system #guidedBrief { grid-column:1; }
+ .lt-system #guidedPlans { grid-column:2; min-width:0; }
+ .lt-system #guidedPlans .guided-card:first-child { margin-top:0; }
+}
+@media(max-width:700px) {
+ .lt-system header { padding:12px; }
+ .lt-system .lt-project-bar>.toolbar { padding:6px 12px; flex-basis:100%; }
+ .lt-system .lt-project-bar>.toolbar:last-child { padding-top:0; }
+ .lt-system .flow-nav { padding:8px 12px; }
+ .lt-system .flow-summary { padding:8px 12px 12px; display:block; }
+ .lt-system #flowSummary { margin-block:8px; }
+ .lt-system #flowNext { max-width:none; width:100%; }
+ .lt-system :where(button,.download,summary) { min-height:44px; }
+ .lt-system #notice,.lt-system #modelDefaultsBar { padding:8px 12px; }
+ .lt-system #modelDefaultsBar { gap:8px; }
+ .lt-system #editModelSettings { flex:0 0 auto; }
+ .lt-system dialog { padding:16px; }
+ .lt-system .preview { max-width:100%; }
+ .lt-system .preview.portrait { max-width:260px; }
+ .lt-system .shot-board:has(#shotlist:empty):not(:has(details[open])) { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+ .lt-system .shot-board:has(#shotlist:empty):not(:has(details[open])) :where(h2,details) { margin:0; }
+}
+@media(prefers-reduced-motion:no-preference) {
+ .lt-system :where(button,.download) { transition:background-color var(--lt-duration) var(--lt-ease),border-color var(--lt-duration) var(--lt-ease); }
+}
+@media(prefers-reduced-motion:reduce) {
+ .lt-system *, .lt-system *::before, .lt-system *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+}
+@media(forced-colors:active) {
+ .lt-system :focus-visible { outline-color:Highlight; }
+ .lt-system button[aria-pressed="true"],.lt-system .flow-nav button[aria-current="step"] { border:2px solid Highlight; }
+}
+
+</style>
+<style id="loretuneWorkspaceLayout">
+/* Loretune workspace v3. Append after the existing semantic system.
+   Source roles / provenance: structure/DECISIONS.md. Candidate, not integrated. */
+.lt-workspace-v3 {
+  --lt-chrome: #151515;
+  --lt-work: #1b1b1b;
+  --lt-border-subtle: #303030;
+  --lt-rail-width: 184px;
+  --lt-inspector-width: 288px;
+  --lt-work-gap: 16px;
+  --lt-preview-height: clamp(220px,36vh,360px);
+}
+.lt-workspace-v3 .lt-studio-shell {
+  min-height:56px; padding:8px 20px; gap:12px; flex-wrap:wrap;
+  background:var(--lt-chrome); border-bottom:1px solid var(--lt-border-subtle);
+}
+.lt-workspace-v3 .lt-studio-shell>b { font-size:20px; letter-spacing:-.7px; margin-right:8px; }
+.lt-workspace-v3 .lt-studio-shell>#songs { width:240px; padding:8px 10px; background:transparent; border-color:var(--lt-line); }
+.lt-workspace-v3 .lt-studio-shell>#editModelSettings { margin-left:auto; }
+.lt-workspace-v3 .lt-studio-shell :where(button,summary) { min-height:36px; }
+.lt-workspace-v3 .lt-studio-shell :where(.management,.lt-project-context) { position:relative; margin:0; width:auto; padding:0; border:0; }
+.lt-workspace-v3 .lt-studio-shell summary { padding:8px 10px; color:var(--lt-text-secondary); border-radius:8px; }
+.lt-workspace-v3 .lt-studio-shell details[open] { position:relative; background:var(--lt-surface); }
+.lt-workspace-v3 .lt-studio-shell details[open] { flex-basis:100%; padding:12px; border:1px solid var(--lt-line); border-radius:8px; }
+.lt-workspace-v3 .lt-project-context #flowSummary { margin:8px 0; }
+.lt-workspace-v3 .lt-project-context #modelDefaultsBar { padding:0; }
+.lt-workspace-v3 .lt-mode-switch { padding:8px 0; border:0; }
+.lt-workspace-v3 .lt-stage-bar { display:flex; gap:16px; align-items:center; justify-content:space-between; padding:8px 20px; background:var(--lt-chrome); border-bottom:1px solid var(--lt-border-subtle); }
+.lt-workspace-v3 .flow-nav { display:flex; flex-wrap:nowrap; padding:0; gap:4px; background:none; min-width:0; }
+.lt-workspace-v3 .flow-nav button { min-height:36px; padding:7px 12px; font-size:var(--lt-body); background:transparent; border-color:transparent; white-space:nowrap; }
+.lt-workspace-v3 .flow-nav button[aria-current="step"] { background:#303030; border-color:transparent; box-shadow:inset 0 -2px #ddd; }
+.lt-workspace-v3 #flowNext { min-height:36px; margin:0; max-width:280px; padding:7px 12px; color:var(--lt-text); background:var(--lt-surface-raised); border-color:var(--lt-line); font-size:var(--lt-meta); font-weight:500; }
+.lt-workspace-v3 .lt-status-line { display:flex; gap:20px; align-items:baseline; padding:6px 20px; border-bottom:1px solid var(--lt-border-subtle); }
+.lt-workspace-v3 #flowHeading { flex-shrink:0; font-size:var(--lt-meta); font-weight:600; margin:0; color:var(--lt-text-secondary); }
+.lt-workspace-v3 #notice { padding:0; min-height:0; background:transparent; font-size:var(--lt-meta); color:var(--lt-text-secondary); }
+.lt-workspace-v3 #notice.error { color:var(--lt-danger); font-weight:600; }
+.lt-workspace-v3 .lt-edit-workspace { padding:16px 20px 24px; gap:var(--lt-work-gap); min-height:0; align-items:start; max-width:none!important; }
+.lt-workspace-v3 main>.lt-scene-rail { padding:0; border:0; min-width:0; }
+.lt-workspace-v3 .shot-board>h2 { display:flex; align-items:center; gap:8px; font-size:var(--lt-meta); color:var(--lt-text-secondary); margin:4px 0 12px; }
+.lt-workspace-v3 .shot { padding:8px; margin:4px 0; gap:8px; border-color:transparent; background:transparent; border-radius:8px; }
+.lt-workspace-v3 .shot.active { border-color:#777; background:#262626; box-shadow:inset 2px 0 #f5f5f5; }
+.lt-workspace-v3 .shot .thumb { width:52px; height:36px; }
+.lt-workspace-v3 .shot small { font-size:12px; }
+.lt-workspace-v3 main>.lt-media-pane { padding:0; min-width:0; }
+.lt-workspace-v3 .lt-shot-header { justify-content:space-between; flex-wrap:nowrap; gap:12px; }
+.lt-workspace-v3 .lt-shot-header>h1 { font-size:var(--lt-section); line-height:1.5; }
+.lt-workspace-v3 #selectedBadge { flex:0 0 auto; border-color:var(--lt-border-subtle); color:var(--lt-text-secondary); }
+.lt-workspace-v3 #description { font-size:var(--lt-meta); margin:4px 0 12px; }
+.lt-workspace-v3 #preview { max-width:none; width:100%; height:var(--lt-preview-height); aspect-ratio:auto; border:1px solid var(--lt-border-subtle); border-radius:10px; }
+.lt-workspace-v3 #preview :where(video,img) { width:100%; height:100%; object-fit:contain; }
+.lt-workspace-v3 .lt-take-row { display:flex; align-items:center; gap:8px; min-width:0; padding-block:8px; }
+.lt-workspace-v3 #takes { flex:1; min-width:0; padding:0; gap:6px; }
+.lt-workspace-v3 #takes button { min-width:72px; padding:6px 8px; font-size:var(--lt-meta); line-height:1.3; }
+.lt-workspace-v3 #takes img { display:none; }
+.lt-workspace-v3 #compareButton { flex:0 0 auto; min-height:36px; padding:6px 10px; font-size:var(--lt-meta); }
+.lt-workspace-v3 .timeline { margin:8px 0 0; padding:12px; border:1px solid var(--lt-border-subtle); border-radius:10px; background:var(--lt-work); overflow:visible; }
+.lt-workspace-v3 .lt-timeline-header { align-items:center; flex-wrap:nowrap; }
+.lt-workspace-v3 .lt-timeline-header h2 { font-size:var(--lt-body); margin:0; }
+.lt-workspace-v3 #sync { flex:0 1 auto; font-size:var(--lt-meta); padding:6px 8px; min-height:32px; }
+.lt-workspace-v3 #timelineStatus { margin:6px 0; font-size:var(--lt-meta); }
+.lt-workspace-v3 #track { height:32px; margin:10px 0; border-radius:4px; }
+.lt-workspace-v3 #track span { border-color:#606060; background:#383838; }
+.lt-workspace-v3 .lt-timeline-controls { margin:4px 0 0; }
+.lt-workspace-v3 .lt-timeline-controls>summary { padding:6px 0; min-height:32px; font-size:var(--lt-meta); }
+.lt-workspace-v3 .lt-timeline-controls[open] { overflow-x:auto; }
+.lt-workspace-v3 .lt-output-actions { display:flex; flex:0 1 auto; gap:8px; flex-wrap:wrap; margin:0; }
+.lt-workspace-v3[data-guided="true"]:not([data-step="4"]) .lt-output-actions { display:none; }
+.lt-workspace-v3 #saveTimeline { background:var(--lt-surface-raised); color:var(--lt-text); border-color:var(--lt-control-border); }
+.lt-workspace-v3 #review { background:var(--lt-surface-raised); color:var(--lt-text); border-color:var(--lt-control-border); }
+.lt-workspace-v3 main>.inspector { padding:0 0 0 16px; border:0; border-left:1px solid var(--lt-border-subtle); min-width:0; display:block; }
+.lt-workspace-v3 .inspector>section { border-bottom:1px solid var(--lt-border-subtle); padding:0 0 16px; }
+.lt-workspace-v3 .inspector :where(h2,summary) { font-size:var(--lt-body); font-weight:600; }
+.lt-workspace-v3 .inspector :where(p,small) { font-size:var(--lt-meta); line-height:1.6; }
+.lt-workspace-v3 .inspector label { font-size:var(--lt-meta); }
+.lt-workspace-v3 .inspector .row { display:block; }
+.lt-workspace-v3 .inspector .row>* { width:100%; margin-bottom:8px; }
+.lt-workspace-v3 #reviewTake { background:var(--lt-action); color:var(--lt-on-action); font-weight:600; border-color:var(--lt-action); }
+.lt-workspace-v3 #reviewTake:disabled,.lt-workspace-v3 #flowNext:disabled,.lt-workspace-v3 #render:disabled,.lt-workspace-v3 #saveTimeline:disabled {
+ background:var(--lt-surface-raised); color:var(--lt-text-disabled); border-color:var(--lt-line); cursor:not-allowed;
+}
+.lt-workspace-v3 .lt-inspector-detail { margin:0; border-bottom:1px solid var(--lt-border-subtle); }
+.lt-workspace-v3 .lt-inspector-detail>summary { min-height:44px; padding:12px 0; }
+.lt-workspace-v3 .lt-inspector-detail>section { padding:0 0 12px; border:0; }
+.lt-workspace-v3 .lt-inspector-detail>section>.job { padding:12px; }
+.lt-workspace-v3 #downloadPreview:empty,.lt-workspace-v3 .lt-output-label { display:none; }
+.lt-workspace-v3[data-guided="true"]:not([data-step="4"]) #downloadPreview { display:none; }
+.lt-workspace-v3 #downloadPreview:not(:empty) { margin:0 0 12px; }
+.lt-workspace-v3 #downloadPreview video { height:var(--lt-preview-height); object-fit:contain; background:var(--lt-media); border-radius:10px; max-height:none; }
+.lt-workspace-v3[data-step="4"] .lt-output-label:has(+ #downloadPreview:not(:empty)) { display:block; font-size:var(--lt-meta); }
+.lt-workspace-v3[data-step="4"] #downloadPreview:not(:empty)~#preview { display:none!important; }
+.lt-workspace-v3 .lt-panel-nav { display:none; }
+.lt-workspace-v3[data-guided="true"][data-step="3"] .timeline,
+.lt-workspace-v3[data-guided="true"][data-step="4"] #preview,
+.lt-workspace-v3[data-guided="true"][data-step="4"] #takes,
+.lt-workspace-v3[data-guided="true"][data-step="4"] #compareButton,
+.lt-workspace-v3[data-guided="true"][data-step="4"] main>.lt-scene-rail { display:block; }
+.lt-workspace-v3[data-guided="true"][data-step="4"] #takes { display:flex; }
+.lt-workspace-v3[data-guided="true"][data-step="4"] .audio-section,
+.lt-workspace-v3[data-guided="true"][data-step="4"] .snapshot-section,
+.lt-workspace-v3[data-guided="true"][data-step="4"] .inspector>:not(.render-section) { display:none; }
+.lt-workspace-v3[data-guided="true"][data-step="1"] .lt-panel-nav,
+.lt-workspace-v3[data-guided="true"][data-step="2"] .lt-panel-nav { display:none; }
+.lt-workspace-v3 #chatPanel { padding:20px!important; }
+.lt-workspace-v3 #chatPanel>h1 { font-size:20px; }
+.lt-workspace-v3 #chatPanel>p { max-width:76ch; font-size:var(--lt-meta); }
+@media(min-width:901px) {
+ .lt-workspace-v3:not([data-guided="true"]) main,
+ .lt-workspace-v3[data-guided="true"][data-step="3"] main,
+ .lt-workspace-v3[data-guided="true"][data-step="4"] main { display:grid; grid-template-columns:var(--lt-rail-width) minmax(0,1fr) var(--lt-inspector-width); }
+ .lt-workspace-v3 main>.inspector { grid-column:auto!important; max-height:calc(100dvh - 190px); overflow-y:auto; scrollbar-gutter:stable; padding-right:8px; }
+ .lt-workspace-v3[data-guided="true"][data-step="3"] main>.inspector { border-top:0; }
+ .lt-workspace-v3[data-guided="true"][data-step="1"] main { padding-inline:24px; max-width:960px!important; }
+}
+@media(min-width:901px) and (max-width:1150px) {
+ .lt-workspace-v3 { --lt-rail-width:148px; --lt-inspector-width:260px; --lt-work-gap:12px; }
+ .lt-workspace-v3 .shot { flex-direction:column; }
+}
+@media(max-width:900px) {
+ .lt-workspace-v3 .lt-studio-shell { padding:8px 12px; gap:6px; }
+ .lt-workspace-v3 .lt-studio-shell>b { margin:0; font-size:18px; }
+ .lt-workspace-v3 .lt-studio-shell>#songs { flex:1; width:120px; min-width:0; }
+ .lt-workspace-v3 .lt-studio-shell>.management { flex:0 0 auto; }
+ .lt-workspace-v3 .lt-studio-shell>.management>summary { padding-inline:6px; }
+ .lt-workspace-v3 .lt-studio-shell .lt-project-context { margin-left:auto; }
+ .lt-workspace-v3 .lt-studio-shell>#editModelSettings { margin-left:0; }
+ .lt-workspace-v3 .lt-studio-shell :where(button,summary) { min-height:44px; }
+ .lt-workspace-v3 .lt-stage-bar { display:block; padding:6px 12px; }
+ .lt-workspace-v3 .flow-nav { overflow-x:auto; padding-bottom:4px; scrollbar-width:thin; }
+ .lt-workspace-v3 .flow-nav button { min-height:44px; padding:8px 10px; font-size:13px; }
+ .lt-workspace-v3 #flowNext { display:block; width:100%; max-width:none; min-height:44px; margin-top:4px; }
+ .lt-workspace-v3 .lt-status-line { display:block; padding:6px 12px; }
+ .lt-workspace-v3 #flowHeading { font-size:12px; }
+ .lt-workspace-v3 #notice { font-size:12px; padding-top:4px; }
+ .lt-workspace-v3 .lt-panel-nav:not([hidden]) { display:flex; gap:4px; padding:8px 12px; border-bottom:1px solid var(--lt-border-subtle); }
+ .lt-workspace-v3 .lt-panel-nav button { flex:1; min-height:44px; background:transparent; border-color:transparent; }
+ .lt-workspace-v3 .lt-panel-nav button[aria-selected="true"] { background:var(--lt-selected); box-shadow:inset 0 -2px #eee; }
+ .lt-workspace-v3 .lt-panel-inactive { display:none!important; }
+ .lt-workspace-v3 .lt-edit-workspace { display:block!important; padding:12px; }
+ .lt-workspace-v3[data-guided="true"][data-step="2"] .lt-edit-workspace { display:none!important; }
+ .lt-workspace-v3 main>.inspector { border:0; padding:0; }
+ .lt-workspace-v3 #preview { height:auto; aspect-ratio:16/9; min-height:0; }
+ .lt-workspace-v3 #preview :where(img,video) { max-height:52dvh; }
+ .lt-workspace-v3 #takes img { display:none; }
+ .lt-workspace-v3 #takes button,.lt-workspace-v3 #compareButton,.lt-workspace-v3 #sync { min-height:44px; }
+ .lt-workspace-v3 .lt-take-row { align-items:stretch; }
+ .lt-workspace-v3 #compareButton { max-width:112px; }
+ .lt-workspace-v3 #shotlist { display:block; }
+ .lt-workspace-v3 .shot { min-width:0; }
+ .lt-workspace-v3 .shot .thumb { width:76px; height:48px; }
+ .lt-workspace-v3 .timeline { padding:10px; }
+ .lt-workspace-v3 .lt-timeline-header { flex-wrap:wrap; }
+ .lt-workspace-v3 .lt-output-actions { flex-basis:100%; }
+ .lt-workspace-v3 .lt-timeline-controls>summary { min-height:44px; padding:10px 0; }
+ .lt-workspace-v3 #downloadPreview video { height:auto; max-height:52dvh; }
+ .lt-workspace-v3 #chatPanel { padding:12px!important; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .lt-workspace-v3 *, .lt-workspace-v3 *::before, .lt-workspace-v3 *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+}
+
+</style>
+<style id="loretuneCraft">
+/* Candidate: append after workspace styles. No network assets or data writes. */
+.lt-craft {
+ --craft-canvas:#101010; --craft-panel:#1b1b1b; --craft-input:#141414;
+ --craft-line:#353535; --craft-control:#707070;
+ --craft-text:#f4f4f2; --craft-secondary:#c1c1be;
+ --craft-label:13px; --craft-body:14px; --craft-title:20px;
+ --craft-control-radius:8px; --craft-panel-radius:12px;
+ color:var(--craft-text); background:var(--craft-canvas);
+}
+.lt-craft .lt-studio-shell {background:#141414;}
+.lt-craft .lt-studio-shell>b {display:flex;align-items:center;gap:10px;font-weight:750;letter-spacing:-.7px;}
+.lt-craft :where(button,input,select,textarea) {border-radius:var(--craft-control-radius);font-size:var(--craft-body);line-height:1.45;}
+.lt-craft :where(input,select,textarea) {background:var(--craft-input);border-color:var(--craft-control);padding:10px 12px;}
+.lt-craft :where(button) {background:#252525;border-color:#555;color:var(--craft-text);font-weight:500;min-height:40px;}
+.lt-craft :where(button:hover:not(:disabled)) {background:#333;border-color:#999;}
+.lt-craft :where(button:active:not(:disabled)) {background:#3d3d3d;}
+.lt-craft :where(button:disabled,input:disabled,select:disabled) {opacity:1!important;background:#222!important;color:#858585!important;border-color:#444!important;cursor:not-allowed;}
+.lt-craft :where(button,input,select,textarea,summary,a):focus-visible {outline:2px solid #fafafa;outline-offset:3px;}
+.lt-craft .flow-nav button {font-size:13px;font-weight:600;}
+.lt-craft .lt-stage-short {display:none;}
+.lt-craft .flow-nav button[aria-current="step"] {background:#292929;color:#fff;border-color:#555;box-shadow:inset 0 -2px #eee;}
+.lt-craft #flowNext {background:transparent;border-color:#555;font-size:13px;}
+.lt-craft .lt-status-line {padding-block:2px;justify-content:space-between;align-items:center;}
+.lt-craft #flowHeading {font-size:13px;color:var(--craft-secondary);flex-shrink:1;}
+.lt-craft .lt-notice-detail {margin:0;max-width:65%;font-size:13px;}
+.lt-craft .lt-notice-detail>summary {min-height:28px;padding:4px 0;white-space:nowrap;font-size:12px;}
+.lt-craft .lt-notice-detail[open] {max-width:none;}
+.lt-craft #notice {font-size:13px;line-height:1.55;padding-bottom:6px;}
+.lt-craft .lt-shot-header>h1 {font-size:var(--craft-title);font-weight:650;letter-spacing:-.3px;line-height:1.4;}
+.lt-craft #description {font-size:13px;line-height:1.55;color:var(--craft-secondary);margin:6px 0 12px;}
+.lt-craft #selectedBadge {padding:4px 8px;background:#252525;border-color:#4c4c4c;border-radius:6px;font-size:12px;}
+.lt-craft #preview {border-radius:12px;border-color:#3a3a3a;}
+.lt-craft .shot-board>h2 {font-size:13px;letter-spacing:.02em;}
+.lt-craft .shot {padding:10px 8px;gap:10px;}
+.lt-craft .shot.active {background:#242424;border-color:#555;box-shadow:inset 2px 0 #eee;}
+.lt-craft .shot .thumb {border-radius:4px;width:48px;height:40px;}
+.lt-craft .shot small {display:inline-block;margin-top:3px;color:#bdbdbd;line-height:1.4;}
+.lt-craft #takes button {min-height:44px;padding:6px 10px;background:#1d1d1d;border-color:#555;}
+.lt-craft #takes button[aria-pressed="true"] {background:#303030;border-color:#c9c9c9;box-shadow:inset 0 -2px #eee;}
+.lt-craft #compareButton {min-height:40px;font-size:13px;}
+.lt-craft .timeline {background:#191919;border-color:#363636;padding:14px;border-radius:12px;}
+.lt-craft .lt-timeline-header h2 {font-size:14px;font-weight:650;}
+.lt-craft #track {height:36px;background:#0f0f0f;}
+.lt-craft #track span {background:#303030;border-color:#666;border-left:3px solid #aaa;padding-inline:8px;font-size:12px;}
+.lt-craft #timelineStatus {font-size:13px;color:var(--craft-secondary);margin:8px 0;}
+.lt-craft .lt-timeline-controls>summary {font-size:13px;min-height:36px;}
+.lt-craft main>.inspector {background:var(--craft-panel);border:1px solid var(--craft-line)!important;border-radius:12px;padding:16px!important;max-height:calc(100dvh - 180px);scrollbar-gutter:auto;}
+.lt-craft .inspector>section {padding-bottom:16px;border-bottom-color:#3b3b3b;}
+.lt-craft .inspector :where(h2,summary) {font-size:14px;font-weight:650;line-height:1.5;}
+.lt-craft .inspector :where(p,small) {font-size:13px;line-height:1.6;}
+.lt-craft .inspector label {font-size:13px;color:#d2d2d0;margin:12px 0 6px;}
+.lt-craft #reason {background:#242424;border-radius:8px;padding:10px 12px;color:#ddd;margin:12px 0;}
+.lt-craft #reviewTake {font-size:14px;min-height:42px;margin-top:2px;}
+.lt-craft #reviewTake:hover:not(:disabled) {background:#dededb;color:#101010;}
+.lt-craft .lt-inspector-detail {border-bottom-color:#3b3b3b;}
+.lt-craft .lt-take-review>.lt-inspector-detail {border-bottom:0;}
+.lt-craft .lt-inspector-detail>summary {padding-block:12px;}
+.lt-craft .lt-execution-detail>section>p {margin:0 0 12px;color:var(--craft-secondary);}
+.lt-craft #prepareSelectedAction {width:100%;font-size:13px;line-height:1.5;padding:10px 12px;}
+.lt-craft .lt-execution-card {margin:16px 0 0;padding:14px;background:#141414;border:1px solid #3f3f3f;border-radius:10px;}
+.lt-craft .lt-execution-card h2 {display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;margin:0 0 8px;}
+.lt-craft .lt-state-chip {font-size:12px;font-weight:500;line-height:1.5;border:1px solid #6b6b6b;background:#2a2a2a;border-radius:6px;padding:3px 7px;}
+.lt-craft .lt-execution-card[data-decision="blocked"] .lt-state-chip,
+.lt-craft .lt-execution-card[data-decision="rejected"] .lt-state-chip {color:var(--lt-danger);border-color:var(--lt-danger);}
+.lt-craft .lt-cost-facts {padding-block:10px;border-block:1px solid #343434;color:#d5d5d2;}
+.lt-craft .lt-provenance-detail {margin:8px 0;color:var(--craft-secondary);}
+.lt-craft .lt-provenance-detail>summary {font-size:12px;font-weight:500;min-height:36px;padding-block:8px;}
+.lt-craft .lt-provenance-detail p {overflow-wrap:anywhere;}
+.lt-craft .lt-execution-card>.toolbar {padding:8px 0 0;border:0;display:flex;gap:8px;flex-wrap:wrap;}
+.lt-craft .lt-execution-card>.toolbar:empty {display:none;}
+.lt-craft .lt-execution-card>.toolbar button {width:100%;font-size:13px;}
+.lt-craft .lt-execution-card>img {object-fit:contain;border-radius:6px;}
+.lt-craft .lt-execution-card [data-action="action_execute"],
+.lt-craft .lt-execution-card [data-action="action_decide"][data-decision="approved"] {background:var(--craft-text);color:#151515;}
+.lt-craft dialog {background:#1b1b1b;border-color:#606060;border-radius:16px;padding:24px;box-shadow:0 24px 80px #0009;overscroll-behavior:contain;}
+.lt-craft dialog h2 {font-size:20px;letter-spacing:-.3px;}
+.lt-craft dialog label {font-size:14px;}
+.lt-craft .lt-model-name {font-size:13px;color:#eee;}
+@media(max-width:900px) {
+ .lt-craft .lt-studio-shell {padding:6px 12px;gap:6px;}
+ .lt-craft .lt-studio-shell>b {gap:7px;font-size:17px;}
+ .lt-craft .lt-stage-bar {padding:2px 12px 4px;}
+ .lt-craft .flow-nav {padding-bottom:0;gap:2px;}
+ .lt-craft .flow-nav button {padding-inline:8px;}
+ .lt-craft #flowNext {margin-top:2px;min-height:44px;}
+ .lt-craft .lt-status-line {display:flex;gap:8px;padding:0 12px;}
+ .lt-craft #flowHeading {font-size:12px;line-height:1.5;}
+ .lt-craft .lt-notice-detail>summary {min-height:44px;display:list-item;padding-block:12px;}
+ .lt-craft .lt-status-line:has(.lt-notice-detail[open]) {display:block;}
+ .lt-craft .lt-notice-detail {max-width:none;flex-shrink:0;}
+ .lt-craft .lt-panel-nav:not([hidden]) {padding:2px 12px;gap:4px;}
+ .lt-craft .lt-panel-nav button {font-size:14px;min-height:44px;}
+ .lt-craft .lt-shot-header>h1 {font-size:18px;}
+ .lt-craft main>.inspector {padding:16px!important;max-height:none;}
+ .lt-craft :where(button,input,select,summary) {min-height:44px;}
+ .lt-craft #compareButton,.lt-craft #sync {min-height:44px;}
+ .lt-craft .lt-timeline-controls>summary {min-height:44px;}
+ .lt-craft #preview {height:auto;}
+ .lt-craft .lt-execution-card {padding:14px;}
+ .lt-craft .lt-provenance-detail>summary {min-height:44px;}
+}
+@media(prefers-reduced-motion:reduce) {.lt-craft *, .lt-craft *::before,.lt-craft *::after {animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
+@media(max-width:359px) {
+ .lt-craft .flow-nav {width:100%;}
+ .lt-craft .flow-nav button {flex:1;min-width:0;padding-inline:4px;}
+ .lt-craft .lt-stage-full {display:none;}
+ .lt-craft .lt-stage-short {display:inline;}
+}
+@media(forced-colors:active) {.lt-craft :focus-visible {outline-color:Highlight;} .lt-craft .lt-state-chip {border-color:CanvasText;} }
+
+</style>
+<body class="lt-system">
+<a class="skip-link" href="#flowHeading" id="skipFlow">제작 단계로 건너뛰기</a><header><b>Loretune</b><span>제작 스튜디오</span><span id="providerBadge" class="badge">LOCAL · 모델 미연결</span></header>
+<div class="lt-project-bar"><div class="toolbar"><select id="songs" aria-label="작품 선택"></select><button id="newProject">새 작품</button><details class="management"><summary>설정·자산·운영 더 보기</summary><label>글자 크기<select id="textScale"><option value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label><button id="ontologyButton">인물·장소·계보</button><button id="settings">IP 기준 설정</button><button id="preferencesButton">연출 취향</button><button id="archiveButton">보관 관리</button><button id="operationsButton">운영 상태</button><button id="budgetButton">예산·원장</button><button id="libraryButton">자산함</button><button id="rightsButton">사용권 관리</button></details><div class="spacer"></div><button id="review" class="primary">타임라인 승인</button><button id="render" class="primary">렌더 대기열에 추가</button></div>
+<div class="toolbar"><button id="chatMode" aria-pressed="false">안내형 제작</button><button id="workbenchMode" aria-pressed="true">상세 작업대</button></div>
+</div>
+<nav class="flow-nav" aria-label="제작 순서"><button data-step="1">1 음악 입력</button><button data-step="2">2 계획 검토</button><button data-step="3">3 장면 제작·검토</button><button data-step="4">4 편집·출력</button></nav><div class="flow-summary"><h2 id="flowHeading" tabindex="-1">음악 입력부터 시작하세요</h2><p id="flowSummary" role="status"></p><button id="flowNext">다음 단계</button></div><div id="notice" role="status" aria-live="polite">저장소를 불러오는 중…</div>
+<div id="modelDefaultsBar" class="toolbar"><span id="modelDefaultsSummary">모델 기본값 · 실제 연결 미검증</span><button id="editModelSettings" aria-haspopup="dialog">모델 기본값 변경</button></div><dialog id="modelSettingsPanel"><div class="row"><h2>제작 모델 기본값</h2><button data-close>닫기</button></div><p>새 작업의 기본 선택만 바꿉니다. 진행 중 작업·승인본·원곡은 유지됩니다. 온톨로지 구조화 제안용 Anthropic 연결은 채팅 모델 선택과 별개이며 현재 미연결입니다.</p><form id="modelSettingsForm"><div id="modelSlots"></div><button type="submit">기본 선택 저장 · 호출 없음</button></form><p id="modelSettingsStatus" role="status"></p></dialog>
+<section id="chatPanel" hidden style="max-width:900px;margin:auto;padding:24px"><h1>제작 계획을 함께 정리하세요</h1><p>목표와 보존할 조건을 정리한 뒤, 직접 쓴 장면을 검토합니다. 직접 계획은 외부 전송 없이 저장됩니다. 모델 대화는 아래에 표시된 서버 연결·승인 범위에서만 사용할 수 있습니다.</p><form id="guidedBrief"><label>영상 목표<input name="goal" maxlength="2000" required placeholder="이 곡으로 전달하고 싶은 이야기"></label><label>제작 목적<select name="kind"><option value="narrative">이야기 중심</option><option value="visualizer">음악 시각화</option><option value="performance">퍼포먼스 (립싱크 미지원)</option></select></label><label>스타일 방향<input name="style" maxlength="2000" placeholder="직접 정한 색감·카메라 방향"></label><label>반드시 보존할 조건<input name="constraints" maxlength="2000" placeholder="인물·의상·이야기에서 바꾸면 안 되는 것"></label><label>장면 계획 · 한 줄에 한 장면<textarea name="scenes" rows="5" maxlength="2000" required placeholder="첫 번째 장면을 직접 작성하세요"></textarea></label><button class="primary">계획 미리보기 · 외부 전송 없음</button></form><div id="guidedPlans"></div><details id="modelChatPanel"><summary>모델과 계획 상담 · 연결 상태 확인</summary><p id="modelChatCapability" role="status"></p><p class="muted">온톨로지 기준과 권한은 서버가 관리합니다. 모델의 답변·계획은 검토 전이며 미디어 생성 승인이 아닙니다. 현재 연결은 승인된 합성 검증 프로젝트·입력에만 열립니다.</p><form id="modelChatForm"><label for="modelChatPrompt">모델에게 보낼 요청</label><textarea id="modelChatPrompt" name="prompt" rows="4" maxlength="2000" required aria-describedby="modelChatCapability" placeholder="서버에 승인된 합성 검증 요청만 전송할 수 있습니다."></textarea><button id="modelChatSubmit" type="submit">모델에 요청</button></form><p id="modelChatStatus" role="status" aria-live="polite"></p><div id="modelChatTurns"></div><button id="modelChatRefresh" type="button">저장된 계획·작업 상태 다시 확인</button></details><details><summary>기존 자유 입력 초안·대화 기록</summary><p class="muted">현재 작품과 샷·음원·검토·결과를 공유합니다. 모델 미연결: 각 줄을 장면으로 나누는 로컬 초안만 지원하며 AI 생성은 실행하지 않습니다.</p><div id="conversation" role="log" aria-live="polite"></div><form id="chatForm"><label>장면 지시 · 한 줄에 한 장면<textarea name="prompt" rows="5" maxlength="2000" required placeholder="새벽 도시를 걷는 주인공&#10;후렴에서 하늘을 바라보는 장면"></textarea></label><button class="primary">제작 초안 만들기</button></form><div id="chatPlans"></div><h2>제작 진행</h2><p id="chatProgress"></p><p class="muted">이 채팅 초안 작업은 외부 전송·공급자 호출이 없습니다. 기존 생성 작업의 비용과 수신 상태는 아래 작업 카드 및 원장에서 별도로 확인하세요. 로컬 연산비는 미계측입니다.</p></details><div id="chatWorkspace"></div></section>
+<div id="recovery" hidden class="toolbar"><span>응답 미확정 요청이 있습니다. 새 작업 전에 기존 요청 상태를 확인하세요.</span><button id="recoverRequest">기존 요청 확인 / 재시도</button></div>
+<main><aside><div class="shot-board"><h2>샷 보드 <span id="shotCount" class="badge">0</span></h2><div id="shotlist"></div><details><summary>샷 추가</summary><form id="shot"><label>샷 이름<input name="shot" required></label><label>장면 설명<input name="description" required></label><button>샷 추가</button></form></details></div><section class="snapshot-section"><h2>기준 스냅샷</h2><div id="snapshot"></div></section><section class="audio-section"><h2>음원 마스터</h2><div id="audioInfo"></div><details><summary>음악 구간 · 수동 확정</summary><p class="muted">자동 박자·구조 분석은 미지원입니다. 원곡 절대시간(초)으로 직접 입력하며 이전 편집은 변경하지 않습니다.</p><form id="musicStructure"><label>음원 버전<select name="audio" id="musicAudio"></select></label><div class="row"><label>시작(초)<input name="start" type="number" min="0" step=".001" value="0" required></label><label>끝(초)<input name="end" type="number" min=".001" step=".001" required></label></div><label>선택 사항: 시작,끝,구간 이름 (한 줄에 하나)<textarea name="sections" rows="3" placeholder="0,3,인트로&#10;3,6,후렴"></textarea></label><button>음악 구간 새 버전 확정</button></form><div id="musicSummary"></div></details><details><summary>새 음원 버전 연결</summary><form id="audioUpload"><label>WAV / MP3 / M4A / FLAC / OGG<input name="file" type="file" accept=".wav,.mp3,.m4a,.flac,.ogg" required></label><label>사용권 근거<input name="rights" required placeholder="직접 제작한 음원…"></label><button>원본 보존·연결</button></form></details></section></aside>
+<article><div class="row"><h1 id="shotTitle">첫 작품을 시작하세요</h1><span id="selectedBadge" class="badge">선택된 take 없음</span></div><p id="description" class="muted"></p><div id="preview" class="preview"><div class="empty">승인된 이야기와 기존 자산으로 장면을 구성하세요.</div></div><div id="takes" class="take-strip"></div><button id="compareButton">take 나란히 비교</button>
+<div class="timeline"><div class="row"><h2>타임라인 · 비파괴 편집</h2><button id="sync">현재 take 선택 가져오기</button></div><p class="muted"><small>take 선택과 출력 승인은 별개입니다. 편집을 저장하고 승인한 버전만 최종 렌더에 사용합니다.</small></p><div id="preflight" role="status"></div><div id="track" class="track"></div><div class="clip-row"><span>#</span><span>샷</span><span>take</span><span>길이(초)</span><span>시작(초)</span><span>순서</span></div><div id="clips"></div><div class="row"><label>출력 규격<select id="profile"><option value="preview">미리보기 640×360</option><option value="landscape">가로 1920×1080</option><option value="portrait">세로 1080×1920</option></select></label><label>음원 버전<select id="audioVersion"></select></label><label>음원 시작(초)<input id="audioOffset" type="number" min="0" step="0.001" value="0"></label></div><p><small>24fps · 원곡 48kHz · 클립 오디오 음소거 · 짧은 원곡은 무음으로 채움<br>선택 출력 캔버스에 맞춘 리사이즈입니다. 원본 해상도·AI 생성 해상도와 다르며 AI 업스케일은 미지원입니다.</small></p><h3>확정 자막 <small>시작·끝(초) / 내용</small></h3><div id="captions"></div><button id="addCaption">자막 줄 추가</button><div class="row"><button id="saveTimeline" class="primary">편집 새 버전 저장</button><select id="versions" aria-label="이전 타임라인 버전"></select><button id="restore">이전 버전 복원</button></div><p id="timelineStatus" class="muted"></p></div><div id="downloadPreview"></div></article>
+<aside class="inspector"><section><h2>실행 승인 · 모의 검증</h2><p>현재 실제 미디어 모델은 미연결입니다. 승인된 계획의 장면으로 로컬 단색 후보 흐름을 검증할 수 있습니다.</p><button id="prepareSelectedAction">현재 장면 모의 작업 준비 · AI 아님</button><div id="executionCards" aria-label="실행 승인과 후보 검토"></div></section><section><h2>Kling 생성 준비</h2><p id="generationGateText">실제 호출은 시스템·디자인 QA 후 마지막 승인 단계입니다. 현재는 입력과 견적만 로컬에 저장합니다.</p><label>움직임 지시<textarea id="generationPrompt" maxlength="1000" rows="3" placeholder="카메라가 천천히 다가가며 구름이 흐른다"></textarea></label><button id="prepareGeneration">10초 입력·견적 준비 (전송 없음)</button><div id="generationPreparations"></div></section><section><h2>샷 참고 · 첫 프레임</h2><p class="muted">선택한 이미지 take를 제작 참고로 지정합니다. 모델 생성은 미연결이며 참고 지정만으로 영상을 생성하거나 기존 take를 교체하지 않습니다.</p><label>참고 역할<select id="referenceRole"><option value="start_frame">실제 시작 프레임</option><option value="end_frame">끝 프레임</option><option value="character">캐릭터 정체성</option><option value="style">스타일 참고</option></select></label><label>지정·검토 이유<input id="referenceReason" maxlength="2000" value="샷 제작 참고 검토"></label><button id="assignReference">현재 선택 이미지를 참고로 지정</button><div id="referenceVersions"></div><label>참고 검토<select id="referenceDecision"><option value="approved">승인</option><option value="changes_requested">수정 요청</option><option value="rejected">거절</option></select></label><button id="reviewReference">현재 참고 버전 검토 기록</button><p>참고 승인은 결과 take 승인과 별개입니다. 외부 전송 없음 · 실제 생성은 마지막 승인 게이트 이후에만 실행합니다.</p></section><section><h2>Take 인스펙터</h2><div class="row"><select id="takeDecision" aria-label="테이크 검토 상태"><option value="approved">승인</option><option value="changes_requested">수정 요청</option><option value="rejected">거절</option></select><button id="reviewTake">선택 take 검토 기록</button></div><label>검토 이유<input id="reviewReason" value="검토 완료"></label><p id="reason" class="muted">샷을 선택하면 수정 이유를 확인할 수 있습니다.</p><form id="upload"><label>새 take · 기존 이미지/영상<input name="asset" type="file" accept=".png,.jpg,.jpeg,.mp4,.mov,.webm" required></label><label>수정 이유<input name="reason" required></label><label>사용권 근거<input name="rights" required placeholder="직접 제작 / 사용 허가…"></label><button>원본을 보존하고 새 take 연결</button></form><small>최대 16MB. 기존 take와 승인된 타임라인은 유지됩니다.</small></section><section><h2>검토 의견</h2><form id="comment"><label>타임코드(초)<input name="at" type="number" min="0" step="0.001" value="0" required></label><label>수정 요청<input name="text" required></label><button>의견 추가</button></form><div id="comments"></div></section><section class="render-section"><h2>렌더 작업</h2><p><small>외부 생성비 0 · 로컬 연산 비용 미계측. 자막은 선택 가능한 MP4 텍스트 트랙과 SRT로 제공됩니다.</small></p><label>납품 검토 이유<input id="deliveryReason" value="출력 영상·음원·자막 검토 완료" maxlength="2000"></label><div id="jobs"></div><button id="manifest">JSON 명세 (영상 아님)</button></section></aside></main>
+<dialog id="ontologyDialog"><div class="row"><h2>인물·장소·스타일과 제작 계보</h2><button data-close>닫기</button></div><p>현재는 직접 입력·검토입니다. Anthropic 제안은 미연결이며 외부 전송하지 않습니다. 설정 승인으로 기존 영상이나 출력이 변경되지는 않습니다.</p><form id="ontologyForm"><input type="hidden" name="entity" value=""><p id="ontologyEditStatus">새 개체 제안</p><button type="button" id="ontologyNew">새 개체로 작성</button><label>역할<select name="kind"><option value="character">인물</option><option value="place">장소</option><option value="style">스타일</option></select></label><label>이름<input name="label" maxlength="200" required></label><label>설명<textarea name="description" maxlength="2000" required></textarea></label><label>출처 또는 직접 작성 근거<textarea name="evidence" maxlength="2000" required></textarea></label><button>검토 후보로 저장</button></form><div id="ontologyContent"></div><details><summary>실제 제작 객체 계보</summary><div id="lineageContent"></div></details></dialog><dialog id="projectDialog"><div class="row"><h2>다음 작품 시작</h2><button data-close>닫기</button></div><form id="project"><details><summary>이전 곡의 승인 설정을 선택 계승</summary><label>원본 작품<select name="source_song" id="inheritSource"><option value="">계승하지 않음</option></select></label><div id="inheritSettings"></div><label><input type="checkbox" name="clone_structure" style="width:auto">샷 이름·설명도 복사 (미디어·승인 제외)</label><label>계승 이유<input name="inherit_reason" value="다음 곡에 승인 설정 계승"></label><p>같은 IP의 정확한 설정 버전만 선택합니다. 음원·샷·take·승인은 새로 시작합니다.</p></details><label>IP<select name="ip" class="ipSelect"></select></label><label>작품명<input name="name" required></label><label>시대 / 분기<input name="era" value="default" required></label><label>이야기 순서<input name="story" type="number" min="0" value="0" required></label><button class="primary">승인 설정으로 작품 만들기</button></form></dialog>
+<dialog id="settingDialog"><div class="row"><h2>IP 기준 설정</h2><button data-close>닫기</button></div><p>새 승인 설정은 이후 작품에만 적용합니다. 현재는 단일 로컬 사용자 기준이며 조직 권한 기능이 아닙니다.</p><form id="setting"><label>IP<select name="ip" class="ipSelect"></select></label><label>설정 내용<textarea name="text" required></textarea></label><label>시대 / 분기<input name="era" value="default" required></label><div class="row"><label>시작 순서<input name="valid_from" type="number" min="0" value="0" required></label><label>끝 순서 (선택)<input name="valid_to" type="number" min="0"></label></div><button class="primary">설정 승인·저장</button></form><details><summary>로컬 IP 만들기</summary><p>이 로컬 작업실 안의 설정 분리입니다. 조직·계정별 접근 제어가 아닙니다.</p><form id="ipForm"><label>IP 이름<input name="name" required></label><label>설명<input name="description" required></label><button>IP 만들기</button></form></details><div id="canon"></div><details><summary>설정 후보 · 정정 제안</summary><p>로컬 검토입니다. 조직 승인 권한은 미지원입니다. 승인해도 기존 작품 스냅샷은 바꾸지 않습니다.</p><form id="candidateForm"><label>IP<select name="ip" class="ipSelect"></select></label><label>새 설정<textarea name="text" maxlength="2000" required></textarea></label><label>시대 / 분기<input name="era" value="default" required></label><div class="row"><label>시작 순서<input name="valid_from" type="number" min="0" value="0" required></label><label>끝 순서 (공란=계속)<input name="valid_to" type="number" min="0"></label></div><label>정정할 버전 (신규는 공란)<input name="supersedes" type="number" min="1"></label><label>근거 / 출처<input name="evidence" required></label><label>제안 이유<input name="reason" required></label><button>검토 후보로 저장</button></form></details></dialog>
+<dialog id="libraryDialog"><div class="row"><h2>프로젝트 자산함</h2><button data-close>닫기</button></div><label>검색<input id="assetSearch" placeholder="파일명 / 수정 이유…"></label><div class="row"><label>유형<select id="assetType"><option value="all">전체</option><option value="image">이미지</option><option value="video">영상</option></select></label><label>범위<select id="assetScope"><option value="current">현재 작품</option><option value="ip">현재 IP 전체</option><option value="all">이 로컬 작업실 전체</option></select></label></div><p class="muted">재사용 대상: 현재 작품의 선택 샷. 원본과 사용권 근거만 연결하고 승인·선택 상태는 가져오지 않습니다.</p><label>검토 상태<select id="assetReview"><option value="all">전체 take</option><option value="approved">승인된 take만</option></select></label><div id="library" class="library"></div><p class="muted">현재 작품 take의 원본 링크입니다. 연결은 새 take를 만들며, 출처 프로젝트를 수정하지 않습니다.</p></dialog>
+<dialog id="rightsDialog"><div class="row"><h2>자산 사용 중지 · 재검토</h2><button data-close>닫기</button></div><p>같은 원본 해시를 사용하는 모든 작품에 적용됩니다. 파일은 보존하고 재사용·렌더·결과 다운로드를 제한합니다. 로컬 사용자 진술이며 법적 권리 검증은 아닙니다.</p><form id="rightsForm"><label>현재 작품 자산<select name="sha256" id="rightsAsset"></select></label><label>조치<select name="blocked"><option value="true">사용 중지</option><option value="false">근거 재검토 후 사용 재개</option></select></label><label>중지 또는 재개 근거<input name="reason" maxlength="2000" required></label><button>선택 자산 사용 상태 적용</button></form><div id="rightsStatus"></div></dialog>
+<dialog id="compareDialog" aria-labelledby="compareTitle" style="width:min(1000px,95vw)"><div class="row"><h2 id="compareTitle">같은 샷의 take 비교</h2><button data-close>닫기</button></div><p>각 미디어를 독립 재생합니다. 프레임 동기 재생은 지원하지 않습니다. 비교는 선택·승인을 바꾸지 않습니다.</p><div class="row"><label>왼쪽 take<select id="compareLeft"></select></label><label>오른쪽 take<select id="compareRight"></select></label></div><div class="row"><div id="compareLeftPreview"></div><div id="compareRightPreview"></div></div></dialog>
+<dialog id="budgetDialog" aria-labelledby="budgetTitle"><div class="row"><h2 id="budgetTitle">작품 공급자 예산·원장</h2><button data-close>닫기</button></div><p>공급자 미연결 · 이 설정은 외부 전송·유료 호출 승인이 아닙니다. 현재 로컬 렌더는 이 공급자 예산을 사용하지 않으며 연산비는 미계측입니다.</p><form id="budgetForm"><label>한도 (USD)<input name="amount" inputmode="decimal" pattern="[0-9]+(\.[0-9]{1,6})?" required value="0"></label><label>공급자 동시 작업 한도<input name="concurrency" type="number" min="1" max="100" required value="1"></label><button>읽은 예산 버전으로 저장</button></form><button id="reloadBudget">최신 예산 비교</button><p id="budgetStatus" role="status"></p><div id="budgetSummary"></div><h3>최근 원장 기록</h3><div id="budgetLedger"></div></dialog>
+<dialog id="operationsDialog" aria-labelledby="operationsTitle"><div class="row"><h2 id="operationsTitle">로컬 운영 상태</h2><button data-close>닫기</button></div><p>요청 저장 성공과 렌더 성공은 별도입니다. 외부 공급자는 미연결이며 로컬 연산비는 미계측입니다.</p><button id="refreshOperations">상태 새로 조회</button><div id="operationsContent" role="status"></div></dialog>
+<dialog id="archiveDialog" aria-labelledby="archiveTitle"><div class="row"><h2 id="archiveTitle">작품 보관 관리</h2><button data-close>닫기</button></div><p id="archiveStatus"></p><p>보관하면 제작 변경을 차단하고 결과 재생·다운로드는 유지합니다. 물리 삭제·보관 기한 자동 삭제는 실행하지 않습니다.</p><form id="archiveForm"><label>보관 또는 해제 이유<input name="reason" maxlength="2000" required></label><button id="archiveSubmit">보관 상태 변경</button></form></dialog>
+<dialog id="preferencesDialog" aria-labelledby="preferencesTitle"><div class="row"><h2 id="preferencesTitle">연출 취향 · 명시적 검토</h2><button data-close>닫기</button></div><p>현재 작품의 IP 기준입니다. take 선택이나 비용 절약은 자동으로 취향이 되지 않습니다. 공식 설정·사용권을 바꾸지 않습니다.</p><form id="preferenceForm"><label>적용 범위<select name="scope"><option value="song">현재 작품의 예외</option value="ip">이 IP의 기본 취향</option></select></label><label>속성<select name="category"><option value="color">색감</option><option value="texture">질감</option><option value="camera">카메라</option><option value="editing">편집 리듬</option></select></label><label>해석한 규칙<input name="value" maxlength="2000" required></label><label>원문·예시·반례 근거<textarea name="evidence" maxlength="2000" required></textarea></label><label>이유<input name="reason" maxlength="2000" required></label><label>정정 대상 v번호 (신규는 공란)<input name="supersedes" type="number" min="1"></label><button>검토 후보로 저장</button></form><label>승인·중지·복원 이유<input id="preferenceReviewReason" value="명시적 연출 취향 검토" maxlength="2000"></label><div id="preferencesList"></div><p>승인 규칙은 다음 채팅 초안의 문맥 기록에만 포함됩니다. 로컬 초안 문장을 AI로 재작성하지 않으며 기존 기획·영상은 보존합니다.</p></dialog>
+<dialog id="renderConfirm" aria-labelledby="renderConfirmTitle"><h2 id="renderConfirmTitle">출력 입력과 비용 범위 확인</h2><div id="renderEstimate"></div><p>외부 공급자 호출비 0 · 로컬 연산비 미계측. AI 생성과 결제는 실행하지 않습니다.</p><div class="row"><button id="dismissRender">닫기</button><button id="confirmRender" class="primary">확인한 버전으로 로컬 렌더</button></div></dialog>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let state,shotName='',draft=null,busy=false,dirty=false;
+const song=()=>$('#songs').value,project=()=>state?.projects[song()],asset=a=>'/assets/'+a.asset.split('/').pop(),image=a=>/\.(png|jpe?g)$/i.test(a.asset);
+function audioWave(a){const w=a.metadata.waveform;if(w?.status!=='measured')return '<small>파형 미분석 · 원본 재생과 숫자 입력을 사용하세요.</small>';const points=w.peaks.map((v,i)=>`${i*400/Math.max(1,w.peaks.length-1)},${40-v*38}`).join(' ');return `<svg viewBox="0 0 400 44" role="img" aria-label="음원 첫 ${w.duration}초의 실제 진폭 파형" style="width:100%;height:60px;background:#101010"><polyline points="${points}" fill="none" stroke="#ddd" stroke-width="2"/></svg><small>${w.duration.toFixed(1)}초 간이 진폭 · ${w.quiet?'무음 또는 매우 작은 음량 감지':'실제 PCM 측정'}<br>비트·BPM 분석 아님</small>`}
+function message(t,error=false){$('#notice').textContent=t;$('#notice').className=error?'error':'';const status=document.querySelector('dialog[open] .dialog-status');if(status){status.textContent=t;status.className='dialog-status '+(error?'error':'')}}
+function fresh(p){return {clips:Object.entries(p.shots).map(([shot,s])=>({shot,take:s.selected,duration:s.planned_duration||3,trim:0})),audio:p.audio_selected,audio_offset:p.music_head?p.music_versions.at(-1).start:0,profile:p.profile||'landscape',subtitles:[]}}
+async function refresh(preferred){const r=await fetch('/api/state');state=await r.json();document.querySelectorAll('.ipSelect').forEach(select=>{const old=select.value;select.innerHTML=(state.ips||[{id:'default',name:'기본 IP'}]).map(ip=>`<option value="${esc(ip.id)}">${esc(ip.name)}</option>`).join('');if([...select.options].some(o=>o.value===old))select.value=old});const name=preferred||decodeURIComponent(location.hash.slice(1))||song();$('#songs').innerHTML=Object.keys(state.projects).map(n=>`<option>${esc(n)}</option>`).join('')||'<option value="">작품을 만드세요</option>';if(state.projects[name])$('#songs').value=name;$('#canon').innerHTML=state.canon.map(s=>`<div class="job"><b>v${s.revision} · ${s.superseded_by?'정정됨':s.approved?'승인':s.status==='rejected'?'거절':'후보'}</b><p>${esc(s.text)}</p><small>${esc(state.ips?.find(ip=>ip.id===(s.ip||'default'))?.name||'기본 IP')} / ${esc(s.era)} · ${s.valid_from}–${s.valid_to??'계속'} · ${esc(s.evidence||'기존 직접 승인')}</small>${s.status==='proposed'?`<div class="row"><button data-candidate="${s.revision}" data-decision="approved">후보 승인</button><button data-candidate="${s.revision}" data-decision="rejected">후보 거절</button></div>`:''}</div>`).join('');draft=null;dirty=false;draw();drawJobs()}
+let commentDraftScope='';const commentDraftRevisions=new Map();
+function commentDraftKey(){return state?.workspace_id&&song()?'loretune-comment-draft:'+state.workspace_id+':'+song():''}
+function restoreCommentDraft(){const key=commentDraftKey();if(key===commentDraftScope)return;commentDraftScope=key;const form=$('#comment');form.reset();if(!key)return;try{const value=JSON.parse(sessionStorage.getItem(key)||'null');if(value)for(const [k,v]of Object.entries(value))if(form.elements[k])form.elements[k].value=v}catch{message('검토 의견 초안을 복구하지 못했습니다. 저장 기록은 유지됩니다.',true)}}
+$('#comment').addEventListener('input',()=>{const key=commentDraftKey();if(key)commentDraftRevisions.set(key,(commentDraftRevisions.get(key)||0)+1);if(key)try{sessionStorage.setItem(key,JSON.stringify(Object.fromEntries(new FormData($('#comment')))))}catch{message('검토 의견 초안을 브라우저에 보존하지 못했습니다.',true)}});
+function draw(){if($('#downloadPreview').dataset.project!==song())$('#downloadPreview').replaceChildren();restoreCommentDraft();drawModelChat();drawModelSettings();drawChat();drawReferences();const p=project();if(!p)return;if(!p.shots[shotName])shotName=Object.keys(p.shots)[0]||'';drawReferences();location.hash=encodeURIComponent(song());$('#archiveButton').textContent=p.archived?'보관됨 · 관리':'보관 관리';$('#shotCount').textContent=Object.keys(p.shots).length;$('#shotlist').innerHTML=Object.entries(p.shots).map(([n,s],i)=>{const t=s.takes.find(t=>t.id===s.selected);return `<button class="shot ${n===shotName?'active':''}" data-shot="${esc(n)}">${t&&image(t)?`<img class="thumb" src="${asset(t)}" alt="">`:'<span class="thumb"></span>'}<span>${String(i+1).padStart(2,'0')} ${esc(n)}<br><small>${s.takes.length} takes · ${s.selected?'선택 T'+s.selected:'선택 대기'}</small></span></button>`}).join('');$('#snapshot').innerHTML=p.snapshot.map(s=>`<p>${esc(s.text)}<br><small>${esc(s.era)} · v${s.revision}</small></p>`).join('')||'<small>해당 범위에 승인된 설정 없음</small>';const s=p.shots[shotName],t=s?.takes.find(t=>t.id===s.selected);$('#shotTitle').textContent=shotName||'첫 샷을 추가하세요';$('#description').textContent=s?.description||'';$('#selectedBadge').textContent=t?'선택 Take '+t.id:'선택된 take 없음';$('#preview').innerHTML=t?(image(t)?`<img src="${asset(t)}" alt="${esc(shotName)} 선택 take">`:`<video src="${asset(t)}" controls></video>`):'<p class="muted">기존 파일을 연결하고 take를 선택하세요.</p>';$('#takes').innerHTML=s?s.takes.map(t=>`<button data-take="${t.id}" class="${s.selected===t.id?'active':''}">${image(t)?`<img src="${asset(t)}" alt="">`:''}Take ${t.id}<br><small>${s.selected===t.id?'현재 선택':'선택하기'}</small></button>`).join(''):'';const review=t?[...(s.reviews||[])].reverse().find(r=>r.take===t.id):null;$('#reason').textContent=t?`${t.reason} · ${t.rights||'사용권 미확인'} · ${review?({approved:'승인됨',changes_requested:'수정 요청',rejected:'거절'})[review.decision]:'검토 대기'}`:'새 take를 연결하면 이전 결과를 덮어쓰지 않습니다.';$('#audioInfo').innerHTML=p.audio_versions.map(a=>`<p>v${a.id} ${esc(a.filename)}<br><small>${a.metadata.duration.toFixed(2)}초 · ${a.metadata.sample_rate}Hz</small>${audioWave(a)}<audio src="${asset(a)}" controls></audio></p>`).join('')||'<small>음원이 연결되지 않았습니다.</small>';$('#comments').innerHTML=p.comments.map(c=>`<p>${c.at}s · ${esc(c.text)}<br>${c.resolved?'<small>해결됨</small>':`<button data-resolve="${c.id}">해결 표시</button>`}</p>`).join('');if(!draft)draft=structuredClone(p.timeline_head?p.timeline_versions[p.timeline_head-1]:fresh(p));drawTimeline();drawLibrary()}
+function drawTimeline(){const p=project();if(!p)return;const check=p.preflight;$('#preflight').innerHTML=check?`<p><b>${check.ready?'저장 버전 출력 준비됨':'저장 버전 확인 필요'}</b> · ${check.duration}초 · 음원 ${check.audio_version?'v'+check.audio_version+' / '+check.audio_start+'–'+check.audio_end+'초':'없음'}</p>${[...check.errors,...check.warnings].map(x=>`<p>${esc(x)}</p>`).join('')}<small>${esc(check.note)}</small>`:'';$('#track').innerHTML=draft.clips.map(c=>`<span style="flex:${Math.max(c.duration,.125)}">${esc(c.shot)} · ${c.duration}s</span>`).join('');$('#clips').innerHTML=draft.clips.map((c,i)=>`<div class="clip-row"><span>${i+1}</span><span>${esc(c.shot)}</span><select data-clip="${i}" data-field="take" aria-label="${esc(c.shot)} take"><option value="">선택</option>${p.shots[c.shot].takes.map(t=>`<option value="${t.id}" ${t.id===c.take?'selected':''}>Take ${t.id}</option>`).join('')}</select><input aria-label="${esc(c.shot)} 길이" data-clip="${i}" data-field="duration" type="number" min=".125" step=".001" value="${c.duration}"><input aria-label="${esc(c.shot)} 시작" data-clip="${i}" data-field="trim" type="number" min="0" step=".001" value="${c.trim}"><span><button data-move="${i}" data-dir="-1" aria-label="앞으로 이동">↑</button><button data-move="${i}" data-dir="1" aria-label="뒤로 이동">↓</button></span></div>`).join('');$('#audioVersion').innerHTML='<option value="">무음</option>'+p.audio_versions.map(a=>`<option value="${a.id}">v${a.id} ${esc(a.filename)}</option>`).join('');$('#audioVersion').value=draft.audio??'';$('#audioOffset').value=draft.audio_offset;$('#profile').value=draft.profile;$('#captions').innerHTML=draft.subtitles.map((l,i)=>`<div class="caption-row"><input aria-label="자막 시작" data-caption="${i}" data-field="start" type="number" min="0" step=".001" value="${l.start}"><input aria-label="자막 끝" data-caption="${i}" data-field="end" type="number" min="0" step=".001" value="${l.end}"><input aria-label="자막 내용" data-caption="${i}" data-field="text" value="${esc(l.text)}"><button data-remove="${i}" aria-label="자막 삭제">×</button></div>`).join('');$('#versions').innerHTML=p.timeline_versions.map(t=>`<option value="${t.id}">버전 ${t.id}${t.approval?' · 승인':''}</option>`).join('')||'<option>저장 버전 없음</option>';$('#versions').value=p.timeline_head;$('#timelineStatus').textContent=`${draft.clips.reduce((n,c)=>n+c.duration,0).toFixed(3)}초 · ${dirty?'저장되지 않은 편집':p.timeline_head?'저장 버전 '+p.timeline_head+(draft.approval?' · 승인됨':' · 승인 대기'):'첫 편집 저장 필요'}`}
+function drawLibrary(){const p=project(),q=$('#assetSearch').value.toLowerCase(),kind=$('#assetType').value;const projects=$('#assetScope').value==='all'?Object.entries(state.projects):$('#assetScope').value==='ip'?Object.entries(state.projects).filter(([n,x])=>(x.ip||'default')===(p?.ip||'default')):[[song(),p]];$('#library').innerHTML=p?projects.flatMap(([sourceSong,source])=>Object.entries(source.shots).flatMap(([name,s])=>s.takes.map(t=>({...t,shot:name,sourceSong,review:[...(s.reviews||[])].reverse().find(r=>r.take===t.id)?.decision})))).filter(t=>($('#assetReview').value!=='approved'||t.review==='approved')&&(t.filename+' '+t.reason+' '+t.shot).toLowerCase().includes(q)&&(kind==='all'||(image(t)?'image':'video')===kind)).map(t=>`<div class="job">${image(t)?`<img src="${asset(t)}" alt="${esc(t.filename)}">`:'<span class="badge">VIDEO</span>'}<p>${esc(t.filename||t.shot)}</p><small>${esc(t.sourceSong)} / ${esc(t.shot)} · Take ${t.id}<br>${esc(t.rights||'사용권 미확인')} · ${t.review==='approved'?'승인됨':'검토 필요'}${state.asset_rights?.[t.sha256]?.blocked?' · 사용 중지':''}</small><button data-reuse-song="${esc(t.sourceSong)}" data-reuse-shot="${esc(t.shot)}" data-reuse-take="${t.id}">선택 샷에 연결</button></div>`).join(''):''}
+
+const statuses={queued:'대기',running:'합성 중',completed:'완료',failed:'실패',cancelled:'취소됨',interrupted:'중단됨'};
+function drawJobs(){drawChatProgress();const jobs=(state.jobs||[]).filter(j=>j.song===song());$('#jobs').innerHTML=jobs.map(j=>`<div class="job"><b>${statuses[j.status]||j.status}</b> ${j.snapshot.timeline.id!==project()?.timeline_head||j.snapshot.timeline.clips.some(c=>project()?.shots[c.shot]?.selected!==c.take)?'<span class="badge">이전 편집 결과</span>':''} <small>${j.id.slice(0,8)}</small><progress max="100" value="${j.progress}"></progress><small>${j.progress}% · ${esc(j.error||'')}</small>${j.download?`<p><a href="${j.download}" download>MP4</a><a href="/exports/${j.id}.srt" download>SRT</a><a href="/exports/${j.id}.json" download>제작 기록</a></p><button data-play="${j.download}">렌더 결과 검토</button><p>납품 검토: ${j.delivery_reviews?.at(-1)?.decision==='approved'?'승인됨':'검토 전'}</p><button data-delivery="${j.id}">납품 검토 승인 기록</button>`:''}${['queued','running'].includes(j.status)?`<button data-cancel="${j.id}">작업 취소</button>`:''}</div>`).join('')||'<small>아직 렌더 작업이 없습니다.</small>'}
+let pendingRequest=null;
+async function requestCache(action,id,value){return new Promise((resolve,reject)=>{const open=indexedDB.open('loretune-recovery',1);open.onupgradeneeded=()=>open.result.createObjectStore('requests');open.onerror=()=>reject(open.error);open.onsuccess=()=>{const db=open.result,tx=db.transaction('requests',action==='get'?'readonly':'readwrite'),store=tx.objectStore('requests');const req=action==='get'?store.get(id):action==='put'?store.put(value,id):store.delete(id);let result;req.onsuccess=()=>result=req.result;tx.oncomplete=()=>{db.close();resolve(result)};tx.onerror=()=>{db.close();reject(tx.error)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
+
+function pendingId(){return sessionStorage.getItem('loretune-pending')}
+function clearPending(){const id=pendingId();if(id)requestCache('delete',id).catch(()=>{});pendingRequest=null;sessionStorage.removeItem('loretune-pending');$('#recovery').hidden=true}
+async function sendRequest(request,preferred){
+ busy=true;document.querySelectorAll('button').forEach(b=>b.disabled=true);message('저장 중…');let committed=false;
+ try{
+  const r=await fetch('/api/action',{method:'POST',headers:{'Content-Type':'application/json','X-Loretune-Token':state.token},body:JSON.stringify(request)});
+  const out=await r.json();
+  if(!r.ok){clearPending();throw Error(out.error)}
+  committed=true;clearPending();await refresh(preferred);
+  message(request.action==='render_job'?'승인 버전으로 렌더 작업을 등록했습니다.':'저장했습니다.');
+  if(out.download){$('#downloadPreview').dataset.project=song();$('#downloadPreview').innerHTML=`<a href="${out.download}" download>JSON 명세 다운로드 (영상 아님)</a>`;}
+  return true;
+ }catch(e){
+  message(committed?'저장은 완료됐지만 화면 갱신에 실패했습니다. 새로고침하세요.':pendingId()?'응답 미확정입니다. 기존 요청 확인으로 복구하세요.':e.message,true);
+  $('#recovery').hidden=!pendingId();return false;
+ }finally{busy=false;document.querySelectorAll('button').forEach(b=>b.disabled=b.hasAttribute('data-plan-blocked'));drawModelChat();const status=document.querySelector('dialog[open] .dialog-status')||$('#notice');status.tabIndex=-1;status.focus()}
+}
+async function act(action,data,preferred){
+ if(busy)return false;
+ if(state?.projects[data.song]?.archived&&!['archive_project','manifest'].includes(action)){message('보관된 작품입니다. 보관 관리에서 먼저 해제하세요.',true);return false}
+ if(pendingId()){message('먼저 응답 미확정 요청을 확인하세요.',true);$('#recovery').hidden=false;return false}
+ if(dirty&&action!=='timeline'){message('저장되지 않은 편집이 있습니다. 먼저 편집을 저장하세요.',true);return false}
+ const request={action,data,revision:state.revision,request_id:crypto.randomUUID()};pendingRequest=request;busy=true;document.querySelectorAll('button').forEach(b=>b.disabled=true);
+ try{await requestCache('put',request.request_id,request);sessionStorage.setItem('loretune-pending',request.request_id)}catch{pendingRequest=null;busy=false;document.querySelectorAll('button').forEach(b=>b.disabled=b.hasAttribute('data-plan-blocked'));drawModelChat();message('요청 복구 정보를 저장할 수 없습니다. 브라우저 저장소를 확인하세요.',true);return false}
+ return sendRequest(request,preferred);
+}
+$('#recoverRequest').onclick=async()=>{
+ if(busy||!pendingId())return;
+ try{
+  const r=await fetch('/api/requests/'+encodeURIComponent(pendingId()));const out=await r.json();
+  if(r.ok&&out.status==='committed'){clearPending();await refresh();message('기존 요청의 저장 완료를 확인했습니다. 중복 실행하지 않았습니다.')}
+  else if(r.status===404){pendingRequest=pendingRequest||await requestCache('get',pendingId());if(pendingRequest)await sendRequest(pendingRequest);else message('복구할 입력 원문이 없습니다. 서버 요청 기록 확인이 필요합니다.',true)}
+  else message('아직 저장 여부를 확인할 수 없습니다. 새 요청을 만들지 말고 상태를 다시 확인하세요. 새로고침으로 입력 원문이 사라졌다면 서버 요청 기록 확인이 필요합니다.',true);
+ }catch{message('기존 요청 상태 조회에 실패했습니다. 연결 복구 후 다시 확인하세요.',true)}
+};
+$('#recovery').hidden=!pendingId();
+async function upload(form,action){const f=new FormData(form),file=f.get(action==='audio'?'file':'asset');if(file.size>16*1024*1024)return message('파일은 최대 16MB입니다.',true);const content=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(',')[1]);r.onerror=no;r.readAsDataURL(file)});await act(action,{song:song(),shot:shotName,shot_revision:project()?.shots[shotName]?.revision,filename:file.name,content,reason:f.get('reason'),rights:f.get('rights')})}
+$('#rightsButton').onclick=()=>{const p=project();if(!p)return message('작품을 선택하세요.',true);const assets=[...p.audio_versions,...Object.values(p.shots).flatMap(s=>s.takes)];$('#rightsAsset').innerHTML=assets.map(a=>`<option value="${a.sha256}">${esc(a.filename)} · ${a.sha256.slice(0,8)} · ${state.asset_rights?.[a.sha256]?.blocked?'사용 중지':'사용 가능'}</option>`).join('');$('#rightsStatus').textContent=assets.filter(a=>state.asset_rights?.[a.sha256]?.blocked).map(a=>`${a.filename}: ${state.asset_rights[a.sha256].reason}`).join(' / ');$('#rightsDialog').showModal()};$('#rightsForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);if(await act('asset_rights',{sha256:f.get('sha256'),blocked:f.get('blocked')==='true',reason:f.get('reason')}))$('#rightsDialog').close()};
+$('#newProject').onclick=()=>{$('#inheritSource').innerHTML='<option value="">계승하지 않음</option>'+Object.keys(state.projects).map(n=>`<option>${esc(n)}</option>`).join('');$('#inheritSettings').innerHTML='';$('#projectDialog').showModal()};$('#inheritSource').onchange=()=>{const p=state.projects[$('#inheritSource').value];$('#inheritSettings').innerHTML=(p?.snapshot||[]).map(s=>`<label><input type="checkbox" name="inherit" value="${s.revision}" style="width:auto">v${s.revision} · ${esc(s.text)}</label>`).join('');if(p)$('#project select[name=ip]').value=p.ip||'default'};$('#settings').onclick=()=>$('#settingDialog').showModal();$('#libraryButton').onclick=()=>{$('#libraryDialog').showModal();drawLibrary()};document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>b.closest('dialog').close());$('#assetSearch').oninput=drawLibrary;$('#assetType').onchange=drawLibrary;$('#assetScope').onchange=drawLibrary;$('#assetReview').onchange=drawLibrary;$('#library').onclick=async e=>{const b=e.target.closest('[data-reuse-take]');if(!b)return;if(!project()?.shots[shotName])return message('대상 샷을 먼저 선택하세요.',true);if(await act('reuse_take',{song:song(),shot:shotName,shot_revision:project().shots[shotName].revision,source_song:b.dataset.reuseSong,source_shot:b.dataset.reuseShot,source_take:Number(b.dataset.reuseTake),reason:'기존 자산을 새 작품 문맥에서 재검토'}))$('#libraryDialog').close()};
+$('#ipForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);act('create_ip',{name:f.get('name'),description:f.get('description')})};
+$('#candidateForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);act('setting_candidate',{ip:f.get('ip'),text:f.get('text'),era:f.get('era'),valid_from:Number(f.get('valid_from')),valid_to:f.get('valid_to')===''?null:Number(f.get('valid_to')),supersedes:f.get('supersedes')===''?null:Number(f.get('supersedes')),evidence:f.get('evidence'),reason:f.get('reason')})};$('#canon').onclick=e=>{const b=e.target.closest('[data-candidate]');if(b)act('review_setting',{candidate:Number(b.dataset.candidate),decision:b.dataset.decision,reason:'로컬 설정 후보 검토'})};
+$('#setting').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);if(await act('setting',{ip:f.get('ip'),text:f.get('text'),era:f.get('era'),valid_from:Number(f.get('valid_from')),valid_to:f.get('valid_to')===''?null:Number(f.get('valid_to'))}))$('#settingDialog').close()};
+$('#project').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);if(await act('project',{ip:f.get('ip'),name:f.get('name'),era:f.get('era'),story:Number(f.get('story')),source_song:f.get('source_song'),inherit_revisions:f.getAll('inherit').map(Number),inherit_reason:f.get('inherit_reason'),clone_structure:f.get('clone_structure')==='on'},f.get('name')))$('#projectDialog').close()};$('#shot').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);shotName=f.get('shot');await act('shot',{song:song(),shot:shotName,description:f.get('description')})};$('#upload').onsubmit=e=>{e.preventDefault();if(project()?.shots[shotName])upload(e.target,'take');else message('샷을 먼저 추가하세요.',true)};$('#audioUpload').onsubmit=e=>{e.preventDefault();upload(e.target,'audio')};$('#shotlist').onclick=e=>{const b=e.target.closest('[data-shot]');if(b){shotName=b.dataset.shot;draw()}};$('#takes').onclick=e=>{const b=e.target.closest('[data-take]');if(b)act('select',{song:song(),shot:shotName,take:Number(b.dataset.take),shot_revision:project().shots[shotName].revision})};$('#songs').onchange=()=>{if(dirty&&!confirm('저장하지 않은 편집을 버리고 작품을 전환할까요?')){$('#songs').value=decodeURIComponent(location.hash.slice(1));return}draft=null;dirty=false;draw();drawJobs()};$('#sync').onclick=()=>{if(!project())return;draft=fresh(project());dirty=true;drawTimeline()};
+$('#clips').onchange=e=>{const x=e.target;if(x.dataset.clip!==undefined){draft.clips[Number(x.dataset.clip)][x.dataset.field]=x.value===''?null:Number(x.value);dirty=true;drawTimeline()}};$('#clips').onclick=e=>{const b=e.target.closest('[data-move]');if(!b)return;const i=Number(b.dataset.move),j=i+Number(b.dataset.dir);if(j>=0&&j<draft.clips.length){[draft.clips[i],draft.clips[j]]=[draft.clips[j],draft.clips[i]];dirty=true;drawTimeline()}};$('#addCaption').onclick=()=>{if(!draft)return;draft.subtitles.push({start:0,end:1,text:''});dirty=true;drawTimeline()};$('#captions').oninput=e=>{const x=e.target;if(x.dataset.caption!==undefined){draft.subtitles[Number(x.dataset.caption)][x.dataset.field]=x.dataset.field==='text'?x.value:Number(x.value);dirty=true}};$('#captions').onclick=e=>{if(e.target.dataset.remove!==undefined){draft.subtitles.splice(Number(e.target.dataset.remove),1);dirty=true;drawTimeline()}};for(const [id,field] of [['profile','profile'],['audioVersion','audio'],['audioOffset','audio_offset']])$('#'+id).onchange=e=>{draft[field]=field==='profile'?e.target.value:e.target.value===''?null:Number(e.target.value);dirty=true;drawTimeline()};$('#saveTimeline').onclick=()=>{if(!draft)return;document.querySelectorAll('[data-caption]').forEach(x=>{draft.subtitles[Number(x.dataset.caption)][x.dataset.field]=x.dataset.field==='text'?x.value:Number(x.value)});document.querySelectorAll('[data-clip][data-field]').forEach(x=>{draft.clips[Number(x.dataset.clip)][x.dataset.field]=x.value===''?null:Number(x.value)});act('timeline',{song:song(),timeline:draft})};$('#restore').onclick=()=>act('restore_timeline',{song:song(),version:Number($('#versions').value)});$('#reviewTake').onclick=()=>{const sh=project()?.shots[shotName];if(sh?.selected)act('review_take',{song:song(),shot:shotName,take:sh.selected,decision:$('#takeDecision').value,reason:$('#reviewReason').value});else message('take를 먼저 선택하세요.',true)};$('#review').onclick=()=>{if(dirty)return message('편집을 먼저 저장하세요.',true);act('approve_timeline',{song:song()})};let pendingRender=null;$('#render').onclick=async()=>{if(dirty)return message('편집을 먼저 저장하세요.',true);const name=song();if(await act('estimate_render',{song:name})){const q=state.projects[name].render_estimates.at(-1);pendingRender={song:name,estimate:q.id};$('#renderEstimate').innerHTML=`<p>타임라인 v${q.timeline_version} · ${q.clips}컷 · ${q.duration}초 · ${q.resolution.join('×')}</p><p>음원 ${q.audio_version===null?'없음 (무음 출력)':'v'+q.audio_version+' / '+q.audio_start+'–'+q.audio_end+'초'} · 자막 ${q.subtitles}줄</p><p class="muted">5분 내 유효 · 입력이 바뀌면 다시 확인해야 합니다.</p>`;$('#renderConfirm').showModal()}};$('#dismissRender').onclick=()=>$('#renderConfirm').close();$('#confirmRender').onclick=async()=>{if(pendingRender&&await act('render_job',pendingRender)){$('#renderConfirm').close();pendingRender=null}};$('#manifest').onclick=()=>act('manifest',{song:song()});$('#comment').onsubmit=async e=>{e.preventDefault();const form=e.target,key=commentDraftKey(),shot=shotName,version=commentDraftRevisions.get(key)||0,f=new FormData(form),submitted=JSON.stringify(Object.fromEntries(f));if(await act('comment',{song:song(),at:Number(f.get('at')),text:f.get('text')})){const unchanged=(commentDraftRevisions.get(key)||0)===version;if(unchanged&&key)try{if(sessionStorage.getItem(key)===submitted)sessionStorage.removeItem(key)}catch{}if(unchanged&&commentDraftKey()===key&&shotName===shot&&JSON.stringify(Object.fromEntries(new FormData(form)))===submitted)form.reset()}};$('#comments').onclick=e=>{if(e.target.dataset.resolve)act('resolve_comment',{song:song(),id:Number(e.target.dataset.resolve)})};$('#jobs').onclick=e=>{if(e.target.dataset.delivery)act('delivery_review',{job:e.target.dataset.delivery,decision:'approved',reason:$('#deliveryReason').value});if(e.target.dataset.cancel)act('cancel_job',{job:e.target.dataset.cancel});if(e.target.dataset.play){$('#downloadPreview').dataset.project=song();$('#downloadPreview').innerHTML=`<h2>실제 렌더 결과</h2><video src="${e.target.dataset.play}" controls></video>`}};window.onbeforeunload=e=>{if(dirty){e.preventDefault();e.returnValue=''}};
+
+function drawComparison(){const sh=project()?.shots[shotName];for(const side of ['Left','Right']){const t=sh?.takes.find(t=>t.id===Number($('#compare'+side).value));const target=$('#compare'+side+'Preview');if(!t){target.textContent='take 없음';continue}const review=[...(sh.reviews||[])].reverse().find(r=>r.take===t.id);target.innerHTML=`<p>T${t.id} · ${sh.selected===t.id?'현재 선택':'미선택'} · ${esc(({approved:'승인됨',rejected:'거절',changes_requested:'수정 요청'})[review?.decision]||'검토 대기')}</p>${image(t)?`<img style="width:100%" src="${asset(t)}" alt="비교 T${t.id}">`:`<video style="width:100%" src="${asset(t)}" controls></video>`}<p>${esc(t.reason)}</p><small>${esc(t.sha256)}</small>`}}
+$('#compareButton').onclick=()=>{const sh=project()?.shots[shotName];if(!sh?.takes.length)return message('비교할 take를 먼저 연결하세요.',true);for(const side of ['Left','Right'])$('#compare'+side).innerHTML=sh.takes.map(t=>`<option value="${t.id}">T${t.id}</option>`).join('');$('#compareLeft').value=sh.selected||sh.takes[0].id;$('#compareRight').value=sh.takes.at(-1).id;drawComparison();$('#compareDialog').showModal()};$('#compareLeft').onchange=drawComparison;$('#compareRight').onchange=drawComparison;
+function drawGeneration(){if(state){drawProviderBadge();$('#generationGateText').textContent=state.capabilities.provider_generation?'승인된 테스트 범위의 요청만 허용됩니다. 준비 입력과 비용을 확인한 뒤 실행하세요.':'실제 호출은 시스템·디자인 QA 후 마지막 승인 단계입니다. 현재는 입력과 견적만 로컬에 저장합니다.'}const sh=project()?.shots[shotName];$('#generationPreparations').innerHTML=(sh?.generation_preparations||[]).map(p=>`<div class="job"><b>${p.job?'작업 접수됨':'실호출 승인 대기'} · 10초 · 무음</b><p>${esc(p.estimate.model)}</p><p>문서 견적 $${esc(p.estimate.money.amount)} · ${new Date(p.estimate.expires*1000).toLocaleTimeString()} 만료</p><p>${esc(p.prompt)}</p>${p.action_id?`<p class="muted">계획 v${p.plan_revision} · 영상 작업 ${esc(p.action_id.slice(0,8))} · ${p.grant_id?'전송 승인 연결됨':'전송·비용 승인 전'}</p>`:''}<small>시작 참고 v${p.reference_version} · ${p.shot_revision===sh.revision?'준비 당시 샷 버전과 동일':'이후 샷 변경됨: 실행 전 재검토 필요'} · ${p.job?'작업 접수됨':'외부 전송 없음'}</small>${!p.job&&state.capabilities.provider_generation?`<p><button data-generation="${esc(p.id)}">승인된 범위로 10초 생성 요청</button></p>`:''}</div>`).join('');$('#generationPreparations').innerHTML+=(state.generation_jobs||[]).filter(j=>j.context.song===song()&&j.context.shot===shotName).map(j=>`<div class="job"><b>생성 작업 · ${esc(({failed:'영구 오류 · 자동 재시도 중단',prepared:'대기',submission_blocked:'제출 전 권리·승인 검사 차단',expired:'견적 만료 · 전송 안 됨',submitting:'접수 확인 중',accepted:'접수됨',running:'생성 중',reconciliation_required:'접수 미확정 · 대사 필요',result_ready:'결과 수신 대기',downloading:'결과 수신·파일 검증 중',imported:'take 연결 완료',import_blocked:'공급자 생성 완료 · 로컬 수신/검증 차단',cancel_pending:'취소 전송 대기',cancel_sent:'취소 요청됨 · 상태 확인 중',cancelled:'전송 전 취소',cancelled_result:'취소 후 결과 도착 · 검토 필요'})[j.state]||j.state)}</b><p>${esc(j.last_error||'')}</p>${j.provider_request_id?`<small>공급자 요청 ID: ${esc(j.provider_request_id)}</small>`:''}${j.provider_completed?`<p>공급자 결과 준비 완료 · ${j.state==='imported'?'로컬 파일 연결 완료':'로컬 영상 파일 연결 전'}</p><small>${esc(j.retention_notice||'')}</small>`:''}${j.retrieval_permission_blocked?'<p>접근 권한 해결 근거 확인 대기 · 자동 다운로드/재생성 없음</p>':''}<p>${j.take?'새 T'+j.take+' 연결됨 · 선택·승인 필요':'기존 승인 take 유지'}</p><small>비용 ${j.cost_confirmed?'확정':['cancelled','expired','submission_blocked'].includes(j.state)?'전송 전 예약 해제 · 환불 아님':'미확정 · 예약 유지'}</small>${['prepared','accepted','running','submitting','reconciliation_required'].includes(j.state)&&!j.cancel_requested?`<p><button data-generation-cancel="${esc(j.id)}">생성 취소 요청</button></p>`:''}${j.can_recheck?`<p><button data-generation-recheck="${esc(j.id)}">기존 접수 상태 다시 조회 (새 생성 없음)</button></p>`:''}${j.can_resume_result?`<p><button data-generation-resume="${esc(j.id)}">기존 결과 검토용 연결 재시도 (새 생성 없음)</button></p>`:''}</div>`).join('')}
+$('#generationPreparations').onclick=e=>{if(e.target.dataset.generationRecheck)act('resume_generation_status',{song:song(),job:e.target.dataset.generationRecheck});if(e.target.dataset.generationCancel)act('cancel_generation',{song:song(),job:e.target.dataset.generationCancel,reason:'사용자 화면 취소 요청'});if(e.target.dataset.generationResume)act('resume_generation_result',{song:song(),job:e.target.dataset.generationResume});if(e.target.dataset.generation)act('start_generation',{song:song(),shot:shotName,preparation:e.target.dataset.generation})};
+$('#prepareGeneration').onclick=()=>{const sh=project()?.shots[shotName];if(!sh)return message('샷을 먼저 선택하세요.',true);act('prepare_generation',{song:song(),shot:shotName,shot_revision:sh.revision,prompt:$('#generationPrompt').value})};
+function drawReferences(){drawGeneration();const sh=project()?.shots[shotName];const roles={character:'캐릭터',style:'스타일',start_frame:'시작 프레임',end_frame:'끝 프레임'};$('#referenceVersions').innerHTML=(sh?.reference_versions||[]).map(v=>`<div class="job"><b>참고 v${v.id} · ${{approved:'승인',unreviewed:'검토 대기',changes_requested:'수정 요청',rejected:'거절'}[v.status]}</b>${Object.entries(v.roles).map(([role,r])=>`<p>${roles[role]} · ${esc(r.song)} / ${esc(r.shot)} / T${r.take}</p><img class="thumb" src="${asset(r)}" alt="${roles[role]} 참고">`).join('')}<p>${esc(v.reason)}</p></div>`).join('')||'<p>지정된 참고가 없습니다.</p>';if(sh?.semantic_impact?.length)$('#referenceVersions').innerHTML+=`<p>연결된 설정 변경: ${sh.semantic_impact.map(x=>esc(x.label)+' · '+esc(x.reason)).join(' / ')}. 기존 Take·출력은 보존됩니다. 인물·장소·계보에서 재검토 후 연결하세요.</p>`;if(sh?.reference_head&&sh.selected){const t=sh.takes.find(t=>t.id===sh.selected);if(t?.reference_version_at_upload!==sh.reference_head)$('#referenceVersions').innerHTML+='<p>현재 take 업로드 이후 참고가 변경됐습니다. 기존 take와 출력은 보존되며 반영 여부를 직접 검토하세요.</p>';}}
+$('#assignReference').onclick=async()=>{const sh=project()?.shots[shotName];if(!sh?.selected)return message('이미지 take를 먼저 선택하세요.',true);await act('assign_reference',{song:song(),shot:shotName,shot_revision:sh.revision,role:$('#referenceRole').value,source_song:song(),source_shot:shotName,source_take:sh.selected,reason:$('#referenceReason').value})};
+$('#reviewReference').onclick=()=>{const sh=project()?.shots[shotName];if(!sh?.reference_head)return message('참고를 먼저 지정하세요.',true);act('review_reference',{song:song(),shot:shotName,shot_revision:sh.revision,version:sh.reference_head,decision:$('#referenceDecision').value,reason:$('#referenceReason').value})};
+function drawMusic(){const p=project();if(!p)return;$('#musicAudio').innerHTML=p.audio_versions.map(a=>`<option value="${a.id}">v${a.id} ${esc(a.filename)}</option>`).join('');$('#musicAudio').value=p.audio_selected??'';const versions=p.music_versions||[];$('#musicSummary').innerHTML=versions.map(v=>`<p>v${v.id} · 음원 v${v.audio} · ${v.start}–${v.end}초 · 사용자 수동 확정<br>${v.sections.map(x=>`${esc(x.label)} ${x.start}–${x.end}초`).join(' / ')}</p>`).join('')||'<small>확정된 음악 구간 없음</small>';const head=versions.at(-1);if(head&&p.timeline_head)$('#musicSummary').innerHTML+='<p>음악 구간을 바꾸어도 저장된 타임라인은 유지됩니다. 음원 버전·시작·컷 길이를 검토하세요.</p>';}
+$('#musicStructure').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);const sections=String(f.get('sections')).split('\n').filter(x=>x.trim()).map(line=>{const [start,end,...label]=line.split(',');return {start:Number(start),end:Number(end),label:label.join(',')}});act('music_structure',{song:song(),audio:Number(f.get('audio')),start:Number(f.get('start')),end:Number(f.get('end')),sections})};
+function drawChatProgress(){const p=project();if(!p){$('#chatProgress').textContent='새 작품을 만들어 시작하세요.';return}const shots=Object.values(p.shots),selected=shots.filter(s=>s.selected),approved=selected.filter(s=>[...(s.reviews||[])].reverse().find(r=>r.take===s.selected)?.decision==='approved');$('#chatProgress').textContent=`음원 ${p.audio_versions.length}개 · 장면 ${shots.length}개 · take 선택 ${selected.length}개 · take 승인 ${approved.length}개 · 타임라인 ${p.timeline_head?'v'+p.timeline_head:'저장 대기'}`;if(p.rehearsal_jobs?.length){const names={prepared:'접수',claimed:'로컬 처리 중',collected:'수집·검토 대기',blocked:'차단',outcome_unknown:'결과 미확정'};$('#chatProgress').textContent+=' · 모의 계약 (AI 생성 아님): '+p.rehearsal_jobs.map(j=>(names[j.state]||j.state)+(j.result_approved?' / 승인됨':'')).join(', ');}}
+function drawChat(){drawGuided();drawExecutionCards();drawFlow();drawPreferences();drawChatProgress();drawMusic();const p=project();$('#conversation').innerHTML=(p?.conversation||[]).map(m=>`<div class="job"><b>${m.role==='user'?'제작 지시':'로컬 제작 안내'}</b><p style="white-space:pre-wrap">${esc(m.text)}</p></div>`).join('')||'<p>작품을 선택하거나 새 작품을 만들고 제작 지시를 남기세요.</p>';$('#chatPlans').innerHTML=(p?.chat_plans||[]).map(plan=>`<div class="job"><b>${plan.status==='applied'?'샷 보드에 반영됨':'검토할 초안'}</b><p class="muted">명시적 취향 문맥 ${(plan.preferences||[]).map(x=>'v'+x.id+' '+esc(x.value)).join(' / ')||'없음'} · 생성 적용 미지원</p><ol>${plan.scenes.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>${plan.status==='applied'?'':`<button data-plan="${esc(plan.id)}">검토한 초안을 샷에 추가</button>`}</div>`).join('')}
+const workbench=$('main'),chatWorkspace=$('#chatWorkspace');
+function mode(chat){document.body.dataset.guided=String(chat);$('#chatPanel').hidden=!chat;workbench.hidden=false;$('#chatMode').setAttribute('aria-pressed',String(chat));$('#workbenchMode').setAttribute('aria-pressed',String(!chat));drawChat();drawFlow()}
+$('#chatMode').onclick=()=>mode(true);$('#workbenchMode').onclick=()=>mode(false);
+function drawPreferences(){if(!state)return;const names={color:'색감',texture:'질감',camera:'카메라',editing:'편집'},labels={proposed:'검토 대기',active:'활성',paused:'중지',rejected:'거절'};$('#preferencesList').innerHTML=(state.preferences||[]).filter(x=>x.ip===(project()?.ip||'default')).map(x=>`<div class="job"><b>v${x.id} · ${names[x.category]} · ${labels[x.status]}</b><p>${esc(x.value)}</p><small>${x.song?'작품: '+esc(x.song):'IP 기본'} · 근거: ${esc(x.evidence)}</small><p>정정 대상 ${x.supersedes?'v'+x.supersedes:'없음'}</p><button data-pref="${x.id}" data-decision="active">승인·재활성</button> <button data-pref="${x.id}" data-decision="paused">중지</button> <button data-pref="${x.id}" data-decision="rejected">거절</button></div>`).join('')||'<p>명시적으로 등록한 취향이 없습니다.</p>'}
+let budgetRevision=0,budgetProject=null;
+function showBudget(){budgetProject=state.project_ids[song()];const b=(state.budgets||[]).find(b=>b.data.scope==='project:'+budgetProject);budgetRevision=b?.revision||0;const d=b?.data;$('#budgetSummary').textContent=d?`v${b.revision} · 한도 ${d.limit.amount} ${d.limit.currency} · 예약 ${d.reserved.amount} · 확정 순액 ${d.netConfirmed.amount} · 잔여 ${d.available.amount} · 초과 ${d.overrun.amount} · 동시 작업 ${d.maxConcurrentJobs}`:'설정된 공급자 예산 없음';return b}
+async function loadBudgetLedger(){const r=await fetch(`/v1/workspaces/${state.workspace_id}/billing/ledger?limit=200`,{headers:{Authorization:'Bearer '+state.token}});const x=await r.json();if(!r.ok)throw Error(x.message);const b=(state.budgets||[]).find(b=>b.data.scope==='project:'+budgetProject);$('#budgetLedger').innerHTML=x.items.filter(x=>x.data.budgetId===b?.id).map(x=>`<p>${esc(x.state)} · ${esc(x.data.amount.amount)} ${esc(x.data.amount.currency)}<br><small>${esc(x.data.note)}</small></p>`).join('')||'<p>해당 작품의 기록 없음</p>';if(x.nextCursor)$('#budgetLedger').insertAdjacentHTML('beforeend','<p>첫 200개 기록만 표시합니다.</p>')}
+$('#budgetButton').onclick=async()=>{if(!project())return message('작품을 먼저 선택하세요.',true);const b=showBudget();$('#budgetForm').elements.amount.value=b?.data.limit.amount||'0';$('#budgetForm').elements.concurrency.value=b?.data.maxConcurrentJobs||1;$('#budgetStatus').textContent='';$('#budgetDialog').showModal();try{await loadBudgetLedger()}catch(e){$('#budgetStatus').textContent=e.message}};
+$('#reloadBudget').onclick=async()=>{try{await refresh(song());showBudget();await loadBudgetLedger();$('#budgetStatus').textContent='최신 저장값을 표시했습니다. 입력값은 보존됐습니다. 비교 후 저장하세요.'}catch(e){$('#budgetStatus').textContent=e.message}};
+$('#budgetForm').onsubmit=async e=>{e.preventDefault();const button=e.target.querySelector('button');button.disabled=true;try{const f=new FormData(e.target);const r=await fetch(`/v1/workspaces/${state.workspace_id}/billing/budgets`,{method:'PATCH',headers:{'Content-Type':'application/json',Authorization:'Bearer '+state.token,'If-Match':`"${budgetRevision}"`},body:JSON.stringify({period:'project',projectId:budgetProject,limit:{amount:String(f.get('amount')),currency:'USD'},maxConcurrentJobs:Number(f.get('concurrency')),allowAutomaticRetries:false})});const x=await r.json();if(!r.ok)throw Error(r.status===412?'다른 화면에서 예산이 변경됐습니다. 입력을 보존했습니다. 최신 예산 비교 후 다시 저장하세요.':x.message);await refresh(song());showBudget();await loadBudgetLedger();$('#budgetStatus').textContent='예산 설정을 저장했습니다. 실제 지출은 발생하지 않았습니다.'}catch(e){$('#budgetStatus').textContent=e.message}finally{button.disabled=false}};
+async function drawOperations(){try{const r=await fetch('/api/operations');if(!r.ok)throw Error('운영 상태를 조회하지 못했습니다.');const x=await r.json();$('#operationsContent').innerHTML=`<p>전체 ${x.total_jobs} · ${Object.entries(x.counts).map(([k,v])=>`${statuses[k]||k} ${v}`).join(' / ')}</p><p>${esc(x.scope)}</p><h3>최근 렌더 작업</h3>${x.jobs.map(j=>`<div class="job"><b>${esc(j.song)} · ${statuses[j.status]||j.status}</b><p>큐 ${j.queue_seconds}초 · 실행 ${j.run_seconds??'시작 전'}초</p><p>${esc(j.error||'')}</p><small>${esc(j.id)}</small></div>`).join('')||'<p>작업 없음</p>'}<h3>최근 로컬 변경 이력</h3>${x.audit.map(a=>`<p>r${a.revision} · ${esc(a.action)} · ${new Date(a.at*1000).toLocaleString()}</p>`).join('')}`;}catch(e){$('#operationsContent').textContent=e.message}}
+$('#operationsButton').onclick=()=>{$('#operationsDialog').showModal();drawOperations()};$('#refreshOperations').onclick=drawOperations;
+$('#archiveButton').onclick=()=>{if(!project())return message('작품을 먼저 선택하세요.',true);$('#archiveStatus').textContent=project().archived?'현재 보관됨 · 제작 변경 제한':'현재 제작 중';$('#archiveSubmit').textContent=project().archived?'보관 해제':'작품 보관';$('#archiveDialog').showModal()};$('#archiveForm').onsubmit=async e=>{e.preventDefault();if(await act('archive_project',{song:song(),archived:!project().archived,reason:new FormData(e.target).get('reason')}))$('#archiveDialog').close()};
+$('#preferencesButton').onclick=()=>{if(!project())return message('작품을 먼저 선택하세요.',true);drawPreferences();$('#preferencesDialog').showModal()};
+$('#preferenceForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);if(await act('preference_propose',{ip:project().ip||'default',song:f.get('scope')==='song'?song():null,category:f.get('category'),value:f.get('value'),evidence:f.get('evidence'),reason:f.get('reason'),supersedes:f.get('supersedes')?Number(f.get('supersedes')):null}))e.target.reset()};
+$('#preferencesList').onclick=e=>{const b=e.target.closest('[data-pref]');if(b)act('preference_review',{id:Number(b.dataset.pref),decision:b.dataset.decision,reason:$('#preferenceReviewReason').value})};
+function drawProviderBadge(){if(!state)return;const c=project()?.chat_connection;$('#providerBadge').textContent=(c?.available?(c.mode==='contract-fake'?'채팅 모의':'채팅 합성 검증'):'채팅 미연결')+' · '+(state.capabilities.provider_mode==='fake'?'영상 모의':state.capabilities.provider_generation?'영상 시험 허용':'영상 미연결')}
+let modelChatScope='';
+function modelChatKey(){return state&&project()?'loretune-model-chat:'+state.workspace_id+':'+state.project_ids[song()]:''}
+function drawModelChat(){drawProviderBadge();const expanded=new Set([...document.querySelectorAll('#modelChatTurns details[open]')].map(d=>d.dataset.turn));const p=project(),cap=p?.chat_connection||{available:false,mode:'disconnected',reason:'작품을 먼저 선택하세요.'},key=modelChatKey();if(modelChatScope!==key){modelChatScope=key;try{$('#modelChatPrompt').value=key?sessionStorage.getItem(key)||'':''}catch{$('#modelChatPrompt').value=''}}
+ const labels={'disconnected':'연결 없음','contract-fake':'도구 계약 모의 검증 · 실제 AI 호출 없음','anthropic-live':'실제 Anthropic · 승인된 합성 입력만'};
+ $('#modelChatCapability').textContent=(labels[cap.mode]||'연결 확인 필요')+' · '+cap.reason+(cap.available?' · 요청당 제한 $'+cap.maximum_usd:'');
+ const turns=p?.chat_turns||[],active=turns.some(t=>['queued','running','cancel_requested'].includes(t.status));
+ $('#modelChatSubmit').disabled=busy||!cap.available||active;$('#modelChatSubmit').textContent=cap.mode==='contract-fake'?'모의 도구 계약 검증':'승인 범위로 Anthropic 요청';
+ const states={queued:'대기',running:'진행 중',cancel_requested:'취소 요청됨 · 이미 전송된 호출은 과금 가능',cancelled:'중단됨 · 이미 저장된 결과 유지',completed:'답변 수신 · 검토 전',blocked_before_message:'호출 전 차단',outcome_unknown:'응답 미확정 · 자동 재호출 없음',response_validation_failed:'응답 검증 실패 · 사용량 확인 필요',limit_reached:'허용 회차 종료 · 저장된 결과 검토'};
+ $('#modelChatStatus').textContent=turns.length?'최근 작업: '+(states[turns.at(-1).status]||turns.at(-1).status):'아직 모델 대화 작업이 없습니다.';
+ $('#modelChatTurns').innerHTML=turns.map(t=>`<article class="guided-card"><h3>${esc(states[t.status]||t.status)}</h3><p>${esc(labels[t.mode]||t.mode)} · ${esc(t.model)}</p><p style="white-space:pre-wrap">${esc(t.prompt)}</p>${t.answer?`<p style="white-space:pre-wrap">${esc(t.answer)}</p><p>답변 내용과 출처를 검토하세요. 계획 승인·미디어 완료로 처리하지 않습니다.</p>`:''}<p>${t.mode==='contract-fake'?'모의 사용량 계산':'사용량 기준 비용 계산'} $${esc(t.usage_cost_usd||'0')} · 실청구 ${t.billing_confirmed?'확인':'미확인'}</p>${t.error?`<p>${esc(t.error)}</p>`:''}<details data-turn="${esc(t.id)}" ${expanded.has(t.id)?'open':''}><summary>도구 실행 근거 ${(t.steps||[]).length}회</summary>${(t.steps||[]).map(step=>`<p>${esc(step.status)} · ${esc(step.request_id||'응답 식별자 없음')}</p>${(step.tool_calls||[]).map(x=>`<p>${esc(x.call.name)} → ${esc(x.result.status)} ${esc(x.result.plan?.id||x.result.job_id||'')}</p>`).join('')}`).join('')}</details>${['queued','running'].includes(t.status)?`<button data-chat-cancel="${esc(t.id)}">이 대화 중단 요청</button>`:''}</article>`).join('');
+}
+$('#modelChatPrompt').addEventListener('input',()=>{const k=modelChatKey();if(k)try{sessionStorage.setItem(k,$('#modelChatPrompt').value)}catch{message('대화 초안을 브라우저에 보관하지 못했습니다.',true)}});
+$('#modelChatForm').onsubmit=async e=>{e.preventDefault();if(!project()?.chat_connection?.available)return message('서버에 승인된 모델 연결이 없습니다. 입력은 보존됩니다.',true);const prompt=$('#modelChatPrompt').value;if(await act('chat_turn',{song:song(),prompt}))message('대화 작업을 저장했습니다. 접수·답변·미디어 생성은 서로 다른 상태입니다.');drawModelChat()};
+$('#modelChatTurns').onclick=async e=>{const b=e.target.closest('[data-chat-cancel]');if(!b)return;await act('chat_cancel',{song:song(),turn:b.dataset.chatCancel});drawModelChat()};
+$('#modelChatRefresh').onclick=async()=>{if(dirty)return message('먼저 타임라인 편집을 저장하세요. 대화 입력은 보존됩니다.',true);await refresh(song());message('서버에 저장된 계획·작업 상태를 확인했습니다.')};
+
+$('#chatForm').onsubmit=async e=>{e.preventDefault();if(!state.capabilities.chat_plan)return message('새 채팅 기능을 사용하려면 서버를 새 코드로 재시작해야 합니다.',true);if(!project())return message('작품을 먼저 만드세요.',true);const f=new FormData(e.target);if(await act('chat_plan',{song:song(),prompt:f.get('prompt')}))e.target.reset()};
+$('#chatPlans').onclick=e=>{const b=e.target.closest('[data-plan]');if(b)act('apply_chat_plan',{song:song(),plan:b.dataset.plan})};
+
+
+function drawOntology(){const p=project();if(!p)return;const o=p.ontology||{revision:0,graph:{entities:[]}};$('#ontologyContent').innerHTML=`<h3>승인 버전 ${o.revision}</h3><p>대상 샷: ${esc(shotName||'선택 없음')}</p><button id="ontologyBind">체크한 승인 개체를 선택 샷에 연결</button>${o.graph.entities.map(e=>`<p><b>${esc(e.label)}</b> · ${esc(e.type)}<br>${esc(e.description)}<br><small>${esc(e.id)} · ${esc(e.uncertainty.reason)}</small><br><label><input style="width:auto" type="checkbox" data-entity-id="${esc(e.id)}">선택 샷 참고로 연결</label><button data-ontology-edit="${esc(e.id)}">이 개체 수정 제안</button></p>`).join('')||'<p>승인된 개체 없음</p>'}${(p.ontology_proposals||[]).filter(x=>!x.applied_revision).map(x=>`<div class="job"><b>검토 후보 · 기준 v${x.base_revision}</b>${x.graph.entities.map(e=>`<p>${esc(e.label)} · ${esc(e.description)}<br>출처: ${e.provenance.map(v=>esc(v.excerpt)).join(' / ')}</p>`).join('')}<button data-ontology-apply="${esc(x.id)}" data-revision="${x.base_revision}">이 후보 전체 승인</button></div>`).join('')}${o.revision>1?`<label>복원할 승인 버전<input id="ontologyRestoreVersion" type="number" min="1" max="${o.revision}" value="${o.revision-1}"></label><button id="ontologyRestore">선택 버전을 새 승인 버전으로 복원</button>`:''}`;$('#lineageContent').innerHTML=(p.lineage?.nodes||[]).map(n=>`<p>${esc(n.type)} · ${esc(n.label)} · ${esc(n.source)}<br><small>${esc(n.id)}</small></p>`).join('')+`<p>관계 ${(p.lineage?.edges||[]).length}개 · ${esc(p.lineage?.note||'')}</p>`;}
+$('#ontologyButton').onclick=()=>{if(!project())return message('작품을 먼저 만드세요.',true);drawOntology();$('#ontologyDialog').showModal()};
+$('#ontologyForm').onsubmit=async e=>{e.preventDefault();if(await act('ontology_propose',{song:song(),ontology_revision:project().ontology.revision,...Object.fromEntries(new FormData(e.target))}))drawOntology()};
+$('#ontologyNew').onclick=()=>{$('#ontologyForm').reset();$('#ontologyEditStatus').textContent='새 개체 제안'};
+$('#ontologyContent').onclick=async e=>{if(e.target.id==='ontologyBind'){const sh=project().shots[shotName];if(!sh)return message('샷을 먼저 선택하세요.',true);if(await act('ontology_bind',{song:song(),shot:shotName,shot_revision:sh.revision,ontology_revision:project().ontology.revision,entities:[...document.querySelectorAll('[data-entity-id]:checked')].map(x=>x.dataset.entityId)}))drawOntology();return;}const edit=e.target.closest('[data-ontology-edit]');if(edit){const item=project().ontology.graph.entities.find(x=>x.id===edit.dataset.ontologyEdit);const f=$('#ontologyForm');f.elements.entity.value=item.id;f.elements.kind.value=item.type;f.elements.label.value=item.label;f.elements.description.value=item.description;f.elements.evidence.value=item.provenance.map(x=>x.excerpt).join('\n');$('#ontologyEditStatus').textContent='기존 개체 수정 · ID 보존';f.elements.description.focus();return;}const b=e.target.closest('[data-ontology-apply]');if(b&&await act('ontology_apply',{song:song(),proposal:b.dataset.ontologyApply,ontology_revision:Number(b.dataset.revision),approved:true}))drawOntology();if(e.target.id==='ontologyRestore'&&await act('ontology_restore',{song:song(),version:Number($('#ontologyRestoreVersion').value),ontology_revision:project().ontology.revision,approved:true}))drawOntology()};
+document.querySelectorAll('dialog').forEach(d=>{d.setAttribute('aria-label',d.querySelector('h2')?.textContent||'검토');const status=document.createElement('p');status.className='dialog-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');d.prepend(status)});
+$('#textScale').onchange=e=>document.documentElement.style.setProperty('--text-scale',e.target.value);
+function drawModelSettings(){const p=project(),roles={chat:'채팅·기획',image:'이미지',video:'영상'},m=p?.model_settings;$('#modelSlots').innerHTML=Object.entries(roles).map(([role,label])=>`<label>${label} 모델<select name="${role}" aria-describedby="model-${role}-selected model-${role}-reason" ${!p?'disabled':''}><option value="">미선택</option>${(state.model_catalog?.models||[]).filter(x=>x.role===role).map(x=>`<option value="${esc(x.id)}" ${m?.selections[role]===x.id?'selected':''}>${esc(x.model)} · ${x.state==='integration_blocked'?'결과 수신 차단':'통합 미검증'}</option>`).join('')}</select></label><p id="model-${role}-selected" class="lt-model-name">선택 모델: ${esc((state.model_catalog?.models||[]).find(x=>x.id===m?.selections[role])?.model||'미선택')}</p><p id="model-${role}-reason" class="muted">${esc((state.model_catalog?.models||[]).find(x=>x.id===m?.selections[role])?.reason||(role==='image'?'이미지 모델 어댑터는 아직 없습니다.':'미선택 · 외부 실행 없음'))}</p>`).join('');$('#modelDefaultsSummary').textContent='기본값 · '+Object.entries(roles).map(([r,label])=>label+': '+((state.model_catalog?.models||[]).find(x=>x.id===m?.selections[r])?.provider||'미선택')).join(' / ')+' · 실제 연결 미검증';$('#modelSettingsForm button').disabled=!p||!state.model_catalog;$('#modelSettingsStatus').textContent=p&&state.model_catalog?`설정 v${m.revision} · 이미지 활성 모델 없음 · 모델 선택을 저장해도 외부 실행 권한은 생기지 않습니다.`:p?'이 서버는 모델 설정 API 업데이트 전입니다. 기존 제작 기능을 이용할 수 있습니다.':'작품을 먼저 만드세요.';}
+$('#modelSlots').onchange=e=>{const role=e.target.name;if(!['chat','image','video'].includes(role))return;const model=(state.model_catalog?.models||[]).find(x=>x.id===e.target.value);document.getElementById(`model-${role}-selected`).textContent='선택 모델: '+(model?.model||'미선택');document.getElementById(`model-${role}-reason`).textContent=model?.reason||(role==='image'?'이미지 모델 어댑터는 아직 없습니다.':'미선택 · 외부 실행 없음');};
+$('#editModelSettings').onclick=()=>$('#modelSettingsPanel').showModal();
+$('#modelSettingsForm').onsubmit=async e=>{e.preventDefault();if(!project())return;const selections=Object.fromEntries([...new FormData(e.target)].map(([k,v])=>[k,v||null]));await act('model_settings',{song:song(),selections,model_revision:project().model_settings.revision});};
+let briefScope='';
+function briefKey(){return state&&project()?'loretune-brief:'+state.workspace_id+':'+state.project_ids[song()]:''}
+function restoreBrief(){const key=briefKey();if(key===briefScope)return;briefScope=key;const f=$('#guidedBrief');f.reset();if(!key)return;try{const saved=JSON.parse(sessionStorage.getItem(key)||'null');if(saved)for(const [k,v]of Object.entries(saved))if(f.elements[k])f.elements[k].value=v}catch{message('초안 복구를 읽지 못했습니다. 저장된 계획은 그대로입니다.',true)}}
+$('#guidedBrief').addEventListener('input',()=>{const key=briefKey();if(key)try{sessionStorage.setItem(key,JSON.stringify(Object.fromEntries(new FormData($('#guidedBrief')))))}catch{message('브라우저 초안을 보존하지 못했습니다. 계획 미리보기로 서버에 저장하세요.',true)}});
+$('#skipFlow').onclick=e=>{e.preventDefault();$('#flowHeading').focus()};
+let guidedStep=1;
+function setStep(step){guidedStep=step;document.body.dataset.step=String(step);mode(true);drawFlow();$('#flowHeading').focus()}
+function drawFlow(){const p=project(),shots=Object.values(p?.shots||{}),selected=shots.filter(x=>x.selected);const labels=['음악과 사용할 구간을 확인하세요','직접 쓴 계획을 검토하세요','각 장면의 영상과 승인 상태를 확인하세요','음악·자막·출력 버전을 확인하세요'];$('#flowHeading').textContent=labels[guidedStep-1];document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-current',Number(b.dataset.step)===guidedStep?'step':'false'));$('#flowSummary').textContent=!p?'새 작품을 만든 뒤 시작하세요.':`음원 ${p.audio_versions.length}개 · 음악 구간 ${p.music_head?'확정 v'+p.music_head:'미확정'} · 장면 ${shots.length}개 · 선택된 영상/이미지 ${selected.length}개 · 출력 ${p.timeline_head?'저장 v'+p.timeline_head:'저장 전'} · AI 영상 수신은 별도 공급자 검증 대기`;$('#flowNext').textContent=guidedStep===4?'1 음악 입력으로 돌아가기':'다음: '+labels[guidedStep];}
+
+$('#prepareSelectedAction').onclick=async()=>{const s=project()?.shots[shotName];if(!s?.plan_id)return message('계획을 승인해 추가한 장면을 먼저 선택하세요.',true);await act('action_propose',{song:song(),plan:s.plan_id,scene:s.stable_id})};
+function drawExecutionCards(){const p=project();$('#executionCards').innerHTML=(p?.execution_cards||[]).map(c=>{const t=p.shots[c.shot]?.takes.find(t=>t.id===c.take),job=p.rehearsal_jobs?.find(j=>j.id===c.job),states={pending:'승인 대기',held:'보류',rejected:'거절',approved:'실행 승인됨',blocked:'문맥 변경으로 차단'};return `<article class="guided-card lt-execution-card" data-decision="${esc(c.decision)}"><h2>${esc(c.shot)} <span class="lt-state-chip">${states[c.decision]||esc(c.decision)}</span></h2><p>${esc(c.description)}</p><p class="lt-cost-facts">${esc(c.model)} · 공급자 비용 $0 · 외부 전송 없음 · 로컬 연산비 미계측</p><details class="lt-provenance-detail"${c.job&&job?.state!=='collected'?' open':''}><summary>모의 방식·작업 영수증</summary><p>이 작업은 제작 파이프라인 검증용 단색 이미지를 만듭니다. 장면 내용을 그리거나 실제 모델을 호출하지 않습니다.</p>${c.job?`<p>작업 영수증 ${esc(c.job)} · ${esc(job?.state||'상태 확인 중')}</p>`:''}</details>${t?`<img src="${asset(t)}" alt="모의 합성 단색 후보" width="128" height="128"><p>Take ${t.id} · 선택본과 이전 출력은 유지됩니다.</p>`:''}<div class="toolbar">${['pending','held'].includes(c.decision)&&!c.job?`<button data-card="${c.id}" data-action="action_decide" data-decision="approved">$0 모의 작업 승인</button><button data-card="${c.id}" data-action="action_decide" data-decision="held">보류</button><button data-card="${c.id}" data-action="action_decide" data-decision="rejected">거절</button>`:''}${c.decision==='approved'&&!t?`<button data-card="${c.id}" data-action="action_execute">승인한 모의 작업 실행</button><button data-card="${c.id}" data-action="action_decide" data-decision="rejected">실행 전 승인 철회</button>`:''}${t&&!c.result_decision?`<button data-card="${c.id}" data-action="action_review" data-decision="approved">후보 검토 승인</button><button data-card="${c.id}" data-action="action_review" data-decision="rejected">후보 거절</button>`:''}${t?`<button data-card="${c.id}" data-open-shot>작업대에서 Take 비교·선택</button>`:''}</div>${c.result_decision?`<p>후보 ${c.result_decision==='approved'?'승인됨':'거절됨'} · 타임라인 선택은 별도입니다.</p>`:''}</article>`}).join('')}
+$('#executionCards').onclick=async e=>{const b=e.target.closest('[data-card]');if(!b)return;const c=project()?.execution_cards.find(c=>c.id===b.dataset.card);if(!c)return;if(b.hasAttribute('data-open-shot')){shotName=c.shot;mode(false);draw();return}await act(b.dataset.action,{song:song(),id:c.id,card_revision:c.revision,...(b.dataset.decision?{decision:b.dataset.decision}:{})});};
+
+function drawGuided(){restoreBrief();const p=project();$('#guidedPlans').innerHTML=(p?.guided_plans||[]).slice().reverse().map(plan=>`<div class="guided-card"><h2>계획 v${plan.version} · ${plan.status==='applied'?'샷 반영됨':'검토 대기'}</h2><p>${esc(plan.goal)}</p><p>스타일: ${esc(plan.style||'미지정')} · 보존 조건: ${esc(plan.constraints||'미지정')}</p><p>${esc(plan.explanation)}</p><ol>${plan.scenes.map(x=>`<li>${esc(x.description)} · ${x.duration===null?'길이 미정':x.duration.toFixed(3)+'초 / 원곡 '+x.music_start.toFixed(3)+'초'}${plan.status==='applied'?` <button data-prepare-action="${esc(plan.id)}" data-scene="${esc(x.id)}">모의 후보 작업 준비 · AI 아님</button>`:''}</li>`).join('')}</ol>${plan.questions.map(q=>`<p>${esc(q)}</p>`).join('')}<p>계획 승인은 유료 생성 승인이 아닙니다. 기존 샷·승인본을 보존하고 새 샷으로 추가합니다.</p>${plan.status==='applied'?'':`<button data-guided-plan="${esc(plan.id)}" ${plan.scenes.some(x=>x.duration===null)?'disabled data-plan-blocked="true" title="음악 구간 확정 후 보존된 입력으로 새 계획을 검토하세요"':''}>이 버전 승인·샷 추가</button>${plan.scenes.some(x=>x.duration===null)?'<p>이 계획은 음악 구간 확정 전 버전입니다. 입력은 보존됩니다. 구간 확정 후 새 계획 버전을 검토하세요.</p><button data-plan-music>음악 입력으로 이동</button>':''}`}</div>`).join('')}
+$('#guidedBrief').onsubmit=async e=>{e.preventDefault();if(!project())return message('새 작품을 먼저 만드세요.',true);const f=new FormData(e.target);await act('guided_plan',{song:song(),...Object.fromEntries(f)});};
+$('#guidedPlans').onclick=async e=>{if(e.target.closest('[data-plan-music]')){setStep(1);$('#musicStructure').closest('details').open=true;$('#musicAudio').focus();return;}const prepare=e.target.closest('[data-prepare-action]');if(prepare){if(await act('action_propose',{song:song(),plan:prepare.dataset.prepareAction,scene:prepare.dataset.scene}))setStep(3);return;}const b=e.target.closest('[data-guided-plan]');if(b&&await act('apply_guided_plan',{song:song(),plan:b.dataset.guidedPlan}))setStep(3)};
+document.querySelectorAll('button[data-step]').forEach(b=>b.onclick=()=>setStep(Number(b.dataset.step)));$('#flowNext').onclick=()=>setStep(guidedStep%4+1);
+
+setInterval(async()=>{if(busy||!state)return;try{const r=await fetch('/api/state');const fresh=await r.json();const name=song(),p=state.projects[name],next=fresh.projects[name];if(p&&next&&(JSON.stringify(p.chat_turns)!==JSON.stringify(next.chat_turns)||JSON.stringify(p.chat_connection)!==JSON.stringify(next.chat_connection))){p.chat_turns=next.chat_turns;p.chat_connection=next.chat_connection;drawModelChat()}if(JSON.stringify(state.jobs)!==JSON.stringify(fresh.jobs)){state.jobs=fresh.jobs;drawJobs()}if(JSON.stringify(state.generation_jobs)!==JSON.stringify(fresh.generation_jobs)){state.generation_jobs=fresh.generation_jobs;if(!dirty&&state.revision!==fresh.revision)await refresh(song());else drawGeneration()}}catch{}},1500);refresh().then(()=>{document.body.dataset.step='1';mode(true);message('로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.')}).catch(()=>message('서버 연결을 확인하세요.',true));
+</script>
+<script id="loretuneWorkspaceStructure">
+/* DOM-only integration candidate. Preserve original nodes, IDs, handlers and data. */
+(() => {
+  if (document.body.classList.contains('lt-workspace-v3')) return;
+  const q = s => document.querySelector(s);
+  const make = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text) el.textContent = text; return el; };
+  const disclosure = (label, cls) => { const d = make('details', cls); d.append(make('summary', '', label)); return d; };
+  const main = q('main'), media = q('main>article'), rail = q('main>aside:not(.inspector)'), inspector = q('main>.inspector');
+  if (!main || !media || !rail || !inspector) return;
+  document.body.classList.add('lt-workspace-v3');
+
+  // A compact shell. Nodes move without changing their save/action semantics.
+  const oldHeader = q('body>header'), projectBar = q('.lt-project-bar');
+  const shell = make('header', 'lt-studio-shell');
+  oldHeader.before(shell);
+  const brand = oldHeader.querySelector('b'); shell.append(brand, q('#songs'));
+  const management = q('.management');
+  management.querySelector('summary').textContent = '작품·설정';
+  const modeBar = q('#chatMode').parentElement;
+  modeBar.classList.add('lt-mode-switch');
+  management.append(modeBar, q('#newProject'));
+  const modelButton = q('#editModelSettings');
+  const context = disclosure('프로젝트 상태', 'lt-project-context');
+  const modelBar = q('#modelDefaultsBar'); modelBar.className = 'lt-model-context';
+  context.append(q('#providerBadge'), q('#flowSummary'), modelBar);
+  shell.append(management, context, modelButton);
+  modelButton.textContent = '모델 설정';
+  const stage = make('div', 'lt-stage-bar');
+  shell.after(stage);
+  stage.append(q('.flow-nav'), q('#flowNext'));
+  const heading = q('#flowHeading'); heading.classList.add('lt-stage-heading');
+  const status = make('div', 'lt-status-line'); stage.after(status);
+  status.append(heading, q('#notice'));
+  // Move the existing output actions next to timeline save/version controls.
+  const outputActions = make('div', 'lt-output-actions');
+  outputActions.append(q('#review'), q('#render'));
+  oldHeader.remove(); projectBar.remove(); q('.flow-summary').remove();
+
+  main.classList.add('lt-edit-workspace');
+  rail.classList.add('lt-scene-rail'); rail.id = 'ltScenePanel';
+  media.classList.add('lt-media-pane'); media.id = 'ltPreviewPanel';
+  inspector.id = 'ltReviewPanel';
+  const shotHeader = q('#shotTitle').parentElement; shotHeader.classList.add('lt-shot-header');
+  const takeRow = make('div', 'lt-take-row');
+  q('#preview').after(takeRow); takeRow.append(q('#takes'), q('#compareButton'));
+  const download = q('#downloadPreview'); q('#preview').before(download);
+  const outputLabel = make('p', 'lt-output-label', '렌더 결과 · 선택 Take와 별도 출력 버전'); download.before(outputLabel);
+
+  // Keep actual timeline data visible; secondary numeric controls are disclosed.
+  const timeline = q('.timeline');
+  timeline.id = 'ltTimelineDock';
+  const timelineHeader = timeline.querySelector('.row'); timelineHeader.classList.add('lt-timeline-header');
+  timelineHeader.querySelector('h2').textContent = '타임라인';
+  const track = q('#track'), timelineStatus = q('#timelineStatus');
+  const controls = disclosure('정밀 편집 · 음원·자막·버전', 'lt-timeline-controls');
+  [...timeline.children].filter(n => n !== timelineHeader && n !== track && n !== timelineStatus).forEach(n => controls.append(n));
+  timeline.append(timelineHeader, timelineStatus, track, controls);
+  timelineHeader.append(outputActions);
+
+  // Inspection starts with the selected Take. Production controls remain separate.
+  const reviewSection = q('#takeDecision').closest('section');
+  reviewSection.classList.add('lt-take-review');
+  reviewSection.querySelector('h2').textContent = '선택 Take 검토';
+  inspector.prepend(reviewSection);
+  const upload = q('#upload');
+  const uploadDetails = disclosure('새 Take 연결', 'lt-inspector-detail');
+  upload.before(uploadDetails); uploadDetails.append(upload);
+  const reviewRow = q('#takeDecision').parentElement;
+  reviewRow.before(q('#reviewReason').closest('label'));
+  const reason = q('#reason'); reviewSection.querySelector('h2').after(reason);
+  [...inspector.children].filter(n => n.tagName === 'SECTION' && n !== reviewSection && !n.classList.contains('render-section')).forEach(section => {
+    const title = section.querySelector('h2');
+    const d = disclosure(title?.textContent || '상세', 'lt-inspector-detail');
+    section.before(d); if (title) title.remove(); d.append(section);
+    if (section.contains(q('#executionCards'))) { d.classList.add('lt-execution-detail'); d.open = true; }
+  });
+
+  // Mobile focuses one working panel, while desktop retains all three columns.
+  const panelNav = make('div', 'lt-panel-nav'); panelNav.setAttribute('role', 'tablist'); panelNav.setAttribute('aria-label', '작업 영역');
+  main.before(panelNav);
+  const panels = [['scenes', '장면', rail], ['preview', '미리보기', media], ['review', '검토', inspector]];
+  const mobile = matchMedia('(max-width: 900px)');
+  let selected = 'preview';
+  function applyPanels() {
+    // On small screens keep one shell row; model/state controls stay in the
+    // clearly named project disclosure rather than forming more chrome rows.
+    if (mobile.matches && context.parentElement === shell) management.append(context, modelButton);
+    if (!mobile.matches && context.parentElement === management) shell.append(context, modelButton);
+    const focused = !document.body.matches('[data-guided="true"][data-step="1"],[data-guided="true"][data-step="2"]');
+    panelNav.hidden = !mobile.matches || !focused;
+    panels.forEach(([name, , panel]) => {
+      const button = panelNav.querySelector('[data-panel="' + name + '"]');
+      const active = name === selected;
+      button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1;
+      panel.classList.toggle('lt-panel-inactive', mobile.matches && focused && !active);
+      if (mobile.matches && focused) { panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', button.id); panel.tabIndex = 0; }
+      else { panel.removeAttribute('role'); panel.removeAttribute('aria-labelledby'); panel.removeAttribute('tabindex'); }
+    });
+  }
+  function choose(name, focusButton = false) {
+    selected = name; applyPanels();
+    if (focusButton) panelNav.querySelector('[data-panel="' + name + '"]').focus();
+  }
+  panels.forEach(([name, label, panel], i) => {
+    const button = make('button', '', label); button.type = 'button'; button.id = 'ltPanelTab-' + name;
+    button.dataset.panel = name; button.setAttribute('role', 'tab'); button.setAttribute('aria-controls', panel.id);
+    button.addEventListener('click', () => choose(name));
+    button.addEventListener('keydown', event => {
+      const keys = { ArrowRight: (i + 1) % 3, ArrowLeft: (i + 2) % 3, Home: 0, End: 2 };
+      if (event.key in keys) { event.preventDefault(); choose(panels[keys[event.key]][0], true); }
+    });
+    panelNav.append(button);
+  });
+  q('#shotlist').addEventListener('click', event => { if (mobile.matches && event.target.closest('[data-shot]')) choose('preview', true); });
+  q('#jobs').addEventListener('click', event => { if (mobile.matches && event.target.closest('[data-play]')) choose('preview', true); });
+  // Only mode/stage UI changes are observed. No provider or application-state writes.
+  let previousStage = '';
+  function stageChanged() {
+    const stageKey = document.body.dataset.guided + ':' + document.body.dataset.step;
+    if (stageKey !== previousStage) {
+      previousStage = stageKey; selected = 'preview';
+      management.open = false; context.open = false;
+      controls.open = document.body.dataset.step === '4';
+      // Only change focus visibility; keep app's original stage handling intact.
+      applyPanels();
+    }
+  }
+  new MutationObserver(stageChanged).observe(document.body, { attributes: true, attributeFilter: ['data-guided', 'data-step'] });
+  mobile.addEventListener('change', applyPanels); stageChanged();
+  // Disclosure dismissal never submits a form or changes project data.
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || q('dialog[open]')) return;
+    const opened = [management, context].find(d => d.open && d.contains(document.activeElement));
+    if (opened) { opened.open = false; opened.querySelector('summary').focus(); }
+  });
+})();
+
+</script>
+<script id="loretuneCraftUI">
+/* UI-only enhancement; original nodes, event handlers and values remain intact. */
+(() => {
+ if (document.body.classList.contains('lt-craft')) return;
+ document.body.classList.add('lt-craft');
+ const shortStages={'1':'1 음악','2':'2 계획','3':'3 장면','4':'4 출력'};
+ document.querySelectorAll('.flow-nav button[data-step]').forEach(button=>{
+  const label=button.textContent,short=shortStages[button.dataset.step]; if(!short)return;
+  button.setAttribute('aria-label',label);
+  const full=document.createElement('span'); full.className='lt-stage-full';full.textContent=label;
+  const compact=document.createElement('span');compact.className='lt-stage-short';compact.textContent=short;compact.setAttribute('aria-hidden','true');
+  button.replaceChildren(full,compact);
+ });
+ const notice = document.querySelector('#notice');
+ if (notice) {
+  const detail = document.createElement('details'); detail.className='lt-notice-detail';
+  const summary = document.createElement('summary'); summary.textContent='저장 상태';
+  notice.before(detail); detail.append(summary,notice);
+  const baseline='로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.';
+  const reveal = () => {
+   const routine=notice.textContent.trim()===baseline && !notice.classList.contains('error');
+   summary.textContent=routine?'저장 상태':'알림';
+   if (!routine) detail.open=true;
+  };
+  // Initial routine connection detail is collapsed. New errors or messages are
+  // immediately expanded; their original live region and wording are retained.
+  new MutationObserver(reveal).observe(notice,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']});
+  reveal();
+ }
+ const upload=document.querySelector('#upload'),hint=document.querySelector('.lt-take-review>small');
+ if (upload && hint) upload.after(hint);
+})();
+
+</script></html>

@@ -1,0 +1,29 @@
+draft confirmation, saved edit, output snapshot, clip min/max: passed
+timeline locking and limits after unlock: passed
+caption draft status and cancel availability: passed
+.F.........
+======================================================================
+FAIL: test_ui_preview_boundaries_match_server_cumulative_frame_policy (tests.test_timeline_motion_overlay_ui.TimelineMotionOverlayUiTest.test_ui_preview_boundaries_match_server_cumulative_frame_policy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_timeline_motion_overlay_ui.py", line 37, in test_ui_preview_boundaries_match_server_cumulative_frame_policy
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : [eval]:4
+const helper=source.split('
+                          ^
+Expected ',', got 'string literal'
+
+SyntaxError: Invalid or unexpected token
+    at makeContextifyScript (node:internal/vm:194:14)
+    at compileScript (node:internal/process/execution:422:10)
+    at evalTypeScript (node:internal/process/execution:294:22)
+    at node:internal/main/eval_string:71:3
+
+Node.js v26.11.1
+
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.761s
+
+FAILED (failures=1)

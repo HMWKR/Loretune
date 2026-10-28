@@ -1,0 +1,45 @@
+{
+  "reviewed_at": "2026-10-26T14:59:19.027402+00:00",
+  "reviewer": "assistant evidence review, not customer study",
+  "original_runs": [
+    {
+      "case": "L1",
+      "primary_checks": "PASS: old prohibition, grounded prompt, unknown age, exact selected fake payload",
+      "semantic_warning": "provider audio=false incorrectly framed as original-music conflict"
+    },
+    {
+      "case": "L2",
+      "primary_checks": "PASS: explicit release/correction, quote/conditional exclusion, prior proposal preserved",
+      "semantic_warning": "same audio explanation error"
+    },
+    {
+      "case": "L3",
+      "primary_checks": "PASS: Store reopen, canonical v2, released constraint not resurrected",
+      "semantic_warning": "current scoped approval records conflated with older proposal state; audio error repeated"
+    },
+    {
+      "case": "L4",
+      "primary_checks": "PASS: B facts and unknowns; foreign A source/request absent",
+      "semantic_warning": "empty shot inventory incorrectly treated as missing ontology approval"
+    }
+  ],
+  "followups": [
+    {
+      "case": "S1",
+      "result": "PASS within sampled read-only answer: action grant vs output approval vs execution recheck; original-music semantics corrected; missing current option value acknowledged"
+    },
+    {
+      "case": "S2",
+      "result": "PASS within sampled answer: canonical human-applied revision independent of empty shot inventory; earlier error explicitly corrected"
+    }
+  ],
+  "no_blanket_pass": true,
+  "raw_provider_responses_unchanged": true,
+  "limitations": [
+    "not independent evaluator",
+    "not all possible natural-language constraints",
+    "no same-project independent sessions",
+    "no actual fal generation",
+    "no new browser E2E"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "independent-workflow-review-driver-acceptance/1",
+  "recorded_at": "2026-10-27T21:11:30.151441+00:00",
+  "reviewer": "/root/feedback_review_resume",
+  "role": "ce-reviewer",
+  "configured_model_reasoning": "session inherited; provider identity not independently measured",
+  "reported_state": "REPORTED",
+  "driver_decision": "ACCEPTED for six-file source and scoped test review; whole platform incomplete",
+  "source_sha256": {
+    "index.html": "9bfaf17abfa0763e28f1e44f61bea636258f8ffa8de917d768a00dd3079659e7",
+    "scene_assets.py": "00137112cc48da1def1fb9974c8c6b07dc45f6b318ab5198a163402fa0f606bd",
+    "tests/studio_notice.cjs": "41ac6714d2109602c17a69d78e9d6607e94d71f777bec7617ccd6af4ea274990",
+    "tests/test_scene_asset_diagnostics.py": "8ef0d4c6171f9fd0bb9af7e2bac674badf3db2bf8668d5310154558dd2c35ff6",
+    "tests/test_scene_asset_workflow.py": "a680370a5c8a596d19a6ab6f8804b355a552afbc7fd2ec41ceaf9d8aaa2accc8",
+    "tests/test_studio_notice.py": "015a0d963e43c99f2313e669a69f64c9911def74e94224bd45fb3d9ae58c6f29"
+  },
+  "confirmed_findings_resolved": [
+    "UX-FOCUS-08 act captures focus before first button disable",
+    "UX-FOCUS-09 failed request opens parent details synchronously before focusing status"
+  ],
+  "unresolved_high_medium_in_reviewed_scope": 0,
+  "worker_actual_checks": [
+    "node tests/studio_notice.cjs exit0",
+    "node tests/save_feedback.mjs exit0",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_scene_asset_diagnostics -v:4tests/0.441s/OK"
+  ],
+  "worker_read_only_review": [
+    "Before/current source diff and guard paths",
+    "Actual root UI before/after focus receipts",
+    "Backend7HTTP request receipts and probe code; not HTTP rerun by reviewer",
+    "1920before/after and375after screenshots manually viewed"
+  ],
+  "driver_additional_checks": [
+    "S819 single full regression819/447.449s/OK,214source unchanged",
+    "Actual UI render/download/play/caption/reopen and malformed/valid GLB import",
+    "Actual AX disclosure semantics live=polite atomic=true; not actual screen reader announcement"
+  ],
+  "measurement_correction": {
+    "reviewer_early_mobile_header": 109,
+    "basis": "after-queued snapshot immediately after viewport switch",
+    "driver_settled_mobile_header": 57,
+    "basis_file": "after-playback-layout.json; waited responsive data mode and2animationframes",
+    "scope": "Keep both raw measurements; only settled final-state observations used in final report. No usability/performance effect inferred."
+  },
+  "limits": [
+    "Source/VM/receipt inspection is not independent execution of every UI/API case",
+    "No actual users/screen reader/production/Claude/commercialTripo acceptance",
+    "Readonly is task contract, not verified OS enforcement"
+  ],
+  "file_writes_by_reviewer": 0
+}

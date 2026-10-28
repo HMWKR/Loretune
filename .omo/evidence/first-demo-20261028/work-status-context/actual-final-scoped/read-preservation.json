@@ -1,0 +1,69 @@
+{
+  "before_db_sha256": "aa48c2daf855bda89a3999589f2ab5f2c410c4a74c73548234f3cbae3d8b0d98",
+  "after_db_sha256": "aa48c2daf855bda89a3999589f2ab5f2c410c4a74c73548234f3cbae3d8b0d98",
+  "reopened": {
+    "work_status": {
+      "scope": "current-project-current-conversation",
+      "observation_started_at": 1793154797.052607,
+      "observed_at": 1793154797.052696,
+      "observed_revision": 3,
+      "transaction_snapshot": false,
+      "limit_per_source": 8,
+      "sources": [
+        {
+          "source": "local_jobs",
+          "items": [
+            {
+              "id": "preserved",
+              "kind": "local-render",
+              "execution_mode": "local-render",
+              "state": "outcome_unknown",
+              "progress_percent": 52,
+              "record_revision": 4,
+              "input_version": {
+                "kind": "timeline",
+                "value": null
+              },
+              "output_kind": "video",
+              "output_sha256": null,
+              "output_registered": false,
+              "created_at": 123,
+              "updated_at": null
+            }
+          ],
+          "truncated": false,
+          "ordering": "source insertion order descending; not cross-source creation/update order"
+        },
+        {
+          "source": "provider_jobs",
+          "items": [],
+          "truncated": false,
+          "ordering": "source insertion order descending; not cross-source creation/update order"
+        },
+        {
+          "source": "rehearsal_jobs",
+          "items": [],
+          "truncated": false,
+          "ordering": "source insertion order descending; not cross-source creation/update order"
+        },
+        {
+          "source": "general_chat",
+          "items": [],
+          "truncated": false,
+          "ordering": "source insertion order descending; not cross-source creation/update order"
+        },
+        {
+          "source": "legacy_chat",
+          "items": [],
+          "truncated": false,
+          "ordering": "source insertion order descending; not cross-source creation/update order"
+        }
+      ],
+      "collaboration": {
+        "available": false,
+        "reason": "single-local-workspace; no authenticated team/presence data"
+      },
+      "note": "Stored status during this lookup, not a grant, model vision, verified file contents or final-output approval. Output SHA/registration are recorded metadata only. Caller transaction provides a snapshot when active; otherwise sources are sequential observations. Requery for newer status; no automatic retry or cost change."
+    }
+  }
+}

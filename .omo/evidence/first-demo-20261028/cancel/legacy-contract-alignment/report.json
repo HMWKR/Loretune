@@ -1,0 +1,192 @@
+{
+  "schema": "legacy-received-cancel-contract-alignment-report/1",
+  "recorded_at": "2026-10-28T00:54:41.772539+00:00",
+  "status": "REPORTED; root acceptance pending",
+  "objective": "정산 완료·도구 미실행 취소에 대한 기존 3개 기대값을 새 입증된 cancelled 계약으로 정합화",
+  "baseline_full_regression": {
+    "path": ".omo/evidence/first-demo-20261028/regression/full-regression.log",
+    "sha256": "098210e0bcb6a50c04e4137df0ee65b7ebc179fd8cdf87b1978a1d02ae6ed549",
+    "tests": 874,
+    "seconds": 510.97,
+    "failures": 3
+  },
+  "before_alignment_actual_proof": {
+    "path": "before-contract-state-proof.json",
+    "sha256": "aeddc348e16bdd7e78209c7113efe8322824771fc4375b4db5d81a7b1b4b6c8a",
+    "cases": [
+      {
+        "case": "after-settlement-before-tool",
+        "status": "cancelled",
+        "pricing_status": "priced",
+        "reservation": [
+          "settled",
+          60
+        ],
+        "attempts": [
+          [
+            "chat-count",
+            "observed"
+          ],
+          [
+            "chat-message",
+            "observed"
+          ]
+        ],
+        "pending_tool": false,
+        "guided_plans": 0
+      },
+      {
+        "case": "cancel-response-race",
+        "status": "cancelled",
+        "pricing_status": "priced",
+        "reservation": [
+          "settled",
+          60
+        ],
+        "attempts": [
+          [
+            "chat-count",
+            "observed"
+          ],
+          [
+            "chat-message",
+            "observed"
+          ]
+        ],
+        "pending_tool": false,
+        "guided_plans": 0
+      },
+      {
+        "case": "rights-response-race",
+        "status": "outcome_unknown",
+        "pricing_status": "priced",
+        "reservation": [
+          "settled",
+          60
+        ],
+        "attempts": [
+          [
+            "chat-count",
+            "observed"
+          ],
+          [
+            "chat-message",
+            "observed"
+          ]
+        ],
+        "pending_tool": false,
+        "guided_plans": 0
+      },
+      {
+        "case": "loopback-after-message",
+        "status": "cancelled",
+        "pricing_status": "priced",
+        "reservation": [
+          "estimated",
+          60
+        ],
+        "attempts": [
+          [
+            "chat-count",
+            "observed"
+          ],
+          [
+            "chat-message",
+            "observed"
+          ]
+        ],
+        "pending_tool": false,
+        "guided_plans": 0
+      }
+    ]
+  },
+  "decision": {
+    "reason": "세 취소 fixture 모두 완전응답 수신·가격검증·정산 commit 이후이며 pending tool 없이 중단됨. 이 경우 cancelled로 끝나고 관측비용을 보존하는 최신 계약이 맞음.",
+    "rights_or_unpriced": "_observed_usage_race의 rights 또는 expected_reason 분기는 outcome_unknown을 그대로 요구.",
+    "test_weakening": false,
+    "changes": "지정된 두 파일의 세 함수만 상태 기대값 정합화; usage·request ID·zero tool·단일 dispatch assertion 유지, pricing/정산amount/pending_tool/observed attempts assertions 추가."
+  },
+  "scope_review": {
+    "files": [
+      {
+        "path": "tests/test_chat_general_http.py",
+        "changed_functions": [
+          "_observed_usage_race",
+          "test_cancel_after_settlement_before_tool_does_not_create_proposal"
+        ],
+        "unchanged_functions": 61,
+        "test_method_names_unchanged": true,
+        "assertions": [
+          {
+            "function": "_observed_usage_race",
+            "assertions_before": 11,
+            "assertions_after": 14
+          },
+          {
+            "function": "test_cancel_after_settlement_before_tool_does_not_create_proposal",
+            "assertions_before": 9,
+            "assertions_after": 16
+          }
+        ],
+        "before_sha256": "419804147c7ff010cc626618becc6f8e877483623707dcd108c167070425e7e4",
+        "after_sha256": "8339573d7fd87367507aa07544da4be8e8d09c4959000fecf8c7eb567ea3d5ff"
+      },
+      {
+        "path": "tests/test_chat_live_contract.py",
+        "changed_functions": [
+          "test_cancel_after_message_preserves_observed_estimate_and_blocks_tools"
+        ],
+        "unchanged_functions": 23,
+        "test_method_names_unchanged": true,
+        "assertions": [
+          {
+            "function": "test_cancel_after_message_preserves_observed_estimate_and_blocks_tools",
+            "assertions_before": 11,
+            "assertions_after": 15
+          }
+        ],
+        "before_sha256": "977c669b5a271cbdc633d44152434b8b4f046d8c5e8c6cf1ba88f54132c9c769",
+        "after_sha256": "dad5a321bef029a3941c9bfd9ff5f6430b05fb47c5c25f43d64fc94a3f7cde4a"
+      }
+    ],
+    "product_source_unchanged": true,
+    "no_test_added_removed_skipped": true,
+    "limits": "Assertion counts do not prove semantic equivalence; exact diff plus actual negative rights/unknown cases are retained."
+  },
+  "verification": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_chat_general_http tests.test_chat_live_contract tests.test_general_chat_cancel_received -v",
+    "exit_code": 0,
+    "tests": 67,
+    "seconds": 48.152,
+    "status": "OK",
+    "log": "verification.log",
+    "log_sha256": "2d909801b32929118ae265159e821ad9e3f96de0c7300d8a02ed7362e2ad4daa",
+    "actual_provider_calls": 0,
+    "transport_scope": "contract fake, explicit local loopback HTTP, or synthetic provider sockets only"
+  },
+  "product_source_unchanged": {
+    "path": "chat_general.py",
+    "sha256": "edc4537ccbcd100d217ddc240f349001ddda3111324f54ba64f3edb7153c3e45"
+  },
+  "changed_test_hashes": {
+    "tests/test_chat_general_http.py": {
+      "before": "419804147c7ff010cc626618becc6f8e877483623707dcd108c167070425e7e4",
+      "after": "8339573d7fd87367507aa07544da4be8e8d09c4959000fecf8c7eb567ea3d5ff"
+    },
+    "tests/test_chat_live_contract.py": {
+      "before": "977c669b5a271cbdc633d44152434b8b4f046d8c5e8c6cf1ba88f54132c9c769",
+      "after": "dad5a321bef029a3941c9bfd9ff5f6430b05fb47c5c25f43d64fc94a3f7cde4a"
+    }
+  },
+  "previous_worker_evidence": {
+    "manifest": "../manifest.json",
+    "sha256": "8b4aeb3896d88d599cba53537ba10709b8ab4344b6dad05503f50589c0163763",
+    "all_47_original_entries_preserved": true
+  },
+  "limits": [
+    "67 related tests passing is not a rerun or pass claim for the whole874 suite; root coordinates the next full run.",
+    "No real provider/account/billing verification.",
+    "No product source, UI, documents, registries, contexts or old worker evidence modified.",
+    "Manual diff and actual rights/unknown negative checks accompany assertion counts; counts alone are not semantic proof."
+  ]
+}

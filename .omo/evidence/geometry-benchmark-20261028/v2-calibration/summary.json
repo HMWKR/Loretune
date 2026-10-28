@@ -1,0 +1,182 @@
+{
+  "at": "2026-10-28T05:27:31.651244+00:00",
+  "state": "REPORTED_CALIBRATED_CONDITIONAL_DIAGNOSTIC; ROOT_ACCEPTANCE_PENDING",
+  "predecessor": "../summary.json; original v1 remains frozen and exposes rotation-dependent normalization confound",
+  "outcome": "Exact surface-moment normalization passed analytic and independent known-same-shape ICP holdout gates BEFORE raw reconstruction evaluation. Two original generated artifacts were then compared to exact primitive-union references in five fixed views.",
+  "units": "RMS-surface-radius1; not comparable as raw before/after numbers to v1 maxside1",
+  "execution": {
+    "exit_code": 0,
+    "measurement_seconds": 18.552311333012767,
+    "wrapper_seconds": 19.330773624998983,
+    "peak_rss_bytes_macos": 181125120,
+    "os_network_denied": {
+      "os_network_denied": true,
+      "exception": "PermissionError",
+      "errno": 1
+    },
+    "new_inference_calls": 0,
+    "real_provider_calls": 0
+  },
+  "calibration": {
+    "cube": {
+      "analytic_max_error": 5.551115123125783e-16,
+      "known_same_shape_CD_mean_sq": 0.0004590142521627489,
+      "independent_seed_reference_floor": 0.0004521305889722435,
+      "predeclared_maximum": 0.0006881958834583652,
+      "passed": true
+    },
+    "chair": {
+      "analytic_max_error": 1.9984014443252818e-15,
+      "known_same_shape_CD_mean_sq": 0.0004848032701952552,
+      "independent_seed_reference_floor": 0.00046841495200847553,
+      "predeclared_maximum": 0.0007126224280127134,
+      "passed": true
+    }
+  },
+  "cases": {
+    "cube": {
+      "CD_mean_sq_A": 0.04950231809422063,
+      "CD_mean_sq_B": 0.0008876924897645225,
+      "IoU_A": {
+        "input": 0.8295286854389399,
+        "front_minus_y": 0.7760169906877961,
+        "right_plus_x": 0.7551325293782439,
+        "rear_plus_y": 0.8047293883737228,
+        "left_minus_x": 0.7270374537855651
+      },
+      "IoU_B": {
+        "input": 0.9563875205254515,
+        "front_minus_y": 0.9733428012129122,
+        "right_plus_x": 0.9624221440264945,
+        "rear_plus_y": 0.9717827154852344,
+        "left_minus_x": 0.9797028946765447
+      },
+      "independent_seed_reference_floor": 0.0004521305889722435,
+      "source_geometry": {
+        "primitive_count": 1,
+        "grid_shape": [
+          1,
+          1,
+          1
+        ],
+        "occupied_cells": 1,
+        "vertices": 8,
+        "faces": 12,
+        "bounds": [
+          [
+            -0.8,
+            -0.8,
+            0.35
+          ],
+          [
+            0.8,
+            0.8,
+            1.95
+          ]
+        ],
+        "area": 15.360000000000007,
+        "occupancy_volume": 4.096000000000001,
+        "mesh_signed_volume": 4.096000000000001,
+        "watertight": true
+      },
+      "raw_prediction_geometry": {
+        "vertices": 46223,
+        "faces": 92304,
+        "bounds": [
+          [
+            -0.42542675137519836,
+            -0.3444173336029053,
+            -0.34835368394851685
+          ],
+          [
+            0.3730192184448242,
+            0.3484337329864502,
+            0.35710299015045166
+          ]
+        ]
+      }
+    },
+    "chair": {
+      "CD_mean_sq_A": 0.17474018129838143,
+      "CD_mean_sq_B": 0.0027566398408143127,
+      "IoU_A": {
+        "input": 0.6261327183762768,
+        "front_minus_y": 0.5720567889847816,
+        "right_plus_x": 0.44934258983560826,
+        "rear_plus_y": 0.5419838799776554,
+        "left_minus_x": 0.335606936416185
+      },
+      "IoU_B": {
+        "input": 0.92240790655885,
+        "front_minus_y": 0.9274644776558933,
+        "right_plus_x": 0.9006862205750354,
+        "rear_plus_y": 0.9156692570953164,
+        "left_minus_x": 0.8933139202923376
+      },
+      "independent_seed_reference_floor": 0.00046841495200847553,
+      "source_geometry": {
+        "primitive_count": 6,
+        "grid_shape": [
+          5,
+          6,
+          4
+        ],
+        "occupied_cells": 76,
+        "vertices": 140,
+        "faces": 276,
+        "bounds": [
+          [
+            -0.9,
+            -0.8,
+            0.0
+          ],
+          [
+            0.9,
+            0.8,
+            2.35
+          ]
+        ],
+        "area": 14.344000000000001,
+        "occupancy_volume": 1.1997,
+        "mesh_signed_volume": 1.1997,
+        "watertight": true
+      },
+      "raw_prediction_geometry": {
+        "vertices": 42186,
+        "faces": 84216,
+        "bounds": [
+          [
+            -0.43153151869773865,
+            -0.35704219341278076,
+            -0.42914462089538574
+          ],
+          [
+            0.3162113428115845,
+            0.36667370796203613,
+            0.46720337867736816
+          ]
+        ]
+      }
+    }
+  },
+  "limits": [
+    "No raw commercial Tripo result for the same input, so commercial/open parity remains unproven.",
+    "No new model inference or repeat of prior platform import/render or S819 color checks.",
+    "Software silhouette diagnostics are not a platform UI/render/end-to-end or performance acceptance.",
+    "No unseen-view fidelity conclusion from input-only correspondence.",
+    "Input artifacts came from the preserved no-crop/no-background-removal TripoSR condition; not a claim of best possible model configuration.",
+    "Sampled nearest-point distance is finite-sampling approximation with a same-reference floor, not exact point-to-surface error.",
+    "Geometry diagnostics do not establish material editing, motion, semantic part controls, platform generation adapter or full chat3D tool support."
+  ],
+  "source_files_preserved": {
+    "cube_scene": true,
+    "chair_scene": true,
+    "cube_input": true,
+    "chair_input": true,
+    "cube_raw": true,
+    "chair_raw": true
+  },
+  "product_docs_registry_changes": 0,
+  "commercial_open_quality_equivalence_proven": false,
+  "next_action": "Root should independently verify/calibrate the evidence and decide whether these conditional primitive results satisfy a bounded benchmark task. A matched commercial raw artifact with the same input and provenance remains required for commercial/open parity; no whole-platform completion is implied."
+}

@@ -1,0 +1,465 @@
+{
+  "locked_at_utc": "2026-10-26T04:03:14.289335+00:00",
+  "scope": "visual/CSS/keyboard/accessibility state only; no aggregate score",
+  "primary": [
+    1920,
+    1080
+  ],
+  "secondary": [
+    1280,
+    900
+  ],
+  "mobile": "deferred",
+  "source_hashes": {
+    "index.html": "0bfdbbb815c631f23e9188a02a1308aa87430d2db33ab61f4a60f8b7adfdf109",
+    "studio.css": "2fbba70fa95d035aecd19a0fd9a2e7e3e00c5f6b789cf3fe0c3eed5cbef5cfab",
+    "studio-media.js": "65e2468ec5ac6f53310383f2ec0939aa2adb4793e47da5dcca7b0f20b861e328"
+  },
+  "cases": [
+    {
+      "id": "ENV01",
+      "name": "렌더링 환경/fixture 고정",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "method / evidence protocol",
+      "fixture": "existing project",
+      "steps": "브라우저버전/viewport/DPR/visualscale/fonts ready/실제platformfont/소스·servedhash 기록",
+      "expected": "현재소스일치,로드/폰트완료조건기록;누락값을추정하지않음",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "L01",
+      "name": "기본 승인 작업대 두 viewport",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing approved shot01",
+      "steps": "1920×1080/1280×900,앱100%,기본Take를캡처",
+      "expected": "문서세로scroll없음,preview/Take/timeline/review주요진입점함께가시,clipping없는경계",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "L02",
+      "name": "sequence+정밀 편집 두 viewport",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing01 editing /02 playback 2.172s",
+      "steps": "같은장면/시간/자막,상세펼침",
+      "expected": "문서높이viewport,내부scroll허용,조작접근,media contain;최소면적숫자임의설정안함",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "L03",
+      "name": "긴 목록/한글 메모",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "temporaryDOM60rail/40paragraphs",
+      "steps": "원본clone보존후목록/메모늘리고패널끝Tab;복원",
+      "expected": "document넘침없음,끝focus접근;실제60장면성능으로주장안함",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "S01",
+      "name": "계획 empty",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing empty conversation/plan",
+      "steps": "계획단계열기,제출안함",
+      "expected": "빈상태대상/다음입력명확,불필요한내부상세기본노출없음",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "S02",
+      "name": "미검토/반려 review 상태",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing authorized fixture if present",
+      "steps": "저장없이보기가능한표본만선택;없으면NOT RUN",
+      "expected": "현재scene/Take/검토상태/맞는행동;합성DOM은실제경로와별도",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "S03",
+      "name": "dirty/cancel 두 viewport",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "temporary local review draft",
+      "steps": "검토수정→긴한글입력→취소;저장없음",
+      "expected": "저장/취소구별,입력가시,취소후focus복귀,canonical불변",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "S04",
+      "name": "error/unknown 시각표현",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "temporary in-memory presentation fixture only",
+      "steps": "기존error rendering에fixture상태만주입;서버요청없음",
+      "expected": "오류인접,원인중립,disabled저장과조회구분,긴문구줄바꿈;복구기능시험아님",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "S05",
+      "name": "실제 loading/poster-unavailable",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "evidence gap",
+      "fixture": "functional owner controlled fixture",
+      "steps": "안전한로딩시점근거제공시검사;없으면NOT RUN",
+      "expected": "loading을성공/실패와구별,안정화전캡처를일반완료화면으로채택하지않음",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "M01",
+      "name": "모델 미선택/미검증/차단/긴이름",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "actual catalog unsaved + synthetic long name",
+      "steps": "모델창열고저장없이선택/긴이름표시,Escape복원",
+      "expected": "선택/불가이유/승인별도구별,모델명전체접근,가로넘침없음",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "D01",
+      "name": "비교 dialog/contain",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "existing Take1/3 image-video",
+      "steps": "비교열기,두media크기/identity측정,Escape",
+      "expected": "동등boundedstage/원본비율,닫기focus복귀,상태는색만의존안함",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX01",
+      "name": "이름/역할/상태 트리",
+      "source": [
+        "https://testing-library.com/docs/guiding-principles/",
+        "https://playwright.dev/docs/accessibility-testing"
+      ],
+      "threshold_type": "method / evidence protocol",
+      "fixture": "default/dialog/dirty",
+      "steps": "CDP accessibility snapshot과user-facingname검사",
+      "expected": "현재선택/disabled/expanded/name노출기록;스크린리더발화통과대체아님",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX02",
+      "name": "초기 keyboard-only",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html",
+        "https://playwright.dev/docs/actionability"
+      ],
+      "threshold_type": "WCAG AA boundary + Loretune proposal",
+      "fixture": "reload initial page",
+      "steps": "초기BODY부터Tab/Enter/Arrow/Escape,미리보기/비교/검토취소/출처/모델",
+      "expected": "AA:focus완전히가려지지않음;제품:전체control가시.명시focus로전체여정대체금지",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX03",
+      "name": "정밀 폼 keyboard 두 viewport",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html"
+      ],
+      "threshold_type": "WCAG AA boundary + Loretune proposal",
+      "fixture": "L02",
+      "steps": "summary에서연속Tab,상세패널scroll관찰",
+      "expected": "AA최소와제품전체가시를따로기록",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX04",
+      "name": "실제 색상쌍",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      ],
+      "threshold_type": "WCAG AA boundary",
+      "fixture": "normal/selected/focus/dirty/error",
+      "steps": "computedFG/BG/opacity층+스크린샷으로계산",
+      "expected": "보통문자4.5:1,large3:1,필수비문자3:1;장식/비활성예외구분,반투명배경임의대체금지",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX05",
+      "name": "forced-colors",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "same selected/dirty",
+      "steps": "CDPforcedcolorsactive,match확인,선택/focus/오류단서캡처;복원",
+      "expected": "shadow없이도필수단서/텍스트보존;실제Windows사용자환경통과아님",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX06",
+      "name": "reduced-motion",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "same editor",
+      "steps": "CDPmedia reduce확인,computedtransition/animation,복원",
+      "expected": "불필요장식motion제거;영상재생을임의비활성화하지않음",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX07",
+      "name": "앱100/150/200% 두 viewport",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      ],
+      "threshold_type": "Loretune proposal",
+      "fixture": "same editor",
+      "steps": "textScale정상UI변경,문서/패널/라벨/조작확인,복원",
+      "expected": "글자확대와reflow,가로넘침/핵심clipping없음;브라우저zoom으로부르지않음",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX08",
+      "name": "실제 browser200/400%",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+        "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html"
+      ],
+      "threshold_type": "WCAG AA boundary",
+      "fixture": "same app100 editor",
+      "steps": "정상브라우저확대경로지원확인,실제배율변화를검증한때만실행",
+      "expected": "지원불가/변화미확인시BLOCKED;DPR/CSStransform/resize로대체금지",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX09",
+      "name": "비드래그 pointer 대안",
+      "source": [
+        "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+      ],
+      "threshold_type": "WCAG AA boundary",
+      "fixture": "existing timeline/range",
+      "steps": "drag없이단일pointer로위치선택/숫자입력UI접근;저장없음",
+      "expected": "해당drag과업에single-pointer대안,keyboard만으로통과하지않음;미디어decode정확도별도",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "AX10",
+      "name": "기존 axe 실행",
+      "source": [
+        "https://playwright.dev/docs/accessibility-testing"
+      ],
+      "threshold_type": "method / evidence protocol",
+      "fixture": "meaningful default/dialog/dirty",
+      "steps": "현재설치/페이지axe존재확인후가능할때실행;설치금지",
+      "expected": "위반/incomplete/pass모두보존;자동검사=전체인증아님",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    },
+    {
+      "id": "VR01",
+      "name": "같은환경 screenshot 재현성",
+      "source": [
+        "https://playwright.dev/docs/test-snapshots"
+      ],
+      "threshold_type": "method / evidence protocol",
+      "fixture": "paused ready selected scene",
+      "steps": "font/미디어ready/포커스/hover/scroll고정한2캡처바이트차이와위치확인",
+      "expected": "차이는변화근거;미감점수아님;오류/중요영역mask나baseline교체금지",
+      "observed": null,
+      "status": "NOT RUN",
+      "browser": null,
+      "version": null,
+      "viewport": null,
+      "zoom": null,
+      "evidence": [],
+      "severity": null,
+      "retest_status": "not yet executed"
+    }
+  ]
+}

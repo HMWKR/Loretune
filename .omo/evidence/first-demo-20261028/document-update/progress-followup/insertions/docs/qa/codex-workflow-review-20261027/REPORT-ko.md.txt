@@ -1,0 +1,16 @@
+## 현행 실동작 보충 · 에이전트 설정·상태·부분 녹화 · 2026-10-28
+
+**전체 플랫폼과 1차 시연은 아직 미완료다.** 아래 이전 ‘구현 계획/검증 대기’ 문단은 당시 기록으로 보존한다. 이번에는 실제 확인된 패널·설정·도구 상태와 미완료 녹화를 구분한다. [914개 회귀 수락](../../../.omo/evidence/first-demo-20261028/regression-agent-workspace/driver-acceptance.json)은232개 소스의914고유 검사/546.471초/OK, skip·Warning0이며 당시 소스·보호 해시를 대조했다. **이후 중앙 저장 프레임 UI 수정 이전의 영수증**이므로 수정 후 최신 전체 통과로 적용하지 않는다.
+
+|범위·근거|실제 확인|판정 한계|
+|---|---|---|
+|[패널 실제 lifecycle](../../../.omo/evidence/first-demo-20261028/agent-actual-desktop-lifecycle.json), [모달 이동·포커스 수정](../../../.omo/evidence/first-demo-20261028/chat-sidebar/cross-modal-focus/report.json)|1920px의4개 제작 단계에서 같은 대화 DOM·초안 유지, 너비360→440px와상한600px, 모션 창 내부 대화·복귀 확인. 별도 실제 브라우저에서 모션/3D 미저장 입력을 보존한 작업 카드 이동·도착 포커스와 관련16개/9.801초/OK|모든 화면·상태·보조기술/실무자 수용은 아님. native close 이벤트 뒤 도착 포커스를 주도록 수정한 원인/전후를 보존|
+|[서버 설정 수락](../../../.omo/evidence/first-demo-20261028/agent-settings/driver-acceptance.json), [실제 모델별 설정 UI](../../../.omo/evidence/first-demo-20261028/agent-actual-model-effort-and-1440.json)|read_only/review/full_access와 추론 설정,16건 실제 local HTTP·합성 선택 Claude→새 미승인 agent-draft v3→별도 사람 출력 승인→실제3초 렌더·다운로드·재열기. 실제 UI의 Haiku high 복원, xhigh/max 비활성 및 OpenAI 선택 시 일반 전송 차단 확인|Full Access 자동 편집은 set_clip/reorder_clips/set_captions/set_audio_offset/set_motion_overlay의5개뿐. remove/clear/append·새 모션 원본·최종 출력은 사람 검토. 실제 Claude 의미 이해·실제 token fit·실청구 미검증|
+|[정상 저장 표시](../../../.omo/evidence/first-demo-20261028/agent-normal-save-presentation.json)|700ms 지연 조건의 실제 POST 중 ‘저장 중…’만 표시하고 unknown 복구 행은 숨김. 완료 후 원래 모델·초안 유지|이 표본은 정상 요청 표시의 확인이며 네트워크/저장소 실패·기존 unknown 복구 전체 수용과 별개|
+|[작업 상태 검색](../../../.omo/evidence/first-demo-20261028/work-status-context/report.json)|기존 search_project_context의 work-status로 현재 작품/대화의 작업 관측을 조회. 신규9개/2.276초/OK, 실제 HTTP·합성 도구 후속과 실제3초 로컬 정지영상 렌더의 queued/completed·다운로드 해시·decode 확인|독립 수락 진행. 소스별 최대8개/명시적 잘림이며 전역 최신8개가 아님. 저장된 상태 관측은 파일 재검증·승인·재시도 권한이 아니며 협업자/presence는 미구현|
+|[Hallmark HTTP 한정 해석](../../../.omo/evidence/first-demo-20261028/hallmark-agent-http-only/triage/report.json)|원래 render 실행의 FAIL15/WARN1을 열린/닫힌·활성/비활성 상태와 실제 PNG로 대조. 이 검토의 새 모델/렌더/저장 변경0|finding을 삭제·면제하거나0FAIL/전체 합격으로 바꾸지 않음. 제한된 관측 상태의 해석이며 전체 대비·확대·스크린리더·사용자 수용 아님|
+
+[1차 녹화 R2](../../../.omo/evidence/first-demo-20261028/main-demo-case-r2/take-01/recording.json)는 실제527캡처/42.512초에서 비교창 조작이 실패한 **부분 녹화**다. [실패 MP4](../../../.omo/evidence/first-demo-20261028/main-demo-case-r2/partial-failed-take-01.mp4)와 [encode/decode 영수증](../../../.omo/evidence/first-demo-20261028/main-demo-case-r2/take-01/encoding-partial-failed-take-01/encode-receipt.json)을 보존했다(encode/decode0, 무편집·무배속·무음 화면 캡처; 녹화본 자체의 브라우저 재생·내용 검토는 대기). 음악 단독3초의 [실제 출력·다운로드](../../../.omo/evidence/first-demo-20261028/main-demo-case-r2/music-only-result.json)는53,748B·저장 SHA 일치까지 확인했지만 전체 제작 시연 완주를 뜻하지 않는다. 첫 시도/R2의 서버 저장 후 UI polling 완료를 기다리지 않고 다음 조작한 관찰자 오류는 제품 실패와 구분해 남긴다.
+
+별도 실제 제품 문제는 [저장 프레임 가시성](../../../.omo/evidence/first-demo-20261028/main-demo-case-r2/saved-frame-visibility-inspect.json)이다. 1920×1080에서 높이360px PNG가180px 내부 스크롤 영역에 제한되어 전체 구성을 확인하기 어려웠다. 중앙 영역에 전체 프레임을 맞추는 수정 진행→수정 후 실제 검증→현재 소스 전체 회귀→새 연속 녹화가 남아 있다. 일반 AI 대화의 실제 영상 픽셀/음원 이해·외부 자산 추천 검색·영상 생성/3D/일반 설정 도구 전체 연결, 실제 협업 인증/참여자·Claude/청구·실무 수용도 계속 미완료다. 1차 녹화 검토와 구체 모델·자료·비용 승인 전 AI 영상 모델을 호출하지 않는다.
+

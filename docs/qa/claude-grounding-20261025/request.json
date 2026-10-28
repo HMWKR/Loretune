@@ -1,0 +1,190 @@
+{
+  "model": "claude-haiku-5-5",
+  "max_tokens": 4096,
+  "messages": [
+    {
+      "role": "user",
+      "content": "Use the server context tool first; canon is owned by the server. This is synthetic Song A. Answer the approved global coat, the Song A exception, and whether Mira age is known. Do not access another project or invent missing facts. After context lookup, propose a one-scene studio plan using the local plan tool. The plan is a proposal only: never claim approval, generation or payment. Finally report only sourced facts and explicitly unknown age, and the actual saved plan ID."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_01MTTjhtty2C1LxzP5951agG",
+          "name": "search_project_context",
+          "input": {
+            "query": "Song A approved global coat, Song A exception, Mira age"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_01MTTjhtty2C1LxzP5951agG",
+          "content": "{\"status\": \"succeeded\", \"context\": {\"music\": null, \"snapshot\": [{\"id\": \"canon-mira-v1\", \"text\": \"Mira wears a blue coat by default.\", \"scope\": \"global\", \"revision\": 1, \"approved\": true}, {\"id\": \"song-A-exception-v1\", \"text\": \"Only in Song A studio scene, Mira wears a red coat. This does not replace her global blue coat.\", \"scope\": \"song-A\", \"revision\": 1, \"approved\": true}], \"ontology\": {\"revision\": 1, \"graph\": {\"entities\": [{\"id\": \"3f2a9c1e-7b4d-4e8a-9c2f-1a6d5e3b7f10\", \"type\": \"character\", \"label\": \"Mira\", \"description\": \"Character named Mira, identity preserved across scenes. Rooftop scene (source brief-1): wears a blue coat, scoped to the rooftop performance. Studio scene (source brief-2): wears a red coat in the studio, scoped to the studio. Whether the red coat replaces the rooftop costume is unknown; no global wardrobe state is asserted.\", \"provenance\": [{\"source_id\": \"brief-1\", \"excerpt\": \"Mira and Theo perform on a rooftop.\"}, {\"source_id\": \"brief-1\", \"excerpt\": \"Mira wears a blue coat.\"}, {\"source_id\": \"brief-2\", \"excerpt\": \"Mira wears a red coat in the studio.\"}, {\"source_id\": \"brief-2\", \"excerpt\": \"It is unknown whether this replaces the rooftop costume.\"}], \"uncertainty\": {\"status\": \"asserted\", \"reason\": \"Existence of the character Mira is asserted by both sources. Her clothing continuity is unresolved: the rooftop blue coat and studio red coat are scene-scoped claims, and whether the red coat replaces the rooftop costume is explicitly unknown.\"}}, {\"id\": \"8c1d4f2a-5e6b-4a3c-8d9e-2b7f0a1c6e45\", \"type\": \"character\", \"label\": \"Theo\", \"description\": \"Character named Theo, who performs with Mira on a rooftop according to brief-1. No clothing is described for Theo in the supplied sources.\", \"provenance\": [{\"source_id\": \"brief-1\", \"excerpt\": \"Mira and Theo perform on a rooftop.\"}], \"uncertainty\": {\"status\": \"asserted\", \"reason\": \"Theo's participation in the rooftop performance is asserted by brief-1 only; no other scene or appearance details are supplied.\"}}, {\"id\": \"1e9b7a3d-4c2f-4f8e-a6b5-9d0c3e8f2a71\", \"type\": \"place\", \"label\": \"Rooftop\", \"description\": \"Rooftop location where Mira and Theo perform, per brief-1. Mira's blue coat is scoped to this rooftop performance.\", \"provenance\": [{\"source_id\": \"brief-1\", \"excerpt\": \"Mira and Theo perform on a rooftop.\"}], \"uncertainty\": {\"status\": \"asserted\", \"reason\": \"The rooftop as a performance location is asserted by brief-1; no address, shot, or further detail is supplied.\"}}, {\"id\": \"6a4f2c8e-9d1b-4e7a-b3c5-0f8e2d6a9b34\", \"type\": \"place\", \"label\": \"Studio\", \"description\": \"Studio location where Mira wears a red coat, per brief-2. This red-coat claim is scoped to the studio and does not establish a global wardrobe.\", \"provenance\": [{\"source_id\": \"brief-2\", \"excerpt\": \"Mira wears a red coat in the studio.\"}], \"uncertainty\": {\"status\": \"asserted\", \"reason\": \"The studio location is asserted by brief-2; no further detail about the studio or its relation to the rooftop is supplied.\"}}], \"relations\": []}, \"origin\": \"approved synthetic fixture for isolated evaluation\"}}, \"search_mode\": \"scoped-snapshot\", \"note\": \"현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님\"}"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "tool_use",
+          "id": "toolu_0129bzxFvvtsmr84quvUwsui",
+          "name": "propose_media_plan",
+          "input": {
+            "goal": "One-scene studio plan for Song A featuring Mira, showing her in the Song A studio scene wardrobe.",
+            "scenes": "Studio scene (Song A): Mira wears a red coat in the studio, per approved Song A exception. Her global default remains a blue coat outside this scene.",
+            "style": "Studio-based, consistent with approved Song A context; no additional style details supplied.",
+            "constraints": "Proposal only; not approved, not generated, not paid. Only the Song A studio scene uses the red coat; the global blue coat is unchanged. Do not assume whether the red coat replaces the rooftop costume (unknown). Mira's age is unknown and must not be invented.",
+            "kind": "narrative"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_0129bzxFvvtsmr84quvUwsui",
+          "content": "{\"status\": \"proposed\", \"plan\": {\"id\": \"46d0aa5d81584c85874dee1b295d77dc\", \"version\": 1, \"status\": \"proposed\", \"scenes\": [{\"id\": \"7c510fbfa86644ae85148689f222d58e\", \"description\": \"Studio scene (Song A): Mira wears a red coat in the studio, per approved Song A exception. Her global default remains a blue coat outside this scene.\", \"duration\": null, \"music_start\": null}], \"questions\": [\"음원을 연결하고 시작·끝 구간을 확정해 주세요. 시간 배치는 아직 미정입니다.\"]}, \"cost_approval\": false}"
+        }
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "name": "search_project_context",
+      "description": "Loretune server-controlled search_project_context",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "propose_media_plan",
+      "description": "Loretune server-controlled propose_media_plan",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "goal": {
+            "type": "string"
+          },
+          "scenes": {
+            "type": "string"
+          },
+          "style": {
+            "type": "string"
+          },
+          "constraints": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "goal",
+          "scenes",
+          "style",
+          "constraints",
+          "kind"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "tool_choice": {
+    "type": "none"
+  },
+  "system": "Complete the factual answer from these actual synthetic server tool results. Canon is server owned. Return concise JSON only. Use English coat names and age \"unknown\" when absent. Evidence must quote the exact approved source text. A saved proposal is not approval, generation or payment. Do not infer missing facts.",
+  "output_config": {
+    "effort": "low",
+    "format": {
+      "type": "json_schema",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "global_coat": {
+            "type": "string"
+          },
+          "studio_coat": {
+            "type": "string"
+          },
+          "age": {
+            "type": "string"
+          },
+          "global_changed": {
+            "type": "boolean"
+          },
+          "plan_id": {
+            "type": "string"
+          },
+          "plan_status": {
+            "type": "string"
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "generated": {
+            "type": "boolean"
+          },
+          "paid": {
+            "type": "boolean"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "source_id": {
+                  "type": "string"
+                },
+                "excerpt": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "source_id",
+                "excerpt"
+              ]
+            }
+          }
+        },
+        "required": [
+          "global_coat",
+          "studio_coat",
+          "age",
+          "global_changed",
+          "plan_id",
+          "plan_status",
+          "approved",
+          "generated",
+          "paid",
+          "evidence"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,468 @@
+[
+  {
+    "id": "b703355e94594abe8cc96eabb41bdcd9",
+    "project": "c8c9eea2-5101-533d-b495-1324ec677cee",
+    "name": "QA 통합 제작 20261025",
+    "run": "6761da7c318c4f17b4cf931e68430340",
+    "prompt": "합성 검증: Mira wears a blue coat. 두 장면 계획과 첫 컷 편집 변경안, Mira 설정 변경 제안을 저장해 주세요.",
+    "status": "completed",
+    "mode": "contract-fake",
+    "model": "claude-haiku-5-5",
+    "binding": "2f771026d04602c3333f1b745387099afb578f7c9455cd07392cb3a39a8fad1b",
+    "answer": "두 장면 계획, 첫 컷 편집 변경안과 Mira 설정 변경 제안을 저장했습니다. 모두 검토 전이며 아직 적용하거나 영상을 생성하지 않았습니다. 기존 음원·자막·다른 컷은 유지됩니다.",
+    "answer_review": "unreviewed",
+    "steps": [
+      {
+        "round": 0,
+        "mode": "contract-fake",
+        "input_sha256": "8b3806e6c95319ec0a0d842ef8e2889ba840271ba995daa2948cd822c3dd34f7",
+        "status": "tools_applied",
+        "request_id": "synthetic-ui-1",
+        "tool_calls": [
+          {
+            "call": {
+              "id": "14d7bdb22e8f5ce6a5a0897dbb9007f8",
+              "name": "search_project_context",
+              "arguments": {
+                "query": "현재 작품의 승인된 제작 대상과 출처"
+              },
+              "complete": true
+            },
+            "result": {
+              "status": "succeeded",
+              "context": {
+                "music": {
+                  "id": 1,
+                  "audio": 1,
+                  "start": 0,
+                  "end": 2,
+                  "sections": [],
+                  "source": "user",
+                  "engine": null,
+                  "created": 1792942835.904483
+                },
+                "snapshot": [],
+                "ontology": null
+              },
+              "search_mode": "scoped-snapshot",
+              "note": "현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님",
+              "sources": [
+                {
+                  "id": "turn:b703355e94594abe8cc96eabb41bdcd9",
+                  "text": "합성 검증: Mira wears a blue coat. 두 장면 계획과 첫 컷 편집 변경안, Mira 설정 변경 제안을 저장해 주세요."
+                }
+              ],
+              "execution_targets": {
+                "shots": [
+                  {
+                    "shot_id": "537b0049cbb250d088f99086de19a2a3",
+                    "name": "옥상",
+                    "revision": 3,
+                    "selected_take": 1,
+                    "takes": [
+                      {
+                        "take_id": 1,
+                        "sha256": "345a53b7e9d70ba778379304e375fd3cee7a441d4156aea0f202c72a0a015e0d",
+                        "rights": "검증용 직접 제작",
+                        "blocked": false,
+                        "review": "approved"
+                      }
+                    ],
+                    "reference_head": null,
+                    "reference_versions": []
+                  },
+                  {
+                    "shot_id": "3ab818d7c5565548ad024553de13d909",
+                    "name": "스튜디오",
+                    "revision": 3,
+                    "selected_take": 1,
+                    "takes": [
+                      {
+                        "take_id": 1,
+                        "sha256": "2976b9d36d107b2b286edf19b0b86663fe6883a5c310a7e2fcceffe34701dc1c",
+                        "rights": "검증용 직접 제작",
+                        "blocked": false,
+                        "review": "approved"
+                      }
+                    ],
+                    "reference_head": null,
+                    "reference_versions": []
+                  }
+                ],
+                "timeline": {
+                  "version": 1,
+                  "clips": [
+                    {
+                      "index": 0,
+                      "shot_id": "537b0049cbb250d088f99086de19a2a3",
+                      "shot_name": "옥상",
+                      "take": 1,
+                      "trim": 0,
+                      "duration": 1
+                    },
+                    {
+                      "index": 1,
+                      "shot_id": "3ab818d7c5565548ad024553de13d909",
+                      "shot_name": "스튜디오",
+                      "take": 1,
+                      "trim": 0,
+                      "duration": 1
+                    }
+                  ],
+                  "audio_version": 1,
+                  "audio_offset": 0,
+                  "captions": [
+                    {
+                      "start": 0,
+                      "end": 1.5,
+                      "text": "Mira의 합성 자막"
+                    }
+                  ],
+                  "profile": "preview",
+                  "grant_id": "7e20b20a455a434195b9c702d765c042"
+                },
+                "plans": [],
+                "actions": [],
+                "ontology_revision": 0,
+                "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+              }
+            }
+          }
+        ],
+        "input_tokens_counted": 200,
+        "usage": {
+          "input_tokens": 200,
+          "output_tokens": 200
+        },
+        "usage_cost_usd": "0.00012",
+        "stop_reason": "tool_use",
+        "output_sha256": "252ac06cc1bbfc34ed41beab83a5e523c11a7e8e4339b8187fbef7851224377d",
+        "visible_response": [
+          {
+            "type": "tool_use",
+            "id": "lookup",
+            "name": "search_project_context",
+            "input": {
+              "query": "현재 작품의 승인된 제작 대상과 출처"
+            }
+          }
+        ]
+      },
+      {
+        "round": 1,
+        "mode": "contract-fake",
+        "input_sha256": "1f25b47f0aecbaba518446843d9e8da83575666c5a5835644dfeba72b8ec4a9a",
+        "status": "tools_applied",
+        "request_id": "synthetic-ui-2",
+        "tool_calls": [
+          {
+            "call": {
+              "id": "03e962ab802d576f8a5194237a342e7c",
+              "name": "propose_media_plan",
+              "arguments": {
+                "goal": "Mira의 두 장면",
+                "scenes": "Mira가 옥상에서 하늘을 바라본다\nMira가 스튜디오에서 음악을 듣는다",
+                "style": "청색과 따뜻한 조명",
+                "constraints": "파란 코트 유지",
+                "kind": "narrative"
+              },
+              "complete": true
+            },
+            "result": {
+              "status": "proposed",
+              "plan": {
+                "id": "e0e8801e96f24c36919378038202bd01",
+                "version": 1,
+                "status": "proposed",
+                "scenes": [
+                  {
+                    "id": "2f1216fda0c846e5a62fb58c24374101",
+                    "description": "Mira가 옥상에서 하늘을 바라본다",
+                    "duration": 1.0,
+                    "music_start": 0.0
+                  },
+                  {
+                    "id": "64b1648809504a79aaf5ac12191f47f1",
+                    "description": "Mira가 스튜디오에서 음악을 듣는다",
+                    "duration": 1.0,
+                    "music_start": 1.0
+                  }
+                ],
+                "questions": []
+              },
+              "cost_approval": false
+            }
+          },
+          {
+            "call": {
+              "id": "78f7d071a77b52e4a01b471f93d88a3b",
+              "name": "propose_timeline_edit",
+              "arguments": {
+                "description": "첫 컷의 시작점만 0.125초로 조정",
+                "timeline_version": 1,
+                "changes": [
+                  {
+                    "clip_index": 0,
+                    "take": 1,
+                    "trim": 0.125,
+                    "duration": 1
+                  }
+                ]
+              },
+              "complete": true
+            },
+            "result": {
+              "status": "proposed",
+              "proposal_id": "bd80c874251541c49e7fe826107c39a4",
+              "base_version": 1,
+              "changes": [
+                {
+                  "clip_index": 0,
+                  "take": 1,
+                  "trim": 0.125,
+                  "duration": 1
+                }
+              ],
+              "audio_version": 1,
+              "captions_preserved": true,
+              "applied": false,
+              "output_approved": false
+            }
+          },
+          {
+            "call": {
+              "id": "3729db192010564ea1d6e49143792192",
+              "name": "propose_memory_update",
+              "arguments": {
+                "description": "Mira는 이 작품에서 파란 코트를 입는다.",
+                "kind": "character",
+                "label": "Mira",
+                "entity_id": "",
+                "source_id": "turn:b703355e94594abe8cc96eabb41bdcd9",
+                "excerpt": "Mira wears a blue coat.",
+                "ontology_revision": 0
+              },
+              "complete": true
+            },
+            "result": {
+              "status": "proposed",
+              "proposal_id": "ec739ac0-ccf4-4eed-8d33-f4ac10be6fa3",
+              "base_revision": 0,
+              "scope": "current-project",
+              "applied": false,
+              "canonical_approved": false
+            }
+          }
+        ],
+        "input_tokens_counted": 200,
+        "usage": {
+          "input_tokens": 200,
+          "output_tokens": 200
+        },
+        "usage_cost_usd": "0.00012",
+        "stop_reason": "tool_use",
+        "output_sha256": "388a865d0f51625e29382bdd6f5056dd9fb6fe8a73412879c497c1e30b0f885c",
+        "visible_response": [
+          {
+            "type": "tool_use",
+            "id": "plan",
+            "name": "propose_media_plan",
+            "input": {
+              "goal": "Mira의 두 장면",
+              "scenes": "Mira가 옥상에서 하늘을 바라본다\nMira가 스튜디오에서 음악을 듣는다",
+              "style": "청색과 따뜻한 조명",
+              "constraints": "파란 코트 유지",
+              "kind": "narrative"
+            }
+          },
+          {
+            "type": "tool_use",
+            "id": "edit",
+            "name": "propose_timeline_edit",
+            "input": {
+              "description": "첫 컷의 시작점만 0.125초로 조정",
+              "timeline_version": 1,
+              "changes": [
+                {
+                  "clip_index": 0,
+                  "take": 1,
+                  "trim": 0.125,
+                  "duration": 1
+                }
+              ]
+            }
+          },
+          {
+            "type": "tool_use",
+            "id": "memory",
+            "name": "propose_memory_update",
+            "input": {
+              "description": "Mira는 이 작품에서 파란 코트를 입는다.",
+              "kind": "character",
+              "label": "Mira",
+              "entity_id": "",
+              "source_id": "turn:b703355e94594abe8cc96eabb41bdcd9",
+              "excerpt": "Mira wears a blue coat.",
+              "ontology_revision": 0
+            }
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "mode": "contract-fake",
+        "input_sha256": "7e6f740fb8c84316ed5e6f89520c6b445cc5c9dc2602fe4f2a5989b7a97782b9",
+        "status": "answer_received",
+        "request_id": "synthetic-ui-3",
+        "tool_calls": [],
+        "input_tokens_counted": 200,
+        "usage": {
+          "input_tokens": 200,
+          "output_tokens": 200
+        },
+        "usage_cost_usd": "0.00012",
+        "stop_reason": "end_turn",
+        "output_sha256": "57188b1335f34deed3b0c0986d01d594bd3802d23236ae56aa08e7dcc3ed2d56",
+        "visible_response": [
+          {
+            "type": "text",
+            "text": "두 장면 계획, 첫 컷 편집 변경안과 Mira 설정 변경 제안을 저장했습니다. 모두 검토 전이며 아직 적용하거나 영상을 생성하지 않았습니다. 기존 음원·자막·다른 컷은 유지됩니다."
+          }
+        ]
+      }
+    ],
+    "usage_cost_usd": "0.00036",
+    "billing_confirmed": false,
+    "handoff": {
+      "context": {
+        "value": {
+          "model_settings": {
+            "revision": 1,
+            "selections": {
+              "chat": "anthropic-haiku-5-5",
+              "image": "fal-flux-schnell",
+              "video": "fal-kling-2-6-pro"
+            },
+            "history": [
+              {
+                "revision": 1,
+                "actor": "local-owner",
+                "changed": {
+                  "chat": "anthropic-haiku-5-5",
+                  "image": "fal-flux-schnell",
+                  "video": "fal-kling-2-6-pro"
+                },
+                "at": 1792942835.921101
+              }
+            ]
+          },
+          "context": {
+            "music": {
+              "id": 1,
+              "audio": 1,
+              "start": 0,
+              "end": 2,
+              "sections": [],
+              "source": "user",
+              "engine": null,
+              "created": 1792942835.904483
+            },
+            "snapshot": [],
+            "ontology": null
+          },
+          "approved_shots": [
+            {
+              "id": "옥상",
+              "selected": 1,
+              "revision": 3
+            },
+            {
+              "id": "스튜디오",
+              "selected": 1,
+              "revision": 3
+            }
+          ]
+        },
+        "sha256": "d4ac6deef8001d544a814b85f81c407ce71ca3f0010e3ea090c6120c2abfc992"
+      },
+      "messages": [],
+      "jobs": [],
+      "execution_targets": {
+        "shots": [
+          {
+            "shot_id": "537b0049cbb250d088f99086de19a2a3",
+            "name": "옥상",
+            "revision": 3,
+            "selected_take": 1,
+            "takes": [
+              {
+                "take_id": 1,
+                "sha256": "345a53b7e9d70ba778379304e375fd3cee7a441d4156aea0f202c72a0a015e0d",
+                "rights": "검증용 직접 제작",
+                "blocked": false,
+                "review": "approved"
+              }
+            ],
+            "reference_head": null,
+            "reference_versions": []
+          },
+          {
+            "shot_id": "3ab818d7c5565548ad024553de13d909",
+            "name": "스튜디오",
+            "revision": 3,
+            "selected_take": 1,
+            "takes": [
+              {
+                "take_id": 1,
+                "sha256": "2976b9d36d107b2b286edf19b0b86663fe6883a5c310a7e2fcceffe34701dc1c",
+                "rights": "검증용 직접 제작",
+                "blocked": false,
+                "review": "approved"
+              }
+            ],
+            "reference_head": null,
+            "reference_versions": []
+          }
+        ],
+        "timeline": {
+          "version": 1,
+          "clips": [
+            {
+              "index": 0,
+              "shot_id": "537b0049cbb250d088f99086de19a2a3",
+              "shot_name": "옥상",
+              "take": 1,
+              "trim": 0,
+              "duration": 1
+            },
+            {
+              "index": 1,
+              "shot_id": "3ab818d7c5565548ad024553de13d909",
+              "shot_name": "스튜디오",
+              "take": 1,
+              "trim": 0,
+              "duration": 1
+            }
+          ],
+          "audio_version": 1,
+          "audio_offset": 0,
+          "captions": [
+            {
+              "start": 0,
+              "end": 1.5,
+              "text": "Mira의 합성 자막"
+            }
+          ],
+          "profile": "preview",
+          "grant_id": "7e20b20a455a434195b9c702d765c042"
+        },
+        "plans": [],
+        "actions": [],
+        "ontology_revision": 0,
+        "note": "현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다."
+      },
+      "instructions": "서버 상태만 작업 결과로 설명하세요. 미수집 결과를 완료로 설명하지 마세요.",
+      "embedding_policy": "unchanged"
+    }
+  }
+]

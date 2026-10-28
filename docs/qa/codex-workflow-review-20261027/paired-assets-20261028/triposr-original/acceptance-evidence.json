@@ -1,0 +1,26 @@
+[
+  {
+    "scenario": "CPU sphere marching cubes and OS network denial",
+    "invocation": "sandbox-exec -f network-deny.sb <owned-venv>/bin/python cpu-smoke.py",
+    "observable": "exit0;2272vertices4508faces;socket EPERM",
+    "artifact": "cpu-smoke.log"
+  },
+  {
+    "scenario": "weight integrity",
+    "invocation": "python3 run_generation.py",
+    "observable": "actual SHA equals pinned HF LFS oid",
+    "artifact": "weight-integrity.json"
+  },
+  {
+    "scenario": "default-resolution fixed-input cube generation",
+    "invocation": "env -i PATH=/usr/bin:/bin /opt/homebrew/bin/python3 .omo/evidence/triposr-cpu-artifact-20261028/run_generation.py",
+    "observable": "exit0;nonempty1848244byte GLB;inputsha unchanged;resolution256",
+    "artifact": "execution-256.json / result-256.json / cube-resolution256-original.glb"
+  },
+  {
+    "scenario": "platform profile compatibility",
+    "invocation": "sandbox-exec -f network-deny.sb <owned-venv>/bin/python inspect_output.py <evidence-dir>",
+    "observable": "original rejected; mesh extras and COLOR_0 observed; NOT PASS",
+    "artifact": "platform-profile-inspection.json / original-glb-json.json"
+  }
+]

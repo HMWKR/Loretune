@@ -1,0 +1,50 @@
+{
+  "schema": "agent-work-status-context-task/1",
+  "at": "2026-10-28T02:23:02.736735+00:00",
+  "agent": "/root/agent_work_status_context",
+  "state": "REPORTED_SOURCE_FROZEN",
+  "write_set": [
+    "production_context.py",
+    "tests/test_agent_work_status_context.py"
+  ],
+  "source_before": {
+    "production_context.py": "c6f05454e9ea4c85651040fb44161f109488e4545bb88cded98264adfb71c671"
+  },
+  "methodology_sources": [
+    "docs/design/CHAT-SESSION-PLAN.md AGENT-STATUS-03",
+    "chat-capability-audit/job-context-plan.json",
+    "Store.state and chat_sessions ownership source",
+    "Current actual SQLite job schemas"
+  ],
+  "applied_methodology": [
+    "requirements-to-persisted-state traceability",
+    "scope-first data minimization",
+    "bounded per-source ordering",
+    "observation separate from execution authority"
+  ],
+  "non_goals": [
+    "No new tool/API/auth/team/presence",
+    "No paid or real AI calls or credentials",
+    "No Space91 or user server8765",
+    "No MD/registry/context writes",
+    "No edits to files owned by other agents"
+  ],
+  "exit_proof": [
+    "Actual isolated HTTP synthetic selected-model tool query matches stored statuses",
+    "Project/conversation and mismatched binding privacy negatives",
+    "Per-source8 limit/truncation and explicit insertion order",
+    "State/mode/input version/output kind correctness; no paths/private prompts/raw errors",
+    "Read DB/project bytes unchanged; unrelated job progress does not stale approved continuation",
+    "Reopen retains observed job metadata"
+  ],
+  "skills_read": [
+    "feature-verification 1.3.5 runtime/live/rigor",
+    "karpathy-guidelines 1.2.1"
+  ],
+  "actual_real_model_calls": 0,
+  "finished_at": "2026-10-28T02:38:22.717024+00:00",
+  "final_sources": {
+    "production_context.py": "cb85253d5a5cf194f1c1852603e32acec530a7b9a0884460a543386bb169460d",
+    "tests/test_agent_work_status_context.py": "4d8bcd11d5c3dc197d76edfe0b607b4727f38f9920097ea078323f0d96369c93"
+  }
+}

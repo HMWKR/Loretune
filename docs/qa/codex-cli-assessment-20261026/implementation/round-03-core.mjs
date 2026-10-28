@@ -1,0 +1,16 @@
+const fs=await import('node:fs/promises');
+const root='/Users/leesungmin/Desktop/Loretune/docs/qa/codex-cli-assessment-20261026/implementation';
+const task=await taskSpace(42),p=task.page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await p.evaluate(()=>{document.querySelector('.creator-scene-description').open=false;document.querySelector('.lt-timeline-controls').open=false});
+await p.click('#editModelSettings',{label:'모델 선택 상태 확인'});
+await p.screenshot({path:root+'/model-selected-1920.png'});
+const before=await p.evaluate(()=>({time:new Date().toISOString(),slots:[...document.querySelectorAll('#modelSlots select')].map(e=>({role:e.name,selected:e.value,options:[...e.options].map(o=>({value:o.value,text:o.text,disabled:o.disabled})),text:e.closest('section').innerText})),status:document.querySelector('#modelSettingsStatus').innerText}));
+await fs.writeFile(root+'/model-state-before.json',JSON.stringify(before,null,2));console.log(before);
+await p.press('#modelSettingsPanel select[name="chat"]','Escape');
+const focusReturn=await p.evaluate(()=>({open:document.querySelector('#modelSettingsPanel').open,focus:document.activeElement.id}));
+await p.click('button[data-step="2"]',{label:'기획 흐름 현재 상태 확인'});
+await p.screenshot({path:root+'/planning-1920.png'});
+const planning=await p.evaluate(()=>({time:new Date().toISOString(),forms:['guidedBrief','chatForm','modelChatForm'].map(id=>{const f=document.getElementById(id);return{id,visible:!!f.getClientRects().length,text:f.innerText,controls:[...f.elements].map(e=>({name:e.name,id:e.id,type:e.type,disabled:e.disabled,value:e.type==='file'?'':e.value}))}}),status:document.querySelector('#modelChatStatus')?.innerText,projectUnchanged:JSON.stringify(project())===window.__parityOriginalProject,nonGet:window.__baseline?.requests.filter(x=>x.method!=='GET')}));
+await fs.writeFile(root+'/planning-current.json',JSON.stringify({focusReturn,planning},null,2));console.log(planning);
+console.log(await p.snapshot({scope:'full_page'}));

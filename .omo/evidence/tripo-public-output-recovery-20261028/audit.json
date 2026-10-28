@@ -1,0 +1,235 @@
+{
+  "task_id": "tripo-public-output-recovery-20261028",
+  "attempt": 1,
+  "lifecycle": "REPORTED",
+  "date_local": "2026-10-28",
+  "recorded_at_utc": "2026-10-27T16:40:42.969716+00:00",
+  "verdict": "공식 릴리스·논문·공개 Space 설정의 제한된 후속 조사에서 다운로드 가능한 실제 생성 mesh의 출처·개별 사용권을 함께 확인하지 못했다. TripoSG Space config GET은 200으로 성공했다. 소스 tree 밖의 공개 출력이 전체적으로 없거나 플랫폼 형식이 미지원이라는 결론은 아니다.",
+  "prior_evidence": {
+    "path": ".omo/evidence/tripo-public-asset-availability-20261028/audit.json",
+    "sha256": "d8d58afc8450b5ba9e8b8f86996e691d26d2863a8436654d410036e40a959eb1",
+    "reused": "기존 공식 GitHub/HF 6개 tree 검색·고정 revision·라이선스 경계. 해당 검색을 재실행하지 않았다.",
+    "corrected_boundary": "기존 audit는 Space 방문을 실행 위험 추정으로 미실시했다. 이번에는 허용된 GET을 실제 수행했으며 TripoSG config 조회 성공과 TripoSR 503을 구별한다. 단순 Space 방문 자체를 사용자 승인 필요·기능 구현 불가능으로 분류하지 않는다."
+  },
+  "methodology": {
+    "sources": [
+      "공식 VAST-AI-Research/TripoSR·TripoSG GitHub 릴리스 API/README",
+      "고정 revision의 공식 VAST-AI/TripoSG Space app.py",
+      "공식 stabilityai/TripoSR·VAST-AI/TripoSG Space config",
+      "arXiv 2403.02151v1·2502.06608v1 논문 HTML",
+      "현행 scene_assets.py 1–38행의 정적 입력 계약"
+    ],
+    "applied": "출처·권리 우선, 실제 파일과 UI/논문 설명 구별, 기존 부재 증거 재사용, bounded GET만 수행. 6개 주요 경로(릴리스2·Space config2·논문2)와 공식 소스에 근거한 예제 cache GET 1개를 조사했다.",
+    "limits": "공개 조회 전용. 별도 경쟁 제품·3D 제품 확장·모델 설치·변환·벤치마크·제품 import는 범위 밖. 서로 다른 논문·예제를 동일 입력 비교로 취급하지 않음."
+  },
+  "primary_checks": [
+    {
+      "label": "TripoSR GitHub releases",
+      "url": "https://api.github.com/repos/VAST-AI-Research/TripoSR/releases",
+      "method": "GET",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "release_count": 0,
+      "mesh_assets": [],
+      "observation": "응답은 빈 배열. 이 공식 저장소의 릴리스 자산 후보 없음."
+    },
+    {
+      "label": "TripoSG GitHub releases",
+      "url": "https://api.github.com/repos/VAST-AI-Research/TripoSG/releases",
+      "method": "GET",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "release_count": 0,
+      "mesh_assets": [],
+      "observation": "응답은 빈 배열. 이 공식 저장소의 릴리스 자산 후보 없음."
+    },
+    {
+      "label": "TripoSR public Space config",
+      "url": "https://stabilityai-triposr.hf.space/config",
+      "method": "GET",
+      "status": 503,
+      "reason": "Service Unavailable",
+      "observation": "이번 GET이 서비스 불가로 실패. 로그인 필요·항상 사용 불가·공개 캐시 부재를 뜻하지 않음. 반복 요청하지 않음."
+    },
+    {
+      "label": "TripoSG public Space config",
+      "url": "https://vast-ai-triposg.hf.space/config",
+      "method": "GET",
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 36132,
+      "sha256": "c904445f704b4d015086f0163aca6f4779cc7e70612c3e9a645723c275807716",
+      "gradio_version": "5.23.1",
+      "model3d_components": [
+        {
+          "id": 20,
+          "label": "Generated GLB",
+          "initial_value": null
+        },
+        {
+          "id": 21,
+          "label": "Textured GLB",
+          "initial_value": null
+        }
+      ],
+      "example_dataset": {
+        "id": 23,
+        "headers": [
+          "Input Image"
+        ],
+        "sample_count": 8,
+        "sample_filenames": [
+          "hjswed.png",
+          "iuvbww.png",
+          "jkghed.png",
+          "qwvfsd.png",
+          "uegvsd.png",
+          "uihghj.png",
+          "yuyyuw.png",
+          "yywdsd.png"
+        ],
+        "output_file_urls": []
+      },
+      "backend_functions_advertised": [
+        "load_example_input",
+        "load_example",
+        "run_segmentation",
+        "get_random_seed",
+        "image_to_3d",
+        "lambda",
+        "run_texture",
+        "start_session",
+        "end_session"
+      ],
+      "observation": "생성·텍스처 GLB 컴포넌트가 있으나 initial GLB value가 없고 예제 dataset은 입력 PNG들이다. config 자체에는 다운로드할 출력 GLB 주소가 없다.",
+      "limit": "load_example이라는 backend endpoint가 있다는 사실은 기존 출력 파일의 공개 GET 주소·개별 사용권·캐시 존재를 증명하지 않음. endpoint 호출하지 않음."
+    },
+    {
+      "label": "TripoSG official paper/supplement-link inspection",
+      "url": "https://arxiv.org/html/2502.06608v1",
+      "method": "GET",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 287387,
+      "sha256": "b445cadcee110dd2b9791a939d2ff7770dd0273ac93a3b908e220e07000265e8",
+      "asset_or_supplement_links": [],
+      "paper_license_label": "arXiv.org perpetual non-exclusive license",
+      "observation": "HTML href에서 .glb/.gltf/.obj/.ply/.stl/.fbx·supplement·github.io 링크를 찾지 못함. 논문의 생성 결과 그림·주장은 mesh 파일로 계상하지 않음.",
+      "limit": "다른 논문 버전·외부 supplementary archive의 전수 부재 증거가 아님. 논문 게시 라이선스는 별도 mesh 사용 허가가 아님."
+    },
+    {
+      "label": "TripoSR official paper/supplement-link inspection",
+      "url": "https://arxiv.org/html/2403.02151v1",
+      "method": "GET",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 123034,
+      "sha256": "219fb7842eba19095b02e3e1aaee0b8d106b5c3385b1ef637c5d889575fd631d",
+      "asset_or_supplement_links": [],
+      "official_links": [
+        "https://huggingface.co/stabilityai/TripoSR",
+        "https://github.com/VAST-AI-Research/TripoSR",
+        "https://huggingface.co/spaces/stabilityai/TripoSR"
+      ],
+      "paper_license_label": "CC BY 4.0",
+      "observation": "HTML href에 직접 mesh·supplement 링크 없음. 모델·코드·데모 링크는 기존 조사 대상과 일치.",
+      "limit": "논문 CC BY 표시는 실제 미확보 mesh의 원본 입력·출력 권리 검증을 대신하지 않음."
+    }
+  ],
+  "supporting_source": {
+    "url": "https://huggingface.co/spaces/VAST-AI/TripoSG/resolve/d51c5f2f4d5182f925a403b286d1e9faf519aaa2/app.py",
+    "method": "GET",
+    "status": 200,
+    "revision": "d51c5f2f4d5182f925a403b286d1e9faf519aaa2",
+    "sha256": "b46cd3320b2a3ddfe4812a9ae4a999eb5af553005deceef50a295fa8953d4aa2",
+    "source_lines": [
+      423,
+      424,
+      427,
+      428,
+      429,
+      430,
+      431,
+      432,
+      433,
+      434,
+      435
+    ],
+    "observation": "gr.Examples는 입력 example_data PNG들을 run_full에 연결하고 seg_image/model_output/textured_model_output을 cache_examples=True로 선언한다. 실제 현재 캐시 파일의 GET 허용·존재·생성 완료를 선언하지는 않는다."
+  },
+  "cache_probe": {
+    "url": "https://vast-ai-triposg.hf.space/gradio_api/file=gradio_cached_examples/23/log.csv",
+    "method": "GET",
+    "status": 403,
+    "reason": "Forbidden",
+    "response": {
+      "detail": "File not allowed: gradio_cached_examples/23/log.csv."
+    },
+    "derivation": "공식 app.py의 cache_examples=True와 live config의 examples dataset id=23에 대응하는 통상 Gradio 예제 cache 경로 후보를 1회 조회했다. config에서 공개 다운로드 링크로 광고된 경로는 아니다.",
+    "conclusion": "이 cache 경로 후보는 public GET으로 읽을 수 없었다. 파일 존재·부재 자체는 확인되지 않았다. 경로 우회/변형·반복 403·POST backend 실행은 하지 않음."
+  },
+  "candidate_mesh": null,
+  "rights": {
+    "source_and_model_license": "기존 공식 조사에서 source/model MIT 진술을 확인했다. 그 사실은 임의 예제 입력과 파생 mesh의 개별 사용권까지 자동으로 확정하지 않는다.",
+    "asset_specific_license": "실제 mesh 미확보로 미검증",
+    "product_import_allowed": false,
+    "redistribution_allowed": "미확정·실시하지 않음",
+    "research_mesh_downloads": 0
+  },
+  "platform_compatibility": {
+    "inspected_source": "scene_assets.py 1–38행 정적 읽기만",
+    "profile": "gltf2-static-pbr-v1",
+    "max_bytes": 8388608,
+    "max_vertices": 50000,
+    "max_triangles": 100000,
+    "max_nodes": 32,
+    "max_image_edge": 2048,
+    "actual_generated_mesh_admission": "NOT RUN — 실제 생성 mesh 미확보",
+    "native_render": "NOT RUN",
+    "reason": "GLB 컴포넌트 존재·확장자·사이즈만으로 profile 호환성을 선언할 수 없다. 파일을 가져왔어도 정적 분석을 먼저 하며 이 task에서 앱에 import하지 않음."
+  },
+  "comparison": {
+    "model_generation_provenance": "공식 모델/Space 출처만 확인. 실제 개별 출력의 생성 revision·입력·설정·바이트는 미확인.",
+    "same_input_pair": "없음",
+    "controlled_before_after": "없음",
+    "quality_claim": "없음. 논문 그림이나 서로 다른 예제를 Blender 내부 렌더 또는 상용 Tripo 모델의 품질 비교 결과로 사용하지 않음."
+  },
+  "boundaries": {
+    "paid_ai_calls": 0,
+    "inference_requests": 0,
+    "backend_post_calls": 0,
+    "logins": 0,
+    "user_data_uploads": 0,
+    "weights_downloads": 0,
+    "mesh_downloads": 0,
+    "product_imports": 0,
+    "product_changes": 0,
+    "md_changes": 0,
+    "repeated_403_404_probes": 0
+  },
+  "next_actions": [
+    {
+      "action": "공식 소유자가 이미 공개한 직접 GLB·예제 출력 다운로드 URL과 개별 입력/출력 사용권을 확보하면 bounded GET·정적 분석을 진행할 수 있음",
+      "approval": "새 승인 없이 현재 공개 조회 범위에서 가능; 이번 제한된 조사에서는 링크 미발견"
+    },
+    {
+      "action": "공식 Space의 load_example backend가 순수 cache 조회인지 코드와 실제 cache 계약을 확인한 뒤 별도 범위로 실행 검토",
+      "approval": "이번 GET-only 범위 밖. backend POST/예제 실행 허용이 필요한 부분만 driver가 구분해야 함. 무조건 추론이나 유료 요청이라고 단정하지 않음"
+    },
+    {
+      "action": "권리 확인된 입력으로 실제 새 생성 또는 로컬 모델 설치·weights·GPU 실행을 수행",
+      "approval": "이번 범위 밖. 새 외부 추론·리소스/비용·다운로드 허용 및 실제 실행환경 확인 후 별도 결정"
+    },
+    {
+      "action": "내부 음악영상 기본 경로와 이미 검증한 선택형 3D 도구로 복귀",
+      "approval": "제품 우선순위는 driver가 통합; 공개 mesh 미확보를 전체 플랫폼 구현 불가능으로 확대하지 않음"
+    }
+  ],
+  "write_set": [
+    ".omo/evidence/tripo-public-output-recovery-20261028/audit.json"
+  ]
+}

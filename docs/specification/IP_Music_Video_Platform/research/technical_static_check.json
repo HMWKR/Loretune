@@ -1,0 +1,43 @@
+{
+  "as_of": "2026-10-23",
+  "status": "design_artifact_static_validation_only",
+  "openapi": {
+    "paths": 116,
+    "operations": 143,
+    "schemas": 122,
+    "core_operations": 33,
+    "planned_operations": 110,
+    "modules": 16,
+    "local_refs": "all_resolved_in_builder",
+    "core_success_responses": "no_generic_Resource_envelope",
+    "mutation_request_bodies": "present",
+    "billable_idempotency": "required_in_builder"
+  },
+  "sql": {
+    "tables": 51,
+    "referenced_table_names": "all_exist_in_builder",
+    "tenant_rls": "48 tables + tenants checked",
+    "execution": "not_executed",
+    "parser": "not_executed",
+    "psql_available": false
+  },
+  "cross_document": {
+    "TCH": 15,
+    "NFR": 15,
+    "TCT": 36,
+    "FR_reference_mappings": 96,
+    "source_ids": "resolved",
+    "gate_duration": "G0 15-30 seconds / G1 30-60 seconds",
+    "baseline_gate": "G1: rights/permission revocation, version conflicts, deletion, portable export, backup restore; automated billing safeguards required whenever enabled",
+    "subscription_contracts": "cancelSubscription(endAtPeriod), resubscribe, getSubscription, verified payment webhook; FR-079/084 reference mapping"
+  },
+  "not_validated": [
+    "Live HTTP implementation",
+    "Real PostgreSQL/pgvector migration",
+    "Runtime RLS and IP-level ACL",
+    "Provider requests, costs and generated media quality",
+    "Load, recovery, deletion propagation",
+    "Third-party OpenAPI schema validator"
+  ],
+  "latest_static_update": "2026-10-23 baseline-gate and subscription patch; no runtime/provider tests performed"
+}

@@ -1,0 +1,82 @@
+{
+  "utc": "2026-10-26T03:04:56.124Z",
+  "purpose": "Retake stable error pixels after media ready. Earlier 08/09 retain transient native spinner and are inspector-only evidence.",
+  "before": "8ac30524626fcd58457cb62a2616710426e7ec33c1958f3d271bc3dca42a740d",
+  "after": "8ac30524626fcd58457cb62a2616710426e7ec33c1958f3d271bc3dca42a740d",
+  "state": {
+    "message": "아직 저장 여부를 확인하지 못했습니다. 입력은 보존했습니다. 연결이 돌아오면 아래 ‘기존 저장 확인’으로 같은 요청을 조회하세요. 확인 전에는 새로 제출하지 않습니다.",
+    "color": "rgb(255, 180, 157)",
+    "background": "rgb(40, 32, 30)",
+    "opacity": "1",
+    "layers": [
+      {
+        "id": "productionReviewError",
+        "background": "rgb(40, 32, 30)",
+        "opacity": "1"
+      },
+      {
+        "id": "creatorReviewEditor",
+        "background": "rgba(0, 0, 0, 0)",
+        "opacity": "1"
+      },
+      {
+        "id": "",
+        "background": "rgba(0, 0, 0, 0)",
+        "opacity": "1"
+      },
+      {
+        "id": "ltReviewPanel",
+        "background": "rgb(27, 27, 27)",
+        "opacity": "1"
+      },
+      {
+        "id": "",
+        "background": "rgba(0, 0, 0, 0)",
+        "opacity": "1"
+      },
+      {
+        "id": "",
+        "background": "rgb(16, 16, 16)",
+        "opacity": "1"
+      },
+      {
+        "id": "",
+        "background": "rgba(0, 0, 0, 0)",
+        "opacity": "1"
+      }
+    ],
+    "reason": "독립 QA 미확정 — 기존 요청 조회로만 확인합니다.",
+    "pending": true,
+    "saveDisabled": true,
+    "checkVisible": true
+  },
+  "calls": {
+    "mode": "committed",
+    "calls": [
+      {
+        "method": "POST",
+        "path": "/api/action",
+        "action": "review_take",
+        "forwarded": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/action",
+        "action": "review_take",
+        "forwarded": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/requests/[synthetic-id]",
+        "forwarded": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/requests/[synthetic-id]",
+        "forwarded": false
+      }
+    ],
+    "unexpected": []
+  },
+  "scope": "2 additional intercepted POST + 2 intercepted GET, no forwarding; simulated committed cleanup only; canceled local draft; fetch restored"
+}

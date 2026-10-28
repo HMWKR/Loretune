@@ -1,0 +1,114 @@
+- link "제작 단계로 건너뛰기":
+  - /url: "#flowHeading"
+- banner:
+  - generic: Loretune
+  - combobox "작품 선택":
+    - option "MS 계약 검증 A"
+    - option "MS 계약 검증 B"
+    - option "디자인 QA 독립 20261025 최신"
+    - option "실행 승인 QA 20261025"
+    - option "디자인 통합 완주 QA 20261025 1100"
+    - option "기능 통합 QA 20261025 1128"
+    - option "구조 통합 최종 QA 20261025" [selected]
+  - generic "작품·설정"
+  - option "100%" [selected]
+  - option "150%"
+  - option "200%"
+  - generic "프로젝트 상태"
+  - button "모델 설정" [active]
+- navigation "제작 순서":
+  - button "1 음악 입력"
+  - button "2 계획 검토"
+  - button "3 장면 제작·검토"
+  - button "4 편집·출력"
+- button "1 음악 입력으로 돌아가기"
+- heading "음악·자막·출력 버전을 확인하세요" [level=2]
+- status: 로컬 저장소 연결됨 · 선택과 승인을 분리해 안전하게 제작하세요.
+- main:
+  - complementary:
+    - heading "샷 보드 1" [level=2]:
+      - text: 샷 보드
+      - generic: "1"
+    - button "01 장면 1 1 takes · 선택 T1":
+      - text: 01 장면 1
+      - text: 1 takes · 선택 T1
+    - generic "샷 추가"
+  - article:
+    - heading "장면 1" [level=1]
+    - generic: 선택 Take 1
+    - paragraph: 파란 단색 화면을 2초 동안 보여준다
+    - paragraph: 렌더 결과 · 선택 Take와 별도 출력 버전
+    - heading "실제 렌더 결과" [level=2]
+    - button "Take 1 현재 선택":
+      - text: Take 1
+      - text: 현재 선택
+    - button "take 나란히 비교"
+    - heading "타임라인" [level=2]
+    - button "현재 take 선택 가져오기"
+    - button "타임라인 승인"
+    - button "렌더 대기열에 추가"
+    - paragraph: 2.000초 · 저장 버전 1 · 승인됨
+    - generic: 장면 1 · 2s
+    - generic "정밀 편집 · 음원·자막·버전"
+    - paragraph: take 선택과 출력 승인은 별개입니다. 편집을 저장하고 승인한 버전만 최종 렌더에 사용합니다.
+    - status:
+      - paragraph: 저장 버전 출력 준비됨 · 2초 · 음원 v1 / 0–2초
+      - text: 저장된 편집 기준 안내입니다. 실제 실행 시 자산 해시와 승인 상태를 다시 검사합니다.
+    - generic: "#"
+    - generic: 샷
+    - generic: take
+    - generic: 길이(초)
+    - generic: 시작(초)
+    - generic: 순서
+    - generic: "1"
+    - generic: 장면 1
+    - combobox "장면 1 take":
+      - option "선택"
+      - option "Take 1" [selected]
+    - spinbutton "장면 1 길이": "2"
+    - spinbutton "장면 1 시작": "0"
+    - button "앞으로 이동": ↑
+    - button "뒤로 이동": ↓
+    - text: 출력 규격
+    - combobox "출력 규격":
+      - option "미리보기 640×360"
+      - option "가로 1920×1080" [selected]
+      - option "세로 1080×1920"
+    - text: 음원 버전
+    - combobox "음원 버전":
+      - option "무음"
+      - option "v1 synthetic-tone-2s.wav" [selected]
+    - text: 음원 시작(초)
+    - spinbutton "음원 시작(초)": "0"
+    - paragraph:
+      - text: 24fps · 원곡 48kHz · 클립 오디오 음소거 · 짧은 원곡은 무음으로 채움
+      - text: 선택 출력 캔버스에 맞춘 리사이즈입니다. 원본 해상도·AI 생성 해상도와 다르며 AI 업스케일은 미지원입니다.
+    - heading "확정 자막 시작·끝(초) / 내용" [level=3]
+    - spinbutton "자막 시작": "0"
+    - spinbutton "자막 끝": "2"
+    - textbox "자막 내용": 통합 화면 검증 · 음악과 한국어 자막
+    - button "자막 삭제": ×
+    - button "자막 줄 추가"
+    - button "편집 새 버전 저장"
+    - combobox "이전 타임라인 버전":
+      - option "버전 1 · 승인" [selected]
+    - button "이전 버전 복원"
+  - complementary:
+    - heading "렌더 작업" [level=2]
+    - paragraph: 외부 생성비 0 · 로컬 연산 비용 미계측. 자막은 선택 가능한 MP4 텍스트 트랙과 SRT로 제공됩니다.
+    - text: 납품 검토 이유
+    - textbox "납품 검토 이유": 출력 영상·음원·자막 검토 완료
+    - text: 완료 b6cd2217
+    - progressbar
+    - text: 100% ·
+    - paragraph:
+      - link "MP4":
+        - /url: /exports/b6cd2217ff114a23822809db63ac4880.mp4
+      - link "SRT":
+        - /url: /exports/b6cd2217ff114a23822809db63ac4880.srt
+      - link "제작 기록":
+        - /url: /exports/b6cd2217ff114a23822809db63ac4880.json
+    - button "렌더 결과 검토"
+    - paragraph: "납품 검토: 검토 전"
+    - button "납품 검토 승인 기록"
+    - button "JSON 명세 (영상 아님)"

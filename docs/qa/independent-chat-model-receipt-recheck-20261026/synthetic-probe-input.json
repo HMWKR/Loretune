@@ -1,0 +1,901 @@
+{
+  "before": {
+    "canon": [],
+    "projects": {
+      "A": {
+        "name": "A",
+        "ip": "default",
+        "snapshot": [],
+        "shots": {
+          "s": {
+            "description": "synthetic no-motion scene",
+            "takes": [],
+            "selected": null,
+            "revision": 0,
+            "semantic_impact": []
+          }
+        },
+        "revision": 1,
+        "profile": "landscape",
+        "audio_versions": [],
+        "audio_selected": null,
+        "audio_offset": 0,
+        "timeline_versions": [],
+        "timeline_head": null,
+        "subtitles": [],
+        "comments": [],
+        "model_settings": {
+          "revision": 1,
+          "selections": {
+            "chat": "openai-gpt-6-luna",
+            "image": null,
+            "video": null
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "openai-gpt-6-luna"
+              },
+              "at": 1793047084.2227242
+            }
+          ]
+        },
+        "rehearsal_jobs": [],
+        "ontology": {
+          "revision": 0,
+          "graph": {
+            "entities": [],
+            "relations": []
+          },
+          "digest": null
+        },
+        "ontology_proposals": [],
+        "lineage": {
+          "nodes": [
+            {
+              "id": "c430f7cf-fa54-5783-ab2c-58a488958f92",
+              "type": "project",
+              "label": "A",
+              "source": "local-project",
+              "version": null
+            },
+            {
+              "id": "8826030c-f107-5080-aaee-ea0a0b2f6fa6",
+              "type": "shot",
+              "label": "s",
+              "source": "authored",
+              "version": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "c430f7cf-fa54-5783-ab2c-58a488958f92",
+              "target": "8826030c-f107-5080-aaee-ea0a0b2f6fa6",
+              "role": "contains"
+            }
+          ],
+          "note": "\uc2e4\uc81c \uc800\uc7a5 \uac1d\uccb4\uc758 \uc77d\uae30 \uc804\uc6a9 \uacc4\ubcf4. \uc678\ubd80 \uc791\ud488 \ucc38\uace0\ub294 \ucd9c\ucc98 \uc88c\ud45c\ub85c \ud45c\uc2dc\ud558\uba70 \ud604\uc7ac \uc791\ud488 \uac1c\uccb4\ub85c \uc790\ub3d9 \ubcd1\ud569\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4."
+        },
+        "chat_turns": [],
+        "chat_receipts": [],
+        "chat_connection": {
+          "available": false,
+          "mode": "disconnected",
+          "reason": "\ucc44\ud305 \uc2e4\ud589 \uc5f0\uacb0 \uc5c6\uc74c \u00b7 \ub85c\uceec \uacc4\ud68d\uc740 \uacc4\uc18d \uc0ac\uc6a9\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+        },
+        "media_connections": {
+          "image": {
+            "state": "unconfigured",
+            "available": false,
+            "can_prepare": false,
+            "mode": "disconnected",
+            "model": null,
+            "reason": "\ubaa8\ub378\uc744 \uc120\ud0dd\ud558\uba74 \uc5f0\uacb0 \uc0c1\ud0dc\ub97c \ud655\uc778\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+            "policy": "\ucd9c\ub825 \uc811\uadfc\u00b7\ubcf4\uad00 \uc870\uac74\uacfc \ube44\uc6a9\uc740 \uc900\ube44\ub41c \uc791\uc5c5\uc5d0\uc11c \ud655\uc778\ud569\ub2c8\ub2e4."
+          },
+          "video": {
+            "state": "unconfigured",
+            "available": false,
+            "can_prepare": false,
+            "mode": "disconnected",
+            "model": null,
+            "reason": "\ubaa8\ub378\uc744 \uc120\ud0dd\ud558\uba74 \uc5f0\uacb0 \uc0c1\ud0dc\ub97c \ud655\uc778\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+            "policy": "\ucd9c\ub825 \uc811\uadfc\u00b7\ubcf4\uad00 \uc870\uac74\uacfc \ube44\uc6a9\uc740 \uc900\ube44\ub41c \uc791\uc5c5\uc5d0\uc11c \ud655\uc778\ud569\ub2c8\ub2e4."
+          }
+        },
+        "image_connection": {
+          "state": "unconfigured",
+          "available": false,
+          "mode": "disconnected",
+          "model": null,
+          "reason": "\uc774\ubbf8\uc9c0 \uc5f0\uacb0\uc774 \uc124\uc815\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4. \ubaa8\ub378 \uc120\ud0dd\ub9cc\uc73c\ub85c \uc678\ubd80 \uc2e4\ud589\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+          "checks": {
+            "account": false,
+            "configuration": false,
+            "integration": false,
+            "approval": false
+          },
+          "policy": "\uc774\ubbf8\uc9c0 \uacf5\uae09\uc790\u00b7\ubcf4\uad00\u00b7\uc811\uadfc \uacc4\uc57d \ubbf8\uc120\ud0dd. \uae30\uc874 \uc774\ubbf8\uc9c0\ub97c \uc5c5\ub85c\ub4dc\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+        },
+        "media_actions": [],
+        "preflight": {
+          "ready": false,
+          "errors": [
+            "\ud0c0\uc784\ub77c\uc778\uc744 \uc800\uc7a5\ud558\uc138\uc694.",
+            "\uc800\uc7a5\ud55c \ud0c0\uc784\ub77c\uc778 \uc2b9\uc778\uc774 \ud544\uc694\ud569\ub2c8\ub2e4.",
+            "\ubbf8\ub514\uc5b4\u00b7\ud3b8\uc9d1 \uc785\ub825\uc744 \ud655\uc778\ud558\uc138\uc694: \uac01 \ucef7\uc758 take\ub97c \uc120\ud0dd\ud558\uc138\uc694.",
+            "s: take \uac80\ud1a0 \uc2b9\uc778\uc774 \ud544\uc694\ud569\ub2c8\ub2e4."
+          ],
+          "warnings": [
+            "\uc74c\uc6d0 \uc5c6\ub294 \ubb34\uc74c \ucd9c\ub825\uc785\ub2c8\ub2e4."
+          ],
+          "duration": 3,
+          "audio_version": null,
+          "audio_start": 0,
+          "audio_end": 3,
+          "profile": "landscape",
+          "note": "\uc800\uc7a5\ub41c \ud3b8\uc9d1 \uae30\uc900 \uc548\ub0b4\uc785\ub2c8\ub2e4. \uc2e4\uc81c \uc2e4\ud589 \uc2dc \uc790\uc0b0 \ud574\uc2dc\uc640 \uc2b9\uc778 \uc0c1\ud0dc\ub97c \ub2e4\uc2dc \uac80\uc0ac\ud569\ub2c8\ub2e4."
+        }
+      }
+    },
+    "preferences": [],
+    "workspace_id": "a654ec4e-1671-42fe-bd08-be1d7dc6a1df",
+    "model_catalog": {
+      "models": [
+        {
+          "id": "anthropic-haiku-5-5",
+          "release_id": "anthropic:claude-haiku-5-5",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "anthropic",
+          "model": "claude-haiku-5-5",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \ub3c4\uad6c \uc2e4\ud589\u00b7\ud569\uc131 \uac80\uc99d \uacbd\ub85c \uad6c\ud604; \uc77c\ubc18 \ud504\ub85c\uc81d\ud2b8 \uc2e4\uc81c \ucc44\ud305 \uc5f0\uacb0 \ubbf8\uac80\uc99d",
+          "capabilities": null
+        },
+        {
+          "id": "openai-gpt-6-luna",
+          "release_id": "openai:gpt-6-luna",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \uacc4\uc57d \uad6c\ud604 \u00b7 \uacc4\uc815 \uc5f0\uacb0\uacfc \uc2e4\uc81c \uc2e4\ud589 \ubbf8\uac80\uc99d",
+          "capabilities": {
+            "task": "text-and-tools"
+          }
+        },
+        {
+          "id": "xai-grok-4-7",
+          "release_id": "xai:grok-4.7",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "xai",
+          "model": "grok-4.7",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \uacc4\uc57d \uad6c\ud604 \u00b7 \uacc4\uc815 \uc5f0\uacb0\uacfc \uc2e4\uc81c \uc2e4\ud589 \ubbf8\uac80\uc99d",
+          "capabilities": {
+            "task": "text-and-tools"
+          }
+        },
+        {
+          "id": "fal-kling-2-6-pro",
+          "release_id": "fal:kling-video-v2.6-pro-i2v",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "video",
+          "provider": "fal",
+          "model": "fal-ai/kling-video/v2.6/pro/image-to-video",
+          "state": "integration_blocked",
+          "reason": "\uacf5\uae09\uc790 \uc644\ub8cc \ud6c4 \ube44\uacf5\uac1c \ud30c\uc77c \uc218\uc2e0 \ucc28\ub2e8; \ud1b5\ud569 \uac80\uc99d \ubbf8\uc644\ub8cc",
+          "capabilities": {
+            "task": "image-to-video",
+            "durations": [
+              5,
+              10
+            ],
+            "generated_audio": false
+          }
+        },
+        {
+          "id": "fal-flux-schnell",
+          "release_id": "fal:fal-ai/flux/schnell",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "image",
+          "provider": "fal",
+          "model": "fal-ai/flux/schnell",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "text-to-image",
+            "reference_roles": []
+          }
+        },
+        {
+          "id": "fal-flux-pro-1-1",
+          "release_id": "fal:fal-ai/flux-pro/v1.1",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "image",
+          "provider": "fal",
+          "model": "fal-ai/flux-pro/v1.1",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "text-to-image",
+            "reference_roles": []
+          }
+        },
+        {
+          "id": "fal-kling-2-5-turbo",
+          "release_id": "fal:fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "video",
+          "provider": "fal",
+          "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "image-to-video",
+            "reference_roles": [
+              "start_frame"
+            ]
+          }
+        }
+      ],
+      "roles": [
+        "chat",
+        "image",
+        "video"
+      ],
+      "image_notice": "fal \uc774\ubbf8\uc9c0 \ubaa8\ub378 \uacc4\uc57d \uac80\uc99d \uc911 \u00b7 \uc2e4\uc81c \uc5f0\uacb0 \uc804\uc5d0\ub294 \uae30\uc874 \uc774\ubbf8\uc9c0 \uc5c5\ub85c\ub4dc \uc0ac\uc6a9",
+      "live_execution": false,
+      "scope": "single-local-workspace",
+      "automatic_routing": false
+    },
+    "budgets": [],
+    "generation_jobs": [],
+    "project_ids": {
+      "A": "35ab01a5-70a0-548d-bf1e-89a755580822"
+    },
+    "ips": [
+      {
+        "id": "default",
+        "name": "\uae30\ubcf8 IP",
+        "description": "\uae30\uc874 \ub85c\uceec \uc791\ud488"
+      }
+    ],
+    "asset_rights": {},
+    "revision": 3,
+    "jobs": [],
+    "ffmpeg": true,
+    "capabilities": {
+      "chat_plan": true,
+      "provider_generation": false,
+      "local_render": true,
+      "audio": true,
+      "subtitle_track": true,
+      "burned_subtitles": false,
+      "cancel_local_job": true,
+      "authentication": false,
+      "provider_mode": "disconnected",
+      "scope": "single-local-workspace"
+    }
+  },
+  "grok": {
+    "canon": [],
+    "projects": {
+      "A": {
+        "name": "A",
+        "ip": "default",
+        "snapshot": [],
+        "shots": {
+          "s": {
+            "description": "synthetic no-motion scene",
+            "takes": [],
+            "selected": null,
+            "revision": 0,
+            "semantic_impact": []
+          }
+        },
+        "revision": 1,
+        "profile": "landscape",
+        "audio_versions": [],
+        "audio_selected": null,
+        "audio_offset": 0,
+        "timeline_versions": [],
+        "timeline_head": null,
+        "subtitles": [],
+        "comments": [],
+        "model_settings": {
+          "revision": 2,
+          "selections": {
+            "chat": "xai-grok-4-7",
+            "image": null,
+            "video": null
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "openai-gpt-6-luna"
+              },
+              "at": 1793047084.2227242
+            },
+            {
+              "revision": 2,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "xai-grok-4-7"
+              },
+              "at": 1793047084.226909
+            }
+          ]
+        },
+        "rehearsal_jobs": [],
+        "ontology": {
+          "revision": 0,
+          "graph": {
+            "entities": [],
+            "relations": []
+          },
+          "digest": null
+        },
+        "ontology_proposals": [],
+        "lineage": {
+          "nodes": [
+            {
+              "id": "c430f7cf-fa54-5783-ab2c-58a488958f92",
+              "type": "project",
+              "label": "A",
+              "source": "local-project",
+              "version": null
+            },
+            {
+              "id": "8826030c-f107-5080-aaee-ea0a0b2f6fa6",
+              "type": "shot",
+              "label": "s",
+              "source": "authored",
+              "version": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "c430f7cf-fa54-5783-ab2c-58a488958f92",
+              "target": "8826030c-f107-5080-aaee-ea0a0b2f6fa6",
+              "role": "contains"
+            }
+          ],
+          "note": "\uc2e4\uc81c \uc800\uc7a5 \uac1d\uccb4\uc758 \uc77d\uae30 \uc804\uc6a9 \uacc4\ubcf4. \uc678\ubd80 \uc791\ud488 \ucc38\uace0\ub294 \ucd9c\ucc98 \uc88c\ud45c\ub85c \ud45c\uc2dc\ud558\uba70 \ud604\uc7ac \uc791\ud488 \uac1c\uccb4\ub85c \uc790\ub3d9 \ubcd1\ud569\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4."
+        },
+        "chat_turns": [],
+        "chat_receipts": [],
+        "chat_connection": {
+          "available": false,
+          "mode": "disconnected",
+          "reason": "\ucc44\ud305 \uc2e4\ud589 \uc5f0\uacb0 \uc5c6\uc74c \u00b7 \ub85c\uceec \uacc4\ud68d\uc740 \uacc4\uc18d \uc0ac\uc6a9\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+        },
+        "media_connections": {
+          "image": {
+            "state": "unconfigured",
+            "available": false,
+            "can_prepare": false,
+            "mode": "disconnected",
+            "model": null,
+            "reason": "\ubaa8\ub378\uc744 \uc120\ud0dd\ud558\uba74 \uc5f0\uacb0 \uc0c1\ud0dc\ub97c \ud655\uc778\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+            "policy": "\ucd9c\ub825 \uc811\uadfc\u00b7\ubcf4\uad00 \uc870\uac74\uacfc \ube44\uc6a9\uc740 \uc900\ube44\ub41c \uc791\uc5c5\uc5d0\uc11c \ud655\uc778\ud569\ub2c8\ub2e4."
+          },
+          "video": {
+            "state": "unconfigured",
+            "available": false,
+            "can_prepare": false,
+            "mode": "disconnected",
+            "model": null,
+            "reason": "\ubaa8\ub378\uc744 \uc120\ud0dd\ud558\uba74 \uc5f0\uacb0 \uc0c1\ud0dc\ub97c \ud655\uc778\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+            "policy": "\ucd9c\ub825 \uc811\uadfc\u00b7\ubcf4\uad00 \uc870\uac74\uacfc \ube44\uc6a9\uc740 \uc900\ube44\ub41c \uc791\uc5c5\uc5d0\uc11c \ud655\uc778\ud569\ub2c8\ub2e4."
+          }
+        },
+        "image_connection": {
+          "state": "unconfigured",
+          "available": false,
+          "mode": "disconnected",
+          "model": null,
+          "reason": "\uc774\ubbf8\uc9c0 \uc5f0\uacb0\uc774 \uc124\uc815\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4. \ubaa8\ub378 \uc120\ud0dd\ub9cc\uc73c\ub85c \uc678\ubd80 \uc2e4\ud589\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+          "checks": {
+            "account": false,
+            "configuration": false,
+            "integration": false,
+            "approval": false
+          },
+          "policy": "\uc774\ubbf8\uc9c0 \uacf5\uae09\uc790\u00b7\ubcf4\uad00\u00b7\uc811\uadfc \uacc4\uc57d \ubbf8\uc120\ud0dd. \uae30\uc874 \uc774\ubbf8\uc9c0\ub97c \uc5c5\ub85c\ub4dc\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+        },
+        "media_actions": [],
+        "preflight": {
+          "ready": false,
+          "errors": [
+            "\ud0c0\uc784\ub77c\uc778\uc744 \uc800\uc7a5\ud558\uc138\uc694.",
+            "\uc800\uc7a5\ud55c \ud0c0\uc784\ub77c\uc778 \uc2b9\uc778\uc774 \ud544\uc694\ud569\ub2c8\ub2e4.",
+            "\ubbf8\ub514\uc5b4\u00b7\ud3b8\uc9d1 \uc785\ub825\uc744 \ud655\uc778\ud558\uc138\uc694: \uac01 \ucef7\uc758 take\ub97c \uc120\ud0dd\ud558\uc138\uc694.",
+            "s: take \uac80\ud1a0 \uc2b9\uc778\uc774 \ud544\uc694\ud569\ub2c8\ub2e4."
+          ],
+          "warnings": [
+            "\uc74c\uc6d0 \uc5c6\ub294 \ubb34\uc74c \ucd9c\ub825\uc785\ub2c8\ub2e4."
+          ],
+          "duration": 3,
+          "audio_version": null,
+          "audio_start": 0,
+          "audio_end": 3,
+          "profile": "landscape",
+          "note": "\uc800\uc7a5\ub41c \ud3b8\uc9d1 \uae30\uc900 \uc548\ub0b4\uc785\ub2c8\ub2e4. \uc2e4\uc81c \uc2e4\ud589 \uc2dc \uc790\uc0b0 \ud574\uc2dc\uc640 \uc2b9\uc778 \uc0c1\ud0dc\ub97c \ub2e4\uc2dc \uac80\uc0ac\ud569\ub2c8\ub2e4."
+        }
+      }
+    },
+    "preferences": [],
+    "workspace_id": "a654ec4e-1671-42fe-bd08-be1d7dc6a1df",
+    "model_catalog": {
+      "models": [
+        {
+          "id": "anthropic-haiku-5-5",
+          "release_id": "anthropic:claude-haiku-5-5",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "anthropic",
+          "model": "claude-haiku-5-5",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \ub3c4\uad6c \uc2e4\ud589\u00b7\ud569\uc131 \uac80\uc99d \uacbd\ub85c \uad6c\ud604; \uc77c\ubc18 \ud504\ub85c\uc81d\ud2b8 \uc2e4\uc81c \ucc44\ud305 \uc5f0\uacb0 \ubbf8\uac80\uc99d",
+          "capabilities": null
+        },
+        {
+          "id": "openai-gpt-6-luna",
+          "release_id": "openai:gpt-6-luna",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \uacc4\uc57d \uad6c\ud604 \u00b7 \uacc4\uc815 \uc5f0\uacb0\uacfc \uc2e4\uc81c \uc2e4\ud589 \ubbf8\uac80\uc99d",
+          "capabilities": {
+            "task": "text-and-tools"
+          }
+        },
+        {
+          "id": "xai-grok-4-7",
+          "release_id": "xai:grok-4.7",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "xai",
+          "model": "grok-4.7",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \uacc4\uc57d \uad6c\ud604 \u00b7 \uacc4\uc815 \uc5f0\uacb0\uacfc \uc2e4\uc81c \uc2e4\ud589 \ubbf8\uac80\uc99d",
+          "capabilities": {
+            "task": "text-and-tools"
+          }
+        },
+        {
+          "id": "fal-kling-2-6-pro",
+          "release_id": "fal:kling-video-v2.6-pro-i2v",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "video",
+          "provider": "fal",
+          "model": "fal-ai/kling-video/v2.6/pro/image-to-video",
+          "state": "integration_blocked",
+          "reason": "\uacf5\uae09\uc790 \uc644\ub8cc \ud6c4 \ube44\uacf5\uac1c \ud30c\uc77c \uc218\uc2e0 \ucc28\ub2e8; \ud1b5\ud569 \uac80\uc99d \ubbf8\uc644\ub8cc",
+          "capabilities": {
+            "task": "image-to-video",
+            "durations": [
+              5,
+              10
+            ],
+            "generated_audio": false
+          }
+        },
+        {
+          "id": "fal-flux-schnell",
+          "release_id": "fal:fal-ai/flux/schnell",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "image",
+          "provider": "fal",
+          "model": "fal-ai/flux/schnell",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "text-to-image",
+            "reference_roles": []
+          }
+        },
+        {
+          "id": "fal-flux-pro-1-1",
+          "release_id": "fal:fal-ai/flux-pro/v1.1",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "image",
+          "provider": "fal",
+          "model": "fal-ai/flux-pro/v1.1",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "text-to-image",
+            "reference_roles": []
+          }
+        },
+        {
+          "id": "fal-kling-2-5-turbo",
+          "release_id": "fal:fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "video",
+          "provider": "fal",
+          "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "image-to-video",
+            "reference_roles": [
+              "start_frame"
+            ]
+          }
+        }
+      ],
+      "roles": [
+        "chat",
+        "image",
+        "video"
+      ],
+      "image_notice": "fal \uc774\ubbf8\uc9c0 \ubaa8\ub378 \uacc4\uc57d \uac80\uc99d \uc911 \u00b7 \uc2e4\uc81c \uc5f0\uacb0 \uc804\uc5d0\ub294 \uae30\uc874 \uc774\ubbf8\uc9c0 \uc5c5\ub85c\ub4dc \uc0ac\uc6a9",
+      "live_execution": false,
+      "scope": "single-local-workspace",
+      "automatic_routing": false
+    },
+    "budgets": [],
+    "generation_jobs": [],
+    "project_ids": {
+      "A": "35ab01a5-70a0-548d-bf1e-89a755580822"
+    },
+    "ips": [
+      {
+        "id": "default",
+        "name": "\uae30\ubcf8 IP",
+        "description": "\uae30\uc874 \ub85c\uceec \uc791\ud488"
+      }
+    ],
+    "asset_rights": {},
+    "revision": 4,
+    "jobs": [],
+    "ffmpeg": true,
+    "capabilities": {
+      "chat_plan": true,
+      "provider_generation": false,
+      "local_render": true,
+      "audio": true,
+      "subtitle_track": true,
+      "burned_subtitles": false,
+      "cancel_local_job": true,
+      "authentication": false,
+      "provider_mode": "disconnected",
+      "scope": "single-local-workspace"
+    }
+  },
+  "cleared": {
+    "canon": [],
+    "projects": {
+      "A": {
+        "name": "A",
+        "ip": "default",
+        "snapshot": [],
+        "shots": {
+          "s": {
+            "description": "synthetic no-motion scene",
+            "takes": [],
+            "selected": null,
+            "revision": 0,
+            "semantic_impact": []
+          }
+        },
+        "revision": 1,
+        "profile": "landscape",
+        "audio_versions": [],
+        "audio_selected": null,
+        "audio_offset": 0,
+        "timeline_versions": [],
+        "timeline_head": null,
+        "subtitles": [],
+        "comments": [],
+        "model_settings": {
+          "revision": 3,
+          "selections": {
+            "chat": null,
+            "image": null,
+            "video": null
+          },
+          "history": [
+            {
+              "revision": 1,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "openai-gpt-6-luna"
+              },
+              "at": 1793047084.2227242
+            },
+            {
+              "revision": 2,
+              "actor": "local-owner",
+              "changed": {
+                "chat": "xai-grok-4-7"
+              },
+              "at": 1793047084.226909
+            },
+            {
+              "revision": 3,
+              "actor": "local-owner",
+              "changed": {
+                "chat": null
+              },
+              "at": 1793047084.230999
+            }
+          ]
+        },
+        "rehearsal_jobs": [],
+        "ontology": {
+          "revision": 0,
+          "graph": {
+            "entities": [],
+            "relations": []
+          },
+          "digest": null
+        },
+        "ontology_proposals": [],
+        "lineage": {
+          "nodes": [
+            {
+              "id": "c430f7cf-fa54-5783-ab2c-58a488958f92",
+              "type": "project",
+              "label": "A",
+              "source": "local-project",
+              "version": null
+            },
+            {
+              "id": "8826030c-f107-5080-aaee-ea0a0b2f6fa6",
+              "type": "shot",
+              "label": "s",
+              "source": "authored",
+              "version": 0
+            }
+          ],
+          "edges": [
+            {
+              "source": "c430f7cf-fa54-5783-ab2c-58a488958f92",
+              "target": "8826030c-f107-5080-aaee-ea0a0b2f6fa6",
+              "role": "contains"
+            }
+          ],
+          "note": "\uc2e4\uc81c \uc800\uc7a5 \uac1d\uccb4\uc758 \uc77d\uae30 \uc804\uc6a9 \uacc4\ubcf4. \uc678\ubd80 \uc791\ud488 \ucc38\uace0\ub294 \ucd9c\ucc98 \uc88c\ud45c\ub85c \ud45c\uc2dc\ud558\uba70 \ud604\uc7ac \uc791\ud488 \uac1c\uccb4\ub85c \uc790\ub3d9 \ubcd1\ud569\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4."
+        },
+        "chat_turns": [],
+        "chat_receipts": [],
+        "chat_connection": {
+          "available": false,
+          "mode": "disconnected",
+          "reason": "\ucc44\ud305 \uc2e4\ud589 \uc5f0\uacb0 \uc5c6\uc74c \u00b7 \ub85c\uceec \uacc4\ud68d\uc740 \uacc4\uc18d \uc0ac\uc6a9\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+        },
+        "media_connections": {
+          "image": {
+            "state": "unconfigured",
+            "available": false,
+            "can_prepare": false,
+            "mode": "disconnected",
+            "model": null,
+            "reason": "\ubaa8\ub378\uc744 \uc120\ud0dd\ud558\uba74 \uc5f0\uacb0 \uc0c1\ud0dc\ub97c \ud655\uc778\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+            "policy": "\ucd9c\ub825 \uc811\uadfc\u00b7\ubcf4\uad00 \uc870\uac74\uacfc \ube44\uc6a9\uc740 \uc900\ube44\ub41c \uc791\uc5c5\uc5d0\uc11c \ud655\uc778\ud569\ub2c8\ub2e4."
+          },
+          "video": {
+            "state": "unconfigured",
+            "available": false,
+            "can_prepare": false,
+            "mode": "disconnected",
+            "model": null,
+            "reason": "\ubaa8\ub378\uc744 \uc120\ud0dd\ud558\uba74 \uc5f0\uacb0 \uc0c1\ud0dc\ub97c \ud655\uc778\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+            "policy": "\ucd9c\ub825 \uc811\uadfc\u00b7\ubcf4\uad00 \uc870\uac74\uacfc \ube44\uc6a9\uc740 \uc900\ube44\ub41c \uc791\uc5c5\uc5d0\uc11c \ud655\uc778\ud569\ub2c8\ub2e4."
+          }
+        },
+        "image_connection": {
+          "state": "unconfigured",
+          "available": false,
+          "mode": "disconnected",
+          "model": null,
+          "reason": "\uc774\ubbf8\uc9c0 \uc5f0\uacb0\uc774 \uc124\uc815\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4. \ubaa8\ub378 \uc120\ud0dd\ub9cc\uc73c\ub85c \uc678\ubd80 \uc2e4\ud589\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+          "checks": {
+            "account": false,
+            "configuration": false,
+            "integration": false,
+            "approval": false
+          },
+          "policy": "\uc774\ubbf8\uc9c0 \uacf5\uae09\uc790\u00b7\ubcf4\uad00\u00b7\uc811\uadfc \uacc4\uc57d \ubbf8\uc120\ud0dd. \uae30\uc874 \uc774\ubbf8\uc9c0\ub97c \uc5c5\ub85c\ub4dc\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4."
+        },
+        "media_actions": [],
+        "preflight": {
+          "ready": false,
+          "errors": [
+            "\ud0c0\uc784\ub77c\uc778\uc744 \uc800\uc7a5\ud558\uc138\uc694.",
+            "\uc800\uc7a5\ud55c \ud0c0\uc784\ub77c\uc778 \uc2b9\uc778\uc774 \ud544\uc694\ud569\ub2c8\ub2e4.",
+            "\ubbf8\ub514\uc5b4\u00b7\ud3b8\uc9d1 \uc785\ub825\uc744 \ud655\uc778\ud558\uc138\uc694: \uac01 \ucef7\uc758 take\ub97c \uc120\ud0dd\ud558\uc138\uc694.",
+            "s: take \uac80\ud1a0 \uc2b9\uc778\uc774 \ud544\uc694\ud569\ub2c8\ub2e4."
+          ],
+          "warnings": [
+            "\uc74c\uc6d0 \uc5c6\ub294 \ubb34\uc74c \ucd9c\ub825\uc785\ub2c8\ub2e4."
+          ],
+          "duration": 3,
+          "audio_version": null,
+          "audio_start": 0,
+          "audio_end": 3,
+          "profile": "landscape",
+          "note": "\uc800\uc7a5\ub41c \ud3b8\uc9d1 \uae30\uc900 \uc548\ub0b4\uc785\ub2c8\ub2e4. \uc2e4\uc81c \uc2e4\ud589 \uc2dc \uc790\uc0b0 \ud574\uc2dc\uc640 \uc2b9\uc778 \uc0c1\ud0dc\ub97c \ub2e4\uc2dc \uac80\uc0ac\ud569\ub2c8\ub2e4."
+        }
+      }
+    },
+    "preferences": [],
+    "workspace_id": "a654ec4e-1671-42fe-bd08-be1d7dc6a1df",
+    "model_catalog": {
+      "models": [
+        {
+          "id": "anthropic-haiku-5-5",
+          "release_id": "anthropic:claude-haiku-5-5",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "anthropic",
+          "model": "claude-haiku-5-5",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \ub3c4\uad6c \uc2e4\ud589\u00b7\ud569\uc131 \uac80\uc99d \uacbd\ub85c \uad6c\ud604; \uc77c\ubc18 \ud504\ub85c\uc81d\ud2b8 \uc2e4\uc81c \ucc44\ud305 \uc5f0\uacb0 \ubbf8\uac80\uc99d",
+          "capabilities": null
+        },
+        {
+          "id": "openai-gpt-6-luna",
+          "release_id": "openai:gpt-6-luna",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "openai",
+          "model": "gpt-6-luna",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \uacc4\uc57d \uad6c\ud604 \u00b7 \uacc4\uc815 \uc5f0\uacb0\uacfc \uc2e4\uc81c \uc2e4\ud589 \ubbf8\uac80\uc99d",
+          "capabilities": {
+            "task": "text-and-tools"
+          }
+        },
+        {
+          "id": "xai-grok-4-7",
+          "release_id": "xai:grok-4.7",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "chat",
+          "provider": "xai",
+          "model": "grok-4.7",
+          "state": "integration_unverified",
+          "reason": "\uc11c\ubc84 \uacc4\uc57d \uad6c\ud604 \u00b7 \uacc4\uc815 \uc5f0\uacb0\uacfc \uc2e4\uc81c \uc2e4\ud589 \ubbf8\uac80\uc99d",
+          "capabilities": {
+            "task": "text-and-tools"
+          }
+        },
+        {
+          "id": "fal-kling-2-6-pro",
+          "release_id": "fal:kling-video-v2.6-pro-i2v",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "video",
+          "provider": "fal",
+          "model": "fal-ai/kling-video/v2.6/pro/image-to-video",
+          "state": "integration_blocked",
+          "reason": "\uacf5\uae09\uc790 \uc644\ub8cc \ud6c4 \ube44\uacf5\uac1c \ud30c\uc77c \uc218\uc2e0 \ucc28\ub2e8; \ud1b5\ud569 \uac80\uc99d \ubbf8\uc644\ub8cc",
+          "capabilities": {
+            "task": "image-to-video",
+            "durations": [
+              5,
+              10
+            ],
+            "generated_audio": false
+          }
+        },
+        {
+          "id": "fal-flux-schnell",
+          "release_id": "fal:fal-ai/flux/schnell",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "image",
+          "provider": "fal",
+          "model": "fal-ai/flux/schnell",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "text-to-image",
+            "reference_roles": []
+          }
+        },
+        {
+          "id": "fal-flux-pro-1-1",
+          "release_id": "fal:fal-ai/flux-pro/v1.1",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "image",
+          "provider": "fal",
+          "model": "fal-ai/flux-pro/v1.1",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "text-to-image",
+            "reference_roles": []
+          }
+        },
+        {
+          "id": "fal-kling-2-5-turbo",
+          "release_id": "fal:fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+          "connection_id": null,
+          "revision_pinning": "unverified",
+          "role": "video",
+          "provider": "fal",
+          "model": "fal-ai/kling-video/v2.5-turbo/pro/image-to-video",
+          "state": "integration_unverified",
+          "reason": "\uacc4\uc57d \uad6c\ud604 \u00b7 \uac00\uaca9\u00b7\uacc4\uc815\u00b7\uacb0\uacfc \uc218\uc2e0 \uc2e4\uc81c \uac80\uc99d \uc804",
+          "capabilities": {
+            "task": "image-to-video",
+            "reference_roles": [
+              "start_frame"
+            ]
+          }
+        }
+      ],
+      "roles": [
+        "chat",
+        "image",
+        "video"
+      ],
+      "image_notice": "fal \uc774\ubbf8\uc9c0 \ubaa8\ub378 \uacc4\uc57d \uac80\uc99d \uc911 \u00b7 \uc2e4\uc81c \uc5f0\uacb0 \uc804\uc5d0\ub294 \uae30\uc874 \uc774\ubbf8\uc9c0 \uc5c5\ub85c\ub4dc \uc0ac\uc6a9",
+      "live_execution": false,
+      "scope": "single-local-workspace",
+      "automatic_routing": false
+    },
+    "budgets": [],
+    "generation_jobs": [],
+    "project_ids": {
+      "A": "35ab01a5-70a0-548d-bf1e-89a755580822"
+    },
+    "ips": [
+      {
+        "id": "default",
+        "name": "\uae30\ubcf8 IP",
+        "description": "\uae30\uc874 \ub85c\uceec \uc791\ud488"
+      }
+    ],
+    "asset_rights": {},
+    "revision": 5,
+    "jobs": [],
+    "ffmpeg": true,
+    "capabilities": {
+      "chat_plan": true,
+      "provider_generation": false,
+      "local_render": true,
+      "audio": true,
+      "subtitle_track": true,
+      "burned_subtitles": false,
+      "cancel_local_job": true,
+      "authentication": false,
+      "provider_mode": "disconnected",
+      "scope": "single-local-workspace"
+    }
+  },
+  "gptId": "openai-gpt-6-luna",
+  "videoId": "fal-kling-2-6-pro"
+}

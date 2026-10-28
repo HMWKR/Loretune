@@ -1,0 +1,82 @@
+{
+  "status": "ready: related55 tests/43.686s OK and actual synthetic-protocol/local-render proof retained",
+  "tool": "propose_timeline_changes",
+  "commands": {
+    "set_motion_overlay": {
+      "op": "set_motion_overlay",
+      "clip_index": "zero-based base timeline occurrence",
+      "source_shot_id": "same-project approved source stable ID from catalog",
+      "motion_revision": "immutable source version integer",
+      "start": "clip-local seconds; source begins at frame0 here",
+      "end": "exclusive clip-local end, within clip and source duration",
+      "offset_x": "original1920 logicalpx translation [-1920,1920]",
+      "offset_y": "original1080 logicalpx translation [-1080,1080]"
+    },
+    "clear_motion_overlay": {
+      "op": "clear_motion_overlay",
+      "clip_index": "zero-based base timeline occurrence"
+    }
+  },
+  "projection": {
+    "timeline.clips[].motion_overlay": [
+      "source_shot_id",
+      "source_shot_name",
+      "motion_revision",
+      "start",
+      "end",
+      "offset_x",
+      "offset_y"
+    ],
+    "motion_overlay_sources": {
+      "items_max": 32,
+      "items": [
+        "source_shot_id",
+        "motion_revision",
+        "scene_hash",
+        "duration_seconds",
+        "layer_count",
+        "approval_status",
+        "requires_revalidation"
+      ],
+      "name_lookup": "execution_targets.shots[].name by source_shot_id; no repeated full names/scenes/grants",
+      "next_query": "motion-overlay-sources offset=32",
+      "malformed_reserved_query": "invalid_arguments; negative/noninteger/over7digit offset rejected"
+    },
+    "source_data": "whole historical source scenes omitted; current head body retains existing motion_context path"
+  },
+  "review_UI": {
+    "diff_field": "timeline_diff.motion_overlays",
+    "entries": [
+      "base_clip_index",
+      "proposed_clip_index",
+      "before (stored overlay or null)",
+      "after (stored overlay or null)"
+    ],
+    "before_after_fields": [
+      "shot",
+      "motion_revision",
+      "start",
+      "end",
+      "offset_x",
+      "offset_y"
+    ],
+    "preserved": "existing clip/order/captions/audio diff fields unchanged",
+    "review_action": "existing review_timeline_proposal",
+    "approval_behavior": "new saved unapproved timeline; final output approval separate"
+  },
+  "scope": {
+    "run_revision": 2,
+    "legacy_or_malformed_marker": "TOOL_SCHEMA_REVIEW_REQUIRED",
+    "approved_manifest": "actual consumed general_chat preview schema must list requested new operation; same name alone not enough"
+  },
+  "bounds": [
+    "one source per clip; source internal max8layers",
+    "current source3–4sec; source background excluded",
+    "source/clip/rights/media/version/font validated; no new provider or generic API"
+  ],
+  "unsupported": [
+    "real model/account/billing not verified by fixtures",
+    "3D mesh generation not provided by these tools",
+    "drag editor and arbitrary timeline tracks not introduced"
+  ]
+}

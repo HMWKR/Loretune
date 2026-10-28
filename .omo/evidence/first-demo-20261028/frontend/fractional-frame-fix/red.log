@@ -1,0 +1,28 @@
+PASS approved immutable sources include hidden-grant versions without leaking grant IDs
+PASS source version changes preserve timing and offsets; explicit clear restores absent-field contract
+PASS invalid duration, source, blank values and offset ranges are explained without clamping
+PASS numeric editing sets dirty and preserves source and focused control without redraw
+PASS save reads current unblurred overlay fields and preserves original source versions
+PASS invalid save keeps input and source while withholding the mutation
+PASS actual saved-frame request includes exact version, clip, frame and conversation
+PASS unsaved draft cannot request a misleading saved-frame preview
+PASS late network response cannot replace preview after a draft edit
+PASS late decoded image cannot cross conversation or requested-time boundaries
+PASS server preview rejection preserves editing inputs and exposes recovery message
+PASS saved-frame range rejects empty and out-of-clip time without a request
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 0.08333333333333333
+- 0.125
+
+    at /Users/leesungmin/Desktop/Loretune/tests/timeline_motion_overlay.cjs:71:255
+    at test (/Users/leesungmin/Desktop/Loretune/tests/timeline_motion_overlay.cjs:22:70)
+    at run (/Users/leesungmin/Desktop/Loretune/tests/timeline_motion_overlay.cjs:70:8) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 0.08333333333333333,
+  expected: 0.125,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

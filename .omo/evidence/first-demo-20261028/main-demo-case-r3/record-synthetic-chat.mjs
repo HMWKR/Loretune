@@ -1,0 +1,63 @@
+const fs=await import('node:fs/promises'),crypto=await import('node:crypto');
+const base='/Users/leesungmin/Desktop/Loretune/.omo/evidence/first-demo-20261028';
+const dir=base+'/main-demo-case-r3';
+const {recordScreen,observeUntil}=await import('file://'+base+'/record-screen.mjs');
+const {demoControls}=await import('file://'+base+'/main-demo-actions.mjs');
+const task=await taskSpace(91),page=task.page('p1');
+await page.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+await page.reload();
+await observeUntil(page,()=>project()?.timeline_head===3&&project()?.general_chat_connection?.mode==='contract-live-test'&&!busy&&!pendingId());
+const options={projectName:'1차 시연 · 음악에서 영상까지',evidenceDir:dir,inputDir:base+'/inputs'};
+const ui=demoControls(page,async()=>{},options);
+const before=await ui.saveState('before-synthetic-chat-ui.json');
+const sources={};for(const name of ['index.html','studio.css','studio-media.js','general-chat-ui.js','chat-sidebar.js'])sources[name]=crypto.createHash('sha256').update(await fs.readFile('/Users/leesungmin/Desktop/Loretune/'+name)).digest('hex');
+await fs.writeFile(dir+'/synthetic-chat-recording-source.json',JSON.stringify({sources,recordScriptSha256:crypto.createHash('sha256').update(await fs.readFile(dir+'/record-synthetic-chat.mjs')).digest('hex'),scope:'Real local HTTP and actual UI/native render. All model responses deterministic fixture; real model/billing calls0. One synthetic budget scope seeded outside UI as disclosed setup.'},null,2));
+console.log(await recordScreen(page,dir+'/synthetic-chat-take-01',async rawMark=>{
+ const mark=async(name,detail={})=>{await rawMark(name,detail);await new Promise(r=>setTimeout(r,850));};
+ await mark('synthetic-only-chat-episode-start',{realModelCalls:0,mode:'contract-live-test',timeline:3,fixtureBudgetSeed:'Synthetic rehearsal-live USD0.04; not real spend or UI budget completion'});
+ await ui.button('#agentChatTab');
+ await ui.choose('#agentMode','full_access');await ui.button('#agentPreferencesForm button');
+ await ui.stored(s=>s.projects[options.projectName].agent_preferences.current.mode==='full_access');
+ await mark('full-access-chosen-through-ui',{effort:'high',model:'anthropic-haiku-5-5',finalOutputApprovalSeparate:true,accountDeleteForbidden:true});
+ await ui.fill('#generalChatPrompt','현재 작업을 확인하고 사진 위 타이포 위치와 마지막 자막을 바꿔줘');
+ await ui.fill('#generalChatMaximum','0.01');await ui.fill('#generalChatTotal','0.04');await ui.button('#generalChatPrepare');
+ const seen=new Set();
+ for(let round=1;round<=4;round++){
+  const value=await ui.stored(s=>s.projects[options.projectName].general_chat_previews?.some(v=>!seen.has(v.id)));
+  const preview=value.projects[options.projectName].general_chat_previews.find(v=>!seen.has(v.id));seen.add(preview.id);
+  const box='#generalChatReviews [data-rights="'+preview.id+'"]';
+  await observeUntil(page,s=>!!document.querySelector(s),box);await ui.expose(box);
+  await mark('synthetic-transmission-manifest-review',{round,previewId:preview.id,manifest:preview.manifest_sha256,realExternalTransmission:false});
+  await page.focus(box);if(!await page.evaluate(s=>document.querySelector(s).checked,box))await page.press(box,'Space');
+  await ui.button('#generalChatReviews [data-general-decision="approve"][data-preview="'+preview.id+'"]');
+  if(round===3){
+   await ui.stored(s=>s.projects[options.projectName].timeline_head===4);
+   await observeUntil(page,()=>project()?.timeline_head===4&&draft?.id===4&&!draft.approval&&!dirty);
+   const aligned=await page.evaluate(()=>({head:project().timeline_head,draft:draft.id,approved:!!draft.approval,offset:[document.querySelector('[data-overlay-clip="0"][data-overlay-field="offset_x"]').value,document.querySelector('[data-overlay-clip="0"][data-overlay-field="offset_y"]').value],lastCaption:[...document.querySelectorAll('#captions [data-field="text"]')].at(-1).value,preflight:document.querySelector('#preflight').innerText,status:document.querySelector('#timelineStatus').innerText}));
+   await fs.writeFile(dir+'/actual-chat-edit-ui-alignment.json',JSON.stringify(aligned,null,2));
+   if(aligned.offset.join(',')!=='-80,-80'||aligned.lastCaption!=='음악의 여운을 이어서')throw Error('Saved edit and visible fields disagree');
+   await mark('actual-agent-draft-four-immediately-visible',aligned);
+   const jobs=(await ui.state()).jobs.length;await ui.stage('4 편집·출력');await ui.button('#render');
+   await observeUntil(page,()=>document.querySelector('#notice')?.classList.contains('error')&&!document.querySelector('#renderConfirm').open);
+   const denied={notice:await page.evaluate(()=>document.querySelector('#notice').innerText),jobsBefore:jobs,jobsAfter:(await ui.state()).jobs.length};if(denied.jobsBefore!==denied.jobsAfter)throw Error('Unapproved edit unexpectedly created a job');
+   await fs.writeFile(dir+'/actual-unapproved-chat-output-denied.json',JSON.stringify(denied,null,2));await mark('agent-draft-output-requires-separate-human-approval',denied);
+   await ui.button('#agentChatTab');
+  }
+ }
+ await ui.stored(s=>s.projects[options.projectName].general_chat_turns.some(t=>t.status==='completed'));
+ await observeUntil(page,()=>project()?.general_chat_turns?.some(t=>t.status==='completed'));
+ await mark('synthetic-chat-answer-matches-saved-edit',{timeline:4,realModelCalls:0});
+ await ui.stage('4 편집·출력');await ui.choose('#timelineFrameClip',0);await ui.fill('#timelineFrameTime',1.5);await ui.button('#timelineFrameView');
+ await observeUntil(page,()=>!document.querySelector('#savedFramePreview').hidden&&!document.querySelector('#timelineFrameImage').hidden&&document.querySelector('#timelineFrameImage').naturalWidth===1920);
+ await page.fetch(await page.evaluate(()=>document.querySelector('#timelineFrameImage').src),{saveAs:dir+'/chat-overlay-after.png'});
+ await mark('chat-edited-composition-actual-saved-frame',{timeline:4,clip:0,time:1.5});
+ const withMarks=demoControls(page,mark,options);const output=await withMarks.output(4,'chat-edited-output');
+ await ui.saveState('after-synthetic-chat-output.json');
+ await page.reload();await observeUntil(page,()=>project()?.timeline_head===4&&draft?.id===4&&!busy&&!pendingId());
+ const after=await ui.saveState('after-synthetic-chat-reopen.json');const p=after.projects[options.projectName],old=before.projects[options.projectName];
+ if(JSON.stringify(p.shots)!==JSON.stringify(old.shots)||JSON.stringify(p.audio_versions)!==JSON.stringify(old.audio_versions)||old.timeline_versions.some((v,i)=>JSON.stringify(v)!==JSON.stringify(p.timeline_versions[i])))throw Error('Prior source or timeline history changed during agent edit');
+ if(after.jobs.find(j=>j.id===output.id)?.sha256!==output.sha256)throw Error('Reopened output SHA changed');
+ await fs.writeFile(dir+'/synthetic-chat-reopen-preservation.json',JSON.stringify({oldTimelineVersions:3,newTimeline:4,oldSourcesAndAudioPreserved:true,outputJob:output.id,outputSha256:output.sha256,realModelCalls:0},null,2));
+ await mark('synthetic-chat-native-edit-output-reopen-completed',{timeline:4,output:output.id,realModelCalls:0,interpretation:'Synthetic protocol responses and real UI/applying/rendering; not actual Claude understanding'});
+}));
+console.log(await page.snapshot());

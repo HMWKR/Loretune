@@ -1,0 +1,33 @@
+[
+  {
+    "id": "F01",
+    "expected": "zero provider submits after input rights revoke",
+    "actual_submits": 1,
+    "job_state": "accepted",
+    "rights_blocked": true
+  },
+  {
+    "id": "F02",
+    "expected": "preserve cancelled_result and collected result URL",
+    "actual_state": "cancel_sent",
+    "actual_result": null,
+    "revision": 6
+  },
+  {
+    "id": "F03",
+    "expected": "reference relationship change is review impact; old context pins relation",
+    "actual_impacts": [],
+    "bound_context_keys": [
+      "revision",
+      "entities"
+    ],
+    "graph_digest_changed": true
+  },
+  {
+    "id": "F04",
+    "expected_duration": 3.9,
+    "actual_duration": 3.75,
+    "verification_error": "출력 영상 길이·해상도 검증에 실패했습니다.",
+    "case": "30 legal 0.130 second still clips at 24fps"
+  }
+]

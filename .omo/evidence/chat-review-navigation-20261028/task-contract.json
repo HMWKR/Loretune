@@ -1,0 +1,193 @@
+{
+  "schema": "loretune-agent-execution-plan/1",
+  "at": "2026-10-28T05:44:28.474943+00:00",
+  "goal_turn_audit": {
+    "previous": "no_progress",
+    "basis": "Previous hook turn rechecked unchanged document gate/approval hashes only",
+    "revalidated": "All235accepted source hashes still match925baseline; same13/26/4/6proposal unapproved",
+    "safe_next_action": "Implement explicit chat result→existing media review card navigation; actual external model approvals remain untouched"
+  },
+  "issue_id": "AGENT-TOOLS-02-REVIEW-DISCOVERY",
+  "goal": "User can reach saved image-production review card from chat without losing draft/conversation/focus/approval boundaries",
+  "authoritative_inputs": [
+    ".omo/evidence/chat-media-preparation-20261028/session-handoff.json",
+    ".omo/evidence/chat-media-preparation-20261028/workflow-followup.json",
+    ".omo/evidence/chat-media-preparation-20261028/driver-acceptance.json",
+    "Current chat/sidebar/index UI and design tokens"
+  ],
+  "methodology_sources": [
+    "NN/g Recognition rather than recall https://www.nngroup.com/articles/recognition-and-recall/",
+    "WAI APG tabs https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+    "Installed Karpathy Guidelines",
+    "Installed feature-verification/runtime/live-feature-verify/uncompromising-rigor/UI craft",
+    "Hallmark2.0.0 scoped app audit; Impeccable incumbent Operate/refinement directives; current Refero design policy permits existing references for small established patterns"
+  ],
+  "applied_methodology": [
+    "Task-flow link to visible saved result",
+    "Explicit navigation, preserve user control/draft and critical approvals",
+    "One existing DOM/card and real tabs/focus lifecycle",
+    "Actual UI/HTTP/state with stale/foreign/missing/modal/keyboard cases"
+  ],
+  "decision": {
+    "selected": "Explicit contextual review action",
+    "rejected": "Auto-switch tab after preparation",
+    "why": "User chooses navigation; avoids interrupting ongoing draft/consent; targets saved scoped result",
+    "association": "Expose existing server-owned turn.run as public run_id; UI verifies current conversation→unique scoped run→proposed prepare call→unique scoped image action/shot",
+    "rejected_association": "Standalone global prepared-action list or answer/prompt/steps parsing",
+    "association_reason": "Existing steps contain round/request/usage, not result IDs; exact relationship required. Avoid duplicating project-wide state projection."
+  },
+  "agents": [
+    {
+      "agent": "read_agent_next_tool_gap followup",
+      "agent_type": "codebase-explorer",
+      "role": "Read-only source map of safe result-to-card navigation",
+      "model": "inherit",
+      "reasoning": "inherit",
+      "write_set": [],
+      "scope": [
+        "general-chat-ui.js",
+        "chat-sidebar.js",
+        "index.html",
+        "tests/shared fixture/browser patterns"
+      ],
+      "verification": "Exact source paths/guards/state targets, no changes; report stale/conversation/modal boundaries"
+    },
+    {
+      "agent": "review_navigation_worker",
+      "agent_type": "worker",
+      "role": "Implement exact result-to-card navigation and actual UI/API/recording checks",
+      "model": "inherit",
+      "reasoning": "inherit",
+      "write_set": [
+        "chat_general.py",
+        "general-chat-ui.js",
+        "chat-sidebar.js",
+        "tests/test_general_chat_review_navigation.py",
+        "tests/general_chat_review_navigation.cjs",
+        ".omo/evidence/chat-review-navigation-20261028/worker/"
+      ],
+      "methodology_sources": [
+        "NN/g Recognition rather than recall https://www.nngroup.com/articles/recognition-and-recall/",
+        "WAI APG tabs https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+        "Installed Karpathy Guidelines",
+        "Installed feature-verification/runtime/live-feature-verify/uncompromising-rigor/UI craft",
+        "Hallmark2.0.0 scoped app audit; Impeccable incumbent Operate/refinement directives; current Refero design policy permits existing references for small established patterns"
+      ],
+      "applied_methodology": [
+        "Task-flow link to visible saved result",
+        "Explicit navigation, preserve user control/draft and critical approvals",
+        "One existing DOM/card and real tabs/focus lifecycle",
+        "Actual UI/HTTP/state with stale/foreign/missing/modal/keyboard cases"
+      ],
+      "verification": [
+        "Public run_id projection is read-only; legacy missing null and no inferred association",
+        "Button and click revalidate current turn/run/call/action/shot and scope; stale/duplicate/missing/foreign fails closed",
+        "Use existing native modal close/shot/stage/mobile tabs and exact existing card focus, no cloned state",
+        "Actual three-width UI/Enter+Space/focus/draft/modal/cross-scope; no extraPOST or media grant/job/reservation",
+        "Actual continuous supplemental screen recording, decode/playback/keyframes/sourcefreeze evidence"
+      ],
+      "dependency": "Read-only source mapper findings, root plan shown; root integrated acceptance",
+      "limits": [
+        "No actual Claude/image/video/provider calls or key access",
+        "No new generation/approval/deletion/permission actions",
+        "No user server8765/review57888/Ego userSpace use",
+        "No registry/policy/generated-context changes",
+        "No whole-product completion claim"
+      ]
+    },
+    {
+      "agent": "read_agent_next_tool_gap followup review",
+      "agent_type": "codebase-explorer",
+      "role": "Independent read-only implementation/evidence review for current task only",
+      "model": "inherit",
+      "reasoning": "inherit",
+      "write_set": [],
+      "methodology_sources": [
+        "NN/g Recognition rather than recall https://www.nngroup.com/articles/recognition-and-recall/",
+        "WAI APG tabs https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+        "Installed Karpathy Guidelines",
+        "Installed feature-verification/runtime/live-feature-verify/uncompromising-rigor/UI craft",
+        "Hallmark2.0.0 scoped app audit; Impeccable incumbent Operate/refinement directives; current Refero design policy permits existing references for small established patterns"
+      ],
+      "applied_methodology": [
+        "Exact typed association and stale/foreign/duplicate counterexamples",
+        "Read-only projection invariance",
+        "Native UI lifecycle, focus and drafts",
+        "Compare changed code against real API/VM/UI evidence, not syntax checks alone"
+      ],
+      "verification": [
+        "No unexpected product files/state mutations",
+        "Three sources and newtests reflect user task; not global-list substitute",
+        "Actual current task evidence and source hash correspondence",
+        "No same-baseline925 or real-model claim for new code"
+      ],
+      "limits": [
+        "No writes/browser/server/model calls",
+        "No new feature beyond current user boundary"
+      ],
+      "dependency": "Worker sources now applied; API/UI evidence completing"
+    }
+  ],
+  "root_write_set": [
+    ".omo/evidence/chat-review-navigation-20261028/"
+  ],
+  "planned_product_write_set": [
+    "chat_general.py",
+    "general-chat-ui.js",
+    "chat-sidebar.js"
+  ],
+  "non_goals": [
+    "No actual Claude/image/video/provider calls or key access",
+    "No new generation/approval/deletion/permission actions",
+    "No user server8765/review57888/Ego userSpace use",
+    "No registry/policy/generated-context changes",
+    "No whole-product completion claim"
+  ],
+  "status": "ACCEPTED_CURRENT_TASK; STOP_AT_USER_BOUNDARY",
+  "skill_use": {
+    "read": [
+      "Hallmark2.0.0 SKILL/redesign/flow app scope",
+      "Impeccable SKILL/clarify/operate/craftfloor",
+      "Refero installed SKILL and existing reference lock",
+      "feature-verification",
+      "orchestrate"
+    ],
+    "execution_context": "Prior Impeccable context/detect session reused; current locked documents/source/UI truth separately revalidated, no context rerun claimed",
+    "fresh_refero_call": false,
+    "reference_reason": "Existing locked Frame.io/Descript/Runway task/control references plus NN/g/APG suffice for narrow existing-pattern navigation; no new visual direction"
+  },
+  "latest_user_scope": {
+    "at": "2026-10-28T05:54:33.626488+00:00",
+    "instruction": "현재 작업하는 것까지만 우선 진행하고 문서 갱신 및 다음 할 일 목록 정리",
+    "allowed_until_stop": [
+      "Finish current result-to-review navigation",
+      "Required scoped actual verification and already assigned artifacts",
+      "Update affected current docs and next-work list"
+    ],
+    "excluded_after_current_task": [
+      "Start another feature/tool integration",
+      "Additional speculative research or polish",
+      "Registration/context execution without explicit approval",
+      "Actual model/provider calls"
+    ],
+    "goal_after_current_task": "Pause further goal implementation at user-requested boundary; retain full objective/incomplete requirements"
+  },
+  "document_write_set_root_only": [
+    "README.md",
+    "docs/design/CHAT-SESSION-PLAN.md",
+    "docs/qa/codex-workflow-review-20261027/REPORT-ko.md",
+    "docs/qa/REMAINING-WORK.md",
+    "docs/qa/codex-cli-assessment-20261026/PLAN-ko.md",
+    "docs/WORKFLOW-EXECUTION-GUIDE-ko.md"
+  ],
+  "document_limits": [
+    "No old lines removed",
+    "Results reflect actual scoped verification,925ispriorbaseline",
+    "Specificnextactions and userrequestedstop recorded",
+    "No registry/context changes; new review proposal hashes only"
+  ],
+  "completed_at": "2026-10-28T06:21:41.683002+00:00",
+  "handoff": "session-handoff.md",
+  "new_root_handoff_authority": "Latest explicit user request to hand off to next agent; classification proposed only",
+  "next_implementation_started": false
+}

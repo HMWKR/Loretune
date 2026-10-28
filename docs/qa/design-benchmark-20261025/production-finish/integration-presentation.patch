@@ -1,0 +1,237 @@
+--- a/index.html
++++ b/index.html
+@@ -557,6 +557,94 @@
+ .lt-creator .creator-output-card>header b{font-size:15px;letter-spacing:0}
+ 
+ </style>
++<style id="loretuneProductionFinish">
++/* Reference-locked finishing layer: semantic emphasis, no provider permissions. */
++.lt-finish{--finish-body:#dededb;--finish-meta:#bdbdbb;--finish-line:#383838;--finish-focus:#e4ddbe;--finish-selected:#2a2a28}
++.lt-finish :where(p,small,label,select,input,textarea){font-weight:400}
++.lt-finish :where(button,summary){font-weight:500}
++.lt-finish :where(h1,h2,h3){font-weight:600}
++.lt-finish .lt-shot-header>h1,.lt-finish .creator-review-scene{font-weight:600;letter-spacing:-.2px}
++.lt-finish .lt-scene-copy>b,.lt-finish .lt-take-copy>b,.lt-finish .lt-track-clip>b{font-weight:500}
++.lt-finish :where(.lt-scene-copy>small,.lt-take-copy>small,.lt-track-clip>small,.creator-comparison-identity>span){font-weight:400;color:var(--finish-meta)}
++.lt-finish .lt-scene-copy{gap:4px}
++.lt-finish :where(.lt-take-copy,.lt-track-clip){line-height:1.5}
++.lt-finish .lt-review-state{display:inline-flex;gap:4px;align-items:center;padding:0;border:0!important;background:transparent!important;font-weight:400;color:var(--finish-meta);line-height:1.5}
++.lt-finish .lt-review-state[data-review="approved"]{color:#dededb}
++.lt-finish .lt-review-state:is([data-review="rejected"],[data-review="changes_requested"]){color:#ffb49d}
++.lt-finish #track .lt-review-state{padding:0;border:0;background:transparent}
++.lt-finish .review-state-symbol{font-size:12px;line-height:1;width:12px;text-align:center}
++.lt-finish #track .review-state-symbol{display:inline-block;border:0;background:transparent;padding:0;overflow:visible;flex:none}
++.lt-finish .shot{border-color:transparent;background:transparent;box-shadow:none;border-radius:6px}
++.lt-finish .shot:hover{background:#222}
++.lt-finish .shot.active{border-color:transparent;background:var(--finish-selected);box-shadow:inset 2px 0 #d8d8d2}
++.lt-finish #takes button{border-color:#484848;background:#1b1b1b;box-shadow:none}
++.lt-finish #takes button:hover{background:#242424;border-color:#777}
++.lt-finish #takes button.active{border-color:#70706a;background:var(--finish-selected);box-shadow:inset 2px 0 #d8d8d2}
++.lt-finish #track>.lt-track-clip{border-color:#484848;background:#202020;box-shadow:none}
++.lt-finish #track>.lt-track-clip[data-current="true"]{background:var(--finish-selected);border-color:#70706a;box-shadow:inset 2px 0 #d8d8d2}
++.lt-finish :where(button,input,select,textarea,summary,a):focus-visible{outline:2px dashed var(--finish-focus);outline-offset:3px}
++.lt-finish #creatorSavedReason{font-weight:400;color:var(--finish-body);line-height:1.7}
++.lt-finish .inspector .lt-take-review{border-bottom:0;padding-bottom:0}
++.lt-finish #creatorEditReview{border-color:#777;background:#242424;font-weight:500}
++.lt-finish #reviewTake:not(:disabled){background:#f4f4f2!important;color:#101010!important;border-color:#f4f4f2!important;opacity:1!important;font-weight:600}
++.lt-finish #reviewTake{transition:none!important}
++.lt-finish #reviewTake:disabled{background:#292929!important;color:#a6a6a3!important;border-color:#555!important;opacity:1!important;cursor:not-allowed}
++.lt-finish #discardTakeReviewDraft{border-color:#777}
++.lt-finish .production-review-error{padding:10px 12px;margin:0 0 12px;border-left:2px solid #ffb49d;background:#28201e;color:#ffb49d;font-size:13px;line-height:1.6;font-weight:400}
++.lt-finish :where(.lt-inspector-detail,.production-tools){border:0;border-top:1px solid var(--finish-line);border-radius:0;background:transparent;margin:16px 0 0;padding:12px 0 0}
++.lt-finish .inspector .lt-inspector-detail{border:0;border-top:1px solid var(--finish-line);border-radius:0;background:transparent}
++.lt-finish .production-tools>summary{font-size:14px;line-height:1.5;min-height:40px;padding:8px 0;color:#dededb}
++.lt-finish .inspector #productionTools>summary{font-weight:500}
++.lt-finish .production-tools>summary>span{display:block;padding-left:14px;color:var(--finish-meta);font-size:12px;font-weight:400}
++.lt-finish .production-tools>.lt-inspector-detail{margin-top:8px;padding-top:8px}
++.lt-finish .production-tools .lt-inspector-detail>summary{font-size:13px;font-weight:500;min-height:36px;color:var(--finish-meta)}
++.lt-finish .production-card{border-top:0!important}
++.lt-finish .production-card>summary{color:#f4f4f2!important}
++.lt-finish .production-context{display:flex;flex-direction:column;gap:4px;padding:12px 0}
++.lt-finish .production-context>span,.lt-finish .production-role{font-size:12px;color:var(--finish-meta);font-weight:400}
++.lt-finish .production-context>b{font-size:14px;font-weight:500;word-break:keep-all;overflow-wrap:anywhere}
++.lt-finish .production-models{padding:0 12px;background:#141414;border-radius:6px}
++.lt-finish .production-model{display:grid;grid-template-columns:36px minmax(0,1fr);gap:6px 8px;padding:12px 0;border-bottom:1px solid #383838}
++.lt-finish .production-model:last-child{border-bottom:0}
++.lt-finish .production-model-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
++.lt-finish .production-model-name{font-size:14px;font-weight:500;color:#f4f4f2;overflow-wrap:anywhere}
++.lt-finish .production-readiness{font-size:12px;font-weight:400;color:var(--finish-meta)}
++.lt-finish .production-model[data-readiness="blocked"] .production-readiness{color:#ffb49d}
++.lt-finish .production-model>p{grid-column:2;margin:0;font-size:12px;line-height:1.6;color:var(--finish-meta);word-break:keep-all;overflow-wrap:anywhere}
++.lt-finish .production-model-button{margin:12px 0 0;min-height:40px;border-color:#777}
++.lt-finish .production-guidance{font-size:12px;line-height:1.6;color:var(--finish-meta);font-weight:400}
++.lt-finish #productionPrevious{border-top:1px solid #383838;margin-top:16px;padding-top:12px}
++.lt-finish #productionPrevious>summary{font-size:12px;font-weight:400;color:var(--finish-meta)}
++.lt-finish .media-action-card{border:0;border-top:1px solid #4b4b49;border-radius:0;background:transparent;padding:16px 0;margin:16px 0}
++.lt-finish .media-action-card h3{font-size:14px;font-weight:500}
++.lt-finish .media-action-card p{font-weight:400;line-height:1.6;color:var(--finish-body)}
++.lt-finish .media-action-card button{border-color:#777}
++.lt-finish .creator-comparison-identity{min-height:32px;margin:12px 0 8px;gap:8px}
++.lt-finish .creator-comparison-identity>b{font-weight:500}
++.lt-finish .comparison-media-stage{display:flex;align-items:center;justify-content:center;width:100%;height:min(32vh,300px);min-height:180px;background:#080808;border-radius:6px;overflow:hidden}
++.lt-finish #compareDialog .comparison-media-stage :is(img,video){width:100%;height:100%;max-height:100%;object-fit:contain;display:block;background:transparent}
++.lt-finish .creator-comparison-facts{margin-top:12px;font-weight:400}
++.lt-finish #compareDialog .creator-comparison-facts{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}
++.lt-finish #compareDialog .creator-comparison-facts>.creator-media-facts{grid-row:1;grid-column:1;margin:0}
++.lt-finish #compareDialog .creator-comparison-facts>.creator-test-badge{grid-row:1;grid-column:2}
++.lt-finish #compareDialog .creator-comparison-facts>p{grid-column:1/-1;margin:0;min-height:22px}
++.lt-finish #compareDialog .creator-comparison-facts>.creator-source{grid-column:1/-1;margin:0}
++.lt-finish .creator-comparison-facts p{font-weight:400;line-height:1.6}
++.lt-finish .creator-media-facts{color:var(--finish-meta);line-height:1.5}
++.lt-finish #takes .lt-take-kind,.lt-finish .shot .lt-media-kind{border:0;background:#30302e;color:#c5c5bf;font-size:12px;font-weight:400}
++@media(max-width:900px){
++ .lt-finish .production-tools>summary,.lt-finish .production-tools .lt-inspector-detail>summary,.lt-finish .production-model-button{min-height:44px}
++ .lt-finish .production-tools>summary{padding-block:10px}
++ .lt-finish #creatorMobileContext b{font-weight:500}
++ .lt-finish #creatorMobileContext small{font-weight:400}
++ .lt-finish .comparison-media-stage{height:210px;min-height:0}
++ .lt-finish .creator-comparison-identity{min-height:44px}
++ .lt-finish :where(#creatorEditReview,#reviewTake,#discardTakeReviewDraft){min-height:44px}
++}
++@media(forced-colors:active){.lt-finish :focus-visible{outline-color:Highlight}.lt-finish :is(.shot,#takes button)[aria-pressed="true"]{border:2px solid Highlight;box-shadow:none}.lt-finish .lt-review-state{color:CanvasText}}
++@media(prefers-reduced-motion:reduce){.lt-finish *{scroll-behavior:auto;animation:none;transition:none}}
++
++</style>
+ <body class="lt-system">
+ <a class="skip-link" href="#flowHeading" id="skipFlow">제작 단계로 건너뛰기</a><header><b>Loretune</b><span>제작 스튜디오</span><span id="providerBadge" class="badge">LOCAL · 모델 미연결</span></header>
+ <div class="lt-project-bar"><div class="toolbar"><select id="songs" aria-label="작품 선택"></select><button id="newProject">새 작품</button><details class="management"><summary>설정·자산·운영 더 보기</summary><label>글자 크기<select id="textScale"><option value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></label><button id="ontologyButton">인물·장소·계보</button><button id="settings">IP 기준 설정</button><button id="preferencesButton">연출 취향</button><button id="archiveButton">보관 관리</button><button id="operationsButton">운영 상태</button><button id="budgetButton">예산·원장</button><button id="libraryButton">자산함</button><button id="rightsButton">사용권 관리</button></details><div class="spacer"></div><button id="review" class="primary">타임라인 승인</button><button id="render" class="primary">렌더 대기열에 추가</button></div>
+@@ -643,9 +731,9 @@
+ // DOM glue. IDs and backend payload/approval contracts remain unchanged.
+ const takeReviewStore=createTakeReviewStore(sessionStorage);
+ let takeReviewScope='';
+-function studioReview(s,id){const review=[...(s?.reviews||[])].reverse().find(r=>r.take===id);const labels={approved:'Take 승인됨',rejected:'Take 거절',changes_requested:'Take 수정 요청'};return {review,decision:review?.decision||'pending',label:labels[review?.decision]||'Take 검토 대기'}}
++function studioReview(s,id){const review=[...(s?.reviews||[])].reverse().find(r=>r.take===id);const labels={approved:'승인됨',rejected:'거절됨',changes_requested:'수정 요청'};return {review,decision:review?.decision||'pending',label:labels[review?.decision]||'검토 전'}}
+ function currentTakeReview(){const p=project(),s=p?.shots[shotName],take=s?.selected;if(!take||!s.takes.some(t=>t.id===take))return null;return {key:takeReviewKey(state.workspace_id,song(),shotName,take),song:song(),shot:shotName,take,review:studioReview(s,take).review}}
+-function studioBadge(s,id){const r=studioReview(s,id);return `<span class="lt-review-state" data-review="${esc(r.decision)}">${esc(r.label)}</span>`}
++function studioBadge(s,id){const r=studioReview(s,id);return `<span class="lt-review-state" data-review="${esc(r.decision)}" aria-label="Take ${esc(id)} 검토: ${esc(r.label)}"><span class="review-state-symbol" aria-hidden="true">${({approved:'✓',pending:'○',rejected:'×',changes_requested:'↺'})[r.decision]||'○'}</span>${esc(r.label)}</span>`}
+ function studioAdopted(p,name,id){const timeline=draft||(p.timeline_head?p.timeline_versions[p.timeline_head-1]:null);return !!timeline?.clips.some(c=>c.shot===name&&c.take===id)}
+ function studioUseLabel(p,name,id){return studioAdopted(p,name,id)?(dirty?'미저장 편집에 사용':'편집에 사용'):''}
+ function renderStudioShots(p){return Object.entries(p.shots).map(([name,s],i)=>{const t=s.takes.find(t=>t.id===s.selected);return `<button class="shot ${name===shotName?'active':''}" data-shot="${esc(name)}" aria-pressed="${name===shotName}">${t&&image(t)?`<img class="thumb" src="${asset(t)}" alt="">`:`<span class="thumb lt-media-kind">${t?'영상':'미연결'}</span>`}<span class="lt-scene-copy"><b>${esc(creatorSceneLabel(name,i))}</b><small>${esc(creatorSceneFacts(p,name,s))}</small>${t?studioBadge(s,t.id):'<small>미디어 연결 전</small>'}</span></button>`}).join('')}
+@@ -679,7 +767,7 @@
+  document.querySelector('#discardTakeReviewDraft').disabled=!local||takeReviewController.pending.has(c?.key);
+  renderCreatorReview(c,local);
+ }
+-const takeReviewController=createTakeReviewController({store:takeReviewStore,context:currentTakeReview,inputs:()=>({decision:document.querySelector('#takeDecision').value,reason:document.querySelector('#reviewReason').value}),save:(action,data)=>act(action,data),render:renderTakeReview,notify:(text,error)=>message(text,error)});
++const takeReviewController=createTakeReviewController({store:takeReviewStore,context:currentTakeReview,inputs:()=>({decision:document.querySelector('#takeDecision').value,reason:document.querySelector('#reviewReason').value}),save:saveReviewWithFeedback,render:renderTakeReview,notify:(text,error)=>message(text,error)});
+ function openStudioComparison(){
+  const sh=project()?.shots[shotName];
+  if(!sh?.takes.length)return message('비교할 Take가 없습니다. 기존 미디어를 먼저 연결하세요.',true);
+@@ -720,7 +808,7 @@
+ function creatorMediaMarkup(t,{includeMemo=true}={}){
+  if(!t)return '';
+  const blocked=state?.asset_rights?.[t.sha256],test=creatorTestMedia(t),meta=t.metadata||{};
+- const facts=[meta.width&&meta.height?`${meta.width}×${meta.height}`:'',meta.duration>0?`${Number(meta.duration.toFixed(3))}초`:''].filter(Boolean).join(' · ');
++ const facts=[meta.width&&meta.height?`${meta.width}×${meta.height}`:'',meta.duration>0?`원본 ${Number(meta.duration.toFixed(3))}초`:''].filter(Boolean).join(' · ');
+  return `${test?'<span class="creator-test-badge">테스트 미디어</span>':''}${facts?`<small class="creator-media-facts">${esc(facts)}</small>`:''}${blocked?.blocked?`<p class="error">사용 중지 · ${esc(blocked.reason)}</p>`:!t.rights?'<p class="error">사용권 근거를 확인하세요.</p>':''}${!test&&includeMemo&&t.reason?`<p>${esc(t.reason)}</p>`:''}<details class="creator-source"><summary>출처·사용권</summary><p>${esc(t.filename||'연결된 파일')}</p><p>${esc(t.rights||'사용권 미확인')}</p>${test?`<p>${esc(t.reason)}</p>`:''}${creatorDiagnostic('파일 식별 정보',t.sha256||'기록 없음')}</details>`;
+ }
+ function creatorOutputTest(j){return Object.values(j.snapshot?.shots||{}).some(s=>creatorTestMedia(s.takes?.find(t=>t.id===s.selected)))}
+@@ -754,6 +842,8 @@
+  let source=$('#creatorReviewSource');if(!source){source=document.createElement('div');source.id='creatorReviewSource';editor.after(source)}source.replaceChildren();const sourceDetail=$('#reason .creator-source');if(sourceDetail)source.append(sourceDetail);
+  const uploadDetail=$('#upload').closest('details');if(uploadDetail){if(!c&&!uploadDetail.open){uploadDetail.dataset.creatorAutoOpen='true';uploadDetail.open=true}else if(c&&uploadDetail.dataset.creatorAutoOpen){uploadDetail.open=false;delete uploadDetail.dataset.creatorAutoOpen}}
+  const mobile=$('#creatorMobileContext');if(mobile)mobile.innerHTML=`<b>${esc(shotName||'장면 선택')}</b><small>${c?'Take '+c.take+' · '+esc(studioReview(s,c.take).label.replace('Take ','')):'미디어 연결 전'}</small>`;
++ syncProductionPresentation();
++ renderProductionReviewFeedback(c,local);
+ }
+ function creatorModelReason(role,model){
+  const target=document.getElementById(`model-${role}-reason`);if(!target)return;
+@@ -785,6 +875,7 @@
+  const budgetIntro=$('#budgetDialog>p:not(.dialog-status)');if(budgetIntro)budgetIntro.textContent='모델 작업에 사용할 예산입니다. 예산 저장은 유료 실행 승인이 아닙니다.';$('#budgetTitle').textContent='제작 예산';$('#budgetForm button').textContent='예산 저장';
+  const projectForm=$('#project'),story=document.createElement('details');story.className='creator-context-detail';story.innerHTML='<summary>세계관·이야기 설정</summary>';const ip=projectForm.querySelector('[name=ip]').closest('label');ip.before(story);for(const name of ['ip','era','story'])story.append(projectForm.querySelector(`[name="${name}"]`).closest('label'));
+  const d=$('#renderConfirm>p:not(.dialog-status)');if(d)d.textContent='외부 모델 비용 $0 · 로컬 처리 비용은 별도입니다. 확인한 편집과 자막으로 출력합니다.';
++ initializeProductionPresentation();
+  if(state)renderTakeReview();
+ }
+ 
+@@ -851,7 +942,7 @@
+ function drawComparison(){
+  const sh=project()?.shots[shotName];$('#compareTitle').textContent=shotName+' · Take 비교';
+  for(const side of ['Left','Right']){const t=sh?.takes.find(t=>t.id===Number($('#compare'+side).value)),target=$('#compare'+side+'Preview');if(!t){target.textContent='Take 없음';continue}
+-  target.innerHTML=`<div class="creator-comparison-identity"><b>Take ${t.id}</b><span>${sh.selected===t.id?'현재 선택':'미선택'}</span>${studioBadge(sh,t.id)}</div>${image(t)?`<img style="width:100%" src="${asset(t)}" alt="${esc(shotName)} Take ${t.id}">`:`<video style="width:100%" src="${asset(t)}" controls></video>`}<div class="creator-comparison-facts">${creatorMediaMarkup(t)}</div>`;
++  target.innerHTML=`<div class="creator-comparison-identity"><b>Take ${t.id}</b><span>${sh.selected===t.id?'현재 선택':'미선택'}</span>${studioBadge(sh,t.id)}</div><div class="comparison-media-stage">${image(t)?`<img src="${asset(t)}" alt="${esc(shotName)} Take ${t.id}">`:`<video src="${asset(t)}" controls></video>`}</div><div class="creator-comparison-facts">${creatorMediaMarkup(t)}</div>`;
+  }
+ }
+ $('#compareButton').onclick=openStudioComparison;$('#compareLeft').onchange=drawComparison;$('#compareRight').onchange=drawComparison;
+@@ -922,6 +1013,68 @@
+ /* Saved model actions: human approval, same-job recovery, separate Take review. */
+ const mediaRightsDrafts=new Map(),mediaPreparationDrafts=new Map();let mediaPreparationScope='';
+ function mediaDraftKey(id){return JSON.stringify([state?.workspace_id,song(),id])}
++/* Presentation only. Backend capability and command handlers remain authoritative. */
++const productionReviewErrors=new Map();
++async function saveReviewWithFeedback(action,data){
++ const key=takeReviewKey(state.workspace_id,data.song,data.shot,data.take);
++ try{const ok=await act(action,data);if(ok)productionReviewErrors.delete(key);else productionReviewErrors.set(key,true);return ok}
++ catch(error){productionReviewErrors.set(key,true);throw error}
++}
++function renderProductionReviewFeedback(c,local){
++ const editor=document.getElementById('creatorReviewEditor');if(!editor)return;
++ let note=document.getElementById('productionReviewError');if(!note){note=document.createElement('p');note.id='productionReviewError';note.className='production-review-error';note.setAttribute('role','alert');editor.prepend(note);const input=document.getElementById('reviewReason');input.setAttribute('aria-describedby','takeReviewDraftState productionReviewError')}
++ const show=!!(c&&local&&productionReviewErrors.has(c.key));note.hidden=!show;note.textContent=show?'저장 확인 필요 · 입력은 보존했습니다. 상단 알림에서 저장 상태를 확인하세요.':'';
++}
++function productionModelView(p,role){
++ const c=p?.media_connections?.[role],id=p?.model_settings?.selections?.[role];
++ const raw=c?.model||id||'';
++ const names={'fal-flux-schnell':'FLUX Schnell','fal-ai/flux/schnell':'FLUX Schnell','fal-kling-2-6-pro':'Kling 2.6 Pro','fal-ai/kling-video/v2.6/pro/image-to-video':'Kling 2.6 Pro'};
++ let state='empty',label='모델 미선택',hint='모델 설정에서 사용할 모델을 고르세요.';
++ if(raw){state='unverified';label='연결 확인 필요';hint='모델은 선택됐습니다. 실행 가능 여부는 별도로 확인합니다.'}
++ if(raw&&c?.state==='blocked'){state='blocked';label='현재 사용 불가';hint='모델 설정의 사용 조건을 확인하세요.'}
++ else if(raw&&c?.can_prepare){state='preparable';label=c.mode==='contract-fake'?'테스트 준비 가능':'입력·견적 준비 가능';hint=c.mode==='contract-fake'?'실제 AI 호출 없이 테스트합니다.':'작업별 입력·비용을 확인한 뒤 승인합니다.'}
++ return {role,raw,name:names[raw]||raw||'선택하지 않음',state,label,hint};
++}
++function productionOverviewMarkup(p,name){
++ const rows=['image','video'].map(role=>{const m=productionModelView(p,role);return `<div class="production-model" data-readiness="${m.state}"><div class="production-role">${role==='image'?'이미지':'영상'}</div><div class="production-model-copy"><span class="production-model-name">${esc(m.name)}</span><span class="production-readiness">${esc(m.label)}</span></div></div>`}).join('');
++ return `<div class="production-context"><span>현재 장면</span><b>${esc(name||'선택한 장면 없음')}</b></div><div class="production-models">${rows}</div><p class="production-guidance">모델 선택은 실행 승인이 아닙니다. 제작 준비에서 입력과 예상 비용을 확인하세요.</p>`;
++}
++function initializeProductionPresentation(){
++ document.body.classList.add('lt-finish');
++ const inspector=document.querySelector('.inspector');if(!inspector)return;
++ let tools=document.getElementById('productionTools');
++ if(!tools){tools=document.createElement('details');tools.id='productionTools';tools.className='production-tools';tools.innerHTML='<summary>제작 도구 <span>미디어·참고·모델</span></summary>';const comments=document.getElementById('comments')?.closest('.lt-inspector-detail');inspector.insertBefore(tools,comments||null)}
++ // Move the existing nodes, retaining inputs, IDs, listeners and scoped drafts.
++ for(const id of ['upload','mediaConnections','executionCards','imageConnection','generationGateText','referenceVersions']){
++  const node=document.getElementById(id);const d=node?.closest('.lt-inspector-detail')||node?.closest('details');
++  if(d&&d!==tools&&!d.contains(tools))tools.append(d);
++ }
++ const prod=document.getElementById('mediaConnections')?.closest('.lt-inspector-detail');
++ if(prod){prod.classList.add('production-card');prod.querySelector(':scope>summary').textContent='장면 제작';prod.open=true;
++  const oldImage=document.getElementById('imageConnection')?.closest('.lt-inspector-detail'),oldVideo=document.getElementById('generationGateText')?.closest('.lt-inspector-detail');
++  let history=document.getElementById('productionPrevious');if(!history){history=document.createElement('details');history.id='productionPrevious';history.innerHTML='<summary>이전 제작 경로·작업</summary>';prod.append(history)}
++  for(const d of [oldImage,oldVideo])if(d&&d!==prod){d.classList.add('production-previous-path');history.append(d)}
++  const old=document.getElementById('imageConnection');if(old)old.hidden=true;
++  // The corrected media_connections summary is authoritative. Keep old diagnostics
++  // and recovery controls in their existing containers; do not erase backend facts.
++  if(!document.getElementById('productionModelsButton')){const b=document.createElement('button');b.id='productionModelsButton';b.type='button';b.className='production-model-button';b.textContent='모델 선택 확인';b.onclick=()=>document.getElementById('editModelSettings').click();document.getElementById('mediaConnections').after(b)}
++ }
++ syncProductionPresentation();
++}
++function syncProductionPresentation(){
++ const tools=document.getElementById('productionTools');if(!tools)return;
++ const p=project(),sh=p?.shots[shotName],cards=(p?.media_actions||[]).filter(x=>x.shot===shotName);
++ // Pending approvals, running work and failures are discoverable even when the
++ // user previously collapsed tools. This only changes disclosure, not permission.
++ const attention=cards.some(x=>!x.job||!['imported','cancelled'].includes(x.job.state));
++ const legacy=(state?.generation_jobs||[]).filter(j=>j.context?.song===song()&&j.context?.shot===shotName&&j.context?.dispatch!=='fal-model-queue-v1');
++ const legacyAttention=legacy.some(j=>!['imported','cancelled'].includes(j.state));
++ if(sh&&!sh.selected||attention||legacyAttention){tools.open=true;tools.dataset.autoOpen='true'}
++ else if(tools.dataset.autoOpen){tools.open=false;delete tools.dataset.autoOpen}
++ const history=document.getElementById('productionPrevious');if(history&&legacyAttention){history.open=true;for(const d of history.querySelectorAll('.lt-inspector-detail'))d.open=true}
++ const summary=tools.querySelector(':scope>summary span');if(summary)summary.textContent=attention||legacyAttention?'진행·확인할 작업 있음':'미디어·참고·모델';
++}
++
+ function mediaPreparation(p,role){
+  const cap=p?.media_connections?.[role],sh=p?.shots[shotName];let reason='장면과 승인된 계획을 먼저 준비하세요.',ready=false,refs=[];
+  if(sh&&p.guided_plans?.some(x=>x.id===sh.plan_id&&x.status==='applied')){
+@@ -945,12 +1098,13 @@
+ }
+ function drawMediaCreator(){
+  const p=project();if(!p||!$('#mediaConnections'))return;
+- $('#mediaConnections').innerHTML=['image','video'].map(role=>{const c=p.media_connections?.[role];return `<p>${role==='image'?'이미지':'영상'} · ${esc(c?.model||'미선택')}<small> ${c?.mode==='contract-fake'?'모의 전송만 가능':c?.state==='blocked'?'연결 차단':'연결 검증 전'}</small></p>`}).join('');
++ $('#mediaConnections').innerHTML=productionOverviewMarkup(p,shotName);
+  $('#mediaDurationLabel').hidden=$('#mediaRole').value!=='video';$('#mediaRatioLabel').hidden=$('#mediaRole').value!=='image';
+  const f=$('#mediaPrepareForm'),scope=mediaDraftKey(shotName+':'+f.elements.role.value);if(mediaPreparationScope!==scope){const saved=mediaPreparationDrafts.get(scope)||{prompt:'',ratio:'16:9',duration:'5'};for(const key of ['prompt','ratio','duration'])f.elements[key].value=saved[key];mediaPreparationScope=scope}
+  const prep=mediaPreparation(p,$('#mediaRole').value),b=$('#prepareMedia');b.toggleAttribute('data-runtime-blocked',!prep.ready);b.disabled=busy||!prep.ready;$('#mediaPreparationHint').textContent=prep.reason;
+  const cards=(p.media_actions||[]).filter(x=>x.shot===shotName);$('#mediaActionCards').innerHTML=cards.map(mediaActionMarkup).join('')||'<p>이 장면의 모델 제작 요청이 없습니다. 대화에서 요청하거나 입력을 준비하세요.</p>';
+  const d=$('#mediaConnections').closest('.lt-inspector-detail');if(d&&cards.some(x=>!x.job||!['imported','cancelled'].includes(x.job.state)))d.open=true;
++ syncProductionPresentation();
+ }
+ $('#mediaRole').onchange=drawMediaCreator;
+ $('#mediaPrepareForm').oninput=e=>{if(e.target.name!=='role')mediaPreparationDrafts.set(mediaPreparationScope,Object.fromEntries(new FormData(e.currentTarget)))};

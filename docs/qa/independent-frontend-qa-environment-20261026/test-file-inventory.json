@@ -1,0 +1,809 @@
+{
+  "kind": "static AST inventory; not executed; count not acceptance coverage",
+  "files": [
+    {
+      "path": "tests/test_action_execution.py",
+      "test_methods": 8,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_same_action_parallel_admission_reserves_once_and_survives_reopen",
+        "test_concurrent_different_actions_cannot_exceed_budget",
+        "test_rollback_between_reservation_and_queue_insert_is_atomic",
+        "test_grant_mutation_revocation_context_and_price_block",
+        "test_unknown_claim_recovery_never_reissues_or_releases",
+        "test_dependencies_require_owned_collected_approved_output_and_keep_hash",
+        "test_model_cannot_grant_and_results_are_idempotent",
+        "test_synthetic_image_bytes_to_validated_store_then_dependency_admission"
+      ]
+    },
+    {
+      "path": "tests/test_action_tool_bridge.py",
+      "test_methods": 4,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_tool_returns_same_persisted_receipt_without_external_execution",
+        "test_foreign_plan_and_stale_revision_never_reserve",
+        "test_revocation_and_scope_substitution_fail_closed",
+        "test_public_state_scopes_receipts_and_omits_inputs"
+      ]
+    },
+    {
+      "path": "tests/test_anthropic_ontology.py",
+      "test_methods": 8,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_disabled_never_reads_credential_or_sends",
+        "test_fake_request_contract_and_proposal_only",
+        "test_incomplete_refusal_and_false_source",
+        "test_transport_exception_redaction_no_retry",
+        "test_conflicting_assertions_rejected",
+        "test_duplicate_json_keys_rejected",
+        "test_thinking_block_not_persisted",
+        "test_input_boundary_before_credential_access"
+      ]
+    },
+    {
+      "path": "tests/test_anthropic_smoke.py",
+      "test_methods": 5,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_small_stage_cap_and_cumulative_prior_cost",
+        "test_single_attempt_usage_and_no_secret_persistence",
+        "test_over_limit_and_unknown_never_submit_again",
+        "test_exact_mixed_case_literal_only",
+        "test_truncated_response_is_received_but_never_applied"
+      ]
+    },
+    {
+      "path": "tests/test_anthropic_transport.py",
+      "test_methods": 11,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_fake_full_adapter_and_single_post",
+        "test_endpoint_variants_never_open",
+        "test_redirect_handler_refuses_all_targets",
+        "test_unexpected_response_origin_and_status",
+        "test_response_size_and_truncation",
+        "test_mime_encoding_and_invalid_json",
+        "test_http_failure_and_timeout_no_retry_or_secret",
+        "test_read_deadline",
+        "test_credential_supplier_exception_redacted",
+        "test_invalid_headers_and_request_bound_before_open",
+        "test_default_builder_disables_proxy_and_redirect_without_network"
+      ]
+    },
+    {
+      "path": "tests/test_app.py",
+      "test_methods": 5,
+      "listener_related_tokens": [
+        "serve_forever",
+        "server(",
+        "Thread("
+      ],
+      "tests": [
+        "test_restart_duplicate_and_conflict",
+        "test_concurrent_writers",
+        "test_invalid_rolls_back",
+        "test_real_render_and_immutable_takes",
+        "test_http_validation_and_local_boundary"
+      ]
+    },
+    {
+      "path": "tests/test_archive.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_archive_freezes_edits_and_clone_resets_media_approval_budget"
+      ]
+    },
+    {
+      "path": "tests/test_backup.py",
+      "test_methods": 3,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_restore_relocates_asset_preserves_text_and_detects_tamper",
+        "test_reject_active_jobs_and_path_escape",
+        "test_active_generation_blocks_offline_backup"
+      ]
+    },
+    {
+      "path": "tests/test_caption_image_recovery.py",
+      "test_methods": 14,
+      "listener_related_tokens": [
+        "serve_forever",
+        "server(",
+        "Thread("
+      ],
+      "tests": [
+        "test_unicode_markup_blank_lines_and_export_rounding",
+        "test_actual_render_caption_version_survives_edit_restart_and_rights_gate",
+        "test_missing_unapproved_incomplete_and_changed_media_rejected",
+        "test_readiness_flags_never_enable_fake_or_read_environment",
+        "test_manual_collect_is_same_receipt_take_once_and_preserves_selection",
+        "test_403_needs_new_matching_permission_evidence_and_one_use",
+        "test_existing_status_query_does_not_implicitly_collect_or_submit",
+        "test_pending_status_stops_after_one_read_and_keeps_unknown_cost",
+        "test_gate_payload_scope_expiry_and_revocation_block_before_io",
+        "test_restart_running_recovery_never_reissues",
+        "test_unknown_receipt_and_cross_project_never_generate",
+        "test_actual_renderer_binds_approved_export_and_disables_unconfigured",
+        "test_local_vtt_mime_and_incomplete_unknown_host_denials",
+        "test_restricted_principal_cannot_read_legacy_captions"
+      ]
+    },
+    {
+      "path": "tests/test_chat.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_persist_apply_and_no_duplicate_or_approval"
+      ]
+    },
+    {
+      "path": "tests/test_chat_live_scope.py",
+      "test_methods": 4,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_configured_scope_token_bound_and_stage_cap",
+        "test_model_cannot_invoke_tool_omitted_from_server_scope",
+        "test_stage_budget_counts_prior_turns_and_unknowns",
+        "test_job_receipt_includes_registered_take_without_path"
+      ]
+    },
+    {
+      "path": "tests/test_chat_protocols.py",
+      "test_methods": 6,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_three_protocols_preserve_call_link_and_do_not_execute",
+        "test_incomplete_refusal_bad_args_and_builtin_tools_never_normalize",
+        "test_duplicate_json_and_partial_arguments_rejected",
+        "test_handoff_omits_reasoning_provider_ids_and_foreign_jobs",
+        "test_three_provider_envelopes_use_same_persisted_local_plan_tool",
+        "test_definitions_are_strict_and_malformed_blocks_fail_closed"
+      ]
+    },
+    {
+      "path": "tests/test_chat_runtime.py",
+      "test_methods": 18,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_canonical_tool_plan_final_reply_persist_and_truthful_provenance",
+        "test_parallel_tool_results_one_message_and_duplicate_tool_idempotence",
+        "test_duplicate_enqueue_same_request_and_competing_new_request",
+        "test_unapproved_prompt_foreign_project_and_model_authority_rejected",
+        "test_cancel_queued_never_calls_provider",
+        "test_cancel_after_message_preserves_cost_but_does_not_apply_tools",
+        "test_context_change_after_count_prevents_message_and_releases",
+        "test_truncation_is_paid_invalid_response_no_plan",
+        "test_unknown_retains_reservation_and_blocks_new_enqueue",
+        "test_input_token_cap_no_message_and_no_fake_billing",
+        "test_restart_unknown_never_requeues_started_turn",
+        "test_two_workers_claim_only_once",
+        "test_existing_unknown_cost_counts_toward_atomic_budget",
+        "test_disabled_connection_without_secret_reads",
+        "test_real_adapter_transport_fake_secret_canary_never_persisted",
+        "test_adapter_success_uses_same_store_bridge_with_transport_fixture",
+        "test_fake_and_real_billing_evidence_cannot_share_journal",
+        "test_concurrent_cumulative_reservations_never_exceed_cap"
+      ]
+    },
+    {
+      "path": "tests/test_chat_ui.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_disclosure_click_does_not_rerender_but_cancel_is_dispatched_once"
+      ]
+    },
+    {
+      "path": "tests/test_claude_grounding_eval.py",
+      "test_methods": 5,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_receipt_compaction_preserves_protocol_and_canonical_read",
+        "test_source_and_authority_hallucinations_rejected",
+        "test_colour_alias_and_extra_real_provenance_are_valid_not_arbitrary_sources",
+        "test_count_overflow_is_known_unsubmitted_and_releases_hold",
+        "test_answer_usage_and_stage_limit_no_secret_persistence"
+      ]
+    },
+    {
+      "path": "tests/test_claude_tool_eval.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_synthetic_tool_protocol_db_roundtrip_and_memory_only_secret"
+      ]
+    },
+    {
+      "path": "tests/test_comment_draft.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_real_handlers_preserve_pending_edits_and_scope"
+      ]
+    },
+    {
+      "path": "tests/test_contract_counterexamples.py",
+      "test_methods": 4,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_f01_revoked_asset_never_submits",
+        "test_f02_cancel_failure_keeps_completed_result",
+        "test_f03_relation_change_is_in_dependency_impact",
+        "test_f04_fractional_cuts_keep_global_clock"
+      ]
+    },
+    {
+      "path": "tests/test_contracts.py",
+      "test_methods": 5,
+      "listener_related_tokens": [
+        "serve_forever",
+        "server(",
+        "Thread("
+      ],
+      "tests": [
+        "test_budget_patch_schema_etag_and_stale_write",
+        "test_cancel_job_is_durable_idempotent_and_has_real_status_links",
+        "test_scoped_principal_cannot_bypass_write_grant_via_legacy",
+        "test_job_contract_auth_foreign_workspace_and_state_revision",
+        "test_versions_pagination_exact_resource_envelope"
+      ]
+    },
+    {
+      "path": "tests/test_desktop_layout.py",
+      "test_methods": 4,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_label_collision_keeps_endpoints_and_time_coordinates",
+        "test_labels_reappear_when_width_available",
+        "test_expanded_type_or_small_window_uses_accessible_flow",
+        "test_layout_adapter_cannot_submit_or_replace_media"
+      ]
+    },
+    {
+      "path": "tests/test_desktop_refinement.py",
+      "test_methods": 4,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_empty_selection_and_inactive_selection_are_distinct",
+        "test_long_name_is_complete_and_short_name_not_duplicated",
+        "test_available_copy_still_requires_execution_approval",
+        "test_media_lifecycle_is_unchanged_except_presentation_label"
+      ]
+    },
+    {
+      "path": "tests/test_editing.py",
+      "test_methods": 21,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_generation_preparation_requires_approved_frame_and_never_dispatches",
+        "test_generation_runtime_fake_end_to_end_and_live_gate",
+        "test_audio_captions_and_actual_render",
+        "test_versions_restore_and_approval_invalidation",
+        "test_supported_output_profiles_are_measured",
+        "test_reference_api_validates_rights_and_preserves_output_inputs",
+        "test_music_32_to_47_second_offset",
+        "test_bad_captions_and_trim",
+        "test_comments_block_approval",
+        "test_preflight_readiness_and_short_audio_warning",
+        "test_asset_stop_propagates_to_queue_and_reuse",
+        "test_cancel_queued_and_recover_running",
+        "test_invalid_media_and_rights",
+        "test_unconfirmed_audio_rights_block_approval",
+        "test_frozen_job_survives_new_edit",
+        "test_render_estimate_stale_expiry_and_duplicate_confirmation",
+        "test_changed_asset_fails_job",
+        "test_take_review_is_separate_and_revoke_blocks_export",
+        "test_reuse_does_not_copy_review_or_mutate_source",
+        "test_running_cancel_keeps_completed_parts",
+        "test_stale_selected_take_cannot_final_render"
+      ]
+    },
+    {
+      "path": "tests/test_execution_context.py",
+      "test_methods": 3,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_handoff_lookup_render_uses_only_server_visible_handles_after_model_switch",
+        "test_unsubmitted_action_grant_and_stable_shot_are_discoverable_and_route_after_switch",
+        "test_canonical_shot_mapping_rejects_ambiguous_and_foreign_id"
+      ]
+    },
+    {
+      "path": "tests/test_execution_disclosure.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_actual_renderer_persists_completed_details_and_forces_unfinished_visible"
+      ]
+    },
+    {
+      "path": "tests/test_fal_multimodel.py",
+      "test_methods": 12,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_four_official_contracts_share_queue_and_import",
+        "test_fresh_grant_required_and_no_ai_authority",
+        "test_rights_revoke_before_submit_is_verified_unsubmitted",
+        "test_chat_switch_preserves_media_grant_but_media_switch_blocks",
+        "test_unknown_submit_never_duplicates_after_restart",
+        "test_model_receipt_and_private_output_cannot_cross_hosts",
+        "test_t2i_ref_roles_and_private_url_not_silently_forwarded",
+        "test_expired_quote_and_absent_runtime_never_enable_catalog",
+        "test_model_tool_prepares_action_and_quote_but_cannot_grant_or_spend",
+        "test_parallel_tool_admission_reserves_once",
+        "test_creator_projection_omits_internal_grants_hashes_and_paths",
+        "test_generated_private_image_uses_local_bytes_for_video_after_human_rights_review"
+      ]
+    },
+    {
+      "path": "tests/test_fal_provider.py",
+      "test_methods": 8,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_approved_reader_serializes_only_on_new_generation_request",
+        "test_explicit_reader_candidate_is_private_and_not_live_configuration",
+        "test_reader_candidate_rejects_unresolved_or_ambiguous_identity",
+        "test_disabled_client_does_not_read_key_or_send",
+        "test_exact_model_no_audio_and_no_retry",
+        "test_receipt_loss_or_host_change_is_uncertain_no_resubmit",
+        "test_completion_and_cancel_do_not_imply_approval_or_refund",
+        "test_untrusted_receipt_and_result_never_fetch_arbitrary_hosts"
+      ]
+    },
+    {
+      "path": "tests/test_frame_timing.py",
+      "test_methods": 2,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_cumulative_boundary_error_is_bounded_not_accumulated",
+        "test_original_timebase_and_aligned_cuts_do_not_change"
+      ]
+    },
+    {
+      "path": "tests/test_generation_queue.py",
+      "test_methods": 11,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_unapproved_request_never_reserves",
+        "test_duplicate_and_parallel_dispatch_submit_once",
+        "test_lost_receipt_holds_reservation_and_never_reissues",
+        "test_crash_before_receipt_and_result_are_distinct",
+        "test_poll_does_not_approve_select_or_settle",
+        "test_import_adds_unselected_take_once_and_preserves_existing_approval",
+        "test_cancel_before_submit_releases_without_refund_or_network",
+        "test_cancel_during_submit_is_not_lost_and_late_result_is_not_imported",
+        "test_quote_expiring_in_queue_does_not_send",
+        "test_live_transport_without_submission_binding_is_blocked_before_network",
+        "test_cancel_timeout_race_preserves_latest_result"
+      ]
+    },
+    {
+      "path": "tests/test_guided.py",
+      "test_methods": 3,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_authored_plan_mapping_idempotency_and_reload",
+        "test_missing_and_stale_music_block_apply_without_mutation",
+        "test_store_transaction_and_wrong_project"
+      ]
+    },
+    {
+      "path": "tests/test_image_adapter.py",
+      "test_methods": 2,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_actual_png_decodes_and_is_labelled_fake",
+        "test_arbitrary_url_reference_and_unsupported_dimensions_are_rejected"
+      ]
+    },
+    {
+      "path": "tests/test_image_pipeline.py",
+      "test_methods": 11,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_generic_contract_registers_unapproved_take_and_same_action_receipt",
+        "test_concurrent_admit_and_worker_only_submit_once",
+        "test_revoked_rights_grant_and_changed_media_block_before_submit",
+        "test_chat_handoff_does_not_invalidate_media",
+        "test_unknown_submit_survives_restart_without_reissue",
+        "test_cancel_before_submit_only_and_post_submit_never_deletes",
+        "test_provider_failure_and_cancelled_are_terminal_but_not_free",
+        "test_wrong_dimensions_or_truncation_never_publish_asset",
+        "test_role_scope_and_human_gate_not_model_flags",
+        "test_image_denied_download_cannot_use_legacy_resume_endpoint",
+        "test_result_registration_rollback_is_recoverable_same_request_no_auto_submit"
+      ]
+    },
+    {
+      "path": "tests/test_ips.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_ip_setting_isolation_and_restart"
+      ]
+    },
+    {
+      "path": "tests/test_ledger.py",
+      "test_methods": 5,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_concurrent_reservations_never_exceed_limit",
+        "test_uncertain_settlement_refund_and_idempotency",
+        "test_release_late_settlement_and_budget_lock",
+        "test_overrun_is_visible_and_stops_new_reservations",
+        "test_invalid_expiry_cannot_reserve"
+      ]
+    },
+    {
+      "path": "tests/test_live_gates.py",
+      "test_methods": 13,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_token_permission_denial_never_reaches_cdn_and_blocks_resume",
+        "test_reader_policy_hash_is_bound_before_secret_access",
+        "test_disabled_launcher_cannot_read_any_file",
+        "test_synthetic_env_is_memory_only_and_literal",
+        "test_synthetic_file_boundaries",
+        "test_submit_422_is_terminal_without_retry_or_refund",
+        "test_input_price_and_privacy_are_pinned",
+        "test_private_acl_and_cdn_token_do_not_expose_primary_key",
+        "test_download_size_type_truncation_and_signature_boundaries",
+        "test_permanent_422_stops_polling_and_keeps_unknown_cost",
+        "test_transient_poll_stops_after_three_reads_without_resubmitting",
+        "test_http_error_never_echoes_upstream_secret",
+        "test_permission_block_requires_new_server_evidence_once_and_redacts_urls"
+      ]
+    },
+    {
+      "path": "tests/test_local_creation_tools.py",
+      "test_methods": 11,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_three_protocols_propose_without_applying_and_human_apply_preserves_other_inputs",
+        "test_stale_edit_and_foreign_proposal_rejected_without_mutation",
+        "test_memory_exact_provenance_human_application_and_global_canon_unchanged",
+        "test_memory_missing_source_stale_version_foreign_identity_and_actor_injection_blocked",
+        "test_render_real_audio_caption_output_receipt_reuse_and_final_approval_separate",
+        "test_render_approval_stale_revoked_rights_and_cancellation_keep_existing_jobs",
+        "test_fake_chat_runtime_roundtrip_uses_tools_not_prose_execution",
+        "test_duplicate_tool_call_does_not_duplicate_proposal",
+        "test_render_transaction_rolls_back_estimate_when_existing_service_rejects",
+        "test_render_snapshot_preserves_approved_audio_captions_while_editor_advances",
+        "test_memory_duplicate_identity_preservation_and_foreign_render_job_isolation"
+      ]
+    },
+    {
+      "path": "tests/test_media_async_lifecycle.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_controlled_media_lifecycle_regressions"
+      ]
+    },
+    {
+      "path": "tests/test_media_creator.py",
+      "test_methods": 15,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_human_hold_reject_reapprove_and_single_reservation",
+        "test_stale_model_cannot_be_reapproved_and_no_fallback",
+        "test_unknown_repeated_human_execute_only_returns_existing_job",
+        "test_collect_double_click_workers_preserve_original_selection",
+        "test_403_new_permission_evidence_only_one_retry",
+        "test_local_recovery_error_cannot_erase_prior_permission_denial",
+        "test_status_query_needs_separate_collection_approval",
+        "test_gate_changes_and_grant_revoke_prevent_collection",
+        "test_recovery_restart_no_resubmit_and_legacy_bypasses_blocked",
+        "test_cross_project_and_wrong_payload_cannot_gain_authority",
+        "test_model_connection_truth_and_secret_free_projection",
+        "test_empty_selected_disabled_retired_and_unverified_remain_distinct",
+        "test_cancel_before_submission_no_fake_network",
+        "test_test_media_badge_uses_saved_provenance_not_only_reason_text",
+        "test_actual_ui_markup_actions_model_rights_and_recovery"
+      ]
+    },
+    {
+      "path": "tests/test_media_http_range.py",
+      "test_methods": 2,
+      "listener_related_tokens": [
+        "serve_forever",
+        "server(",
+        "Thread("
+      ],
+      "tests": [
+        "test_byte_boundaries_and_unsupported_ranges",
+        "test_real_http_range_body_and_rights_before_partial_response"
+      ]
+    },
+    {
+      "path": "tests/test_media_roundtrip.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_trim_reorder_click_track_unicode_manifest"
+      ]
+    },
+    {
+      "path": "tests/test_media_tail.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_store_export_preserves_last_caption_and_audio_click"
+      ]
+    },
+    {
+      "path": "tests/test_model_selection.py",
+      "test_methods": 5,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_role_independence_preserves_existing_media_and_context",
+        "test_wrong_role_unknown_and_stale_are_atomic",
+        "test_policy_precedes_execution_no_fallback_or_metadata_activation",
+        "test_change_rejects_late_run_without_modifying_job_snapshot",
+        "test_store_persistence_isolation_duplicate_and_unknown_fields"
+      ]
+    },
+    {
+      "path": "tests/test_multimodel_chat.py",
+      "test_methods": 6,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_openai_and_grok_tool_results_reach_same_store",
+        "test_missing_counter_and_disabled_provider_never_reads_secret",
+        "test_credentials_not_forwarded_to_redirect_or_logs",
+        "test_old_anthropic_grant_does_not_authorize_other_provider",
+        "test_router_never_falls_back",
+        "test_handoff_contains_public_prior_answer_never_provider_state"
+      ]
+    },
+    {
+      "path": "tests/test_music.py",
+      "test_methods": 3,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_actual_waveform_quiet_and_tone",
+        "test_versions_and_existing_timeline_preserved",
+        "test_bad_ranges_and_overlaps"
+      ]
+    },
+    {
+      "path": "tests/test_next_functional.py",
+      "test_methods": 8,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_b03_chat_only_switch_preserves_execution_not_only_handoff",
+        "test_media_default_change_still_blocks_approved_execution",
+        "test_input_change_and_revoked_grant_still_block",
+        "test_canonical_asset_control_and_rights_revoke",
+        "test_asset_control_claims_without_trusting_model_flags",
+        "test_foreign_reference_and_file_tamper_block",
+        "test_asset_content_changed_blocks",
+        "test_price_revision_still_blocks"
+      ]
+    },
+    {
+      "path": "tests/test_ontology.py",
+      "test_methods": 8,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_approval_revision_restart_and_rollback",
+        "test_duplicate_apply_and_stale_proposals",
+        "test_scope_and_dangling_references",
+        "test_strict_schema_uncertainty_and_type",
+        "test_stable_ids_and_cycle",
+        "test_sql_failure_is_atomic",
+        "test_stable_type_cannot_be_rebound",
+        "test_outer_transaction_rollback_preserves_studio_atomicity"
+      ]
+    },
+    {
+      "path": "tests/test_preferences.py",
+      "test_methods": 2,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_explicit_review_scope_pause_and_frozen_context",
+        "test_conflicting_revision_and_cross_ip_do_not_change_active_rule"
+      ]
+    },
+    {
+      "path": "tests/test_production_boundary.py",
+      "test_methods": 10,
+      "listener_related_tokens": [
+        "serve_forever",
+        "Thread(",
+        "HTTPServer"
+      ],
+      "tests": [
+        "test_http_success_credentials_separated",
+        "test_http_faults_never_retry_permission_or_transient_automatically",
+        "test_http_401_refreshes_once_but_never_403",
+        "test_http_truncated_or_wrong_type_rejected",
+        "test_disallowed_origins_never_open_socket",
+        "test_concurrent_result_claim_downloads_once_and_restart_does_not_reissue",
+        "test_wrong_duration_is_not_published",
+        "test_repeated401_and_timeout_are_bounded",
+        "test_atomic_publish_failure_cleans_staging",
+        "test_db_rollback_never_marks_imported_and_same_request_recovers"
+      ]
+    },
+    {
+      "path": "tests/test_production_tools.py",
+      "test_methods": 6,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_strict_args_never_accept_actor_endpoint_grant_or_partial_json",
+        "test_duplicate_conflict_late_request_and_other_project",
+        "test_context_and_plan_preserve_user_input_no_paid_work",
+        "test_round_limit_and_secret_free_result",
+        "test_store_persists_error_budget_and_scopes_runs",
+        "test_malformed_tool_name_and_semantic_plan_errors_consume_repair_budget"
+      ]
+    },
+    {
+      "path": "tests/test_project_ontology.py",
+      "test_methods": 6,
+      "listener_related_tokens": [
+        "serve_forever",
+        "server(",
+        "Thread("
+      ],
+      "tests": [
+        "test_cross_project_proposal_conflict_and_identity_edit",
+        "test_reference_proxy_has_no_dangling_edges_or_role_conversion",
+        "test_bound_entities_only_become_stale_and_old_context_is_preserved",
+        "test_http_stale_ontology_is_conflict_and_request_retry_is_idempotent",
+        "test_legacy_take_without_filename_remains_readable",
+        "test_relation_dependencies_are_frozen_and_unrelated_edges_do_not_stale"
+      ]
+    },
+    {
+      "path": "tests/test_proposal_ui.py",
+      "test_methods": 2,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_current_source_renderers_and_states",
+        "test_integrated_creator_core_and_caption_handlers_preserved"
+      ]
+    },
+    {
+      "path": "tests/test_provider_action_bridge.py",
+      "test_methods": 9,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_disabled_and_ai_only_requests_cannot_admit",
+        "test_actual_adapter_fake_roundtrip_one_reservation_registered_take_and_safe_receipt",
+        "test_grant_rights_media_and_price_rechecked_before_submit",
+        "test_chat_handoff_and_concurrent_dispatch_keep_same_job",
+        "test_mapping_failure_rolls_back_job_grant_and_reservation",
+        "test_lost_submission_receipt_preserves_unknown_and_does_not_reissue",
+        "test_permission_denial_and_invalid_video_never_register_or_resubmit",
+        "test_cancel_contract_retains_unconfirmed_cost_after_submit",
+        "test_cancel_before_submit_releases_once"
+      ]
+    },
+    {
+      "path": "tests/test_provider_billing.py",
+      "test_methods": 9,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_estimate_never_settles_then_exact_billed_record_settles_once",
+        "test_concurrent_record_never_double_charges",
+        "test_identity_and_numeric_validation_fail_without_mutation",
+        "test_changed_record_is_conflict_not_invented_refund",
+        "test_nano_precision_retained_with_conservative_local_rounding",
+        "test_late_charge_after_verified_unsubmitted_marks_disputed",
+        "test_fixture_cannot_authenticate_real_billing_and_record_does_not_copy_secrets",
+        "test_unknown_or_missing_receipt_never_releases",
+        "test_overspend_record_does_not_claim_provider_budget_enforcement"
+      ]
+    },
+    {
+      "path": "tests/test_qa_boundaries.py",
+      "test_methods": 3,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_inheritance_rejects_cross_ip_and_unknown_revisions_atomically",
+        "test_chat_empty_over_limit_and_apply_retry",
+        "test_request_id_payload_mismatch_is_not_a_second_write"
+      ]
+    },
+    {
+      "path": "tests/test_references.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_versions_separate_approval_and_preserve_take"
+      ]
+    },
+    {
+      "path": "tests/test_rehearsal_workflow.py",
+      "test_methods": 6,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_plan_human_approval_receipt_candidate_review_preserves_selection",
+        "test_hold_reject_no_reservation_and_stale_card_conflict",
+        "test_revoke_before_execution_and_changed_context_never_make_take",
+        "test_unknown_scope_and_model_fields_rejected",
+        "test_b01_handoff_preserves_new_job_after_model_switch",
+        "test_b02_invalid_references_are_persisted_and_bounded"
+      ]
+    },
+    {
+      "path": "tests/test_runway_image_pipeline.py",
+      "test_methods": 5,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_runway_absent_from_catalog_and_resolver_rejects",
+        "test_retired_stub_fails_before_transport",
+        "test_new_competitor_action_blocked_but_old_data_preserved",
+        "test_runtime_has_no_competitor_import_or_endpoint",
+        "test_old_competitor_job_remains_readable_and_is_not_routed_to_new_worker"
+      ]
+    },
+    {
+      "path": "tests/test_save_feedback.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_request_outcomes_recovery_and_scoped_drafts"
+      ]
+    },
+    {
+      "path": "tests/test_settings.py",
+      "test_methods": 1,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_candidate_correction_and_snapshot_isolation"
+      ]
+    },
+    {
+      "path": "tests/test_studio_media.py",
+      "test_methods": 8,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_proportional_ranges_absolute_mapping_and_reorder",
+        "test_fractional_frame_tail_is_not_rounded_in_preview",
+        "test_waveform_uses_only_measured_interval_offset_and_no_invention",
+        "test_comparison_trim_common_duration_and_image_mixture",
+        "test_comparison_readiness_recomputed_after_seek",
+        "test_input_immutability_and_empty_bad_values",
+        "test_audition_has_no_write_api_and_lifecycle_boundaries",
+        "test_static_modules_are_allowlisted_and_font_scale_is_role_based"
+      ]
+    },
+    {
+      "path": "tests/test_studio_state.py",
+      "test_methods": 2,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_take_review_scope_delayed_save_and_new_revision",
+        "test_comparison_defaults_never_duplicate_take"
+      ]
+    },
+    {
+      "path": "tests/test_submission_authority.py",
+      "test_methods": 3,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_rights_gate_connection_and_input_changes_block_only_unsent",
+        "test_explicit_new_preparation_after_verified_unsent_does_not_spend_quota",
+        "test_uncertain_submission_keeps_quota_and_reservation"
+      ]
+    },
+    {
+      "path": "tests/test_workflow.py",
+      "test_methods": 5,
+      "listener_related_tokens": [],
+      "tests": [
+        "test_end_to_end_partial_revision_and_reuse",
+        "test_selection_conflict",
+        "test_missing_take_and_unreviewed_shot",
+        "test_modified_asset_rejected",
+        "test_budget_and_scope"
+      ]
+    }
+  ]
+}

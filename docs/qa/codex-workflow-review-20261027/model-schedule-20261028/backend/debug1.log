@@ -1,0 +1,41 @@
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "PATCH /v1/workspaces/53cd3dc9-2f37-4b43-806f-37631692459a/billing/budgets HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "POST /api/action HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state?song=A&conversation=542912eeba7458c09aaff91fd9e97bb2 HTTP/1.1" 200 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "POST /api/action HTTP/1.1" 409 -
+127.0.0.1 - - [28/Oct/2026 03:36:02] "GET /api/state HTTP/1.1" 200 -
+F
+======================================================================
+FAIL: test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply (tests.test_general_model_schedule.GeneralModelSchedulingHTTPTest.test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_general_model_schedule.py", line 43, in test_queued_and_tool_wait_reservations_preserve_exact_execution_then_apply
+    self.assertEqual(project['general_chat_turns'][-1]['status'],'awaiting_continuation_approval')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'outcome_unknown' != 'awaiting_continuation_approval'
+- outcome_unknown
++ awaiting_continuation_approval
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.593s
+
+FAILED (failures=1)
+EXCEPTION <genexpr> 603 GeneratorExit()
+EXCEPTION process_next 738 Conflict('대화 모델 선택이 변경됐습니다.')
+EXCEPTION <genexpr> 355 GeneratorExit()

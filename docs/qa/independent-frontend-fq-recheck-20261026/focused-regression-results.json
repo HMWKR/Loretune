@@ -1,0 +1,149 @@
+{
+  "at": "2026-10-26T04:56:24.973571+00:00",
+  "python": "3.15.0 (main, Oct  9 2026, 11:16:41) [Clang 21.0.0 (clang-2100.3.34.2)]",
+  "modules": [
+    "test_comment_draft",
+    "test_media_async_lifecycle",
+    "test_studio_state",
+    "test_save_feedback",
+    "test_studio_media",
+    "test_frontend_async"
+  ],
+  "testsRun": 14,
+  "passed": [
+    "test_comment_draft.CommentDraftRaceTest.test_real_handlers_preserve_pending_edits_and_scope",
+    "test_media_async_lifecycle.MediaAsyncLifecycleTest.test_controlled_media_lifecycle_regressions",
+    "test_studio_state.StudioStateTest.test_comparison_defaults_never_duplicate_take",
+    "test_studio_state.StudioStateTest.test_take_review_scope_delayed_save_and_new_revision",
+    "test_save_feedback.SaveFeedbackTest.test_request_outcomes_recovery_and_scoped_drafts",
+    "test_studio_media.StudioMediaTest.test_audition_has_no_write_api_and_lifecycle_boundaries",
+    "test_studio_media.StudioMediaTest.test_comparison_readiness_recomputed_after_seek",
+    "test_studio_media.StudioMediaTest.test_comparison_trim_common_duration_and_image_mixture",
+    "test_studio_media.StudioMediaTest.test_fractional_frame_tail_is_not_rounded_in_preview",
+    "test_studio_media.StudioMediaTest.test_input_immutability_and_empty_bad_values",
+    "test_studio_media.StudioMediaTest.test_proportional_ranges_absolute_mapping_and_reorder",
+    "test_studio_media.StudioMediaTest.test_static_modules_are_allowlisted_and_font_scale_is_role_based",
+    "test_studio_media.StudioMediaTest.test_waveform_uses_only_measured_interval_offset_and_no_invention",
+    "test_frontend_async.FrontendAsyncTest.test_poll_media_storage_regressions"
+  ],
+  "errors": [],
+  "failures": [],
+  "skipped": [],
+  "subprocesses": [
+    {
+      "argv": [
+        "node",
+        "/Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/after/snapshot/tests/comment_draft_controls.js"
+      ],
+      "returncode": 0,
+      "stdout": "{\"case\":\"F05-missing-duration-markup\",\"status\":\"pass\",\"html\":\"<div class=\\\"guided-card\\\"><h2>계획 v1 · 검토 대기</h2><p>g</p><p>스타일: 미지정 · 보존 조건: 미지정</p><details><summary>계획 설명</summary><p>synthetic</p></details><ol><li>s · 길이 미정</li></ol><p>계획 승인은 유료 생성 승인이 아닙니다. 기존 샷·승인본을 보존하고 새 샷으로 추가합니다.</p><button data-guided-plan=\\\"p\\\" disabled data-plan-blocked=\\\"true\\\" title=\\\"음악 구간 확정 후 보존된 입력으로 새 계획을 검토하세요\\\">계획 승인·장면 추가</button><p>이 계획은 음악 구간 확정 전 버전입니다. 입력은 보존됩니다. 구간 확정 후 새 계획 버전을 검토하세요.</p><button data-plan-music>음악 입력으로 이동</button></div>\"}\n{\"case\":\"F05-button-policy-success\",\"status\":\"pass\",\"answer\":true,\"blockedDisabled\":true,\"ordinaryDisabled\":false}\n{\"case\":\"F05-button-policy-server-error\",\"status\":\"pass\",\"answer\":false,\"blockedDisabled\":true,\"ordinaryDisabled\":false}\n{\"case\":\"F05-button-policy-transport-error\",\"status\":\"pass\",\"answer\":false,\"blockedDisabled\":true,\"ordinaryDisabled\":false}\n{\"case\":\"F05-button-policy-refresh-error\",\"status\":\"pass\",\"answer\":false,\"blockedDisabled\":true,\"ordinaryDisabled\":false}\n{\"case\":\"F05-button-policy-cache-error\",\"status\":\"pass\",\"answer\":false,\"blockedDisabled\":true,\"ordinaryDisabled\":false}\n{\"case\":\"F06-reload-restores-draft\",\"status\":\"pass\",\"afterReload\":{\"at\":\"1.25\",\"text\":\"한글 초안\"}}\n{\"case\":\"F06-project-scope\",\"status\":\"pass\",\"restoredA\":{\"at\":\"1.25\",\"text\":\"한글 초안\"},\"storedB\":{\"at\":\"2.5\",\"text\":\"B 초안\"}}\n{\"case\":\"F06-workspace-scope\",\"status\":\"pass\",\"newWorkspace\":{\"at\":\"0\",\"text\":\"\"}}\n{\"case\":\"F06-failed-save-preserves\",\"status\":\"pass\",\"field\":{\"at\":\"1.25\",\"text\":\"보존할 의견\"},\"stored\":[[\"loretune-comment-draft:synthetic-w1:A\",\"{\\\"at\\\":\\\"1.25\\\",\\\"text\\\":\\\"보존할 의견\\\"}\"]]}\n{\"case\":\"F06-successful-save-clears\",\"status\":\"pass\",\"field\":{\"at\":\"0\",\"text\":\"\"},\"stored\":[]}\n{\"case\":\"F06-adjacent-pending-save-must-preserve-new-edit\",\"status\":\"pass\",\"submitted\":{\"action\":\"comment\",\"data\":{\"song\":\"A\",\"at\":1.25,\"text\":\"first submitted draft\"},\"revision\":1,\"request_id\":\"synthetic-id\"},\"expectedNewText\":\"second unsent draft while save pending\",\"actualField\":{\"at\":\"2.5\",\"text\":\"second unsent draft while save pending\"},\"actualStorage\":[[\"loretune-comment-draft:synthetic-w1:A\",\"{\\\"at\\\":\\\"2.5\\\",\\\"text\\\":\\\"second unsent draft while save pending\\\"}\"]],\"execution\":\"VM with delayed fake fetch; exact snapshot submit, act, sendRequest, pending helpers, input listener\"}\n{\"case\":\"F07-project-switch\",\"status\":\"pass\",\"expected\":{\"at\":\"2\",\"text\":\"B unsent\"},\"actual\":{\"at\":\"2\",\"text\":\"B unsent\"},\"storage\":[[\"loretune-comment-draft:synthetic-w1:B\",\"{\\\"at\\\":\\\"2\\\",\\\"text\\\":\\\"B unsent\\\"}\"]]}\n{\"case\":\"F07-shot-switch\",\"status\":\"pass\",\"expected\":{\"at\":\"2\",\"text\":\"shot 2 unsent\"},\"actual\":{\"at\":\"2\",\"text\":\"shot 2 unsent\"},\"storage\":[[\"loretune-comment-draft:synthetic-w1:A\",\"{\\\"at\\\":\\\"2\\\",\\\"text\\\":\\\"shot 2 unsent\\\"}\"]]}\n{\"case\":\"F07-same-value-new-edit\",\"status\":\"pass\",\"expected\":{\"at\":\"1\",\"text\":\"original\"},\"actual\":{\"at\":\"1\",\"text\":\"original\"},\"storage\":[[\"loretune-comment-draft:synthetic-w1:A\",\"{\\\"at\\\":\\\"1\\\",\\\"text\\\":\\\"original\\\"}\"]]}\n{\"case\":\"F07-failed-new-edit\",\"status\":\"pass\",\"expected\":{\"at\":\"2\",\"text\":\"new on failure\"},\"actual\":{\"at\":\"2\",\"text\":\"new on failure\"},\"storage\":[[\"loretune-comment-draft:synthetic-w1:A\",\"{\\\"at\\\":\\\"2\\\",\\\"text\\\":\\\"new on failure\\\"}\"]]}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "/Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/after/snapshot/tests/media_async_lifecycle.cjs"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"kind\": \"controlled Node VM events; no browser/media IO\",\n  \"results\": [\n    {\n      \"name\": \"DM01 pending seek applies latest trimmed frame without play\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"DM02 old cut error waiting playing and loaded callbacks are inert\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"DM02 replacement disposes old controller including detached Audio\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"DM02 old compare canplay/error/loaded cannot change new pair\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"DM03 entering comparison stops detached music and sequence RAF\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"DM03 reverse transition stops compare before sequence plays\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"late rejected play Promise cannot fail a later sequence attempt\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"late compare Promise completion cannot start a disposed loop\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"late compare Promise rejection cannot fail a replacement pair\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"normal audio offset caption switch and canonical data remain intact\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"compare common trimmed duration ends both and preserves approvals\",\n      \"status\": \"pass\"\n    },\n    {\n      \"name\": \"current error is still reported, not hidden by stale guards\",\n      \"status\": \"pass\"\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/tmpzurhbitk/test-comparison.mjs"
+      ],
+      "returncode": 0,
+      "stdout": "5 comparison behavior tests passed\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/tmp12lj9yea/test-review-state.mjs"
+      ],
+      "returncode": 0,
+      "stdout": "9 focused draft tests passed\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "/Users/leesungmin/Desktop/Loretune/docs/qa/independent-frontend-fq-recheck-20261026/after/snapshot/tests/save_feedback.mjs"
+      ],
+      "returncode": 0,
+      "stdout": "13 checks passed\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "-e",
+        "const assert=require('node:assert/strict');const m=require('./studio-media.js');const a={readyState:1},b={readyState:4};assert.equal(m.comparisonReady([a,b]),false);a.readyState=4;assert.equal(m.comparisonReady([a,b]),true);b.error={code:4};assert.equal(m.comparisonReady([a,b]),false);assert.equal(m.comparisonReady([null]),true);"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "-e",
+        "const assert=require('node:assert/strict');const m=require('./studio-media.js');const a=m.auditionWindow({asset:'x.mp4',metadata:{duration:8}},{trim:2,duration:4}),b=m.auditionWindow({asset:'y.mp4',metadata:{duration:3}},{trim:.5,duration:4});assert.deepEqual(m.comparisonPosition([a,b],8),{duration:2.5,time:2.5,sources:[4.5,3]});const im=m.auditionWindow({asset:'x.png'});assert.deepEqual(m.comparisonPosition([im,a],1).sources,[null,3]);assert.equal(m.comparisonPosition([im,im],1).duration,0);assert.equal(m.auditionWindow({asset:'x.mp4',metadata:{duration:1}},{trim:3,duration:2}).duration,0);"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "-e",
+        "const assert=require('node:assert/strict');const m=require('./studio-media.js');const a=Array.from({length:30},()=>({duration:.131}));assert.ok(Math.abs(m.locate(a,3.929).total-3.93)<1e-10);assert.equal(m.locate(a,3.929).index,29);assert.equal(m.timecode(3.93),'00:03.930');"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "-e",
+        "const assert=require('node:assert/strict');const m=require('./studio-media.js');const a=[{duration:2,trim:1}],before=JSON.stringify(a);m.ranges(a);m.locate(a,9);assert.equal(JSON.stringify(a),before);assert.equal(m.locate([],1),null);assert.equal(m.ranges([{duration:NaN}])[0].duration,0);assert.deepEqual(m.ticks(0),[0]);assert.equal(m.ticks(6).at(-1),6);"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "-e",
+        "const assert=require('node:assert/strict');const m=require('./studio-media.js');const a=[{shot:'a',duration:2,trim:1},{shot:'b',duration:4,trim:.5}];assert.deepEqual(m.ranges(a).map(c=>[c.start,c.end]),[[0,2],[2,6]]);assert.equal(m.locate(a,2).shot,'b');assert.equal(m.locate(a,2).source,.5);assert.equal(m.locate(a,5).source,3.5);assert.equal(m.locate(a,99).source,4.5);assert.equal(m.locate(a,-1).source,1);assert.equal(m.locate(a.reverse(),1).source,1.5);"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "-e",
+        "const assert=require('node:assert/strict');const m=require('./studio-media.js');const w={status:'measured',duration:4,peaks:[.1,.2,.7,.9]};assert.deepEqual(m.waveWindow(w,1,2,2),[.2,.7]);assert.deepEqual(m.waveWindow(w,3,2,2),[.9,null]);assert.equal(m.waveWindow(null,0,2),null);assert.equal(m.waveWindow({...w,status:'pending'},0,2),null);assert.equal(m.waveWindow({...w,peaks:[]},0,2),null);"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "tests/frontend_async_regressions.cjs"
+      ],
+      "returncode": 0,
+      "stdout": "[\n  {\n    \"name\": \"FQ01 original reverse responses\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ01 slow polling makes progress and bounds concurrent reads\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ01 apply-time busy/dirty guards\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ01 project ABA and refresh/mutation generations\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ01 old revision and workspace rejected\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ01 equal revision legitimate job/chat/media updates\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ01 refresh older completion cannot replace current state\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ01 refresh cannot erase a new timeline draft\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ02 original native ended final/trim/tolerance\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ02 ended advances next cut without adopting Take\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ02 late ended after switch/dispose or manual pause inert\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ02 queued ended after seek-back/resume is inert\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ02 active audio remains master; audio EOF releases video clock\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ03 denied read init and submit are handled fail closed\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ03 read denial midflight keeps ID and unknown; lookup only\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ03 remove denial cannot turn rejection into unknown or enable POST\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ03 denied write and IDB failure never submit\",\n    \"status\": \"PASS\"\n  },\n  {\n    \"name\": \"FQ03 reconciliation transport failure never inferred committed\",\n    \"status\": \"PASS\"\n  }\n]\n",
+      "stderr": ""
+    }
+  ],
+  "network": "Python socket connect/bind and Node net/http/fetch guarded; no HTTP/browser"
+}

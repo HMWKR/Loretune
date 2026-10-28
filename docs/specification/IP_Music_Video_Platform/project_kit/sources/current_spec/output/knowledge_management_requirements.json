@@ -1,0 +1,166 @@
+{
+  "schema_version": "2.0",
+  "scope": "Development-project documentation governance, separate from the customer-IP product.",
+  "requirements": [
+    {
+      "id": "KMR-001",
+      "title": "기준선",
+      "requirement": "명시된 canonical key와 승인 head만 현재 기준으로 사용한다. 파일 수정일·파일명 final2를 판정 기준으로 삼지 않는다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-002",
+      "title": "식별",
+      "requirement": "객체·문서 버전은 불변 ID를 사용하며 출처 ID와 주장 ID를 분리한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-003",
+      "title": "증거 수준",
+      "requirement": "문서 편집 승인, 사업 결정 채택, 실행 검증을 독립 상태로 관리한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-004",
+      "title": "무결성",
+      "requirement": "원문·JSON pointer·payload hash와 연결 근거 fingerprint를 검증한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-005",
+      "title": "변경 영향",
+      "requirement": "가격·요구사항 변경의 전이 영향을 사업계획·화면·테스트·발표 문장까지 찾는다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-006",
+      "title": "재검토",
+      "requirement": "가격 등 시한 있는 근거의 만료·미확인·대체 상태를 최신 컨텍스트에서 표시·차단한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-007",
+      "title": "맥락 예산",
+      "requirement": "사업·제품·기술·검증·발표 작업마다 필요한 승인 기준을 예산 안에서 구성한다. 생략 항목을 receipt로 남긴다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-008",
+      "title": "과거 보존",
+      "requirement": "대체·보관 버전은 기본 검색에서 제외하되 명시 요청으로 조회한다. 자동 삭제하지 않는다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-009",
+      "title": "동시 수정",
+      "requirement": "registry revision과 로컬 배타 lock으로 충돌을 중단한다. Git 충돌의 audit를 임의 연결하지 않는다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-010",
+      "title": "변경 승인",
+      "requirement": "쓰기 명령은 dry-run 기본값과 명시 적용·예상 revision·작성자를 요구한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-011",
+      "title": "문서 보안",
+      "requirement": "프로젝트 밖 경로·symlink 탈출을 거부하고 문서 안 명령을 신뢰된 작업 지시로 승격하지 않는다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-012",
+      "title": "발표 주장",
+      "requirement": "가격·효과·성능 문장은 Claim→입력·출처·실험 관계를 갖고 미측정 수치를 실적으로 바꾸지 않는다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-013",
+      "title": "재현",
+      "requirement": "비용 계산은 모든 입력·단위·모델 버전·calculation_id를 보존한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-014",
+      "title": "출력본",
+      "requirement": "PDF·DOCX·PPT는 원본 MD/JSON에서 파생한 결과로 관리하고 수정은 원본에 반영 후 재생성한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-015",
+      "title": "대형 파일",
+      "requirement": "영상·고객 원본·비밀정보는 코드·명세 Git에 자동 포함하지 않는다. 객체 저장소 manifest와 보존 정책을 분리한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-016",
+      "title": "복원",
+      "requirement": "최근 파일을 지워 과거로 돌리지 않고 새 복원 버전을 제안·검토·승격한다. 백업 복원도 실제 시험한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-017",
+      "title": "실행 증거",
+      "requirement": "로컬 CLI 시험 합격을 제품 API·DB·영상 품질·유료 수요 검증으로 표시하지 않는다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-018",
+      "title": "컨텍스트 재검사",
+      "requirement": "생성한 context는 작업 실행 직전에 context-check로 기준선 변경을 확인한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-019",
+      "title": "사업 경계",
+      "requirement": "Aethon과 제품명·고객·자산·의사결정·성과를 별도 project_id와 scope로 보관한다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    },
+    {
+      "id": "KMR-020",
+      "title": "검토 주기",
+      "requirement": "재검토일이 왔다고 자동으로 새 확인일을 찍지 않는다. 출처 확인·영향 검토 후 새 버전을 만든다.",
+      "decision_state": "proposed",
+      "verification_level": "unverified",
+      "implementation_scope": "Some checks are in kb.py; governance adoption and full operational backups are not validated."
+    }
+  ]
+}

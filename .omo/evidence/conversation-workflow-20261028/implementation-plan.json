@@ -1,0 +1,71 @@
+{
+  "recorded_at": "2026-10-27T22:29:45.662469+00:00",
+  "state": "IMPLEMENTATION authorized after evidence and user-facing plan",
+  "problems": [
+    {
+      "id": "CS-GENERAL-CAS-14",
+      "facts": "Three localhost HTTP actions409 after sibling-only revision; actual two tabs preview/decision409",
+      "decision": "Classify general_chat_preview/decide/cancel local while retaining sameconv/shared CAS+ownership/rights/ledger/idempotency",
+      "files": [
+        "chat_sessions.py",
+        "tests/test_general_chat_conversations.py"
+      ],
+      "pass": "Sibling drift succeeds, actual stale/shared/forged/actionreplay boundaries stillatomic"
+    },
+    {
+      "id": "CS-WORKER-HOL-15",
+      "facts": "Actual one-worker A messages held, B queued but count/messages not dispatched",
+      "decision": "Fixed queue worker bulkheads, general2,render1,generation1,legacychat1 when runtime exists; reuse claims and capped queues",
+      "alternatives": [
+        "Generic2worker rejected: two provider waits still block render and broaden generation concurrency",
+        "Externalqueue/framework rejected: dependency/migration notneeded for bounded local queue issue"
+      ],
+      "files": [
+        "app.py",
+        "tests/test_worker_scheduling.py"
+      ],
+      "pass": "Same production startup helper: B and internal render complete before A release; bounded threads, sanitized failure handling,stop,claim uniqueness,sharedcaps/cancel maintained"
+    }
+  ],
+  "agents": [
+    {
+      "agent": "general_conversation_cas",
+      "scope": [
+        "chat_sessions.py",
+        "tests/test_general_chat_conversations.py"
+      ]
+    },
+    {
+      "agent": "worker_scheduling",
+      "scope": [
+        "app.py",
+        "tests/test_worker_scheduling.py"
+      ]
+    },
+    {
+      "agent": "root",
+      "scope": [
+        "actual browser/fixture/evidence/docs integration; no worker source overlap"
+      ]
+    },
+    {
+      "agent": "public_tripo_artifact_inspection",
+      "scope": [
+        "read-only public artifact stats; temp raw bytes; task JSON only"
+      ]
+    }
+  ],
+  "methodology_sources": [
+    "Existing CS09–16 contract",
+    "Official SQLite isolation/transactions",
+    "Official WHATWG per-window Web Storage",
+    "https://learn.microsoft.com/en-us/azure/architecture/patterns/bulkhead",
+    "Karpathy surgical no-framework change and actual feature-verification"
+  ],
+  "limits": [
+    "No realprovider/cost approval inferred",
+    "No source/docs original removed",
+    "No registry/context updates pending prior approval",
+    "No full CS/platform acceptance from bounded loopback work"
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema": "requested-document-preservation-review/1",
+  "recorded_at": "2026-10-28T00:08:46.440930+00:00",
+  "project_root": "/Users/leesungmin/Desktop/Loretune",
+  "scope_status": "COMPLETE for recorded-file and recent-before preservation audit; governance and original-byte recovery unresolved",
+  "whole_platform_complete": false,
+  "conclusion_ko": "확인 가능한 기록에서 삭제하면 안 되는 문서의 삭제는 발견하지 못했다. 과거 QA JSON 2개의 T0 원본 내용은 여전히 미복구이고, 문서 등록·분류·문맥 갱신은 미완료다.",
+  "counts": {
+    "T0_inventory_paths": 2156,
+    "T0_missing": 0,
+    "T0_sha12_unchanged": 2138,
+    "T0_changed": 18,
+    "classified_MD": 611,
+    "immutable_full_SHA256_matches": 544,
+    "originals_in_immutable": 53,
+    "registered_snapshot_matches": 285,
+    "adoption_before_copies_preserved": 13,
+    "import_hashes_match": 4,
+    "contexts_receipts_and_payloads_preserved": 58,
+    "requested_entry_documents_present": 18,
+    "post_MR1_paths_unchanged": 675,
+    "latest_before_text_comparisons": 12,
+    "deleted_or_replaced_lines": 0
+  },
+  "T0_change_explanation": {
+    "maintained_MD": 14,
+    "registries": 2,
+    "historical_QA_JSON": 2,
+    "T0_is_not_approval_of_each_change": true
+  },
+  "exceptions": [
+    {
+      "path": "docs/qa/tail-quota-fixes-20261025/media/store-tail-preserved-manifest.json",
+      "current_sha256": "c264adfa3b674edb360032d5065b932297fef3d87c28f0754329f398acf12ca0",
+      "unchanged_since_prior_audit": true,
+      "original_t0_restored": false
+    },
+    {
+      "path": "docs/qa/tail-quota-fixes-20261025/store-media-after.json",
+      "current_sha256": "5eca24402fcf3510a013132b14a6c714c6211ad46eca34ae19cbe3382114938a",
+      "unchanged_since_prior_audit": true,
+      "original_t0_restored": false
+    }
+  ],
+  "gate": {
+    "command": [
+      "python3",
+      "/Users/leesungmin/.agents/skills/document-completion-gate/check.py",
+      "--root",
+      "/Users/leesungmin/Desktop/Loretune"
+    ],
+    "exit_code": 1,
+    "status": "blocked",
+    "evidence_sha256": "2aedc4dcbed582458e708e05e1eb32f7bd17252a642394cf3b235c49392753a7",
+    "verification_scope": "classification, membership, bytes and receipt freshness; not semantic truth, product ontology or implementation acceptance",
+    "findings": {
+      "REGISTERED_SOURCE_OUTDATED": 26,
+      "UNCLASSIFIED_DOCUMENT": 4
+    },
+    "warnings": {
+      "CONTEXT_STALE": 52
+    },
+    "policy_excludes": [
+      "docs/private"
+    ],
+    "registered_or_promoted": false,
+    "generated_context_changed": false
+  },
+  "approval": {
+    "proposal": "docs/qa/codex-workflow-review-20261027/music-recovery-20261028/registration-plan.json",
+    "proposal_sha256": "d0b340899f73fbfc9bdc43eae649b1b4609b0e932dcbace0a8385fb779791d68",
+    "sources": 13,
+    "new_registration_links": 26,
+    "classifications": 4,
+    "current_contexts": 6,
+    "approval_still_pending": true,
+    "executed": false,
+    "existing_285_snapshots_and_52_historical_contexts_to_preserve": true
+  },
+  "evidence": {
+    "whole_inventory_and_hashes": "audit.json",
+    "ordered_before_text_and_contexts": "verification.json",
+    "independent_review": "independent-review.json",
+    "start_gate": "gate-start.json",
+    "final_gate": "gate-final.json"
+  },
+  "skills": {
+    "document-completion-gate": "Read installed SKILL.md; read-only checker run at start and end; exit1 blocked. No registration/promotion.",
+    "harness-orchestration:orchestrate": "Read installed 0.1.0; explicit independent read-only reviewer contract and driver acceptance.",
+    "feature-verification": "Not required for this bounded document audit: no UI/API/product changes.",
+    "fablize_narrow_verification": "Actual audit.py and verify.py completed exit0; gate exit1 separately retained."
+  },
+  "changes_this_audit": {
+    "existing_documents_modified": [],
+    "documents_deleted_or_restored": [],
+    "product_sources_modified": [],
+    "policy_registries_generated_contexts_modified": [],
+    "only_new_task_evidence_written": true
+  },
+  "limits": [
+    "No Git history. Unrecorded preT0 deletions cannot be disproved.",
+    "T0 inventory has 12-hex SHA prefixes; full-byte preservation is independently checked only where full hashes/before text exist.",
+    "Current semantics are spot-checked; this is not every requirement acceptance or product readiness.",
+    "No secrets/data/Trash/private or external backup access; no real provider calls.",
+    "Two known historical QA JSON original-byte recovery remains unresolved."
+  ]
+}

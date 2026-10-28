@@ -1,0 +1,33 @@
+--- before/anthropic_ontology.py
++++ anthropic_ontology.py
+@@ -155,6 +155,16 @@
+         self.max_request_bytes = max_request_bytes
+         self._opener = opener
+ 
++    def encode_body(self, body):
++        """Pure preflight, shared with the POST's exact UTF-8 serialization."""
++        try:
++            payload = json.dumps(body, ensure_ascii=False, allow_nan=False).encode('utf-8')
++        except Exception:
++            raise ProposalError('provider request invalid') from None
++        if len(payload) > self.max_request_bytes:
++            raise ProposalError('provider request too large')
++        return payload
++
+     def __call__(self, endpoint, headers, body):
+         # Pin complete URL: queries, userinfo, alternate ports and fragments fail.
+         if endpoint != self.endpoint:
+@@ -165,12 +175,7 @@
+             raise ProposalError('provider headers invalid')
+         if any(not isinstance(v, str) or not v or '\r' in v or '\n' in v for v in headers.values()):
+             raise ProposalError('provider headers invalid')
+-        try:
+-            payload = json.dumps(body, ensure_ascii=False, allow_nan=False).encode('utf-8')
+-        except Exception:
+-            raise ProposalError('provider request invalid') from None
+-        if len(payload) > self.max_request_bytes:
+-            raise ProposalError('provider request too large')
++        payload = self.encode_body(body)
+         request = urllib.request.Request(self.endpoint, data=payload, headers=headers, method='POST')
+         opener = self._opener or urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect())
+         try:

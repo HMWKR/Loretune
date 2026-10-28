@@ -1,0 +1,889 @@
+{
+  "summary": {
+    "fails": 9,
+    "reflex": 73,
+    "warns": 15,
+    "waived": 0,
+    "rejected": 0,
+    "answered": 0,
+    "dismissed": 0,
+    "notes": 0,
+    "files": 2,
+    "render": "off"
+  },
+  "findings": [
+    {
+      "gate": "7a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 190,
+      "evidence": "pure #000: color: black (.skip-link)",
+      "fix": "Tint the base toward the anchor hue"
+    },
+    {
+      "gate": "20",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 1,
+      "evidence": "no Hallmark stamp on the first non-empty line of any CSS",
+      "fix": "The stamp comment is line 1 of the CSS; only @charset may precede it"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 1,
+      "evidence": "no overflow-x: clip on html and body",
+      "fix": "overflow-x: clip on both html and body"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 288,
+      "evidence": "width: min(640px,calc(100vw - 32px… on .lt-ui dialog (scrollbar overflow)",
+      "fix": "width: 100% with container padding"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 606,
+      "evidence": "width: min(500px,calc(100vw - 24px… on .lt-ui .lt-notice-detail[open] (scrollbar overflow)",
+      "fix": "width: 100% with container padding"
+    },
+    {
+      "gate": "39a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 73,
+      "evidence": "disabled via opacity alone on button:disabled",
+      "fix": "Three disabled channels: fill, ink and cursor, plus the disabled attribute"
+    },
+    {
+      "gate": "39a",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 694,
+      "evidence": "disabled via opacity alone on .lt-ui #reviewTake:not(:disabled)",
+      "fix": "Three disabled channels: fill, ink and cursor, plus the disabled attribute"
+    },
+    {
+      "gate": "48",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "index.html",
+      "line": 45,
+      "evidence": "inline-style colour literal #101010",
+      "fix": "Lift the value into the token block"
+    },
+    {
+      "gate": "63",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "index.html",
+      "line": 23,
+      "evidence": "middle-dot meta string \"24fps · 원곡 48kHz · 클립 오디오 음소거 · 짧은 원곡은 무음으로 채움 선택…\"",
+      "fix": "Line breaks, columns or hairlines; one dot in a byline at most"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 70,
+      "evidence": "padding: 9px var(--ui-space-3) (off the 4px scale) on button,.download",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 75,
+      "evidence": "padding: 9px (off the 4px scale) on input,select,textarea",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 77,
+      "evidence": "margin: 10px 0 5px (off the 4px scale) on label",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 103,
+      "evidence": "gap: 10px (off the 4px scale) on .take-strip",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 103,
+      "evidence": "padding: 14px 0 (off the 4px scale) on .take-strip",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 105,
+      "evidence": "margin-bottom: 6px (off the 4px scale) on .take-strip img",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 106,
+      "evidence": "padding: 3px 6px (off the 4px scale) on .badge",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 107,
+      "evidence": "padding: 14px (off the 4px scale) on .timeline",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 108,
+      "evidence": "gap: 6px (off the 4px scale) on .clip-row",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 108,
+      "evidence": "margin: 6px 0 (off the 4px scale) on .clip-row",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 109,
+      "evidence": "padding: 6px (off the 4px scale) on .clip-row input,.clip-row select",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 112,
+      "evidence": "padding: 3px (off the 4px scale) on .track span",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 113,
+      "evidence": "gap: 5px (off the 4px scale) on .caption-row",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 113,
+      "evidence": "margin: 6px 0 (off the 4px scale) on .caption-row",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 115,
+      "evidence": "margin: 10px 0 (off the 4px scale) on .job",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 122,
+      "evidence": "gap: 10px (off the 4px scale) on .library",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 148,
+      "evidence": "gap: 3px (off the 4px scale) on .clip-row",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 160,
+      "evidence": "gap: 10px (off the 4px scale) on .toolbar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 190,
+      "evidence": "padding: 10px (off the 4px scale) on .skip-link",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 203,
+      "evidence": "gap: 7px (off the 4px scale) on .lt-ui .creator-source>summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 210,
+      "evidence": "padding-block: 6px (off the 4px scale) on #modelDefaultsBar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 213,
+      "evidence": "padding-block: 10px (off the 4px scale) on .toolbar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 214,
+      "evidence": "padding-block: 10px (off the 4px scale) on .flow-nav",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 222,
+      "evidence": "padding-block: 10px (off the 4px scale) on summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 244,
+      "evidence": "padding: 14px (off the 4px scale) on .guided-card, .job",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 272,
+      "evidence": "padding: 6px var(--ui-space-6) (off the 4px scale) on .lt-ui .lt-project-bar>.toolbar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 278,
+      "evidence": "padding: 6px var(--ui-space-6) (off the 4px scale) on .lt-ui #modelDefaultsBar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 291,
+      "evidence": "margin: 6px 0 var(--ui-space-4) (off the 4px scale) on .lt-ui dialog .row>h2",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 292,
+      "evidence": "gap: 6px (off the 4px scale) on .lt-ui .lt-status",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 312,
+      "evidence": "padding: 6px var(--ui-space-3) (off the 4px scale) on .lt-ui .lt-project-bar>.toolbar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 337,
+      "evidence": "padding: var(--ui-space-2) 10px (off the 4px scale) on .lt-ui .lt-studio-shell>#songs",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 341,
+      "evidence": "padding: var(--ui-space-2) 10px (off the 4px scale) on .lt-ui .lt-studio-shell summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 349,
+      "evidence": "padding: 7px var(--ui-space-3) (off the 4px scale) on .lt-ui .flow-nav button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 350,
+      "evidence": "padding: 7px var(--ui-space-3) (off the 4px scale) on .lt-ui #flowNext",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 351,
+      "evidence": "padding: 6px 20px (off the 4px scale) on .lt-ui .lt-status-line",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 369,
+      "evidence": "padding: 6px 10px (off the 4px scale) on .lt-ui #compareButton",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 373,
+      "evidence": "padding: 6px var(--ui-space-2) (off the 4px scale) on .lt-ui #sync",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 374,
+      "evidence": "margin: 10px 0 (off the 4px scale) on .lt-ui #track",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 376,
+      "evidence": "padding: 6px 0 (off the 4px scale) on .lt-ui .lt-timeline-controls>summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 429,
+      "evidence": "padding-inline: 6px (off the 4px scale) on .lt-ui .lt-studio-shell>.management>summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 435,
+      "evidence": "padding: var(--ui-space-2) 10px (off the 4px scale) on .lt-ui .flow-nav button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 453,
+      "evidence": "padding: 10px (off the 4px scale) on .lt-ui .timeline",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 456,
+      "evidence": "padding: 10px 0 (off the 4px scale) on .lt-ui .lt-timeline-controls>summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 465,
+      "evidence": "gap: 10px (off the 4px scale) on .lt-ui .lt-studio-shell>b",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 467,
+      "evidence": "padding: 10px var(--ui-space-3) (off the 4px scale) on .lt-ui :where(input,select,textarea)",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 481,
+      "evidence": "padding-bottom: 6px (off the 4px scale) on .lt-ui #notice",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 483,
+      "evidence": "margin: 6px 0 var(--ui-space-3) (off the 4px scale) on .lt-ui #description",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 487,
+      "evidence": "padding: 10px var(--ui-space-2) (off the 4px scale) on .lt-ui .shot",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 487,
+      "evidence": "gap: 10px (off the 4px scale) on .lt-ui .shot",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 489,
+      "evidence": "margin-top: 3px (off the 4px scale) on .lt-ui .shot small",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 493,
+      "evidence": "padding: 14px (off the 4px scale) on .lt-ui .timeline",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 502,
+      "evidence": "margin: var(--ui-space-3) 0 6px (off the 4px scale) on .lt-ui .inspector label",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 509,
+      "evidence": "padding: 10px var(--ui-space-3) (off the 4px scale) on .lt-ui #prepareSelectedAction",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 510,
+      "evidence": "padding: 14px (off the 4px scale) on .lt-ui .lt-execution-card",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 512,
+      "evidence": "padding: 3px 7px (off the 4px scale) on .lt-ui .lt-state-chip",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 515,
+      "evidence": "padding-block: 10px (off the 4px scale) on .lt-ui .lt-cost-facts",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 530,
+      "evidence": "padding: 6px var(--ui-space-3) (off the 4px scale) on .lt-ui .lt-studio-shell",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 531,
+      "evidence": "gap: 7px (off the 4px scale) on .lt-ui .lt-studio-shell>b",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 549,
+      "evidence": "padding: 14px (off the 4px scale) on .lt-ui .lt-execution-card",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 576,
+      "evidence": "gap: 3px (off the 4px scale) on .lt-ui .lt-take-copy",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 580,
+      "evidence": "gap: 6px (off the 4px scale) on .lt-ui #track",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 609,
+      "evidence": "padding-block: 5px (off the 4px scale) on .lt-ui .lt-stage-bar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 616,
+      "evidence": "padding: 2px 6px (off the 4px scale) on .lt-ui .creator-test-badge",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 617,
+      "evidence": "margin-top: 6px (off the 4px scale) on .lt-ui .creator-media-facts",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 618,
+      "evidence": "padding: 6px 0 (off the 4px scale) on .lt-ui .creator-source>summary,.lt-ui .creator-diagnostic>summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 621,
+      "evidence": "margin: 0 0 6px (off the 4px scale) on .lt-ui .creator-record-label",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 630,
+      "evidence": "margin: var(--ui-space-1) 0 10px (off the 4px scale) on .lt-ui .creator-scene-description",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 698,
+      "evidence": "padding: 10px var(--ui-space-3) (off the 4px scale) on .lt-ui .production-review-error",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 703,
+      "evidence": "padding-left: 14px (off the 4px scale) on .lt-ui .production-tools>summary>span",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 712,
+      "evidence": "gap: 6px var(--ui-space-2) (off the 4px scale) on .lt-ui .production-model",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 714,
+      "evidence": "gap: 3px (off the 4px scale) on .lt-ui .production-model-copy",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 742,
+      "evidence": "padding-block: 10px (off the 4px scale) on .lt-ui .production-tools>summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "38iii",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 106,
+      "evidence": "accented word inside a heading (.badge)",
+      "fix": "Set the whole head one way: a line break, a second line at a second size, or the whole head in the accent. Guard: the theme names the coloured word as its signature and it appears once on the page, in the hero"
+    },
+    {
+      "gate": "3",
+      "grade": "WARN",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 495,
+      "evidence": "side stripe border-left: 3px solid var(--ui-control) on .lt-ui #track span",
+      "fix": "Hairline all round, none, or an accent square"
+    },
+    {
+      "gate": "25",
+      "grade": "WARN",
+      "tier": "reflex",
+      "file": "studio.css",
+      "line": 412,
+      "evidence": "measure 76ch on .lt-ui #chatPanel>p (45-75ch range)",
+      "fix": "Set prose measure between 45 and 75ch; a one-sentence lede or caption from 28ch"
+    },
+    {
+      "gate": "40",
+      "grade": "WARN",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 471,
+      "evidence": "4.21:1 < 4.5:1 on .lt-ui :where(button:disabled,input:disabled,select:disabled)",
+      "fix": "Raise the contrast to threshold"
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 284,
+      "evidence": "dark surface (L 22%) on .lt-ui :where(.guided-card,.job,.timeline) sets no text colour",
+      "fix": "Swap text to paper in the same rule"
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 440,
+      "evidence": "dark surface (L 28%) on .lt-ui .lt-panel-nav button[aria-selected=\"true\"] sets no text colour",
+      "fix": "Swap text to paper in the same rule"
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "tier": "floor",
+      "file": "studio.css",
+      "line": 510,
+      "evidence": "dark surface (L 19%) on .lt-ui .lt-execution-card sets no text colour",
+      "fix": "Swap text to paper in the same rule"
+    },
+    {
+      "gate": "F3",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 78,
+      "evidence": "no text-wrap: balance on any display head (27 head rule(s), e.g. h1)",
+      "fix": "Add text-wrap: balance to h1/h2-level heads"
+    },
+    {
+      "gate": "F4",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "index.html",
+      "line": 19,
+      "evidence": "two filled buttons side by side in the hero: \"계획 미리보기 · 외부 전송 없음\" and \"모델에 요청\"",
+      "fix": "One filled primary per screen; the second action is outlined or a typographic link"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 292,
+      "evidence": "numeric selector .lt-ui .lt-status at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 512,
+      "evidence": "numeric selector .lt-ui .lt-state-chip at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 569,
+      "evidence": "numeric selector .lt-ui .lt-review-state at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 681,
+      "evidence": "numeric selector .lt-ui .review-state-symbol at display size without tabular figures",
+      "fix": "Add font-variant-numeric: tabular-nums"
+    },
+    {
+      "gate": "F7",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 284,
+      "evidence": "same container recipe on 6 selectors (.lt-ui (.guided-card, .job, .timeline), .lt-ui …...)",
+      "fix": "Vary weight, radius, or fill by role; not every box is the same box"
+    },
+    {
+      "gate": "F23",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "index.html",
+      "line": 1,
+      "evidence": "the document lacks a meta description",
+      "fix": "Name the language, title the page in its own words, and describe it in one sentence for link previews"
+    },
+    {
+      "gate": "F24",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "studio.css",
+      "line": 606,
+      "evidence": "a hairline border under a wide soft shadow on .lt-ui .lt-notice-detail[open]",
+      "fix": "Commit to one: a defined edge, or elevation by shadow"
+    }
+  ]
+}

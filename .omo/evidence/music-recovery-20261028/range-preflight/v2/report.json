@@ -1,0 +1,41 @@
+{
+  "status": "REPORTED; parent acceptance pending",
+  "issue": "UX-MUSIC-SPAN-11",
+  "change": "Add readonly music_selection_warning=str|null, same existing warning when ranges differ; UI can select only this actionable message",
+  "reason_artifact": "change-reason.json",
+  "source_hashes": {
+    "editing.py": "40291483025d1344e9dee8465718efb000533be60a270857353d5bd21383d5ac",
+    "tests/test_editing.py": "f53a991db43a8c235dedf48f31b51c9fe201bdbfe117035f36e471ac8d1b96b0"
+  },
+  "verification": [
+    {
+      "scenario": "existing regressions plus every new unit case checks specific field equality/null",
+      "invocation": "python3 -m unittest tests.test_editing tests.test_music_input_context tests.test_timeline_repeated_http -v",
+      "exit_code": 0,
+      "tests": 46,
+      "seconds": 22.626,
+      "artifact": "scoped-tests.log"
+    },
+    {
+      "scenario": "real HTTP 10 boundary cases plus actual renderer downloaded output",
+      "invocation": "python3 .omo/evidence/music-recovery-20261028/range-preflight/probe-v2.py after-matrix-v2",
+      "exit_code": 0,
+      "artifact": "../after-matrix-v2/http-boundary-matrix.json",
+      "render_artifact": "../after-matrix-v2/result.json",
+      "observable": "specific field matches warning/null; same readiness/errors; PCM520Hz offset3 and duration3.0s; output bytes identical to original before source change"
+    },
+    {
+      "scenario": "preserve original evidence",
+      "observable": "all47 prior manifest entries SHA256 verified unchanged",
+      "artifact": "../manifest.json"
+    }
+  ],
+  "output_sha256": "9742cad134f08c47e7f9f10555966ff85c744d8ea605f5af59cbe5dc42456490",
+  "limits": [
+    "No UI validation by this worker; root integrates and checks UI",
+    "No production/provider/user tests; original46 fixture limitations remain",
+    "No full819 rerun",
+    "No output duration/approval/selection/quote automatic change"
+  ],
+  "evidence_runner_note": "Initial v2 run used temporary edited probe.py; the exact v2 runner was separated to probe-v2.py, original probe.py restored to original manifest SHA, then complete scenario rerun using explicit versioned runner. Initial run retained under initial-http/."
+}

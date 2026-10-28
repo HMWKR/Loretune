@@ -1,0 +1,142 @@
+--- .omo/evidence/agent-tools-02-20261028/before/production_context.py	2026-10-28 11:33:16
++++ production_context.py	2026-10-28 16:57:42
+@@ -211,11 +211,20 @@
+   transaction_snapshot=transaction_snapshot,
+   limit_per_source=limit,sources=groups,collaboration=dict(available=False,reason='single-local-workspace; no authenticated team/presence data'),
+   note='Stored status during this lookup, not a grant, model vision, verified file contents or final-output approval. Output SHA/registration are recorded metadata only. Caller transaction provides a snapshot when active; otherwise sources are sequential observations. Requery for newer status; no automatic retry or cost change.')
++
++def scene_status(c,store,p,name,observed_revision):
++ # Current conversation only. Never loads trusted 3D configuration or runs a renderer.
++ import scene_project
++ return dict(scope='current-project-current-conversation',observed_revision=observed_revision,
++  scenes_3d=scene_project.status(c,store,p,name,chat_sessions.current(p)),
++  connection=dict(available=scene_project.capability(store)['available'],external_transmission=False),
++  note='Stored 3D scene heads and pending proposals, not an execution grant, render result or final-output approval. requires_review means the project context changed since that version or proposal was saved. Approval and rendering stay human actions in Scene Studio.')
+ 
+ def read(c,store,p,name,query=None):
+  w=store.workspace_id;pid=contracts.project_id(w,name);shots=[]
+  observed,body=c.execute('SELECT revision,body FROM state WHERE id=1').fetchone()
+  if query=='work-status':return dict(work_status=work_status(c,store,p,name,observed))
++ if query=='scene-status':return dict(scene_status=scene_status(c,store,p,name,observed))
+  source_projects=json.loads(body)['projects'];source_projects[name]=p
+  projected={'shots':deepcopy(p['shots'])}
+  chat_sessions.project_references(source_projects,projected,chat_sessions.current(p))
+@@ -247,7 +256,8 @@
+   handles=[dict(grant_id=g['id'],expires=g['expires'],price_revision=g['price_revision'],money=g['money'].get(a['id'])) for g in grants if g['state']=='active' and g['expires']>time.time() and g['action_hashes'].get(a['id'])==a['hash']]
+   actions.append(dict(action_id=a['id'],plan_id=a['plan_id'],plan_revision=a['plan_revision'],role=a['role'],model=a['release_id'],mode=a['mode'],shot_id=shot_id(p,a['options']['shot']) if a['options'].get('shot') in p['shots'] else None,approval_handles=handles))
+  return dict(shots=shots,timeline=timeline,music_input=music_input(c,p,t),server_receipts=motion_receipts(p,pid,observed),
+-             supported_context_queries=[dict(query='work-status',purpose='Current conversation work status; bounded recorded metadata, not participant presence or video pixels')],
++             supported_context_queries=[dict(query='work-status',purpose='Current conversation work status; bounded recorded metadata, not participant presence or video pixels'),
++               dict(query='scene-status',purpose='Current conversation 3D scene heads, approval state and pending proposals; no grants, asset paths or scene bodies')],
+              motion_overlay_sources=motion_overlay_sources(p,query),
+              motion_overlay_contract=dict(commands=['set_motion_overlay','clear_motion_overlay'],clock='clip-local seconds; source frame0 starts at start; end is exclusive',
+                offsets='translation in original1920x1080 logical pixels; aspect-fit to output',source_background='excluded; layer motion/alpha/in-out retained',
+--- .omo/evidence/agent-tools-02-20261028/before/scene_project.py	2026-10-28 04:34:04
++++ scene_project.py	2026-10-28 16:57:41
+@@ -297,6 +297,19 @@
+     return records
+ 
+ 
++def status(c,store,p,name,conversation):
++    """Model-facing summary of public(): no grant ids, asset references or scene bodies."""
++    values=[]
++    for record in public(c,store,p,name,conversation):
++        version=next((v for v in record['versions'] if v['id']==record['head']),None)
++        pending=[x for x in record['proposals'] if x['status'] in {'proposed','held'}]
++        values.append(dict(scene_id=record['id'],shot_id=record['shot_id'],head=record['head'],
++            approval_status='none' if version is None else 'stale_context' if version['requires_review'] else 'recorded',
++            requires_review=any(x['requires_review'] for x in ([version] if version else [])+pending),
++            pending_proposals=[dict(proposal_id=x['id'],base_revision=x['base_revision'],status=x['status']) for x in pending][-10:]))
++    return values
++
++
+ def handle(c,store,p,name,action,data):
+     pid,cid,onto=_scope(c,store,p,name)
+     if action=='scene_create':
+--- .omo/evidence/agent-tools-02-20261028/before/scene_spec.py	2026-10-28 04:08:36
++++ scene_spec.py	2026-10-28 16:57:29
+@@ -14,6 +14,15 @@
+ 
+ MAX_OBJECTS = 8
+ MAX_LIGHTS = 3
++# Fields an existing scene target may change; ids, kinds and object/light
++# membership never change (no add or delete).
++CHANGE_FIELDS = {'camera': ('position', 'target', 'lens_mm'),
++                 'object': ('position', 'rotation_degrees', 'scale', 'color', 'asset'),
++                 'light': ('position', 'target', 'energy_w', 'size_m', 'color')}
++# (three-component vector?, lower, upper), mirroring validate().
++VALUE_BOUNDS = {'position': (True, -100, 100), 'target': (True, -100, 100), 'rotation_degrees': (True, -360, 360),
++                'scale': (True, 0.05, 10), 'color': (True, 0, 1), 'lens_mm': (False, 18, 120),
++                'energy_w': (False, 0, 5000), 'size_m': (False, 0.1, 20)}
+ 
+ 
+ def _exact(value, fields):
+@@ -137,9 +146,7 @@
+     allowed = set(allowed_fields)
+     locked = set(locked_fields)
+     updated = validate(scene)
+-    valid_fields = {'camera': {'position', 'target', 'lens_mm'},
+-                    'object': {'position', 'rotation_degrees', 'scale', 'color', 'asset'},
+-                    'light': {'position', 'target', 'energy_w', 'size_m', 'color'}}
++    valid_fields = CHANGE_FIELDS
+     changes, seen = [], set()
+     for operation in operations:
+         _exact(operation, ('target', 'id', 'field', 'value'))
+@@ -173,6 +180,57 @@
+     return dict(scene=updated, scene_hash=fingerprint(updated), changes=changes, base_revision=base_revision)
+ 
+ 
++def _value_schema(field):
++    if field == 'asset':
++        return dict(type='object', properties=dict(id=dict(type='string', minLength=32, maxLength=32), sha256=dict(type='string', minLength=64, maxLength=64),
++                    profile=dict(type='string', enum=list(ASSET_PROFILES))), required=['id', 'sha256', 'profile'], additionalProperties=False)
++    vector, lower, upper = VALUE_BOUNDS[field]
++    number = dict(type='number', minimum=lower, maximum=upper)
++    return dict(type='array', minItems=3, maxItems=3, items=number) if vector else number
++
++
++# Tool argument shape for a change proposal to an existing, approved scene.
++PROPOSAL_SCHEMA = dict(type='object', properties=dict(
++    shot_id=dict(type='string', minLength=1, maxLength=200),
++    base_revision=dict(type='integer', minimum=1, maximum=2**31-1, description='Current approved scene head; 0 (no approved version) is rejected.'),
++    operations=dict(type='array', minItems=1, maxItems=16, items=dict(anyOf=[
++        dict(type='object', properties=dict(target=dict(type='string', enum=[kind]),
++             id=dict(type='string', enum=['camera']) if kind == 'camera' else dict(type='string', minLength=1, maxLength=32),
++             field=dict(type='string', enum=[field]), value=_value_schema(field)),
++             required=['target', 'id', 'field', 'value'], additionalProperties=False)
++        for kind, fields in CHANGE_FIELDS.items() for field in fields]))),
++    required=['shot_id', 'base_revision', 'operations'], additionalProperties=False)
++
++
++def validate_proposal(args):
++    """Check tool arguments only; the host still resolves scope and applies propose_changes."""
++    _exact(args, ('shot_id', 'base_revision', 'operations'))
++    if type(args['shot_id']) is not str or not args['shot_id'].strip() or len(args['shot_id']) > 200:
++        raise ValueError('invalid shot id')
++    if type(args['base_revision']) is not int or not 0 <= args['base_revision'] <= 2**31-1:
++        raise ValueError('invalid scene revision')
++    if args['base_revision'] == 0:
++        raise ValueError('no approved scene version; the first draft is reviewed in Scene Studio')
++    if type(args['operations']) is not list or not 1 <= len(args['operations']) <= 16:
++        raise ValueError('1–16 scene changes required')
++    seen = set()
++    for operation in args['operations']:
++        _exact(operation, ('target', 'id', 'field', 'value'))
++        kind, identifier, field, value = operation['target'], operation['id'], operation['field'], operation['value']
++        if not all(isinstance(x, str) for x in (kind, identifier, field)) or kind not in CHANGE_FIELDS or field not in CHANGE_FIELDS[kind]:
++            raise ValueError('unsupported scene change')
++        if kind == 'camera':
++            if identifier != 'camera': raise ValueError('scene target not found')
++        else: _id(identifier)
++        if (kind, identifier, field) in seen:
++            raise ValueError('duplicate, out-of-scope or locked scene change')
++        seen.add((kind, identifier, field))
++        if field == 'asset': _asset(value)
++        elif VALUE_BOUNDS[field][0]: _vector(value, *VALUE_BOUNDS[field][1:])
++        else: _number(value, *VALUE_BOUNDS[field][1:])
++    return deepcopy(args)
++
++
+ def require_approval(scene, binding, approval):
+     """Check a server-provided exact approval; this does not authenticate callers.
+ 

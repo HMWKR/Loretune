@@ -1,0 +1,110 @@
+[
+  {
+    "id": "P01",
+    "scenario": "HTTP 정상 다운로드; Key는 token endpoint에만, Bearer는 CDN에만",
+    "status": "pass",
+    "evidence": "test_http_success_credentials_separated"
+  },
+  {
+    "id": "P02",
+    "scenario": "401 한 번 token 갱신, 반복401 최대2회 GET;403 갱신·우회 없음",
+    "status": "pass",
+    "evidence": "test_http_401_refreshes_once_but_never_403 / test_repeated401_and_timeout_are_bounded"
+  },
+  {
+    "id": "P03",
+    "scenario": "403/404/410/429/500/503/302 오류 분류; 자동 재시도·redirect 없음",
+    "status": "pass",
+    "evidence": "test_http_faults_never_retry_permission_or_transient_automatically"
+  },
+  {
+    "id": "P04",
+    "scenario": "잘린 body·MIME·크기·MP4 signature 거절",
+    "status": "pass",
+    "evidence": "test_http_truncated_or_wrong_type_rejected / test_live_gates.test_download_size_type_truncation_and_signature_boundaries"
+  },
+  {
+    "id": "P05",
+    "scenario": "HTTP/타호스트/userinfo/비표준포트는 소켓 전 거절",
+    "status": "pass",
+    "evidence": "test_disallowed_origins_never_open_socket"
+  },
+  {
+    "id": "P06",
+    "scenario": "동시 수신2회 중 실제 download1회; 새 프로세스에서 기존job import_blocked 복원",
+    "status": "pass",
+    "evidence": "test_concurrent_result_claim_downloads_once_and_restart_does_not_reissue"
+  },
+  {
+    "id": "P07",
+    "scenario": "1초 영상을10초 결과로 등록 금지; 검증 실패 시 assets 없음",
+    "status": "pass",
+    "evidence": "test_wrong_duration_is_not_published"
+  },
+  {
+    "id": "P08",
+    "scenario": "파일 원자 이동 실패 후 staging/asset 없음",
+    "status": "pass",
+    "evidence": "test_atomic_publish_failure_cleans_staging"
+  },
+  {
+    "id": "P09",
+    "scenario": "DB commit fault 후 Take/imported 없음; 같은request 복구 후 Take1회 추가",
+    "status": "pass",
+    "evidence": "test_db_rollback_never_marks_imported_and_same_request_recovers"
+  },
+  {
+    "id": "P10",
+    "scenario": "timeout 오류 비밀값 삭제·반복 없음 (transport fault injection)",
+    "status": "pass",
+    "evidence": "test_repeated401_and_timeout_are_bounded"
+  },
+  {
+    "id": "P11",
+    "scenario": "중복 enqueue/응답 유실: reservation 유지·새 생성 금지",
+    "status": "pass",
+    "evidence": "test_generation_queue.test_duplicate_and_parallel_dispatch_submit_once / test_lost_receipt_holds_reservation_and_never_reissues"
+  },
+  {
+    "id": "P12",
+    "scenario": "승인·선택 보존, 중복결과 Take1회, 취소 도착 결과 자동import 금지",
+    "status": "pass",
+    "evidence": "test_generation_queue.test_import_adds_unselected_take_once_and_preserves_existing_approval / test_cancel_during_submit_is_not_lost_and_late_result_is_not_imported"
+  },
+  {
+    "id": "P13",
+    "scenario": "권한 없는 legacy 쓰기/타workspace job/잘못된 프로젝트 회수 거절",
+    "status": "pass",
+    "evidence": "test_contracts.test_scoped_principal_cannot_bypass_write_grant_via_legacy / test_job_contract_auth_foreign_workspace_and_state_revision / test_live_gates.test_permission_block_requires_new_server_evidence_once_and_redacts_urls"
+  },
+  {
+    "id": "P14",
+    "scenario": "원장 예약/미확정/정산/환급 멱등성; 초과 확인 시 새 예약 중지",
+    "status": "pass",
+    "evidence": "tests/test_ledger.py"
+  },
+  {
+    "id": "P15",
+    "scenario": "실제 UI: provider 완료와 로컬 차단 구분, requestID·만료 안내,403 재시도 버튼 없음; 채팅/작업대 동일 작품",
+    "status": "pass",
+    "evidence": "ui-final.txt / ui-final.png"
+  },
+  {
+    "id": "P16",
+    "scenario": "실제 private CDN 결과 수신→최종 음악/자막영상",
+    "status": "blocked",
+    "evidence": "live403 원인 미확정; 추가 실제 요청 없음"
+  },
+  {
+    "id": "P17",
+    "scenario": "다중 서버 lease/SSO·실사용자 tenant auth/원격TLS/실클라우드 부하",
+    "status": "not implemented",
+    "evidence": "현재 localhost 단일 사용자 MVP 범위"
+  },
+  {
+    "id": "P18",
+    "scenario": "전원 차단 fsync 내구성·장시간/메모리 부하",
+    "status": "not run",
+    "evidence": "원자 rename과 DB rollback만 검증; cross-resource atomic 아님"
+  }
+]

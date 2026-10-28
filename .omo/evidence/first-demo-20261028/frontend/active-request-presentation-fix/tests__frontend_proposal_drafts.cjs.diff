@@ -1,0 +1,20 @@
+--- tests/frontend_proposal_drafts.cjs before
++++ tests/frontend_proposal_drafts.cjs current
+@@ -15,7 +15,7 @@
+   reset(){this.dispatch('reset');this.data={};this.resets++}}}
+  const $=selector=>{if(!nodes.has(selector))nodes.set(selector,node());return nodes.get(selector)};
+  const state={revision:1,workspace_id:'synthetic-workspace',project_ids:{A:'p-a',B:'p-b'},projects:{A:{ip:'ip-a'},B:{ip:'ip-b'}},capabilities:{chat_plan:true}};
+- const c={console,Map,Set,WeakMap,JSON,Error,state,stateReadEpoch:0,current:'A',busy:false,dirty:false,pendingRequest:null,
++ const c={console,Map,Set,WeakMap,JSON,Error,state,stateReadEpoch:0,current:'A',busy:false,dirty:false,pendingRequest:null,activeMutationRequestId:null,
+   $,song:()=>c.current,project:()=>c.state.projects[c.current],
+   document:{querySelector:$,querySelectorAll:()=>[]},
+   FormData:class{constructor(form){this.values=Object.entries(form.data)}get(key){return this.values.find(x=>x[0]===key)?.[1]??null}[Symbol.iterator](){return this.values[Symbol.iterator]()}},
+@@ -26,7 +26,7 @@
+   productionReviewErrors:new Map(),takeReviewStore:{clearRevision(){}},refresh:async()=>{},
+   fetch:async(url,options)=>{requests.push({url,options});if(!options)return response({status:'unknown'},404);return new Promise((resolve,reject)=>pending.push({resolve,reject}))}};
+  vm.createContext(c);
+- vm.runInContext([line('function pendingId('),line('function updateRecovery('),line('function clearPending('),slice('async function sendRequest(',"$('#recoverRequest').onclick=")].join('\n'),c);
++ vm.runInContext([line('function pendingId('),line('function mutationRequestActive('),line('function updateRecovery('),line('function clearPending('),slice('async function sendRequest(',"$('#recoverRequest').onclick=")].join('\n'),c);
+  // Absence on the before snapshot is intentional: run the same behavioural assertions red/green.
+  if(html.includes('/* Proposal form draft guards */'))vm.runInContext(slice('/* Proposal form draft guards */','/* End proposal form draft guards */'),c);
+  vm.runInContext(line("$('#"+id+"').onsubmit="),c);

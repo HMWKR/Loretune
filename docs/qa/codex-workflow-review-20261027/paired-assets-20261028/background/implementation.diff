@@ -1,0 +1,136 @@
+--- scene_renderer.py.before
++++ scene_renderer.py
+@@ -12,6 +12,8 @@
+ import hashlib
+ import json
+ import math
++import marshal
++import sys
+ import os
+ from pathlib import Path
+ import re
+@@ -26,6 +28,13 @@
+ 
+ import scene_spec
+ import scene_assets
++
++# Fingerprint the code object actually loaded by this process, never a newer disk file.
++_RENDERER_FINGERPRINT = hashlib.sha256(marshal.dumps(sys._getframe().f_code)).hexdigest()
++
++
++def renderer_fingerprint():
++    return _RENDERER_FINGERPRINT
+ 
+ 
+ _SCRIPT = '''import bpy, json, math, time
+@@ -43,7 +52,7 @@
+ scene.render.resolution_percentage = 100
+ scene.render.image_settings.file_format = 'PNG'
+ scene.render.filepath = '/output/frame.png'
+-scene.world.color = tuple(scene_data['background'])
++scene.world.node_tree.nodes['Background'].inputs['Color'].default_value = (*scene_data['background'], 1)
+ for data in scene_data['objects']:
+     if data['kind'] == 'cube':
+         bpy.ops.mesh.primitive_cube_add(size=2, location=data['position'])
+--- scene_project.py.before
++++ scene_project.py
+@@ -25,6 +25,7 @@
+ import project_ontology
+ import scene_spec
+ import scene_assets
++import scene_renderer
+ from loretune import Conflict
+ 
+ # Two copies of an 8 MiB validated image plus conservative per-job bookkeeping.
+@@ -203,7 +204,7 @@
+     if verify_tree and tree_manifest(root)!=digest:
+         raise ValueError('승인된 3D 설치 환경이 변경되었습니다.')
+     return dict(image_id=renderer.image_id, blender_sha256=renderer.blender_sha256,
+-                tree_sha256=digest, docker_socket=str(Path(renderer.docker_socket).resolve()),
++                tree_sha256=digest, renderer_fingerprint=scene_renderer.renderer_fingerprint(), docker_socket=str(Path(renderer.docker_socket).resolve()),
+                 timeout_seconds=renderer.timeout_seconds,quota_bytes=quota)
+ 
+ 
+@@ -266,9 +267,8 @@
+ 
+ def _context(p,shot):
+     shot_record=p['shots'][shot]
+-    value=dict(shot_id=production_context.shot_id(p,shot),description=shot_record['description'],canon=guided.context(p))
+-    # Preserve legacy hash compatibility when no binding exists. Binding or
+-    # changing it invalidates the prior approval even at the same ontology revision.
++    value=dict(shot_id=production_context.shot_id(p,shot),description=shot_record['description'],canon=guided.context(p),renderer_fingerprint=scene_renderer.renderer_fingerprint())
++    # Renderer or semantic-context changes require an explicit new approval.
+     if 'semantic_context' in shot_record:value['semantic_context']=deepcopy(shot_record['semantic_context'])
+     return guided.fingerprint(value)
+ 
+@@ -291,6 +291,9 @@
+         try:record['shot']=production_context.shot_key(p,record['shot_id'])
+         except ValueError:record['shot']=None
+         record['proposals']=[json.loads(row[0]) for row in c.execute('SELECT body FROM scene_proposals WHERE scene=? AND conversation=? ORDER BY rowid',(record['id'],conversation))]
++        context=_context(p,record['shot']) if record['shot'] is not None else None
++        for item in record['versions']+record['proposals']:
++            item['requires_review']=item.get('context')!=context
+     return records
+ 
+ 
+@@ -314,6 +317,7 @@
+             if data['decision']!='approved':raise ValueError('적용된 구도는 새 변경안으로 수정하세요.')
+             version=next((v for v in record['versions'] if v['id']==item['applied_revision']),None)
+             if not version:raise ValueError('승인된 구도 버전을 확인하세요.')
++            if version['context']!=_context(p,shot):raise Conflict('실행 기준이 변경되었습니다. 새 변경안으로 다시 승인하세요.')
+             _register_grant_owner(p,cid,version['approval']['id'])
+             return dict(scene_id=record['id'],revision=item['applied_revision'],status='applied')
+         if item['status']=='superseded':raise ValueError('교체된 변경안입니다. 최신 변경안을 검토하세요.')
+--- scene-studio.js.before
++++ scene-studio.js
+@@ -67,24 +67,26 @@
+   const selectedAsset=assets().find(x=>x.id===el('sceneStudioAssetSelect').value);el('sceneStudioAssetUse').disabled=blocked||!same||isStale||!selectedAsset||!!state?.asset_rights?.[selectedAsset.sha256]?.blocked;
+   el('sceneStudioInputs').disabled=blocked||!same||!editing;el('sceneStudioRecover').hidden=!pendingRequest;el('sceneStudioRecover').disabled=busy||inFlight;
+   const retryAvailable=globalThis.LoretuneSceneRecovery?.canRetry?.()===true;el('sceneStudioRetry').hidden=!retryAvailable;el('sceneStudioRetry').disabled=!retryAvailable||inFlight||assetReading||busy;
+-  el('sceneStudioSave').disabled=blocked||!same||!editing||(!dirty&&!rejected)||isStale;el('sceneStudioDiscard').disabled=blocked||!same||!dirty;
++  el('sceneStudioSave').disabled=blocked||!same||!editing||(!dirty&&!rejected&&!(!r?.head&&p?.requires_review))||isStale;el('sceneStudioDiscard').disabled=blocked||!same||!dirty;
+   const unavailableAsset=editing?.objects?.some(obj=>obj.kind==='mesh'&&!assets().some(x=>x.id===obj.asset?.id&&x.sha256===obj.asset?.sha256&&x.profile===obj.asset?.profile&&!state?.asset_rights?.[x.sha256]?.blocked));
+   const currentJob=(project()?.scene_3d_jobs||[]).filter(j=>j.scene_id===r?.id).at(-1),shot=project()?.shots[shotName];
+-  const candidate=!blocked&&!dirty&&!isStale&&!p&&!unavailableAsset&&r?.head&&currentJob?.scene_revision===r.head&&currentJob.status==='completed'&&(shot?.takes||[]).some(t=>t.id===currentJob.take);
+-  el('sceneStudioCapability').textContent=candidate?(shot.selected===currentJob.take?'현재 구도의 이미지 후보가 준비됐습니다. 편집·출력에서 이어서 작업하세요.':'현재 구도의 이미지 후보가 준비됐습니다. 창을 닫고 Take를 선택해 검토하세요.'):available?'정지 이미지 후보를 만들 수 있습니다.':'구성은 저장할 수 있습니다. 현재 환경에서는 이미지 생성이 준비되지 않았습니다.';
++  const candidate=!v?.requires_review&&!blocked&&!dirty&&!isStale&&!p&&!unavailableAsset&&r?.head&&currentJob?.scene_revision===r.head&&currentJob.status==='completed'&&(shot?.takes||[]).some(t=>t.id===currentJob.take);
++  el('sceneStudioCapability').textContent=v?.requires_review?'실행 기준이 변경됐습니다. 저장된 버전을 새 변경안으로 복원하고 다시 승인하세요.':candidate?(shot.selected===currentJob.take?'현재 구도의 이미지 후보가 준비됐습니다. 편집·출력에서 이어서 작업하세요.':'현재 구도의 이미지 후보가 준비됐습니다. 창을 닫고 Take를 선택해 검토하세요.'):available?'정지 이미지 후보를 만들 수 있습니다.':'구성은 저장할 수 있습니다. 현재 환경에서는 이미지 생성이 준비되지 않았습니다.';
+   if(candidate&&el('sceneStudioStatus').textContent===RENDER_REQUESTED)status('');
+-  el('sceneStudioApprove').disabled=blocked||!same||dirty||isStale||!p||source!==p.id||!!unavailableAsset;
+-  el('sceneStudioRender').disabled=blocked||!same||dirty||isStale||!!p||!v?.approval?.id||!available||!!unavailableAsset;
++  el('sceneStudioApprove').disabled=blocked||!same||dirty||isStale||!p||p.requires_review===true||source!==p.id||!!unavailableAsset;
++  el('sceneStudioRender').disabled=blocked||!same||dirty||isStale||!!p||!v?.approval?.id||v.requires_review===true||!available||!!unavailableAsset;
+   el('sceneStudioRestore').disabled=blocked||!same||dirty||!r?.head;el('sceneStudioVersions').disabled=blocked||!r?.head;
+   if(isStale)el('sceneStudioSummary').textContent='저장된 구도나 변경안이 바뀌었습니다. 입력을 보존하고 있습니다. 현재 입력을 취소한 뒤 최신 구도를 확인하세요.';
+   else if(unavailableAsset)el('sceneStudioSummary').textContent='현재 구성의 3D 자산을 사용할 수 없습니다. 원본과 사용권 상태를 확인하거나 다른 자산으로 바꾸세요.';
+   else if(dirty)el('sceneStudioSummary').textContent='아직 저장하지 않은 구성이 있습니다.';
++  else if(p?.requires_review)el('sceneStudioSummary').textContent=r?.head?'실행 기준이 변경된 변경안입니다. 저장된 버전을 복원해 새 변경안으로 다시 검토하세요.':'실행 기준이 변경된 초안입니다. 변경안을 다시 저장한 뒤 승인하세요.';
++  else if(v?.requires_review&&!p)el('sceneStudioSummary').textContent='이전 승인과 결과는 보존됩니다. 저장된 버전을 복원해 새 변경안을 승인하세요.';
+   else if(p){const kinds={cube:'상자',sphere:'구',plane:'평면'};const shapes=p.scene.objects.map(x=>x.kind==='mesh'?assetName(x):kinds[x.kind]||'도형').join(', ');el('sceneStudioSummary').textContent=`저장된 변경안: ${shapes} · 렌즈 ${p.scene.camera.lens_mm}mm · 조명 ${p.scene.lights.map(x=>x.energy_w+'W').join(', ')}. 각 항목을 펼쳐 확인한 뒤 승인하세요.`}
+   else if(rejected)el('sceneStudioSummary').textContent='거절된 구성입니다. 내용을 다시 확인하고 새 변경안으로 저장할 수 있습니다.';
+   else if(v)el('sceneStudioSummary').textContent='승인된 구도입니다. 정지 후보 생성과 Take 검토는 별도입니다.';
+   else el('sceneStudioSummary').textContent='구성을 입력하고 변경안을 저장하세요.';
+  }
+- function jobMarkup(job){const stateLabel=({queued:'대기',running:'이미지 생성 중',completed:'후보 준비됨',failed:'생성 실패',cancelled:'취소됨',interrupted:'중단됨',outcome_unknown:'확인 필요'})[job.status]||'상태 확인 필요';const detail=({queued:'창을 닫아도 작업은 계속됩니다.',running:'창을 닫아도 작업은 계속됩니다.',completed:'Take가 추가됐습니다. 기존 Take에서 선택하고 사용권과 내용을 검토하세요.',failed:'후보를 만들지 못했습니다. 작업 상태와 실행 환경을 확인하세요.',cancelled:'작업이 취소됐습니다. 이 작업의 후보는 추가되지 않았습니다.',interrupted:'작업이 중단됐습니다. 작업 상태를 확인하세요.',outcome_unknown:'기존 작업을 확인해야 합니다. 자동으로 다시 실행하지 않습니다.'})[job.status]||'작업 상태를 확인하세요.';const url=typeof job.download==='string'&&/^\/assets\/scene-[a-f0-9]{64}\.png$/.test(job.download)?job.download:'';return `<article class="guided-card"><b>정지 이미지 · ${esc(stateLabel)}</b><p>${esc(detail)}</p>${job.error?`<p class="error">${esc(job.error)}</p>`:''}${url?`<img src="${esc(url)}" alt="생성된 3D 구도 정지 이미지" class="scene-studio-result">`:''}${['queued','running'].includes(job.status)?`<button type="button" data-scene-cancel="${esc(job.id)}">후보 생성 취소</button>`:''}</article>`}
++ function jobMarkup(job){const previous=record()?.versions?.find(v=>v.id===job.scene_revision)?.requires_review===true;const stateLabel=previous&&job.status==='completed'?'이전 실행 기준의 후보':({queued:'대기',running:'이미지 생성 중',completed:'후보 준비됨',failed:'생성 실패',cancelled:'취소됨',interrupted:'중단됨',outcome_unknown:'확인 필요'})[job.status]||'상태 확인 필요';const detail=previous?'이전 실행 기준의 작업입니다. 결과는 보존되며, 새 후보 생성에는 변경안 복원과 재승인이 필요합니다.':({queued:'창을 닫아도 작업은 계속됩니다.',running:'창을 닫아도 작업은 계속됩니다.',completed:'Take가 추가됐습니다. 기존 Take에서 선택하고 사용권과 내용을 검토하세요.',failed:'후보를 만들지 못했습니다. 작업 상태와 실행 환경을 확인하세요.',cancelled:'작업이 취소됐습니다. 이 작업의 후보는 추가되지 않았습니다.',interrupted:'작업이 중단됐습니다. 작업 상태를 확인하세요.',outcome_unknown:'기존 작업을 확인해야 합니다. 자동으로 다시 실행하지 않습니다.'})[job.status]||'작업 상태를 확인하세요.';const url=typeof job.download==='string'&&/^\/assets\/scene-[a-f0-9]{64}\.png$/.test(job.download)?job.download:'';return `<article class="guided-card"><b>정지 이미지 · ${esc(stateLabel)}</b><p>${esc(detail)}</p>${job.error?`<p class="error">${esc(job.error)}</p>`:''}${url?`<img src="${esc(url)}" alt="생성된 3D 구도 정지 이미지" class="scene-studio-result">`:''}${['queued','running'].includes(job.status)?`<button type="button" data-scene-cancel="${esc(job.id)}">후보 생성 취소</button>`:''}</article>`}
+  function refresh(){button.disabled=!project()?.shots[shotName];if(!dialog.open)return;const next=scopeKey();if(scope!==next){persist();scope=next;const old=remembered();if(old?.editing){({editing,baseline,source,base,dirty,editVersion,objectIndex,lightIndex}=old);renderedFields=''}else hydrate(record());status('')}
+   const p=project(),r=record(),selected=replaceable(r);if(!dirty&&r&&((selected?.id||null)!==source||r.head!==base)){hydrate(r)}
+   el('sceneStudioContext').textContent=shotName?'현재 장면: '+shotName:'장면을 선택하세요.';
+@@ -129,14 +131,14 @@
+  el('sceneStudioFields').addEventListener('invalid',e=>{const section=e.target.closest('details');if(section)section.open=true;status('입력 범위를 확인하세요.')},true);
+  el('sceneStudioFields').oninput=e=>{const input=e.target,path=input.dataset.scenePath;if(!editing||!path||inFlight||busy)return;const keys=path.split('.'),last=keys.pop();let target=editing;for(const key of keys)target=target[key];target[last]=input.type==='number'?(input.value===''?null:Number(input.value)):input.type==='color'?input.value.slice(1).match(/../g).map(x=>parseInt(x,16)/255):input.value;dirty=true;editVersion++;persist();controls();status('수정 내용을 아직 저장하지 않았습니다.')};
+  el('sceneStudioDiscard').onclick=()=>{if(inFlight||busy)return;hydrate(record());dirty=false;if(!record()){editing=initial();dirty=true}fields();persist();controls();status('저장된 구도를 다시 불러왔습니다.')};
+- el('sceneStudioSave').onclick=async()=>{const r0=record();if(inFlight||busy||!editing||(!dirty&&replaceable(r0)?.status!=='rejected')||scope!==scopeKey()||!valid())return;const ctx=scope,version=editVersion,p=project(),s=p?.shots[shotName],r=record(),scene=structuredClone(editing);if(!s||stale(r))return;let action,data;
++ el('sceneStudioSave').onclick=async()=>{const r0=record();if(inFlight||busy||!editing||(!dirty&&replaceable(r0)?.status!=='rejected'&&!(!r0?.head&&replaceable(r0)?.requires_review))||scope!==scopeKey()||!valid())return;const ctx=scope,version=editVersion,p=project(),s=p?.shots[shotName],r=record(),scene=structuredClone(editing);if(!s||stale(r))return;let action,data;
+   if(!r){action='scene_create';data={song:song(),shot_id:s.stable_id||shotName,scene}}
+   else if(!r.head){if(!source)return status('현재 변경안을 다시 확인하세요.');action='scene_replace_draft';data={song:song(),scene_id:r.id,scene_proposal_id:source,base_revision:0,scene}}
+   else {const prior=r.versions.find(v=>v.id===r.head)?.scene,ops=prior?operations(prior,scene):[];if(!ops.length)return status('저장할 변경이 없습니다.');action='scene_propose';data={song:song(),scene_id:r.id,base_revision:r.head,operations:ops}}
+   if(await request(action,data)){if(scope!==ctx||version!==editVersion)return;const saved=record();if(!saved||!pending(saved)){status('저장은 완료됐지만 변경안을 불러오지 못했습니다. 입력을 유지하고 새로고침해 확인하세요.');return}hydrate(saved);dirty=false;persist();fields();refresh();status('변경안을 저장했습니다. 구성 승인 전입니다.')}
+  };
+- el('sceneStudioApprove').onclick=async()=>{const r=record(),p=pending(r),ctx=scope;if(inFlight||busy||!p||dirty||stale(r)||p.id!==source)return;if(await request('scene_review',{song:song(),scene_proposal_id:p.id,decision:'approved'})){if(scope!==ctx)return;hydrate(record());dirty=false;fields();refresh();status('구도를 승인했습니다. 이미지 후보 생성과 Take 검토는 별도입니다.')}};
+- el('sceneStudioRender').onclick=async()=>{const r=record(),v=r?.versions?.find(x=>x.id===r.head),ctx=scope;if(inFlight||busy||!v||dirty||pending(r)||stale(r)||project()?.scene_3d_connection?.available!==true)return;if(await request('scene_render',{song:song(),scene_id:r.id,scene_revision:r.head,grant_id:v.approval.id})){if(ctx!==scope)return;refresh();status(RENDER_REQUESTED)}};
++ el('sceneStudioApprove').onclick=async()=>{const r=record(),p=pending(r),ctx=scope;if(inFlight||busy||!p||p.requires_review===true||dirty||stale(r)||p.id!==source)return;if(await request('scene_review',{song:song(),scene_proposal_id:p.id,decision:'approved'})){if(scope!==ctx)return;hydrate(record());dirty=false;fields();refresh();status('구도를 승인했습니다. 이미지 후보 생성과 Take 검토는 별도입니다.')}};
++ el('sceneStudioRender').onclick=async()=>{const r=record(),v=r?.versions?.find(x=>x.id===r.head),ctx=scope;if(inFlight||busy||!v||v.requires_review===true||dirty||pending(r)||stale(r)||project()?.scene_3d_connection?.available!==true)return;if(await request('scene_render',{song:song(),scene_id:r.id,scene_revision:r.head,grant_id:v.approval.id})){if(ctx!==scope)return;refresh();status(RENDER_REQUESTED)}};
+  el('sceneStudioRestore').onclick=async()=>{const r=record(),ctx=scope,revision=editVersion;if(inFlight||busy||!r?.head||dirty)return;const value=Number(el('sceneStudioVersions').value);if(await request('scene_restore',{song:song(),scene_id:r.id,base_revision:r.head,version:value})){if(scope!==ctx||editVersion!==revision)return;hydrate(record());dirty=false;fields();refresh();status('이전 구도를 새 변경안으로 복원했습니다. 다시 검토해 주세요.')}};
+  el('sceneStudioJobs').onclick=async e=>{
+   const b=e.target.closest('[data-scene-cancel]');

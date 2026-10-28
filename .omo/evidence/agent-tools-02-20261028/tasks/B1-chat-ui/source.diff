@@ -1,0 +1,303 @@
+--- .omo/evidence/agent-tools-02-20261028/before/general-chat-ui.js	2026-10-28 14:56:12
++++ general-chat-ui.js	2026-10-28 16:59:14
+@@ -19,7 +19,7 @@
+  const historyLabel=v=>Number.isSafeInteger(v.history_context?.request_count)&&v.history_context.request_count>0&&Number.isSafeInteger(v.history_context.answer_count)&&v.history_context.answer_count>=0?`이 대화의 이전 요청 ${v.history_context.request_count}개 · 최근 답변 ${v.history_context.answer_count}개 포함. 과거 답변은 승인된 작품 기준이 아닙니다.`:'';
+  let sidebarHost=null,closeHost=null;
+  function layout(live){const legacy=el('modelChatPanel');if(sidebarHost){if(panel.parentElement!==sidebarHost)sidebarHost.append(panel);panel.dataset.liveLayout=String(live);panel.dataset.sidebarHosted='true';panel.open=true;legacy.hidden=live;return}if(panel.dataset.liveLayout===String(live))return;panel.dataset.liveLayout=String(live);if(live){el('guidedBrief').before(panel);legacy.hidden=true;panel.open=true}else{legacy.after(panel);legacy.hidden=false}}
+- const toolLabels={propose_media_plan:'장면 계획 제안',search_project_context:'프로젝트 내용 검색',propose_timeline_changes:'편집 변경 제안',request_render:'출력 요청',propose_motion_scene:'모션 구성 제안',request_motion_render:'승인된 모션 후보 렌더',get_model_capabilities:'모델 기능 목록 조회',prepare_image_action:'이미지 제작안 준비 · 실행 없음'};
++ const toolLabels={propose_media_plan:'장면 계획 제안',search_project_context:'프로젝트 내용 검색',propose_timeline_changes:'편집 변경 제안',request_render:'출력 요청',propose_motion_scene:'모션 구성 제안',request_motion_render:'승인된 모션 후보 렌더',get_model_capabilities:'모델 기능 목록 조회',prepare_image_action:'이미지 제작안 준비 · 실행 없음',get_generation_job:'생성 작업 상태 조회 · 승인 아님',estimate_media_plan:'준비된 제작안 견적 합계 · 청구 아님',prepare_video_action:'영상 제작안 준비 · 실행 없음',get_agent_settings:'에이전트 설정 조회',propose_preference_rule:'선호 규칙 후보 제안 · 승인 전',propose_scene_3d:'3D 장면 변경 제안 · 승인 전'};
+  const states={queued:'대기 중',running:'처리 중',cancel_requested:'취소 요청 중',cancelled:'취소됨',completed:'답변 확인',awaiting_continuation_approval:'추가 전달 승인 대기',continuation_rejected:'추가 전달 거절됨',outcome_unknown:'결과 미확정 · 자동 재호출 없음',blocked_before_message:'전달 전 차단',response_validation_failed:'응답 확인 실패',limit_reached:'대화 한도에 도달'};
+  function reviewTargets(p,turn){
+   const cid=p?.active_conversation?.id;
+@@ -30,7 +30,7 @@
+   for(const call of runs[0].calls||[]){
+    const result=call.result;if(call.name!=='prepare_image_action'||result?.status!=='proposed'||result.role!=='image'||typeof result.action_id!=='string')continue;
+    const actions=(p.media_actions||[]).filter(action=>action.id===result.action_id);
+-   if(actions.length===1&&actions[0].role==='image'&&typeof actions[0].shot==='string'&&p.shots?.[actions[0].shot])targets.push({id:actions[0].id,shot:actions[0].shot});
++   if(actions.length===1&&actions[0].role==='image'&&typeof actions[0].shot==='string'&&p.shots?.[actions[0].shot])targets.push({id:actions[0].id,shot:actions[0].shot,approval:actions[0].approval,job:!!actions[0].job});
+   }
+   return targets.filter(target=>targets.filter(other=>other.id===target.id).length===1);
+  }
+@@ -39,7 +39,12 @@
+   const p=project(),turns=(p?.general_chat_turns||[]).filter(turn=>turn.id===turnId);
+   return turns.length===1?reviewTargets(p,turns[0]).find(target=>target.id===actionId)||null:null;
+  }
+- function controls(){const p=project(),cap=p?.general_chat_connection;const blocked=!!busy||inFlight||!!pendingId()||!!pendingId.failed||!!dirty;const active=(p?.general_chat_turns||[]).some(t=>['queued','running','outcome_unknown','cancel_requested','awaiting_continuation_approval'].includes(t.status));el('generalChatPrepare').disabled=blocked||!allowed(cap)||cap?.new_preview_available===false||active||(p?.general_chat_previews||[]).length>0;el('generalChatRefresh').disabled=!!busy||inFlight;panel.querySelectorAll('[data-general-decision],[data-general-cancel]').forEach(b=>b.disabled=blocked||!allowed(cap)&&b.dataset?.generalDecision!=='reject'&&!b.dataset?.generalCancel)}
++ // Visible names separate same-scene targets by order and decision; server IDs stay in data-* only.
++ function reviewLabel(target,list){const same=list.filter(other=>other.shot===target.shot),state=target.job?'작업 생성됨':{approved:'승인됨',held:'보류됨',rejected:'거절됨'}[target.approval];return target.shot+' 제작안 '+(same.length>1?(same.indexOf(target)+1)+'/'+same.length+' ':'')+(state?'보기 ('+state+')':'검토')}
++ const reviewMessages={busy:'진행 중인 요청이 끝난 뒤 다시 시도하세요.',dirty:'다른 장면의 제작안을 열려면 현재 편집을 먼저 저장하거나 초안을 취소하세요. 대화 초안은 유지됩니다.',missing:'이 제작안을 현재 대화에서 찾을 수 없습니다. 저장된 대화 상태를 다시 확인하세요.',blocked:'제작안 카드로 이동하지 못했습니다. 열린 작업 창과 장면 목록을 확인한 뒤 다시 시도하세요.'};
++ function focusKey(b){return b?.dataset?.generalReviewAction?'review\n'+b.dataset.generalReviewAction+'\n'+b.dataset.generalReviewTurn:b?.dataset?.generalCancel?'cancel\n'+b.dataset.generalCancel:''}
++ function restoreFocus(value){if(value)[...el('generalChatTurns').querySelectorAll('[data-general-review-action],[data-general-cancel]')].find(b=>focusKey(b)===value)?.focus({preventScroll:true})}
++ function controls(){const p=project(),cap=p?.general_chat_connection;const blocked=!!busy||inFlight||!!pendingId()||!!pendingId.failed||!!dirty;const active=(p?.general_chat_turns||[]).some(t=>['queued','running','outcome_unknown','cancel_requested','awaiting_continuation_approval'].includes(t.status));el('generalChatPrepare').disabled=blocked||!allowed(cap)||cap?.new_preview_available===false||active||(p?.general_chat_previews||[]).length>0;el('generalChatRefresh').disabled=!!busy||inFlight;panel.querySelectorAll('[data-general-decision],[data-general-cancel],[data-general-review-action]').forEach(b=>b.disabled=b.dataset?.generalReviewAction?!!busy||inFlight:blocked||!allowed(cap)&&b.dataset?.generalDecision!=='reject'&&!b.dataset?.generalCancel)}
+  function refresh(){
+   const next=key();if(next!==scope){scope=next;el('generalChatPrompt').value=draftRead(scope)||'';el('generalChatMaximum').value=draftRead(scope+'-maximum')??'0.01';el('generalChatTotal').value=draftRead(scope+'-total')??'0.04';el('generalChatStatus').textContent='';renderedReviews='';renderedTurns=''}
+   const p=project(),cap=p?.general_chat_connection,enabled=allowed(cap);
+@@ -55,7 +60,7 @@
+    el('generalChatReviews').innerHTML=reviews.map(v=>`<article class="general-chat-card"><h3>${v.turn_id?'도구 결과 추가 전달 검토':'요청 전송 검토'}</h3><dl><dt>수신처</dt><dd>${esc(v.mode==='contract-fake'?'합성 시험 · 외부 전송 없음':v.destination)}</dd><dt>방식</dt><dd>${esc(label(v.mode))}</dd><dt>모델</dt><dd>${esc(v.binding?.model||'확인 필요')}</dd><dt>자료 범위</dt><dd>${esc(v.data_scope)}</dd><dt>한 회차 상한 / 최대 예약액</dt><dd>${money(v.maximum_micro)} / ${money(v.reserve_micro)}</dd><dt>이번 요청 총 상한</dt><dd>${v.total_maximum_micro==null?'합성 시험: 총 상한 미적용':money(v.total_maximum_micro)}</dd><dt>도구 범위</dt><dd>${esc((v.tool_scope||[]).map(name=>toolLabels[name]||'확인 필요').join(', '))}</dd></dl>${historyLabel(v)?`<p>${esc(historyLabel(v))}</p>`:''}<p>총 상한은 이번 요청과 이어지는 도구 결과 전달에 적용됩니다. 승인 후에도 서버에서 문맥과 예산을 다시 확인하며 자료 파일 자체는 전달하지 않습니다.</p><details data-detail="${esc(v.id)}" ${opened.has(v.id)?'open':''}><summary>전달할 전체 내용 보기 · 도구 결과 포함</summary><p>메시지 요청</p><pre>${esc(JSON.stringify(v.message_body,null,2))}</pre><p>토큰 수 확인 요청</p><pre>${esc(JSON.stringify(v.count_body,null,2))}</pre></details><label class="general-chat-rights"><input type="checkbox" data-rights="${esc(v.id)}" ${checked.has(v.id)?'checked':''}> 이 요청에 포함된 내용의 사용 및 전달 권한을 확인했습니다.</label><div class="general-chat-actions"><button type="button" data-general-decision="approve" data-preview="${esc(v.id)}">확인한 내용 승인</button><button type="button" data-general-decision="reject" data-preview="${esc(v.id)}">전달 거절</button></div></article>`).join('');
+    renderedReviews=reviewData;if(focused)el('generalChatReviews').querySelector('[data-general-decision="'+focused+'"], [data-rights="'+focused+'"]')?.focus({preventScroll:true});
+   }
+-  const targets=turns.map(turn=>reviewTargets(p,turn)),turnData=JSON.stringify([turns,targets]);if(renderedTurns!==turnData){el('generalChatTurns').innerHTML=turns.map((t,i)=>`<article class="general-chat-card"><h3>${esc(states[t.status]||'상태 확인 필요')}</h3><p>${esc(label(t.mode))} · ${esc(t.model||'')}</p><p class="general-chat-text">${esc(t.prompt||'')}</p>${t.answer?`<p class="general-chat-text">${esc(t.answer)}</p><p>${t.mode==='anthropic-live'?'모델 답변과 변경안의 적용·출력 승인은 별도입니다.':'시험 응답이며 제작 결과나 편집 승인이 아닙니다.'}</p>`:''}${t.error?`<p>${esc(t.error)}</p>`:''}<p>${esc(usageLabel(t))} · 청구 ${t.billing_confirmed?'확인':'미확인'}</p>${targets[i].map(target=>`<button type="button" data-general-review-action="${esc(target.id)}" data-general-review-turn="${esc(t.id)}" data-general-review-scope="${esc(scope)}">${esc(target.shot)} 제작안 검토</button>`).join('')}${['queued','running','awaiting_continuation_approval'].includes(t.status)?`<button type="button" data-general-cancel="${esc(t.id)}">대화 작업 중단</button>`:''}</article>`).join('');renderedTurns=turnData}
++  const targets=turns.map(turn=>reviewTargets(p,turn)),turnData=JSON.stringify([turns,targets]);if(renderedTurns!==turnData){const focused=focusKey(document.activeElement);el('generalChatTurns').innerHTML=turns.map((t,i)=>{const actions=targets[i].map(target=>`<button type="button" data-general-review-action="${esc(target.id)}" data-general-review-turn="${esc(t.id)}" data-general-review-scope="${esc(scope)}">${esc(reviewLabel(target,targets[i]))}</button>`).join('')+(['queued','running','awaiting_continuation_approval'].includes(t.status)?`<button type="button" data-general-cancel="${esc(t.id)}">대화 작업 중단</button>`:'');return `<article class="general-chat-card"><h3>${esc(states[t.status]||'상태 확인 필요')}</h3><p>${esc(label(t.mode))} · ${esc(t.model||'')}</p><p class="general-chat-text">${esc(t.prompt||'')}</p>${t.answer?`<p class="general-chat-text">${esc(t.answer)}</p><p>${t.mode==='anthropic-live'?'모델 답변과 변경안의 적용·출력 승인은 별도입니다.':'시험 응답이며 제작 결과나 편집 승인이 아닙니다.'}</p>`:''}${t.error?`<p>${esc(t.error)}</p>`:''}<p>${esc(usageLabel(t))} · 청구 ${t.billing_confirmed?'확인':'미확인'}</p>${actions?`<div class="general-chat-actions">${actions}</div>`:''}</article>`}).join('');renderedTurns=turnData;restoreFocus(focused)}
+   controls();
+  }
+  el('generalChatPrompt').addEventListener('input',()=>draftWrite(scope,el('generalChatPrompt').value));
+@@ -64,7 +69,7 @@
+  async function request(action,data){let outcome={status:'not_sent'};const current=scope;inFlight=true;controls();try{const ok=await act(action,data,undefined,value=>{outcome=value});if(current!==scope)return false;if(!ok){const messages={rejected:outcome.reason||'요청이 거절되었습니다. 입력을 확인하세요.',unknown:'요청 결과가 미확정입니다. 기존 요청 확인 후 계속하세요.',committed_refresh_failed:'저장됐지만 화면 갱신에 실패했습니다. 상태를 다시 확인하세요.',not_sent:'요청하지 못했습니다. 저장되지 않은 편집, 브라우저 저장소와 기존 요청을 확인하세요.'};el('generalChatStatus').textContent=messages[outcome.status]||'상태를 다시 확인하세요.'}return ok}finally{inFlight=false;refresh()}}
+  el('generalChatForm').onsubmit=async e=>{e.preventDefault();if(!allowed(project()?.general_chat_connection)||project()?.general_chat_connection?.new_preview_available===false||inFlight||busy||scope!==key())return;const cap=project().general_chat_connection,maximum=micro(el('generalChatMaximum').value),total=micro(el('generalChatTotal').value);if(!maximum||maximum>100000||(bounded(cap.mode)&&(!total||total<maximum||total>400000))){el('generalChatStatus').textContent='비용 상한을 확인하세요.';return}const data={song:song(),prompt:el('generalChatPrompt').value,maximum_micro:maximum};if(bounded(cap.mode))data.total_maximum_micro=total;if(await request('general_chat_preview',data))el('generalChatStatus').textContent='전달할 내용을 준비했습니다. 확인하고 승인 또는 거절하세요. 아직 전달하지 않았습니다.'};
+  el('generalChatReviews').onclick=async e=>{const b=e.target.closest('[data-general-decision]'),decision=b?.dataset.generalDecision;if(!b||inFlight||busy||scope!==key()||decision!=='reject'&&!allowed(project()?.general_chat_connection))return;const v=(project()?.general_chat_previews||[]).find(x=>x.id===b.dataset.preview);if(!v)return;const rights=[...el('generalChatReviews').querySelectorAll('[data-rights]')].find(x=>x.dataset.rights===v.id)?.checked===true;if(decision==='approve'&&!rights){el('generalChatStatus').textContent='내용의 사용 및 전달 권한을 확인해 주세요.';return}if(decision==='approve'&&!v.turn_id&&previewPrompt(v)!==el('generalChatPrompt').value){el('generalChatStatus').textContent='초안이 바뀌었거나 요청을 확인할 수 없습니다. 이 검토를 거절하고 새 내용을 준비하세요.';return}if(await request('general_chat_decide',{song:song(),preview_id:v.id,manifest_sha256:v.manifest_sha256,decision,rights_confirmed:rights}))el('generalChatStatus').textContent=decision==='approve'?'승인을 저장했습니다. 대화 상태를 확인하세요.':'전달을 거절했습니다.'};
+- el('generalChatTurns').onclick=async e=>{const review=e.target.closest('[data-general-review-action]');if(review){if(busy||inFlight)return;const expected=review.dataset.generalReviewScope,target=currentReviewTarget(review.dataset.generalReviewTurn,review.dataset.generalReviewAction,expected);if(!target)return;const valid=()=>!!currentReviewTarget(review.dataset.generalReviewTurn,review.dataset.generalReviewAction,expected);const opened=await window.LoretuneAgentSidebar?.reviewMediaAction(target.id,expected,valid);if(scope===expected&&!opened)el('generalChatStatus').textContent='제작안을 열지 못했습니다. 저장되지 않은 편집과 현재 대화의 제작안을 확인하세요.';return}const b=e.target.closest('[data-general-cancel]');if(!b||busy||inFlight||scope!==key())return;if(await request('general_chat_cancel',{song:song(),turn:b.dataset.generalCancel}))el('generalChatStatus').textContent='중단 요청을 저장했습니다. 작업 상태를 확인하세요.'};
++ el('generalChatTurns').onclick=async e=>{const review=e.target.closest('[data-general-review-action]');if(review){const expected=review.dataset.generalReviewScope,origin=focusKey(review);if(busy||inFlight){el('generalChatStatus').textContent=reviewMessages.busy;return}const target=currentReviewTarget(review.dataset.generalReviewTurn,review.dataset.generalReviewAction,expected);if(!target){if(scope===expected&&key()===expected)el('generalChatStatus').textContent=reviewMessages.missing;return}const valid=()=>!!currentReviewTarget(review.dataset.generalReviewTurn,review.dataset.generalReviewAction,expected);const result=await window.LoretuneAgentSidebar?.reviewMediaAction(target.id,expected,valid);if(scope!==expected||result==='superseded')return;el('generalChatStatus').textContent=result==='opened'?'':reviewMessages[result]||reviewMessages.blocked;if(result!=='opened')restoreFocus(origin);return}const b=e.target.closest('[data-general-cancel]');if(!b||busy||inFlight||scope!==key())return;if(await request('general_chat_cancel',{song:song(),turn:b.dataset.generalCancel}))el('generalChatStatus').textContent='중단 요청을 저장했습니다. 작업 상태를 확인하세요.'};
+  el('generalChatRefresh').onclick=async()=>{if(dirty)return el('generalChatStatus').textContent='저장되지 않은 편집을 먼저 저장하세요. 초안은 유지됩니다.';try{await refreshState()}catch{el('generalChatStatus').textContent='상태를 불러오지 못했습니다. 초안은 유지됩니다.'}};
+  panel.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const section=e.target.closest('details');if(section===panel&&sidebarHost){e.preventDefault();e.stopPropagation();closeHost?.();return}if(section?.open){e.preventDefault();e.stopPropagation();section.open=false;section.querySelector(':scope > summary')?.focus()}});
+  async function refreshState(){await windowRefresh();refresh();el('generalChatStatus').textContent='저장된 대화 상태를 확인했습니다.'}
+--- .omo/evidence/agent-tools-02-20261028/before/chat-sidebar.js	2026-10-28 15:00:29
++++ chat-sidebar.js	2026-10-28 16:59:29
+@@ -127,32 +127,37 @@
+    });
+   });
+  }
++ // Returns 'opened' or a reason: superseded (newer navigation/conversation, stay silent),
++ // missing (target gone), dirty (unsaved edit on another scene), blocked (screen did not reach the card).
+  async function reviewMediaAction(id, scope, stillCurrent) {
+   const sequence = ++navigationSequence;
+-  const current = () => {
+-   if (sequence !== navigationSequence || scope !== conversationDraftKey('general-chat') || typeof stillCurrent !== 'function' || !stillCurrent()) return null;
++  const check = () => {
++   if (sequence !== navigationSequence || scope !== conversationDraftKey('general-chat')) return 'superseded';
+    const p = project(), actions = (p?.media_actions || []).filter(action => action.id === id);
+-   return actions.length === 1 && actions[0].role === 'image' && p.shots?.[actions[0].shot] ? actions[0] : null;
++   if (typeof stillCurrent !== 'function' || !stillCurrent() || actions.length !== 1 || actions[0].role !== 'image' || !p.shots?.[actions[0].shot]) return 'missing';
++   return dirty && actions[0].shot !== shotName ? 'dirty' : actions[0];
+   };
+-  let action = current(); if (!action || (dirty && action.shot !== shotName)) return false;
++  const shotButton = shot => { const buttons = [...document.querySelectorAll('#shotlist [data-shot]')].filter(button => button.dataset.shot === shot); return buttons.length === 1 && !buttons[0].disabled ? buttons[0] : null; };
++  // Verify the scene control before closing dialogs or changing the step so a failure leaves the screen as it was.
++  let action = check(); if (typeof action === 'string') return action;
++  if (action.shot !== shotName && !shotButton(action.shot)) return 'blocked';
+   const closing = [...dialogStack].reverse().filter(dialog => dialog.open);
+   const closed = closing.map(dialog => new Promise(resolve => dialog.addEventListener('close', resolve, { once: true })));
+   for (const dialog of closing) dialog.close();
+   await Promise.all(closed); syncDialogs();
+-  action = current(); if (!action || activeDialog || (dirty && action.shot !== shotName)) return false;
+-  setStep(3); await Promise.resolve();
+-  action = current(); if (!action || activeDialog || (dirty && action.shot !== shotName)) return false;
+-  if (action.shot !== shotName) {
+-   const buttons = [...document.querySelectorAll('#shotlist [data-shot]')].filter(button => button.dataset.shot === action.shot);
+-   if (buttons.length !== 1 || buttons[0].disabled) return false;
+-   buttons[0].click();
+-  }
++  action = check(); if (typeof action === 'string') return action; if (activeDialog) return 'blocked';
++  setStep(3, { focus: false }); await Promise.resolve();
++  action = check(); if (typeof action === 'string') return action; if (activeDialog) return 'blocked';
++  if (action.shot !== shotName) { const button = shotButton(action.shot); if (!button) return 'blocked'; button.click(); }
+   await Promise.resolve();
+-  action = current(); if (!action || action.shot !== shotName || activeDialog) return false;
++  action = check(); if (typeof action === 'string') return action; if (action.shot !== shotName || activeDialog) return 'blocked';
+   const cards = [...document.querySelectorAll('[data-action-card]')].filter(card => card.dataset.actionCard === id);
+-  if (cards.length !== 1) return false;
++  if (cards.length !== 1) return 'blocked';
+   choose('settings'); focusWorkTarget(cards[0]);
+-  return !!cards[0].getClientRects().length && document.activeElement === cards[0];
++  // The chat pane is hidden now; return to it so the failure text and button focus are reachable.
++  if (!cards[0].getClientRects().length || document.activeElement !== cards[0]) { choose('chat'); return 'blocked'; }
++  cards[0].dataset.reviewArrival = ''; cards[0].addEventListener('blur', () => { delete cards[0].dataset.reviewArrival; }, { once: true });
++  return 'opened';
+  }
+  workRows.addEventListener('click', event => { const button = event.target.closest('[data-agent-work]'); if (button) viewWork(button.dataset.agentWork); });
+  const modeNames = { read_only: '읽기 전용', review: '검토 후 편집', full_access: 'FullAccess' };
+--- .omo/evidence/agent-tools-02-20261028/before/studio.css	2026-10-28 12:42:31
++++ studio.css	2026-10-28 16:59:41
+@@ -758,6 +758,8 @@
+ .lt-ui .media-action-card h3 { font-size:var(--ui-body-size); font-weight:var(--ui-weight-label); }
+ .lt-ui .media-action-card p { font-weight:var(--ui-weight-normal); line-height:1.6; color:var(--ui-body); }
+ .lt-ui .media-action-card button { border-color:var(--ui-control); }
++/* Arrival mark after chat navigation; shown for mouse and keyboard alike, cleared on blur. No motion. */
++.lt-ui .media-action-card[data-review-arrival] { outline:2px solid var(--ui-focus); outline-offset:var(--ui-space-1); }
+ .lt-ui .creator-comparison-identity { min-height:32px; margin:var(--ui-space-3) 0 var(--ui-space-2); gap:var(--ui-space-2); }
+ .lt-ui .creator-comparison-identity>b { font-weight:var(--ui-weight-label); }
+ .lt-ui .comparison-media-stage { display:flex; align-items:center; justify-content:center; width:100%; height:min(32vh,300px); min-height:180px; background:var(--ui-compare); border-radius:var(--ui-radius-control); overflow:hidden; }
+@@ -781,7 +783,7 @@
+ .lt-ui :where(#creatorEditReview,#reviewTake,#discardTakeReviewDraft) { min-height:44px; }
+ }
+ @media(forced-colors:active) {
+-.lt-ui :focus-visible { outline-color:Highlight; }
++.lt-ui :focus-visible,.lt-ui .media-action-card[data-review-arrival] { outline-color:Highlight; }
+ .lt-ui :is(.shot,#takes button)[aria-pressed="true"] { border:2px solid Highlight; box-shadow:none; }
+ .lt-ui .lt-review-state { color:CanvasText; }
+ }
+--- .omo/evidence/agent-tools-02-20261028/before/index.html	2026-10-28 12:57:46
++++ index.html	2026-10-28 16:59:35
+@@ -798,7 +798,7 @@
+  const j=x.job,labels={prepared:'실행 대기',submitting:'접수 확인 중',accepted:'접수됨',running:'생성 중',result_ready:'결과 수집 대기',downloading:'결과 검증·저장 중',imported:'새 Take 연결됨',import_blocked:'결과 연결 확인 필요',reconciliation_required:'접수 여부 확인 필요',submission_blocked:'전송 전 확인 필요',expired:'견적 만료 · 미전송',failed:'생성 실패',cancel_pending:'취소 요청 대기',cancel_sent:'취소 확인 중',cancelled:'전송 전 취소',cancelled_result:'취소 후 결과 도착',image_recovery_pending:'기존 결과 확인 대기',image_recovery_running:'기존 결과 확인 중'};
+  const decision={approved:'승인됨',held:'보류됨',rejected:'거절됨',required:'검토 필요'},test=x.mode==='contract-fake',c=x.candidate,r=j?.recovery||{};
+  const button=(decision,label)=>`<button data-media-decision="${decision}" data-action="${esc(x.id)}">${label}</button>`;
+- return `<article class="guided-card media-action-card" data-action-card="${esc(x.id)}"><h3>${esc(x.shot)} · ${x.role==='image'?'이미지':'영상'}</h3><p><b>${esc(j?(j.failure_code==='budget_exposure_changed'?'미확정 비용 또는 예산 초과 · 전송 전 차단':labels[j.state]||'상태 확인 필요'):(decision[x.approval]||'검토 필요'))}</b>${test?' <span class="creator-test-badge">모의 전송 · 실제 AI 호출 없음</span>':''}</p><p>${esc(x.model)}</p><p>${esc(x.prompt)}</p><p>${x.estimate_expired&&!j?'견적 만료 · 재확인 필요':test?'시험 견적 · 실제 청구 아님':'예상 비용'} ${esc(x.estimate?.amount)} ${esc(x.estimate?.currency)}${x.options?.duration?' · '+x.options.duration+'초 · 무음':''}</p><details><summary>전송·출력 조건</summary><p>표시된 지시와 ${x.role==='video'?'승인된 시작 프레임':'선택한 이미지 설정'}만 전송합니다.</p><p>${esc(x.output_policy)}</p></details>
++ return `<article class="guided-card media-action-card" data-action-card="${esc(x.id)}" aria-labelledby="mediaActionTitle-${esc(x.id)}"><h3 id="mediaActionTitle-${esc(x.id)}">${esc(x.shot)} · ${x.role==='image'?'이미지':'영상'}</h3><p><b>${esc(j?(j.failure_code==='budget_exposure_changed'?'미확정 비용 또는 예산 초과 · 전송 전 차단':labels[j.state]||'상태 확인 필요'):(decision[x.approval]||'검토 필요'))}</b>${test?' <span class="creator-test-badge">모의 전송 · 실제 AI 호출 없음</span>':''}</p><p>${esc(x.model)}</p><p>${esc(x.prompt)}</p><p>${x.estimate_expired&&!j?'견적 만료 · 재확인 필요':test?'시험 견적 · 실제 청구 아님':'예상 비용'} ${esc(x.estimate?.amount)} ${esc(x.estimate?.currency)}${x.options?.duration?' · '+x.options.duration+'초 · 무음':''}</p><details><summary>전송·출력 조건</summary><p>표시된 지시와 ${x.role==='video'?'승인된 시작 프레임':'선택한 이미지 설정'}만 전송합니다.</p><p>${esc(x.output_policy)}</p></details>
+  ${j?`<p>${j.failure_code==='budget_exposure_changed'?'비용을 확인한 뒤 새 작업을 준비하세요. 자동으로 다시 요청하지 않습니다.':j.state==='imported'?'파일 검증과 Take 연결 완료 · 선택·검토 승인은 별도입니다.':esc(r.reason||'기존 승인 Take는 보존됩니다.')}</p><p><small>비용 ${test?'모의 원장 · 실제 청구 없음':j.cost?.billing_confirmed?'확인된 사용 기록':'확인 중 · 추정과 실청구 별도'}</small></p>${j.stale_input?'<p>작업 중 장면이 바뀌었습니다. 새 결과를 직접 비교해 주세요.</p>':''}${j.can_cancel?`<button data-media-cancel="${esc(j.id)}">취소 요청</button>`:''}${r.can_status?`<button data-media-recover="status" data-job="${esc(j.id)}">기존 요청 확인</button>`:''}${r.can_collect?`<button data-media-recover="collect" data-job="${esc(j.id)}">기존 결과 연결</button>`:''}`:`<p>${esc(x.reason)}</p><div class="row">${x.can_approve?button('approved','이 조건 승인'):''}${x.can_execute?button('execute',test?'승인한 모의 작업 실행':'승인한 작업 실행'):''}${x.can_decide?button('held','보류')+button('rejected','거절'):''}</div><button data-media-edit="${esc(x.id)}">입력 수정·새 작업 준비</button>`}
+  ${c?`<p>Take ${c.take} · ${c.selected?'현재 선택':'아직 선택하지 않음'} · ${c.review==='approved'?'검토 승인됨':'검토 필요'}</p><button data-media-take="${esc(x.id)}">${c.selected?'선택한 Take 검토로 이동':'새 Take 선택·검토'}</button>${!c.rights_known?`<form data-media-rights="${esc(x.id)}"><label>이 결과의 사용권 근거<input name="evidence" maxlength="2000" required value="${esc(mediaRightsDrafts.get(mediaDraftKey(x.id))||'')}" placeholder="사용 허가·직접 제작 등 확인한 근거"></label><button>사용권 기록</button></form>`:''}`:''}
+  ${creatorDiagnostic('작업 상세',{action:x.id,job:x.job_id,state:j?.state,failure:j?.failure_code,options:x.options})}</article>`;
+@@ -856,7 +856,7 @@
+ $('#guidedBrief').addEventListener('input',()=>draftWrite(briefKey(),JSON.stringify(Object.fromEntries(new FormData($('#guidedBrief'))))));
+ $('#skipFlow').onclick=e=>{e.preventDefault();$('#flowHeading').focus()};
+ let guidedStep=1;
+-function setStep(step){guidedStep=step;document.body.dataset.step=String(step);mode(true);drawFlow();$('#flowHeading').focus()}
++function setStep(step,{focus=true}={}){guidedStep=step;document.body.dataset.step=String(step);mode(true);drawFlow();if(focus)$('#flowHeading').focus()}
+ function drawFlow(){const p=project(),shots=Object.values(p?.shots||{}),selected=shots.filter(x=>x.selected);const labels=['음악과 사용할 구간을 확인하세요','직접 쓴 계획을 검토하세요','각 장면의 영상과 승인 상태를 확인하세요','음악·자막·출력 버전을 확인하세요'];$('#flowHeading').textContent=labels[guidedStep-1];document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-current',Number(b.dataset.step)===guidedStep?'step':'false'));$('#flowSummary').textContent=!p?'새 작품을 만든 뒤 시작하세요.':`음원 ${p.audio_versions.length}개 · 음악 구간 ${p.music_head?'확정 v'+p.music_head:'미확정'} · 장면 ${shots.length}개 · 선택된 Take ${selected.length}개 · 출력 ${p.timeline_head?'저장 v'+p.timeline_head:'저장 전'}`;$('#flowNext').textContent=guidedStep===4?'1 음악 입력으로 돌아가기':'다음: '+labels[guidedStep];}
+ 
+ $('#prepareSelectedAction').onclick=async()=>{const s=project()?.shots[shotName];if(!s?.plan_id)return message('계획을 승인해 추가한 장면을 먼저 선택하세요.',true);await act('action_propose',{song:song(),plan:s.plan_id,scene:s.stable_id})};
+--- .omo/evidence/agent-tools-02-20261028/before/tests/general_chat_review_navigation.cjs	2026-10-28 15:00:19
++++ tests/general_chat_review_navigation.cjs	2026-10-28 17:02:05
+@@ -1,7 +1,11 @@
+ 'use strict';
+ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+-const ui=fs.readFileSync('general-chat-ui.js','utf8'),sidebar=fs.readFileSync('chat-sidebar.js','utf8');
+-const slice=(source,a,b)=>source.slice(source.indexOf(a),source.indexOf(b,source.indexOf(a)));
++const ui=fs.readFileSync('general-chat-ui.js','utf8'),sidebar=fs.readFileSync('chat-sidebar.js','utf8'),html=fs.readFileSync('index.html','utf8');
++const slice=(source,a,b)=>{const start=source.indexOf(a),end=source.indexOf(b,start);assert.ok(start>=0&&end>start,'marker missing: '+a);return source.slice(start,end)};
++const line=(source,prefix)=>{const found=source.split('\n').find(value=>value.startsWith(prefix));assert.ok(found,'line missing: '+prefix);return found};
++// The product escaper from index.html is injected instead of a test copy.
++const productEsc='var '+slice(html,'esc=s=>',';let stateReadEpoch');
++let completed=false;process.on('beforeExit',()=>{if(!completed){console.error('review navigation contracts did not complete');process.exitCode=1}});
+ const clone=value=>JSON.parse(JSON.stringify(value));
+ const turn={id:'turn',conversation_id:'current',run_id:'run',status:'completed',answer:'saved'};
+ const project={active_conversation:{id:'current'},general_chat_turns:[turn],shots:{target:{}},
+@@ -10,9 +14,9 @@
+ const context={p:clone(project),scope:'scope-A',currentScope:'scope-A',project(){return this.p},key(){return this.currentScope}};
+ // Globals called as plain functions deliberately use closure access instead of this.
+ context.project=()=>context.p;context.key=()=>context.currentScope;
+-vm.createContext(context);vm.runInContext(slice(ui,' function reviewTargets(',' function controls(')+';globalThis.targets=reviewTargets;globalThis.current=currentReviewTarget;',context);
++vm.createContext(context);vm.runInContext(slice(ui,' function reviewTargets(',' function controls(')+';globalThis.targets=reviewTargets;globalThis.current=currentReviewTarget;globalThis.label=reviewLabel;',context);
+ const plain=value=>JSON.parse(JSON.stringify(value));
+-assert.deepEqual(plain(context.targets(context.p,turn)),[{id:'action',shot:'target'}]);
++assert.deepEqual(plain(context.targets(context.p,turn)),[{id:'action',shot:'target',approval:'required',job:false}]);
+ assert.equal(context.current('turn','action','scope-A').id,'action');
+ for(const mutate of [
+  p=>delete p.general_chat_turns[0].run_id,
+@@ -30,35 +34,95 @@
+ ]){const p=clone(project);mutate(p);assert.deepEqual(plain(context.targets(p,p.general_chat_turns[0])),[]);}
+ context.currentScope='scope-B';assert.equal(context.current('turn','action','scope-A'),null);context.currentScope='scope-A';
+ 
+-// Execute the real refresh body with a tiny DOM to check destination invalidation
+-// and escaping, without exporting implementation-only helpers in the product.
++// Execute the real refresh body with a tiny DOM to check destination invalidation,
++// product escaping, distinct names and focus restore, without exporting helpers.
++const decode=s=>s.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
++const document={activeElement:null};
++function buttonsFrom(markup){return [...markup.matchAll(/<button type="button" ([^>]*)>([^<]*)<\/button>/g)].map(([,attrs,text])=>{const dataset={};for(const [,name,value] of attrs.matchAll(/data-general-([a-z-]+)="([^"]*)"/g))dataset['general'+name.split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join('')]=decode(value);return{dataset,text:decode(text),focus(){document.activeElement=this}}})}
+ const nodes=new Map();const node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',hidden:false,required:false,textContent:'',innerHTML:'',querySelectorAll:()=>[],querySelector:()=>null});return nodes.get(id)};
+-Object.assign(context,{p:clone(project),renderedReviews:'',renderedTurns:'',el:node,layout(){},allowed:()=>false,configured:()=>false,bounded:()=>false,label:()=> 'fixture',usageLabel:()=> 'unverified',historyLabel:()=>'',money:()=>'',controls(){},draftRead:()=>'',document:{activeElement:null},states:{completed:'complete'},esc:value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))});
++nodes.set('generalChatTurns',{innerHTML:'',querySelectorAll(){return buttonsFrom(this.innerHTML)}});
++Object.assign(context,{p:clone(project),renderedReviews:'',renderedTurns:'',el:node,layout(){},allowed:()=>false,configured:()=>false,bounded:()=>false,label:()=> 'fixture',usageLabel:()=> 'unverified',historyLabel:()=>'',money:()=>'',controls(){},draftRead:()=>'',document,states:{completed:'complete'}});
++vm.runInContext(productEsc,context);
+ vm.runInContext(slice(ui,' function refresh(){'," el('generalChatPrompt').addEventListener")+';globalThis.draw=refresh;',context);
+-context.draw();assert.match(node('generalChatTurns').innerHTML,/data-general-review-action="action"/);
+-context.p.media_actions=[];context.draw();assert.doesNotMatch(node('generalChatTurns').innerHTML,/data-general-review-action/,'same turns must invalidate after a destination disappears');
+-context.p=clone(project);const dangerous='긴 장면 <img src=x onerror=alert(1)> "검토"';context.p.shots={[dangerous]:{}};context.p.media_actions[0].shot=dangerous;context.draw();assert.doesNotMatch(node('generalChatTurns').innerHTML,/<img/);assert.match(node('generalChatTurns').innerHTML,/&lt;img/);
++const turns=()=>node('generalChatTurns').innerHTML;
++context.draw();assert.match(turns(),/data-general-review-action="action"/);
++assert.match(turns(),/<div class="general-chat-actions"><button type="button" data-general-review-action="action"[^>]*>target 제작안 검토<\/button><\/div>/,'review buttons use the existing action group');
++context.p.media_actions=[];context.draw();assert.doesNotMatch(turns(),/data-general-review-action/,'same turns must invalidate after a destination disappears');assert.doesNotMatch(turns(),/general-chat-actions/,'no empty action group');
++context.p=clone(project);const dangerous='긴 장면 <img src=x onerror=alert(1)> "검토"';context.p.shots={[dangerous]:{}};context.p.media_actions[0].shot=dangerous;context.draw();assert.doesNotMatch(turns(),/<img/);assert.match(turns(),/&lt;img/);
++context.p=clone(project);context.currentScope='a" onfocus="x\' b';context.draw();assert.match(turns(),/data-general-review-scope="a&quot; onfocus=&quot;x&#39; b"/,'attribute boundary is escaped by the product esc');assert.equal(buttonsFrom(turns())[0].dataset.generalReviewScope,'a" onfocus="x\' b');context.currentScope='scope-A';context.draw();
+ 
++// Several prepared actions in one turn: same-scene names differ by order and decision.
++const many=clone(project);many.shots.other={};
++many.production_runs[0].calls=['a1','a2','a3'].map(id=>({name:'prepare_image_action',result:{status:'proposed',role:'image',action_id:id}}));
++many.media_actions=[{id:'a1',role:'image',shot:'target',approval:'required'},{id:'a2',role:'image',shot:'target',approval:'rejected'},{id:'a3',role:'image',shot:'other',approval:'approved',job:{id:'j',state:'prepared'}}];
++context.p=many;context.draw();let names=buttonsFrom(turns()).map(b=>b.text);
++assert.deepEqual(names,['target 제작안 1/2 검토','target 제작안 2/2 보기 (거절됨)','other 제작안 보기 (작업 생성됨)']);
++assert.equal(new Set(names).size,names.length,'accessible names are unique');for(const name of names)assert.doesNotMatch(name,/a1|a2|a3|\bj\b/,'internal IDs stay out of names');
++context.p.media_actions[0].approval='held';context.draw();assert.equal(buttonsFrom(turns())[0].text,'target 제작안 1/2 보기 (보류됨)','decision change re-renders the suffix');
++
++// Focus survives a re-render on the same review or cancel button.
++document.activeElement=buttonsFrom(turns())[1];const before=document.activeElement;context.p.media_actions[2].approval='rejected';context.draw();
++assert.notEqual(document.activeElement,before,'markup was replaced');assert.equal(document.activeElement.dataset.generalReviewAction,'a2');assert.equal(document.activeElement.dataset.generalReviewTurn,'turn');
++context.p.general_chat_turns[0].status='running';context.draw();document.activeElement=buttonsFrom(turns()).find(b=>b.dataset.generalCancel);context.p.media_actions[0].approval='rejected';context.draw();assert.equal(document.activeElement.dataset.generalCancel,'turn');
++assert.match(turns(),/<div class="general-chat-actions">(<button[^>]*>[^<]*<\/button>){4}<\/div>/,'review and cancel share one action group');
++document.activeElement=null;
++
++// controls(): review buttons follow busy/inFlight only, independent of connection or dirty drafts.
++function controlFixture(values){const review={dataset:{generalReviewAction:'a1'},disabled:false},get=id=>({disabled:false});const c={busy:false,inFlight:false,dirty:true,pendingId:()=> 'pending',el:get,project:()=>({general_chat_connection:{available:false},general_chat_turns:[],general_chat_previews:[]}),panel:{querySelectorAll:selector=>{assert.match(selector,/\[data-general-review-action\]/);return [review]}},...values};vm.createContext(c);vm.runInContext(line(ui,' const allowed=')+'\n'+line(ui,' function controls()')+'\ncontrols();',c);return review.disabled}
++assert.equal(controlFixture({}),false,'dirty/pending/disconnected do not block navigation');assert.equal(controlFixture({busy:true}),true);assert.equal(controlFixture({inFlight:true}),true);
++
+ function navigationFixture(){
+- const events=[],p=clone(project),card={dataset:{actionCard:'action'},getClientRects:()=>[{}]},d={activeElement:null};
+- const c={Promise,navigationSequence:0,currentScope:'scope-A',dirty:false,shotName:'other',activeDialog:null,dialogStack:[],project:()=>p,conversationDraftKey:()=>c.currentScope,document:d,syncDialogs(){},setStep(step){events.push('step:'+step)},choose(name){c.navigationSequence++;events.push('tab:'+name)},focusWorkTarget(target){d.activeElement=target;events.push('focus:'+target.dataset.actionCard)}};
+- d.querySelectorAll=selector=>selector==='[data-action-card]'?[card]:selector==='#shotlist [data-shot]'?[{dataset:{shot:'target'},disabled:false,click(){c.shotName='target';events.push('shot:target')}}]:[];
++ const events=[],p=clone(project),d={activeElement:null},card={dataset:{actionCard:'action'},getClientRects:()=>[{}],addEventListener(name,callback,options){assert.equal(name,'blur');assert.equal(options.once,true);card.blur=()=>{d.activeElement=null;callback()}}};
++ const c={Promise,navigationSequence:0,currentScope:'scope-A',dirty:false,shotName:'other',activeDialog:null,dialogStack:[],project:()=>p,conversationDraftKey:()=>c.currentScope,document:d,syncDialogs(){},setStep(step,options){events.push('step:'+step+(options?.focus===false?':quiet':''))},choose(name){c.navigationSequence++;events.push('tab:'+name)},focusWorkTarget(target){d.activeElement=target;events.push('focus:'+target.dataset.actionCard)}};
++ const shot={dataset:{shot:'target'},disabled:false,click(){c.shotName='target';events.push('shot:target')}};
++ d.querySelectorAll=selector=>selector==='[data-action-card]'?[card]:selector==='#shotlist [data-shot]'?[shot]:[];
+  vm.createContext(c);vm.runInContext(slice(sidebar,' async function reviewMediaAction(',' workRows.addEventListener')+';globalThis.navigate=reviewMediaAction;',c);
+- return{c,p,card,events,valid:()=>p.media_actions.length===1&&p.shots.target!=null};
++ return{c,p,card,shot,events,valid:()=>p.media_actions.length===1&&p.shots.target!=null};
+ }
+ function delayedDialog(f){let close;const dialog={open:true,addEventListener(name,callback){assert.equal(name,'close');close=callback},close(){this.open=false;f.events.push('close-request')},finish(){f.events.push('close-event');close()}};f.c.dialogStack=[dialog];return dialog;}
++function handlerFixture(p,navigate){
++ const status={textContent:'previous failure'},d={activeElement:null},c={busy:false,inFlight:false,scope:'scope-A',currentScope:'scope-A',p,calls:0,document:d};
++ // Re-render replaces buttons: every query returns fresh nodes carrying the same data attributes.
++ const turnsNode={querySelectorAll:()=>buttonsFrom('<button type="button" data-general-review-action="action" data-general-review-turn="turn" data-general-review-scope="scope-A">x</button>').map(b=>(b.focus=function(){d.activeElement=this},b))};
++ c.project=()=>c.p;c.key=()=>c.currentScope;c.song=()=> 'A';c.request=async()=>true;c.el=id=>id==='generalChatStatus'?status:id==='generalChatTurns'?turnsNode:{};
++ c.window={LoretuneAgentSidebar:{reviewMediaAction:async(...args)=>{c.calls++;return navigate(...args)}}};
++ vm.createContext(c);vm.runInContext(slice(ui,' function reviewTargets(',' function controls(')+'\n'+line(ui," el('generalChatTurns').onclick="),c);
++ const button={dataset:{generalReviewAction:'action',generalReviewTurn:'turn',generalReviewScope:'scope-A'}};
++ return{c,status,d,click:()=>turnsNode.onclick({target:{closest:selector=>selector==='[data-general-review-action]'?button:null}})};
++}
++const messages={};{const m=line(ui,' const reviewMessages=');const c={};vm.createContext(c);vm.runInContext(m+';globalThis.out=reviewMessages;',c);Object.assign(messages,c.out)}
+ (async()=>{
+- let f=navigationFixture();assert.equal(await f.c.navigate('action','scope-A',f.valid),true);assert.deepEqual(f.events,['step:3','shot:target','tab:settings','focus:action']);assert.equal(f.c.document.activeElement,f.card);
+- f=navigationFixture();f.c.dirty=true;assert.equal(await f.c.navigate('action','scope-A',f.valid),false);assert.deepEqual(f.events,[]);
+- f=navigationFixture();let dialog=delayedDialog(f);const pending=f.c.navigate('action','scope-A',f.valid);f.c.currentScope='scope-B';dialog.finish();assert.equal(await pending,false);assert.deepEqual(f.events,['close-request','close-event']);
+- f=navigationFixture();dialog=delayedDialog(f);const first=f.c.navigate('action','scope-A',f.valid);const second=f.c.navigate('action','scope-A',f.valid);assert.equal(await second,true);dialog.finish();assert.equal(await first,false);assert.equal(f.c.document.activeElement,f.card);
+- f=navigationFixture();dialog=delayedDialog(f);const removed=f.c.navigate('action','scope-A',f.valid);f.p.media_actions=[];dialog.finish();assert.equal(await removed,false);assert.equal(f.c.document.activeElement,null);
+- f=navigationFixture();dialog=delayedDialog(f);const superseded=f.c.navigate('action','scope-A',f.valid);f.c.choose('chat');dialog.finish();assert.equal(await superseded,false);assert.equal(f.c.document.activeElement,null);
+- f=navigationFixture();f.c.setStep=()=>{f.c.currentScope='scope-B'};assert.equal(await f.c.navigate('action','scope-A',f.valid),false);assert.equal(f.c.document.activeElement,null);
+- f=navigationFixture();f.c.document.querySelectorAll=()=>[];assert.equal(await f.c.navigate('action','scope-A',f.valid),false);assert.equal(f.c.document.activeElement,null);
+- f=navigationFixture();f.p.media_actions.push(clone(f.p.media_actions[0]));assert.equal(await f.c.navigate('action','scope-A',()=>true),false);assert.deepEqual(f.events,[]);
++ let f=navigationFixture();assert.equal(await f.c.navigate('action','scope-A',f.valid),'opened');assert.deepEqual(f.events,['step:3:quiet','shot:target','tab:settings','focus:action'],'step heading focus is skipped; only the card receives focus');assert.equal(f.c.document.activeElement,f.card);
++ assert.equal(f.card.dataset.reviewArrival,'','arrival mark is visible regardless of input method');f.card.blur();assert.equal('reviewArrival' in f.card.dataset,false,'arrival mark clears on blur');
++ f=navigationFixture();f.c.dirty=true;assert.equal(await f.c.navigate('action','scope-A',f.valid),'dirty');assert.deepEqual(f.events,[]);
++ f=navigationFixture();f.c.dirty=true;f.c.shotName='target';assert.equal(await f.c.navigate('action','scope-A',f.valid),'opened','dirty draft on the same scene is preserved and still reachable');assert.deepEqual(f.events,['step:3:quiet','tab:settings','focus:action']);
++ f=navigationFixture();f.shot.disabled=true;let dialog=delayedDialog(f);assert.equal(await f.c.navigate('action','scope-A',f.valid),'blocked');assert.deepEqual(f.events,[],'missing scene control is detected before closing dialogs or switching steps');assert.equal(dialog.open,true);
++ f=navigationFixture();dialog=delayedDialog(f);let pending=f.c.navigate('action','scope-A',f.valid);f.c.currentScope='scope-B';dialog.finish();assert.equal(await pending,'superseded');assert.deepEqual(f.events,['close-request','close-event']);
++ f=navigationFixture();dialog=delayedDialog(f);const first=f.c.navigate('action','scope-A',f.valid);const second=f.c.navigate('action','scope-A',f.valid);assert.equal(await second,'opened');dialog.finish();assert.equal(await first,'superseded');assert.equal(f.c.document.activeElement,f.card);
++ f=navigationFixture();dialog=delayedDialog(f);const removed=f.c.navigate('action','scope-A',f.valid);f.p.media_actions=[];dialog.finish();assert.equal(await removed,'missing');assert.equal(f.c.document.activeElement,null);
++ f=navigationFixture();dialog=delayedDialog(f);const superseded=f.c.navigate('action','scope-A',f.valid);f.c.choose('chat');dialog.finish();assert.equal(await superseded,'superseded');assert.equal(f.c.document.activeElement,null);
++ f=navigationFixture();f.c.setStep=()=>{f.c.currentScope='scope-B'};assert.equal(await f.c.navigate('action','scope-A',f.valid),'superseded');assert.equal(f.c.document.activeElement,null);
++ f=navigationFixture();f.c.document.querySelectorAll=selector=>selector==='#shotlist [data-shot]'?[f.shot]:[];assert.equal(await f.c.navigate('action','scope-A',f.valid),'blocked');assert.equal(f.c.document.activeElement,null);
++ f=navigationFixture();f.p.media_actions.push(clone(f.p.media_actions[0]));assert.equal(await f.c.navigate('action','scope-A',()=>true),'missing');assert.deepEqual(f.events,[]);
++ f=navigationFixture();f.card.getClientRects=()=>[];assert.equal(await f.c.navigate('action','scope-A',f.valid),'blocked');assert.deepEqual(f.events.slice(-2),['focus:action','tab:chat'],'final-step failure returns to the chat pane where the status is visible');assert.equal('reviewArrival' in f.card.dataset,false);
+  f=navigationFixture();f.c.shotName='target';const details={tagName:'DETAILS',open:false,parentElement:null};f.card.parentElement=details;f.card.getClientRects=()=>details.open?[{}]:[];f.card.focus=()=>{f.c.document.activeElement=f.card};f.card.scrollIntoView=()=>{};
+  vm.runInContext(slice(sidebar,' function focusWorkTarget(',' function viewWork('),f.c);
+- assert.equal(await f.c.navigate('action','scope-A',f.valid),true,'same-shot card inside collapsed details must be opened before visibility/focus checks');assert.equal(details.open,true);assert.equal(f.c.document.activeElement,f.card);
+- console.log('Exact turn/run/action references, escaping/invalidation and asynchronous scoped focus contracts passed');
++ assert.equal(await f.c.navigate('action','scope-A',f.valid),'opened','same-shot card inside collapsed details must be opened before visibility/focus checks');assert.equal(details.open,true);assert.equal(f.c.document.activeElement,f.card);
++
++ // Click handler branches with the real onclick line.
++ let h=handlerFixture(clone(project),async()=>'opened');h.c.busy=true;await h.click();assert.equal(h.status.textContent,messages.busy);assert.equal(h.c.calls,0);
++ h=handlerFixture(clone(project),async()=>'opened');h.c.inFlight=true;await h.click();assert.equal(h.status.textContent,messages.busy);assert.equal(h.c.calls,0);
++ h=handlerFixture(clone(project),async()=>'opened');await h.click();assert.equal(h.status.textContent,'','success clears an earlier failure');assert.equal(h.c.calls,1);
++ for(const reason of ['dirty','missing','blocked']){h=handlerFixture(clone(project),async()=>reason);await h.click();assert.equal(h.status.textContent,messages[reason],reason);assert.equal(h.d.activeElement?.dataset.generalReviewAction,'action',reason+' returns focus to the originating button');}
++ assert.equal(new Set([messages.dirty,messages.missing,messages.blocked,messages.busy]).size,4,'each reason has its own guidance');
++ h=handlerFixture(clone(project),async()=>undefined);await h.click();assert.equal(h.status.textContent,messages.blocked,'absent sidebar is reported');
++ h=handlerFixture(clone(project),async()=>'superseded');await h.click();assert.equal(h.status.textContent,'previous failure','superseded navigation stays silent');assert.equal(h.d.activeElement,null);
++ h=handlerFixture(clone(project),async()=>{h.c.scope='scope-B';return 'blocked'});await h.click();assert.equal(h.status.textContent,'previous failure','another conversation receives no message');
++ const gone=clone(project);gone.media_actions=[];h=handlerFixture(gone,async()=>'opened');await h.click();assert.equal(h.status.textContent,messages.missing);assert.equal(h.c.calls,0);
++ h=handlerFixture(gone,async()=>'opened');h.c.currentScope='scope-B';await h.click();assert.equal(h.status.textContent,'previous failure','stale scope stays silent');
++ // Run removed while the real navigation waits for a dialog: the handler's stillCurrent reports it.
++ f=navigationFixture();dialog=delayedDialog(f);h=handlerFixture(clone(project),(...args)=>f.c.navigate(...args));const clicked=h.click();h.c.p.production_runs=[];dialog.finish();await clicked;
++ assert.equal(h.status.textContent,messages.missing);assert.equal(f.c.document.activeElement,null);assert.equal(h.d.activeElement?.dataset.generalReviewAction,'action');
++ completed=true;
++ console.log('Exact turn/run/action references, product escaping, distinct names, focus restore, reason codes and asynchronous scoped focus contracts passed');
+ })().catch(error=>{console.error(error);process.exitCode=1});
+--- .omo/evidence/agent-tools-02-20261028/before/tests/test_general_chat_review_navigation.py	2026-10-28 14:59:16
++++ tests/test_general_chat_review_navigation.py	2026-10-28 17:02:38
+@@ -91,6 +91,8 @@
+                                 cwd=Path(__file__).resolve().parents[1],
+                                 capture_output=True, text=True, timeout=20)
+         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
++        # Exit code 0 alone passes when a pending promise never settles.
++        self.assertIn('contracts passed', result.stdout, result.stdout + result.stderr)
+ 
+ 
+ if __name__ == '__main__':

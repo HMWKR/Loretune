@@ -1,0 +1,12 @@
+COMMAND node --check tests/chat_model_polling.cjs
+
+COMMAND python3 -m unittest tests.test_chat_model_polling tests.test_frontend_async -v
+test_model_only_polling_and_guards (tests.test_chat_model_polling.ChatModelPollingTest.test_model_only_polling_and_guards) ... ok
+test_reopen_settings_reads_current_selection_before_opening (tests.test_chat_model_polling.ChatModelPollingTest.test_reopen_settings_reads_current_selection_before_opening) ... ok
+test_poll_media_storage_regressions (tests.test_frontend_async.FrontendAsyncTest.test_poll_media_storage_regressions) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.116s
+
+OK
+

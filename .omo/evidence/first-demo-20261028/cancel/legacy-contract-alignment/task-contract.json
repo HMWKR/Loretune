@@ -1,0 +1,48 @@
+{
+  "schema": "legacy-cancel-contract-alignment/1",
+  "recorded_at": "2026-10-28T00:50:44.646818+00:00",
+  "status": "REPORTED",
+  "ownership": [
+    "tests/test_chat_general_http.py",
+    "tests/test_chat_live_contract.py"
+  ],
+  "before_hashes": {
+    "tests/test_chat_general_http.py": "419804147c7ff010cc626618becc6f8e877483623707dcd108c167070425e7e4",
+    "tests/test_chat_live_contract.py": "977c669b5a271cbdc633d44152434b8b4f046d8c5e8c6cf1ba88f54132c9c769"
+  },
+  "product_source_sha256": "edc4537ccbcd100d217ddc240f349001ddda3111324f54ba64f3edb7153c3e45",
+  "product_source_changes_allowed": false,
+  "baseline_full_regression": {
+    "path": ".omo/evidence/first-demo-20261028/regression/full-regression.log",
+    "sha256": "098210e0bcb6a50c04e4137df0ee65b7ebc179fd8cdf87b1978a1d02ae6ed549",
+    "tests": 874,
+    "seconds": 510.97,
+    "failures": 3
+  },
+  "Methodology sources": [
+    "root follow-up explicit scope",
+    "full-regression failure log",
+    "existing fixture response/settlement/tool-entry synchronization",
+    "received-cancel-fix report"
+  ],
+  "Applied methodology": "Verify each old expectation is the same completed-accounting cancellation boundary; update cancellation status expectation only and retain all cost/rights/attempt/no-tool checks",
+  "Verification standard": "Three cancellation scenarios cancelled with committed cost and no tool; rights/unknown branches remain unknown; affected2 modules plus new12 cancel cases pass",
+  "Non-goals/limits": [
+    "No product source change",
+    "No global replacement or assertion weakening/skips",
+    "No real provider/key/billing calls",
+    "Do not overwrite prior worker reports/manifests"
+  ],
+  "report": "report.json",
+  "verification": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_chat_general_http tests.test_chat_live_contract tests.test_general_chat_cancel_received -v",
+    "exit_code": 0,
+    "tests": 67,
+    "seconds": 48.152,
+    "status": "OK",
+    "log": "verification.log",
+    "log_sha256": "2d909801b32929118ae265159e821ad9e3f96de0c7300d8a02ed7362e2ad4daa",
+    "actual_provider_calls": 0,
+    "transport_scope": "contract fake, explicit local loopback HTTP, or synthetic provider sockets only"
+  }
+}

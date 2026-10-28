@@ -1,0 +1,265 @@
+test_cli_exit_codes_and_no_content_echo (test_gate.GateTest.test_cli_exit_codes_and_no_content_echo) ... FAIL
+test_escape_absolute_and_windows_paths (test_gate.GateTest.test_escape_absolute_and_windows_paths) ... ok
+test_existing_hooks_preserved (test_gate.GateTest.test_existing_hooks_preserved) ... ERROR
+test_explicit_secret_path_rejected (test_gate.GateTest.test_explicit_secret_path_rejected) ... ok
+test_historical_document_needs_no_registration (test_gate.GateTest.test_historical_document_needs_no_registration) ... ERROR
+test_input_changed_during_check_is_not_pass (test_gate.GateTest.test_input_changed_during_check_is_not_pass) ... ok
+test_invalid_stop_input_is_safe_and_not_pass (test_gate.GateTest.test_invalid_stop_input_is_safe_and_not_pass) ... ok
+test_legacy_pending_is_not_false_pass (test_gate.GateTest.test_legacy_pending_is_not_false_pass) ... ERROR
+test_modified_registered_hash (test_gate.GateTest.test_modified_registered_hash) ... ERROR
+test_nested_repo_and_worktree_do_not_inherit (test_gate.GateTest.test_nested_repo_and_worktree_do_not_inherit) ... ERROR
+test_new_unclassified_document (test_gate.GateTest.test_new_unclassified_document) ... ERROR
+test_no_project_command_execution (test_gate.GateTest.test_no_project_command_execution) ... ok
+test_normal_pass_and_read_only (test_gate.GateTest.test_normal_pass_and_read_only) ... ERROR
+test_other_project_not_configured (test_gate.GateTest.test_other_project_not_configured) ... ERROR
+test_registry_project_mismatch (test_gate.GateTest.test_registry_project_mismatch) ... ok
+test_required_missing_registration (test_gate.GateTest.test_required_missing_registration) ... ERROR
+test_secret_excluded_without_open (test_gate.GateTest.test_secret_excluded_without_open) ... ERROR
+test_source_drift_even_registered_copy_unchanged (test_gate.GateTest.test_source_drift_even_registered_copy_unchanged) ... ERROR
+test_stale_receipt_and_changed_context (test_gate.GateTest.test_stale_receipt_and_changed_context) ... ERROR
+test_stop_blocks_once_then_reports_without_loop (test_gate.GateTest.test_stop_blocks_once_then_reports_without_loop) ... ERROR
+test_symlink_document_and_parent_rejected (test_gate.GateTest.test_symlink_document_and_parent_rejected) ... ok
+
+======================================================================
+ERROR: test_existing_hooks_preserved (test_gate.GateTest.test_existing_hooks_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 94, in test_existing_hooks_preserved
+    before=p.read_bytes();self.result();self.assertEqual(before,p.read_bytes())
+                          ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_historical_document_needs_no_registration (test_gate.GateTest.test_historical_document_needs_no_registration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 48, in test_historical_document_needs_no_registration
+    self.assertEqual(self.result()[1],0)
+                     ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_legacy_pending_is_not_false_pass (test_gate.GateTest.test_legacy_pending_is_not_false_pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 52, in test_legacy_pending_is_not_false_pass
+    self.assertEqual(self.result()[0]['status'],'review-required');self.assertEqual(self.result()[1],1)
+                     ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_modified_registered_hash (test_gate.GateTest.test_modified_registered_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 37, in test_modified_registered_hash
+    self.write('kit/docs/current.md','changed');self.assertIn('REGISTERED_HASH_CHANGED',self.codes())
+                                                                                        ~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 29, in codes
+    def codes(self):return {x['code'] for x in self.result()[0]['findings']}
+                                               ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_nested_repo_and_worktree_do_not_inherit (test_gate.GateTest.test_nested_repo_and_worktree_do_not_inherit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 85, in test_nested_repo_and_worktree_do_not_inherit
+    self.assertEqual(gate.check(base)[1],2)
+                     ~~~~~~~~~~^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_new_unclassified_document (test_gate.GateTest.test_new_unclassified_document)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 44, in test_new_unclassified_document
+    self.write('docs/new-plan.md','new');self.assertIn('UNCLASSIFIED_DOCUMENT',self.codes())
+                                                                               ~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 29, in codes
+    def codes(self):return {x['code'] for x in self.result()[0]['findings']}
+                                               ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_normal_pass_and_read_only (test_gate.GateTest.test_normal_pass_and_read_only)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 32, in test_normal_pass_and_read_only
+    r,code=self.result();self.assertEqual(code,0);self.assertEqual(r['status'],'pass');self.assertEqual(before,{str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+           ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_other_project_not_configured (test_gate.GateTest.test_other_project_not_configured)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 55, in test_other_project_not_configured
+    r,code=gate.check(p);self.assertEqual(code,2);self.assertEqual(r['status'],'not-configured');self.assertEqual(list(Path(p).iterdir()),[])
+           ~~~~~~~~~~^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_required_missing_registration (test_gate.GateTest.test_required_missing_registration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 35, in test_required_missing_registration
+    self.assertIn('REGISTRATION_MISSING',self.codes())
+                                         ~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 29, in codes
+    def codes(self):return {x['code'] for x in self.result()[0]['findings']}
+                                               ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_secret_excluded_without_open (test_gate.GateTest.test_secret_excluded_without_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 65, in test_secret_excluded_without_open
+    try:self.assertEqual(self.result()[1],0)
+                         ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_source_drift_even_registered_copy_unchanged (test_gate.GateTest.test_source_drift_even_registered_copy_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 39, in test_source_drift_even_registered_copy_unchanged
+    self.write('docs/current.md','new source');self.assertIn('REGISTERED_SOURCE_OUTDATED',self.codes())
+                                                                                          ~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 29, in codes
+    def codes(self):return {x['code'] for x in self.result()[0]['findings']}
+                                               ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_stale_receipt_and_changed_context (test_gate.GateTest.test_stale_receipt_and_changed_context)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 42, in test_stale_receipt_and_changed_context
+    self.assertIn('CONTEXT_STALE',self.codes())
+                                  ~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 29, in codes
+    def codes(self):return {x['code'] for x in self.result()[0]['findings']}
+                                               ~~~~~~~~~~~^^
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 28, in result
+    def result(self):return gate.check(self.root)
+                            ~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+ERROR: test_stop_blocks_once_then_reports_without_loop (test_gate.GateTest.test_stop_blocks_once_then_reports_without_loop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 97, in test_stop_blocks_once_then_reports_without_loop
+    self.assertEqual(gate.hook(payload)['decision'],'block')
+                     ~~~~~~~~~^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 209, in hook
+    result,code=check(payload['cwd'])
+                ~~~~~^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 146, in check
+    root=find_root(start)
+  File "/Users/leesungmin/Desktop/Loretune/tools/document-gate/check.py", line 73, in find_root
+    if any(p.is_symlink() for p in [raw,*raw.parents]):raise Invalid('symlink project root rejected')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+document_gate.Invalid: symlink project root rejected
+
+======================================================================
+FAIL: test_cli_exit_codes_and_no_content_echo (test_gate.GateTest.test_cli_exit_codes_and_no_content_echo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/document-gate/test_gate.py", line 105, in test_cli_exit_codes_and_no_content_echo
+    self.assertEqual(proc.returncode,1);self.assertNotIn('PRIVATE_CANARY',proc.stdout+proc.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+AssertionError: 3 != 1
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.111s
+
+FAILED (failures=1, errors=13)

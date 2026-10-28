@@ -1,0 +1,162 @@
+{
+  "task_id": "tripo-public-output-recovery-20261028",
+  "attempt": 2,
+  "lifecycle": "REPORTED",
+  "recorded_at_utc": "2026-10-27T16:43:57.552445+00:00",
+  "verdict": "NOT EXECUTED: 공개 load_example API가 기존 cache만 읽는다는 조건을 확인하지 못하여 POST하지 않았다. 공식 Gradio 5.23.1은 lazy cache miss에서 실제 모델 fn을 실행할 수 있고, 고정 Space app은 cache mode를 강제하지 않는다. 이는 공개 API가 반드시 추론한다는 확정이나 플랫폼 구현 불가능 판정이 아니다.",
+  "methodology": {
+    "sources": "공식 Gradio 5.23.1 helpers.py와 고정 revision VAST-AI/TripoSG app.py 두 곳. 이전 성공 config GET의 정확한 dependency를 재사용.",
+    "applied": "HTTP method와 실제 부작용을 분리하고, 함수 연결·cache miss 분기·runtime override를 따라 cache-only 허용 조건을 검사. 제품·모델 실행 없이 소스 근거를 기록.",
+    "limits": "공식 source 두 곳만. 캐시 부재/실행 모드가 불분명할 때 endpoint 호출하지 않음. 403 경로 우회·임의 경로 추측·인증 우회 없음."
+  },
+  "prior_evidence": {
+    "path": ".omo/evidence/tripo-public-output-recovery-20261028/audit.json",
+    "sha256": "8ac17ff364cb81739f9e0cde7171eb7c747e500474f86730d59f5d0f0d7175ae",
+    "unchanged": true
+  },
+  "source_evidence": {
+    "path": ".omo/evidence/tripo-public-output-recovery-20261028/attempt2-source-evidence.json",
+    "sha256": "64b6dde82a5c5c6c0e0b72a6a8aac9716378f7344049b4f412710507cbd78341",
+    "contains": "각 source GET 상태·바이트·SHA 및 실제 행 번호가 있는 관련 코드 발췌"
+  },
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/gradio-app/gradio/gradio%405.23.1/gradio/helpers.py",
+      "version": "gradio@5.23.1",
+      "status": 200,
+      "bytes": 50190,
+      "sha256": "e3c771b8d6f189c013f8472120475030c96f0a13a9a2a7f6885f0b00089f954c",
+      "observations": [
+        {
+          "lines": "349–376",
+          "fact": "cache_examples가 truthy이면 load_example_output wrapper가 dataset example_id를 self.load_from_cache(example_id)에 전달하고 api_name=self.api_name, inputs=[dataset], outputs=self.outputs로 등록한다."
+        },
+        {
+          "lines": "162–175",
+          "fact": "cache_mode 인자가 None이면 GRADIO_CACHE_MODE 환경변수 lazy를 읽어 cache_examples=True도 self.cache_examples=\"lazy\"로 바뀔 수 있다."
+        },
+        {
+          "lines": "551–569",
+          "fact": "load_from_cache는 lazy이며 해당 example_index가 cached_indices에 없으면 self.cache(example_id)를 실행한 뒤 cache log를 읽는다. eager 경로는 log를 읽고 파일 없으면 open 실패하며 모델 fallback이 없다."
+        },
+        {
+          "lines": "471–549",
+          "fact": "cache()는 self.fn을 fake dependency에 등록하고 root_block.process_api로 예제를 처리한다. 따라서 lazy miss는 단순 파일 읽기가 아니다."
+        }
+      ]
+    },
+    {
+      "url": "https://huggingface.co/spaces/VAST-AI/TripoSG/resolve/d51c5f2f4d5182f925a403b286d1e9faf519aaa2/app.py",
+      "revision": "d51c5f2f4d5182f925a403b286d1e9faf519aaa2",
+      "status": 200,
+      "bytes": 15494,
+      "sha256": "b46cd3320b2a3ddfe4812a9ae4a999eb5af553005deceef50a295fa8953d4aa2",
+      "observations": [
+        {
+          "lines": "427–436",
+          "fact": "gr.Examples는 fn=run_full, inputs=[image_prompts], outputs=[seg_image,model_output,textured_model_output], cache_examples=True를 지정한다. cache_mode 지정은 없다."
+        },
+        {
+          "lines": "132–147",
+          "fact": "run_full은 @spaces.GPU(duration=180)이고 prepare_image와 triposg_pipe(...num_inference_steps=50...)를 실행한다. cached example fn이 호출되면 실제 새 추론·GPU 실행 경로다."
+        },
+        {
+          "lines": "whole app.py static search",
+          "fact": "cache_mode 또는 GRADIO_CACHE_MODE를 강제로 eager로 고정하는 코드가 없다."
+        }
+      ]
+    }
+  ],
+  "reused_live_config_contract": {
+    "url": "https://vast-ai-triposg.hf.space/config",
+    "prior_get_status": 200,
+    "sha256": "c904445f704b4d015086f0163aca6f4779cc7e70612c3e9a645723c275807716",
+    "reported_gradio_version": "5.23.1",
+    "dependency": {
+      "id": 1,
+      "api_name": "load_example",
+      "inputs": [
+        23
+      ],
+      "outputs": [
+        6,
+        20,
+        21
+      ],
+      "targets": [
+        [
+          null,
+          "then"
+        ]
+      ],
+      "backend_fn": true
+    },
+    "input_component": {
+      "id": 23,
+      "type": "dataset",
+      "headers": [
+        "Input Image"
+      ],
+      "sample_count": 8
+    },
+    "output_components": [
+      {
+        "id": 6,
+        "meaning": "seg_image"
+      },
+      {
+        "id": 20,
+        "type": "model3d",
+        "label": "Generated GLB"
+      },
+      {
+        "id": 21,
+        "type": "model3d",
+        "label": "Textured GLB"
+      }
+    ],
+    "source_linkage": "app.py Examples의 출력 순서와 config outputs [6,20,21]가 대응하며, Gradio helper의 cache wrapper가 해당 api_name으로 등록된다. 모델 생성 image_to_3d API와는 별도 dependency다.",
+    "limit": "config의 이 dependency는 eager/lazy 모두에서 같은 wrapper다. effective GRADIO_CACHE_MODE와 해당 index의 cache hit은 공개 config에서 확인되지 않았다."
+  },
+  "semantic_classification": {
+    "post_method_itself_is_inference": false,
+    "cache_read_is_allowed_if_proven": true,
+    "safe_conditions": [
+      "effective eager cache modeが確認される",
+      "または当該indexが既存cached outputを持つことを実行なしに確認できる"
+    ],
+    "condition_proven": false,
+    "reason": "cache_examples=Trueだけではenvironment overrideによるlazyを除外できず、既存cache indexも未確認。低確率の一般的懸念ではなく、該当versionの具体的fallback分岐とapp内GPU fn接続が根拠。",
+    "conclusion": "今回のread-only許可条件を満たす証拠がないためload_example API未実行。可能なら所有者がeffective eager/cache availabilityを公開するか、既存outputの直接公開URLで解消できる。"
+  },
+  "execution": {
+    "public_cache_api_calls": 0,
+    "post_calls": 0,
+    "generation_calls": 0,
+    "gpu_jobs_requested": 0,
+    "accounts_or_authentication_used": 0,
+    "paid_resources_requested": 0,
+    "public_mesh_file_gets": 0,
+    "mesh_downloads": 0,
+    "profile_validate_runs": 0,
+    "app_store_imports": 0,
+    "rights_approvals": 0,
+    "redistributions": 0,
+    "product_changes": 0,
+    "model_simulations": 0
+  },
+  "artifact_and_comparison": {
+    "candidate_mesh": null,
+    "asset_license": "미확인",
+    "research_only_download": "NOT RUN — 공개 file URL 미확보",
+    "actual_model_output_provenance": "NOT VERIFIED",
+    "profile_compatibility": "NOT RUN — 파일 미확보",
+    "paired_before_after": "NOT RUN",
+    "product_production_claim": false
+  },
+  "next_step": "이번 짧은 소스 확인은 종료한다. eager 설정/기존 cache hit의 공개 근거나 권리가 확인되는 직접 output URL을 얻으면 허용된 범위에서 재검토할 수 있다. 새 생성·GPU 이용을 실행하는 부분만 별도 범위로 driver가 판단한다. 기존 음악영상 기능 작업으로 복귀한다.",
+  "write_set": [
+    ".omo/evidence/tripo-public-output-recovery-20261028/attempt2-source-evidence.json",
+    ".omo/evidence/tripo-public-output-recovery-20261028/attempt2-audit.json"
+  ]
+}

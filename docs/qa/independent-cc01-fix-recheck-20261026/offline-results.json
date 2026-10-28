@@ -1,0 +1,119 @@
+{
+  "original_probes": [
+    {
+      "id": "original_CC01_9turn_resume",
+      "status": "PASS",
+      "observed": {
+        "persistedTurns": 10,
+        "retainedPriorUserTurns": [
+          "Synthetic neutral turn 2",
+          "Synthetic neutral turn 3",
+          "Synthetic neutral turn 4",
+          "Synthetic neutral turn 5",
+          "Synthetic neutral turn 6",
+          "Synthetic neutral turn 7",
+          "Synthetic neutral turn 8",
+          "Synthetic neutral turn 9"
+        ],
+        "canaryStillInDatabase": true,
+        "canaryInProviderRequest": true,
+        "summaryOrStructuredSessionConstraintsInHandoff": [
+          "context",
+          "embedding_policy",
+          "execution_targets",
+          "instructions",
+          "jobs",
+          "messages",
+          "session_request_history"
+        ],
+        "expected": "Session prohibition survives history compaction, even if original turn is omitted"
+      }
+    },
+    {
+      "id": "adjacent_canon_correction_provenance_isolation",
+      "status": "PASS",
+      "observed": {
+        "restartPreservesPriorUserTurn": true,
+        "canonicalRevision": 2,
+        "stableEntityAndRelation": true,
+        "currentProvenance": [
+          {
+            "excerpt": "A-CANARY-V2: Nari wears violet now. Age remains unknown.",
+            "source_id": "author-correction-v2"
+          }
+        ],
+        "oldVersionPreserved": true,
+        "priorAssistantMarkedUnreviewed": true,
+        "foreignCanaryExcludedBothWays": true,
+        "claudeQuality": "NOT RUN; fake text proves app payload only"
+      }
+    }
+  ],
+  "targeted_regressions": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 0
+  },
+  "byte_boundary": {
+    "seed_count": 41,
+    "first_prompt_chars": 1074,
+    "count_bytes": 65529,
+    "message_bytes": 65549,
+    "count_opener_calls": 1,
+    "message_opener_calls": 0,
+    "status": "outcome_unknown",
+    "journal": [
+      [
+        "outcome_unknown",
+        5735,
+        null
+      ]
+    ],
+    "subsequent_enqueue_blocked": true,
+    "expected": {
+      "status": "blocked_before_message",
+      "message_opener_calls": 0,
+      "held_micro": 0,
+      "subsequent_enqueue_blocked": false
+    },
+    "verdict": "FAIL"
+  },
+  "byte_boundary_controls": {
+    "below_both_caps": {
+      "seed_count": 41,
+      "first_prompt_chars": 1034,
+      "count_bytes": 65490,
+      "message_bytes": 65510,
+      "count_opener_calls": 1,
+      "message_opener_calls": 1,
+      "status": "completed",
+      "journal": [
+        [
+          "completed",
+          5735,
+          60
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    },
+    "above_count_cap": {
+      "seed_count": 41,
+      "first_prompt_chars": 1114,
+      "count_bytes": 65570,
+      "message_bytes": 65590,
+      "count_opener_calls": 0,
+      "message_opener_calls": 0,
+      "status": "blocked_before_message",
+      "journal": [
+        [
+          "blocked_before_message",
+          0,
+          null
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    }
+  },
+  "actual_provider_calls": 0,
+  "shared_database_opened": false
+}

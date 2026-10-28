@@ -1,0 +1,32 @@
+{
+  "kind": "guard-boundary probe; app.server and tree_manifest deliberately stubbed, not a native/provider run",
+  "results": [
+    {
+      "version": "before",
+      "source_sha256": "254bfe9c67af13544a926d23d43aa6941c43c623a1fd21ef5a9dee01fa7f1edb",
+      "observed_error": {
+        "type": "RuntimeError",
+        "message": "SERVER_SENTINEL"
+      },
+      "attempted_server_start": true,
+      "prior_marker_unchanged": true,
+      "directory_files": [
+        "prior-observation.json"
+      ]
+    },
+    {
+      "version": "after",
+      "source_sha256": "925749b9c682eba7599f22aa63210d51a481fbea788b438cd2f0d90a6173d612",
+      "observed_error": {
+        "type": "AssertionError",
+        "message": "True is not false : native evidence output must be empty; preserve prior observations"
+      },
+      "attempted_server_start": false,
+      "prior_marker_unchanged": true,
+      "directory_files": [
+        "prior-observation.json"
+      ]
+    }
+  ],
+  "verdict": "before could enter renderer workflow with prior evidence; after refuses before server start without modifying marker"
+}

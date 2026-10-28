@@ -1,0 +1,163 @@
+{
+  "scope": "current-project-current-conversation",
+  "observation_started_at": 1793154642.948836,
+  "observed_at": 1793154642.9490402,
+  "observed_revision": 3,
+  "transaction_snapshot": false,
+  "limit_per_source": 8,
+  "sources": [
+    {
+      "source": "local_jobs",
+      "items": [
+        {
+          "id": "scene",
+          "kind": "local-3d-still",
+          "execution_mode": "local-3d-still",
+          "state": "completed",
+          "progress_percent": 100,
+          "record_revision": 6,
+          "input_version": {
+            "kind": "scene_3d",
+            "value": 7
+          },
+          "output_kind": "image",
+          "output_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "output_registered": true,
+          "created_at": null,
+          "updated_at": null
+        },
+        {
+          "id": "motion",
+          "kind": "local-motion",
+          "execution_mode": "local-motion",
+          "state": "completed",
+          "progress_percent": 100,
+          "record_revision": 5,
+          "input_version": {
+            "kind": "motion",
+            "value": 3
+          },
+          "output_kind": "video",
+          "output_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "output_registered": true,
+          "created_at": null,
+          "updated_at": null
+        },
+        {
+          "id": "render",
+          "kind": "local-render",
+          "execution_mode": "local-render",
+          "state": "running",
+          "progress_percent": 37.5,
+          "record_revision": 4,
+          "input_version": {
+            "kind": "timeline",
+            "value": 2
+          },
+          "output_kind": "video",
+          "output_sha256": null,
+          "output_registered": false,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    {
+      "source": "provider_jobs",
+      "items": [
+        {
+          "id": "provider",
+          "kind": "provider-generation",
+          "execution_mode": "contract-fake",
+          "state": "imported",
+          "progress_percent": null,
+          "record_revision": 8,
+          "input_version": {
+            "kind": "shot",
+            "value": 9
+          },
+          "output_kind": "image",
+          "output_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "output_registered": true,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    {
+      "source": "rehearsal_jobs",
+      "items": [
+        {
+          "id": "rehearsal",
+          "kind": "rehearsal-media",
+          "execution_mode": "rehearsal",
+          "state": "collected",
+          "progress_percent": null,
+          "record_revision": null,
+          "input_version": {
+            "kind": "plan",
+            "value": 10
+          },
+          "output_kind": "video",
+          "output_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "output_registered": false,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    {
+      "source": "general_chat",
+      "items": [
+        {
+          "id": "general",
+          "kind": "general-chat",
+          "execution_mode": "contract-live-test",
+          "state": "outcome_unknown",
+          "progress_percent": null,
+          "record_revision": null,
+          "input_version": null,
+          "output_kind": "text",
+          "output_sha256": null,
+          "output_registered": false,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    },
+    {
+      "source": "legacy_chat",
+      "items": [
+        {
+          "id": "legacy",
+          "kind": "legacy-chat",
+          "execution_mode": "contract-fake",
+          "state": "queued",
+          "progress_percent": null,
+          "record_revision": null,
+          "input_version": null,
+          "output_kind": "text",
+          "output_sha256": null,
+          "output_registered": false,
+          "created_at": null,
+          "updated_at": null
+        }
+      ],
+      "truncated": false,
+      "ordering": "source insertion order descending; not cross-source creation/update order"
+    }
+  ],
+  "collaboration": {
+    "available": false,
+    "reason": "single-local-workspace; no authenticated team/presence data"
+  },
+  "note": "Stored status during this lookup, not a grant, model vision, verified file contents or final-output approval. Output SHA/registration are recorded metadata only. Caller transaction provides a snapshot when active; otherwise sources are sequential observations. Requery for newer status; no automatic retry or cost change."
+}

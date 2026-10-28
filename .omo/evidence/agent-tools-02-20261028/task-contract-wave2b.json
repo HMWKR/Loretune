@@ -1,0 +1,42 @@
+{
+ "written_at": "2026-10-28T12:25:45.754878+00:00",
+ "written": "before spawn",
+ "source": "tasks/*/verdict-wave2.json (critic FAIL A2a/A2b/E1/B2, PASS D1 with minors)",
+ "tracks": {
+  "SRV-r2": {
+   "fixes": [
+    "A2a serious: vacuous settings-invariant test",
+    "A2a serious: model_reason 1..300 not visible to model; over-length locks conversation as outcome_unknown",
+    "A2b serious: continuation body real 70,579B/66,565B > 64KiB; wrong measurements",
+    "A2a/A2b minors"
+   ],
+   "write_set": "server .py files + tests/"
+  },
+  "UI-r2": {
+   "fixes": [
+    "E1 serious: 375 #songs rule overridden (studio.css:668)",
+    "B2 serious: #46 notices mostly unchanged",
+    "B2 serious: S16 work-status/turn missing unit/source/revision/expiry/provenance",
+    "E1/B2 minors incl. #23,#3,#7,#8,#41, monotonous-spacing"
+   ],
+   "write_set": "index.html, studio.css, chat-sidebar.js, general-chat-ui.js, studio-media.js, scene-studio.js, motion-studio.js, UI tests"
+  },
+  "D1-r4": {
+   "fixes": [
+    "6 D1 minors"
+   ],
+   "write_set": "docs/design/FRAME-OBSERVATION-DESIGN-ko.md + task folder"
+  }
+ },
+ "lead_decisions": [
+  "over-length/oversize results must not silently lock the conversation: bound results to fit 64KiB with explicit truncation counts (assumption, reversible)",
+  "monotonous-spacing: fix by tokenizing literals, not by ignore entry",
+  "kling 2.5 turbo: keep published terms verbatim alongside per-second value",
+  "1:1 megapixel definition stays dual-candidate (no paid call)"
+ ],
+ "not_in_scope": [
+  "browser rendering (lead does S14 with ego lite)",
+  "real/paid calls",
+  "registration/promotion of docs"
+ ]
+}

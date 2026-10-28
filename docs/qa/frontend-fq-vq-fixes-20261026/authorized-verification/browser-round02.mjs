@@ -1,0 +1,22 @@
+const fs=await import('node:fs/promises');
+const root='/Users/leesungmin/Desktop/Loretune/docs/qa/frontend-fq-vq-fixes-20261026/authorized-verification';
+const task=await taskSpace(36),p=task.page('p1');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
+const before=await p.evaluate(()=>JSON.stringify(project()));
+const results=[];
+async function measure(label){results.push(await p.evaluate(label=>{const s=document.querySelector('#takes'),b=document.activeElement,r=b.getBoundingClientRect(),q=s.getBoundingClientRect(),left=q.left+s.clientLeft,right=left+s.clientWidth;return {case:label,viewport:[innerWidth,innerHeight],scale:document.querySelector('#textScale').value,take:b.dataset.take,rect:r.toJSON(),strip:q.toJSON(),scrollLeft:s.scrollLeft,visibleRatio:Math.max(0,Math.min(r.right,right)-Math.max(r.left,left))/r.width,focusVisible:b.matches(':focus-visible')};},label));}
+await p.focus('#takes button[data-take="1"]');await measure('VF01 first');
+await p.keyboard.press('Tab');await measure('VF01 middle');
+await p.keyboard.press('Tab');await measure('VF01 last');
+await p.screenshot({path:root+'/vf01-take3-1280-app200.png'});
+await p.keyboard.press('Shift+Tab');await measure('VF01 reverse middle');
+await p.keyboard.press('Shift+Tab');await measure('VF01 reverse first');
+await p.click('.management>summary');await p.selectOption('#textScale','1');await p.click('.management>summary');
+await p.cdp('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
+const long=await p.evaluate(()=>{const t=document.querySelector('.lt-scene-copy>b');window.__qaOriginalTitle=t.textContent;t.textContent='01 긴 한국어 장면 제목과 EnglishNoSpacesABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';const r=t.getBoundingClientRect(),style=getComputedStyle(t);return {case:'VF02 unbroken long title',viewport:[innerWidth,innerHeight],text:t.textContent,width:t.clientWidth,scrollWidth:t.scrollWidth,height:t.clientHeight,rect:r.toJSON(),wrap:style.overflowWrap,font:style.fontSize,fullTextRetained:t.textContent.endsWith('0123456789')};});results.push(long);
+await p.screenshot({path:root+'/vf02-long-title-1920.png'});
+await p.evaluate(()=>{document.querySelector('.lt-scene-copy>b').textContent=window.__qaOriginalTitle;delete window.__qaOriginalTitle;});
+const final=await p.evaluate(()=>({ua:navigator.userAgent,time:new Date().toISOString(),errors:window.__fixtureErrors,requestCount:window.__fixtureRequests.length,posts:window.__fixtureRequests.filter(x=>x.method!=='GET'),project:JSON.stringify(project())}));
+const projectUnchanged=before===final.project;delete final.project;
+await fs.writeFile(root+'/browser-visual-results.json',JSON.stringify({results,projectUnchanged,...final},null,2));
+console.log({results,projectUnchanged,...final});

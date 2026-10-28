@@ -1,0 +1,59 @@
+{
+  "synthetic_only": true,
+  "real_server_compatible_import": false,
+  "workspace": "synthetic-w1",
+  "projects": [
+    "A",
+    "B"
+  ],
+  "revisions": [
+    1,
+    2,
+    3
+  ],
+  "media": {
+    "shots": 2,
+    "takes_per_shot": 2,
+    "duration_seconds": [
+      1,
+      2,
+      4
+    ],
+    "trim_seconds": [
+      0,
+      0.5,
+      2
+    ],
+    "audio_offset": 2,
+    "fractional_cuts": {
+      "count": 30,
+      "seconds": 0.131
+    }
+  },
+  "text": {
+    "korean_long_chars": 10000,
+    "captions": [
+      "첫 자막",
+      "다음 자막",
+      "끝 자막"
+    ]
+  },
+  "stress": {
+    "shots": 60,
+    "takes_per_shot": 3,
+    "captions": 120,
+    "cycles": [
+      30,
+      30
+    ]
+  },
+  "network_modes": [
+    "400 rejected",
+    "503 unknown",
+    "throw unknown",
+    "truncated JSON unknown",
+    "committed refresh failed",
+    "delayed/reversed responses"
+  ],
+  "mutation_transport": "strict synthetic VM only; never delegates to real fetch"
+}

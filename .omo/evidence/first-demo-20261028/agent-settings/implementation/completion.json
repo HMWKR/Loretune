@@ -1,0 +1,177 @@
+{
+  "status": "backend scoped implementation verified and frozen; root acceptance pending",
+  "recorded_at": "2026-10-28T02:24:08.826078+00:00",
+  "scope": "per-conversation/per-chat-model permission and effort storage, revision/CAS, frozen logical turn execution, server dispatcher enforcement, bounded unapproved timeline draft",
+  "files": [
+    "agent_preferences.py",
+    "app.py",
+    "chat_sessions.py",
+    "chat_general.py",
+    "chat_models.py",
+    "chat_runtime.py",
+    "production_tools.py",
+    "local_creation_tools.py",
+    "tests/test_agent_preferences.py"
+  ],
+  "mode_contract": {
+    "read_only": "read scope only; no cost/transmission/rights bypass",
+    "review": "existing propose then human apply default",
+    "full_access": "only explicit typed timeline nondelete whitelist auto-saves unapproved agent-draft"
+  },
+  "actual_full_whitelist": [
+    "set_clip",
+    "reorder_clips",
+    "set_captions",
+    "set_audio_offset",
+    "set_motion_overlay"
+  ],
+  "human_review_only": [
+    "remove_clips",
+    "clear_motion_overlay",
+    "append_clips",
+    "legacy propose_timeline_edit",
+    "new motion source",
+    "final output"
+  ],
+  "deletion": {
+    "account": "always prohibited",
+    "files": "no delete API/tools added; explicit target/impact permission still required; FullAccess is insufficient",
+    "arbitrary_tool": "deny by registry and dispatcher"
+  },
+  "frozen_settings": "new logical turn binds selection/revision/mode/effort in hashed manifest and run; ongoing body/count/effort do not change; current settings and irreversible run ceiling intersect for immediate permission narrowing; upgrades only on new logical turn; legacy no marker means review/low",
+  "vendor_and_route": {
+    "anthropic": {
+      "efforts": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "thinking": "disabled",
+      "xhigh_max": "vendor supported but disabled-path HTTP400; adaptive not implemented"
+    },
+    "openai": {
+      "efforts": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "general_route": false,
+      "legacy_route": "implemented separately, actual account unverified"
+    },
+    "xai": {
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh"
+      ],
+      "none_max": "not supported",
+      "general_route": false,
+      "legacy_route": "implemented separately, actual account unverified"
+    }
+  },
+  "checks": [
+    {
+      "command": "python3 -m unittest tests.test_agent_preferences -v",
+      "result": "PASS18 /12.263s final source; 18 /12.365s prior dedicated run",
+      "log": "focused-tests-final.log"
+    },
+    {
+      "command": "python3 -m unittest tests.test_agent_preferences tests.test_chat_general_http tests.test_general_model_schedule tests.test_chat_runtime tests.test_chat_protocols tests.test_multimodel_chat tests.test_local_creation_tools tests.test_timeline_commands tests.test_ai_motion_overlay tests.test_general_chat_cancel_received -v",
+      "result": "PASS155 /77.683s; before final capability-list-only clarification adding append_clips, then 18 dedicated tests rerun PASS",
+      "log": "related-regression.log"
+    },
+    {
+      "command": "python3 -m py_compile agent_preferences.py app.py chat_sessions.py chat_general.py chat_models.py chat_runtime.py production_tools.py local_creation_tools.py tests/test_agent_preferences.py",
+      "result": "PASS; no syntax changes after except capability list and unused test imports"
+    },
+    {
+      "command": "python3 .omo/evidence/first-demo-20261028/agent-settings/implementation/verify_agent_settings.py",
+      "result": "PASS16 actual localhost HTTP action requests; explicit synthetic model response fixture",
+      "log": "http-verification.log"
+    }
+  ],
+  "actual_http": {
+    "trace": "agent-settings-http-verification.json",
+    "selected_model": "anthropic-haiku-5-5",
+    "wire_models": [
+      "claude-haiku-5-5",
+      "claude-haiku-5-5",
+      "claude-haiku-5-5",
+      "claude-haiku-5-5"
+    ],
+    "job": "0f40a7b59d984c71a51e0ad97851b17e",
+    "timeline_version": 3,
+    "actor": "agent-draft",
+    "human_edit_review_forged": false,
+    "human_final_output_approval": "separate successful step",
+    "original_versions_preserved": true,
+    "self_effect": "usage settled, no unknown, no extra unapproved message, exact approved followup used frozen high despite desired medium; next new request used medium",
+    "reopened_timeline": 3,
+    "output": "agent-draft-output.mp4",
+    "output_sha256": "e8a90bad2ed7d23a073cce75b49aaeddc24a4763f689c6761779c488ee92f575",
+    "duration_seconds": "3.000000",
+    "streams": [
+      "video",
+      "audio",
+      "subtitle"
+    ],
+    "fully_decoded": true,
+    "frame_comparison": {
+      "size": [
+        1920,
+        1080
+      ],
+      "frame": 18,
+      "mean_absolute_rgb_error": 0.42353684413580245,
+      "pass_threshold_lt": 5,
+      "comparison": "saved draft preview vs decoded actual same-frame MP4; lossy encoder tolerance",
+      "attempt1": "shell quoting and unavailable PIL failed before pixel comparison; rerun uses subprocess argv and FFmpeg RGB decoding, no new dependency"
+    }
+  },
+  "distinctions": {
+    "actual_provider_calls": 0,
+    "credential_reads": 0,
+    "actual_billing_calls": 0,
+    "synthetic_token_count": 100,
+    "real_token_fit": "not verified; provider count is fixture",
+    "real_model_quality": "not verified",
+    "actual_render": "production local CoreText/FFmpeg; output HTTP download and SHA matched",
+    "manual_visual_review": "opened same frame before/after saved PNG and decoded output PNG; Korean overlay actual position change visible",
+    "browser_ui_recording": "parent-owned separate; this receipt is API/render evidence, not a UI demo"
+  },
+  "methodology": {
+    "skill_read": [
+      "installed Karpathy Guidelines and Codex runtime",
+      "feature-verification/runtime/live-feature-verify/uncompromising-rigor"
+    ],
+    "commands": "actual Python unittest/py_compile/HTTP probe/FFmpeg/ffprobe; no invented skill command",
+    "sources": [
+      "latest user selected-model and internal-system requirements",
+      "existing approved plan, manifest/dispatcher/schema and approval services",
+      "Anthropic effort and thinking troubleshooting, OpenAI gpt-6-luna model, xAI reasoning official pages researched by parent 2026-10-28"
+    ],
+    "applied": "minimum versioned settings, freeze exact body, deny by default, monotonic permission narrowing, reuse human validation without fake human actor, normal/error/boundary/restart plus actual persisted HTTP and renderer output"
+  },
+  "remaining": [
+    "Parent UI integration and browser setting interaction acceptance",
+    "Root final coordinated full suite after all writers freeze",
+    "Real Claude account/latency/token-count/billing and semantic editing quality require separate scope and explicit material/budget approval",
+    "General chat OpenAI/xAI route remains unsupported; legacy synthetic protocol is separate",
+    "Haiku adaptive thinking/xhigh/max remains unsupported",
+    "No account/file deletion APIs added; no team ACL claimed",
+    "No new job-status/settings/3D generator tools added in this assignment; parent next scope"
+  ],
+  "attempts": {
+    "attempt1": "12/13 passed; test sent wrong cancel key turn_id instead of actual turn, corrected test only",
+    "attempt2": "17/18 passed; test asset location used nonexistent path key instead of actual asset, corrected test only",
+    "attempt3": "18/18 PASS",
+    "pixel_attempt1": "shell filter quoting/PIL missing prevented comparison; rerun used subprocess argv and FFmpeg raw RGB, no dependency added"
+  },
+  "source_freeze": "source-freeze.json",
+  "ui_contract": "ui-contract.json",
+  "ui_actual_example": "ui-projection-example.json"
+}

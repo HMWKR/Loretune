@@ -1,0 +1,52 @@
+{
+  "schema": "driver-acceptance/1",
+  "checked_at": "2026-10-27T17:58:05.386056+00:00",
+  "decision": "ACCEPTED within recorded local/synthetic scope",
+  "regression": {
+    "receipt": "general-live/regression-current.json",
+    "tests": 774,
+    "seconds": 338.034,
+    "exit_code": 0,
+    "skip": 0,
+    "warning_lines": 0,
+    "current_frozen_sources_verified": 199,
+    "source_drift": [],
+    "log_sha256": "2709188d01365e45983b9f7725277a27edf53a2c571e7d426c40423f519f0e10"
+  },
+  "independent_reviews": {
+    "backend": "general-live/independent-review.json",
+    "ui": "general-live/ui-independent-review.json",
+    "confirmed_high_medium": 0,
+    "review_corrections_preserved": true
+  },
+  "driver_observations": {
+    "scope": "Actual local browser interactions against production configuration branch, all provider stdlib sockets synthetic",
+    "actual_provider_calls": 0,
+    "real_credentials_accessed": 0,
+    "synthetic_supplier_reads": 7,
+    "synthetic_requests": 6,
+    "evidence": [
+      "general-live/ui-completed.json",
+      "general-live/ui-not-sent.json",
+      "general-live/ui-recovered.json",
+      "general-live/ui-unknown-cost-render-only.json",
+      "general-live/ui-final-layout.json"
+    ],
+    "manual_images_viewed": [
+      "general-live/ui-final-1920.png",
+      "general-live/ui-final-375.png"
+    ],
+    "render_only_unknown_cost": "Not a real provider outcome; demonstrates display and escaped error sink only",
+    "layout_visibility_collection_limit": "Height-only visibleForms/labels collection may include collapsed descendants; not accepted as visibility proof"
+  },
+  "cleanup": "general-live/cleanup-receipt.json",
+  "not_accepted_as_complete": [
+    "Actual Claude/account access/model quality/billing reconciliation",
+    "Whole platform or original07/CS acceptance",
+    "Whole accessibility, real zoom/screen reader, user testing",
+    "AI video tests",
+    "Commercial/public Tripo equal quality comparison",
+    "Production deployment or operations"
+  ],
+  "gate": "../document-preservation-20261028/gate-final.json"
+}

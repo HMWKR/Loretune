@@ -1,0 +1,56 @@
+{
+ "id": "A2b-3d-pref-guards",
+ "summary": "A2b-3d-pref-guards 작업을 끝냈습니다. 맡은 5개 항목을 모두 반영했고, 관련 테스트 715개가 통과했습니다(skip 17개는 환경 조건). 워크플로 단계 자체의 오류는 없었습니다. 다만 아래 사용자 결정 1번(scene-status 크기 상한)은 그대로 열려 있습니다.\n\n**바꾼 것**\n- **3D 장면 변경 제안 도구 `propose_scene_3d`** [검증됨]: 모델은 변경을 \"제안\"만 저장하고, 실제 반영은 사람이 Scene Studio에서 승인할 때만 됩니다. 어떤 권한 모드에서도 자동 반영되지 않습니다.\n  - 다른 대화의 장면이나 없는 샷은 `SCENE_NOT_FOUND`로, 낡은 버전 기준 제안은 `STALE_VERSION`으로 거절합니다.\n  - 제안에는 출처(누가·어떤 모델·어떤 권한 모드)와 모델이 댄 이유를 \"검증 안 됨\" 표시와 함께 남깁니다.\n- **연출 취향 후보 도구 `propose_preference_rule`** [검증됨]: 후보만 만들고, 활성화는 사람이 승인할 때만 됩니다. 같은 속성에 이미 활성 규칙이 있으면, 승인 시 기존 규칙이 중지되도록 연결합니다.\n- **렌더 요청의 승인 ID 검사 위치 이동** [검증됨]: 모델이 다른 대화의 승인 ID로 렌더를 요청해도 이제 대화가 결과 불명(`outcome_unknown`)으로 끊기지 않습니다. 구조화된 거절을 받고 작업은 만들어지지 않습니다. 사람이 직접 누르는 렌더 요청은 기존처럼 HTTP 400으로 거절됩니다.\n- **장면 검토 표시 보강** [검증됨]: 승인 기록이 없는 예전 장면도 오류 없이 \"검토 필요\"로 표시됩니다. 실행 기준(ontology)만 바뀐 경우에도 \"검토 필요\"가 표시되도록 바꿔, 서버가 이미 거절하던 상태와 화면을 맞췄습니다.\n- **도구 × 권한 전수 검사** [검증됨]: 도구 14개 × 권한 3종 × {정상, 요청 도중 읽기 전용으로 낮춤, 재시작} 126칸을 확인했습니다.\n  - 읽기 전용 차단은 정확히 45칸입니다.\n  - 자동 반영은 문서화된 full_access 타임라인 초안 2건뿐입니다.\n\n수정한 소스 파일은 `production_tools.py`, `chat_protocols.py`, `chat_general.py`, `local_creation_tools.py`, `scene_project.py`, `app.py` 6개입니다. 바뀐 줄 위치는 `result.md`에 적었습니다.\n\n**의도적으로 바꾼 기존 테스트** (단언 삭제·약화 0)\n- `test_chat_protocols`: 도구 수 15→17.\n- `test_general_chat_media_d15`: 모든 도구를 거치는 검사에 새 도구 2개의 인수를 추가.\n- `test_general_chat_motion`: 다른 대화의 승인 ID 요청이 `outcome_unknown` 대신 승인 대기로 이어지고, 정확한 거절 결과를 확인하도록 변경.\n- `test_timeline_grant_scope`(3곳): HTTP 400 기대를 \"HTTP 200 + 정확한 거절 결과 + 작업 수 그대로\"로 바꿨습니다. 더 엄격해진 단언입니다.\n- `test_general_chat_scene_context`: 실행 기준이 바뀐 경우 \"검토 필요\"가 모두 True인지 확인하도록 변경.\n\n**테스트 실행과 결과**\n모두 `/Users/leesungmin/Desktop/Loretune`에서 `PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/opt/python@3.15/bin/python3.15 -B`로 실행했습니다.\n- `PYTHONPATH=tests -m unittest $(cat related-modules.txt)` (78개 모듈): `Ran 715 tests in 309.256s / OK (skipped=17) / rc=0`\n  - skip은 모두 환경 조건입니다: Blender 테스트 환경 미설정 14, Blender 고정 환경 1, Blender+TripoSR 산출물 1, 로컬 QA 환경 1.\n- 새 테스트 모듈 2개(22개 + 2개 테스트): `Ran 24 tests / OK`.\n- 일부러 버그를 넣어 테스트가 잡는지 본 검사(작업 폴더 사본에서): 넣은 버그 10개 모두 테스트가 실패로 잡았고, 되돌린 뒤 다시 OK입니다.\n- 1회차 실행(`related-tests.run1.log`)은 `PYTHONPATH`가 빠져서 테스트 폴더 내부 import 12건이 오류였습니다. 코드 문제가 아니었고, 2회차에서 모두 통과했습니다.\n- 처음 시작 시점 크기 측정은 모듈 경로 문제로 결과 파일이 깨졌습니다. 경로를 보충해 다시 실행해서 해결했습니다.\n\n**크기 측정** (바이트 실측, 토큰 수는 [추정])\n- 첫 요청 본문: review·full_access 모드는 18,273B → 26,541B, read_only는 7,991B로 그대로입니다.\n- 장면 32개 × 대기 제안 10개인 최악의 경우, 장면 상태 결과만 39,515B입니다. 이 결과를 실은 이어쓰기 요청은 66,318B로 전송 상한 65,536B를 782B 넘습니다. 실제 전송 직전 거절 동작은 코드로만 확인했습니다 [미확인].\n\n**결정이 필요한 사항**\n1. **장면 상태 크기 상한**: 위 최악의 경우가 전송 상한을 넘습니다. 선택지는 세 가지입니다.\n   - (a) 상한 축소(예: 장면 8개·대기 3개)\n   - (b) 나눠 보내기(페이징)\n   - (c) 지금대로 두고 전송 전 거절에 맡기기\n\n   도구 정의를 줄인 판으로 바꿔도 62,304B로 여유가 3KB뿐이라 근본 해결이 아닙니다. 그래서 도구 정의는 지금의 전체판을 유지했습니다.\n2. **Scene Studio 표시 변화를 받아들일지**: 실행 기준만 바뀌어도 \"검토 필요\"가 뜨고 승인·렌더 버튼이 비활성됩니다. 원치 않으면 이 표시 변경만 되돌릴 수 있습니다.\n3. **취향 후보의 범위**: 지금은 현재 작품 한정입니다 [가정]. IP 전체 기본 취향 후보도 허용할지 정해 주세요.\n\n**하지 않은 것**\n- 제안 출처를 화면에 표시하는 일과 도구 이름 라벨은 B2 담당이라 하지 않았습니다.\n- 장면별 필드 잠금 기능은 프로젝트에 저장소 자체가 없어서 만들지 않았습니다. 현재 장면 기준 허용 목록만 집행합니다.\n- 예전(legacy) 대화의 기본 도구 목록에는 새 도구를 넣지 않았습니다.\n- 전체 테스트 전수 실행은 main 통합 단계 몫으로 남겼습니다.\n- 화면 변화는 브라우저 금지 조건이라 코드로만 확인했습니다.\n\n파일은 모두 `/Users/leesungmin/Desktop/Loretune/.omo/evidence/agent-tools-02-20261028/tasks/A2b-3d-pref-guards/`에 있습니다.\n- `result.md`, `changes.diff`\n- `related-modules.txt`, `related-tests.log`, `related-tests.run1.log`, `related-tests.skips.txt`, `mutants.log`\n- `measure-start.json`, `measure-after.json`, `measure-a2b.json`\n- `evidence/`: `permission-matrix.json`, `scene-proposal-receipt.json`, `preference-receipt.json`, `scene-status-worst-case.json`\n\n새 테스트 파일은 다음 두 개입니다.\n- `/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_scene_preference_tools.py`\n- `/Users/leesungmin/Desktop/Loretune/tests/test_general_chat_tool_permission_matrix.py`",
+ "verdict": {
+  "id": "A2b-3d-pref-guards",
+  "pass": false,
+  "issues": [
+   {
+    "severity": "serious",
+    "problem": "이어쓰기 본문 크기 '실측'값이 틀렸다. 결과 보고와 사용자 결정 1번에 적힌 66,318B(782B 초과)와 축소판 62,304B('여유 3KB')는 둘 다 실제보다 작게 나온 값이다. 실제로는 전체판 70,579B로 상한을 5,043B 넘고, 축소판도 66,565B로 상한 65,536B를 넘는다. 따라서 '축소판이면 들어간다'는 진술은 거짓이다.",
+    "evidence": "measure_a2b.py는 39,515B 결과를 'x'로 채운 문자열로 대체했다. 실제 결과의 따옴표가 tool_result 문자열 안에서 \\\"로 이스케이프되는 증가분과, search_project_context 결과의 나머지 필드(39,768B)를 빠뜨렸다. 재측정 방법: 스크래치패드 probe_size.py에서 테스트 fixture로 장면 32개×대기 10개를 실제로 만들고, production_tool search_project_context(query='scene-status') → chat_runtime.compact_result → chat_protocols.result_message → chat_models.continuation/body 순서로 측정했다. 출력은 'tool_result content bytes 43961', 'REAL continuation body bytes 70579', 'REAL continuation body bytes per-target 66565'이다.",
+    "fix": "result.md §2 표, §6-1, 워커 요약의 수치를 실측값(전체판 70,579B / 축소판 66,565B, 둘 다 초과)으로 고친다. 사용자 결정 1번에서 '축소판으로는 여유 3KB' 문구를 지우고, (a)의 상한 축소 예시가 실제로 64KiB 안에 드는지 같은 방식으로 다시 측정해 제시한다."
+   },
+   {
+    "severity": "minor",
+    "problem": "항목 1의 '잠긴 필드 재검사'는 구현되지 않았다. 프로젝트에 필드 잠금 저장소가 없기 때문이다. 서버는 현재 head 기준 허용 목록만 집행하고, scene_spec.propose_changes의 locked_fields 인자는 호출부가 쓰지 않는다. 워커는 이 사실을 공개했다.",
+    "evidence": "grep 결과 'locked'는 scene_spec.py:132,147,157에만 있다. scene_project.py:385-388은 allowed_fields만 넘긴다.",
+    "fix": "잠금 기능 신설은 사용자 결정 사항으로 남기거나, 이 항목을 범위에서 빼기로 명시 승인받는다."
+   },
+   {
+    "severity": "minor",
+    "problem": "매트릭스 테스트의 '차단 시 상태 불변' 단언이 약하다. observed()가 장면 제안 행, 대기 취향 후보, 타임라인·모션 제안 수를 포함하지 않는다. 그래서 차단된 쓰기 도구가 제안을 저장해도 상태 비교로는 잡히지 않고, AGENT_READ_ONLY 코드 단언에만 기댄다.",
+    "evidence": "tests/test_general_chat_tool_permission_matrix.py의 observed()는 timeline_head, scene head, jobs, reservations, active_preferences, model_settings, agent_settings만 비교한다.",
+    "fix": "observed()에 scene_proposals 행 수, preferences 전체 길이, timeline_edit_proposals와 motion_proposals 길이를 추가한다."
+   },
+   {
+    "severity": "minor",
+    "problem": "매트릭스의 '요청 도중 권한 축소'와 '재시작'은 general chat turn 없이 production_run과 production_tool을 직접 호출하는 경로만 검사한다. 이 경로에서는 chat_general.claim_tool이 turn이 없으면 바로 반환한다. 실제 일반 대화 turn에서 도중에 권한을 낮추는 경우는 테스트 스위트에 없다.",
+    "evidence": "chat_general.py:395에 'if not turns:return'이 있다. 내가 probe_midturn.py로 실제 turn을 돌려 보니 propose_scene_3d와 propose_preference_rule 모두 review·full_access에서 decide 뒤 read_only로 낮추면 awaiting_continuation_approval와 AGENT_READ_ONLY가 나오고 후보·제안은 0건이었다. 동작은 맞지만 이 검증이 회귀 테스트에 들어 있지 않다.",
+    "fix": "GeneralChatToolsTest에 decide 뒤 read_only로 낮추는 케이스를 추가한다."
+   },
+   {
+    "severity": "minor",
+    "problem": "모델이 만드는 제안과 후보에 개수 상한이 없다. 다른 call id로 같은 인수를 반복하면 중복 후보·제안이 쌓인다. scene-status 크기 상한 초과(위 serious 항목)도 이제 사람만이 아니라 모델 자신의 propose_scene_3d로 도달할 수 있다. 다만 장면 32개 승인은 사람이 해야 한다.",
+    "evidence": "probe_edges.py: 같은 활성 규칙을 supersedes하는 후보 2건이 모두 저장됐다('dup cand 1 1'). 첫째를 승인하면 둘째 승인은 ValueError로 거절된다. 안전하지만 낡은 후보가 남는다.",
+    "fix": "사용자 결정 1번(scene-status 상한)에 '모델이 대기 제안을 늘릴 수 있다'는 점을 추가한다. 대기 후보 상한 필요 여부를 기록한다."
+   },
+   {
+    "severity": "minor",
+    "problem": "쓰기 범위 밖 파일 docs/qa/contract-fixes-20261025/counterexamples-after.json이 A2b 시작 직후(19:52:52)에 바뀌었다. 이 파일은 tests/test_contract_counterexamples.py가 실행하는 verify-fixes.py가 쓴다. A2b의 related-modules에는 이 모듈이 없어서 A2b가 바꿨다고 귀속할 수 없다. [미확인]",
+    "evidence": "stat 결과 'Oct 28 19:52:52 2026'. start/app.py의 mtime은 19:52:00이다. related-modules.txt에 test_contract_counterexamples가 없다. git 저장소가 아니라 작성 주체를 확인할 수 없다.",
+    "fix": "main이 같은 시각에 다른 에이전트·회귀 실행이 있었는지 확인해 귀속을 정리한다."
+   },
+   {
+    "severity": "minor",
+    "problem": "64KiB 초과 시 전송 직전 거절과 그때의 turn 상태(정산·outcome)는 코드로만 확인됐고 실행 검증이 없다. 워커가 [미확인]으로 공개했다. 실제 초과 폭이 5KB여서 이 경로가 실제로 발동할 수 있다.",
+    "evidence": "result.md §2 '64KiB 초과 시 동작 [검증됨: 코드 읽기, 실행 미검증]'.",
+    "fix": "live transport fixture로 70,579B 본문 거절과 그 뒤 turn 상태를 실행 검증한다."
+   }
+  ],
+  "tests_rerun": "cd /Users/leesungmin/Desktop/Loretune && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tests /opt/homebrew/opt/python@3.15/bin/python3.15 -B -m unittest $(cat .omo/evidence/agent-tools-02-20261028/tasks/A2b-3d-pref-guards/related-modules.txt) 를 다시 실행했다(78개 모듈). 결과는 'Ran 715 tests in 312.377s / OK (skipped=17) / rc=0'로 워커 기록과 같다.\n\n추가 탐침은 스크래치패드 /private/tmp/claude-501/-Users-leesungmin-Desktop-Loretune/1ebfb89f-9e94-4156-8aea-2393f299eb3e/scratchpad/probe/ 에서 돌렸고, 저장소 파일은 수정하지 않았다.\n(1) probe_midturn.py: 실제 일반 대화 turn에서 decide 뒤 read_only로 낮춤. 새 도구 2개 × review·full_access 전부 AGENT_READ_ONLY로 구조화 거절됐고 저장은 0건이다.\n(2) probe_edges.py: 같은 연산 중복은 거절, model_reason 300자는 허용·301자와 공백만은 거절, base_revision=True와 추가 키는 거절, 같은 활성 규칙을 대체하는 후보 2건 중 둘째 승인은 거절, 보관된 작품은 ValueError.\n(3) probe_size.py: 최악 경우 실측. scene-status 39,515B, 도구 결과 39,768B, 이어쓰기 본문 전체판 70,579B, 축소판 66,565B.\n\n쓰기 범위: 현재 저장소를 start/ 사본과 비교해 changes.diff를 다시 만들었고 기록된 diff와 같다. 시작(19:52) 뒤 바뀐 소스는 6개(app, chat_general, chat_protocols, local_creation_tools, production_tools, scene_project)와 tests 7개뿐이다. before/ 대비와 r2 acceptance 해시 대비 차이(JS·HTML·CSS, agent_preferences, fal_*, docs/design 등)는 모두 19:52 이전 시각이고 start/와 같아 A2b 몫이 아니다.",
+  "write_set_violations": [
+   "[미확인·A2b 귀속 불가] /Users/leesungmin/Desktop/Loretune/docs/qa/contract-fixes-20261025/counterexamples-after.json — 19:52:52에 변경. 테스트 부수효과로 쓰이는 파일이고 A2b 테스트 목록에는 그 모듈이 없음"
+  ]
+ }
+}

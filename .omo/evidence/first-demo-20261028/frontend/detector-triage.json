@@ -1,0 +1,889 @@
+{
+  "schema": "first-demo-static-detector-triage/1",
+  "recorded_at": "2026-10-28T00:40:44.467306+00:00",
+  "scope": "Read-only classification plus separately authorized fractional-frame bug fix recorded under fractional-frame-fix; no restyle or detector-policy edits",
+  "source_sha256": {
+    "index.html": "9779fa9f53924eeb4b59d20f9a56298c67fb3c84f8ea1f101ef96a08c2cde24a",
+    "studio.css": "19851dcf5e21244fed815beb34cb11967036b44fdf0dc1e0d705b1ae5b29cd54"
+  },
+  "detector_receipts": {
+    "impeccable": {
+      "path": ".omo/evidence/first-demo-20261028/impeccable-detect.json",
+      "sha256": "d034ccb6409273d51a257379e2f26c411031cc7090f157686f8d5ae9e83dd1cb",
+      "exit_code_reported_by_root": 2,
+      "findings": 15,
+      "categories": {
+        "broken-image": 1,
+        "gpt-thin-border-wide-shadow": 12,
+        "side-tab": 2
+      }
+    },
+    "hallmark": {
+      "path": ".omo/evidence/first-demo-20261028/hallmark-audit/stdout.json",
+      "sha256": "5762e8050d39ebb6e696127b1bd9949443d949824288a7046cf9b0bc3adce259",
+      "exit_code_reported_by_root": 1,
+      "summary": {
+        "fails": 11,
+        "reflex": 73,
+        "warns": 15,
+        "waived": 0,
+        "rejected": 0,
+        "answered": 0,
+        "dismissed": 0,
+        "notes": 0,
+        "files": 2,
+        "render": "not run: no puppeteer-core found locally, globally or via HALLMARK_PUPPETEER"
+      },
+      "render_executed": false
+    }
+  },
+  "version_note": "Detector receipt predates the separately requested fractional-frame numerical bound fix. CSS and markup remain identical to detector input; current preview lifecycle/source controls rechecked. No new detector execution by this worker.",
+  "classification_summary": {
+    "new_related_missing_src": "Hidden dynamic image; visible defect not proven, root runtime checks required",
+    "all_95_Hallmark_CSS_finding_lines_preexisting": true,
+    "confirmed_new_render_blocker_from_static_findings": null,
+    "whole_design_pass_claimed": false,
+    "raw_findings_suppressed_or_policy_changed": false
+  },
+  "entries": [
+    {
+      "id": "DT-IMAGE",
+      "findings": [
+        "Impeccable broken-image warning",
+        "Hallmark76 FAIL"
+      ],
+      "classification": "Intentional dynamic image lifecycle; static missing-src fact is true, visible-broken-image interpretation not established",
+      "new_UI_related": true,
+      "observations": [
+        "index.html:23 image has hidden attribute and no placeholder src",
+        "studio.css:130-131 define image display and hidden display:none; studio.css:627 .lt-ui [hidden] has display:none!important",
+        "body already has class lt-ui in static markup",
+        "invalidateTimelineFrame hides image; request start hides image; fetch/format/decode errors do not unhide it",
+        "Only pending.onload assigns validated blob URL to img.src then sets hidden=false, after checking current context generation",
+        "Late network/decode context changes do not show a stale frame"
+      ],
+      "source_refs": [
+        "index.html #timelineFrameImage",
+        "index.html invalidateTimelineFrame/showTimelineFrame",
+        "studio.css #timelineFrameImage[hidden] and .lt-ui [hidden]"
+      ],
+      "required_runtime_check": [
+        "Empty, loading, HTTP rejection, timeout and decode error: hidden=true, computed display:none, rendered rect zero, no broken-image icon or blank media box",
+        "Successful actual PNG: naturalWidth/naturalHeight positive, src assigned before visible, actual frame matches chosen saved version",
+        "Edit/source/clip/time/conversation/version changes hide prior image; late result stays hidden"
+      ],
+      "first_demo_blocker_if": "A broken or stale image is visible, or success text appears without a decoded actual PNG",
+      "action": "Keep lifecycle; do not add a fabricated data placeholder to silence static linter. Root verifies actual state."
+    },
+    {
+      "id": "DT-DISABLED",
+      "findings": [
+        "Hallmark39a FAIL on button:disabled",
+        "Hallmark39a FAIL on #reviewTake:not(:disabled)"
+      ],
+      "classification": "Static cascade/selector false positives for current lt-ui surface; actual disabled semantics still require observation",
+      "new_UI_related": false,
+      "observations": [
+        "Base button:disabled opacity:.45 exists before this task",
+        "Later .lt-ui button:disabled sets opacity:1 and fill/ink/border/cursor; later .lt-ui :where(button:disabled,input:disabled,select:disabled) sets same channels with !important",
+        "The literal :not(:disabled) selector explicitly describes enabled #reviewTake; opacity:1 there cannot demonstrate disabled-by-opacity styling",
+        "An explicit #reviewTake:disabled rule also sets fill/ink/border/cursor",
+        "New preview uses actual disabled DOM property for dirty/no-saved/in-flight states"
+      ],
+      "source_refs": [
+        "studio.css:75",
+        "studio.css:277",
+        "studio.css:496",
+        "studio.css:719-721",
+        "index.html updateTimelineFrameControls"
+      ],
+      "required_runtime_check": [
+        "Check disabled property and computed opacity/fill/ink/border/cursor for saved-frame button with no saved edit, dirty edit and in-flight request",
+        "Ensure disabled reasons remain readable in status; enabled controls are not accidentally styled as disabled"
+      ],
+      "action": "Do not alter enabled or disabled styles merely to satisfy selector substring detection."
+    },
+    {
+      "id": "DT-REDUCE",
+      "findings": [
+        "Earlier design hook: JS motion present and no prefers-reduced-motion globally"
+      ],
+      "classification": "Absence claim contradicted by current source; not a result of either retained full detector receipt",
+      "new_UI_related": false,
+      "observations": [
+        "Before and current studio.css both contain six prefers-reduced-motion occurrences",
+        "Global and lt-ui reduce blocks disable animation/transition and smooth scrolling",
+        "New overlay UI adds no CSS/JS animation or rAF loop; authored output-media motion is deliberate content playback, not UI entrance animation"
+      ],
+      "source_refs": [
+        "studio.css:268-270",
+        "studio.css:485-487",
+        "studio.css:577",
+        "studio.css:779",
+        "studio.css:835"
+      ],
+      "required_runtime_check": [
+        "In reduced-motion mode, new controls/focus/status change without UI animation; intentional user-started media playback remains controllable"
+      ],
+      "action": "No blanket video freezing or new duplicate reduce stylesheet. Keep this signal separate from actual detector results."
+    },
+    {
+      "id": "DT-SHADOW",
+      "findings": [
+        "Impeccable 12 repeated advisory hairline border plus80px blur",
+        "Hallmark F24 WARN on notice popup"
+      ],
+      "classification": "Existing floating-dialog/popover styling; repeated-instance heuristic is not evidence of a row of shadowed cards",
+      "new_UI_related": false,
+      "observations": [
+        "No new overlay/frame CSS rule adds a shadow",
+        "Existing .lt-ui dialog has one 0 24px 80px modal shadow rule; static HTML contains multiple dialog instances",
+        "Existing notice popup has 0 12px 36px shadow and border",
+        "Source alone does not prove simultaneous visible card-row repetition; tool supplied no selector/line for 12 advisories"
+      ],
+      "source_refs": [
+        "studio.css:550",
+        "studio.css:631"
+      ],
+      "required_runtime_check": [
+        "Inspect motion and render-confirm dialogs at matched widths; confirm legible focus, unclipped content and no unnecessary simultaneous overlays"
+      ],
+      "action": "Retain raw advisory counts; do not count identical instances as twelve confirmed task defects. Modal elevation vs locked design detail remains reviewable."
+    },
+    {
+      "id": "DT-MARKERS",
+      "findings": [
+        "Impeccable side-tab warning x2",
+        "Hallmark3 WARN"
+      ],
+      "classification": "Existing semantic track marker and explicit error feedback; no new decorative side border",
+      "new_UI_related": false,
+      "observations": [
+        "#track span 3px edge and production-review-error 2px edge both exactly preexist",
+        "Production review error is actual role=alert with recovery text; approved/focus/selected/error states must stay distinguishable",
+        "New overlay/frame sections use passive1px top/bottom dividers only"
+      ],
+      "source_refs": [
+        "studio.css:520",
+        "studio.css:723",
+        "index.html renderProductionReviewFeedback"
+      ],
+      "required_runtime_check": [
+        "Failure text and retry/recovery action remain visible; marker is not the only state cue"
+      ],
+      "action": "Do not remove error or selection information for aesthetic lint alone."
+    },
+    {
+      "id": "DT-TOKENS",
+      "findings": [
+        "Hallmark7a FAIL pure black skip link",
+        "Hallmark48 FAIL #d5d5d5 literal outside tokens"
+      ],
+      "classification": "Confirmed preexisting token/convention debt; no new overlay token or palette violation",
+      "new_UI_related": false,
+      "observations": [
+        "Skip link retains white/black high-contrast source declarations; request to tint toward anchor is aesthetic and conflicts with locked neutral workbench unless a product need is shown",
+        "general-chat-card fallback #d5d5d5 outside semantic root tokens is a genuine source-system inconsistency",
+        "Neither line was changed in this task"
+      ],
+      "source_refs": [
+        "studio.css:211",
+        "studio.css:937",
+        "docs/qa/design-system-redesign-20261026/SEMANTIC-TOKEN-SPEC.md"
+      ],
+      "action": "Keep in design backlog; an eventual narrow semantic-token correction must preserve actual contrast/focus. No arbitrary new anchor tint or broad restyle."
+    },
+    {
+      "id": "DT-STAMP",
+      "findings": [
+        "Hallmark20 FAIL no CSS stamp"
+      ],
+      "classification": "True tool metadata absence; does not prove product rendering failure",
+      "new_UI_related": false,
+      "observations": [
+        "Existing stylesheet starts with its single semantic-authority/provenance comment",
+        "This is an audit/refinement of an incumbent implementation, not a freshly generated Hallmark theme build"
+      ],
+      "action": "Report Hallmark failure as recorded; do not stamp a clean/full Hallmark build that was not performed."
+    },
+    {
+      "id": "DT-OVERFLOW",
+      "findings": [
+        "Hallmark34 FAIL x3"
+      ],
+      "classification": "Preexisting policies/viewport formulas require actual layout checking; static source is insufficient to prove overflow",
+      "new_UI_related": false,
+      "observations": [
+        "No html/body overflow-x:clip policy exists",
+        "Dialog min(640px,calc(100vw -32px)) and popup min(500px,calc(100vw -24px)) are old capped overlays with explicit viewport gutters",
+        "The bounded media workbench also has intentional panel scrolling; global clipping cannot be applied safely from a marketing-page rule alone"
+      ],
+      "source_refs": [
+        "studio.css:309",
+        "studio.css:631",
+        "existing desktop shell rules"
+      ],
+      "required_runtime_check": [
+        "At1920/1280/375 and zoom, compare document scrollWidth/clientWidth plus focused dialog/popup edges and internal panel reachability",
+        "If real clipping/overflow blocks an action, fix the owning layout rather than blanket hiding it"
+      ],
+      "action": "Unverified at runtime, not dismissed or passed."
+    },
+    {
+      "id": "DT-GRID",
+      "findings": [
+        "Hallmark50 FAIL #creatorReviewEditor>.row bare1fr"
+      ],
+      "classification": "Image-bearing-track inference contradicted by current DOM construction; still check long control content",
+      "new_UI_related": false,
+      "observations": [
+        "creatorReviewEditor is constructed from reviewReason label and takeDecision controls row",
+        "The targeted row contains review inputs/buttons/state, not an image grid track",
+        "Source includes min-width and wrapping constraints, but computed long-text geometry was not inspected here"
+      ],
+      "source_refs": [
+        "index.html ensureCreatorReview",
+        "studio.css:649-653"
+      ],
+      "action": "Do not replace unrelated review grid solely from global image inference; root checks actual long Korean review controls."
+    },
+    {
+      "id": "DT-METADATA",
+      "findings": [
+        "Hallmark63 FAIL middle-dot metadata string"
+      ],
+      "classification": "Existing product metadata convention; new source/version labels reuse it, so this is a documented skill/product convention conflict",
+      "new_UI_related": true,
+      "observations": [
+        "The cited 24fps/audio metadata string exactly preexisted",
+        "Version/source labels help users distinguish immutable motion source choices and do not expose internal grant IDs",
+        "The locked brief preserves Korean product terminology and familiar workbench density"
+      ],
+      "action": "Keep raw FAIL; root may choose a scoped copy decision later. Do not pretend the convention passed the Hallmark floor or remove required version/rights/cost facts."
+    },
+    {
+      "id": "DT-REFLEX",
+      "findings": [
+        "Hallmark24b REFLEX72",
+        "Hallmark38iii REFLEX1"
+      ],
+      "classification": "Preexisting spacing/convention findings, not73 established new task defects",
+      "new_UI_related": false,
+      "observations": [
+        "All exact cited CSS lines are in before.json",
+        "Accepted spacing guide permits role-specific optical exceptions; other off-scale gaps remain maintainability candidates",
+        "The .badge selector is a reusable status element; an accented word inside a display heading is not established by a CSS class alone"
+      ],
+      "required_runtime_check": [
+        "Prioritize measurable cramped/wrapped/clipped controls; do not mass-normalize every old spacing number during functional work"
+      ],
+      "action": "Retain all73 raw findings; no blanket waiver or fake resolved count."
+    },
+    {
+      "id": "DT-WARNS",
+      "findings": [
+        "Hallmark25/40/41/F3/F4/F6/F7/F23 warnings"
+      ],
+      "classification": "Mixed preexisting aesthetic, inherited-style and applicability observations; no broad accessibility or usability verdict",
+      "new_UI_related": false,
+      "observations": [
+        "76ch paragraph vs75ch target is a source taste threshold; long text still needs current display review",
+        "4.21:1 finding targets disabled controls; distinguish inactive-state applicability from enabled text contrast before judging compliance",
+        "Dark panels inherit .lt-ui foreground; absence of local color is not absence of foreground",
+        "App screen is not a hero; two buttons inside separate details/forms are not shown to be competing filled hero actions by static HTML",
+        "Meta description and display-heading balance are not the core editor-completion proof",
+        "Numeric badges/status chips are not necessarily numerical display figures"
+      ],
+      "required_runtime_check": [
+        "Observe actual enabled/disabled/focus/error color pairs and long Korean text",
+        "Inspect information hierarchy in current displayed step and open disclosures, not all hidden forms flattened together"
+      ],
+      "action": "Report uncertainty; do not claim WCAG compliance or design score from this static audit."
+    }
+  ],
+  "css_preexisting_checks": [
+    {
+      "gate": "7a",
+      "grade": "FAIL",
+      "line_in_receipt": 211,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "20",
+      "grade": "FAIL",
+      "line_in_receipt": 1,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "line_in_receipt": 1,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "line_in_receipt": 309,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "line_in_receipt": 631,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "39a",
+      "grade": "FAIL",
+      "line_in_receipt": 75,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "39a",
+      "grade": "FAIL",
+      "line_in_receipt": 719,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "48",
+      "grade": "FAIL",
+      "line_in_receipt": 937,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "50",
+      "grade": "FAIL",
+      "line_in_receipt": 649,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 72,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 77,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 79,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 109,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 109,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 111,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 112,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 113,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 114,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 114,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 115,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 133,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 134,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 134,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 136,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 143,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 169,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 181,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 211,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 224,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 231,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 234,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 235,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 243,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 265,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 293,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 299,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 312,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 313,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 335,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 360,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 364,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 372,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 373,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 374,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 392,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 396,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 397,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 399,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 454,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 460,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 478,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 481,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 490,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 492,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 506,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 508,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 512,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 512,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 514,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 518,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 527,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 534,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 535,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 537,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 540,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 555,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 556,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 574,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 601,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 605,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 634,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 641,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 642,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 643,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 646,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 655,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 723,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 728,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 737,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 739,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "24b",
+      "grade": "REFLEX",
+      "line_in_receipt": 767,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "38iii",
+      "grade": "REFLEX",
+      "line_in_receipt": 112,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "3",
+      "grade": "WARN",
+      "line_in_receipt": 520,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "25",
+      "grade": "WARN",
+      "line_in_receipt": 437,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "40",
+      "grade": "WARN",
+      "line_in_receipt": 496,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "line_in_receipt": 305,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "line_in_receipt": 465,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "41",
+      "grade": "WARN",
+      "line_in_receipt": 535,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "F3",
+      "grade": "WARN",
+      "line_in_receipt": 80,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "line_in_receipt": 313,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "line_in_receipt": 537,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "line_in_receipt": 594,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "F6",
+      "grade": "WARN",
+      "line_in_receipt": 706,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "F7",
+      "grade": "WARN",
+      "line_in_receipt": 85,
+      "exact_css_line_preexisted": true
+    },
+    {
+      "gate": "F24",
+      "grade": "WARN",
+      "line_in_receipt": 631,
+      "exact_css_line_preexisted": true
+    }
+  ],
+  "root_priority_checks": [
+    "Before-demo empty/loading/error image hidden with zero rendered box; actual PNG load required before showing success",
+    "Actual saved-frame dirty/version/conversation/time races and valid final fractional frame .125s for .130s cut",
+    "Native disabled property plus computed fill/ink/border/cursor and clear reason",
+    "Keyboard focus/Enter/Space and long-label geometry at1920/1280/375 without extra internal diagnostics",
+    "Actual source version/time/position difference in composited PNG and final output; static detector does not prove it"
+  ],
+  "limits": [
+    "No child browser operation, screenshot or computed-style observation",
+    "No full visual acceptance/accessibility certification",
+    "Raw Hallmark11FAIL/73REFLEX/15WARN and Impeccable15findings remain recorded",
+    "No existing report/manifest/source modified as part of detector triage; fractional fix is explicit separate root-authorized change"
+  ]
+}

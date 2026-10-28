@@ -1,0 +1,165 @@
+{
+  "task_id": "music-input-context-20261028",
+  "attempt": 2,
+  "state": "REPORTED",
+  "driver_acceptance": "pending",
+  "source_writes": "DONE",
+  "source_sha256": {
+    "production_context.py": "e88abbf9f75ed5555a0ee45b413c77a2a036a6341466a80f8b1da147a14bd70b",
+    "chat_general.py": "cd7dfe1e2ba0f9b78adb03a665aff7f00fad6645640828a3e7f67d008a2ecbd0",
+    "tests/test_music_input_context.py": "5167a4f64eddfb17c00f93f7b52f190df6297186208e4e30fc918e2cb27c4f51"
+  },
+  "changes": {
+    "production_behavior": "unchanged; chat_general AST equals the frozen attempt1 AST",
+    "product_source": "chat_general.py:538 adds a three-line comment defining the current reservation/message-attempt commit as submission-intent linearization",
+    "regression_tests": [
+      "test_postclaim_audio_change_keeps_exact_body_blocks_tool_and_settles_observed_usage",
+      "test_postclaim_audio_change_and_timeout_hold_unknown_current_attempt_without_tools"
+    ]
+  },
+  "independent_review_read": {
+    "path": ".omo/evidence/music-input-context-20261028/independent-review.json",
+    "sha256": "df6cd5daf460cd3fee58973cd7659c569f5e0fe0d3eacc8c095b73c31e15a7c2",
+    "current_verdict": "No independently demonstrated high/medium stale-approval bypass in the pre-submission boundary. The previously reported scheduling behavior remains a concrete post-claim in-flight case, not proof of a defect under a submission-intent linearization contract. No blanket no-defect or production-readiness claim follows.",
+    "supersession": "The initial pre-submission-bypass/severity assertion was withdrawn in the appended correction. Original review text remains an audit record; this report follows the corrected verdict."
+  },
+  "submission_contract": {
+    "linearization_point": "Commit of the BEGIN IMMEDIATE transaction containing _current, the current-reservation chat-message attempt claim, and submitted marker persistence.",
+    "identity_evidence": "Current reservation + operation=chat-message attempt + job + approved request_hash + manifest binding_hash. turn.submitted alone is insufficient because it can persist from a previous round.",
+    "before_point": "Music changes detected before the current message claim prevent message submission. The existing count-time change regression still proves this; no network-long project lock is introduced.",
+    "after_point": "Concurrent edits may overlap an already authorized in-flight send. The exact approved body remains unchanged. A subsequent music mismatch blocks returned tool effects; this transaction cannot retroactively recall remote traffic.",
+    "atomicity_limit": "The DB transaction makes local state-check/claim atomic. It does not make the remote provider or transport delivery atomic with later project edits. The fixture changed audio inside an already entered complete wrapper, after committed submission intent. This is not evidence of a pre-submission approval bypass."
+  },
+  "verification": {
+    "current_attempt": {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "-v",
+        "tests.test_music_input_context"
+      ],
+      "tests": 15,
+      "result": "PASS",
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "log": ".omo/evidence/music-input-context-20261028/attempt2-final-15.log",
+      "sha256": "ed5c62d96847b801294bb17cc603efca1f5a4f6f028e4eeb2429bc0241fc5cc4",
+      "instrumentation": "The standard unittest suite was invoked through a runner that records the two post-claim SQLite/HTTP fixture receipts."
+    },
+    "prior_related": {
+      "tests": 73,
+      "result": "PASS in attempt1 product logic",
+      "log": ".omo/evidence/music-input-context-20261028/related-final.log",
+      "sha256": "4ded608180e422307a5001f4a4df80f098bfb1d685287a63357da603840d3870",
+      "rerun_in_attempt2": false,
+      "equivalence_evidence": "No product behavior changed; AST equality with attempt1 verified. Prior log is preserved and not described as a new exact-byte-source rerun."
+    },
+    "prior_narrow": {
+      "tests": 13,
+      "log": ".omo/evidence/music-input-context-20261028/final-13.log",
+      "preserved": true,
+      "current_suite_supersedes_count_with": 15
+    },
+    "postclaim_receipt": {
+      "path": ".omo/evidence/music-input-context-20261028/attempt2-postclaim-http.json",
+      "sha256": "1f8b98cafed866e7afc69f391d22fe5c828d1a13a4b805b42954d3a05e236077",
+      "observations": [
+        {
+          "test": "test_postclaim_audio_change_and_timeout_hold_unknown_current_attempt_without_tools",
+          "postclaim_timeout": true,
+          "mode": "contract-fake",
+          "fixture_message_count": 1,
+          "complete_received_exact_approved_body": true,
+          "approved_message_sha256": "b801eb95f406fcd8d9425d5954cfe3b51b2a9b5a74c2d3936ce35b4943aa7033",
+          "approved_manifest_sha256": "b2cd4598cd72d76a6c9ea19ccd65d680c988cd586d560e3d9e65320e5bafd6f8",
+          "current_audio_version": 2,
+          "disclosed_audio_version": 1,
+          "reservation": {
+            "id": "53e0a98e-6dd7-42cc-8e8e-150344b19c77",
+            "state": "uncertain",
+            "actual_micro": null,
+            "held_amount_micro": 2458
+          },
+          "current_message_attempt": {
+            "id": "bbbfb5b517d3d31117257bc866085605a21bf112702f420df2fbe4ecf385bd3f",
+            "state": "unknown",
+            "operation": "chat-message",
+            "job": "984607b6c7a54568ba2962303f4367b6",
+            "reservation": "53e0a98e-6dd7-42cc-8e8e-150344b19c77",
+            "request_hash": "b801eb95f406fcd8d9425d5954cfe3b51b2a9b5a74c2d3936ce35b4943aa7033",
+            "binding_hash": "b2cd4598cd72d76a6c9ea19ccd65d680c988cd586d560e3d9e65320e5bafd6f8"
+          },
+          "tool_call_count": 1,
+          "plans": [],
+          "jobs": [],
+          "turn_status": "outcome_unknown",
+          "billing_confirmed": false,
+          "external_provider_calls": 0
+        },
+        {
+          "test": "test_postclaim_audio_change_keeps_exact_body_blocks_tool_and_settles_observed_usage",
+          "postclaim_timeout": false,
+          "mode": "contract-fake",
+          "fixture_message_count": 2,
+          "complete_received_exact_approved_body": true,
+          "approved_message_sha256": "b801eb95f406fcd8d9425d5954cfe3b51b2a9b5a74c2d3936ce35b4943aa7033",
+          "approved_manifest_sha256": "776d01329e70aeb1a3b8b34c52568b7f9e2c81dc12674957b51c802cdfc89d8e",
+          "current_audio_version": 2,
+          "disclosed_audio_version": 1,
+          "reservation": {
+            "id": "284a100d-bf68-4bb0-a2c9-2aca6bdaa23f",
+            "state": "settled",
+            "actual_micro": 60,
+            "held_amount_micro": 2458
+          },
+          "current_message_attempt": {
+            "id": "3af230fad50c7da95a781862ec4b60d56017f702b21a438d6add1c4ac7203c10",
+            "state": "observed",
+            "operation": "chat-message",
+            "job": "952f31e4f90e46daa9751590a3c71194",
+            "reservation": "284a100d-bf68-4bb0-a2c9-2aca6bdaa23f",
+            "request_hash": "b801eb95f406fcd8d9425d5954cfe3b51b2a9b5a74c2d3936ce35b4943aa7033",
+            "binding_hash": "776d01329e70aeb1a3b8b34c52568b7f9e2c81dc12674957b51c802cdfc89d8e"
+          },
+          "tool_call_count": 1,
+          "plans": [],
+          "jobs": [],
+          "turn_status": "outcome_unknown",
+          "billing_confirmed": false,
+          "external_provider_calls": 0
+        }
+      ]
+    }
+  },
+  "case_results": [
+    {
+      "case": "post-claim music replacement + observed tool response",
+      "observed": "complete received the exact approved version1 body; current audio became2; original fixture transport recorded the second message; returned propose_media_plan did not append a tool call or plan/job; turn outcome_unknown but current reservation settled with actual60 micro-units and current message attempt observed.",
+      "interpretation": "Workflow completion and observed fixture usage are different states. Settled fixture usage does not establish a real provider charge."
+    },
+    {
+      "case": "post-claim music replacement + TimeoutError without response",
+      "observed": "complete wrapper received the approved body and then raised; original fixture recorded no additional message; current reservation uncertain with actual=null and its amount retained; current message attempt unknown; no plan/job/tool side effect.",
+      "interpretation": "The injected fixture timeout does not prove real-provider delivery or billing. Durable submission intent means unknown outcome remains held rather than auto-retried."
+    }
+  ],
+  "preservation": {
+    "attempt1_report_and_source_snapshot_overwritten": false,
+    "attempt1_logs_overwritten": false,
+    "independent_review_overwritten": false,
+    "actual_provider_guard_changed": false,
+    "network_or_edit_lock_added": false,
+    "approved_body_automatically_modified": false,
+    "provider_calls": 0,
+    "credential_or_env_read": false,
+    "parent_server_51815_touched": false,
+    "full_suite_run": false
+  },
+  "remaining_limits": [
+    "Actual general Claude remains disabled; no provider quality, live billing, or user acceptance claim.",
+    "Raw-DB metadata corruption preflight limitation remains unchanged and outside this narrow task."
+  ],
+  "handoff": "Source writes DONE. Attempt2 adds comments/tests only. No further source or artifact changes after this report unless root requests them."
+}

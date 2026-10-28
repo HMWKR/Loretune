@@ -1,0 +1,29 @@
+--- before/chat_runtime.py
++++ chat_runtime.py
+@@ -68,6 +68,12 @@
+   # This independent byte ceiling never replaces the counted token/budget gates.
+   self.count_transport=count_transport or anthropic.BoundedCountTransport(max_request_bytes=65536)
+   self.message_transport=message_transport or anthropic.BoundedMessagesTransport(timeout=60,max_request_bytes=65536)
++ def preflight(self,body):
++  # Count omits max_tokens. Check the full Messages body before any request or
++  # credential read; known local rejection must not become an unknown charge.
++  encode=getattr(self.message_transport,'encode_body',None)
++  if encode is None:encode=anthropic.BoundedMessagesTransport(max_request_bytes=65536).encode_body
++  encode(body)
+  def _call(self,body,*,count):
+   if not self.enabled:raise ValueError('provider disabled')
+   key=None;headers=None
+@@ -191,8 +197,11 @@
+     body=chat_models.body(self.spec,messages,definitions,limits['output'])
+     digest=hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest();identifier='chat:'+t['id']+':'+str(round_index)
+     self.journal.reserve(identifier,digest,t['id'],int((chat_models.cost(self.spec,limits['input'],limits['output'])*1000000).to_integral_value(rounding=ROUND_CEILING)),limits['turn'],self.approval.get('stage'));attempt=identifier
+-    step=dict(round=round_index,mode=t['mode'],input_sha256=digest,status='count_started',request_id=None,tool_calls=[])
+-    t['steps'].append(step);self._save(t);self.journal.update(identifier,'count_started',step)
++    step=dict(round=round_index,mode=t['mode'],input_sha256=digest,status='preflight_started',request_id=None,tool_calls=[])
++    t['steps'].append(step);self._save(t);self.journal.update(identifier,'preflight_started',step)
++    preflight=getattr(self.adapter,'preflight',None)
++    if preflight is not None:preflight(body)
++    step['status']='count_started';self._save(t);self.journal.update(identifier,'count_started',step)
+     tokens=self.adapter.count(body);step['input_tokens_counted']=tokens
+     if type(tokens) is not int or not 0<=tokens<=limits['input']:raise ValueError('input cap')
+     self._fresh(t);submitted=True;step['status']='message_started';self._save(t);self.journal.update(identifier,'message_started',step)

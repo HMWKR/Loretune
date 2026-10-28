@@ -1,0 +1,38 @@
+--- chat_general.py before
++++ chat_general.py after
+@@ -608,7 +608,7 @@
+             turn=next((json.loads(r[0]) for r in rows if json.loads(r[0])['status']=='queued'),None)
+             if not turn:return False
+             turn['status']='running';put(c,'general_chat_turns',turn)
+-        submitted=False;active_attempt=None;active_owner=None;active_operation=None
++        submitted=False;active_attempt=None;active_owner=None;active_operation=None;response_accounted=False
+         try:
+             with self.store.connect() as c:
+                 c.execute('BEGIN IMMEDIATE');preview=get_row(c,'general_chat_previews',turn['preview_id']);self._current(c,turn,preview);require_reconciled_budget(c,self.store.workspace_id,turn['binding'])
+@@ -711,6 +711,7 @@
+                 if ledger_failed:turn['journal_failure']='update_failed'
+                 put(c,'general_chat_turns',turn)
+             if ledger_failed:raise ValueError('비용 기록을 확인하세요.')
++            response_accounted=True
+             with self.store.connect() as c:
+                 c.execute('BEGIN IMMEDIATE');self._current(c,turn,preview)
+             if usage['input_tokens']>MAX_INPUT or usage['output_tokens']>MAX_OUTPUT:raise ValueError('보고된 사용량이 상한을 초과했습니다.')
+@@ -790,8 +791,16 @@
+                 if not_sent:
+                     latest['message_status']='not_sent'
+                     if active_operation=='chat-count':latest['count_status']='not_sent'
+-                latest.update(status='outcome_unknown' if (submitted and not not_sent) or journal_failure or isinstance(exc,ledger.AttemptExists) else 'cancelled' if latest['status']=='cancel_requested' else 'blocked_before_message',
+-                              error='연결 키를 확인하세요. 대화 메시지는 전송하지 않았습니다. 설정을 수정한 뒤 새 전송 내용을 확인하세요.' if not_sent else str(exc) if isinstance(exc,MusicContextChanged) else '요청을 중단했습니다. 기존 결과와 비용 상태를 확인하세요. 자동 재시도하지 않습니다.')
++                # Only this round's committed response accounting proves a
++                # received cancellation. Pending tool execution or an unknown
++                # provider/journal outcome must keep the existing unknown guard.
++                received_cancel=(response_accounted and active_attempt is None and latest['status']=='cancel_requested' and
++                    not latest.get('pending_tool') and not latest.get('journal_failure') and not journal_failure and
++                    not isinstance(exc,ledger.AttemptExists) and
++                    latest.get('pricing_status')=='priced' and row and row[0] in {'estimated','settled'} and
++                    all(latest[key]==turn[key] for key in ('preview_id','reservation','binding','round')))
++                latest.update(status='cancelled' if received_cancel else 'outcome_unknown' if (submitted and not not_sent) or journal_failure or isinstance(exc,ledger.AttemptExists) else 'cancelled' if latest['status']=='cancel_requested' else 'blocked_before_message',
++                              error='요청을 취소했습니다. 이미 수신한 사용량과 비용 기록은 보존했습니다.' if received_cancel else '연결 키를 확인하세요. 대화 메시지는 전송하지 않았습니다. 설정을 수정한 뒤 새 전송 내용을 확인하세요.' if not_sent else str(exc) if isinstance(exc,MusicContextChanged) else '요청을 중단했습니다. 기존 결과와 비용 상태를 확인하세요. 자동 재시도하지 않습니다.')
+                 if journal_failure:latest['journal_failure']='update_failed'
+                 latest.pop('pending_tool',None)
+                 put(c,'general_chat_turns',latest);close_run(c,latest,latest['status'])

@@ -1,0 +1,51 @@
+{
+  "default": {
+    "scope": "current-project-current-conversation",
+    "observed_revision": 8,
+    "scenes_3d": [
+      {
+        "scene_id": "dcc6081101444e539facd1512f65cf6b",
+        "shot_id": "f806e3e3bf1b5b71a0995104fa94530e",
+        "head": 1,
+        "approval_status": "recorded",
+        "requires_review": false,
+        "pending_proposals": [
+          {
+            "proposal_id": "e27ffab53725472f892eb113f512b846",
+            "base_revision": 1,
+            "status": "proposed"
+          }
+        ],
+        "pending_total": 1,
+        "pending_truncated": false,
+        "stale_total": 0
+      }
+    ],
+    "scenes_3d_total": 1,
+    "scenes_3d_truncated": false,
+    "connection": {
+      "available": false,
+      "external_transmission": false
+    },
+    "note": "Stored 3D scene heads and pending proposals, not an execution grant, render result or final-output approval. requires_review means the shot context or project ontology changed since that version or pending proposal was saved, so approval or rendering will be refused. Pending proposals are proposed/held ones based on the current head; stale_total counts older ones that can no longer be approved. head 0 means no approved version: its first draft is reviewed in Scene Studio and change proposals need base_revision equal to a head of 1 or more. Lists keep the latest 32 scenes and 10 pending proposals per scene; *_total and *_truncated report omissions. Approval and rendering stay human actions in Scene Studio."
+  },
+  "sibling": [
+    {
+      "scene_id": "a604c355fe7a44279e5dfafd871a9fec",
+      "shot_id": "4d1eca78b1b65b63b4287745bd436182",
+      "head": 0,
+      "approval_status": "none",
+      "requires_review": false,
+      "pending_proposals": [
+        {
+          "proposal_id": "3d23a18898024096bf9d934106af2762",
+          "base_revision": 0,
+          "status": "proposed"
+        }
+      ],
+      "pending_total": 1,
+      "pending_truncated": false,
+      "stale_total": 0
+    }
+  ]
+}

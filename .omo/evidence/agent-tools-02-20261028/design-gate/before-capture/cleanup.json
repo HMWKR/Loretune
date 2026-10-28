@@ -1,0 +1,34 @@
+{
+  "at": "2026-10-28T09:22:23.740870+00:00",
+  "servers_started": [
+    {
+      "pid": 74736,
+      "port": 59038,
+      "folder": "server-attempt1-python3.9-rejected",
+      "stopped": "SIGTERM, exited, fixture-stop.json written"
+    },
+    {
+      "pid": 76121,
+      "port": 62828,
+      "folder": "server",
+      "stopped": "scripts/stop_server.sh SIGTERM, exited, fixture-stop.json written (provider_submissions [], worker threads alive [])"
+    }
+  ],
+  "leftover_processes": "none: pgrep serve_capture_fixture and sandbox-exec network-loopback both empty; launcher pids 74736/76121 gone",
+  "own_ports_listening_after": "none (lsof 59038/62828 empty)",
+  "reserved_ports": {
+    "baseline": "2026-10-28T08:48:15Z\nPORT 8765\nno listener\nPORT 57888\nCOMMAND   PID       USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME\nPython  39837 leesungmin    3u  IPv4 0xc3cf946471e0c697      0t0  TCP 127.0.0.1:57888 (LISTEN)\n  PID STARTED                      COMMAND\n39837 2026년 10월 28일 수요일 13시 14분 19초 /opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -u .omo/evidence/first-demo-20261028/demo-server.py .omo/evidence/first-demo-20261028/main-demo-case-r3/workspace .omo/evidence/first-demo-20261028/main-demo-case-r3/server-review-normal 57888\n",
+    "after": "2026-10-28T08:59:59Z\nPORT 8765\nno listener\nPORT 57888\nCOMMAND   PID       USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME\nPython  39837 leesungmin    3u  IPv4 0xc3cf946471e0c697      0t0  TCP 127.0.0.1:57888 (LISTEN)\n  PID STARTED                      COMMAND\n39837 2026년 10월 28일 수요일 13시 14분 19초 /opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -u .omo/evidence/first-demo-20261028/demo-server.py .omo/evidence/first-demo-20261028/main-demo-case-r3/workspace .omo/evidence/first-demo-20261028/main-demo-case-r3/server-review-normal 57888\n",
+    "unchanged": true,
+    "note": "8765 no listener before/after; 57888 held by pid 39837 (user demo-server) before/after, untouched"
+  },
+  "aside_tabs": "every capture tab opened by openTab and closed by closeTab in finally; listBrowserTabs after run shows no tab on 59038/62828; no other tab attached or closed",
+  "aside_reconnect": "`open -b at.studio.AsideBrowser` was run once because profile u0 showed disconnected; app was already running (pid 86639), not restarted",
+  "project_files_edited": 0,
+  "server_post_requests_during_capture": 0,
+  "kept_on_disk": [
+    "server-attempt1-python3.9-rejected/ (failed first attempt evidence)",
+    "superseded-run1/ (21 captures made before the e2 state was added; superseded by the final 24-capture run with one template)"
+  ],
+  "scratch_previews": "/private/tmp/claude-501/-Users-leesungmin-Desktop-Loretune/1ebfb89f-9e94-4156-8aea-2393f299eb3e/scratchpad (trial and downscaled views only)"
+}

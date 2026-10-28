@@ -1,0 +1,32 @@
+{
+  "NetworkMode": "none",
+  "ReadonlyRootfs": true,
+  "Memory": 2147483648,
+  "NanoCpus": 2000000000,
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/asset-color-controlled-20261028/output",
+      "Destination": "/output",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/private/tmp/loretune-blender-x64.jEi6qO/unpacked/blender-5.2.2-linux-x64",
+      "Destination": "/opt/blender",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/leesungmin/Desktop/Loretune/.omo/evidence/asset-color-controlled-20261028/input",
+      "Destination": "/input",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    }
+  ]
+}

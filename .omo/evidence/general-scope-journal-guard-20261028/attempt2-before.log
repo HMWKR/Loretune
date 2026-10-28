@@ -1,0 +1,34 @@
+test_not_sent_cannot_be_replayed_or_receive_late_evidence (tests.test_ledger_not_sent.NotSentAttemptTest.test_not_sent_cannot_be_replayed_or_receive_late_evidence) ... ERROR
+test_observed_and_unknown_cannot_be_reclassified (tests.test_ledger_not_sent.NotSentAttemptTest.test_observed_and_unknown_cannot_be_reclassified) ... ok
+test_owner_can_record_not_sent_without_changing_reservation_or_events (tests.test_ledger_not_sent.NotSentAttemptTest.test_owner_can_record_not_sent_without_changing_reservation_or_events) ... ERROR
+test_transaction_is_required_and_other_states_remain_rejected (tests.test_ledger_not_sent.NotSentAttemptTest.test_transaction_is_required_and_other_states_remain_rejected) ... ok
+test_wrong_owner_and_nonexistent_attempt_cannot_finish (tests.test_ledger_not_sent.NotSentAttemptTest.test_wrong_owner_and_nonexistent_attempt_cannot_finish) ... ok
+
+======================================================================
+ERROR: test_not_sent_cannot_be_replayed_or_receive_late_evidence (tests.test_ledger_not_sent.NotSentAttemptTest.test_not_sent_cannot_be_replayed_or_receive_late_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_ledger_not_sent.py", line 55, in test_not_sent_cannot_be_replayed_or_receive_late_evidence
+    ledger.finish_attempt(self.c, self.attempt, self.owner, 'not_sent')
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/ledger.py", line 143, in finish_attempt
+    if state not in {'observed','unknown'}:raise LedgerError('전송 결과 상태를 확인하세요.',422)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ledger.LedgerError: 전송 결과 상태를 확인하세요.
+
+======================================================================
+ERROR: test_owner_can_record_not_sent_without_changing_reservation_or_events (tests.test_ledger_not_sent.NotSentAttemptTest.test_owner_can_record_not_sent_without_changing_reservation_or_events)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/tests/test_ledger_not_sent.py", line 29, in test_owner_can_record_not_sent_without_changing_reservation_or_events
+    ledger.finish_attempt(self.c, self.attempt, self.owner, 'not_sent')
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leesungmin/Desktop/Loretune/ledger.py", line 143, in finish_attempt
+    if state not in {'observed','unknown'}:raise LedgerError('전송 결과 상태를 확인하세요.',422)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ledger.LedgerError: 전송 결과 상태를 확인하세요.
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.005s
+
+FAILED (errors=2)

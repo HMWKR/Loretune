@@ -1,0 +1,33 @@
+--- before/production_context.py
++++ production_context.py
+@@ -31,6 +31,23 @@
+  result['proposals']=[dict(proposal_id=x['id'],base_revision=x['base_revision'],status=x['status'],applied=False,requires_human_review=x['status'] in {'proposed','held'}) for x in p.get('motion_proposals',[]) if x.get('shot')==name and x.get('shot_id')==shot_id(p,name) and x['status'] in {'proposed','held','rejected'}][-10:]
+  return result
+ 
++def motion_receipts(p,project_id,observed_revision):
++ # A read-only projection of canonical records, never model-authored prose.
++ # Keep lookup-time context matching separate from the executor's preflight.
++ receipts=[]
++ for name in p['shots']:
++  m=motion_context(p,name)
++  if not m['revision'] and not m['proposals']:continue
++  a=m['approval']
++  receipts.append(dict(kind='motion-approval-v1',project_id=project_id,
++   shot_id=shot_id(p,name),shot_name=name,observed_revision=observed_revision,
++   motion_revision=m['revision'],composition_saved=m['scene'] is not None,
++   approval_status=m['approval_status'],approval=deepcopy(a),
++   matches_current_context=a['matches_current_context'] if a else None,
++   execution_check='not_run',proposals=deepcopy(m['proposals']),
++   timeline_adoption='separate',final_delivery='outside_this_scope'))
++ return receipts
++
+ def read(c,store,p,name):
+  w=store.workspace_id;pid=contracts.project_id(w,name);shots=[]
+  for n,s in p['shots'].items():
+@@ -46,4 +63,5 @@
+  for row in c.execute('SELECT body FROM production_actions WHERE workspace=? AND project=?',(w,pid)):
+   a=json.loads(row[0]);handles=[dict(grant_id=g['id'],expires=g['expires'],price_revision=g['price_revision'],money=g['money'].get(a['id'])) for g in grants if g['state']=='active' and g['expires']>time.time() and g['action_hashes'].get(a['id'])==a['hash']]
+   actions.append(dict(action_id=a['id'],plan_id=a['plan_id'],plan_revision=a['plan_revision'],role=a['role'],model=a['release_id'],mode=a['mode'],shot_id=shot_id(p,a['options']['shot']) if a['options'].get('shot') in p['shots'] else None,approval_handles=handles))
+- return dict(shots=shots,timeline=timeline,plans=[dict(plan_id=x['id'],version=x['version'],state=x['status']) for x in p.get('guided_plans',[])],actions=actions,ontology_revision=ontology.snapshot(c,project_ontology.scope(w,pid))['revision'],note='현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다.')
++ observed=c.execute('SELECT revision FROM state WHERE id=1').fetchone()[0]
++ return dict(shots=shots,timeline=timeline,server_receipts=motion_receipts(p,pid,observed),plans=[dict(plan_id=x['id'],version=x['version'],state=x['status']) for x in p.get('guided_plans',[])],actions=actions,ontology_revision=ontology.snapshot(c,project_ontology.scope(w,pid))['revision'],note='현재 작품의 읽기 전용 대상. 조회된 승인도 실행 시 권리·입력·가격·만료를 다시 검사합니다. 승인 생성 권한이 아닙니다.')

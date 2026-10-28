@@ -1,0 +1,376 @@
+{
+  "at": "2026-10-26T04:10:48.615Z",
+  "environment": {
+    "node": "v26.11.1",
+    "browser": null,
+    "viewport": null,
+    "zoom": null,
+    "network": "VM only"
+  },
+  "results": [
+    {
+      "id": "ENV01",
+      "status": "PASS",
+      "observed": {
+        "html": "0bfdbbb815c631f23e9188a02a1308aa87430d2db33ab61f4a60f8b7adfdf109",
+        "allowed": 1,
+        "blocked": 2,
+        "forwarded": 0
+      }
+    },
+    {
+      "id": "FUN02",
+      "status": "PASS",
+      "observed": {
+        "submittedChars": 10000,
+        "calls": 1,
+        "newDraft": "새 한국어 초안",
+        "canonicalUnchanged": true
+      }
+    },
+    {
+      "id": "FUN03",
+      "status": "PASS",
+      "observed": {
+        "payload": {
+          "action": "model_settings",
+          "payload": {
+            "song": "A",
+            "selections": {
+              "chat": "synthetic-chat",
+              "image": null,
+              "video": "synthetic-blocked-video"
+            },
+            "model_revision": 7
+          }
+        },
+        "canonicalUnchanged": true,
+        "providerDispatch": 0
+      }
+    },
+    {
+      "id": "STA02",
+      "status": "PASS",
+      "observed": {
+        "markup": "<div class=\"job creator-output-card\"><header><b>출력 파일 준비됨 · 납품 검토 전</b><span class=\"badge\">이전 편집 결과</span></header><p>출력 버전 1 · <span class=\"creator-test-badge\">테스트 미디어</span></p><button data-play=\"/exports/synthetic-output.mp4\">결과 검토</button><p class=\"creator-downloads\"><a href=\"/exports/synthetic-output.mp4\" download>영상 저장</a><a href=\"/exports/synthetic-output.srt\" download>자막 저장</a></p><p>납품 검토: 검토 전</p><button data-delivery=\"synthetic-output\">납품 검토 승인</button><details class=\"creator-diagnostic\"><summary>출력 기록</summary><p>synthetic-output</p><p>오류 기록 없음</p><a href=\"/exports/synthetic-output.json\" download>제작 기록 다운로드</a></details></div>",
+        "canonicalUnchanged": true
+      }
+    },
+    {
+      "id": "ASY01",
+      "status": "FAIL",
+      "observed": {
+        "afterNewer": 3,
+        "afterLateOlder": 2,
+        "drawRevisions": [
+          3,
+          2
+        ],
+        "source": "index.html:564"
+      },
+      "error": "late older poll regressed state.revision\n\n2 !== 3\n",
+      "stack": [
+        "AssertionError [ERR_ASSERTION]: late older poll regressed state.revision",
+        "",
+        "2 !== 3",
+        "",
+        "    at /Users/leesungmin/Desktop/Loretune/docs/qa/frontend-functional-independent-20261026/suite.cjs:88:155",
+        "    at async test (/Users/leesungmin/Desktop/Loretune/docs/qa/frontend-functional-independent-20261026/suite.cjs:26:52)"
+      ]
+    },
+    {
+      "id": "ASY02",
+      "status": "FAIL",
+      "observed": {
+        "expectedRevision": 3,
+        "actualRevision": 2,
+        "busy": true,
+        "dirty": true,
+        "drawRevisions": [
+          2
+        ],
+        "source": "index.html:564"
+      },
+      "error": "poll that started idle overwrote current state while busy\n\n2 !== 3\n",
+      "stack": [
+        "AssertionError [ERR_ASSERTION]: poll that started idle overwrote current state while busy",
+        "",
+        "2 !== 3",
+        "",
+        "    at /Users/leesungmin/Desktop/Loretune/docs/qa/frontend-functional-independent-20261026/suite.cjs:93:10",
+        "    at async test (/Users/leesungmin/Desktop/Loretune/docs/qa/frontend-functional-independent-20261026/suite.cjs:26:52)"
+      ]
+    },
+    {
+      "id": "ASY03",
+      "status": "PASS",
+      "observed": {
+        "pendingId": "synthetic-1",
+        "requests": [
+          {
+            "caseId": "ASY03",
+            "url": "/api/action",
+            "method": "POST",
+            "action": "cancel_job",
+            "requestId": "synthetic-1",
+            "scope": "A",
+            "disposition": "synthetic-only",
+            "forwarded": false
+          },
+          {
+            "caseId": "ASY03",
+            "url": "/api/requests/synthetic-1",
+            "method": "GET",
+            "disposition": "synthetic-only",
+            "forwarded": false
+          }
+        ],
+        "cancellationReceipt": "unknown; no cancelled outcome inferred",
+        "canonicalUnchanged": true
+      }
+    },
+    {
+      "id": "MED02",
+      "status": "FAIL",
+      "observed": {
+        "details": [
+          {
+            "name": "current play rejection",
+            "label": "영상 재생이 차단됐습니다.",
+            "button": "편집 재생",
+            "frames": 0
+          },
+          {
+            "name": "waiting stalls clock and resumes",
+            "time": 1,
+            "frames": 0
+          },
+          {
+            "name": "ended delta 0",
+            "duration": 3,
+            "time": 2.95,
+            "button": "일시 정지",
+            "frames": 1,
+            "canonicalUnchanged": true
+          },
+          {
+            "name": "ended delta 0.025",
+            "duration": 2.975,
+            "time": 2.9250000000000003,
+            "button": "일시 정지",
+            "frames": 1,
+            "canonicalUnchanged": true
+          }
+        ]
+      },
+      "error": "terminal ended media leaves playing UI/RAF active",
+      "stack": [
+        "AssertionError [ERR_ASSERTION]: terminal ended media leaves playing UI/RAF active",
+        "    at /Users/leesungmin/Desktop/Loretune/docs/qa/frontend-functional-independent-20261026/suite.cjs:117:85",
+        "    at async test (/Users/leesungmin/Desktop/Loretune/docs/qa/frontend-functional-independent-20261026/suite.cjs:26:52)",
+        "    at async /Users/leesungmin/Desktop/Loretune/docs/qa/frontend-functional-independent-20261026/suite.cjs:103:2"
+      ]
+    },
+    {
+      "id": "TIM01",
+      "status": "PASS",
+      "observed": {
+        "total": 3.9300000000000033,
+        "mapping": [
+          {
+            "shot": "s0",
+            "take": 1,
+            "duration": 0.131,
+            "trim": 0.5,
+            "index": 0,
+            "start": 0,
+            "end": 0.131,
+            "time": 0,
+            "local": 0,
+            "source": 0.5,
+            "total": 3.9300000000000033
+          },
+          {
+            "shot": "s0",
+            "take": 1,
+            "duration": 0.131,
+            "trim": 0.5,
+            "index": 0,
+            "start": 0,
+            "end": 0.131,
+            "time": 0.130999,
+            "local": 0.130999,
+            "source": 0.630999,
+            "total": 3.9300000000000033
+          },
+          {
+            "shot": "s1",
+            "take": 1,
+            "duration": 0.131,
+            "trim": 0.5,
+            "index": 1,
+            "start": 0.131,
+            "end": 0.262,
+            "time": 0.131,
+            "local": 0,
+            "source": 0.5,
+            "total": 3.9300000000000033
+          },
+          {
+            "shot": "s29",
+            "take": 1,
+            "duration": 0.13100000000000023,
+            "trim": 0.5,
+            "index": 29,
+            "start": 3.799000000000003,
+            "end": 3.9300000000000033,
+            "time": 3.929,
+            "local": 0.12999999999999678,
+            "source": 0.6299999999999968,
+            "total": 3.9300000000000033
+          },
+          {
+            "shot": "s29",
+            "take": 1,
+            "duration": 0.13100000000000023,
+            "trim": 0.5,
+            "index": 29,
+            "start": 3.799000000000003,
+            "end": 3.9300000000000033,
+            "time": 3.9300000000000033,
+            "local": 0.13100000000000023,
+            "source": 0.6310000000000002,
+            "total": 3.9300000000000033
+          }
+        ],
+        "observed": [
+          {
+            "time": 0,
+            "caption": "첫 자막"
+          },
+          {
+            "time": 0.999,
+            "caption": "첫 자막"
+          },
+          {
+            "time": 1,
+            "caption": "다음 자막"
+          },
+          {
+            "time": 3,
+            "caption": ""
+          }
+        ],
+        "sourceTimeOnly": "no decoded frame precision claimed",
+        "finite": true
+      }
+    },
+    {
+      "id": "STO01",
+      "status": "PASS",
+      "observed": {
+        "badJSON": null,
+        "oldShape": null,
+        "scopedRestore": true,
+        "deniedDraft": {
+          "decision": "rejected",
+          "reason": "메모리 보존",
+          "revision": 1
+        },
+        "failureFlag": true
+      }
+    },
+    {
+      "id": "STO02",
+      "status": "FAIL",
+      "observed": {
+        "startup": {
+          "name": "SecurityError",
+          "message": "synthetic storage denied"
+        },
+        "submit": {
+          "name": "SecurityError",
+          "message": "synthetic storage denied"
+        },
+        "requests": 0,
+        "source": "index.html:264,284,310"
+      },
+      "error": "startup recovery visibility throws when storage access denied\n+ actual - expected\n\n+ {\n+   message: 'synthetic storage denied',\n+   name: 'SecurityError'\n+ }\n- 'graceful'\n",
+      "stack": [
+        "AssertionError [ERR_ASSERTION]: startup recovery visibility throws when storage access denied",
+        "+ actual - expected",
+        "",
+        "+ {",
+        "+   message: 'synthetic storage denied',",
+        "+   name: 'SecurityError'"
+      ]
+    },
+    {
+      "id": "STO03",
+      "status": "PASS",
+      "observed": {
+        "cacheFailureSent": 0,
+        "cacheFailureBusy": false,
+        "cacheFailureMessage": [
+          [
+            "요청 복구 정보를 저장할 수 없습니다. 브라우저 저장소를 확인하세요.",
+            true
+          ]
+        ],
+        "transactionAbortSent": 0,
+        "transactionClosed": 1,
+        "duplicatePostCount": 1
+      }
+    },
+    {
+      "id": "PER01",
+      "status": "PASS",
+      "observed": {
+        "fixture": {
+          "shots": 60,
+          "takes": 180,
+          "captions": 120,
+          "labelCharsAtLeast": 1000
+        },
+        "cycles": 60,
+        "checkpoints": [
+          {
+            "cycle": 1,
+            "active": 1,
+            "callbacks": 2,
+            "raf": 1
+          },
+          {
+            "cycle": 30,
+            "active": 1,
+            "callbacks": 2,
+            "raf": 1
+          },
+          {
+            "cycle": 31,
+            "active": 1,
+            "callbacks": 2,
+            "raf": 1
+          },
+          {
+            "cycle": 60,
+            "active": 1,
+            "callbacks": 2,
+            "raf": 1
+          }
+        ],
+        "maxActive": 1,
+        "maxCallbacks": 2,
+        "rafAfterStop": 0,
+        "hostOnlyMs": {
+          "samples": 60,
+          "min": 0.11195800000000133,
+          "p95": 0.18299999999999983,
+          "max": 0.30620800000000514
+        },
+        "limitations": "Node VM fixture holds all created elements deliberately; no DOM/heap/leak/INP/cached-browser-shot p95 claim",
+        "canonicalUnchanged": true
+      }
+    }
+  ]
+}

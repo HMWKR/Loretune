@@ -1,0 +1,13 @@
+--- before/chat_general.py
++++ chat_general.py
+@@ -319,7 +319,9 @@
+ 
+ 
+ def public_turn(item):
+-    return {k: deepcopy(item.get(k)) for k in ('id','conversation_id','status','mode','model','prompt','answer','error','round','preview_id','usage','observed_usage','pricing_status','usage_cost_usd','billing_confirmed','steps','journal_failure','count_status','message_status')}
++    value = {k: deepcopy(item.get(k)) for k in ('id','conversation_id','status','mode','model','prompt','answer','error','round','preview_id','usage','observed_usage','pricing_status','usage_cost_usd','billing_confirmed','steps','journal_failure','count_status','message_status')}
++    value['run_id'] = item.get('run')
++    return value
+ 
+ 
+ def observe_usage(response):

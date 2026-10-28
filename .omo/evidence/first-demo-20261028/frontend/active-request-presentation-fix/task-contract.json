@@ -1,0 +1,37 @@
+{
+  "created_at": "2026-10-28T01:17:50.787183+00:00",
+  "state": "REPORTED",
+  "owner": "/root/demo_overlay_ui",
+  "Model": "session inherited",
+  "Reasoning": "session inherited",
+  "objective": "정상 준비·송신중과 실제unknown 복구 표시 구분",
+  "write_set": [
+    "index.html",
+    "motion-studio.js",
+    "scene-studio.js",
+    "tests/frontend_async_regressions.cjs",
+    "tests/general_chat_controls.cjs",
+    "tests/scene_request_recovery.cjs",
+    "tests/frontend_proposal_drafts.cjs",
+    "tests/save_feedback.mjs",
+    "tests/active_request_presentation.cjs",
+    "tests/test_active_request_presentation.py"
+  ],
+  "Methodology sources": [
+    "root real UI200 observations",
+    "actual index pending journal lifecycle",
+    "feature-verification/Karpathy",
+    "Impeccable craft-floor reread"
+  ],
+  "Applied methodology": "Explicit presentation-only active request ID, journal invariants unchanged, deferred-cache/POST and failure state transitions",
+  "Non-goals/limits": [
+    "No request envelope, API, stored journal or IDB schema change",
+    "No lock/inert/blocking/replay behavior change",
+    "No source221/874 evidence overwrite",
+    "No general-chat-ui.js edit",
+    "Root owns browser/HTTP/recording"
+  ],
+  "Verification standard": "Actual source event functions on deferred synthetic storage/network; preserved unknown/reload/failed-storage/same-id boundaries; root actualUI acceptance",
+  "source_cause": "pendingId denotes active journal anchor but recovery UI equates it with unknown",
+  "source_final": "source-final.json"
+}

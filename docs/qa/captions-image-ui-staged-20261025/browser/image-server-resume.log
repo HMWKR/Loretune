@@ -1,0 +1,22 @@
+http://127.0.0.1:55038
+127.0.0.1 - - [25/Oct/2026 22:46:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:28] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:28] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [25/Oct/2026 22:46:30] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:31] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:33] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:34] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:36] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:37] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:39] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:40] "GET /api/state HTTP/1.1" 200 -
+127.0.0.1 - - [25/Oct/2026 22:46:42] "GET /api/state HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "/private/var/folders/t7/p6pl4snd6pd3cmz1y80_7fzw0000gn/T/loretune-captions-image-ui-01ygn56e/qa_image_resume_server.py", line 14, in <module>
+    http.serve_forever()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/socketserver.py", line 232, in serve_forever
+    ready = selector.select(poll_interval)
+  File "/opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/lib/python3.15/selectors.py", line 398, in select
+    fd_event_list = self._selector.poll(timeout)
+KeyboardInterrupt

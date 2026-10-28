@@ -1,0 +1,262 @@
+{
+  "schema_version": "2.0",
+  "executed_at": "2026-10-23T13:09:14.552795+00:00",
+  "scope": "Actual local knowledge-kit integration only; not platform API/video/customer validation",
+  "registry_revision": 3,
+  "registry_sha256": "43713eb30b990c92b08258dec4f825b5595be5763f430150d7da6c74062eada7",
+  "objects": 1666,
+  "approved_head_count": 882,
+  "by_kind": {
+    "Document": 77,
+    "Test": 686,
+    "Requirement": 257,
+    "Experiment": 36,
+    "Metric": 64,
+    "Screen": 76,
+    "Source": 145,
+    "Decision": 30,
+    "API": 286,
+    "Assumption": 3,
+    "Claim": 6
+  },
+  "by_editorial_status": {
+    "approved": 882,
+    "archived": 784
+  },
+  "errors": 0,
+  "warnings": 0,
+  "strict_validate": "passed",
+  "events": [
+    {
+      "step": "current_dry_run",
+      "count": 882,
+      "issues": []
+    },
+    {
+      "step": "current_merge",
+      "revision": 1
+    },
+    {
+      "step": "editorial_promote",
+      "revision": 2,
+      "promoted": 882
+    },
+    {
+      "step": "archive_merge",
+      "revision": 3,
+      "count": 784
+    }
+  ],
+  "search_cost_matches": 6,
+  "impact_price_assumption": {
+    "changed_id": "SPEC2:ASM-PRICE-001",
+    "affected_count": 7,
+    "affected": [
+      {
+        "id": "SPEC2:CLM-COST-030-HYBRID",
+        "kind": "Claim",
+        "title": "30초 혼합형 고객 비용의 예산 시나리오",
+        "distance": 1,
+        "via": "depends_on",
+        "chain": [
+          "SPEC2:ASM-PRICE-001",
+          "SPEC2:CLM-COST-030-HYBRID"
+        ],
+        "status": "approved",
+        "current": true
+      },
+      {
+        "id": "SPEC2:CLM-COST-060-HYBRID",
+        "kind": "Claim",
+        "title": "60초 혼합형 고객 비용의 예산 시나리오",
+        "distance": 1,
+        "via": "depends_on",
+        "chain": [
+          "SPEC2:ASM-PRICE-001",
+          "SPEC2:CLM-COST-060-HYBRID"
+        ],
+        "status": "approved",
+        "current": true
+      },
+      {
+        "id": "SPEC2:CLM-COST-180-HYBRID",
+        "kind": "Claim",
+        "title": "180초 혼합형 고객 비용의 예산 시나리오",
+        "distance": 1,
+        "via": "depends_on",
+        "chain": [
+          "SPEC2:ASM-PRICE-001",
+          "SPEC2:CLM-COST-180-HYBRID"
+        ],
+        "status": "approved",
+        "current": true
+      },
+      {
+        "id": "SPEC2:DOC:3bf993a087576678",
+        "kind": "Document",
+        "title": "chapters/01_business.md",
+        "distance": 2,
+        "via": "depends_on",
+        "chain": [
+          "SPEC2:ASM-PRICE-001",
+          "SPEC2:CLM-COST-030-HYBRID",
+          "SPEC2:DOC:3bf993a087576678"
+        ],
+        "status": "approved",
+        "current": true
+      },
+      {
+        "id": "SPEC2:DOC:4656f4229e45576f",
+        "kind": "Document",
+        "title": "planning/PITCH_BRIEF.md",
+        "distance": 2,
+        "via": "depends_on",
+        "chain": [
+          "SPEC2:ASM-PRICE-001",
+          "SPEC2:CLM-COST-030-HYBRID",
+          "SPEC2:DOC:4656f4229e45576f"
+        ],
+        "status": "approved",
+        "current": true
+      },
+      {
+        "id": "SPEC2:DOC:bc64b0365ab991de",
+        "kind": "Document",
+        "title": "chapters/09_cost_and_comparison.md",
+        "distance": 2,
+        "via": "depends_on",
+        "chain": [
+          "SPEC2:ASM-PRICE-001",
+          "SPEC2:CLM-COST-030-HYBRID",
+          "SPEC2:DOC:bc64b0365ab991de"
+        ],
+        "status": "approved",
+        "current": true
+      },
+      {
+        "id": "SPEC2:CLM-BIZ-001",
+        "kind": "Claim",
+        "title": "반복 제작 팀을 대상으로 조건부 사업 검증",
+        "distance": 2,
+        "via": "depends_on",
+        "chain": [
+          "SPEC2:ASM-PRICE-001",
+          "SPEC2:CLM-COST-060-HYBRID",
+          "SPEC2:CLM-BIZ-001"
+        ],
+        "status": "approved",
+        "current": true
+      }
+    ],
+    "limitation": "Only declared links propagate. Undeclared slide/copy dependencies require human review."
+  },
+  "contexts": [
+    {
+      "task": "business",
+      "context": "generated/context/business-release-v2.md",
+      "receipt": "generated/context/business-release-v2.receipt.json",
+      "selected": 10,
+      "omitted": 202,
+      "estimated_tokens": 5632,
+      "actual_model_tokens": null,
+      "context_check": {
+        "valid": true,
+        "failures": [],
+        "scope": "Local project context freshness, not product test validity"
+      }
+    },
+    {
+      "task": "product",
+      "context": "generated/context/product-release-v2.md",
+      "receipt": "generated/context/product-release-v2.receipt.json",
+      "selected": 12,
+      "omitted": 701,
+      "estimated_tokens": 5624,
+      "actual_model_tokens": null,
+      "context_check": {
+        "valid": true,
+        "failures": [],
+        "scope": "Local project context freshness, not product test validity"
+      }
+    },
+    {
+      "task": "pitch",
+      "context": "generated/context/pitch-release-v2.md",
+      "receipt": "generated/context/pitch-release-v2.receipt.json",
+      "selected": 10,
+      "omitted": 202,
+      "estimated_tokens": 5631,
+      "actual_model_tokens": null,
+      "context_check": {
+        "valid": true,
+        "failures": [],
+        "scope": "Local project context freshness, not product test validity"
+      }
+    },
+    {
+      "task": "technical",
+      "context": "generated/context/technical-release-v2.md",
+      "receipt": "generated/context/technical-release-v2.receipt.json",
+      "selected": 12,
+      "omitted": 701,
+      "estimated_tokens": 5624,
+      "actual_model_tokens": null,
+      "context_check": {
+        "valid": true,
+        "failures": [],
+        "scope": "Local project context freshness, not product test validity"
+      }
+    },
+    {
+      "task": "validation",
+      "context": "generated/context/validation-release-v2.md",
+      "receipt": "generated/context/validation-release-v2.receipt.json",
+      "selected": 12,
+      "omitted": 869,
+      "estimated_tokens": 5625,
+      "actual_model_tokens": null,
+      "context_check": {
+        "valid": true,
+        "failures": [],
+        "scope": "Local project context freshness, not product test validity"
+      }
+    },
+    {
+      "task": "operations",
+      "context": "generated/context/operations-release-v2.md",
+      "receipt": "generated/context/operations-release-v2.receipt.json",
+      "selected": 11,
+      "omitted": 52,
+      "estimated_tokens": 5720,
+      "actual_model_tokens": null,
+      "context_check": {
+        "valid": true,
+        "failures": [],
+        "scope": "Local project context freshness, not product test validity"
+      }
+    }
+  ],
+  "isolated_change_demo": {
+    "scope": "Isolated copy of delivered registry, not product runtime",
+    "changed_file": "sources/current_spec/models/cost_model.json",
+    "mutation": "budget FX 1400 -> 1500 without a new version",
+    "strict_validate_exit_code": 1,
+    "issue_codes": [
+      "HASH_CHANGED",
+      "UPSTREAM_STALE"
+    ],
+    "expected_downstream_objects": [
+      "SPEC2:ASM-FX-001",
+      "SPEC2:ASM-PRICE-001",
+      "SPEC2:CLM-COST-180-HYBRID",
+      "SPEC2:DOC:3bf993a087576678",
+      "SPEC2:DOC:4656f4229e45576f"
+    ],
+    "all_expected_marked": true,
+    "old_pitch_context_rejected": true,
+    "original_delivered_registry_modified": false
+  },
+  "business_adoption": "proposed",
+  "platform_runtime_status": "not_run",
+  "actual_ppt_created": false
+}

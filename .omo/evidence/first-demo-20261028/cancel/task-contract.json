@@ -1,0 +1,47 @@
+{
+  "task_id": "demo-cancel-received-fix",
+  "recorded_at": "2026-10-28T00:25:17.341615+00:00",
+  "state": "REPORTED",
+  "ownership": [
+    "chat_general.py",
+    "tests/test_general_chat_cancel_received.py"
+  ],
+  "evidence": ".omo/evidence/first-demo-20261028/cancel",
+  "Methodology sources": [
+    "latest phase1 demo request",
+    "chat_general.py Runtime.process_next",
+    "tests/test_general_chat_activation.py",
+    "ledger.py provider_attempt/reservation state",
+    "feature-verification installed SKILL.md",
+    "karpathy-guidelines installed SKILL.md"
+  ],
+  "Applied methodology": "actual HTTP replay of cancel while message socket is held, competing deadline vs post-settlement generic exception hypotheses, narrow local state proof, positive and negative cost/attempt guards",
+  "Non-goals/limits": [
+    "no real provider/key/billing",
+    "no UI/app/render/registry/MD edits",
+    "other workers changes preserved"
+  ],
+  "Verification standard": "priced received cancellation cancelled with cost retained and next request allowed; unresolved or unaccounted costs remain unknown and block admission",
+  "before_sha256": "580d4a7046add89ecd251bf5e5324c4656fb617b99e0d3ba7d12455bb8f79f17",
+  "model": "session inherited",
+  "reasoning": "session inherited",
+  "baseline_hypothesis": "post-settlement _current cancellation is remapped to outcome_unknown solely because submitted=True",
+  "competing_hypothesis": "provider deadline (prior real UI synthetic hold2.019s contradicts30s deadline)",
+  "report": "report.json",
+  "verification": {
+    "new": {
+      "sha256": "6cac2d493b469fb74c7e94b10807de473a9c34a312066caae9eda33fd91d9613",
+      "tests": 12,
+      "seconds": 7.448,
+      "status": "OK",
+      "command": "CANCEL_RECEIVED_EVIDENCE=.omo/evidence/first-demo-20261028/cancel/after-restart python3 -m unittest tests.test_general_chat_cancel_received -v"
+    },
+    "related": {
+      "sha256": "ee5e6ed1b551a0e3b4aeeadd3f9283e58dc07bc8f15c06335d5aa5cb9cb1ad8a",
+      "tests": 46,
+      "seconds": 26.939,
+      "status": "OK",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.test_general_chat_activation tests.test_general_chat_conversations tests.test_general_scope_journal_guard -v"
+    }
+  }
+}

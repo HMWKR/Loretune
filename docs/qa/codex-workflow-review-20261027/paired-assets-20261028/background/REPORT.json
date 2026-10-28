@@ -1,0 +1,145 @@
+{
+  "task_id": "SCENE-BG-01",
+  "status": "REPORTED_DIAGNOSIS_ONLY",
+  "source_unchanged": {
+    "scene_renderer.py": "be41e10eb8bebb43ae8ccc1f33156b3f83c4bddd5f422604707e99d7e9664353",
+    "scene_project.py": "2b7d1a3c30dbe5453dcbad983528fae96d6b61179ccc871bdc9c52190adf52e4",
+    "scene_assets.py": "9e35727099e06730ea92d1a15de80ca65fa9ea85eaa4eb547a669dc4a12f4068",
+    "scene_spec.py": "29f3956be9b5fa17d70c614128821c1c801d4a6643a80ce43487892b9fa36c65",
+    "scene-studio.js": "51fdd58f3d7391d26af84c358dcaaa2f8c454aff1a370180c9b9643f7a6524a5"
+  },
+  "confirmed_bug": "Validated SceneSpec.background does not change rendered pixels in pinned Blender5.2.2",
+  "observations": {
+    "factory": "World.use_nodes=True; Background RGBA=(.050876088,.050876088,.050876088,1);Strength1; shader linked to World Output Surface;AgX/None/exposure0/gamma1",
+    "three_backgrounds": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        1
+      ],
+      [
+        0.1,
+        0.3,
+        0.8
+      ]
+    ],
+    "rgb_sha256": "ee0421300fbfb5a3422bfa8ddc9c58d7588d485bda23290dbfae96f1062b9894",
+    "all_corners": [
+      [
+        [
+          58,
+          58,
+          58
+        ],
+        [
+          62,
+          61,
+          60
+        ],
+        [
+          57,
+          59,
+          58
+        ],
+        [
+          58,
+          57,
+          57
+        ]
+      ],
+      [
+        [
+          58,
+          58,
+          58
+        ],
+        [
+          62,
+          61,
+          60
+        ],
+        [
+          57,
+          59,
+          58
+        ],
+        [
+          58,
+          57,
+          57
+        ]
+      ],
+      [
+        [
+          58,
+          58,
+          58
+        ],
+        [
+          62,
+          61,
+          60
+        ],
+        [
+          57,
+          59,
+          58
+        ],
+        [
+          58,
+          57,
+          57
+        ]
+      ]
+    ],
+    "same_entire_decoded_frame": true,
+    "flag_false_no_effect": true
+  },
+  "cause": "scene_renderer.py:46 assigns World.color, but active node surface retains default Color. Blender5.2 World.use_nodes setter is compatibility no-op.",
+  "alternatives": [
+    {
+      "option": "Set existing Background shader Color to (*scene_data.background,1); retain linked World Output and Strength1",
+      "recommendation": true,
+      "impact": "Keeps Cycles and current AgX/look/exposure/gamma. Changing world surface changes background AND environment illumination, hence can legitimately change foreground shading; do not promise identical foreground pixels. Scene RGB remains linear and display PNG is transformed, so white1 need not become255.",
+      "scope": "Only trusted compiler script, narrow native regression; no palette/view transform changes."
+    },
+    {
+      "option": "Set world.use_nodes=False and continue world.color assignment",
+      "recommendation": false,
+      "impact": "Not viable on pinned Blender5.2.2: actual getter remainsTrue after assignment; official5.2 API declares setter no-op. On older Blender fallback behavior differs, so not a portable substitution."
+    }
+  ],
+  "cache_and_approval": {
+    "completed_renderer_cache": "scene_renderer._claim lines334-368 compares stored compiler_sha256 against current compiled source; actual completed receipt accepted samehash and rejected changedhash as RenderOutcomeUnknown (cache-probe.json).",
+    "publication": "scene_project.py:440-444 requires receipt compiler_sha256 == current compile_scene(job.scene). Code tracing, not a midflight race experiment.",
+    "queued_job": "scene_project.runtime_binding lines192-207 pins image/binary/tree/socket/timeout/quota only; check_job lines401-416 compares that binding plus scene/approval/context. Compiler source is not frozen in queued job, so unchanged SceneSpec queued jobs are not automatically invalidated by compiler patch.",
+    "same_approval_dedup": "scene_project.py:373-380 returns existing job for same approval unless failed/cancelled and reservation released; completed prior result is retained, not rerendered or relabeled after compiler patch.",
+    "recommendation": "Do not claim old approvals become stale after this patch. Preserve prior outputs/provenance. Use a new explicit scene revision and approval for fresh benchmark results; root decides whether compiler version should additionally become part of environment pin."
+  },
+  "evidence": {
+    "invocation": "/opt/homebrew/opt/python@3.15/bin/python3.15 .omo/evidence/paired-assets-platform-20261028/background/run.py",
+    "native_receipts": "renders.json",
+    "factory": "factory.json",
+    "toggle": "flag-probe.json",
+    "cache": "cache-probe.json",
+    "execution": "execution.json",
+    "official_fetch": "official-doc-fetch.json"
+  },
+  "sources": [
+    "https://docs.blender.org/api/5.2/bpy.types.World.html#bpy.types.World.use_nodes",
+    "https://docs.blender.org/manual/en/latest/render/lights/world.html",
+    "current scene_renderer.py/scene_project.py; exact hashes source-before.json"
+  ],
+  "limits": [
+    "No product source modifications or new tests. Root decision required before implementation.",
+    "No full suite, provider calls, user authentication, external editor or regeneration of original benchmark inputs.",
+    "Actual probe uses production isolated renderer directly; this is not a new full HTTP approval workflow test.",
+    "Corner pixel differences within each frame are observed; no flat255 promise under current Cycles4samples/AgX."
+  ],
+  "recommended_next": "Minimal Background node Color wiring plus regression on color-responsive actual pixels, preserving color-management settings and all existing original evidence."
+}

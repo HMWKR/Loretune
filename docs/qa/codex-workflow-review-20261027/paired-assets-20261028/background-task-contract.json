@@ -1,0 +1,23 @@
+{
+  "task_id": "SCENE-BG-01",
+  "status": "diagnosing",
+  "observation": "Self-authored input SceneSpec background[1,1,1] rendered actual PNG corner RGB58,58,58; scene_renderer._SCRIPT sets scene.world.color but does not configure Background surface nodes",
+  "Methodology sources": [
+    "actual paired input scene JSON+PNG",
+    "scene_renderer.py compiled trusted script",
+    "pinned Blender5.2.2 factory-startup",
+    "Blender World API/world-surface official docs"
+  ],
+  "Applied methodology": "Minimal native controlled same-scene background A/B probe, inspect actual factory world node graph; separate linear scene RGB and display conversion",
+  "Scope": "diagnose first; after root acceptance only scene_renderer.py + focused new tests if confirmed; do not touch scene asset v2 files or docs",
+  "Write set": [
+    ".omo/evidence/paired-assets-platform-20261028/background/**"
+  ],
+  "Non-goals/limits": [
+    "No provider calls/credentials/.env/shared dependency installs",
+    "No art-direction/view-transform/palette changes",
+    "No global full suite start before coordinated freeze",
+    "No silent resynthesis of original benchmark inputs or historical files"
+  ],
+  "Verification standard": "Different validated backgrounds cause expected different actual pixels while same foreground render contract is preserved; source pin/cache/approval implications checked"
+}

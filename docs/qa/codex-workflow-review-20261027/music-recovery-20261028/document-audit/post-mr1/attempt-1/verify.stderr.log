@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/leesungmin/Desktop/Loretune/.omo/evidence/document-preservation-live-20261028/post-mr1/verify.py", line 186, in <module>
+    assert all(x['width'] == w and x['overflow'] == 0 and '3.000–4.000초' in x['text'] and '3.000–6.000초' in x['text'] for x, w in zip(warnings, [1920, 1280, 375]))
+           ^^^
+  File "/Users/leesungmin/Desktop/Loretune/.omo/evidence/document-preservation-live-20261028/post-mr1/verify.py", line 186, in <genexpr>
+    assert all(x['width'] == w and x['overflow'] == 0 and '3.000–4.000초' in x['text'] and '3.000–6.000초' in x['text'] for x, w in zip(warnings, [1920, 1280, 375]))
+                                   ~^^^^^^^^^^^^
+KeyError: 'overflow'

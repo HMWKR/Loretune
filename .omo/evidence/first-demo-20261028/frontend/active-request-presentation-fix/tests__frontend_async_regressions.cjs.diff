@@ -1,0 +1,13 @@
+--- tests/frontend_async_regressions.cjs before
++++ tests/frontend_async_regressions.cjs current
+@@ -17,8 +17,8 @@
+ function requestFixture(){
+  const nodes=new Map(),memory=new Map(),calls=[];let serial=0;
+  const $=s=>{if(!nodes.has(s))nodes.set(s,{hidden:false,disabled:false,textContent:'',dataset:{},hasAttribute:()=>false,focus(){}});return nodes.get(s)};
+- const c={console,Map,Set,Error,JSON,encodeURIComponent,state:state(1),stateReadEpoch:0,busy:false,dirty:false,pendingRequest:null,$,document:{querySelector:$,querySelectorAll:()=>[]},crypto:{randomUUID:()=>`request-${++serial}`},sessionStorage:{getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,v),removeItem:k=>memory.delete(k)},requestCache:async()=>{},message:(...m)=>calls.push(['notice',...m]),drawModelChat(){},renderTakeReview(){},song:()=> 'A',productionReviewErrors:new Map(),takeReviewStore:{clearRevision:(...args)=>calls.push(['clear',...args])},refresh:async()=>{},fetch:async(url,options)=>{calls.push([url,options]);return response({})}};
+- vm.createContext(c);vm.runInContext(line('function pendingId(')+'\n'+line('function updateRecovery(')+'\n'+line('function clearPending(')+'\n'+slice('async function sendRequest(',"$('#recoverRequest').onclick="),c);
++ const c={console,Map,Set,Error,JSON,encodeURIComponent,state:state(1),stateReadEpoch:0,busy:false,dirty:false,pendingRequest:null,activeMutationRequestId:null,$,document:{querySelector:$,querySelectorAll:()=>[]},crypto:{randomUUID:()=>`request-${++serial}`},sessionStorage:{getItem:k=>memory.get(k)||null,setItem:(k,v)=>memory.set(k,v),removeItem:k=>memory.delete(k)},requestCache:async()=>{},message:(...m)=>calls.push(['notice',...m]),drawModelChat(){},renderTakeReview(){},song:()=> 'A',productionReviewErrors:new Map(),takeReviewStore:{clearRevision:(...args)=>calls.push(['clear',...args])},refresh:async()=>{},fetch:async(url,options)=>{calls.push([url,options]);return response({})}};
++ vm.createContext(c);vm.runInContext(line('function pendingId(')+'\n'+line('function mutationRequestActive(')+'\n'+line('function updateRecovery(')+'\n'+line('function clearPending(')+'\n'+slice('async function sendRequest(',"$('#recoverRequest').onclick="),c);
+  return{c,memory,calls,$};
+ }
+ function loaded(f,options={}){f.d.audio=options.audio?1:null;f.p.audio_versions=options.audio?[{id:1,asset:'fixture:music.wav'}]:[];f.d.clips=options.two?[{shot:'A',take:1,trim:0,duration:3},{shot:'B',take:1,trim:0,duration:3}]:[{shot:'A',take:1,trim:options.trim||0,duration:3}];const s=f.api._audit.createSequence(f.p,f.d,0);s.seek(0);const v=f.q('#preview').children[0];v.duration=options.duration||3+(options.trim||0);v.onloadeddata();return{s,v,a:f.media.find(m=>m.tagName==='audio')}};

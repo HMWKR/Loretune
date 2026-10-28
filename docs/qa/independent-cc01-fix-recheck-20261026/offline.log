@@ -1,0 +1,109 @@
+original_CC01_9turn_resume PASS
+adjacent_canon_correction_provenance_isolation PASS
+test_count_over_limit_keeps_history_and_never_calls_messages (test_chat_request_history.RequestHistoryTest.test_count_over_limit_keeps_history_and_never_calls_messages) ... ok
+test_failed_cancelled_and_unreviewed_answers_never_become_canonical (test_chat_request_history.RequestHistoryTest.test_failed_cancelled_and_unreviewed_answers_never_become_canonical) ... ok
+test_handoff_is_frozen_when_persisted_history_changes (test_chat_request_history.RequestHistoryTest.test_handoff_is_frozen_when_persisted_history_changes) ... ok
+test_original_nine_turn_counterexample_and_store_resume (test_chat_request_history.RequestHistoryTest.test_original_nine_turn_counterexample_and_store_resume) ... ok
+test_project_isolation_and_explicit_order_after_record_update (test_chat_request_history.RequestHistoryTest.test_project_isolation_and_explicit_order_after_record_update) ... ok
+test_quoted_conditional_corrected_and_retracted_requests_are_evidence_not_canon (test_chat_request_history.RequestHistoryTest.test_quoted_conditional_corrected_and_retracted_requests_are_evidence_not_canon) ... ok
+test_same_project_independent_session_still_not_advertised (test_chat_request_history.RequestHistoryTest.test_same_project_independent_session_still_not_advertised) ... ok
+test_context_change_after_count_prevents_message_and_releases (tests.test_chat_runtime.ChatRuntimeTest.test_context_change_after_count_prevents_message_and_releases) ... ok
+test_truncation_is_paid_invalid_response_no_plan (tests.test_chat_runtime.ChatRuntimeTest.test_truncation_is_paid_invalid_response_no_plan) ... ok
+test_unknown_retains_reservation_and_blocks_new_enqueue (tests.test_chat_runtime.ChatRuntimeTest.test_unknown_retains_reservation_and_blocks_new_enqueue) ... ok
+test_restart_unknown_never_requeues_started_turn (tests.test_chat_runtime.ChatRuntimeTest.test_restart_unknown_never_requeues_started_turn) ... ok
+test_duplicate_enqueue_same_request_and_competing_new_request (tests.test_chat_runtime.ChatRuntimeTest.test_duplicate_enqueue_same_request_and_competing_new_request) ... ok
+test_unapproved_prompt_foreign_project_and_model_authority_rejected (tests.test_chat_runtime.ChatRuntimeTest.test_unapproved_prompt_foreign_project_and_model_authority_rejected) ... ok
+test_bounded_chat_request_capacity_preserves_exact_payload_and_upper_limit (test_anthropic_transport.TransportTests.test_bounded_chat_request_capacity_preserves_exact_payload_and_upper_limit) ... ok
+test_credential_supplier_exception_redacted (test_anthropic_transport.TransportTests.test_credential_supplier_exception_redacted) ... ok
+test_default_builder_disables_proxy_and_redirect_without_network (test_anthropic_transport.TransportTests.test_default_builder_disables_proxy_and_redirect_without_network) ... ok
+test_endpoint_variants_never_open (test_anthropic_transport.TransportTests.test_endpoint_variants_never_open) ... ok
+test_fake_full_adapter_and_single_post (test_anthropic_transport.TransportTests.test_fake_full_adapter_and_single_post) ... ok
+test_http_failure_and_timeout_no_retry_or_secret (test_anthropic_transport.TransportTests.test_http_failure_and_timeout_no_retry_or_secret) ... ok
+test_invalid_headers_and_request_bound_before_open (test_anthropic_transport.TransportTests.test_invalid_headers_and_request_bound_before_open) ... ok
+test_mime_encoding_and_invalid_json (test_anthropic_transport.TransportTests.test_mime_encoding_and_invalid_json) ... ok
+test_read_deadline (test_anthropic_transport.TransportTests.test_read_deadline) ... ok
+test_redirect_handler_refuses_all_targets (test_anthropic_transport.TransportTests.test_redirect_handler_refuses_all_targets) ... ok
+test_response_size_and_truncation (test_anthropic_transport.TransportTests.test_response_size_and_truncation) ... ok
+test_unexpected_response_origin_and_status (test_anthropic_transport.TransportTests.test_unexpected_response_origin_and_status) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.400s
+
+OK
+{
+  "probes": [
+    [
+      "original_CC01_9turn_resume",
+      "PASS"
+    ],
+    [
+      "adjacent_canon_correction_provenance_isolation",
+      "PASS"
+    ]
+  ],
+  "regressions": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 0
+  },
+  "boundary": {
+    "seed_count": 41,
+    "first_prompt_chars": 1074,
+    "count_bytes": 65529,
+    "message_bytes": 65549,
+    "count_opener_calls": 1,
+    "message_opener_calls": 0,
+    "status": "outcome_unknown",
+    "journal": [
+      [
+        "outcome_unknown",
+        5735,
+        null
+      ]
+    ],
+    "subsequent_enqueue_blocked": true,
+    "expected": {
+      "status": "blocked_before_message",
+      "message_opener_calls": 0,
+      "held_micro": 0,
+      "subsequent_enqueue_blocked": false
+    },
+    "verdict": "FAIL"
+  },
+  "controls": {
+    "below_both_caps": {
+      "seed_count": 41,
+      "first_prompt_chars": 1034,
+      "count_bytes": 65490,
+      "message_bytes": 65510,
+      "count_opener_calls": 1,
+      "message_opener_calls": 1,
+      "status": "completed",
+      "journal": [
+        [
+          "completed",
+          5735,
+          60
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    },
+    "above_count_cap": {
+      "seed_count": 41,
+      "first_prompt_chars": 1114,
+      "count_bytes": 65570,
+      "message_bytes": 65590,
+      "count_opener_calls": 0,
+      "message_opener_calls": 0,
+      "status": "blocked_before_message",
+      "journal": [
+        [
+          "blocked_before_message",
+          0,
+          null
+        ]
+      ],
+      "subsequent_enqueue_blocked": false
+    }
+  }
+}

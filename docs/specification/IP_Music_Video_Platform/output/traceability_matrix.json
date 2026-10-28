@@ -1,0 +1,3952 @@
+{
+  "version": "1.0",
+  "status": "design_traceability_only",
+  "rows": [
+    {
+      "requirement_id": "FR-001",
+      "title": "조직과 계정 분리",
+      "module": "organization",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-001",
+        "SCR-002",
+        "SCR-028"
+      ],
+      "operation_ids": [
+        "createWorkspace",
+        "listWorkspaces"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-001-A",
+        "AT-001-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-001"
+      ],
+      "related_metric_ids": [
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-010",
+        "EXP-012",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-002",
+      "title": "구성원 초대와 세부 권한",
+      "module": "organization",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-028"
+      ],
+      "operation_ids": [
+        "createInvitation",
+        "createGrant",
+        "addMember"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-002-A",
+        "AT-002-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-010",
+        "EXP-012",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-003",
+      "title": "권한 철회와 세션 갱신",
+      "module": "organization",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-028",
+        "SCR-022",
+        "SCR-023"
+      ],
+      "operation_ids": [
+        "revokeMember",
+        "revokeGrant"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-003-A",
+        "AT-003-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-017"
+      ],
+      "related_metric_ids": [
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-010",
+        "EXP-012",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-004",
+      "title": "조직 제작 정책",
+      "module": "organization",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-002",
+        "SCR-028",
+        "SCR-035"
+      ],
+      "operation_ids": [
+        "getWorkspacePolicy",
+        "patchWorkspacePolicy"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-004-A",
+        "AT-004-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-010",
+        "EXP-012",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-005",
+      "title": "감사 기록과 활동 이력",
+      "module": "organization",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-031"
+      ],
+      "operation_ids": [
+        "listAuditEvents"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-005-A",
+        "AT-005-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-010",
+        "EXP-012",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-006",
+      "title": "계정 탈퇴와 조직 이전",
+      "module": "organization",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-028",
+        "SCR-037",
+        "SCR-029"
+      ],
+      "operation_ids": [
+        "transferOwnership",
+        "requestDeletion"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-006-A",
+        "AT-006-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-010",
+        "EXP-012",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-007",
+      "title": "IP 생성과 최소 등록",
+      "module": "ip",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-004",
+        "SCR-005"
+      ],
+      "operation_ids": [
+        "createIp"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-007-A",
+        "AT-007-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-002",
+        "MET-009",
+        "MET-012",
+        "MET-014"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-008",
+      "title": "멤버와 시각적 정체성",
+      "module": "ip",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-009"
+      ],
+      "operation_ids": [
+        "createEntity",
+        "createEntityRevision"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-008-A",
+        "AT-008-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-002",
+        "MET-009",
+        "MET-012",
+        "MET-014"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-009",
+      "title": "활동기와 캠페인",
+      "module": "ip",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-004",
+        "SCR-008",
+        "SCR-013"
+      ],
+      "operation_ids": [
+        "createEra"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-009-A",
+        "AT-009-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-002"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-002",
+        "MET-009",
+        "MET-012",
+        "MET-014"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-010",
+      "title": "세계와 분기 관리",
+      "module": "ip",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-008"
+      ],
+      "operation_ids": [
+        "createBranch"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-010-A",
+        "AT-010-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-003"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-002",
+        "MET-009",
+        "MET-012",
+        "MET-014"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-011",
+      "title": "IP 자산함과 검색",
+      "module": "ip",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-011",
+        "SCR-012"
+      ],
+      "operation_ids": [
+        "searchIpKnowledge",
+        "getAsset"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-011-A",
+        "AT-011-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-001"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-002",
+        "MET-009",
+        "MET-012",
+        "MET-014"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-012",
+      "title": "프로젝트 간 인계 요약",
+      "module": "ip",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-027"
+      ],
+      "operation_ids": [
+        "createHandoff"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-012-A",
+        "AT-012-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-023"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-002",
+        "MET-009",
+        "MET-012",
+        "MET-014"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-013",
+      "title": "파일 업로드와 중단 복구",
+      "module": "ingestion",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-005",
+        "SCR-006"
+      ],
+      "operation_ids": [
+        "createUpload",
+        "getUploadSession",
+        "completeUpload"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-013-A",
+        "AT-013-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-029"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-012",
+        "MET-013",
+        "MET-024",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-010"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-014",
+      "title": "문서와 영상에서 정보 추출",
+      "module": "ingestion",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-006",
+        "SCR-007"
+      ],
+      "operation_ids": [
+        "extractAssetKnowledge"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-014-A",
+        "AT-014-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-021",
+        "IT-025"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-012",
+        "MET-013",
+        "MET-024",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-010"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-015",
+      "title": "외부 자료와 링크 가져오기",
+      "module": "ingestion",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-005",
+        "SCR-011"
+      ],
+      "operation_ids": [
+        "importUrl"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-015-A",
+        "AT-015-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-021"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-012",
+        "MET-013",
+        "MET-024",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-010"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-016",
+      "title": "사용 권리와 동의 관리",
+      "module": "ingestion",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-009",
+        "SCR-012"
+      ],
+      "operation_ids": [
+        "patchAssetRights"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-016-A",
+        "AT-016-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-010"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-012",
+        "MET-013",
+        "MET-024",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-010"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-017",
+      "title": "분석 작업과 수동 보정",
+      "module": "ingestion",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-006",
+        "SCR-014"
+      ],
+      "operation_ids": [
+        "extractAssetKnowledge",
+        "createAssertionRevision"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-017-A",
+        "AT-017-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-025",
+        "IT-029"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-012",
+        "MET-013",
+        "MET-024",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-010"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-018",
+      "title": "사용 중지와 삭제 영향 추적",
+      "module": "ingestion",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-012",
+        "SCR-031",
+        "SCR-037"
+      ],
+      "operation_ids": [
+        "requestDeletion",
+        "previewImpact"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-018-A",
+        "AT-018-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-010"
+      ],
+      "related_metric_ids": [
+        "MET-001",
+        "MET-012",
+        "MET-013",
+        "MET-024",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-010"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-019",
+      "title": "인물 관계와 사건 모델",
+      "module": "canon",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-008",
+        "SCR-009"
+      ],
+      "operation_ids": [
+        "createEntity",
+        "createPredicate",
+        "createAssertion"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-019-A",
+        "AT-019-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-003"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-012",
+        "MET-013",
+        "MET-014",
+        "MET-015",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-020",
+      "title": "설정 후보 검토와 승인",
+      "module": "canon",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-007",
+        "SCR-008"
+      ],
+      "operation_ids": [
+        "recordApproval"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-020-A",
+        "AT-020-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-004"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-012",
+        "MET-013",
+        "MET-014",
+        "MET-015",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-021",
+      "title": "시간과 분기별 사실 적용",
+      "module": "canon",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-008",
+        "SCR-013",
+        "SCR-017"
+      ],
+      "operation_ids": [
+        "listAssertions",
+        "createContextSnapshot"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-021-A",
+        "AT-021-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-002",
+        "IT-003"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-012",
+        "MET-013",
+        "MET-014",
+        "MET-015",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-022",
+      "title": "충돌과 설정 정정",
+      "module": "canon",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-007",
+        "SCR-008",
+        "SCR-031"
+      ],
+      "operation_ids": [
+        "listCanonConflicts",
+        "resolveCanonConflict"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-022-A",
+        "AT-022-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-012",
+        "MET-013",
+        "MET-014",
+        "MET-015",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-023",
+      "title": "근거 검색과 설명 가능한 문맥",
+      "module": "canon",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-017",
+        "SCR-012"
+      ],
+      "operation_ids": [
+        "searchIpKnowledge",
+        "getContextSnapshot"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-023-A",
+        "AT-023-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-001"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-012",
+        "MET-013",
+        "MET-014",
+        "MET-015",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-024",
+      "title": "설정 영향 분석과 복원",
+      "module": "canon",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-031",
+        "SCR-017"
+      ],
+      "operation_ids": [
+        "previewImpact",
+        "createAssertionRevision"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-024-A",
+        "AT-024-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-002",
+        "IT-008"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-012",
+        "MET-013",
+        "MET-014",
+        "MET-015",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-025",
+      "title": "스타일 규칙과 예시",
+      "module": "preference",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-010"
+      ],
+      "operation_ids": [
+        "createPreference"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-025-A",
+        "AT-025-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-014",
+        "MET-020"
+      ],
+      "related_experiment_ids": [
+        "EXP-004",
+        "EXP-005",
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-026",
+      "title": "피드백을 규칙 후보로 변환",
+      "module": "preference",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-024",
+        "SCR-010"
+      ],
+      "operation_ids": [
+        "createMemoryProposals"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-026-A",
+        "AT-026-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-005",
+        "IT-006"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-014",
+        "MET-020"
+      ],
+      "related_experiment_ids": [
+        "EXP-004",
+        "EXP-005",
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-027",
+      "title": "규칙 우선순위와 예외",
+      "module": "preference",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-010",
+        "SCR-017"
+      ],
+      "operation_ids": [
+        "revisePreference",
+        "createContextSnapshot"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-027-A",
+        "AT-027-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-005"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-014",
+        "MET-020"
+      ],
+      "related_experiment_ids": [
+        "EXP-004",
+        "EXP-005",
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-028",
+      "title": "취향 검토와 되돌리기",
+      "module": "preference",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-010",
+        "SCR-024"
+      ],
+      "operation_ids": [
+        "revisePreference",
+        "recordApproval"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-028-A",
+        "AT-028-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-005"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-014",
+        "MET-020"
+      ],
+      "related_experiment_ids": [
+        "EXP-004",
+        "EXP-005",
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-029",
+      "title": "새로운 연출의 탐색",
+      "module": "preference",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-015",
+        "SCR-016"
+      ],
+      "operation_ids": [
+        "createPreferenceExperiment"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-029-A",
+        "AT-029-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-014",
+        "MET-020"
+      ],
+      "related_experiment_ids": [
+        "EXP-004",
+        "EXP-005",
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-030",
+      "title": "기억 효과 비교와 설명",
+      "module": "preference",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-027",
+        "SCR-036"
+      ],
+      "operation_ids": [
+        "createPreferenceExperiment",
+        "getIpAnalytics"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-030-A",
+        "AT-030-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-006",
+        "IT-023"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-014",
+        "MET-020"
+      ],
+      "related_experiment_ids": [
+        "EXP-004",
+        "EXP-005",
+        "EXP-006",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-031",
+      "title": "곡 등록과 원본 관리",
+      "module": "music",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-013",
+        "SCR-014"
+      ],
+      "operation_ids": [
+        "createSong"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-031-A",
+        "AT-031-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-009",
+        "IT-029"
+      ],
+      "related_metric_ids": [
+        "MET-018",
+        "MET-019"
+      ],
+      "related_experiment_ids": [
+        "EXP-008"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-032",
+      "title": "곡 구조와 박자 분석",
+      "module": "music",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-014"
+      ],
+      "operation_ids": [
+        "analyzeSong"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-032-A",
+        "AT-032-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-018",
+        "MET-019"
+      ],
+      "related_experiment_ids": [
+        "EXP-008"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-033",
+      "title": "가사 정렬과 교정",
+      "module": "music",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-014",
+        "SCR-021"
+      ],
+      "operation_ids": [
+        "patchSongSegments"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-033-A",
+        "AT-033-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-009",
+        "IT-025"
+      ],
+      "related_metric_ids": [
+        "MET-018",
+        "MET-019"
+      ],
+      "related_experiment_ids": [
+        "EXP-008"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-034",
+      "title": "멤버 파트와 등장 계획",
+      "module": "music",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-014",
+        "SCR-016"
+      ],
+      "operation_ids": [
+        "patchSongParts"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-034-A",
+        "AT-034-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-018",
+        "MET-019"
+      ],
+      "related_experiment_ids": [
+        "EXP-008"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-035",
+      "title": "음악 구간과 파생 영상",
+      "module": "music",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-013",
+        "SCR-014",
+        "SCR-021"
+      ],
+      "operation_ids": [
+        "createProject",
+        "createPlan"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-035-A",
+        "AT-035-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-018",
+        "MET-019"
+      ],
+      "related_experiment_ids": [
+        "EXP-008"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-036",
+      "title": "가사 의미와 연출의 분리",
+      "module": "music",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-014",
+        "SCR-015",
+        "SCR-007"
+      ],
+      "operation_ids": [
+        "createPlan",
+        "createAssertion"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-036-A",
+        "AT-036-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-004"
+      ],
+      "related_metric_ids": [
+        "MET-018",
+        "MET-019"
+      ],
+      "related_experiment_ids": [
+        "EXP-008"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-037",
+      "title": "브리프와 제작 모드",
+      "module": "planning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-013",
+        "SCR-015"
+      ],
+      "operation_ids": [
+        "createProject"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-037-A",
+        "AT-037-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-002",
+        "MET-003",
+        "MET-004",
+        "MET-007",
+        "MET-011",
+        "MET-012",
+        "MET-015"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-005",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-038",
+      "title": "콘셉트 후보와 비교",
+      "module": "planning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-015"
+      ],
+      "operation_ids": [
+        "createPlan",
+        "listPlans"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-038-A",
+        "AT-038-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-002",
+        "MET-003",
+        "MET-004",
+        "MET-007",
+        "MET-011",
+        "MET-012",
+        "MET-015"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-005",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-039",
+      "title": "곡 구간별 장면 구성",
+      "module": "planning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-016",
+        "SCR-014"
+      ],
+      "operation_ids": [
+        "createPlan",
+        "createShotRevision"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-039-A",
+        "AT-039-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-002",
+        "MET-003",
+        "MET-004",
+        "MET-007",
+        "MET-011",
+        "MET-012",
+        "MET-015"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-005",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-040",
+      "title": "스토리보드와 기준 프레임",
+      "module": "planning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-016",
+        "SCR-017"
+      ],
+      "operation_ids": [
+        "createStoryboard"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-040-A",
+        "AT-040-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-026"
+      ],
+      "related_metric_ids": [
+        "MET-002",
+        "MET-003",
+        "MET-004",
+        "MET-007",
+        "MET-011",
+        "MET-012",
+        "MET-015"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-005",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-041",
+      "title": "계획 승인과 변경 차이",
+      "module": "planning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-016",
+        "SCR-025"
+      ],
+      "operation_ids": [
+        "recordApproval",
+        "compareVersions"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-041-A",
+        "AT-041-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-007",
+        "IT-026"
+      ],
+      "related_metric_ids": [
+        "MET-002",
+        "MET-003",
+        "MET-004",
+        "MET-007",
+        "MET-011",
+        "MET-012",
+        "MET-015"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-005",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-042",
+      "title": "누락 자료와 제작 가능성 검사",
+      "module": "planning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-018"
+      ],
+      "operation_ids": [
+        "runPreflight"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-042-A",
+        "AT-042-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-010"
+      ],
+      "related_metric_ids": [
+        "MET-002",
+        "MET-003",
+        "MET-004",
+        "MET-007",
+        "MET-011",
+        "MET-012",
+        "MET-015"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-004",
+        "EXP-005",
+        "EXP-006"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-043",
+      "title": "모델 기능 목록과 선택",
+      "module": "generation",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-018",
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "listModelCapabilities"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-043-A",
+        "AT-043-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-016",
+        "IT-022"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-007",
+        "MET-016",
+        "MET-017",
+        "MET-022",
+        "MET-023",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-007",
+        "EXP-008",
+        "EXP-009",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-044",
+      "title": "견적과 예산 예약",
+      "module": "generation",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-018",
+        "SCR-029"
+      ],
+      "operation_ids": [
+        "createEstimate",
+        "createGeneration"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-044-A",
+        "AT-044-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-011",
+        "IT-015",
+        "IT-016",
+        "IT-027"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-007",
+        "MET-016",
+        "MET-017",
+        "MET-022",
+        "MET-023",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-007",
+        "EXP-008",
+        "EXP-009",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-045",
+      "title": "실행 스냅샷과 재현 정보",
+      "module": "generation",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-017",
+        "SCR-018",
+        "SCR-019"
+      ],
+      "operation_ids": [
+        "createContextSnapshot",
+        "getContextSnapshot"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-045-A",
+        "AT-045-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-026"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-007",
+        "MET-016",
+        "MET-017",
+        "MET-022",
+        "MET-023",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-007",
+        "EXP-008",
+        "EXP-009",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-046",
+      "title": "샷별 후보 생성",
+      "module": "generation",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-019",
+        "SCR-020"
+      ],
+      "operation_ids": [
+        "createGeneration"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-046-A",
+        "AT-046-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-027"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-007",
+        "MET-016",
+        "MET-017",
+        "MET-022",
+        "MET-023",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-007",
+        "EXP-008",
+        "EXP-009",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-047",
+      "title": "승인 자산 합성 제작",
+      "module": "generation",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-017",
+        "SCR-021"
+      ],
+      "operation_ids": [
+        "createProjectVersion",
+        "createExport"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-047-A",
+        "AT-047-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-028"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-007",
+        "MET-016",
+        "MET-017",
+        "MET-022",
+        "MET-023",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-007",
+        "EXP-008",
+        "EXP-009",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-048",
+      "title": "생성 결과의 품질 검사",
+      "module": "generation",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-020",
+        "SCR-025"
+      ],
+      "operation_ids": [
+        "getTakeQualityReport"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-048-A",
+        "AT-048-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-007",
+        "MET-016",
+        "MET-017",
+        "MET-022",
+        "MET-023",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-007",
+        "EXP-008",
+        "EXP-009",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-049",
+      "title": "작업 진행과 상태 복원",
+      "module": "jobs",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-019"
+      ],
+      "operation_ids": [
+        "getJob",
+        "streamJobEvents"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-049-A",
+        "AT-049-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-012",
+        "IT-024"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-006",
+        "MET-021",
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-011",
+        "EXP-013"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-050",
+      "title": "안전한 재시도와 중복 방지",
+      "module": "jobs",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-019",
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "retryJob"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-050-A",
+        "AT-050-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-011",
+        "IT-012",
+        "IT-013"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-006",
+        "MET-021",
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-011",
+        "EXP-013"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-051",
+      "title": "취소와 일부 완료 보존",
+      "module": "jobs",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-019"
+      ],
+      "operation_ids": [
+        "cancelJob"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-051-A",
+        "AT-051-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-014"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-006",
+        "MET-021",
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-011",
+        "EXP-013"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-052",
+      "title": "오류 분류와 복구 안내",
+      "module": "jobs",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-019",
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "getJob",
+        "retryJob"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-052-A",
+        "AT-052-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-012",
+        "IT-027"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-006",
+        "MET-021",
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-011",
+        "EXP-013"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-053",
+      "title": "부분 재생성과 의존성 유지",
+      "module": "jobs",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-020",
+        "SCR-021",
+        "SCR-031"
+      ],
+      "operation_ids": [
+        "previewImpact",
+        "createRegeneration"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-053-A",
+        "AT-053-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-008"
+      ],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-006",
+        "MET-021",
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-011",
+        "EXP-013"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-054",
+      "title": "큐 우선순위와 공급자 장애",
+      "module": "jobs",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-019",
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "patchJobPriority",
+        "getServiceStatus"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-054-A",
+        "AT-054-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-005",
+        "MET-006",
+        "MET-021",
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-028"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-011",
+        "EXP-013"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-055",
+      "title": "타임라인 조립과 수동 편집",
+      "module": "editing",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-021"
+      ],
+      "operation_ids": [
+        "createProjectVersion"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-055-A",
+        "AT-055-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-028"
+      ],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-018",
+        "MET-019",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-056",
+      "title": "음원과 영상 동기화",
+      "module": "editing",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-014",
+        "SCR-021"
+      ],
+      "operation_ids": [
+        "createProjectVersion"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-056-A",
+        "AT-056-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-009",
+        "IT-019"
+      ],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-018",
+        "MET-019",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-057",
+      "title": "가사와 타이포그래피",
+      "module": "editing",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-021",
+        "SCR-025"
+      ],
+      "operation_ids": [
+        "createProjectVersion"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-057-A",
+        "AT-057-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-019"
+      ],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-018",
+        "MET-019",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-058",
+      "title": "가로 세로 파생 편집",
+      "module": "editing",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-021",
+        "SCR-025"
+      ],
+      "operation_ids": [
+        "createProjectVersion",
+        "createExport"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-058-A",
+        "AT-058-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-018",
+        "MET-019",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-059",
+      "title": "테이크와 버전 비교",
+      "module": "editing",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-020",
+        "SCR-023"
+      ],
+      "operation_ids": [
+        "listTakes",
+        "compareVersions"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-059-A",
+        "AT-059-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-008"
+      ],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-018",
+        "MET-019",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-060",
+      "title": "자동 저장과 동시 편집",
+      "module": "editing",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-021",
+        "SCR-031"
+      ],
+      "operation_ids": [
+        "patchWorkingDraft",
+        "createProjectVersion"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-060-A",
+        "AT-060-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-007"
+      ],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-018",
+        "MET-019",
+        "MET-021"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-061",
+      "title": "검토 링크와 모바일 접근",
+      "module": "review",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-022",
+        "SCR-023"
+      ],
+      "operation_ids": [
+        "createShareLink"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-061-A",
+        "AT-061-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-017",
+        "IT-024"
+      ],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-007",
+        "MET-014",
+        "MET-025",
+        "MET-031"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-005",
+        "EXP-012"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-062",
+      "title": "타임코드 댓글과 수정 요청",
+      "module": "review",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-023",
+        "SCR-024"
+      ],
+      "operation_ids": [
+        "createReview",
+        "resolveReview"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-062-A",
+        "AT-062-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-007",
+        "MET-014",
+        "MET-025",
+        "MET-031"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-005",
+        "EXP-012"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-063",
+      "title": "기획 샷 최종본 승인 단계",
+      "module": "review",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-022",
+        "SCR-023",
+        "SCR-025"
+      ],
+      "operation_ids": [
+        "recordApproval",
+        "recordReviewDecision"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-063-A",
+        "AT-063-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-007"
+      ],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-007",
+        "MET-014",
+        "MET-025",
+        "MET-031"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-005",
+        "EXP-012"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-064",
+      "title": "외주 작업 배정과 회수",
+      "module": "review",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-030",
+        "SCR-011",
+        "SCR-028"
+      ],
+      "operation_ids": [
+        "createAssignment",
+        "patchAssignment"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-064-A",
+        "AT-064-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-017"
+      ],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-007",
+        "MET-014",
+        "MET-025",
+        "MET-031"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-005",
+        "EXP-012"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-065",
+      "title": "알림과 변경 요약",
+      "module": "review",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-030"
+      ],
+      "operation_ids": [
+        "listNotifications"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-065-A",
+        "AT-065-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-007",
+        "MET-014",
+        "MET-025",
+        "MET-031"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-005",
+        "EXP-012"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-066",
+      "title": "승인 이력과 책임 인계",
+      "module": "review",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-031",
+        "SCR-028"
+      ],
+      "operation_ids": [
+        "listAuditEvents",
+        "createHandoff"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-066-A",
+        "AT-066-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-006",
+        "MET-007",
+        "MET-014",
+        "MET-025",
+        "MET-031"
+      ],
+      "related_experiment_ids": [
+        "EXP-003",
+        "EXP-005",
+        "EXP-012"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-067",
+      "title": "출력 규격과 렌더",
+      "module": "delivery",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-025",
+        "SCR-026"
+      ],
+      "operation_ids": [
+        "createExport"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-067-A",
+        "AT-067-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-018",
+        "IT-019",
+        "IT-028"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-017",
+        "MET-019",
+        "MET-025",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-068",
+      "title": "납품 전 검사와 승인 잠금",
+      "module": "delivery",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-025"
+      ],
+      "operation_ids": [
+        "recordApproval",
+        "validateProjectRights"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-068-A",
+        "AT-068-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-018"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-017",
+        "MET-019",
+        "MET-025",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-069",
+      "title": "납품 파일과 제작 기록",
+      "module": "delivery",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-026",
+        "SCR-037"
+      ],
+      "operation_ids": [
+        "getExport",
+        "requestDataExport"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-069-A",
+        "AT-069-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-018"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-017",
+        "MET-019",
+        "MET-025",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-070",
+      "title": "외부 공개와 예약 게시",
+      "module": "delivery",
+      "full_release_gate": "G3",
+      "baseline_gate": "G3",
+      "screen_ids": [
+        "SCR-025",
+        "SCR-026",
+        "SCR-034"
+      ],
+      "operation_ids": [
+        "recordRelease",
+        "scheduleRelease"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-070-A",
+        "AT-070-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-017",
+        "MET-019",
+        "MET-025",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-071",
+      "title": "아카이브와 복제",
+      "module": "delivery",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-026",
+        "SCR-027"
+      ],
+      "operation_ids": [
+        "cloneProject",
+        "listProjectVersions"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-071-A",
+        "AT-071-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-017",
+        "MET-019",
+        "MET-025",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-072",
+      "title": "프로젝트 마감과 설정 후보",
+      "module": "delivery",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-024",
+        "SCR-027"
+      ],
+      "operation_ids": [
+        "createMemoryProposals"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-072-A",
+        "AT-072-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-004"
+      ],
+      "related_metric_ids": [
+        "MET-011",
+        "MET-017",
+        "MET-019",
+        "MET-025",
+        "MET-026"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-011",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-073",
+      "title": "제작 시간과 비용 계측",
+      "module": "learning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-036"
+      ],
+      "operation_ids": [
+        "getIpAnalytics",
+        "getBillingUsage"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-073-A",
+        "AT-073-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-023"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-020",
+        "MET-027",
+        "MET-029",
+        "MET-030",
+        "MET-031",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-002",
+        "EXP-004",
+        "EXP-005",
+        "EXP-014",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-074",
+      "title": "팀 정체성 평가",
+      "module": "learning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-023",
+        "SCR-036"
+      ],
+      "operation_ids": [
+        "createEvaluation"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-074-A",
+        "AT-074-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-023"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-020",
+        "MET-027",
+        "MET-029",
+        "MET-030",
+        "MET-031",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-002",
+        "EXP-004",
+        "EXP-005",
+        "EXP-014",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-075",
+      "title": "반복 프로젝트와 유지율",
+      "module": "learning",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-036",
+        "SCR-029"
+      ],
+      "operation_ids": [
+        "getIpAnalytics"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-075-A",
+        "AT-075-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-020",
+        "MET-027",
+        "MET-029",
+        "MET-030",
+        "MET-031",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-002",
+        "EXP-004",
+        "EXP-005",
+        "EXP-014",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-076",
+      "title": "오류 수정의 다음 작품 반영",
+      "module": "learning",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-024",
+        "SCR-027",
+        "SCR-036"
+      ],
+      "operation_ids": [
+        "createMemoryProposals",
+        "revisePreference"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-076-A",
+        "AT-076-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-006",
+        "IT-023"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-020",
+        "MET-027",
+        "MET-029",
+        "MET-030",
+        "MET-031",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-002",
+        "EXP-004",
+        "EXP-005",
+        "EXP-014",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-077",
+      "title": "벤치마크와 모델 변경 검증",
+      "module": "learning",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-032",
+        "SCR-036"
+      ],
+      "operation_ids": [
+        "createEvaluation"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-077-A",
+        "AT-077-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-022"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-020",
+        "MET-027",
+        "MET-029",
+        "MET-030",
+        "MET-031",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-002",
+        "EXP-004",
+        "EXP-005",
+        "EXP-014",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-078",
+      "title": "고객별 학습 설정과 내보내기",
+      "module": "learning",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-035",
+        "SCR-037"
+      ],
+      "operation_ids": [
+        "patchLearningPolicy",
+        "requestDataExport"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-078-A",
+        "AT-078-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-020"
+      ],
+      "related_metric_ids": [
+        "MET-007",
+        "MET-008",
+        "MET-009",
+        "MET-010",
+        "MET-020",
+        "MET-027",
+        "MET-029",
+        "MET-030",
+        "MET-031",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-002",
+        "EXP-004",
+        "EXP-005",
+        "EXP-014",
+        "EXP-015"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-079",
+      "title": "플랜과 사용 권한",
+      "module": "billing",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-029"
+      ],
+      "operation_ids": [
+        "cancelSubscription",
+        "changeSubscription",
+        "getSubscription",
+        "listBillingPlans",
+        "receivePaymentWebhook",
+        "resubscribe"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-079-A",
+        "AT-079-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-027",
+        "MET-030"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-014",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-080",
+      "title": "조직과 프로젝트 한도",
+      "module": "billing",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-018",
+        "SCR-029"
+      ],
+      "operation_ids": [
+        "patchBudget"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-080-A",
+        "AT-080-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-015",
+        "IT-016"
+      ],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-027",
+        "MET-030"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-014",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-081",
+      "title": "원장과 공급자 비용 조정",
+      "module": "billing",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-029",
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "listLedger",
+        "getBillingUsage"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-081-A",
+        "AT-081-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-011",
+        "IT-013",
+        "IT-015"
+      ],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-027",
+        "MET-030"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-014",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-082",
+      "title": "실패 과금과 환불 기준",
+      "module": "billing",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-029",
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "requestRefund"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-082-A",
+        "AT-082-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-014"
+      ],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-027",
+        "MET-030"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-014",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-083",
+      "title": "사용량 내역과 비용 보고",
+      "module": "billing",
+      "full_release_gate": "G2",
+      "baseline_gate": "G2",
+      "screen_ids": [
+        "SCR-029",
+        "SCR-036"
+      ],
+      "operation_ids": [
+        "getBillingUsage",
+        "listLedger"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-083-A",
+        "AT-083-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-027",
+        "MET-030"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-014",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-084",
+      "title": "결제 실패와 제한 해제",
+      "module": "billing",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-029",
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "cancelSubscription",
+        "changeSubscription",
+        "createCheckout",
+        "getSubscription",
+        "receivePaymentWebhook",
+        "resubscribe"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-084-A",
+        "AT-084-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-023",
+        "MET-025",
+        "MET-027",
+        "MET-030"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-014",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-085",
+      "title": "지원 사건과 임시 접근",
+      "module": "operations",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "createSupportTicket",
+        "grantSupportAccess"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-085-A",
+        "AT-085-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-010",
+        "EXP-013",
+        "EXP-015",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-086",
+      "title": "입력 안전과 사용 정책",
+      "module": "operations",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-006",
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "createUpload",
+        "runPreflight"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-086-A",
+        "AT-086-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-021"
+      ],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-010",
+        "EXP-013",
+        "EXP-015",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-087",
+      "title": "보관과 완전 삭제 처리",
+      "module": "operations",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-031",
+        "SCR-037"
+      ],
+      "operation_ids": [
+        "requestDeletion",
+        "getDeletionRequest"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-087-A",
+        "AT-087-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-020"
+      ],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-010",
+        "EXP-013",
+        "EXP-015",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-088",
+      "title": "관측과 장애 대응",
+      "module": "operations",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "getServiceStatus",
+        "listAuditEvents"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-088-A",
+        "AT-088-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-013"
+      ],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-010",
+        "EXP-013",
+        "EXP-015",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-089",
+      "title": "백업과 재해 복구",
+      "module": "operations",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-032",
+        "SCR-035"
+      ],
+      "operation_ids": [
+        "getServiceStatus"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-089-A",
+        "AT-089-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-020"
+      ],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-010",
+        "EXP-013",
+        "EXP-015",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-090",
+      "title": "배포와 변경 관리",
+      "module": "operations",
+      "full_release_gate": "G1",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-032"
+      ],
+      "operation_ids": [
+        "getServiceStatus"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-090-A",
+        "AT-090-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-022"
+      ],
+      "related_metric_ids": [
+        "MET-022",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-009",
+        "EXP-010",
+        "EXP-013",
+        "EXP-015",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-091",
+      "title": "제작 템플릿과 반복 배치",
+      "module": "integration",
+      "full_release_gate": "G3",
+      "baseline_gate": "G3",
+      "screen_ids": [
+        "SCR-033"
+      ],
+      "operation_ids": [
+        "createBatchRun",
+        "createPreset"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-091-A",
+        "AT-091-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-019",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-010",
+        "EXP-012",
+        "EXP-013",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-092",
+      "title": "외부 제작 도구와 편집 교환",
+      "module": "integration",
+      "full_release_gate": "G3",
+      "baseline_gate": "G3",
+      "screen_ids": [
+        "SCR-038"
+      ],
+      "operation_ids": [
+        "importTimeline",
+        "createExport"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-092-A",
+        "AT-092-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-019",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-010",
+        "EXP-012",
+        "EXP-013",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-093",
+      "title": "연동 API와 웹훅",
+      "module": "integration",
+      "full_release_gate": "G3",
+      "baseline_gate": "G3",
+      "screen_ids": [
+        "SCR-034"
+      ],
+      "operation_ids": [
+        "createApiKey",
+        "receiveProviderWebhook"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-093-A",
+        "AT-093-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-019",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-010",
+        "EXP-012",
+        "EXP-013",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-094",
+      "title": "기업 인증과 정책 관리",
+      "module": "integration",
+      "full_release_gate": "G3",
+      "baseline_gate": "G3",
+      "screen_ids": [
+        "SCR-035"
+      ],
+      "operation_ids": [
+        "configureEnterpriseAuth",
+        "patchWorkspacePolicy"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-094-A",
+        "AT-094-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-019",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-010",
+        "EXP-012",
+        "EXP-013",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-095",
+      "title": "다국어와 접근성",
+      "module": "integration",
+      "full_release_gate": "G2",
+      "baseline_gate": "G1",
+      "screen_ids": [
+        "SCR-001",
+        "SCR-023",
+        "SCR-035"
+      ],
+      "operation_ids": [
+        "patchWorkspace",
+        "patchIp"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-095-A",
+        "AT-095-B"
+      ],
+      "integration_scenario_ids": [
+        "IT-024"
+      ],
+      "related_metric_ids": [
+        "MET-019",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-010",
+        "EXP-012",
+        "EXP-013",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    },
+    {
+      "requirement_id": "FR-096",
+      "title": "고급 인물과 퍼포먼스 제작",
+      "module": "integration",
+      "full_release_gate": "G3",
+      "baseline_gate": "G3",
+      "screen_ids": [
+        "SCR-009",
+        "SCR-017",
+        "SCR-018"
+      ],
+      "operation_ids": [
+        "createPerformanceJob"
+      ],
+      "acceptance_scenario_ids": [
+        "AT-096-A",
+        "AT-096-B"
+      ],
+      "integration_scenario_ids": [],
+      "related_metric_ids": [
+        "MET-019",
+        "MET-024",
+        "MET-025",
+        "MET-026",
+        "MET-028",
+        "MET-032"
+      ],
+      "related_experiment_ids": [
+        "EXP-008",
+        "EXP-010",
+        "EXP-012",
+        "EXP-013",
+        "EXP-016"
+      ],
+      "definition_status": "specified",
+      "fixture_status": "planned",
+      "binding_status": "not_bound",
+      "implementation_status": "not_implemented",
+      "execution_status": "not_run",
+      "passed": null,
+      "mapping_note": "관련 화면·API·지표의 설계상 연계. 각각이 기능 전체 또는 수용 조건 전체를 충족한다는 뜻이 아니다. 운영·접근성 등은 UI·runbook·CI/CD 시험을 병행한다."
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "schema": "music-recovery-driver-acceptance/1",
+  "recorded_at": "2026-10-27T22:04:41.843607+00:00",
+  "status": "ACCEPTED for three bounded fixes and synthetic actual music-only workflow",
+  "whole_platform_complete": false,
+  "source_count": 214,
+  "changed_sources": [
+    "editing.py",
+    "index.html",
+    "motion-studio.js",
+    "tests/studio_notice.cjs",
+    "tests/test_editing.py",
+    "tests/test_motion_text_controls.py"
+  ],
+  "focused_tests": {
+    "count": 57,
+    "seconds": 24.683,
+    "exit": 0,
+    "log": "focused-regression.log",
+    "source_changed_during_run": []
+  },
+  "actual_browser": {
+    "tool": "Ego0.6.0.20 guide2.1.0",
+    "space": 90,
+    "page": "p1",
+    "url": "http://127.0.0.1:52062/",
+    "seed_actions": 0,
+    "human_authored": true,
+    "photo_inputs": 0,
+    "three_d_inputs": 0,
+    "external_provider_calls": 0,
+    "action_counts": {
+      "approve_timeline": 1,
+      "audio": 1,
+      "declare_take_rights": 1,
+      "estimate_render": 4,
+      "motion_propose": 3,
+      "motion_render": 1,
+      "motion_review": 3,
+      "music_structure": 8,
+      "project": 1,
+      "render_job": 1,
+      "review_take": 1,
+      "select": 1,
+      "shot": 1,
+      "timeline": 1
+    },
+    "flow": [
+      "Empty workspace project created through UI",
+      "10second self-authored tone uploaded with rights",
+      "Invalid range/overlap/name rejected with preserved input and focus",
+      "Explicit music selection3–4",
+      "New two-line starter default240 saved/approved as motionv2",
+      "Native candidate4seconds Take1",
+      "Take selected/rights/review approved",
+      "Timelinev1 3seconds audiooffset3/caption1 saved/approved",
+      "Selection3–4 vs output3–6 advisory visible1920/1280/375",
+      "Explicit confirm renders3second output without implicit trim",
+      "UI download/native playback actual1.193242seconds/showing Korean cue",
+      "Both music form fields explicitly3–6 savedv3; warning clears, saved timeline/output preserved",
+      "Reload retains head/take/output; output bytes identical"
+    ],
+    "finished": {
+      "spaceId": 90,
+      "closedSpace": true,
+      "closedManagedLabels": [
+        "p1"
+      ],
+      "keep": []
+    }
+  },
+  "media": "media-verification.json",
+  "independent_review": {
+    "source": ".omo/evidence/music-recovery-20261028-code-review.md",
+    "result": "No blocking findings within inspected scope; browser root-owned",
+    "copy": "independent-code-review.txt"
+  },
+  "limits": [
+    "Synthetic one-shot native typography, not selected Claude output or real user/production acceptance",
+    "Full819 suite belongs to previous S819 snapshot; not rerun on current changes",
+    "No formal Hallmark detector/Impeccable critique or WCAG compliance",
+    "Observer errors/intermediate state retained and excluded from pass claims",
+    "Explicit music change alters computed future motion grant; stored scene/Take/timeline unchanged"
+  ],
+  "skills": {
+    "read_applied": [
+      "document-completion-gate",
+      "harness-orchestration:orchestrate",
+      "harness-core:feature-verification",
+      "karpathy-guidelines",
+      "Hallmark2.0 and Impeccable UI/craft guidance from continuous prior stage",
+      "ego-browser actual installed guide"
+    ],
+    "not_run": [
+      "Formal Hallmark detector",
+      "Formal Impeccable critique/audit",
+      "Impeccable launcher retry",
+      "Full819 rerun",
+      "Real Claude/paid provider call"
+    ]
+  },
+  "fablize_narrow_verification": "57 related tests and actual UI→HTTP→native/FFmpeg→download/play/reopen; actual document gate separately retained"
+}

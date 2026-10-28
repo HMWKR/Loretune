@@ -1,0 +1,49 @@
+{
+  "results": [
+    {
+      "name": "current selected GPT and historical Claude remain distinct",
+      "status": "PASS"
+    },
+    {
+      "name": "absent unknown wrong-role and hostile display use honest text only",
+      "status": "PASS"
+    },
+    {
+      "name": "current false only first-line warning; historical facts unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "model-only polling / Grok change",
+      "status": "FAIL",
+      "serverRevision": 4,
+      "clientRevision": 3,
+      "serverSelection": "xai-grok-4-7",
+      "clientSelection": "openai-gpt-6-luna",
+      "initial": "\uae30\ud68d \ubaa8\ub378: GPT 6 Luna \u00b7 \uc791\ud488 \uae30\ubcf8\uac12 \u00b7 \ub2e4\uc74c \uc694\uccad \uae30\uc900",
+      "expected": "\uae30\ud68d \ubaa8\ub378: Grok 4.7 \u00b7 \uc791\ud488 \uae30\ubcf8\uac12 \u00b7 \ub2e4\uc74c \uc694\uccad \uae30\uc900",
+      "actual": "\uae30\ud68d \ubaa8\ub378: GPT 6 Luna \u00b7 \uc791\ud488 \uae30\ubcf8\uac12 \u00b7 \ub2e4\uc74c \uc694\uccad \uae30\uc900",
+      "polls": 3,
+      "draftPreserved": true
+    },
+    {
+      "name": "model-only polling / selection cleared",
+      "status": "FAIL",
+      "serverRevision": 5,
+      "clientRevision": 3,
+      "serverSelection": null,
+      "clientSelection": "openai-gpt-6-luna",
+      "initial": "\uae30\ud68d \ubaa8\ub378: GPT 6 Luna \u00b7 \uc791\ud488 \uae30\ubcf8\uac12 \u00b7 \ub2e4\uc74c \uc694\uccad \uae30\uc900",
+      "expected": "\uae30\ud68d \ubaa8\ub378: \ubbf8\uc120\ud0dd \u00b7 \ubaa8\ub378 \uc124\uc815\uc5d0\uc11c \uc120\ud0dd\ud558\uc138\uc694.",
+      "actual": "\uae30\ud68d \ubaa8\ub378: GPT 6 Luna \u00b7 \uc791\ud488 \uae30\ubcf8\uac12 \u00b7 \ub2e4\uc74c \uc694\uccad \uae30\uc900",
+      "polls": 3,
+      "draftPreserved": true
+    },
+    {
+      "name": "same fresh model update applies when chat progression also changes",
+      "status": "PASS"
+    }
+  ],
+  "passed": 4,
+  "failed": 2,
+  "network": "stubbed fetch; no HTTP"
+}

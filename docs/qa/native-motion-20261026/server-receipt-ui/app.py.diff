@@ -1,0 +1,10 @@
+--- before/app.py
++++ app.py
+@@ -164,6 +164,7 @@
+                 p['ontology_proposals']=[dict(id=r[0],base_revision=r[1],graph=json.loads(r[2]),applied_revision=r[3]) for r in c.execute('SELECT id,base_revision,body,applied_revision FROM ontology_proposals WHERE scope=?',(scope,))]
+                 p['lineage']=project_ontology.projection(self.workspace_id,identifier,p)
+                 p['chat_turns']=[chat_runtime.public(json.loads(r[0])) for r in c.execute('SELECT body FROM chat_turns WHERE project=? ORDER BY rowid',(identifier,))]
++                p['chat_receipts']=__import__('production_context').motion_receipts(p,identifier,revision)
+                 p['chat_connection']=self.chat_runtime.capability(name,p) if self.chat_runtime else dict(available=False,mode='disconnected',reason='채팅 실행 연결 없음 · 로컬 계획은 계속 사용할 수 있습니다.')
+                 import media_creator
+                 p['media_connections']={role:media_creator.capability(self,p,role) for role in ('image','video')}

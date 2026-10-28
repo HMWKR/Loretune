@@ -1,0 +1,903 @@
+--- a/chat_general.py
++++ b/chat_general.py
+@@ -25,9 +25,11 @@
+ import agent_preferences
+ 
+ TTL_SECONDS = 300
+-MAX_INPUT = 4096
++# D20 (user: "상한만 올리기"); 16384 is the lead's stated assumption. Transport stays 64 KiB.
++MAX_INPUT = 16384
+ MAX_OUTPUT = 4096
+ MAX_ROUNDS = 4
++CONVERSATION_CAP_MICRO = 400000
+ MAX_OBSERVED_TOKEN_DIGITS = 256
+ MAX_OBSERVED_TOKENS = 10 ** MAX_OBSERVED_TOKEN_DIGITS - 1
+ SAFE_JSON_INTEGER = 2 ** 53 - 1
+@@ -35,7 +37,8 @@
+                  'propose_timeline_changes', 'request_render',
+                  'propose_motion_scene', 'request_motion_render',
+                  'get_model_capabilities', 'prepare_image_action',
+-                 'get_generation_job', 'estimate_media_plan')
++                 'get_generation_job', 'estimate_media_plan',
++                 'prepare_video_action', 'get_agent_settings')
+ 
+ 
+ def initialize(c):
+@@ -431,7 +434,7 @@
+         # Haiku 5.5 allows disabled thinking at low effort. Unexpected private
+         # blocks are rejected rather than persisted or forwarded.
+         body['thinking']={'type':'disabled'}
+-        if type(total_maximum_micro) is not int or not 1<=total_maximum_micro<=400000:
++        if type(total_maximum_micro) is not int or not 1<=total_maximum_micro<=CONVERSATION_CAP_MICRO:
+             raise ValueError('대화 전체 비용 상한을 확인하세요.')
+     count={k:deepcopy(v) for k,v in body.items() if k!='max_tokens'}
+     worst=int((chat_models.cost(spec,MAX_INPUT,MAX_OUTPUT)*1000000).to_integral_value(rounding=ROUND_CEILING))
+--- a/agent_preferences.py
++++ b/agent_preferences.py
+@@ -6,12 +6,13 @@
+ from copy import deepcopy
+ import json
+ import time
++from decimal import ROUND_CEILING
+ 
+ import chat_models
+ from loretune import Conflict
+ 
+ MODES={'read_only':0,'review':1,'full_access':2}
+-READ_TOOLS={'search_project_context','get_model_capabilities','get_generation_job','estimate_media_plan'}
++READ_TOOLS={'search_project_context','get_model_capabilities','get_generation_job','estimate_media_plan','get_agent_settings'}
+ AUTO_DRAFT_COMMANDS={'set_clip','reorder_clips','set_captions','set_audio_offset','set_motion_overlay'}
+ ACCOUNT_DELETE_TOOLS={'delete_account','account_delete'}
+ FILE_DELETE_TOOLS={'delete_file','delete_asset','delete_project','file_delete','asset_delete','project_delete'}
+@@ -100,6 +101,34 @@
+     return value
+ 
+ 
++def token_price(selection):
++    """D21: standard text rates per 1M tokens from the chat contract, not a billing claim."""
++    if selection not in chat_models.MODELS:return None
++    spec=chat_models.contract(selection)
++    long=dict(threshold_input_tokens=spec['long_context_threshold'],input_rate=spec['long_input_rate'],output_rate=spec['long_output_rate']) if 'long_context_threshold' in spec else None
++    return dict(input_rate=spec['input_rate'],output_rate=spec['output_rate'],unit='USD per 1M tokens',long_context=long,
++                source=spec['source'],revision=spec['price_revision'])
++
++
++def reservation(selection):
++    """D20: general-chat worst-case hold per round and how many fit the conversation cap."""
++    import chat_general
++    if selection not in chat_models.MODELS:return None
++    worst=int((chat_models.cost(chat_models.contract(selection),chat_general.MAX_INPUT,chat_general.MAX_OUTPUT)*1000000).to_integral_value(rounding=ROUND_CEILING))
++    return dict(max_input_tokens=chat_general.MAX_INPUT,max_output_tokens=chat_general.MAX_OUTPUT,worst_per_round_micro=worst,
++                conversation_cap_micro=chat_general.CONVERSATION_CAP_MICRO,worst_case_rounds_within_cap=chat_general.CONVERSATION_CAP_MICRO//worst)
++
++
++def settings_summary(project,run):
++    """S9/D21 read-only view of the frozen settings for this run; the agent cannot change them."""
++    saved=frozen(project,run);selection=saved['selection']
++    spec=chat_models.contract(selection) if selection in chat_models.MODELS else None
++    return dict(status='succeeded',
++                chat_model=dict(id=selection,model=spec['model'],provider=spec['provider'],selection_reason='사용자가 선택한 모델',price=token_price(selection)) if spec else None,
++                effort=saved['effort'],permission=dict(saved=profile(project,selection)['mode'] if selection else saved['mode'],frozen=saved['mode'],effective=effective_mode(project,run)),
++                reservation=reservation(selection),agent_can_change=False,note='권한·effort·모델은 사용자만 바꿀 수 있습니다. 이 결과는 읽기 전용입니다.')
++
++
+ def capability(selection,store=None):
+     spec=chat_models.contract(selection);provider=spec['provider']
+     general=bool(store and store.general_chat_runtime is not None and provider=='anthropic')
+@@ -111,6 +140,7 @@
+     return dict(provider=provider,model=spec['model'],effort_options=list(EFFORTS[selection]),unsupported_efforts=unavailable,
+                 general_route_supported=provider=='anthropic',general_route_configured=general,
+                 legacy_route_supported=True,legacy_route_configured=legacy,
++                token_price=token_price(selection),reservation=reservation(selection),
+                 account_verified=False,billing_verified=False,
+                 reason='일반 채팅은 현재 Claude 경로만 지원합니다. 다른 모델은 별도 legacy 연결·검증이 필요합니다.' if provider!='anthropic' else '현재 일반 경로는 low/medium/high와 disabled thinking을 사용합니다. 실제 계정·청구는 별도 검증입니다.')
+ 
+--- a/app.py
++++ b/app.py
+@@ -817,9 +817,12 @@
+                 chat_general.claim_tool(c,self,project_id,text(d['run']),d['call'],key)
+                 chat_runtime.claim_tool(c,self,project_id,text(d['run']),d['call'],key,s.projects[name])
+                 jobs=action_execution.project_jobs(c,self.workspace_id,project_id,name)
+-                result['tool']=production_tools.execute(s.projects[name],text(d['run']),d['call'],jobs=[j for j in jobs if chat_sessions.owns(target,j['id'])],
++                jobs=[j for j in jobs if chat_sessions.owns(target,j['id'])]
++                import fal_dispatch
++                for j in jobs:j['pricing']=fal_dispatch.action_view(c,self.workspace_id,project_id,j.get('action_id'))
++                result['tool']=production_tools.execute(s.projects[name],text(d['run']),d['call'],jobs=jobs,
+                     local_tool=lambda tool,args,run,call: __import__('local_creation_tools').execute(self,c,s,name,tool,args,run,call),
+-                    prepare_media=(lambda tool,args: self.media_dispatch.prepare_tool(c,s.projects[name],name,tool,args)) if self.media_dispatch else None,
++                    prepare_media=(lambda tool,args,provenance: self.media_dispatch.prepare_tool(c,s.projects[name],name,tool,args,provenance)) if self.media_dispatch else None,
+                     estimate_plan=(lambda plan: self.media_dispatch.estimate_plan(c,s.projects[name],name,plan)) if self.media_dispatch else None,
+                     request_generation=lambda args: action_execution.request_with_savepoint(c,self.workspace_id,project_id,s.projects[name],args,provider_request=self.media_dispatch.request if self.media_dispatch else None))
+             elif a == 'model_settings':
+--- a/fal_dispatch.py
++++ b/fal_dispatch.py
+@@ -5,6 +5,7 @@
+ from copy import deepcopy
+ import hashlib,json,os,time
+ import action_assets,action_execution as actions,chat_sessions,contracts,guided,ledger,media_bridge,model_selection
++import fal_models
+ from fal_models import CONNECTION,MODELS
+ from fal_provider import ProviderError
+ 
+@@ -39,11 +40,14 @@
+    if hashlib.sha256(raw).hexdigest()!=ref['sha256']:raise ValueError('reference changed')
+    frames.append(raw)
+   return ad.contract.payload(a['inputs']['prompt'],a['options']['generation'],frames)
+- def prepare(self,c,p,name,shot,prompt,options,refs,expected_revision,explicit=None):
++ def prepare(self,c,p,name,shot,prompt,options,refs,expected_revision,explicit=None,*,actor='local-owner',model_reason=None,provenance=None):
+   if not isinstance(options,dict) or not isinstance(refs,list) or type(expected_revision) is not int or expected_revision<0:raise ValueError('typed media input required')
+   role='video' if 'duration' in options else 'image'
+-  resolved=model_selection.resolve(role,explicit=explicit,project=model_selection.settings(p)['selections'][role])
++  # D15: a model different from the project selection is saved as a proposal; settings never change here.
++  current=model_selection.settings(p)['selections'][role]
++  resolved=model_selection.resolve(role,explicit=explicit,project=current)
+   item=resolved['selection'];ad=self.adapters.get(item['id']) if item else None
++  proposal=proposal_record(actor,model_reason,provenance,current,item)
+   if ad is None:raise actions.ExecutionBlocked('선택 모델의 서버 연결·견적이 없습니다.')
+   target=p['shots'][shot]
+   if target['revision']!=expected_revision:raise ValueError('stale shot')
+@@ -53,11 +57,11 @@
+   skeleton=dict(connection_id=CONNECTION,release_id=ad.contract.MODEL,inputs=dict(prompt=prompt,asset_refs=deepcopy(refs)),options=dict(generation=deepcopy(options),shot=shot))
+   data=self.data(c,p,skeleton);quote=ad.contract.estimate(data)
+   output_policy=deepcopy(ad._lifecycle)
+-  a=actions.propose(c,self.store.workspace_id,contracts.project_id(self.store.workspace_id,name),plan_id=plan['id'],plan_revision=plan['version'],context_hash=model_selection.media_snapshot(p)['sha256'],context_kind='media-v1',role=role,release_id=ad.contract.MODEL,inputs=skeleton['inputs'],options=dict(shot=shot,shot_revision=expected_revision,generation=deepcopy(options),quote=quote,output_policy=output_policy,selection_origin=resolved['origin']),mode='provider',connection_id=CONNECTION)
++  a=actions.propose(c,self.store.workspace_id,contracts.project_id(self.store.workspace_id,name),plan_id=plan['id'],plan_revision=plan['version'],context_hash=model_selection.media_snapshot(p)['sha256'],context_kind='media-v1',role=role,release_id=ad.contract.MODEL,inputs=skeleton['inputs'],options=dict(shot=shot,shot_revision=expected_revision,generation=deepcopy(options),quote=quote,output_policy=output_policy,selection_origin=resolved['origin'],proposal=proposal),mode='provider',connection_id=CONNECTION)
+   return dict(action=a,estimate=quote,input_sha256=guided.fingerprint(data),state='needs_approval',mode=ad.mode)
+- def prepare_tool(self,c,p,name,tool,args):
++ def prepare_tool(self,c,p,name,tool,args,provenance=None):
+   import production_context
+-  args=deepcopy(args);args['shot_id']=production_context.shot_key(p,args['shot_id'])
++  args=deepcopy(args);reason=args.pop('model_reason',None);args['shot_id']=production_context.shot_key(p,args['shot_id'])
+   if tool=='prepare_video_action':
+    # Model-supplied source handles are checked here, not by the HTTP preflight.
+    args['source_shot_id']=production_context.shot_key(p,args['source_shot_id']);source=p['shots'][args['source_shot_id']]
+@@ -67,8 +71,9 @@
+   elif tool=='prepare_video_action':
+    options={'duration':args['duration'],'generate_audio':False};refs=[dict(shot=args['source_shot_id'],take=args['source_take_id'],sha256=args['source_sha256'],role='start_frame')]
+   else:raise ValueError('unsupported media preparation')
+-  prepared=self.prepare(c,p,name,args['shot_id'],args['prompt'],options,refs,args['shot_revision'],args['model_id']);a=prepared['action']
+-  return dict(status='proposed',action_id=a['id'],plan_id=a['plan_id'],plan_revision=a['plan_revision'],model=a['release_id'],role=a['role'],prompt=a['inputs']['prompt'],output_options=a['options']['generation'],estimate=prepared['estimate']['money'],price_kind=prepared['estimate']['kind'],approval='required',mode=prepared['mode'],external_calls=0)
++  prepared=self.prepare(c,p,name,args['shot_id'],args['prompt'],options,refs,args['shot_revision'],args['model_id'],actor='agent',model_reason=reason,provenance=provenance);a=prepared['action']
++  item=model_selection.validate_selection(a['role'],fal_models.identifier_for(a['release_id']))
++  return dict(status='proposed',action_id=a['id'],plan_id=a['plan_id'],plan_revision=a['plan_revision'],model=a['release_id'],role=a['role'],prompt=a['inputs']['prompt'],output_options=a['options']['generation'],estimate=prepared['estimate']['money'],**proposal_view(a),model_state=item['state'],approval='required',mode=prepared['mode'],external_calls=0)
+  def estimate_plan(self,c,p,name,plan_id):
+   if not any(x['id']==plan_id for x in p.get('guided_plans',[])):return dict(status='not_found')
+   pid=contracts.project_id(self.store.workspace_id,name)
+@@ -86,7 +91,7 @@
+    if reason is None and model_selection.action_context(p,a)!=a['context_hash']:reason='stale'
+    if reason is None and q['expires']<=now:reason='expired'
+    if reason:excluded[reason]+=1
+-   items.append(dict(action_id=a['id'],model=a['release_id'],role=a['role'],money=q['money'],price_kind=q['kind'],expired=q['expires']<=now,excluded=reason))
++   items.append(dict(action_id=a['id'],model=a['release_id'],role=a['role'],money=q['money'],price_kind=q['kind'],expired=q['expires']<=now,excluded=reason,**{k:v for k,v in proposal_view(a).items() if k!='price_kind'}))
+   current=[x for x in items if x['excluded'] is None];complete=bool(current) and not excluded['expired']
+   return dict(status='estimated' if complete else 'incomplete',actions=items,total=ledger.money(sum(ledger.units(x['money']) for x in current),'USD') if complete else None,excluded=excluded,billing_confirmed=False,approval=False,label='이 대화에서 준비된 현재 유효 작업의 견적 합계입니다(제외 건수는 excluded). 계획 전체 견적이나 청구 금액이 아닙니다.')
+  def gate(self,pid,a,data):
+@@ -165,5 +170,40 @@
+   if a.get('connection_id')!=CONNECTION:continue
+   q=a['options']['quote'];mapping=c.execute('SELECT job FROM provider_action_jobs WHERE workspace=? AND project=? AND action=?',(w,pid,a['id'])).fetchone()
+   g=next((json.loads(r[0]) for r in reversed(c.execute('SELECT body FROM execution_grants WHERE workspace=? AND project=?',(w,pid)).fetchall()) if a['id'] in json.loads(r[0]).get('action_hashes',{})),None)
+-  result.append(dict(id=a['id'],shot=a['options']['shot'],role=a['role'],model=a['release_id'],prompt=a['inputs']['prompt'],options=a['options']['generation'],estimate=q['money'],estimate_kind=q['kind'],mode='contract-fake' if q['kind']=='fixture' else 'provider-unverified',estimate_expired=q['expires']<=time.time(),approval='approved' if g and g['state']=='active' and g['expires']>time.time() else 'required',job_id=mapping[0] if mapping else None))
++  result.append(dict(id=a['id'],shot=a['options']['shot'],role=a['role'],model=a['release_id'],prompt=a['inputs']['prompt'],options=a['options']['generation'],estimate=q['money'],estimate_kind=q['kind'],mode='contract-fake' if q['kind']=='fixture' else 'provider-unverified',estimate_expired=q['expires']<=time.time(),approval='approved' if g and g['state']=='active' and g['expires']>time.time() else 'required',job_id=mapping[0] if mapping else None,**{k:v for k,v in proposal_view(a).items() if k!='price_kind'}))
+  return result
++
++
++PROVENANCE_KEYS=('engine','chat_model','permission_mode','effort','run','call')
++NO_RECORD='출처 기록 없음(변경 전 준비)'
++
++def proposal_record(actor,model_reason,provenance,project_selection,item):
++ """Server-frozen D15 origin of one prepared action. Model arguments supply only model_reason."""
++ if actor=='agent':
++  if type(model_reason) is not str or not model_reason.strip() or len(model_reason)>300:raise ValueError('model_reason required, 1..300 characters')
++  if not isinstance(provenance,dict) or set(provenance)!=set(PROVENANCE_KEYS):raise ValueError('server provenance required')
++ elif actor=='local-owner':
++  if model_reason is not None or provenance is not None:raise ValueError('human preparation carries no model reason')
++  provenance=dict.fromkeys(PROVENANCE_KEYS)
++ else:raise ValueError('unknown actor')
++ identifier=item['id'] if item else None
++ return dict(actor=actor,model_reason=model_reason,provenance=deepcopy(provenance),project_selection=project_selection,
++             differs_from_project=identifier!=project_selection,unit_price=fal_models.unit_price(identifier))
++
++def proposal_view(a):
++ """Price, quote and origin display for one saved fal action, identical on every surface."""
++ q=a['options']['quote'];item=a['options'].get('proposal')
++ identifier=fal_models.identifier_for(a['release_id'])
++ value=dict(price=fal_models.price_view(identifier,a['options']['generation'],q['money'],unit=(item or {}).get('unit_price')),
++            price_kind=q['kind'],price_source=q.get('source'),price_revision=q.get('price_revision'),quote_expires=q['expires'],quote_expired=q['expires']<=time.time())
++ if item is None:
++  return dict(value,record=NO_RECORD,actor=None,model_reason=None,model_reason_label=None,provenance=None,project_selection=None,differs_from_project=None)
++ label='모델이 제시한 이유(검증 안 됨)' if item['actor']=='agent' else '사용자가 준비 시 지정한 모델' if item['differs_from_project'] else '프로젝트에서 사용자가 선택한 모델'
++ return dict(value,record='recorded',actor=item['actor'],model_reason=item['model_reason'],model_reason_label=label,provenance=deepcopy(item['provenance']),
++             project_selection=item['project_selection'],differs_from_project=item['differs_from_project'])
++
++def action_view(c,w,pid,action_id):
++ """D15 fields for a job's saved fal action, or None when the job has no such action."""
++ row=c.execute('SELECT body FROM production_actions WHERE id=? AND workspace=? AND project=?',(action_id,w,pid)).fetchone() if isinstance(action_id,str) else None
++ a=json.loads(row[0]) if row else None
++ return proposal_view(a) if a and a.get('connection_id')==CONNECTION else None
+--- a/fal_models.py
++++ b/fal_models.py
+@@ -4,6 +4,7 @@
+ """
+ import base64,hashlib,json,time
+ from copy import deepcopy
++from decimal import Decimal
+ import ledger
+ 
+ CONNECTION='fal-model-queue-v1'
+@@ -14,7 +15,53 @@
+  'fal-kling-2-5-turbo':dict(endpoint='fal-ai/kling-video/v2.5-turbo/pro/image-to-video',role='video',task='image-to-video'),
+ }
+ SIZES={'16:9':{'width':1024,'height':576},'9:16':{'width':576,'height':1024},'1:1':{'width':1024,'height':1024}}
++# D19 (user decision 2026-10-28): published fal model-page unit prices, read once
++# without an account. A documented estimate shown beside the quote; never a quote,
++# a billing claim or an execution input. Verbatim page text:
++#  flux/schnell "$0.003 per megapixel" / flux-pro/v1.1 "$0.04 per megapixel",
++#   both "Images are billed by rounding up to the nearest megapixel."
++#  kling v2.6 pro i2v "Videos generated without audio cost $0.07 per second."
++#  kling v2.5-turbo pro i2v "For 5s video your request will cost $0.35. For every
++#   additional second you will be charged $0.07." (= 0.07/s for the 5s and 10s allowed here)
++PRICE_FETCHED_AT='2026-10-28T09:28:18Z'
++PRICE_REVISION='fal-public-model-pages-20261028'
++UNIT_PRICES={
++ 'fal-flux-schnell':dict(amount='0.003',currency='USD',unit='megapixel',source='https://fal.ai/models/fal-ai/flux/schnell'),
++ 'fal-flux-pro-1-1':dict(amount='0.04',currency='USD',unit='megapixel',source='https://fal.ai/models/fal-ai/flux-pro/v1.1'),
++ 'fal-kling-2-6-pro':dict(amount='0.07',currency='USD',unit='second',source='https://fal.ai/models/fal-ai/kling-video/v2.6/pro/image-to-video'),
++ 'fal-kling-2-5-turbo':dict(amount='0.07',currency='USD',unit='second',source='https://fal.ai/models/fal-ai/kling-video/v2.5-turbo/pro/image-to-video'),
++}
+ 
++def unit_price(identifier):
++ item=UNIT_PRICES.get(identifier)
++ if item is None:return None
++ return dict(deepcopy(item),fetched_at=PRICE_FETCHED_AT,revision=PRICE_REVISION,kind='documented-estimate')
++
++def price_view(identifier,options,quote_money=None,unit=None):
++ """Unit x quantity for the configured output beside the quote total; neither replaces the other."""
++ unit=deepcopy(unit) if unit else unit_price(identifier)
++ if unit is None:return dict(unit_price=None,reason='공식 단가를 찾지 못했습니다.')
++ rate=Decimal(unit['amount'])
++ if unit['unit']=='second':
++  quantity=int(options['duration']);formula=f"{unit['amount']} USD/초 × {quantity}초"
++ else:
++  size=SIZES[options['ratio']];pixels=size['width']*size['height']
++  # The pages do not define a megapixel; publish a per-image figure only where 10^6 and 2^20 agree.
++  decimal,binary=-(-pixels//1_000_000),-(-pixels//1_048_576)
++  formula=f"올림({size['width']}×{size['height']} px ÷ 1MP) × {unit['amount']} USD/MP"
++  if decimal!=binary:
++   return dict(unit_price=unit,quantity=None,expected_total=None,formula=formula,quote_total=deepcopy(quote_money),matches_quote=None,
++               reason=f'메가픽셀 정의(10^6 또는 2^20 px)가 공개 문서에 없어 장당 금액 미확정: {rate*decimal} 또는 {rate*binary} USD')
++  quantity=decimal
++ expected=ledger.money(int(rate*quantity*1_000_000),unit['currency'])
++ value=dict(unit_price=unit,quantity=quantity,expected_total=expected,formula=formula+f' = {expected["amount"]} USD',quote_total=deepcopy(quote_money))
++ value['matches_quote']=None if quote_money is None else ledger.units(quote_money)==ledger.units(expected) and quote_money['currency']==expected['currency']
++ if value['matches_quote'] is False:value['mismatch']='견적 총액과 단가×수량이 다릅니다. 둘 다 표시하며 어느 쪽도 자동 선택하지 않습니다.'
++ return value
++
++def identifier_for(endpoint):
++ return next((k for k,v in MODELS.items() if v['endpoint']==endpoint),None)
++
+ def spec(identifier):
+  if identifier not in MODELS:raise ValueError('unsupported fal selection; no fallback')
+  item=deepcopy(MODELS[identifier]);item.update(id=identifier,source='https://fal.ai/models/'+item['endpoint']+'/api');return item
+--- a/media_creator.py
++++ b/media_creator.py
+@@ -66,6 +66,7 @@
+   q=a['options']['quote'];mapping=c.execute('SELECT job FROM provider_action_jobs WHERE workspace=? AND project=? AND action=?',(store.workspace_id,pid,a['id'])).fetchone()
+   j=json.loads(c.execute('SELECT body FROM generation_jobs WHERE id=?',mapping).fetchone()[0]) if mapping else None
+   card=dict(id=a['id'],shot=a['options']['shot'],role=a['role'],model=a['release_id'],prompt=a['inputs']['prompt'],options=a['options']['generation'],estimate=q['money'],estimate_kind=q['kind'],mode='contract-fake' if q['kind']=='fixture' else 'provider-unverified',estimate_expired=q['expires']<=time.time(),approval=p.get('media_action_reviews',{}).get(a['id'],{}).get('decision','required'),job_id=j['id'] if j else None,can_approve=False,can_execute=False,can_decide=not j,reason='입력·모델·예상 비용을 검토하세요.',output_policy='비공개 출력 · 1시간 만료 요청. 정확한 서버 삭제 시각 미확인.')
++  card.update({k:v for k,v in __import__('fal_dispatch').proposal_view(a).items() if k!='price_kind'})
+   if j:
+    card['job']={k:j.get(k) for k in ('id','state','failure_code','take','stale_input','cancel_requested')};card['job'].update(recovery=media_recovery.describe(c,store,j),cost=media_bridge.projection(c,j)['cost'],can_cancel=j['state'] in {'prepared','accepted','running','submitting','reconciliation_required'} and not j.get('cancel_requested'))
+    if j.get('take'):
+--- a/production_tools.py
++++ b/production_tools.py
+@@ -12,10 +12,11 @@
+  'get_model_capabilities': {'role':str},
+  'propose_media_plan': {'goal':str,'scenes':str,'style':str,'constraints':str,'kind':str},
+  'estimate_media_plan': {'plan_id':str},
+- 'prepare_image_action': {'shot_id':str,'model_id':str,'prompt':str,'ratio':str,'shot_revision':int},
+- 'prepare_video_action': {'shot_id':str,'model_id':str,'prompt':str,'duration':int,'shot_revision':int,'source_shot_id':str,'source_take_id':int,'source_sha256':str},
++ 'prepare_image_action': {'shot_id':str,'model_id':str,'model_reason':str,'prompt':str,'ratio':str,'shot_revision':int},
++ 'prepare_video_action': {'shot_id':str,'model_id':str,'model_reason':str,'prompt':str,'duration':int,'shot_revision':int,'source_shot_id':str,'source_take_id':int,'source_sha256':str},
+  'request_media_generation': {'plan_id':str,'action_id':str,'grant_id':str},
+  'get_generation_job': {'job_id':str},
++ 'get_agent_settings': {},
+  'propose_timeline_edit': {'description':str,'timeline_version':int,'changes':list},
+  'propose_timeline_changes': {'description':str,'timeline_version':int,'commands':list},
+  'propose_motion_scene': {'shot_id':str,'base_motion_revision':int,'scene':dict},
+@@ -24,6 +25,11 @@
+  'propose_memory_update': {'description':str,'kind':str,'label':str,'entity_id':str,'source_id':str,'excerpt':str,'ontology_revision':int},
+ }
+ 
++def prices(model):
++    # D19/D21: documented unit prices beside catalog entries; never execution proof.
++    if model['role']=='chat':return dict(token_price=agent_preferences.token_price(model['id']))
++    return dict(unit_price=__import__('fal_models').unit_price(model['id']))
++
+ def begin(project):
+     settings=agent_preferences.profile(project)
+     run=dict(id=uuid.uuid4().hex,conversation_id=chat_sessions.current(project),conversation_model_revision=chat_sessions.resolve(project,chat_sessions.current(project))['model_revision'],state='accepting_tools',engine='local-contract-rehearsal',
+@@ -44,6 +50,7 @@
+             # Empty optional prose is permitted in a plan, never an ID or query.
+             if t is str and k in {'style','constraints','entity_id'} and args[k]=='':continue
+             raise ValueError('INVALID_TOOL_ARGUMENTS')
++        if k=='model_reason' and len(args[k])>300:raise ValueError('INVALID_TOOL_ARGUMENTS')
+         if t is int and args[k]<(0 if k in {'shot_revision','timeline_version','ontology_revision','base_motion_revision'} else 1):raise ValueError('INVALID_TOOL_ARGUMENTS')
+     if name=='propose_motion_scene':__import__('motion_scene').validate(args['scene'])
+     if name=='search_project_context':__import__('production_context').overlay_page_offset(args['query'])
+@@ -81,7 +88,9 @@
+     else:
+         name=call['name'];args=call['arguments']
+         if name=='get_model_capabilities':
+-            result=dict(status='succeeded',models=[m for m in model_selection.catalog()['models'] if m['role']==args['role']],live_execution=False)
++            result=dict(status='succeeded',models=[dict(m,**prices(m)) for m in model_selection.catalog()['models'] if m['role']==args['role']],live_execution=False)
++        elif name=='get_agent_settings':
++            result=agent_preferences.settings_summary(project,run)
+         elif name=='search_project_context':
+             result=dict(status='succeeded',context=deepcopy(run['snapshot']['value']['context']),search_mode='scoped-snapshot',note='현재 작품의 승인 문맥 전체 반환; 의미 검색·임베딩 검색 아님')
+             if local_tool is not None:
+@@ -96,7 +105,10 @@
+                 result['plan']['explanation']='모델 도구 인수로 제안된 장면을 저장했습니다. 확정 음악 구간은 서버가 균등 배분합니다. 사람의 검토·승인 전이며 미디어 생성은 실행하지 않았습니다.' if run['engine']!='contract-fake' else '도구 계약 검증용 모의 제안입니다. 실제 AI·외부 미디어 호출은 없습니다.'
+         elif name in {'prepare_image_action','prepare_video_action'} and prepare_media is not None:
+             from action_execution import ExecutionBlocked
+-            try:result=prepare_media(name,deepcopy(args))
++            # Server-frozen origin; the model supplies only model_reason (D15/S15).
++            provenance=dict(engine=run['engine'],chat_model=run.get('provider_model'),permission_mode=agent_preferences.effective_mode(project,run),
++                            effort=agent_preferences.frozen(project,run)['effort'],run=run['id'],call=call['id'])
++            try:result=prepare_media(name,deepcopy(args),provenance)
+             except ExecutionBlocked:result=dict(status='blocked',code='MODEL_CONNECTION_OR_PRICE_REQUIRED',retryable=False)
+             except (ValueError,KeyError):
+                 run['repair_count']+=1
+@@ -117,7 +129,7 @@
+                 result=dict(status='blocked',code='VALIDATION_OR_HUMAN_APPROVAL_REQUIRED',retryable=False)
+         elif name=='get_generation_job':
+             job=next((j for j in jobs if j['id']==args['job_id']),None)
+-            result=dict(status='not_found') if job is None else dict(status='succeeded',job={k:deepcopy(job.get(k)) for k in ['id','state','failure_code','mode','action_id','plan_id','plan_revision','release_id','external_calls','result','result_approved','provider_completed','cost']})
++            result=dict(status='not_found') if job is None else dict(status='succeeded',job={k:deepcopy(job.get(k)) for k in ['id','state','failure_code','mode','action_id','plan_id','plan_revision','release_id','external_calls','result','result_approved','provider_completed','cost','pricing']})
+             if job is not None:
+                 result['job']['registered_takes']=[dict(shot=n,take=t['id'],sha256=t['sha256']) for n,s in project.get('shots',{}).items() for t in s['takes'] if t.get('action_id')==job.get('action_id') and t.get('action_id') is not None]
+                 if job.get('mode')!='rehearsal' and result['job']['registered_takes']:
+--- a/chat_protocols.py
++++ b/chat_protocols.py
+@@ -6,14 +6,15 @@
+ PROVIDERS={'anthropic','openai','xai'}
+ # One line each, minimum that disambiguates; result fields/labels carry the rest. Kept short for the input cap.
+ DESCRIPTIONS={
+- 'search_project_context':'Read approved project context and execution targets.',
+- 'get_model_capabilities':'List catalog models for a role.',
++ 'search_project_context':'Read approved project context and execution targets; scoped snapshot, not semantic search.',
++ 'get_model_capabilities':'List catalog models and documented prices for a role; not proof of a live connection.',
+  'propose_media_plan':'Save a scene plan proposal for review.',
+  'estimate_media_plan':"Sum saved quotes of this conversation's prepared actions for a plan.",
+- 'prepare_image_action':'Save one image action with a quote for approval.',
+- 'prepare_video_action':'Save one video action from an approved start frame for approval.',
++ 'prepare_image_action':'Save one image action with a quote for approval; model_reason is shown unverified.',
++ 'prepare_video_action':'Save one video action from an approved start frame for approval; model_reason is shown unverified.',
+  'request_media_generation':'Submit a saved action with a human-issued grant.',
+  'get_generation_job':'Read a job owned by this conversation.',
++ 'get_agent_settings':'Read the frozen chat model, prices, effort and permission; read-only.',
+  'propose_timeline_edit':'Save a timeline change-list proposal for review.',
+  'propose_timeline_changes':'Propose typed timeline commands against a timeline version.',
+  'propose_motion_scene':'Save a motion scene proposal for a shot.',
+--- a/tests/test_agent_preferences.py
++++ b/tests/test_agent_preferences.py
+@@ -123,8 +123,8 @@
+ 
+     def test_read_only_manifest_and_direct_write_denial(self):
+         self.settings('read_only','low');preview=self.f.preview()
+-        self.assertEqual(preview['tool_scope'],['search_project_context','get_model_capabilities','get_generation_job','estimate_media_plan'])
+-        self.assertEqual([x['name'] for x in preview['message_body']['tools']],['search_project_context','get_model_capabilities','estimate_media_plan','get_generation_job'])
++        self.assertEqual(preview['tool_scope'],['search_project_context','get_model_capabilities','get_generation_job','estimate_media_plan','get_agent_settings'])  # S9 read tool
++        self.assertEqual([x['name'] for x in preview['message_body']['tools']],['search_project_context','get_model_capabilities','estimate_media_plan','get_generation_job','get_agent_settings'])  # S9 read tool
+         result,_=self.direct_tool('propose_media_plan',dict(goal='a',scenes='b',style='',constraints='',kind='narrative'))
+         self.assertEqual(result['code'],'AGENT_READ_ONLY');self.assertFalse(self.project().get('guided_plans'))
+ 
+@@ -175,7 +175,7 @@
+         self.assertEqual(captured[0],preview['message_body'])
+         follow=p['general_chat_previews'][-1]
+         self.assertEqual(follow['message_body']['output_config']['effort'],'high')
+-        self.assertEqual(follow['tool_scope'],['search_project_context','get_model_capabilities','get_generation_job','estimate_media_plan'])
++        self.assertEqual(follow['tool_scope'],['search_project_context','get_model_capabilities','get_generation_job','estimate_media_plan','get_agent_settings'])  # S9 read tool
+         active=p['agent_preferences']['active_response'];self.assertEqual(active['effective_mode'],'read_only')
+         self.assertEqual(active['mode'],'full_access');self.assertEqual(active['effort'],'high')
+         self.assertTrue(p['agent_preferences']['settings_pending'])
+--- a/tests/test_chat_live_contract.py
++++ b/tests/test_chat_live_contract.py
+@@ -204,7 +204,8 @@
+         finally:reopened.server_close()
+     def test_turn_total_cap_stops_followup(self):
+         self.provider.replies=[response([use('plan','propose_media_plan',ARGS)],'tool_use')]
+-        p=self.preview(total=2458);self.assertEqual(self.approve(p)[0],200);self.assertTrue(self.http.store.general_chat_runtime.process_next())
++        p=self.preview(total=3687);  # exactly one worst round (D20: MAX_INPUT 16384)
++        self.assertEqual(self.approve(p)[0],200);self.assertTrue(self.http.store.general_chat_runtime.process_next())
+         self.assertEqual(len(self.provider.requests),2)
+         self.assertEqual(self.state()['projects']['A']['general_chat_turns'][-1]['status'],'limit_reached')
+         self.assertFalse(self.http.store.general_chat_runtime.process_next())
+--- a/tests/test_chat_preflight.py
++++ b/tests/test_chat_preflight.py
+@@ -35,8 +35,9 @@
+         self.runtime.approval.update(max_input_tokens=16384, max_output_tokens=8192, turn_cap_micro=25000)
+ 
+     def final_body(self, turn):
+-        # Mirror the runtime: only the approved legacy scope (D1 default excludes request_media_generation).
+-        definitions = [d for d in chat_protocols.tool_definitions('anthropic') if d['name'] in self.runtime.limits()['tools']]
++        # Static legacy scope (D1 excludes request_media_generation). Literal, not derived from the code under test.
++        expected = ['search_project_context', 'get_model_capabilities', 'propose_media_plan', 'estimate_media_plan', 'prepare_image_action', 'prepare_video_action', 'get_generation_job', 'propose_timeline_edit', 'propose_timeline_changes', 'propose_motion_scene', 'request_motion_render', 'request_render', 'propose_memory_update']
++        definitions = [d for d in chat_protocols.tool_definitions('anthropic') if d['name'] in expected]
+         for item in definitions:
+             item['strict'] = True
+             if item['name'] == 'propose_media_plan':
+--- a/tests/test_chat_protocols.py
++++ b/tests/test_chat_protocols.py
+@@ -58,8 +58,8 @@
+    state=Store(folder).state();self.assertEqual(len(state['projects']['A']['guided_plans']),3);self.assertEqual(state['generation_jobs'],[])
+  def test_definitions_are_strict_and_malformed_blocks_fail_closed(self):
+   for provider in c.PROVIDERS:
+-   definitions=c.tool_definitions(provider);self.assertEqual(len(definitions),14)
+-   self.assertEqual({d['name'] for d in definitions},{'estimate_media_plan','get_generation_job','get_model_capabilities','prepare_image_action','prepare_video_action','propose_media_plan','propose_memory_update','propose_motion_scene','propose_timeline_changes','propose_timeline_edit','request_media_generation','request_motion_render','request_render','search_project_context'})
++   definitions=c.tool_definitions(provider);self.assertEqual(len(definitions),15)
++   self.assertEqual({d['name'] for d in definitions},{'estimate_media_plan','get_agent_settings','get_generation_job','get_model_capabilities','prepare_image_action','prepare_video_action','propose_media_plan','propose_memory_update','propose_motion_scene','propose_timeline_changes','propose_timeline_edit','request_media_generation','request_motion_render','request_render','search_project_context'})
+    for d in definitions:
+     schema=d.get('input_schema',d.get('parameters'));self.assertFalse(schema['additionalProperties']);self.assertEqual(set(schema['required']),set(schema['properties']))
+   for blocks in [[None],[{'type':'message','content':None}]]:
+--- a/tests/test_execution_context.py
++++ b/tests/test_execution_context.py
+@@ -18,7 +18,7 @@
+   h=f.call('model_handoff',song='synthetic')['handoff']['execution_targets'];a=next(x for x in h['actions'] if x['action_id']==f.action['id']);self.assertEqual(a['approval_handles'][0]['grant_id'],f.grant['id'])
+   run=f.call('production_run',song='synthetic')['run']['id'];shot=next(x for x in h['shots'] if x['shot_id']==a['shot_id'])
+   def tool(n,args):return f.call('production_tool',song='synthetic',run=run,call=dict(id=uuid.uuid4().hex,name=n,arguments=args,complete=True))['tool']
+-  proposed=tool('prepare_image_action',dict(shot_id=shot['shot_id'],shot_revision=shot['revision'],model_id='fal-flux-schnell',prompt='blue geometry',ratio='16:9'));self.assertEqual(proposed['status'],'proposed')
++  proposed=tool('prepare_image_action',dict(shot_id=shot['shot_id'],shot_revision=shot['revision'],model_id='fal-flux-schnell',model_reason='test reason',prompt='blue geometry',ratio='16:9'));self.assertEqual(proposed['status'],'proposed')
+   receipt=tool('request_media_generation',dict(plan_id=a['plan_id'],action_id=a['action_id'],grant_id=a['approval_handles'][0]['grant_id']));self.assertEqual(receipt['status'],'accepted')
+   f.call('project',name='foreign',era='default',story=0)
+   foreign=f.call('model_handoff',song='foreign')['handoff']['execution_targets'];self.assertEqual(foreign['actions'],[]);self.assertEqual(foreign['shots'],[])
+--- a/tests/test_fal_multimodel.py
++++ b/tests/test_fal_multimodel.py
+@@ -103,7 +103,7 @@
+ 
+  def test_model_tool_prepares_action_and_quote_but_cannot_grant_or_spend(self):
+   self.setup_model('fal-flux-schnell');run=self.call('production_run',song='synthetic')['run']['id']
+-  args=dict(shot_id='장면 1',model_id='fal-flux-schnell',prompt='blue geometry',ratio='16:9',shot_revision=self.shot()['revision'])
++  args=dict(shot_id='장면 1',model_id='fal-flux-schnell',model_reason='test reason',prompt='blue geometry',ratio='16:9',shot_revision=self.shot()['revision'])
+   result=self.call('production_tool',song='synthetic',run=run,call=dict(id='prepare',name='prepare_image_action',arguments=args,complete=True))['tool']
+   self.assertEqual(result['status'],'proposed');self.assertEqual(result['approval'],'required');self.assertEqual(self.calls,[])
+   with self.st.connect() as db:
+--- a/tests/test_general_chat_activation.py
++++ b/tests/test_general_chat_activation.py
+@@ -359,7 +359,7 @@
+             self.assertEqual(c.execute('SELECT count(*) FROM reservations').fetchone()[0], 1)
+ 
+     def test_shared_production_budget_cannot_reserve_twice_from_different_conversations(self):
+-        self.budget('0.003')
++        self.budget('0.004')  # one worst round (3687 micro after D20) fits, two do not
+         first = self.preview()
+         cid = self.post('conversation_create', song='A', title='동일 예산 대화')['conversation']['id']
+         second = self.preview(conversation=cid)
+--- /dev/null
++++ b/tests/test_general_chat_media_d15.py
+@@ -0,0 +1,392 @@
++"""A2a: D15 media proposals, S15 provenance, D19 unit prices, D20 cap, S9/D21 settings.
++
++Isolated HTTP/SQLite and in-process Store fixtures only. No model, provider,
++count_tokens or paid call: fal transports fail the test if reached.
++"""
++import hashlib
++import json
++import time
++import unittest
++import uuid
++from copy import deepcopy
++
++import agent_preferences
++import chat_general
++import chat_models
++import chat_sessions
++import fal_models
++import production_context
++from app import Store
++from fal_dispatch import FalDispatch, NO_RECORD
++from fal_model_adapter import FalModelAdapter
++from fal_models import Contract
++from tests import test_general_chat_media_preparation as media
++from tests import test_fal_multimodel as multi
++
++REASON = '프로젝트 기본보다 품질이 높은 모델을 제안합니다.'
++PROVENANCE_KEYS = {'engine', 'chat_model', 'permission_mode', 'effort', 'run', 'call'}
++
++
++def quote_for(contract, payload, amount='0.01'):
++    return dict(provider='fal.ai', model=contract.MODEL, money={'amount':amount,'currency':'USD'},
++                input_sha256=hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest(), kind='fixture', price_revision='synthetic-not-real',
++                source=contract.spec['source'], expires=time.time()+300)
++
++
++def settings_state(project):
++    """Every user-owned setting an agent tool must never change."""
++    sessions = {s['id']:(deepcopy(s.get('agent_settings')), deepcopy(s.get('agent_settings_history'))) for s in project.get('chat_sessions', [])}
++    return deepcopy(project.get('model_settings')), sessions
++
++
++class GeneralChatImageD15Test(unittest.TestCase):
++    """Image path through the real general chat turn (contract-fake transport)."""
++    def setUp(self):
++        self.m = media.GeneralChatMediaPreparationTest('test_missing_adapter_blocks_without_enabling_catalog_model')
++        self.m.setUp()
++        self.addCleanup(self.m.doCleanups)
++        self.f = self.m.f
++        self.store = self.f.http.store
++        # A second image model the project did NOT select, with its own input-bound fixture quote.
++        pro = Contract('fal-flux-pro-1-1')
++        self.pro_quote = quote_for(pro, pro.payload(self.m.prompt, {'ratio':'16:9'}), '0.04')
++        self.store.media_dispatch.adapters['fal-flux-pro-1-1'] = FalModelAdapter(
++            'fal-flux-pro-1-1', quote=self.pro_quote, transport=lambda *a: self.fail('no provider submission'))
++
++    def set_agent(self, mode, effort='low'):
++        revision = self.m.project()['agent_preferences']['by_model']['anthropic-haiku-5-5']['revision']
++        self.m.post('conversation_agent_settings', song='A', selection='anthropic-haiku-5-5', settings_revision=revision,
++                    mode=mode, effort=effort)
++
++    def sent_effort(self):
++        with self.store.connect() as c:
++            bodies = [json.loads(r[0]) for r in c.execute('SELECT body FROM general_chat_previews ORDER BY rowid')]
++        return bodies[0]['message_body']['output_config']['effort']
++
++    def test_agent_image_proposal_records_reason_provenance_and_prices_on_every_surface(self):
++        for mode, effort in (('review', 'medium'), ('full_access', 'high')):
++            with self.subTest(mode=mode):
++                self.setUp()
++                self.set_agent(mode, effort)
++                before = settings_state(self.m.project())
++                project = self.m.send_tool('prepare_image_action', self.m.arguments())
++                self.assertEqual(project['general_chat_turns'][-1]['status'], 'awaiting_continuation_approval')
++                run = project['production_runs'][-1]
++                result = run['calls'][-1]['result']
++                self.assertEqual(result['status'], 'proposed')
++                self.assertEqual((result['actor'], result['model_reason'], result['model_reason_label']),
++                                 ('agent', self.m.arguments()['model_reason'], '모델이 제시한 이유(검증 안 됨)'))
++                self.assertEqual(set(result['provenance']), PROVENANCE_KEYS)
++                self.assertEqual(result['provenance']['permission_mode'], mode)
++                # Effort recorded = effort actually in the sent message body.
++                self.assertEqual(result['provenance']['effort'], effort)
++                self.assertEqual(self.sent_effort(), effort)
++                self.assertEqual((result['provenance']['engine'], result['provenance']['chat_model'],
++                                  result['provenance']['run'], result['provenance']['call']),
++                                 ('contract-fake', 'claude-haiku-5-5', run['id'], run['calls'][-1]['id']))
++                self.assertEqual((result['project_selection'], result['differs_from_project']), ('fal-flux-schnell', False))
++                unit = result['price']['unit_price']
++                self.assertEqual((unit['amount'], unit['unit'], unit['kind'], unit['revision']),
++                                 ('0.003', 'megapixel', 'documented-estimate', fal_models.PRICE_REVISION))
++                self.assertTrue(unit['source'].startswith('https://fal.ai/models/'))
++                self.assertEqual(result['price']['expected_total'], {'amount':'0.003','currency':'USD'})
++                # Fixture quote 0.01 vs documented 0.003: both shown, flagged, neither picked.
++                self.assertEqual(result['price']['quote_total'], {'amount':'0.01','currency':'USD'})
++                self.assertIs(result['price']['matches_quote'], False)
++                self.assertIn('둘 다 표시', result['price']['mismatch'])
++                self.assertGreater(result['quote_expires'], time.time())
++                card, = project['media_actions']
++                reopened = Store(self.f.tmp.name).state()['projects']['A']['media_actions'][0]
++                for surface in (card, reopened):
++                    for key in ('actor', 'model_reason', 'model_reason_label', 'provenance', 'project_selection',
++                                'differs_from_project', 'price', 'price_source', 'price_revision', 'quote_expires', 'record'):
++                        self.assertEqual(surface[key], result[key], key)
++                self.assertEqual(settings_state(self.m.project()), before)
++                self.m.assert_no_media_execution()
++
++    def test_different_model_is_a_proposal_and_never_changes_project_settings(self):
++        before = settings_state(self.m.project())
++        arguments = self.m.arguments()
++        arguments['model_id'] = 'fal-flux-pro-1-1'
++        project = self.m.send_tool('prepare_image_action', arguments)
++        result = project['production_runs'][-1]['calls'][-1]['result']
++        self.assertEqual(result['status'], 'proposed')
++        self.assertEqual((result['model'], result['project_selection'], result['differs_from_project']),
++                         ('fal-ai/flux-pro/v1.1', 'fal-flux-schnell', True))
++        self.assertEqual(result['price']['unit_price']['amount'], '0.04')
++        self.assertEqual(result['price']['expected_total'], {'amount':'0.04','currency':'USD'})
++        self.assertIs(result['price']['matches_quote'], True)
++        self.assertEqual(settings_state(self.m.project()), before)
++        self.assertEqual(self.m.project()['model_settings']['selections']['image'], 'fal-flux-schnell')
++        card, = project['media_actions']
++        self.assertEqual((card['approval'], card['can_execute']), ('required', False))
++        self.m.assert_no_media_execution()
++
++    def test_missing_empty_or_long_reason_is_rejected_before_any_action(self):
++        for reason in ('', '   ', 'x'*301, None):
++            with self.subTest(reason=None if reason is None else len(reason)):
++                self.setUp()
++                arguments = self.m.arguments()
++                if reason is None:del arguments['model_reason']
++                else:arguments['model_reason'] = reason
++                project = self.m.send_tool('prepare_image_action', arguments)
++                # The schema validator refuses the model response before any tool request.
++                self.assertEqual(project['general_chat_turns'][-1]['status'], 'outcome_unknown')
++                self.assertEqual(self.m.actions(), [])
++                self.m.assert_no_media_execution()
++
++    def test_reason_at_300_characters_is_stored_verbatim(self):
++        arguments = self.m.arguments()
++        arguments['model_reason'] = ' 이유<b>"'+'가'*293
++        self.assertEqual(len(arguments['model_reason']), 300)
++        project = self.m.send_tool('prepare_image_action', arguments)
++        self.assertEqual(project['media_actions'][0]['model_reason'], arguments['model_reason'])
++
++    def test_read_only_cannot_prepare_video_but_can_read_settings_and_prices(self):
++        self.set_agent('read_only')
++        preview = self.f.preview()
++        self.assertNotIn('prepare_video_action', preview['tool_scope'])
++        self.assertIn('get_agent_settings', preview['tool_scope'])
++        self.assertIn('get_model_capabilities', preview['tool_scope'])
++        project = self.m.send_tool('get_model_capabilities', {'role':'image'}, preview)
++        models = project['production_runs'][-1]['calls'][-1]['result']['models']
++        schnell = next(m for m in models if m['id'] == 'fal-flux-schnell')
++        self.assertEqual((schnell['unit_price']['amount'], schnell['unit_price']['kind']), ('0.003', 'documented-estimate'))
++
++    def test_human_preparation_has_null_provenance_and_owner_label(self):
++        project = self.m.project()
++        prepared = self.m.post('media_prepare', song='A', shot='장면 1', shot_revision=project['shots']['장면 1']['revision'],
++                               prompt=self.m.prompt, options={'ratio':'16:9'}, refs=[])
++        card, = self.m.project()['media_actions']
++        self.assertEqual((card['actor'], card['model_reason'], card['model_reason_label']),
++                         ('local-owner', None, '프로젝트에서 사용자가 선택한 모델'))
++        self.assertEqual(card['provenance'], dict.fromkeys(PROVENANCE_KEYS))
++        self.assertEqual(card['record'], 'recorded')
++        self.assertEqual(prepared['media_action']['action']['options']['proposal']['actor'], 'local-owner')
++        self.m.assert_no_media_execution()
++
++    def test_old_action_without_fields_projects_no_record_label(self):
++        self.m.post('media_prepare', song='A', shot='장면 1', shot_revision=self.m.project()['shots']['장면 1']['revision'],
++                    prompt=self.m.prompt, options={'ratio':'16:9'}, refs=[])
++        with self.store.connect() as c:
++            identifier, body = c.execute('SELECT id,body FROM production_actions').fetchone()
++            value = json.loads(body);value['options'].pop('proposal')
++            c.execute('UPDATE production_actions SET body=? WHERE id=?', (json.dumps(value), identifier))
++        card, = self.m.project()['media_actions']
++        self.assertEqual(card['record'], NO_RECORD)
++        self.assertEqual(NO_RECORD, '출처 기록 없음(변경 전 준비)')
++        self.assertIsNone(card['provenance'])
++        self.assertEqual(card['price']['unit_price']['amount'], '0.003')
++
++    def test_estimate_items_and_generation_job_carry_the_same_price_and_origin(self):
++        project = self.m.send_tool('prepare_image_action', self.m.arguments())
++        prepared = project['production_runs'][-1]['calls'][-1]['result']
++        plan = self.m.project()['guided_plans'][-1]['id']
++        item, = self.direct('estimate_media_plan', {'plan_id':plan})['actions']
++        for key in ('price', 'actor', 'model_reason', 'provenance', 'differs_from_project', 'price_revision'):
++            self.assertEqual(item[key], prepared[key], key)
++        job_id = 'job-'+uuid.uuid4().hex
++        job = dict(id=job_id, state='imported', mode='contract-fake', external_calls=0, cost_confirmed=False, quote=dict(money={'amount':'0.01','currency':'USD'}),
++                   updated=time.time(), context=dict(song='A', output_kind='image', action_binding=dict(workspace=self.store.workspace_id, project=self.f.pid,
++                   action_id=prepared['action_id'], plan_id=plan, plan_revision=1, release_id='fal-ai/flux/schnell', grant_id='g')))
++        with self.store.connect() as c:
++            c.execute('INSERT INTO generation_jobs (id,request_key,digest,body) VALUES (?,?,?,?)', (job_id, 'fixture:'+job_id, 'fixture', json.dumps(job)))
++        pricing = self.direct('get_generation_job', {'job_id':job_id})['job']['pricing']
++        self.assertEqual(pricing['price'], prepared['price'])
++        self.assertEqual(pricing['provenance'], prepared['provenance'])
++        with self.store.connect() as c:c.execute('DELETE FROM generation_jobs WHERE id=?', (job_id,))
++        self.m.assert_no_media_execution()
++
++    def direct(self, name, arguments):
++        run = self.m.post('production_run', song='A')['run']['id']
++        return self.m.post('production_tool', song='A', run=run, call=dict(id=uuid.uuid4().hex, name=name, arguments=arguments, complete=True))['tool']
++
++    def test_agent_settings_tool_reports_frozen_settings_and_cannot_change_them(self):
++        self.set_agent('review', 'medium')
++        before = settings_state(self.m.project())
++        project = self.m.send_tool('get_agent_settings', {})
++        result = project['production_runs'][-1]['calls'][-1]['result']
++        self.assertEqual(result['status'], 'succeeded')
++        model = result['chat_model']
++        self.assertEqual((model['id'], model['selection_reason']), ('anthropic-haiku-5-5', '사용자가 선택한 모델'))
++        self.assertEqual((model['price']['input_rate'], model['price']['output_rate'], model['price']['unit']), ('.1', '.5', 'USD per 1M tokens'))
++        self.assertEqual(model['price']['long_context'], dict(threshold_input_tokens=100000, input_rate='.5', output_rate='2.5'))
++        self.assertEqual((model['price']['source'], model['price']['revision']),
++                         (chat_models.MODELS['anthropic-haiku-5-5']['source'], 'haiku-5-5-20261027-tiered'))
++        self.assertEqual(result['effort'], 'medium')
++        self.assertEqual(result['permission'], dict(saved='review', frozen='review', effective='review'))
++        self.assertEqual(result['reservation'], dict(max_input_tokens=16384, max_output_tokens=4096, worst_per_round_micro=3687,
++                                                     conversation_cap_micro=400000, worst_case_rounds_within_cap=108))
++        self.assertIs(result['agent_can_change'], False)
++        self.assertEqual(settings_state(self.m.project()), before)
++
++
++class DirectToolInvariantTest(unittest.TestCase):
++    """Every tool, run directly, leaves model_settings and agent_settings unchanged."""
++    def setUp(self):
++        self.m = media.GeneralChatMediaPreparationTest('test_missing_adapter_blocks_without_enabling_catalog_model')
++        self.m.setUp()
++        self.addCleanup(self.m.doCleanups)
++
++    def tool(self, name, arguments):
++        run = self.m.post('production_run', song='A')['run']['id']
++        status, value = self.m.f.action('production_tool', song='A', run=run,
++                                        call=dict(id=uuid.uuid4().hex, name=name, arguments=arguments, complete=True))
++        return status, value
++
++    def test_settings_unchanged_after_every_tool_in_every_mode(self):
++        project = self.m.project()
++        shot = production_context.shot_id(project, '장면 1')
++        plan = project['guided_plans'][-1]['id']
++        arguments = dict(
++            search_project_context={'query':'scene'}, get_model_capabilities={'role':'video'},
++            propose_media_plan=dict(goal='g', scenes='s', style='', constraints='', kind='visualizer'),
++            estimate_media_plan={'plan_id':plan}, prepare_image_action=self.m.arguments(),
++            prepare_video_action=dict(shot_id=shot, model_id='fal-kling-2-5-turbo', model_reason='r', prompt='p', duration=5,
++                                      shot_revision=0, source_shot_id=shot, source_take_id=1, source_sha256='a'*64),
++            request_media_generation=dict(plan_id=plan, action_id='a', grant_id='g'), get_generation_job={'job_id':'missing'},
++            get_agent_settings={}, propose_timeline_edit=dict(description='d', timeline_version=0, changes=[]),
++            propose_timeline_changes=dict(description='d', timeline_version=0, commands=[]),
++            propose_motion_scene=dict(shot_id=shot, base_motion_revision=0, scene={}),
++            request_motion_render=dict(shot_id=shot, motion_revision=1, grant_id='g'),
++            request_render=dict(timeline_version=1, grant_id='g'),
++            propose_memory_update=dict(description='d', kind='fact', label='l', entity_id='', source_id='s', excerpt='e', ontology_revision=0))
++        self.assertEqual(set(arguments), set(__import__('production_tools').TOOLS))
++        for mode in ('read_only', 'review', 'full_access'):
++            revision = self.m.project()['agent_preferences']['by_model']['anthropic-haiku-5-5']['revision']
++            self.m.post('conversation_agent_settings', song='A', selection='anthropic-haiku-5-5', settings_revision=revision, mode=mode, effort='low')
++            for name, value in arguments.items():
++                with self.subTest(mode=mode, tool=name):
++                    before = settings_state(self.m.project())
++                    self.tool(name, value)
++                    self.assertEqual(settings_state(self.m.project()), before)
++        self.m.assert_no_media_execution()
++
++    def test_read_only_cannot_prepare_video(self):
++        self.m.post('conversation_agent_settings', song='A', selection='anthropic-haiku-5-5', settings_revision=0, mode='read_only', effort='low')
++        shot = production_context.shot_id(self.m.project(), '장면 1')
++        status, value = self.tool('prepare_video_action', dict(shot_id=shot, model_id='fal-kling-2-5-turbo', model_reason='r', prompt='p', duration=5,
++                                  shot_revision=0, source_shot_id=shot, source_take_id=1, source_sha256='a'*64))
++        self.assertEqual(status, 200, value)
++        self.assertEqual((value['tool']['status'], value['tool']['code']), ('invalid_arguments', 'AGENT_READ_ONLY'))
++        self.assertEqual(self.m.actions(), [])
++        self.m.assert_no_media_execution()
++
++
++class VideoD15Test(unittest.TestCase):
++    """Video path through the direct tool endpoint with an approved start frame."""
++    @classmethod
++    def setUpClass(cls):
++        multi.FalMultiTest.setUpClass()
++
++    def setUp(self):
++        self.t = multi.FalMultiTest('test_model_tool_prepares_action_and_quote_but_cannot_grant_or_spend')
++        self.t.setUp()
++        self.addCleanup(self.t.doCleanups)
++        self.t.setup_model('fal-kling-2-5-turbo')
++        self.take = self.t.shot()['takes'][-1]
++        self.frame = open(self.take['asset'], 'rb').read()
++        # Not the project's video model; integration_blocked in the catalog.
++        blocked = Contract('fal-kling-2-6-pro')
++        payload = blocked.payload('blue geometry', {'duration':5,'generate_audio':False}, [self.frame])
++        self.t.pipe.adapters['fal-kling-2-6-pro'] = FalModelAdapter('fal-kling-2-6-pro', quote=quote_for(blocked, payload, '0.35'),
++                                                                   transport=lambda *a: self.fail('no provider submission'))
++        self.baseline = self.counts()
++        self.baseline_actions = len(self.actions())
++
++    def counts(self):
++        with self.t.st.connect() as db:
++            return {table:db.execute('SELECT count(*) FROM '+table).fetchone()[0] for table in ('generation_jobs', 'reservations', 'execution_grants', 'provider_action_jobs')}
++
++    def arguments(self, **changes):
++        value = dict(shot_id='장면 1', model_id='fal-kling-2-5-turbo', model_reason=REASON, prompt='blue geometry', duration=5,
++                     shot_revision=self.t.shot()['revision'], source_shot_id='장면 1', source_take_id=self.take['id'], source_sha256=self.take['sha256'])
++        value.update(changes)
++        return value
++
++    def tool(self, arguments, name='prepare_video_action'):
++        run = self.t.call('production_run', song='synthetic')['run']['id']
++        return self.t.call('production_tool', song='synthetic', run=run, call=dict(id=uuid.uuid4().hex, name=name, arguments=arguments, complete=True))['tool']
++
++    def actions(self):
++        with self.t.st.connect() as c:
++            return [json.loads(r[0]) for r in c.execute('SELECT body FROM production_actions')]
++
++    def assert_nothing_reserved_or_sent(self):
++        self.assertEqual(self.t.calls, [])
++        self.assertEqual(self.counts(), self.baseline)
++        self.assertEqual(self.baseline['reservations'], 0)
++
++    def test_blocked_different_video_model_is_saved_as_proposal_only(self):
++        before = settings_state(self.t.project())
++        result = self.tool(self.arguments(model_id='fal-kling-2-6-pro'))
++        self.assertEqual(result['status'], 'proposed')
++        self.assertEqual((result['project_selection'], result['differs_from_project'], result['model_state']),
++                         ('fal-kling-2-5-turbo', True, 'integration_blocked'))
++        self.assertEqual(result['model_reason'], REASON)
++        self.assertEqual(result['provenance']['permission_mode'], 'review')
++        self.assertEqual(result['provenance']['engine'], 'local-contract-rehearsal')
++        price = result['price']
++        self.assertEqual((price['unit_price']['amount'], price['unit_price']['unit'], price['quantity']), ('0.07', 'second', 5))
++        self.assertEqual(price['expected_total'], {'amount':'0.35','currency':'USD'})
++        self.assertIs(price['matches_quote'], True)
++        self.assertEqual(settings_state(self.t.project()), before)
++        card = next(x for x in self.t.project()['media_actions'] if x['id'] == result['action_id'])
++        self.assertEqual((card['approval'], card['can_execute']), ('required', False))
++        self.assert_nothing_reserved_or_sent()
++
++    def test_changed_quote_input_rejects_old_quote_and_accepts_only_a_new_one(self):
++        for changes in (dict(duration=10), dict(prompt='blue geometry, slower')):
++            with self.subTest(changes=changes):
++                result = self.tool(self.arguments(**changes))
++                self.assertEqual((result['status'], result['code']), ('invalid_arguments', 'INVALID_MEDIA_INPUT'))
++        self.assertEqual(len(self.actions()), self.baseline_actions)
++        contract = Contract('fal-kling-2-5-turbo')
++        payload = contract.payload('blue geometry', {'duration':10,'generate_audio':False}, [self.frame])
++        self.t.pipe.adapters['fal-kling-2-5-turbo'].contract.quote = quote_for(contract, payload, '0.70')
++        old = self.tool(self.arguments())
++        self.assertEqual((old['status'], old['code']), ('invalid_arguments', 'INVALID_MEDIA_INPUT'))
++        result = self.tool(self.arguments(duration=10))
++        self.assertEqual(result['status'], 'proposed')
++        self.assertEqual((result['price']['quantity'], result['price']['expected_total'], result['price']['matches_quote']),
++                         (10, {'amount':'0.7','currency':'USD'}, True))
++        self.assertEqual(len(self.actions()), self.baseline_actions+1)
++        self.assert_nothing_reserved_or_sent()
++
++
++class UnitPriceTest(unittest.TestCase):
++    def test_unit_times_quantity_and_mismatch_are_both_visible(self):
++        view = fal_models.price_view('fal-kling-2-6-pro', {'duration':10,'generate_audio':False}, {'amount':'0.70','currency':'USD'})
++        self.assertEqual((view['expected_total'], view['matches_quote']), ({'amount':'0.7','currency':'USD'}, True))
++        self.assertIn('0.07 USD/초 × 10초', view['formula'])
++        view = fal_models.price_view('fal-flux-pro-1-1', {'ratio':'9:16'}, {'amount':'0.05','currency':'USD'})
++        self.assertEqual((view['quantity'], view['expected_total'], view['quote_total'], view['matches_quote']),
++                         (1, {'amount':'0.04','currency':'USD'}, {'amount':'0.05','currency':'USD'}, False))
++        self.assertIn('mismatch', view)
++
++    def test_square_image_is_not_priced_while_the_megapixel_definition_is_unpublished(self):
++        view = fal_models.price_view('fal-flux-schnell', {'ratio':'1:1'}, {'amount':'0.003','currency':'USD'})
++        self.assertIsNone(view['expected_total'])
++        self.assertIsNone(view['matches_quote'])
++        self.assertIn('0.006', view['reason'])
++        self.assertIn('0.003', view['reason'])
++
++    def test_every_catalog_media_model_has_a_documented_price_record(self):
++        for identifier in fal_models.MODELS:
++            unit = fal_models.unit_price(identifier)
++            self.assertEqual(set(unit), {'amount', 'currency', 'unit', 'source', 'fetched_at', 'revision', 'kind'})
++            self.assertEqual(unit['kind'], 'documented-estimate')
++            self.assertTrue(unit['source'].startswith('https://fal.ai/models/'+fal_models.MODELS[identifier]['endpoint']))
++        self.assertIsNone(fal_models.unit_price('unknown'))
++        self.assertEqual(fal_models.price_view('unknown', {}), dict(unit_price=None, reason='공식 단가를 찾지 못했습니다.'))
++
++
++class InputCapTest(unittest.TestCase):
++    def test_d20_raises_only_the_input_cap_and_reports_the_worst_round(self):
++        self.assertEqual((chat_general.MAX_INPUT, chat_general.MAX_OUTPUT, chat_general.CONVERSATION_CAP_MICRO), (16384, 4096, 400000))
++        self.assertEqual(agent_preferences.reservation('anthropic-haiku-5-5')['worst_per_round_micro'], 3687)
++        self.assertEqual(agent_preferences.reservation('xai-grok-4-7')['worst_per_round_micro'], 57344)
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- a/tests/test_general_chat_media_preparation.py
++++ b/tests/test_general_chat_media_preparation.py
+@@ -62,7 +62,7 @@
+     def arguments(self):
+         project = self.project()
+         return dict(shot_id=production_context.shot_id(project, '장면 1'), model_id='fal-flux-schnell',
+-                    prompt=self.prompt, ratio='16:9', shot_revision=project['shots']['장면 1']['revision'])
++                    model_reason='프로젝트 이미지 모델과 같은 저비용 모델', prompt=self.prompt, ratio='16:9', shot_revision=project['shots']['장면 1']['revision'])
+ 
+     def send_tool(self, name, arguments, preview=None):
+         self.f.http.store.general_chat_runtime.transport.responses = [response([use('media-call', name, arguments)], 'tool_use')]
+--- a/tests/test_general_chat_tool_invariants.py
++++ b/tests/test_general_chat_tool_invariants.py
+@@ -39,9 +39,10 @@
+     def test_legacy_runtime_default_scope_excludes_media_generation(self):
+         # D1 (user approved): the legacy default is an explicit list without
+         # request_media_generation; every other tool stays, in TOOLS order.
++        # Static list (S9 get_agent_settings is general-chat only; legacy reserves with its own limits).
+         value = chat_runtime.ChatRuntime.limits(SimpleNamespace(approval={}))
+         self.assertNotIn('request_media_generation', value['tools'])
+-        self.assertEqual(value['tools'], [t for t in production_tools.TOOLS if t != 'request_media_generation'])
++        self.assertEqual(value['tools'], ['search_project_context', 'get_model_capabilities', 'propose_media_plan', 'estimate_media_plan', 'prepare_image_action', 'prepare_video_action', 'get_generation_job', 'propose_timeline_edit', 'propose_timeline_changes', 'propose_motion_scene', 'request_motion_render', 'request_render', 'propose_memory_update'])
+ 
+     def test_every_tool_has_a_short_specific_description(self):
+         self.assertEqual(set(chat_protocols.DESCRIPTIONS), set(production_tools.TOOLS))
+@@ -106,7 +107,7 @@
+ 
+     def tool(self, **changes):
+         project = self.m.project()
+-        arguments = dict(shot_id=production_context.shot_id(project, '장면 1'), model_id='fal-flux-schnell', prompt='p',
++        arguments = dict(shot_id=production_context.shot_id(project, '장면 1'), model_id='fal-flux-schnell', model_reason='test reason', prompt='p',
+                          duration=5, shot_revision=project['shots']['장면 1']['revision'],
+                          source_shot_id=production_context.shot_id(project, '장면 1'), source_take_id=99, source_sha256='e'*64)
+         arguments.update(changes)

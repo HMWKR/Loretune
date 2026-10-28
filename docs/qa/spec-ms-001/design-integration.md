@@ -1,0 +1,1 @@
+디자인 CSS를 검토한 뒤 index.html의 기존 스타일 다음 designPolish 블록으로 통합했다. 외부 static 디렉터리 노출이나 DOM/이벤트 변경 없음. 원본 design-polish.css는 수정하지 않았다. 새 모델 설정 details는 기존 management 스타일을 사용한다. 확인 URL http://127.0.0.1:8773 (격리 fixture, session 36136). 공용 서버는 재시작하지 않았다. 143개 전체 회귀는 CSS 통합 직전 통과; 통합 후 시각 검증 진행 중.

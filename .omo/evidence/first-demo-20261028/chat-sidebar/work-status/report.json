@@ -1,0 +1,128 @@
+{
+  "trace_id": "AGENT-STATUS-03",
+  "scope": "current public creation work status presentation and existing card navigation only",
+  "implementation": [
+    "현재 대화에 공개된 작품 출력과 선택 장면 모션·3D·AI 미디어를 구분",
+    "기본 접힌 제작 작업 요약에 진행/확인 필요/결과 준비/취소·중단·만료 건수 표시",
+    "펼치면 종류별 실제 저장상태와 기존 카드로 연결되는 작업 보기 제공",
+    "기존 1.5초 API poll이 적용한 메모리 public state를 읽는 표시 전용 갱신; 추가 API/모델/작업 생성 없음",
+    "내부 ID·경로·오류원문·ledger·가짜 작업자 현황 기본 노출 없음",
+    "원래 stage/mobile observer 완료 후 실제 설정/모션/3D 카드로 키보드 포커스 이동"
+  ],
+  "sources": {
+    "output": "app.py Store.state().jobs, index.html drawJobs/#jobs",
+    "motion": "state.jobs kind=local-motion + selected shot; motion-studio.js #motionJobs",
+    "scene": "project.scenes_3d selected shot binding + scene_3d_jobs.scene_id; scene-studio.js #sceneStudioJobs",
+    "provider": "state.generation_jobs selected project/shot and project.media_actions[].job; actual existing mediaActionCards/generationPreparations/imageRecoveryJobs",
+    "boundary": "existing server public conversation owner projection; extra explicit conversation mismatch records are excluded"
+  },
+  "methodology": {
+    "sources": [
+      "current public state/code/card labels",
+      "AGENT-STATUS-03",
+      "existing semantic tokens and progressive disclosure"
+    ],
+    "applied": [
+      "task status traceability",
+      "read-only summary from scoped public state",
+      "progressive disclosure",
+      "existing card navigation/focus"
+    ],
+    "limits": [
+      "UI summary is not AI server work_status search",
+      "no provider or render execution proof from fixture state",
+      "no platform-wide all-complete claim"
+    ]
+  },
+  "verification": {
+    "command": "LORETUNE_WORK_STATUS_EVIDENCE=<captures-complete> PYTHONPATH=.:tests python3 -m unittest tests.test_work_status_ui tests.test_chat_sidebar_ui tests.test_proposal_ui tests.test_general_chat_ui_controls tests.test_general_chat_history_ui tests.test_active_request_presentation tests.test_timeline_motion_overlay_ui tests.test_scene_ui tests.test_proposal_drafts tests.test_frontend_async tests.test_save_feedback -v",
+    "receipt": "complete-tests.log",
+    "result": "16 tests / 9.758s / OK",
+    "browser_receipt": "captures-complete/browser-result.json",
+    "syntax": "syntax.json: 3 targets exit0",
+    "actual_http": "normal app /api/state with persisted synthetic job status fixtures and real conversation/project projection; no custom API, no provider or render call",
+    "cases": [
+      "no project hidden",
+      "project has no saved jobs",
+      "active/failed/result distinction",
+      "server-polled running→failed transition",
+      "private conversation/project/selected-shot boundary",
+      "provider dedup",
+      "unknown status preserves confirmation need",
+      "desktop keyboard links to all four existing card containers",
+      "375px keyboard output navigation after mobile stage change",
+      "existing sidebar/drafts/model/overlay/recovery regressions"
+    ]
+  },
+  "manual_render_review": {
+    "viewed": [
+      "captures-final/active-1920.png",
+      "captures-final/failed-1920.png",
+      "captures-final-mobile/mobile-output-375.png",
+      "captures-complete/compact-default-1920.png"
+    ],
+    "comparison": "active/failed screenshots share 1920×1080, same input fixtures/route/selection; details explicitly expanded for inspection; compact-default capture shows actual default collapsed state"
+  },
+  "initial_failure": {
+    "receipt": "first-tests.log; captures/invocation.json; captures/failure.png",
+    "observed": "provider work link selected a nonempty placeholder in mediaActionCards instead of actual legacy provider status card",
+    "fixed": "target now derives from actual selected-shot media_actions/generation_jobs rather than childElementCount",
+    "regression": "real keyboard focus target equals generationPreparations with existing saved provider job; other three groups and mobile also checked"
+  },
+  "model_calls": 0,
+  "remaining": [
+    "root independent review and integrated full regression",
+    "root actual production-workflow rehearsal/recording with real artifacts",
+    "AI server-side work_status search is a separate root/backend task"
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 219983,
+      "sha256": "45e3f36436412e8db9c51959017cfc10b40bee20e1e8f1a06fdfbf8d2740b719",
+      "changed_in_followup": false
+    },
+    {
+      "path": "studio.css",
+      "bytes": 85814,
+      "sha256": "cf1ec74f58ca27e7bff389bd7f0fcc3ded3dd217675c2dc96c18c174cbd5ec52",
+      "changed_in_followup": true
+    },
+    {
+      "path": "general-chat-ui.js",
+      "bytes": 15557,
+      "sha256": "f92daed3368a99b12a71f40991964b59b5fc14aadcb892a3204dee4dbdbf65bc",
+      "changed_in_followup": false
+    },
+    {
+      "path": "chat-sidebar.js",
+      "bytes": 27082,
+      "sha256": "f66cecfea2824bb5ffa201af0fb848c656207eedb2593624895bce80111a1fc1",
+      "changed_in_followup": true
+    },
+    {
+      "path": "tests/chat_sidebar.cjs",
+      "bytes": 13674,
+      "sha256": "b0df49546a6304cadecc34ee73b79e5ea0411005ddf1a0652f20d08c4196aaf3",
+      "changed_in_followup": true
+    },
+    {
+      "path": "tests/test_chat_sidebar_ui.py",
+      "bytes": 3697,
+      "sha256": "92b73e3c3782fed6b68ac6db2012f5bed6d4cd00f65d6f449b37292fbf942581",
+      "changed_in_followup": false
+    },
+    {
+      "path": "tests/work_status.cjs",
+      "bytes": 7831,
+      "sha256": "2862ab76d161fb975d9ca353cb989d9ed691889b1b1bcd726003b71c46669c4d",
+      "changed_in_followup": true
+    },
+    {
+      "path": "tests/test_work_status_ui.py",
+      "bytes": 5977,
+      "sha256": "877c2965421f63a62a4a9434c2b0ee1ade53c6e18fb0253f316947bff9759106",
+      "changed_in_followup": true
+    }
+  ]
+}

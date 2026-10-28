@@ -1,0 +1,20 @@
+--- a/index.html
++++ b/index.html
+@@ -586,7 +586,7 @@
+  $('#modelSettingsStatus').textContent=!p?'작품을 먼저 선택하세요.':!state.model_catalog?'지금은 모델을 선택할 수 없습니다. 기존 미디어로 제작을 계속할 수 있습니다.':'선택만 저장합니다. 실행 전에 입력과 비용에 대한 별도 승인이 필요합니다.';
+ }
+ $('#modelSlots').onchange=e=>{const role=e.target.name;if(!['chat','image','video'].includes(role))return;const model=(state.model_catalog?.models||[]).find(x=>x.id===e.target.value);document.getElementById(`model-${role}-selected`).textContent='선택 모델: '+modelChoiceName(model);creatorModelReason(role,model);};
+-$('#editModelSettings').onclick=()=>$('#modelSettingsPanel').showModal();
++$('#editModelSettings').onclick=()=>{drawModelSettings();$('#modelSettingsPanel').showModal()};
+ $('#modelSettingsForm').onsubmit=async e=>{e.preventDefault();if(!project())return;const selections=Object.fromEntries([...new FormData(e.target)].map(([k,v])=>[k,v||null]));await act('model_settings',{song:song(),selections,model_revision:project().model_settings.revision});};
+ let briefScope='';
+ function briefKey(){return state&&project()?'loretune-brief:'+state.workspace_id+':'+state.project_ids[song()]:''}
+@@ -616,7 +616,7 @@
+   const r=await fetch('/api/state'),fresh=await r.json();
+   if(epoch!==stateReadEpoch||sequence<appliedPollSequence||busy||dirty||song()!==name||shotName!==shot||fresh.workspace_id!==state.workspace_id||fresh.revision<state.revision)return;
+   appliedPollSequence=sequence;const p=state.projects[name],next=fresh.projects[name];
+-  const chatChanged=p&&next&&(JSON.stringify(p.chat_turns)!==JSON.stringify(next.chat_turns)||JSON.stringify(p.chat_connection)!==JSON.stringify(next.chat_connection)||JSON.stringify(p.chat_receipts)!==JSON.stringify(next.chat_receipts));
++  const chatChanged=p&&next&&(JSON.stringify(p.chat_turns)!==JSON.stringify(next.chat_turns)||JSON.stringify(p.chat_connection)!==JSON.stringify(next.chat_connection)||JSON.stringify(p.chat_receipts)!==JSON.stringify(next.chat_receipts)||JSON.stringify(p.model_settings)!==JSON.stringify(next.model_settings)||JSON.stringify(state.model_catalog)!==JSON.stringify(fresh.model_catalog));
+   const mediaChanged=p&&next&&(JSON.stringify(p.media_actions)!==JSON.stringify(next.media_actions)||JSON.stringify(p.media_connections)!==JSON.stringify(next.media_connections));
+   const jobsChanged=JSON.stringify(state.jobs)!==JSON.stringify(fresh.jobs),generationChanged=JSON.stringify(state.generation_jobs)!==JSON.stringify(fresh.generation_jobs);
+   const motionPublished=jobsChanged&&fresh.jobs.some(j=>j.kind==='local-motion'&&j.status==='completed'&&state.jobs.find(old=>old.id===j.id)?.status!=='completed');

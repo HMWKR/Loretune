@@ -1,0 +1,348 @@
+{
+  "status": "REPORTED",
+  "task": "BENCH-COLOR-04 controlled native renders",
+  "outcome": "네 조건의 실제 PNG·선형 EXR·float 버퍼를 확보했다. 색 전달함수 가정은 큰 차이를 만들었고, 재조명의 영향은 좌석과 등받이에서 방향이 달랐다. 모델 학습 출력의 색공간과 교정의 정답은 아직 미확인이다.",
+  "methodology_sources": [
+    "../asset-color-diagnosis-20261028/report.json",
+    "Khronos glTF 2 COLOR_0 linear rule",
+    "현재 scene_renderer.py와 고정 설치본 Blender importer"
+  ],
+  "cases": [
+    {
+      "case": "native-byte-pbr",
+      "interpretation": "imported-byte",
+      "shader": "pbr",
+      "seconds": 11.238916212983895,
+      "geometry_sha256": "755e958cbc0353d33659708cb482f1e1431b2e4988ddd662be84cf12225bd6ad",
+      "vertices": 42186,
+      "triangles": 84216,
+      "float_attr_max_storage_error": 2.9685450542160652e-08,
+      "vertex_color_layer": "Color",
+      "surface_link": [
+        "ShaderNodeBsdfPrincipled"
+      ],
+      "linear_buffer_colorspace": "Linear Rec.709",
+      "linear_min": [
+        0.0267623420804739,
+        0.01681402698159218,
+        0.011131661012768745
+      ],
+      "linear_max": [
+        1.2965666055679321,
+        0.8739737272262573,
+        0.7078952789306641
+      ],
+      "linear_center": [
+        0.9652530550956726,
+        0.6277608275413513,
+        0.4384237229824066,
+        1.0
+      ],
+      "png_sha256": "3763788bbb4e1b977b17dd7612ee08ac03986e2d3bba729055abdd063b673b9e",
+      "exr_sha256": "315c3c2764864e8bc8a3b6dae9ebce3ca37156f9051f87c8779534595fd1f98c"
+    },
+    {
+      "case": "raw-float-pbr",
+      "interpretation": "raw",
+      "shader": "pbr",
+      "seconds": 10.334937504958361,
+      "geometry_sha256": "755e958cbc0353d33659708cb482f1e1431b2e4988ddd662be84cf12225bd6ad",
+      "vertices": 42186,
+      "triangles": 84216,
+      "float_attr_max_storage_error": 2.9685450542160652e-08,
+      "vertex_color_layer": "DiagnosticExact",
+      "surface_link": [
+        "ShaderNodeBsdfPrincipled"
+      ],
+      "linear_buffer_colorspace": "Linear Rec.709",
+      "linear_min": [
+        0.026782402768731117,
+        0.0167941115796566,
+        0.011114593595266342
+      ],
+      "linear_max": [
+        1.2912733554840088,
+        0.8780137896537781,
+        0.7101105451583862
+      ],
+      "linear_center": [
+        0.9619502425193787,
+        0.6273829936981201,
+        0.43771278858184814,
+        1.0
+      ],
+      "png_sha256": "066a19d47579bc2bd5cb775fbf80e4feb9b21789eb4ec1b43f043c5948b4f0e2",
+      "exr_sha256": "c733a28f85f81c9a7e3523004d777be94836b1b66be98d35779925c7dc42de12"
+    },
+    {
+      "case": "inverse-srgb-float-pbr",
+      "interpretation": "inverse-srgb",
+      "shader": "pbr",
+      "seconds": 10.633076504978817,
+      "geometry_sha256": "755e958cbc0353d33659708cb482f1e1431b2e4988ddd662be84cf12225bd6ad",
+      "vertices": 42186,
+      "triangles": 84216,
+      "float_attr_max_storage_error": 2.875151916548191e-08,
+      "vertex_color_layer": "DiagnosticExact",
+      "surface_link": [
+        "ShaderNodeBsdfPrincipled"
+      ],
+      "linear_buffer_colorspace": "Linear Rec.709",
+      "linear_min": [
+        0.010435573756694794,
+        0.007109452970325947,
+        0.005137700587511063
+      ],
+      "linear_max": [
+        1.0125070810317993,
+        0.4637475311756134,
+        0.31538400053977966
+      ],
+      "linear_center": [
+        0.6488238573074341,
+        0.26871809363365173,
+        0.13444823026657104,
+        1.0
+      ],
+      "png_sha256": "ed117a064ac332e4d8f023896d11f45be389c30dbe917ac3476c16bca1852fdc",
+      "exr_sha256": "d5e2ed0e1ce190ee4ae6a058fdaf5a8ce051e09649519391e2b1dd5dd4246026"
+    },
+    {
+      "case": "raw-float-emission",
+      "interpretation": "raw",
+      "shader": "emission",
+      "seconds": 10.533899920992553,
+      "geometry_sha256": "755e958cbc0353d33659708cb482f1e1431b2e4988ddd662be84cf12225bd6ad",
+      "vertices": 42186,
+      "triangles": 84216,
+      "float_attr_max_storage_error": 2.9685450542160652e-08,
+      "vertex_color_layer": "DiagnosticExact",
+      "surface_link": [
+        "ShaderNodeEmission"
+      ],
+      "linear_buffer_colorspace": "Linear Rec.709",
+      "linear_min": [
+        0.07132641971111298,
+        0.08061350882053375,
+        0.060494422912597656
+      ],
+      "linear_max": [
+        0.8110750913619995,
+        0.5564456582069397,
+        0.546010434627533
+      ],
+      "linear_center": [
+        0.7546179890632629,
+        0.5136339664459229,
+        0.3682801127433777,
+        1.0
+      ],
+      "png_sha256": "b891c973583d9cf81186355576e85508ea01bd7c078ccd5feea51a7f57f8bdaf",
+      "exr_sha256": "a62a152a6ab72ab3a6ec8b944ccdda376e469e7dc264228810391406f6816044"
+    }
+  ],
+  "comparisons": {
+    "A": "raw-float-pbr ↔ inverse-srgb-float-pbr: 동일 FLOAT_COLOR, inverse-sRGB 전달함수만 변경",
+    "B": "raw-float-pbr ↔ raw-float-emission: 원색·조명·표시 설정을 유지하고 표면 셰이더만 변경",
+    "bridge": "native-byte-pbr ↔ raw-float-pbr: 가져오기 BYTE_COLOR 양자화 영향을 별도로 확인"
+  },
+  "quantitative_summary": {
+    "seat_interior": {
+      "A_inverse_srgb_linear_Y_percent_change": -49.697897779149095,
+      "B_emission_linear_Y_percent_change": -21.36842245709617
+    },
+    "backrest_interior": {
+      "A_inverse_srgb_linear_Y_percent_change": -55.58505346593204,
+      "B_emission_linear_Y_percent_change": 15.039925999021996
+    },
+    "bridge_whole_frame_png_max_channel_difference": 1.0
+  },
+  "interpretation": "위 비율은 명시된 좌석·등받이 ROI의 동일 조건 민감도이다. 원본 입력과 결과의 차이에 대한 가산 가능한 원인 비율이나 전체 물체 품질 점수가 아니다.",
+  "manual_visual_review": {
+    "viewed": [
+      "output/raw-float-pbr.png",
+      "output/inverse-srgb-float-pbr.png",
+      "output/raw-float-emission.png"
+    ],
+    "observation": "원색 PBR은 옅은 베이지색, inverse-sRGB는 더 어둡고 주황·갈색이며, 무조명도 같은 AgX에서 베이지색을 유지한다. 무조명 전환만으로 색 차이가 해소되지 않았다. 입력과 동일 구도 재현 품질 검증은 아니다."
+  },
+  "actual_settings": {
+    "blender": "5.2.2 LTS",
+    "original_glb_sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+    "scene": {
+      "schema_version": 2,
+      "width": 480,
+      "height": 270,
+      "background": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "objects": [
+        {
+          "id": "subject",
+          "kind": "mesh",
+          "asset": {
+            "id": "46ebb93873d947fdb80455e2f48e307b",
+            "sha256": "2f589816941840ed59a0b5f8661d7d40e6a76edf1c07cdaaf371431772ecb4b3",
+            "profile": "gltf2-static-pbr-color-v2"
+          },
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation_degrees": [
+            -90,
+            0,
+            0
+          ],
+          "scale": [
+            3,
+            3,
+            3
+          ]
+        }
+      ],
+      "camera": {
+        "position": [
+          4,
+          -6,
+          4
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "lens_mm": 50
+      },
+      "lights": [
+        {
+          "id": "key",
+          "position": [
+            3,
+            -4,
+            6
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "energy_w": 800,
+          "size_m": 3,
+          "color": [
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    "engine": "CYCLES",
+    "device": "CPU",
+    "samples": 4,
+    "seed": 0,
+    "threads": 2,
+    "view_transform": "AgX",
+    "look": "None",
+    "exposure": 0.0,
+    "gamma": 1.0,
+    "world_strength": 1.0,
+    "bsdf_defaults": {
+      "Metallic": 0.0,
+      "Roughness": 0.5,
+      "IOR": 1.5,
+      "Specular IOR Level": 0.5
+    },
+    "geometry_sha256": "755e958cbc0353d33659708cb482f1e1431b2e4988ddd662be84cf12225bd6ad",
+    "float_color_domain": "POINT",
+    "float_color_type": "FLOAT_COLOR",
+    "time_total_seconds": 43.477983895048965,
+    "process_peak_rss_bytes": 766459904,
+    "differences_from_product": [
+      "independent script; direct read-only input mount and owned output bind",
+      "explicit fixed2 Blender threads and AgX/None/exposure0/gamma1",
+      "diagnostic FLOAT_COLOR and shader variants; no production adapter",
+      "extra EXR/float-buffer output and object-index pass; no new provider inference"
+    ]
+  },
+  "geometry_source_check": {
+    "source_GLTF_to_Blender_axis": "(x,-z,y)",
+    "source_vertices": 42186,
+    "source_triangles": 84216,
+    "source_decoded_geometry_sha256": "755e958cbc0353d33659708cb482f1e1431b2e4988ddd662be84cf12225bd6ad",
+    "render_geometry_sha256": "755e958cbc0353d33659708cb482f1e1431b2e4988ddd662be84cf12225bd6ad",
+    "exact_vertex_and_face_order_equal": true
+  },
+  "verification": [
+    {
+      "scenario": "고정 실행 환경",
+      "invocation": "설치 트리와 바이너리 SHA 계산 + docker image inspect",
+      "observable": "모든 설정 pin과 일치",
+      "artifact": "preflight.json"
+    },
+    {
+      "scenario": "실제 네 조건 렌더",
+      "invocation": "python3 .omo/evidence/asset-color-controlled-20261028/launch.py; container.json의 정확한 docker argv",
+      "observable": "컨테이너 exit0, OOM false, PNG4·EXR4·NPY4 존재",
+      "artifact": "execution.json / render.log / output/case-receipts.json"
+    },
+    {
+      "scenario": "원본 기하 및 조건 간 불변",
+      "invocation": "원본 POSITION/index 해독 후 (x,-z,y) 축 변환과 순서 보존 SHA 대조",
+      "observable": "원본 및 네 조건의 정점·면 순서 해시 일치",
+      "artifact": "geometry-source-check.json"
+    },
+    {
+      "scenario": "픽셀 비교",
+      "invocation": "기존 전용 Python3.11로 analyze.py 실행",
+      "observable": "exit0, 고정 ROI 및 전체 프레임 통계",
+      "artifact": "analysis.log / pixel-analysis.json"
+    },
+    {
+      "scenario": "원본·제품 보존 및 종료",
+      "invocation": "원본 GLB/복사본/renderer SHA, 컨테이너 삭제 후 inspect",
+      "observable": "원본과 renderer 불변, 전용 컨테이너 없음",
+      "artifact": "preservation-and-cleanup-check.json / cleanup.json"
+    }
+  ],
+  "resources": {
+    "container_wall_seconds": 46.915148041036446,
+    "Blender_total_seconds": 43.477983895048965,
+    "Blender_process_peak_rss_bytes": 766459904,
+    "container_memory_limit_bytes": 2147483648,
+    "container_cpus": 2,
+    "wall_timeout_seconds": 420,
+    "evidence_bytes_before_report": 15543265,
+    "network": "실제 컨테이너 설정 network=none 확인",
+    "container_peak_memory": "별도 측정하지 않음; 위 RSS는 Blender 프로세스 측정"
+  },
+  "failures_preserved": [
+    "analysis-attempt-1-rejected: 배경 차이 마스크가 거의 전체 화면을 선택해 대상 통계로 부적합. 결과를 보존하고 고정 ROI 분석으로 교체. 렌더 재실행 없음.",
+    "최종 컨테이너 부재 검사 문자열 대소문자 실패를 수정; 실제 렌더/정리 실패는 아님."
+  ],
+  "actual_tools_and_skills": {
+    "skills": "같은 에이전트 세션에서 앞서 읽은 Karpathy·feature-verification 적용; 별도 가상 스킬 명령 실행 없음",
+    "tools": [
+      "exec_command",
+      "write_stdin",
+      "view_image"
+    ],
+    "commands": [
+      "고정 docker create/start/inspect/rm",
+      "Blender --background --factory-startup --disable-autoexec --python /input/experiment.py",
+      "기존 전용 Python의 numpy/PIL 분석"
+    ],
+    "exits": "render0, analysis0, owned container rm0"
+  },
+  "limits": [
+    "모델 학습 출력 색공간 미확인. 더 어두움·입력과 비슷해 보임은 올바른 교정의 증거가 아니다.",
+    "제품·문서·registry·context 수정, 새 모델 추론·다운로드·설치·공급자 호출 없음.",
+    "상용 Tripo 동등성 또는 플랫폼 전체 완료를 주장하지 않음.",
+    "480×270, 4 samples, 단일 seed. 노이즈 수렴·신뢰구간 미측정.",
+    "독립 진단 스크립트의 명시적 AgX·2 threads·FLOAT_COLOR·shader·EXR 설정은 제품과 차이를 가지며 settings.json에 기록.",
+    "ROI는 수동 선택한 내부 사각형이며 전체 물체 분할 또는 입력과 대응되는 영역이 아님."
+  ]
+}

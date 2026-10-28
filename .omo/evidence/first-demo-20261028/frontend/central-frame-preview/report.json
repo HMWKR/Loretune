@@ -1,0 +1,570 @@
+{
+  "status": "RECEIVED",
+  "goal": "D05/D14: display the exact saved composition PNG fully in the platform central canvas and preserve original media/output access",
+  "problem": {
+    "root_evidence": ".omo/evidence/first-demo-20261028/main-demo-case-r2/saved-frame-visibility-inspect.json",
+    "root_image_height": 360,
+    "root_visible_height": 180,
+    "own_same_fixture_before": "seventh-captures/before-1920.json: PNG below visible precision viewport after frame-confirmation action, 0 of360 content pixels visible"
+  },
+  "decision": {
+    "chosen": "A central sibling host using original timelineFrameImage",
+    "alternatives": [
+      "B modal adds repeated close/reopen while editing",
+      "C removing precision/dock scrolling risks workbench sizing and sticky regressions"
+    ],
+    "why": "put full visual decision surface above the numeric controls, preserve exact request/output source and original player DOM"
+  },
+  "changes": [
+    "studio-media.js creates one sibling saved-frame host, moves original img into fit canvas, pauses media without replacing it, supports keyboard return and mobile original-node routing",
+    "index.html current PNG onload alone opens the central view; invalidation/loading hides old result, old generation/scope/dirty/version guards remain",
+    "studio.css fit grid uses available bounded height with no artificial minimum clipping; selected-Take context/row are temporarily hidden only during saved-frame view",
+    "existing output-card click leaves saved-frame mode automatically, keeping showRenderPreview and subtitle/native playback handlers intact"
+  ],
+  "not_added": [
+    "new endpoint",
+    "new approval",
+    "model call",
+    "new runtime render engine",
+    "subtitle-in-PNG capability",
+    "editor rewrite"
+  ],
+  "verification": {
+    "actual_command": "LORETUNE_CENTRAL_FRAME_EVIDENCE=<seventh-captures> LORETUNE_CENTRAL_FRAME_BEFORE=1 PYTHONPATH=.:tests python3 -m unittest tests.test_central_frame_preview -v",
+    "actual_receipt": "seventh-actual-tests.log",
+    "actual_result": "1 test / 28.057s / OK",
+    "real_frame": "seventh-captures/frame.png",
+    "real_frame_sha256": "7432de7d642b793d539e34f3f4c609701235fc1e345a4d7156464a0a4638f3a2",
+    "browser_request_and_body_receipt": "seventh-captures/result.json",
+    "actual_checks": [
+      "actual same PNG body",
+      "full content fits1920/1280/375",
+      "single image and original player containers",
+      "version/clip/time identity",
+      "keyboard return",
+      "video DOM/currentTime preserved",
+      "dirty invalidates and blocks",
+      "no approval/POST/model call"
+    ],
+    "browser_POSTs": [],
+    "browser_page_errors": [],
+    "PNG_requests": 6,
+    "request_count_interpretation": "six explicit frame confirmation actions caused exactly six PNG requests, no automatic duplicate request",
+    "fixture_preparation": "Fresh temporary project, direct authored PNG/video + approved immutable motion. Existing internal approval/render pipeline prepared one real completed fixture MP4 with subtitle track; current saved version2 is unapproved. Browser inspection itself uses no POST/approval/job/model action. No user/main data used.",
+    "legacy_command": "PYTHONPATH=.:tests python3 -m unittest tests.test_timeline_motion_overlay_ui tests.test_media_async_lifecycle tests.test_frontend_async tests.test_proposal_ui tests.test_save_feedback tests.test_chat_sidebar_ui tests.test_work_status_ui -v",
+    "legacy_receipt": "final-narrow-tests.log",
+    "legacy_result": "11 tests / 10.479s / OK",
+    "guard_cases": "existing and added controlled DOM/network tests: source/time/conversation/version/dirty invalidation, late response and decoded image, decode error, server rejection, return late callback, no approval/actions; original assertions preserved",
+    "syntax_receipt": "syntax/result.json:10 targets exit0"
+  },
+  "geometry": {
+    "before-1920.json": {
+      "rect": {
+        "x": 233,
+        "y": 1085.75,
+        "width": 1274,
+        "height": 360,
+        "top": 1085.75,
+        "right": 1507,
+        "bottom": 1445.75,
+        "left": 233
+      },
+      "natural": [
+        640,
+        360
+      ],
+      "visible": {
+        "left": 233,
+        "top": 1085.75,
+        "right": 1507,
+        "bottom": 1056,
+        "width": 1274,
+        "height": 0
+      },
+      "content": {
+        "left": 550,
+        "top": 1085.75,
+        "width": 640,
+        "height": 360
+      },
+      "ancestors": [
+        {
+          "id": "",
+          "class": "lt-timeline-controls",
+          "rect": {
+            "x": 233,
+            "y": 919.109375,
+            "width": 1282,
+            "height": 180,
+            "top": 919.109375,
+            "right": 1515,
+            "bottom": 1099.109375,
+            "left": 233
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "ltTimelineDock",
+          "class": "timeline",
+          "rect": {
+            "x": 220,
+            "y": 700.328125,
+            "width": 1308,
+            "height": 355.671875,
+            "top": 700.328125,
+            "right": 1528,
+            "bottom": 1056,
+            "left": 220
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "ltPreviewPanel",
+          "class": "lt-media-pane",
+          "rect": {
+            "x": 220,
+            "y": 120,
+            "width": 1308,
+            "height": 936,
+            "top": 120,
+            "right": 1528,
+            "bottom": 1056,
+            "left": 220
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "",
+          "class": "lt-edit-workspace",
+          "rect": {
+            "x": 0,
+            "y": 104,
+            "width": 1548,
+            "height": 976,
+            "top": 104,
+            "right": 1548,
+            "bottom": 1080,
+            "left": 0
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "agentWorkspace",
+          "class": "agent-workspace",
+          "rect": {
+            "x": 0,
+            "y": 104,
+            "width": 1920,
+            "height": 976,
+            "top": 104,
+            "right": 1920,
+            "bottom": 1080,
+            "left": 0
+          },
+          "overflow": "hidden"
+        }
+      ],
+      "status": "저장 버전 2 · 1번 컷 1.000초의 실제 합성 프레임입니다. 출력 승인은 별도입니다.",
+      "sameImage": true,
+      "samePreview": true,
+      "sameDownload": true,
+      "bodyOverflow": 0
+    },
+    "after-1920.json": {
+      "rect": {
+        "x": 220,
+        "y": 195.1875,
+        "width": 1308,
+        "height": 469.953125,
+        "top": 195.1875,
+        "right": 1528,
+        "bottom": 665.140625,
+        "left": 220
+      },
+      "natural": [
+        640,
+        360
+      ],
+      "visible": {
+        "left": 220,
+        "top": 195.1875,
+        "right": 1528,
+        "bottom": 665.140625,
+        "width": 1308,
+        "height": 469.953125
+      },
+      "content": {
+        "left": 456.2638888888889,
+        "top": 195.1875,
+        "width": 835.4722222222222,
+        "height": 469.953125
+      },
+      "ancestors": [
+        {
+          "id": "",
+          "class": "saved-frame-canvas",
+          "rect": {
+            "x": 220,
+            "y": 195.1875,
+            "width": 1308,
+            "height": 469.953125,
+            "top": 195.1875,
+            "right": 1528,
+            "bottom": 665.140625,
+            "left": 220
+          },
+          "overflow": "hidden"
+        },
+        {
+          "id": "savedFramePreview",
+          "class": "saved-frame-preview",
+          "rect": {
+            "x": 220,
+            "y": 120,
+            "width": 1308,
+            "height": 572.328125,
+            "top": 120,
+            "right": 1528,
+            "bottom": 692.328125,
+            "left": 220
+          },
+          "overflow": "hidden"
+        },
+        {
+          "id": "",
+          "class": "lt-preview-stage",
+          "rect": {
+            "x": 220,
+            "y": 120,
+            "width": 1308,
+            "height": 572.328125,
+            "top": 120,
+            "right": 1528,
+            "bottom": 692.328125,
+            "left": 220
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "ltPreviewPanel",
+          "class": "lt-media-pane",
+          "rect": {
+            "x": 220,
+            "y": 120,
+            "width": 1308,
+            "height": 936,
+            "top": 120,
+            "right": 1528,
+            "bottom": 1056,
+            "left": 220
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "",
+          "class": "lt-edit-workspace",
+          "rect": {
+            "x": 0,
+            "y": 104,
+            "width": 1548,
+            "height": 976,
+            "top": 104,
+            "right": 1548,
+            "bottom": 1080,
+            "left": 0
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "agentWorkspace",
+          "class": "agent-workspace",
+          "rect": {
+            "x": 0,
+            "y": 104,
+            "width": 1920,
+            "height": 976,
+            "top": 104,
+            "right": 1920,
+            "bottom": 1080,
+            "left": 0
+          },
+          "overflow": "hidden"
+        }
+      ],
+      "label": "저장 버전 2 · 1번 컷 1.000초의 실제 합성 프레임입니다. 출력 승인은 별도입니다.",
+      "status": "저장 버전 2 · 1번 컷 1.000초의 실제 합성 프레임입니다. 출력 승인은 별도입니다.",
+      "sameImage": true,
+      "samePreview": true,
+      "sameDownload": true,
+      "bodyOverflow": 0
+    },
+    "after-1280.json": {
+      "rect": {
+        "x": 220,
+        "y": 343.625,
+        "width": 668,
+        "height": 197.1875,
+        "top": 343.625,
+        "right": 888,
+        "bottom": 540.8125,
+        "left": 220
+      },
+      "natural": [
+        640,
+        360
+      ],
+      "visible": {
+        "left": 220,
+        "top": 343.625,
+        "right": 888,
+        "bottom": 540.8125,
+        "width": 668,
+        "height": 197.1875
+      },
+      "content": {
+        "left": 378.72222222222223,
+        "top": 343.625,
+        "width": 350.55555555555554,
+        "height": 197.1875
+      },
+      "ancestors": [
+        {
+          "id": "",
+          "class": "saved-frame-canvas",
+          "rect": {
+            "x": 220,
+            "y": 343.625,
+            "width": 668,
+            "height": 197.1875,
+            "top": 343.625,
+            "right": 888,
+            "bottom": 540.8125,
+            "left": 220
+          },
+          "overflow": "hidden"
+        },
+        {
+          "id": "savedFramePreview",
+          "class": "saved-frame-preview",
+          "rect": {
+            "x": 220,
+            "y": 268.4375,
+            "width": 668,
+            "height": 299.5625,
+            "top": 268.4375,
+            "right": 888,
+            "bottom": 568,
+            "left": 220
+          },
+          "overflow": "hidden"
+        },
+        {
+          "id": "",
+          "class": "lt-preview-stage",
+          "rect": {
+            "x": 220,
+            "y": 268.4375,
+            "width": 668,
+            "height": 299.5625,
+            "top": 268.4375,
+            "right": 888,
+            "bottom": 568,
+            "left": 220
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "ltPreviewPanel",
+          "class": "lt-media-pane",
+          "rect": {
+            "x": 220,
+            "y": 268.4375,
+            "width": 668,
+            "height": 607.5625,
+            "top": 268.4375,
+            "right": 888,
+            "bottom": 876,
+            "left": 220
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "",
+          "class": "lt-edit-workspace",
+          "rect": {
+            "x": 0,
+            "y": 252.4375,
+            "width": 908,
+            "height": 647.5625,
+            "top": 252.4375,
+            "right": 908,
+            "bottom": 900,
+            "left": 0
+          },
+          "overflow": "auto"
+        },
+        {
+          "id": "agentWorkspace",
+          "class": "agent-workspace",
+          "rect": {
+            "x": 0,
+            "y": 252.4375,
+            "width": 1280,
+            "height": 647.5625,
+            "top": 252.4375,
+            "right": 1280,
+            "bottom": 900,
+            "left": 0
+          },
+          "overflow": "hidden"
+        }
+      ],
+      "label": "저장 버전 2 · 1번 컷 1.000초의 실제 합성 프레임입니다. 출력 승인은 별도입니다.",
+      "status": "저장 버전 2 · 1번 컷 1.000초의 실제 합성 프레임입니다. 출력 승인은 별도입니다.",
+      "sameImage": true,
+      "samePreview": true,
+      "sameDownload": true,
+      "bodyOverflow": 0
+    },
+    "after-375.json": {
+      "rect": {
+        "x": 12,
+        "y": 98.375,
+        "width": 351,
+        "height": 197.4375,
+        "top": 98.375,
+        "right": 363,
+        "bottom": 295.8125,
+        "left": 12
+      },
+      "natural": [
+        640,
+        360
+      ],
+      "visible": {
+        "left": 12,
+        "top": 98.375,
+        "right": 363,
+        "bottom": 295.8125,
+        "width": 351,
+        "height": 197.4375
+      },
+      "content": {
+        "left": 12,
+        "top": 98.375,
+        "width": 351,
+        "height": 197.4375
+      },
+      "ancestors": [],
+      "label": "저장 버전 2 · 1번 컷 1.000초의 실제 합성 프레임입니다. 출력 승인은 별도입니다.",
+      "status": "저장 버전 2 · 1번 컷 1.000초의 실제 합성 프레임입니다. 출력 승인은 별도입니다.",
+      "sameImage": true,
+      "samePreview": true,
+      "sameDownload": true,
+      "bodyOverflow": 0
+    }
+  },
+  "manual_render_review": [
+    "seventh-captures/frame.png",
+    "seventh-captures/before-1920.png",
+    "seventh-captures/after-1920.png",
+    "seventh-captures/after-1280.png",
+    "seventh-captures/after-375.png",
+    "seventh-captures/actual-output-return-1920.png"
+  ],
+  "independent_root_observation": {
+    "evidence": ".omo/evidence/first-demo-20261028/resume-central-preview/root-actual-central-frame-and-output.json",
+    "message_receipt": "root directly confirmed current1920x1080 source PNG fit content835.43x469.93 with clipping0, existing output-card click→native playback0.959s/ready4/subtitle track1, jobs3→3/timeline1→1/model0"
+  },
+  "failed_receipts_preserved": [
+    {
+      "receipt": "first-actual-tests.log",
+      "type": "product sizing and test discovery",
+      "resolution": "bounded grid/flex sizing was explicit; import TestCase via module to avoid accidental duplicate unittest collection"
+    },
+    {
+      "receipt": "second-actual-tests.log",
+      "type": "response body observation",
+      "resolution": "Puppeteer response.buffer returned empty; capture native fetch response.clone body without another request and compare to displayed blob SHA"
+    },
+    {
+      "receipt": "third-actual-tests.log",
+      "type": "test seek timing",
+      "resolution": "wait loaded metadata/data and seek completion before asserting unchanged native video time"
+    },
+    {
+      "receipt": "fourth-actual-tests.log;fit-diagnosis-tests.log",
+      "type": "real1280 boundary clipping",
+      "resolution": "remove100px canvas minimum and temporarily suppress selected-Take-only context/row while frame view active; preserve all nodes"
+    },
+    {
+      "receipt": "fifth-actual-tests.log;sixth-actual-tests.log",
+      "type": "unaccepted cross-breakpoint locator sequence",
+      "resolution": "desktop output-card acceptance now follows the actual main task before the responsive fit matrix; mobile→desktop global-toggle mouse locator remains outside this acceptance case"
+    }
+  ],
+  "limitations": [
+    "Real failed/stale/late PNG scenarios for the new view callback are controlled tests, not deliberately injected production network faults",
+    "Static PNG is one source frame, not real-time timeline playback, audio or final subtitle rendering",
+    "The separate mobile→desktop global-toggle mouse locator failure was retained, not labelled a fixed product defect",
+    "Whole full regression, current main-data user recording and final release judgement remain root-owned"
+  ],
+  "security_triage": [
+    "New innerHTML is fixed trusted UI copy; dynamic frame identity uses textContent, no user HTML insertion",
+    "Puppeteer evaluate/VM code are test-only constant functions, not product eval"
+  ],
+  "methodology": {
+    "sources": [
+      "installed feature-verification runtime/live-feature-verify/ui-ux-craft",
+      "Impeccable operate/harden/craft-floor",
+      "root actual ROI180/360 screenshot/data",
+      "current studio media controllers and saved-frame guards"
+    ],
+    "applied": [
+      "single image/player DOM",
+      "task-first central canvas",
+      "progressive numeric controls",
+      "same data1920 before/after and375 responsive inspection",
+      "state invariant regression"
+    ],
+    "model": "session inherited; no actual model invocation"
+  },
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 220202,
+      "sha256": "f79217bd9778af472f00c095a1152e259420a05f40c3b85cfd3cc293870175d9",
+      "before_sha256": "45e3f36436412e8db9c51959017cfc10b40bee20e1e8f1a06fdfbf8d2740b719"
+    },
+    {
+      "path": "studio.css",
+      "bytes": 87013,
+      "sha256": "8e9b9acf939cdeb2a99626db29dc3a54c850ef099d29a8f45c6b1b82bb25904a",
+      "before_sha256": "cf1ec74f58ca27e7bff389bd7f0fcc3ded3dd217675c2dc96c18c174cbd5ec52"
+    },
+    {
+      "path": "studio-media.js",
+      "bytes": 24885,
+      "sha256": "f9b4ff6bde0990336dafa9cf76087f7a259566f8f37864dbe3916fc1ecb521d6",
+      "before_sha256": "bdd14c7107f4dabba3afcb9cd176c7984671089bab67ed85198ef50324a0111c"
+    },
+    {
+      "path": "tests/timeline_motion_overlay.cjs",
+      "bytes": 14112,
+      "sha256": "2efa8ae4bc03c93d92f696f10e5f2e1986956515c9f42d0be1a9c0762ec2b5aa",
+      "before_sha256": "4441d0130fb0cc6dfb25439ae5b4c63806cebb26c50537419427cc936cf4c401"
+    },
+    {
+      "path": "tests/central_frame_preview.cjs",
+      "bytes": 9439,
+      "sha256": "0a399d1c8a054c2842b71ee1bcc1e04268bcedc0856d0b984f0b07f5772c2788",
+      "before_sha256": null
+    },
+    {
+      "path": "tests/test_central_frame_preview.py",
+      "bytes": 3362,
+      "sha256": "96c70bfbebb612b34d940a9f32ecba766ffc4901b692792c66b1354959292dd8",
+      "before_sha256": null
+    }
+  ]
+}

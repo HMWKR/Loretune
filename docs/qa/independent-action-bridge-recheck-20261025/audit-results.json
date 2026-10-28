@@ -1,0 +1,121 @@
+[
+  {
+    "case": "single-job-reservation-mock-receipt",
+    "status": "pass",
+    "receipt": {
+      "status": "accepted",
+      "job_id": "aaa119b8859c4a2a839aee9dad049468",
+      "state": "prepared",
+      "mode": "rehearsal",
+      "external_calls": 0,
+      "note": "로컬 모의 실행 계약만 접수했습니다. 실제 AI 생성·외부 전송은 실행하지 않았습니다."
+    },
+    "job_count": 1,
+    "reservations": 1
+  },
+  {
+    "case": "grant-does-not-approve-ip",
+    "status": "pass"
+  },
+  {
+    "case": "B01-new-action-job-handoff",
+    "status": "pass",
+    "expected_job": "aaa119b8859c4a2a839aee9dad049468",
+    "actual_jobs": [
+      {
+        "id": "aaa119b8859c4a2a839aee9dad049468",
+        "state": "prepared",
+        "mode": "rehearsal"
+      }
+    ],
+    "source_job_state": "prepared"
+  },
+  {
+    "case": "different-action-same-call-key-conflict",
+    "status": "pass"
+  },
+  {
+    "case": "revoked-grant-new-call-rejected",
+    "status": "pass"
+  },
+  {
+    "case": "revoke-before-claim-release-only-unsent",
+    "status": "pass",
+    "job_state": "blocked",
+    "reservation": "cancelled"
+  },
+  {
+    "case": "B02-semantic-invalid-arguments-bounded",
+    "status": "pass",
+    "attempts": 10,
+    "structured": [
+      {
+        "status": "invalid_arguments",
+        "code": "INVALID_ACTION_REFERENCE",
+        "retryable": true
+      },
+      {
+        "status": "invalid_arguments",
+        "code": "INVALID_ACTION_REFERENCE",
+        "retryable": false
+      }
+    ],
+    "state": "invalid_arguments",
+    "repair_count": 2,
+    "call_count": 2,
+    "counts": {
+      "jobs": 0,
+      "reservations": 0
+    },
+    "error": "RUN_NOT_ACCEPTING_TOOLS"
+  },
+  {
+    "case": "action-input-rejected-before-reservation",
+    "status": "pass",
+    "reservations": 0
+  },
+  {
+    "case": "action-model-rejected-before-reservation",
+    "status": "pass",
+    "reservations": 0
+  },
+  {
+    "case": "grant-price-rejected-before-reservation",
+    "status": "pass",
+    "reservations": 0
+  },
+  {
+    "case": "settings-rejected-before-reservation",
+    "status": "pass",
+    "reservations": 0
+  },
+  {
+    "case": "role-injection-rejected-before-reservation",
+    "status": "pass",
+    "reservations": 0
+  },
+  {
+    "case": "endpoint-injection-rejected-before-reservation",
+    "status": "pass",
+    "reservations": 0
+  },
+  {
+    "case": "explicit-rights-revocation-before-claim",
+    "status": "pass"
+  },
+  {
+    "case": "unknown-recovery-keeps-reservation-no-reclaim",
+    "status": "pass",
+    "job_state": "outcome_unknown",
+    "reservation": "uncertain"
+  },
+  {
+    "case": "concurrent-actions-respect-cap",
+    "status": "pass",
+    "results": [
+      "15ea6502d64941a1b2bc7b0e161c8448",
+      "blocked"
+    ],
+    "reserved": "0.7"
+  }
+]

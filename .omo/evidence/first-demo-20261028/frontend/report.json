@@ -1,0 +1,47 @@
+{
+  "schema": "approved-motion-overlay-ui-handoff/1",
+  "status": "REPORTED; root integration acceptance pending",
+  "owner": "/root/demo_overlay_ui",
+  "files_changed": [
+    "index.html",
+    "studio.css",
+    "tests/timeline_ui_safety.cjs",
+    "tests/timeline_motion_overlay.cjs",
+    "tests/test_timeline_motion_overlay_ui.py"
+  ],
+  "source_sha256": {
+    "index.html": "25b0097f47400eb16e24f034eb0f9ce887390e014952507ae511bf8dfb660eed",
+    "studio.css": "19851dcf5e21244fed815beb34cb11967036b44fdf0dc1e0d705b1ae5b29cd54",
+    "tests/timeline_ui_safety.cjs": "e99cf8c8dbf22fedbc2c8d6cb61cb4940cd859c90eebfbc7aa0ae1ba44e3a118",
+    "tests/timeline_motion_overlay.cjs": "a12e952cab6b00cfa6198cdea01dd4a9d4e5689f80c47b2580cc093818292507",
+    "tests/test_timeline_motion_overlay_ui.py": "ae6ea1083a2bf07dae0ac58c468b3f20036f95dec3873cc5bba5b2b9fb7fb1e0"
+  },
+  "implementation": [
+    "Existing clip row retained; per-clip native details for optional typography overlay",
+    "Approved same-project motion choices from immutable version actor/scope/hash; grant id not required or exposed",
+    "Clip-local start/end and logical1920x1080 offsets; source clear removes key",
+    "Input and save handlers preserve values/source/draft, validate before mutation, keep numeric-control DOM/focus",
+    "Saved timeline actual PNG preview: explicit clip/time, no auto request or output approval",
+    "Preview generation guard covers workspace/project/conversation/timeline/draft/dirty/selected clip/time; read errors preserve input",
+    "Original scene/sequence playback explicitly distinguished from actual saved composite frame and final output",
+    "Existing semantic tokens and native focus/disabled/details controls reused"
+  ],
+  "api_contract": "GET /api/timeline-frame?song=...&timeline_revision=<savedhead>&clip_index=<0based>&frame=<floor(seconds*24)>&conversation=<cid>",
+  "test_fixture_change": "Legacy timeline_ui_safety callback stub added for new frame-control dependency; all old assertions preserved",
+  "verification": "verification.json",
+  "before": "before.json",
+  "before_existing_tests": "before-existing-tests.json",
+  "no_writes": [
+    "backend files",
+    "motion-studio.js",
+    "existing documents/registry/historical QA",
+    "browser Space91"
+  ],
+  "root_next_actions": [
+    "Restart server on latest backend/UI source",
+    "Actual UI choose motion source; modify time/position; save; inspect real PNG before approval; approve and export",
+    "Check image/video composite plus source mutation/stale approval/rights/error and reopen",
+    "Run coordinated mechanical detectors, rendered desktop/mobile/keyboard inspection and recording",
+    "Freeze combined source only after remaining root/backend changes and run required regression"
+  ]
+}

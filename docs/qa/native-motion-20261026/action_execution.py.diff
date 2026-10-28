@@ -1,0 +1,11 @@
+--- before/action_execution.py
++++ action_execution.py
+@@ -28,7 +28,7 @@
+  for row in c.execute('SELECT body FROM jobs'):
+   j=json.loads(row[0])
+   if j['song']!=name:continue
+-  result.append(dict(id=j['id'],state=j['status'],mode='local-render',context={'song':name},external_calls=0,result=dict(sha256=j['sha256'],output_slot='video') if j['status']=='completed' and j.get('sha256') else None,result_approved=bool(j.get('delivery_reviews') and j['delivery_reviews'][-1]['decision']=='approved'),cost=deepcopy(j['cost'])))
++  result.append(dict(id=j['id'],state=j['status'],mode=j.get('kind','local-render'),context={'song':name},external_calls=0,result=dict(sha256=j['sha256'],output_slot='video',take=j.get('take')) if j['status']=='completed' and j.get('sha256') else None,result_approved=bool(j.get('delivery_reviews') and j['delivery_reviews'][-1]['decision']=='approved'),cost=deepcopy(j['cost'])))
+  return result
+ 
+ 
