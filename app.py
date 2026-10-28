@@ -1351,6 +1351,11 @@ def server(root, port, permissions=None, provider_adapter=None, generation_appro
                 source=ROOT/self.path[1:]
                 if not source.is_file():return self.send(404,{'error':'정적 파일이 없습니다.'})
                 return self.send(200, source.read_bytes(), kind)
+            if self.path in {'/brand/aethon-ink-icon.svg', '/brand/aethon-white-icon.svg', '/brand/aethon-apple-touch-180.png'}:
+                kind = 'image/svg+xml' if self.path.endswith('.svg') else 'image/png'
+                source=ROOT/self.path[1:]
+                if not source.is_file():return self.send(404,{'error':'정적 파일이 없습니다.'})
+                return self.send(200, source.read_bytes(), kind)
             if self.path.split('?')[0] == '/api/state':
                 from urllib.parse import parse_qs,urlsplit
                 try:
